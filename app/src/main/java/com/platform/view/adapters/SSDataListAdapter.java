@@ -163,7 +163,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                                 case R.id.action_machine_shifting:
                                     Intent intent = new Intent(activity, SSActionsActivity.class);
                                     intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                                    intent.putExtra("title", "Shift Machine");
+                                    intent.putExtra("title", "Select Structure");
                                     intent.putExtra("type", "shiftMachine");
                                     intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                                     intent.putExtra("currentStructureId", ssDataList.get
@@ -217,7 +217,6 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                             return false;
                         }
                     });
-
                 }
             });
             rlMachine = itemView.findViewById(R.id.rl_machine);
@@ -240,7 +239,17 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                         }
                         activity.startActivity(mouIntent);
                     } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE){
+                            Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE ){
+                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                getId());
+                        mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
+
+                    } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_REALEASED_STATUS_CODE ){
                         fragment.takeMouDoneAction(getAdapterPosition());
                     } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE){
@@ -248,7 +257,7 @@ public class SSDataListAdapter extends RecyclerView.Adapter<SSDataListAdapter.Vi
                             Intent intent = new Intent(activity, SSActionsActivity.class);
                             intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
                             intent.putExtra("type", "deployMachine");
-                            intent.putExtra("title", "Deploy Machine");
+                            intent.putExtra("title", "Select Structure");
                             intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                             activity.startActivity(intent);
                         } else {

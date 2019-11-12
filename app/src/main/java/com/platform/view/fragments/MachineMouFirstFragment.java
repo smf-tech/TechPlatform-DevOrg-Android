@@ -130,10 +130,19 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 btnNotEligible.setOnClickListener(this);
                 btnFirstPartMou.setVisibility(View.GONE);
             }
-        } else {
+        } else if(statusCode == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
             if(isMachineMou) {
                 btnFirstPartMou.setVisibility(View.VISIBLE);
                 btnFirstPartMou.setOnClickListener(this);
+            }
+        } else if(statusCode == Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
+            if(isMachineEligible) {
+                llEligible.setVisibility(View.VISIBLE);
+                btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
+                btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
+                btnEligilble.setOnClickListener(this);
+                btnNotEligible.setVisibility(View.GONE);
+                btnFirstPartMou.setVisibility(View.GONE);
             }
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);

@@ -179,23 +179,23 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else {
 //            structureMachineListFragmentPresenter.getMachinesList(Util.getUserObjectFromPref().getUserLocation().getDistrictIds()
 //                    .get(0).getId(), Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-            if(Util.getUserObjectFromPref().getRoleIds().equals(Constants.SSModule.DISTRICT_LEVEL)) {
-                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba");
-            } else {
-                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
-            }
-
-//            if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
-//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)){
+//            if(Util.getUserObjectFromPref().getRoleIds().equals(Constants.SSModule.DISTRICT_LEVEL)) {
 //                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
 //                        "5ced0c27d42f28124c0150ba");
-//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
+//            } else {
 //                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-//                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+//                        "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
 //            }
+
+            if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
+                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+            } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM){
+                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba");
+            } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+            }
         }
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
@@ -481,23 +481,23 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
         if(status == 200){
-            if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
-                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba");
-            } else {
-                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
-            }
-
-//            if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
-//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)){
+//            if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
 //                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
 //                        "5ced0c27d42f28124c0150ba");
-//            } else if(Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
+//            } else {
 //                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-//                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+//                        "5ced0c27d42f28124c0150ba", "5c66a53cd42f283b440013eb");
 //            }
+
+            if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
+                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+            } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM){
+                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba");
+            } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
+                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+            }
         }
     }
 

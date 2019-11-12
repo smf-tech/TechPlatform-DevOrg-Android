@@ -147,39 +147,39 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         structureListAdapter = new StructureListAdapter(getActivity(), this, filteredStructureListData, type);
         rvStructureList.setAdapter(structureListAdapter);
 
-//        if(type.equalsIgnoreCase("deployMachine")) {
-//            if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "machineDeployableStructures", "");
-//            } else if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "machineDeployableStructures", "");
-//            } else if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
-//                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "5c66a468d42f283b440013e3", "machineDeployableStructures", "");
-//            }
-//        } else if(type.equalsIgnoreCase("shiftMachine")) {
-//            if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "machineShiftStructures", "");
-//            } else if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_DM)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "machineShiftStructures", "");
-//            } else if (Util.getUserObjectFromPref().getRoleCode().equals(Constants.SSModule.ROLE_CODE_SS_TC)) {
-//                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                        "5c66a468d42f283b440013e3", "machineShiftStructures", "");
-//            }
-//        }
-
         if(type.equalsIgnoreCase("deployMachine")) {
-            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-                    "machineDeployableStructures", "");
+            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "machineDeployableStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "machineDeployableStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "5c66a468d42f283b440013e3", "machineDeployableStructures", "");
+            }
         } else if(type.equalsIgnoreCase("shiftMachine")) {
-            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-                    "machineShiftStructures", currentStructureId);
+            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "machineShiftStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "machineShiftStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                        "5c66a468d42f283b440013e3", "machineShiftStructures", "");
+            }
         }
+
+//        if(type.equalsIgnoreCase("deployMachine")) {
+//            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+//                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
+//                    "machineDeployableStructures", "");
+//        } else if(type.equalsIgnoreCase("shiftMachine")) {
+//            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+//                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
+//                    "machineShiftStructures", currentStructureId);
+//        }
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
         } else {
