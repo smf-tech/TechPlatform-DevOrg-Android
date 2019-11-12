@@ -89,6 +89,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncSavedForms();
         uploadImage("");
 
+
     }
 
     private void syncSavedForms() {

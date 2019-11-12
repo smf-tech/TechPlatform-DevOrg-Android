@@ -117,6 +117,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private RequestOptions requestOptions;
 
     private void updateStatusAndProceed(int currentState) {
+        Log.e("currentstate--3", "----"+currentState);
         if (currentState == state_start) {
             //editor.putInt("State", state_pause);
             startService();
@@ -155,6 +156,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "state_halt", lat, lon, meter_reading, hours, totalHours, image);
         }
+        Log.e("currentstate--4", "----"+currentState);
     }
 
     private void updateButtonsonRestart(int currentState) {
@@ -225,10 +227,12 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 if (preferences.getInt("State", 0) == state_start) {
                     editor.putInt("State", state_pause);
                     editor.apply();
+                    currentState = state_pause;
                     updateStatusAndProceed(state_pause);
                 } else if (preferences.getInt("State", 0) == state_pause) {
                     editor.putInt("State", state_start);
                     editor.apply();
+                    currentState = state_start;
                     updateStatusAndProceed(state_start);
                 }
 
@@ -363,7 +367,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 editor.apply();
                 editor.putInt("State", state_start);
                 editor.apply();
-                updateStatusAndProceed(state_start);
+                currentState = state_start;
+                        updateStatusAndProceed(state_start);
                 flag = true;
 
             }
@@ -382,13 +387,16 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             flag = false;
         } else {
             stopService();
+            Log.e("currentstate--1", "----"+currentState);
             editor.putInt("State", state_stop);
             editor.apply();
+            currentState = state_stop;
             updateStatusAndProceed(state_stop);
             flag = true;
             image = "";
             //clearReadingImages();
            // et_smeter_read.requestFocus();
+            Log.e("currentstate--2", "----"+currentState);
         }
     }
 
