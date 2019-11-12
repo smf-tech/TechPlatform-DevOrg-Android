@@ -119,7 +119,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
         ssMachineListAdapter = new SSMachineListAdapter(getActivity(), this, ssMachineListData);
         rvDataList.setAdapter(ssMachineListAdapter);
-        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), this, ssStructureListData);
+        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), ssStructureListData,true);
         rvDataList.setAdapter(ssStructureListAdapter);
 
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);

@@ -1,44 +1,22 @@
 package com.platform.presenter;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
-import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
-import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.request.APIRequestCall;
-import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
 import com.platform.utility.Urls;
-import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.fragments.MachineVisitValidationFragment;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class MachineVisitValidationFragmentPresenter implements APIPresenterListener {
     private WeakReference<MachineVisitValidationFragment> fragmentWeakReference;

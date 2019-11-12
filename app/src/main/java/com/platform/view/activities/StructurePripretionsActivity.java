@@ -37,10 +37,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.platform.BuildConfig;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.StructureData;
-import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
+import com.platform.models.SujalamSuphalam.StructurePripretionData;
+import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.presenter.StructurePripretionsActivityPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
@@ -52,10 +55,13 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -74,13 +80,14 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     boolean ffTranningComplited = false;
     boolean structureFit = false;
 
-//    private String upload_URL = "http://13.235.124.3/api/prepareStructure";
+    //    private String upload_URL = "http://13.235.124.3/api/prepareStructure";
     final String upload_URL = BuildConfig.BASE_URL
             + Urls.SSModule.STRUCTURE_PREPARATION;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private ArrayList<Uri> imageUri = new ArrayList<>();
     private int imageCount = 0;
-    StructurePripretionRequest requestData = new StructurePripretionRequest();
+    StructurePripretionData requestData = new StructurePripretionData();
     StructureData structureData;
 
     StructurePripretionsActivityPresenter presenter;
@@ -90,11 +97,12 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_structure_pripretions);
 
-        presenter=new StructurePripretionsActivityPresenter(this);
+        presenter = new StructurePripretionsActivityPresenter(this);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
 
         initView();
+        setTitle("Structure Preparation");
     }
 
     private void initView() {
@@ -171,12 +179,30 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     }
 
+    public void setTitle(String title) {
+        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_submit:
                 if (isAllDataValid()) {
-                    uploadImage();
+
+                    Uri uri1 = imageUri.get(0);
+                    requestData.setStructureImg1(uri1.getPath());
+                    Uri uri2 = imageUri.get(0);
+                    requestData.setStructureImg1(uri2.getPath());
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                            .insert(requestData);
+
+                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
+                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getStructurePripretionDataDao().getAllStructure());
+
+                    uploadImage(structureVisitMonitoringList.get(0), 2);
 //                    presenter.submitPripretion(requestData, imageHashmap);
                 }
                 break;
@@ -187,6 +213,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             case R.id.tv_structure_img2:
                 selectedIV = findViewById(R.id.tv_structure_img2);
                 onAddImageClick();
+                break;
+            case R.id.toolbar_back_action:
+                finish();
                 break;
         }
     }
@@ -199,23 +228,29 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             location = gpsTracker.getLocation();
         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Location not available",
+                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (location != null) {
+            requestData.setStructureId(structureData.getStructureId());
+            requestData.setLat(location.getLatitude());
+            requestData.setLong(location.getLongitude());
+            requestData.setFfIdentified(ffIdentified);
+            requestData.setFfName(etFFName.getText().toString());
+            requestData.setFfMobileNumber(etFFMobile.getText().toString());
+            requestData.setFfMobileNumber(etFFMobile.getText().toString());
+            requestData.setFfTraningDone(ffTranningComplited);
+            requestData.setIsStructureFit(structureFit);
+            requestData.setReason(etReson.getText().toString());
+        } else {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);
             return false;
         }
 
-        requestData.setStructureId(structureData.getStructureId());
-        requestData.setLat(location.getLatitude());
-        requestData.setLong(location.getLongitude());
-        requestData.setFfIdentified(ffIdentified);
-        requestData.setFfName(etFFName.getText().toString());
-        requestData.setFfMobileNumber(etFFMobile.getText().toString());
-        requestData.setFfMobileNumber(etFFMobile.getText().toString());
-        requestData.setFfTraningDone(ffTranningComplited);
-        requestData.setIsStructureFit(structureFit);
-        requestData.setReason(etReson.getText().toString());
-
-        if (imageCount == 0) {
+        if (imageUri.size() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please, click images of structure.",
                     Snackbar.LENGTH_LONG);
@@ -224,9 +259,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         return true;
     }
 
-    private void uploadImage() {
+    private void uploadImage(StructurePripretionData structurePripretionData, int imageCount) {
 
-        Log.d("request -",new Gson().toJson(requestData));
+        Log.d("request -", new Gson().toJson(requestData));
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -253,27 +288,24 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                params.put("formData", new Gson().toJson(structurePripretionData));
+                params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
                 return params;
             }
 
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
-                Drawable drawable = null;
-                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
-                for (int i = 0; i < imageHashmap.size(); i++) {
-                    String key = (String) myVeryOwnIterator.next();
-                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-//                    if(imageType.equals("dieselReceipt")) {
-//                        imageHashmap.put("diesel"+i, bitmap);
-//                    } else if(imageType.equals("registerImage")) {
-//                        imageHashmap.put("register"+i, bitmap);
-//                    }
-                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
-                            "image/jpeg"));
-                }
+//                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+//                for (int i = 0; i < imageHashmap.size(); i++) {
+//                    String key = (String) myVeryOwnIterator.next();
+                Drawable drawable = new BitmapDrawable(getResources(), structurePripretionData.getStructureImg1());
+                params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
+                Drawable drawable1 = new BitmapDrawable(getResources(), structurePripretionData.getStructureImg1());
+                params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
+                        "image/jpeg"));
+//                }
                 return params;
             }
         };
@@ -384,8 +416,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     if (Util.isValidImageSize(imageFile)) {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         selectedIV.setImageURI(finalUri);
-                        imageHashmap.put("Structure" + imageCount, bitmap);
-                        imageCount++;
+                        imageUri.add(finalUri);
+//                        imageHashmap.put("Structure" + imageCount, bitmap);
+//                        imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }

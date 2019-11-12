@@ -8,8 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
-import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
-import com.platform.models.SujalamSuphalam.StructureVisitMonitoringRequest;
+import com.platform.models.SujalamSuphalam.StructurePripretionData;
 import com.platform.request.APIRequestCall;
 import com.platform.utility.Urls;
 import com.platform.view.activities.StructurePripretionsActivity;
@@ -42,7 +41,7 @@ public class StructurePripretionsActivityPresenter implements APIPresenterListen
 //        activity.success(masterDataResponse);
     }
 
-    public void submitPripretion(StructurePripretionRequest requestData, HashMap<String, Bitmap> imageHashmap){
+    public void submitPripretion(StructurePripretionData requestData, HashMap<String, Bitmap> imageHashmap){
         activity.showProgressBar();
         Gson gson = new GsonBuilder().create();
 

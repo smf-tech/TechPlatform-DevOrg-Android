@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,9 +16,12 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.view.activities.CommunityMobilizationActivity;
+import com.platform.view.activities.StructureCompletionActivity;
 import com.platform.view.activities.StructurePripretionsActivity;
 import com.platform.view.activities.StructureVisitMonitoringActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
@@ -30,13 +34,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
     private ArrayList<StructureData> ssDataList;
     Activity activity;
-    StructureMachineListFragment fragment;
+    boolean isSave;
 
-    public SSStructureListAdapter(FragmentActivity activity, StructureMachineListFragment fragment,
-                                  ArrayList<StructureData> ssStructureListData) {
+    public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
+                                  boolean isSave) {
         this.ssDataList = ssStructureListData;
         this.activity = activity;
-        this.fragment = fragment;
+        this.isSave = isSave;
     }
 
     @NonNull
@@ -75,6 +79,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         ImageView btnPopupMenu;
         LinearLayout rlMachine;
         PopupMenu popup;
+        Button btSave;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +91,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvStructureName = itemView.findViewById(R.id.tv_structure_name);
             tvStructureOwnerDepartment = itemView.findViewById(R.id.tv_structure_owner_department);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            btSave = itemView.findViewById(R.id.bt_save);
+            if (isSave){
+                btSave.setText("Save Offline");
+            } else {
+                btSave.setText("Remove from Offline");
+            }
+
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,6 +123,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                     activity.startActivity(intent);
 //                                    }
                                     break;
+                                case R.id.action_structure_completion:
+                                    intent = new Intent(activity, StructureCompletionActivity.class);
+                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
+                                    activity.startActivity(intent);
+                                    break;
+
                             }
                             return false;
                         }
@@ -127,6 +145,21 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
                         activity.startActivity(intent);
                     }
+                }
+            });
+            btSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isSave){
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
+                                .insert(ssDataList.get(getAdapterPosition()));
+                    } else {
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
+                                .delete(ssDataList.get(getAdapterPosition()).getStructureId());
+                        ssDataList.remove(getAdapterPosition());
+                        notifyDataSetChanged();
+                    }
+
                 }
             });
         }

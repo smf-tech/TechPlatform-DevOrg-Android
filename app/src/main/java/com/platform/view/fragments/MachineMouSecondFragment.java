@@ -129,10 +129,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
-        };
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
-        masterDataList.size();
+
         for(int i = 0; i<masterDataList.size(); i++) {
             if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
                     getField().equals("ownedBy")) {

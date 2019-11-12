@@ -14,12 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.MasterDataValue;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.SujalamSuphalam.Structure;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionLocation;
@@ -72,7 +77,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateStructureActivityPresenter(this);
-        presenter.getMaster();
+        setMasterData();
         initView();
         setTitle("Create Structure");
 
@@ -383,15 +388,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         finish();
     }
 
-    public void setMasterData(MasterDataResponse masterDataResponse) {
-        if (masterDataResponse.getStatus() == 1000) {
-            logOutUser();
-        } else {
-            for (MasterDataList obj : masterDataResponse.getData()) {
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
                 if (obj.getForm().equalsIgnoreCase("structure_create")) {
                     masterDataLists.add(obj);
                 }
-            }
         }
     }
 

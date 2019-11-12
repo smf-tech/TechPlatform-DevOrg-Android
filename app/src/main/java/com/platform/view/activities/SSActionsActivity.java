@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,22 +20,22 @@ import com.platform.view.fragments.MachineDieselRecordFragment;
 import com.platform.view.fragments.MachineNonUtilizationFragment;
 import com.platform.view.fragments.MachineShiftingFormFragment;
 import com.platform.view.fragments.MachineVisitValidationFragment;
+import com.platform.view.fragments.SavedStructureListFragment;
 import com.platform.view.fragments.SiltTransportationRecordFragment;
 import com.platform.view.fragments.StructureMachineListFragment;
 
-public class SSActionsActivity extends AppCompatActivity  implements View.OnClickListener {
+public class SSActionsActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
     private FragmentManager fManager;
     private Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ssactions);
         Bundle data = getIntent().getExtras();
         fManager = getSupportFragmentManager();
-        ivBackIcon = findViewById(R.id.toolbar_back_action);
-        ivBackIcon.setOnClickListener(this);
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
+
         if (data != null && data.containsKey("SwitchToFragment")) {
 
             String switchToFragment = data.getString("SwitchToFragment") != null
@@ -42,8 +43,7 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
 
             String title = data.getString("title") != null
                     ? data.getString("title") : "";
-
-            toolbar_title.setText(title);
+            setTitle(title);
 
             if (!TextUtils.isEmpty(switchToFragment)) {
                 switch (switchToFragment) {
@@ -51,6 +51,11 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
                         fragment = new StructureMachineListFragment();
                         fragment.setArguments(data);
                         openFragment();
+                        if (data.getInt("viewType", 0) == 1) {
+                            findViewById(R.id.toolbar_edit_action).setVisibility(View.VISIBLE);
+                        } else {
+                            findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
+                        }
                         break;
                     case "MachineDeployStructureListFragment":
                         fragment = new MachineDeployStructureListFragment();
@@ -82,6 +87,11 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
                         fragment.setArguments(data);
                         openFragment();
                         break;
+                    case "SavedStructureListFragment":
+                        fragment = new SavedStructureListFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
                 }
             }
         }
@@ -94,26 +104,45 @@ public class SSActionsActivity extends AppCompatActivity  implements View.OnClic
                 .commit();
     }
 
+    void setTitle(String title) {
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
+        ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action.setImageResource(R.drawable.ic_bell);
+        toolbar_edit_action.setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toolbar_back_action:
                 finish();
+                break;
+            case R.id.toolbar_edit_action:
+                Intent intent = new Intent(this, SSActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
+                intent.putExtra("title", "Saved Structure");
+//                intent.putExtra("machineId", machineId);
+//                intent.putExtra("currentStructureId", currentStructureId);
+//                intent.putExtra("newStructureId", structureListData.get(position).getStructureId());
+                startActivity(intent);
+
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-            try {
-                fManager.popBackStackImmediate();
-            } catch (IllegalStateException e) {
-                Log.e("TAG", e.getMessage());
-            }
+        try {
+            fManager.popBackStackImmediate();
+        } catch (IllegalStateException e) {
+            Log.e("TAG", e.getMessage());
+        }
 
-            if (fManager.getBackStackEntryCount() == 0) {
-                finish();
-            }
+        if (fManager.getBackStackEntryCount() == 0) {
+            finish();
+        }
     }
 
 

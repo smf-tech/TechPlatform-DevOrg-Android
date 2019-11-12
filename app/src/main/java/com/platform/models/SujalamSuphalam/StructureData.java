@@ -1,63 +1,88 @@
 package com.platform.models.SujalamSuphalam;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@Entity
 public class StructureData implements Serializable {
-
+    @PrimaryKey
+    @ColumnInfo(name = "structureId")
+    @NonNull
     @SerializedName("structureId")
     @Expose
     private String structureId;
+    @ColumnInfo(name = "structureName")
     @SerializedName("structureName")
     @Expose
     private String structureName;
+    @ColumnInfo(name = "structureCode")
     @SerializedName("structureCode")
     @Expose
     private String structureCode;
+    @ColumnInfo(name = "state")
     @SerializedName("state")
     @Expose
     private String state;
+    @ColumnInfo(name = "stateId")
     @SerializedName("stateId")
     @Expose
     private String stateId;
+    @ColumnInfo(name = "district")
     @SerializedName("district")
     @Expose
     private String district;
+    @ColumnInfo(name = "districtId")
     @SerializedName("districtId")
     @Expose
     private String districtId;
+    @ColumnInfo(name = "taluka")
     @SerializedName("taluka")
     @Expose
     private String taluka;
+    @ColumnInfo(name = "talukaId")
     @SerializedName("talukaId")
     @Expose
     private String talukaId;
+    @ColumnInfo(name = "structureWorkType")
     @SerializedName("structureWorkType")
     @Expose
     private String structureWorkType;
+    @ColumnInfo(name = "structureStatus")
     @SerializedName("structureStatus")
     @Expose
     private String structureStatus;
+    @ColumnInfo(name = "structureStatusCode")
     @SerializedName("structureStatusCode")
     @Expose
     private int structureStatusCode;
+    @ColumnInfo(name = "lat")
     @SerializedName("lat")
     @Expose
     private double lat;
+    @ColumnInfo(name = "long")
     @SerializedName("long")
     @Expose
     private double _long;
+    @ColumnInfo(name = "structureDepartmentName")
     @SerializedName("structureDepartmentName")
     @Expose
     private String structureDepartmentName;
+    @ColumnInfo(name = "structureSubDepartmentName")
     @SerializedName("structureSubDepartmentName")
     @Expose
     private String structureSubDepartmentName;
+    @ColumnInfo(name = "structureType")
     @SerializedName("structureType")
     @Expose
     private String structureType;
+    @ColumnInfo(name = "structureMachineList")
     @SerializedName("structureMachineList")
     @Expose
     private String structureMachineList;
