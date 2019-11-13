@@ -235,7 +235,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
             etMachineState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
-            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
         }
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {

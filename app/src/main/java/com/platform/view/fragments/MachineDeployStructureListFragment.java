@@ -149,25 +149,33 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
         if(type.equalsIgnoreCase("deployMachine")) {
             if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         "machineDeployableStructures", "");
             } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         "machineDeployableStructures", "");
             } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-                        "5c66a468d42f283b440013e3", "machineDeployableStructures", "");
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                        "machineDeployableStructures", "");
             }
         } else if(type.equalsIgnoreCase("shiftMachine")) {
             if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         "machineShiftStructures", "");
             } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList("5c669d13c7982d31cc6b86cd",
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         "machineShiftStructures", "");
             } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-                        "5c66a468d42f283b440013e3", "machineShiftStructures", "");
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                        "machineShiftStructures", "");
             }
         }
 

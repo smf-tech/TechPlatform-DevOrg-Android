@@ -188,13 +188,17 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //            }
 
             if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+                structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
+                        getUserLocation().getStateId().get(0).getId());
             } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM){
-                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba");
+                structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
+                                getUserLocation().getStateId().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
             } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+                structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
+                                getUserLocation().getStateId().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
             }
         }
         if(isStateFilter) {
@@ -490,13 +494,17 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //            }
 
             if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                structureMachineListFragmentPresenter.getStateMachinesList("5c66989ec7982d31cc6b86c3");
+                structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
+                        getUserLocation().getStateId().get(0).getId());
             } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM){
-                structureMachineListFragmentPresenter.getDistrictMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba");
+                structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
+                                getUserLocation().getStateId().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
             } else if(Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList("5c66989ec7982d31cc6b86c3",
-                        "5ced0c27d42f28124c0150ba", "5ced0c27d42f28124c0150ba");
+                structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
+                                getUserLocation().getStateId().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
             }
         }
     }

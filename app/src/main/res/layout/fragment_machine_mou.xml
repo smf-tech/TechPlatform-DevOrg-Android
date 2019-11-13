@@ -56,7 +56,7 @@
                 <EditText
                     android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/district"/>
+                    android:hint="@string/state"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
