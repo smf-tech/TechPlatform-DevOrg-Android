@@ -25,6 +25,7 @@
             <!--district-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -41,6 +42,7 @@
             <!--taluka-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -55,6 +57,7 @@
             <!--host village-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -69,6 +72,7 @@
             <!--host village population-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -83,6 +87,7 @@
             <!--catchment villages-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -97,6 +102,7 @@
             <!--catchment village population-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -111,6 +117,7 @@
             <!--gat no-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -121,11 +128,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Gat No."
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Water Shed No.-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -136,11 +144,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Water Shed No."
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Area (If Required)-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -151,11 +160,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Area"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Structure Name-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -171,6 +181,7 @@
             <!--Structure owner department-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -186,6 +197,7 @@
             <!--Sub Structure owner department (Sub Type as per Adm approval)-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -201,6 +213,7 @@
             <!--Details when "NOTA" is selected as department-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -216,6 +229,7 @@
             <!--Structure Category / Type-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
@@ -231,6 +245,7 @@
             <!--Administrative Approval Number-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -241,11 +256,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Administrative Approval Number"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Approval Date-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -256,11 +272,14 @@
                     android:layout_height="wrap_content"
                     android:hint="Administrative Approval Date"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    android:focusable="false"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Technical Sanction Number-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -271,11 +290,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Technical Sanction Number"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Estimate  Amount-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -286,11 +306,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Administrative Estimate  Amount"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Working Hours-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -301,11 +322,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Working Hours"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Diesel Consumption in Liters-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -316,11 +338,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Diesel Consumption in Liters"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Diesel Consumption in Rs-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -331,11 +354,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Diesel Consumption in Rs"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Estimate Quantity (CuM)-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -346,11 +370,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Estimate Quantity (CuM)"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Remark-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

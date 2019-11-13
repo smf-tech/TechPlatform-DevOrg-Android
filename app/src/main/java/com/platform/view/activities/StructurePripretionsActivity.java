@@ -1,0 +1,445 @@
+package com.platform.view.activities;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.platform.BuildConfig;
+import com.platform.R;
+import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
+import com.platform.presenter.StructurePripretionsActivityPresenter;
+import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
+import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
+import com.platform.utility.Util;
+import com.platform.utility.VolleyMultipartRequest;
+import com.soundcloud.android.crop.Crop;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+
+public class StructurePripretionsActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
+
+    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String STRUCTURE_DATA = "StructureData";
+
+
+    ImageView selectedIV;
+    EditText etFFName, etFFMobile, etReson;
+
+    private Uri outputUri;
+    private Uri finalUri;
+    boolean ffIdentified = false;
+    boolean ffTranningComplited = false;
+    boolean structureFit = false;
+
+//    private String upload_URL = "http://13.235.124.3/api/prepareStructure";
+    final String upload_URL = BuildConfig.BASE_URL
+            + Urls.SSModule.STRUCTURE_PREPARATION;
+    private RequestQueue rQueue;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private int imageCount = 0;
+    StructurePripretionRequest requestData = new StructurePripretionRequest();
+    StructureData structureData;
+
+    StructurePripretionsActivityPresenter presenter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_structure_pripretions);
+
+        presenter=new StructurePripretionsActivityPresenter(this);
+
+        structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
+
+        initView();
+    }
+
+    private void initView() {
+
+        TextView tvStructureCode = findViewById(R.id.tv_structure_code);
+        ImageView ivStructureImg1 = findViewById(R.id.tv_structure_img1);
+        TextView tv_machin_code = findViewById(R.id.tv_machin_code);
+        ImageView ivStructureImg2 = findViewById(R.id.tv_structure_img2);
+        RadioGroup rgFFIdentified = findViewById(R.id.rg_ff_identified);
+        LinearLayout lyFFDetailes = findViewById(R.id.ly_ff_detailes);
+        etFFName = findViewById(R.id.et_ff_name);
+        etFFMobile = findViewById(R.id.et_ff_mobile);
+        RadioGroup rgFFTranningComplited = findViewById(R.id.rg_ff_tranning_complited);
+        RadioGroup rgStructureFit = findViewById(R.id.rg_structure_fit);
+        TextInputLayout lyReson = findViewById(R.id.ly_reason);
+        etReson = findViewById(R.id.et_reason);
+        Button btSubmit = findViewById(R.id.bt_submit);
+
+        tvStructureCode.setText(structureData.getStructureCode());
+        tv_machin_code.setText(structureData.getStructureMachineList());
+
+        ivStructureImg1.setOnClickListener(this);
+        ivStructureImg2.setOnClickListener(this);
+        btSubmit.setOnClickListener(this);
+
+        rgFFIdentified.check(R.id.rb_ff_identified_no);
+        rgFFIdentified.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_ff_identified_yes:
+                        ffIdentified = true;
+                        lyFFDetailes.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rb_ff_identified_no:
+                        ffIdentified = false;
+                        lyFFDetailes.setVisibility(View.GONE);
+                        break;
+                }
+            }
+        });
+
+        rgFFTranningComplited.check(R.id.rb_ff_tranning_complited_no);
+        rgFFTranningComplited.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_ff_tranning_complited_yes:
+                        ffTranningComplited = true;
+                        break;
+                    case R.id.rb_ff_tranning_complited_no:
+                        ffTranningComplited = false;
+                        break;
+                }
+            }
+        });
+
+        rgStructureFit.check(R.id.rb_structure_fit_no);
+        rgStructureFit.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_structure_fit_yes:
+                        structureFit = true;
+                        lyReson.setVisibility(View.GONE);
+                        break;
+                    case R.id.rb_structure_fit_no:
+                        structureFit = false;
+                        lyReson.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_submit:
+                if (isAllDataValid()) {
+                    uploadImage();
+//                    presenter.submitPripretion(requestData, imageHashmap);
+                }
+                break;
+            case R.id.tv_structure_img1:
+                selectedIV = findViewById(R.id.tv_structure_img1);
+                onAddImageClick();
+                break;
+            case R.id.tv_structure_img2:
+                selectedIV = findViewById(R.id.tv_structure_img2);
+                onAddImageClick();
+                break;
+        }
+    }
+
+    private boolean isAllDataValid() {
+
+        GPSTracker gpsTracker = new GPSTracker(this);
+        Location location = null;
+        if (gpsTracker.isGPSEnabled(this, this)) {
+            location = gpsTracker.getLocation();
+        } else {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Location not available",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+
+        requestData.setStructureId(structureData.getStructureId());
+        requestData.setLat(location.getLatitude());
+        requestData.setLong(location.getLongitude());
+        requestData.setFfIdentified(ffIdentified);
+        requestData.setFfName(etFFName.getText().toString());
+        requestData.setFfMobileNumber(etFFMobile.getText().toString());
+        requestData.setFfMobileNumber(etFFMobile.getText().toString());
+        requestData.setFfTraningDone(ffTranningComplited);
+        requestData.setIsStructureFit(structureFit);
+        requestData.setReason(etReson.getText().toString());
+
+        if (imageCount == 0) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, click images of structure.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
+    }
+
+    private void uploadImage() {
+
+        Log.d("request -",new Gson().toJson(requestData));
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Toast.makeText(StructurePripretionsActivity.this, jsonString, Toast.LENGTH_LONG).show();
+                            Log.d("response -", jsonString);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(StructurePripretionsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(StructurePripretionsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(requestData));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0; i < imageHashmap.size(); i++) {
+                    String key = (String) myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
+//                    if(imageType.equals("dieselReceipt")) {
+//                        imageHashmap.put("diesel"+i, bitmap);
+//                    } else if(imageType.equals("registerImage")) {
+//                        imageHashmap.put("register"+i, bitmap);
+//                    }
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(this);
+        rQueue.add(volleyMultipartRequest);
+    }
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            showPictureDialog();
+        }
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, getResources().getString(R.string.msg_error_in_photo_gallery),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/Octopus/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(this, this.getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) return;
+                finalUri = Util.getUri(imageFilePath);
+                Crop.of(outputUri, finalUri).start(this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) return;
+                    outputUri = data.getData();
+                    finalUri = Util.getUri(imageFilePath);
+                    Crop.of(outputUri, finalUri).start(this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                if (Util.isConnected(this)) {
+                    if (Util.isValidImageSize(imageFile)) {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        selectedIV.setImageURI(finalUri);
+                        imageHashmap.put("Structure" + imageCount, bitmap);
+                        imageCount++;
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    private String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
+    }
+}

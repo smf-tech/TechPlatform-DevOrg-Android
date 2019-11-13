@@ -34,7 +34,7 @@ import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.home.RoleAccessAPIResponse;
 import com.platform.models.home.RoleAccessList;
 import com.platform.models.home.RoleAccessObject;
-import com.platform.models.profile.Location;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.MachineMouFragmentPresenter;
 import com.platform.utility.Constants;
@@ -586,14 +586,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         }
     }
 
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         if (etMachineDistrict.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
                             talukaList.set_id(location.getTalukaId());

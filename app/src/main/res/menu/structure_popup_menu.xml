@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_mobilization"
+        android:title="Community Mobilization"
+        />
+    <item
+        android:id="@+id/action_visit_monitoring"
+        android:title="TC structure visit and monitoring record" />
+    <item
+        android:id="@+id/action_allocate_badge"
+        android:visible="false"
+        android:title="Allocate Badge" />
+</menu>

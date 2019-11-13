@@ -32,16 +32,15 @@ import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.SujalamSuphalam.StructureListAPIResponse;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.home.RoleAccessAPIResponse;
 import com.platform.models.home.RoleAccessList;
 import com.platform.models.home.RoleAccessObject;
-import com.platform.models.profile.Location;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.MachineDeployStructureListFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.SSActionsActivity;
-import com.platform.view.adapters.SSDataListAdapter;
 import com.platform.view.adapters.StructureListAdapter;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
@@ -292,7 +291,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         getActivity().finish();
     }
 
-    public void showJurisdictionLevel(List<Location> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -300,7 +299,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                     Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         if (tvDistrictFilter.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
                             talukaList.set_id(location.getTalukaId());
@@ -324,7 +323,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                             compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        Location location = jurisdictionLevels.get(i);
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
                         if (tvStateFilter.getText().toString().equalsIgnoreCase(location.getState().getName())) {
                             CustomSpinnerObject districtList = new CustomSpinnerObject();
                             districtList.set_id(location.getDistrictId());

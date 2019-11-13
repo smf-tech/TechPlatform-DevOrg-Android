@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.platform.view.activities.CommunityMobilizationActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--Activity-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_activity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Activity"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Task-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_tasks"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Task"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Activity 1-->
+            <LinearLayout
+                android:id="@+id/ly_activity1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!--Date of Meeting-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_meeting_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date of Meeting"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Village Name-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_village_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Village Name"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Grampanchayat Name-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_grampanchayat_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=" Grampanchayat Name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--No of Participant-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_no_of_participant"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="No of Participant"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_a1_entry_level"
+                    android:layout_width="@dimen/dimen_160dp"
+                    android:layout_height="@dimen/dimen_160dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add_img" />
+
+                <!--Name of Sarpanch-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_name_of_sarpanch"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of Sarpanch"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Contact of Sarpanch-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_contact_of_sarpanch"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contact of Sarpanch"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Name of OopSarpanch-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_name_of_oopSarpanch"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of OopSarpanch"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Contact of OopSarpanch-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a1_contact_of_oopSarpanch"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contact of OopSarpanch"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!--Activity 2-->
+            <LinearLayout
+                android:id="@+id/ly_activity2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!--Village Name a2-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a2_village_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Village Name"
+                        android:focusable="false"
+                        android:longClickable="false"  />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--GP Name-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a2_gp_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="GP Name"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a2_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="GP Name"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--No of Participant-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a2_no_of_participant"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="No of Participant"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_a2_entry_level"
+                    android:layout_width="@dimen/dimen_160dp"
+                    android:layout_height="@dimen/dimen_160dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add_img" />
+
+            </LinearLayout>
+
+            <!--Activity 3-->
+            <LinearLayout
+                android:id="@+id/ly_activity3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Name of Taskforce / Leader name-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_taskforce_leader"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of Taskforce / Leader name"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--  Member Name -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_member_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Member Name"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Gender -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_gender"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Gender"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Phone no of task force -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_phone_no_task_force"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Phone no of task force"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Education-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_education"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Education"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Occupation-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_occupation"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Occupation"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--date of formation-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a3_date_of_formation"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date of formation"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!--Activity 4-->
+            <LinearLayout
+                android:id="@+id/ly_activity4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!--Topic of Training-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a4_topic_of_training"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Topic of Training"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Date of Training-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a4_date_of_training"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date of Training"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--Name of participant-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a4_name_of_participant"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of participant"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Duration in days-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a4_duration_in_days"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Duration in days"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_a4_photo"
+                    android:layout_width="@dimen/dimen_160dp"
+                    android:layout_height="@dimen/dimen_160dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add_img" />
+
+            </LinearLayout>
+
+            <!--Activity 5-->
+            <LinearLayout
+                android:id="@+id/ly_activity5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!--Topic of Training-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_village_name"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Topic of Training"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Name of Govt officer / Dept-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_name_of_officer_dept"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of Govt officer / Dept"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date"
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Name of the farmers (Potential Beneficiary)-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_name_of_farmer"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name of the farmers (Potential Beneficiary)"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--phone number of the farmers-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_phone_no_of_farmers"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Phone number of the farmers"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Farmer's land holding (In Acres) - Category Options-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_03dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_a5_farmer_land_holding"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Farmer's land holding (In Acres) - Category Options"
+                        android:imeOptions="actionNext" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_a5_photo"
+                    android:layout_width="@dimen/dimen_160dp"
+                    android:layout_height="@dimen/dimen_160dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Program photo"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/submit"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/ly_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
