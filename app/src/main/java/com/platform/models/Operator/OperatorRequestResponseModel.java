@@ -21,6 +21,10 @@ public class OperatorRequestResponseModel {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("status_code")
+    @Expose
+    private String status_code;
+
     @SerializedName("workTime")
     @Expose
     private String workTime;
@@ -122,5 +126,13 @@ public class OperatorRequestResponseModel {
 
     public void set_id(int _id) {
         this._id = _id;
+    }
+
+    public String getStatus_code() {
+        return status_code;
+    }
+
+    public void setStatus_code(String status_code) {
+        this.status_code = status_code;
     }
 }

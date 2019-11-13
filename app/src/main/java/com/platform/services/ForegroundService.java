@@ -97,7 +97,7 @@ public class ForegroundService extends Service {
         editor.putInt("systemTime", currentSystemTime);
         editor.putInt("systemClockTime", currentClockTime+systemClockTime);
         Log.e("systemClockTime---destr", "---"+systemClockTime);
-        editor.putInt("totalHours", currentClockTime);
+        editor.putInt("totalHours", totalHours);
         editor.apply();
     }
 
@@ -147,6 +147,7 @@ public class ForegroundService extends Service {
             intent.putExtra("CURRENT_HOURS", currentHours);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+
     }
 
 

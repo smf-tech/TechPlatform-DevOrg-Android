@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "25aa080c218c9eab7e27804658db93ba",
+    "identityHash": "78989effca44977810505bd28ee6b18e",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -618,7 +618,7 @@
       },
       {
         "tableName": "OperatorRequestResponseModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `status_code` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -635,6 +635,12 @@
           {
             "fieldPath": "status",
             "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status_code",
+            "columnName": "status_code",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -721,44 +727,12 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "SSMasterDatabase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `data` TEXT, `dateTime` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "data",
-            "columnName": "data",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dateTime",
-            "columnName": "dateTime",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '25aa080c218c9eab7e27804658db93ba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78989effca44977810505bd28ee6b18e')"
     ]
   }
 }

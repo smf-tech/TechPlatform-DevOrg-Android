@@ -65,11 +65,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener {
     private GPSTracker gpsTracker;
@@ -128,7 +132,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             //-----------
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
-            saveOperatorStateData(machine_id, workTime, "state_start", lat, lon, meter_reading, hours, totalHours, image);
+            saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
@@ -137,7 +141,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
-            saveOperatorStateData(machine_id, workTime, "state_pause", lat, lon, meter_reading, hours, totalHours, image);
+            saveOperatorStateData(machine_id, workTime, "pause",""+state_pause, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
         } else if (currentState == state_stop) {
             editor.putInt("State", 0);
@@ -147,14 +151,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
-            saveOperatorStateData(machine_id, workTime, "state_stop", lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
+            saveOperatorStateData(machine_id, workTime, "stop",""+state_stop, lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
 
             image = "";
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
-            saveOperatorStateData(machine_id, workTime, "state_halt", lat, lon, meter_reading, hours, totalHours, image);
+            saveOperatorStateData(machine_id, workTime, "halt",""+state_halt, lat, lon, meter_reading, hours, totalHours, image);
         }
         Log.e("currentstate--4", "----"+currentState);
     }
@@ -186,6 +190,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
         GetLocationofOperator();
+
         if (Permissions.isCameraPermissionGranted(this, this)) {
 
         }
@@ -209,7 +214,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         img_start_meter = findViewById(R.id.img_start_meter);
         img_end_meter = findViewById(R.id.img_end_meter);
 
-
+        clearDataForNewDate();
         if (preferences.getInt("State", 0) == 0) {
             currentState = state_stop;
             //updateButtonsonRestart(currentState);
@@ -340,9 +345,9 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                         currentHours = intent.getIntExtra("CURRENT_HOURS", 0);
                         hours = currentHours;
                         if (!TextUtils.isEmpty(timestr)) {
-                           /* Log.e("current Time", timestr);
+                         //   Log.e("current Time", timestr);
                             Log.e("Total_hours", "" + totalHours);
-                            Log.e("current_hours", "" + currentHours);*/
+                            Log.e("current_hours", "" + currentHours);
                         }
 
                     }
@@ -436,10 +441,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         Log.e("method--2", "---OnDestroy");
     }
 
-    public void saveOperatorStateData(String machine_id, String workTime, String status, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
+    public void saveOperatorStateData(String machine_id, String workTime,String status, String statusCode, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
         operatorRequestResponseModel = new OperatorRequestResponseModel();
         operatorRequestResponseModel.setMachine_id(machine_id);
         operatorRequestResponseModel.setWorkTime(workTime);
+        operatorRequestResponseModel.setStatus_code(statusCode);
         operatorRequestResponseModel.setStatus(status);
         operatorRequestResponseModel.setLat(lat);
         operatorRequestResponseModel.setLong(lon);
@@ -455,7 +461,12 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             SyncAdapterUtils.manualRefresh();
         }
 
+        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
 
+        Log.e("list--2","---"+list.size());
+        for (int i = 0; i < list.size(); i++) {
+            Log.e("list--2--2","---"+list.get(i).getTotalHours());
+        }
 
         //List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
         /*for (int i = 0; i < list.size(); i++) {
@@ -485,7 +496,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
             Log.e("method--", "---" + new Gson().toJson(list.get(i)));
         }*/
-
+        clearDataForNewDate();
     }
 
     @Override
@@ -826,6 +837,46 @@ public String showReadingDialog(final Activity context, int pos){
     }
 
     public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
-        machine_id = operatorMachineData.getMachine_code();
+        machine_id = operatorMachineData.getMachine_id();
+    }
+
+
+
+
+    public void clearDataForNewDate(){
+        if (preferences.getLong("todaysDate", 0)==0){
+            setTodaysDate();
+        }else {
+            Calendar today = Calendar.getInstance();
+            long diff = today.getTimeInMillis() - preferences.getLong("todaysDate", 0); //result in millis
+            long days = diff / (24 * 60 * 60 * 1000);
+            Util.logger("Date difference", "-day-" + days);
+            if (days>=1){
+                setTodaysDate();
+                //clear data here
+                editor.putInt("State",0);
+                editor.putInt("et_emeter_read",0);
+                editor.putInt("et_smeter_read",0);
+
+                editor.putInt("systemTime",0);
+                editor.putInt("systemClockTime",0);
+                editor.putInt("totalHours", 0);
+                editor.apply();
+            }else {
+
+            }
+        }
+
+    }
+    public void setTodaysDate(){
+        Calendar thatDay = Calendar.getInstance();
+        thatDay.set(DAY_OF_MONTH,Calendar.getInstance().get(DAY_OF_MONTH));
+        thatDay.set(Calendar.MONTH,Calendar.getInstance().get(MONTH)); // 0-11 so 1 less
+        thatDay.set(Calendar.YEAR, Calendar.getInstance().YEAR);
+        thatDay.set(Calendar.HOUR_OF_DAY,00);
+        thatDay.set(Calendar.MINUTE,00);
+        thatDay.set(Calendar.SECOND,00);
+        editor.putLong("todaysDate", thatDay.getTimeInMillis());
+        editor.apply();
     }
 }

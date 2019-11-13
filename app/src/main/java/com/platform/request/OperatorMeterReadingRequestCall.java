@@ -38,7 +38,7 @@ public class OperatorMeterReadingRequestCall {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "getMAchineData -> Resp: " + res);
-                  //  listener.onFilterListRequestsFetched(res);
+                    listener.onFilterListRequestsFetched(res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

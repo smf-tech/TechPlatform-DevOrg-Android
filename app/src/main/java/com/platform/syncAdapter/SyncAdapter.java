@@ -277,6 +277,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 private void uploadImage(String receivedImage) {
     List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
     if (list.size()>0){
+        Log.e("sync--", "---" + new Gson().toJson(list.get(0)));
     OperatorRequestResponseModel operatorRequestResponseModel = list.get(0);
     String imageToSend = operatorRequestResponseModel.getImage();
     VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
