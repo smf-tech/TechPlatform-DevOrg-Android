@@ -55,8 +55,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
     String machineId;
     private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
-    private EditText editOwnerType,etUniqueIdNumber, etMachineState, etMachineDistrict,etMachineTaluka,etMachineType,etYear,
-            etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,etExcavationCapacity,etDieselCapacity;
+    private EditText editOwnerType,etUniqueIdNumber, etMachineState, etMachineDistrict,etMachineTaluka,
+            etMachineType,etYear, etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,
+            etExcavationCapacity, etDieselCapacity, etProviderName, etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
     private int statusCode;
@@ -66,9 +67,10 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ArrayList<CustomSpinnerObject> isMeterWorkingList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
-    private String selectedOwner, selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedMachine,
-            selectedMachineId, selectedMakeModel, selectedMakeModelId,
-            selectedIsMeterWorking, selectedYear, selectedYearId;
+    private String selectedOwner = "", selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka,
+            selectedTalukaId, selectedMachine ="",
+            selectedMachineId, selectedMakeModel ="", selectedMakeModelId,
+            selectedIsMeterWorking ="", selectedYear, selectedYearId;
     private boolean isMachineEligible, isMachineMou;
 
     @Override
@@ -107,6 +109,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etChasisNumber = machineMouFragmentView.findViewById(R.id.et_chasis_number);
         etExcavationCapacity = machineMouFragmentView.findViewById(R.id.et_excavation_capacity);
         etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
+        etProviderName = machineMouFragmentView.findViewById(R.id.et_provider_name);
+        etProviderContact = machineMouFragmentView.findViewById(R.id.et_provider_contact);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
 
@@ -147,6 +151,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
         if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+            btnFirstPartMou.setOnClickListener(this);
             btnFirstPartMou.setVisibility(View.VISIBLE);
             btnFirstPartMou.setText("Create Machine");
             setUIForMachineCreate();
@@ -182,19 +187,26 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etExcavationCapacity.setLongClickable(false);
         etDieselCapacity.setFocusable(false);
         etDieselCapacity.setLongClickable(false);
+        etProviderName.setFocusable(false);
+        etProviderName.setLongClickable(false);
+        etProviderContact.setFocusable(false);
+        etProviderContact.setLongClickable(false);
+
         editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
         //etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
-        //etMachineState.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getState());
+        etMachineState.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getState());
         etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
         etMachineTaluka.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getTaluka());
         etMachineType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachinetype());
         etYear.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getManufacturedYear());
         etMachineMakeModel.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMakeModel());
-//        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
-//        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().get);
+        etMeterWorking.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getIsMeterWorking());
+        etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getRtoNumber());
+        etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getChasisNo());
+        etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getExcavationCapacity());
         etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
+        etProviderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderName());
+        etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderContactNumber());
     }
 
     private void setUIForMachineCreate() {
@@ -224,6 +236,10 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etExcavationCapacity.setLongClickable(true);
         etDieselCapacity.setFocusable(true);
         etDieselCapacity.setLongClickable(true);
+        etProviderName.setFocusable(true);
+        etProviderName.setLongClickable(true);
+        etProviderContact.setFocusable(true);
+        etProviderContact.setLongClickable(true);
 
         editOwnerType.setOnClickListener(this);
         //etMachineTaluka.setOnClickListener(this);
@@ -339,16 +355,20 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 (selectedYearId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMakeModel
                 (selectedMakeModelId);
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMeterWorking
-                (etMeterWorking.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setIsMeterWorking(
+                (etMeterWorking.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setRtoNumber
                 (etRtoNumber.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setChasisNumber
-                (etChasisNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setChasisNo(
+                (etChasisNumber.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setExcavationCapacity
                 (etExcavationCapacity.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
                 (etDieselCapacity.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderName(
+                (etProviderName.getText().toString().trim()));
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
+                (etProviderContact.getText().toString().trim()));
         machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
     }
 
@@ -484,13 +504,17 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 
     public boolean isAllDataValid() {
         if (selectedOwner.length()==0 || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineState.getText().toString().trim())
+                || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
                 || TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())
                 || selectedMachine.length()==0 || TextUtils.isEmpty(etYear.getText().toString().trim())
                 || selectedMakeModel.length()==0 || selectedIsMeterWorking.length()==0
                 || TextUtils.isEmpty(etRtoNumber.getText().toString().trim())
                 || TextUtils.isEmpty(etChasisNumber.getText().toString().trim())
                 || TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())
-                || TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
+                || TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())
+                || TextUtils.isEmpty(etProviderName.getText().toString().trim())
+                || TextUtils.isEmpty(etProviderContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                     Snackbar.LENGTH_LONG);
@@ -604,7 +628,6 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                     }
                 }
                 break;
-
             default:
                 break;
         }

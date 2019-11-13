@@ -71,7 +71,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_mobile"
                     android:inputType="number"
-                    android:maxLength="12"/>
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -123,7 +123,7 @@
                     android:id="@+id/et_gst_reg_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/gst_reg_no"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="15"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -135,7 +135,7 @@
                     android:id="@+id/et_pan_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/pan_number"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -171,7 +171,7 @@
                     android:id="@+id/et_ifsc"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/ifsc_code"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="11"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

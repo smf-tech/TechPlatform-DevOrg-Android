@@ -191,10 +191,18 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 || TextUtils.isEmpty(etConfirmAccountNo.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountHolderName.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountType.getText().toString().trim())
-                || selectedOwnership == null) {
+                || selectedOwnership == null || isTurnoverBelow == null) {
+
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                 Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if(!etAccountNo.getText().toString().trim().equals(etConfirmAccountNo.getText().
+                toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.error_confirm_account_no),
+                    Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
@@ -220,6 +228,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 }
                 break;
             case R.id.btn_previous_mou:
+                getActivity().onBackPressed();
                 break;
             case R.id.et_ownership:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,

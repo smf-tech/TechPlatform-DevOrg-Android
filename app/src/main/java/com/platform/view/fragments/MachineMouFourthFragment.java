@@ -96,7 +96,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private Uri finalUri;
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineVisit";
+    private String upload_URL = "http://13.235.124.3/api/machineMou";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -205,6 +205,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 }
                 break;
             case R.id.btn_previous_mou:
+                getActivity().onBackPressed();
                 break;
             case R.id.et_operator_training:
                 CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -380,10 +381,10 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(((MachineMouActivity) getActivity()).getMachineDetailData()));
-//                if(location != null) {
-//                    params.put("lat", String.valueOf(location.getLatitude()));
-//                    params.put("long ", String.valueOf(location.getLongitude()));
-//                }
+                if(location != null) {
+                    params.put("lat", String.valueOf(location.getLatitude()));
+                    params.put("long ", String.valueOf(location.getLongitude()));
+                }
                 params.put("imageArraySize", String.valueOf(((MachineMouActivity) getActivity()).getImageHashmap().size()));//add string parameters
                 return params;
             }

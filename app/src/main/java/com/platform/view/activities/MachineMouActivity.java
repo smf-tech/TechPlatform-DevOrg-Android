@@ -102,10 +102,6 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                 .commit();
     }
 
-//    public void setMachineDetails(MachineDetailData machineDetailData){
-//            setMachineDetailData(machineDetailData);
-//    }
-
     public MachineDetailData getMachineDetailData() {
         return machineDetailData;
     }
@@ -113,10 +109,6 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     public HashMap<String, Bitmap> getImageHashmap() {
         return imageHashmap;
     }
-
-//    public void setImageHashmap(HashMap<String, Bitmap> imageHashmap) {
-//        this.imageHashmap = imageHashmap;
-//    }
 
     public void setMachineDetailData(MachineDetailData machineDetail) {
         this.machineDetailData = machineDetail;

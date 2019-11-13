@@ -256,7 +256,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         text.setVisibility(View.VISIBLE);
 
         Button button = dialog.findViewById(R.id.btn_dialog);
-        button.setText("Release Machine");
+        button.setText("Release");
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog

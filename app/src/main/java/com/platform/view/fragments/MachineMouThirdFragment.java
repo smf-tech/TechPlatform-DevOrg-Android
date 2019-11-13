@@ -154,6 +154,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.btn_previous_mou:
+                getActivity().onBackPressed();
                 break;
         }
     }
