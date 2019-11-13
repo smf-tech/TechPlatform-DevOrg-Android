@@ -19,12 +19,21 @@ public class MachineData  implements Serializable {
     @SerializedName("state")
     @Expose
     private String state;
+    @SerializedName("stateId")
+    @Expose
+    private String stateId;
     @SerializedName("district")
     @Expose
     private String district;
+    @SerializedName("districtId")
+    @Expose
+    private String districtId;
     @SerializedName("taluka")
     @Expose
     private String taluka;
+    @SerializedName("talukaId")
+    @Expose
+    private String talukaId;
     @SerializedName("manufactured_year")
     @Expose
     private String manufacturedYear;
@@ -52,6 +61,9 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureId")
     @Expose
     private String deployedStrutureId;
+    @SerializedName("updatedDate")
+    @Expose
+    private String lastUpdatedTime;
 
     public String isMeterWorking() {
         return isMeterWorking;
@@ -83,6 +95,14 @@ public class MachineData  implements Serializable {
 
     public void setExcavationCapacity(String excavationCapacity) {
         this.excavationCapacity = excavationCapacity;
+    }
+
+    public String getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(String lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
     }
 
     @SerializedName("isMeterWorking")
@@ -144,6 +164,30 @@ public class MachineData  implements Serializable {
 
     public void setTaluka(String taluka) {
         this.taluka = taluka;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(String talukaId) {
+        this.talukaId = talukaId;
     }
 
     public String getManufacturedYear() {

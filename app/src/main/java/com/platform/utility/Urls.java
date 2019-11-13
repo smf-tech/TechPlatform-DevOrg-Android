@@ -22,6 +22,7 @@ public class Urls {
 
     public class Home {
         public static final String GET_MODULES = "api/modules/%1$s/%2$s";
+        public static final String GET_ROLE_ACCESS = "api/roleAccess";
     }
 
     public class PM {

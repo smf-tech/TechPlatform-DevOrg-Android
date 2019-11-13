@@ -14,6 +14,7 @@ public class Constants {
     public static final int IS_ROLE_CHANGE = 3;
     public static final int READ_EXTERNAL_STORAGE=4;
     public static final int CALL_PHONE=5;
+    public static final int READ_PHONE_STORAGE = 1;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
@@ -99,6 +100,7 @@ public class Constants {
         static final String USER_ORG = "userOrgObj";
         static final String USER_ROLE = "userRoleObj";
         static final String USER_PROJECT = "userProjectsObj";
+        static final String USER_ROLE_ACCESS_OBJ = "userRoleAccessObj";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -252,7 +254,7 @@ public class Constants {
         public static final String FILE_SEP = "/";
         public static final String IMAGE_PREFIX = "picture_";
         public static final String IMAGE_SUFFIX = ".jpg";
-        public static final String IMAGE_STORAGE_DIRECTORY = "/MV/Image/profile";
+        public static final String IMAGE_STORAGE_DIRECTORY = "/Octopus/Image/profile";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
@@ -355,6 +357,33 @@ public class Constants {
         public static final Integer MACHINE_BREAK_STATUS_CODE = 109;
         public static final Integer MACHINE_STOPPED_STATUS_CODE = 110;
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
+        public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
+        public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
+
+        public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
+        public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
+        public static final Integer ACCESS_CODE_VIEW_MACHINES = 109;
+        public static final Integer ACCESS_CODE_MOU_MACHINE = 110;
+        public static final Integer ACCESS_CODE_ELIGIBLE_MACHINE = 111;
+        public static final Integer ACCESS_CODE_MOU_TERMINATE = 112;
+        public static final Integer ACCESS_CODE_AVAILABLE_MACHINE = 113;
+        public static final Integer ACCESS_CODE_DEPLOY_MACHINE = 114;
+        public static final Integer ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM = 115;
+        public static final Integer ACCESS_CODE_SILT_TRANSPORT_FORM = 116;
+        public static final Integer ACCESS_CODE_DIESEL_RECORD_FORM = 117;
+        public static final Integer ACCESS_CODE_MACHINE_SHIFT_FORM = 118;
+        public static final Integer ACCESS_CODE_MACHINE_RELEASE = 119;
+
+        public static final Integer ACCESS_CODE_STATE = 120;
+        public static final Integer ACCESS_CODE_DISTRICT = 121;
+        public static final Integer ACCESS_CODE_TALUKA = 122;
+        public static final Integer ACCESS_CODE_VILLAGE = 123;
+
+        //public static final Integer ROLE_CODE_SS_HO = 110;
+        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
+        public static final Integer ROLE_CODE_SS_DM = 110;
+        public static final Integer ROLE_CODE_SS_TC = 111;
+        public static final Integer ROLE_CODE_SS_OPERATOR = 113;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";

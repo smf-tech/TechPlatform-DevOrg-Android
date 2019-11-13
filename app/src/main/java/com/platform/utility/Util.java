@@ -57,6 +57,7 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.forms.FormResult;
+import com.platform.models.home.RoleAccessAPIResponse;
 import com.platform.models.login.Login;
 import com.platform.models.pm.ProcessData;
 import com.platform.models.profile.OrganizationProjectsResponse;
@@ -294,6 +295,23 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_OBJ, userData);
+        editor.apply();
+    }
+
+    public static RoleAccessAPIResponse getRoleAccessObjectFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        String obj = preferences.getString(Constants.Login.USER_ROLE_ACCESS_OBJ, "{}");
+
+        return new Gson().fromJson(obj, RoleAccessAPIResponse.class);
+    }
+
+    public static void saveRoleAccessObjectInPref(String roleAccessData) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_ROLE_ACCESS_OBJ, roleAccessData);
         editor.apply();
     }
 
@@ -1189,6 +1207,66 @@ public class Util {
         return trimmedString;
     }
 
+    public static Bitmap compressImageToBitmap(File f) {
+        Bitmap b = null;
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+//            String imageFilePath = Util.getImageName();
+//            File imageFile = new File(imageFilePath);
+            FileOutputStream out = new FileOutputStream(f);
+            b.compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    public static String getImageName() {
+        long time = new Date().getTime();
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.e(TAG, "Failed to create directory!");
+                return null;
+            }
+        }
+        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
+                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
     public static boolean isValidImageSize(File f) {
         if (f != null) {
             try {
@@ -1226,7 +1304,6 @@ public class Util {
 
     public static File compressFile(File f) {
         Bitmap b = null;
-
         //Decode image size
         BitmapFactory.Options o = new BitmapFactory.Options();
         o.inJustDecodeBounds = true;
@@ -1400,9 +1477,6 @@ public class Util {
 
 
    public static String showReasonDialog(final Activity context, int pos, Fragment fragment){
-
-
-
            Dialog dialog;
            Button btnSubmit,btn_cancel;
            EditText edt_reason;

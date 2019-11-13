@@ -12,6 +12,9 @@ public class JurisdictionType {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("role_code")
+    @Expose
+    private int roleCode;
 
     public String getId() {
         return id;
@@ -27,5 +30,13 @@ public class JurisdictionType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(int roleCode) {
+        this.roleCode = roleCode;
     }
 }

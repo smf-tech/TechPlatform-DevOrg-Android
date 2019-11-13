@@ -45,6 +45,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tly_mou_expiry_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textinputstyle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/edt_mou_expiry_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:drawableEnd="@drawable/ic_cal_event"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="@string/mou_expiry_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"

@@ -92,7 +92,7 @@ public class MachineVisitValidationFragmentPresenter implements APIPresenterList
                 } else if(requestID.equalsIgnoreCase(MachineVisitValidationFragmentPresenter.GET_WORKING_HOURS_RECORD)) {
                     MachineWorkingHoursAPIResponse machineWorkingHoursAPIResponse = PlatformGson.getPlatformGsonInstance().fromJson(response,
                             MachineWorkingHoursAPIResponse.class);
-                    fragmentWeakReference.get().setWorkingHoursData(machineWorkingHoursAPIResponse.getData());
+                    fragmentWeakReference.get().setWorkingHoursData(machineWorkingHoursAPIResponse);
                 }
             }
         }catch (Exception e) {

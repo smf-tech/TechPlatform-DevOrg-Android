@@ -31,6 +31,9 @@ import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.home.RoleAccessAPIResponse;
+import com.platform.models.home.RoleAccessList;
+import com.platform.models.home.RoleAccessObject;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.MachineMouFragmentPresenter;
@@ -66,6 +69,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private String selectedOwner, selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedMachine,
             selectedMachineId, selectedMakeModel, selectedMakeModelId,
             selectedIsMeterWorking, selectedYear, selectedYearId;
+    private boolean isMachineEligible, isMachineMou;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,21 +107,47 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         etChasisNumber = machineMouFragmentView.findViewById(R.id.et_chasis_number);
         etExcavationCapacity = machineMouFragmentView.findViewById(R.id.et_excavation_capacity);
         etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
-
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
+        llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
+
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
+                isMachineEligible = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
+                isMachineMou =true;
+            }
+        }
         if(statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
-            btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
-            btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
-            btnEligilble.setOnClickListener(this);
-            btnNotEligible.setOnClickListener(this);
-            btnFirstPartMou.setVisibility(View.GONE);
-        } else {
-            llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
-            llEligible.setVisibility(View.GONE);
-            btnFirstPartMou.setOnClickListener(this);
+            if(isMachineEligible) {
+                llEligible.setVisibility(View.VISIBLE);
+                btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
+                btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
+                btnEligilble.setOnClickListener(this);
+                btnNotEligible.setOnClickListener(this);
+                btnFirstPartMou.setVisibility(View.GONE);
+            }
+        } else if(statusCode == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+            if(isMachineMou) {
+                btnFirstPartMou.setVisibility(View.VISIBLE);
+                btnFirstPartMou.setOnClickListener(this);
+            }
+        } else if(statusCode == Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
+            if(isMachineEligible) {
+                llEligible.setVisibility(View.VISIBLE);
+                btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
+                btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
+                btnEligilble.setOnClickListener(this);
+                btnNotEligible.setVisibility(View.GONE);
+                btnFirstPartMou.setVisibility(View.GONE);
+            }
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
         if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+            btnFirstPartMou.setVisibility(View.VISIBLE);
             btnFirstPartMou.setText("Create Machine");
             setUIForMachineCreate();
         } else {
@@ -205,7 +235,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
             etMachineState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
-            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
         }
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {

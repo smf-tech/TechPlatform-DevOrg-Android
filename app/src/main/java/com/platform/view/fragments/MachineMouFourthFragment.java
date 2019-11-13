@@ -97,6 +97,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
     private String upload_URL = "http://13.235.124.3/api/machineVisit";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -307,7 +308,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
+                String imageFilePath = Util.getImageName();
                 if (imageFilePath == null) return;
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -317,7 +318,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
+                    String imageFilePath = Util.getImageName();
                     if (imageFilePath == null) return;
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
@@ -329,36 +330,17 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                if (Util.isConnected(getActivity())) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        imgLicense.setImageURI(finalUri);
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
-                        //imageHashmap.put("accountImage", bitmap);
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                imgLicense.setImageURI(finalUri);
+                if (Util.isValidImageSize(imageFile)) {
+                    ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    Util.showToast(getString(R.string.msg_big_image), this);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         }
-    }
-
-    private String getImageName() {
-        long time = new Date().getTime();
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Log.e(TAG, "Failed to create directory!");
-                return null;
-            }
-        }
-        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
-                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
     private void backToMachineList(){

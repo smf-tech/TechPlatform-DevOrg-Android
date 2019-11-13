@@ -21,6 +21,8 @@ import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.view.fragments.StructureMachineListFragment;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +43,7 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     private static final String KEY_DEPLOY_TALUKA = "deploy_taluka";
     private static final String KEY_TERMINATE_REASON = "reason";
     public static final String TERMINATE_DEPLOY = "terminateDeployMachine";
+    public static final String RELEASE_MACHINE_STATUS = "releaseMachine";
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -70,30 +73,50 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         requestCall.postDataApiCall(GET_STRUCTURE_LIST, paramjson, getStructuresListUrl);
     }
 
-    public void getMachinesList(String stateId, String districtId, String talukaId){
-        Gson gson = new GsonBuilder().create();
+    public void getTalukaMachinesList(String stateId, String districtId, String talukaId){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_STATE_ID, stateId);
+        map.put(KEY_DISTRICT_ID, districtId);
+        map.put(KEY_TALUKA_ID, talukaId);
+        //Gson gson = new GsonBuilder().create();
         fragmentWeakReference.get().showProgressBar();
-        String paramjson = gson.toJson(getSSDataJson(stateId,districtId,talukaId));
+        //String paramjson = gson.toJson(getSSDataJson(stateId,districtId,talukaId));
         final String getMachinesListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
         Log.d(TAG, "getMachineListUrl: url" + getMachinesListUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MACHINE_LIST, paramjson, getMachinesListUrl);
+        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
     }
 
     public void getDistrictMachinesList(String stateId, String districtId){
-        Gson gson = new GsonBuilder().create();
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_STATE_ID, stateId);
+        map.put(KEY_DISTRICT_ID, districtId);
+
         fragmentWeakReference.get().showProgressBar();
-        String paramjson = gson.toJson(getDistrictMachineDataJson(stateId,districtId));
         final String getMachinesListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
         Log.d(TAG, "getDistrictMachineListUrl: url" + getMachinesListUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MACHINE_LIST, paramjson, getMachinesListUrl);
+        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
+    }
+
+    public void getStateMachinesList(String stateId){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_STATE_ID, stateId);
+
+        fragmentWeakReference.get().showProgressBar();
+        final String getMachinesListUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
+        Log.d(TAG, "getStateMachineListUrl: url" + getMachinesListUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
     }
 
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
@@ -121,6 +144,17 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(TERMINATE_DEPLOY, paramjson, getTerminateDeployUrl);
+    }
+
+    public void updateMachineStatus(String machineId, String machineCode, int statusCode, String type) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        final String releaseMachineStatusUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.UPDATE_STRUCTURE_MACHINE_STATUS, machineId, machineCode, statusCode, type);
+        Log.d(TAG, "releaseMachineUrl: url " + releaseMachineStatusUrl);
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.getDataApiCall(RELEASE_MACHINE_STATUS, releaseMachineStatusUrl);
     }
 
     public JsonObject getSSDataJson(String stateId, String districtId, String talukaId){
@@ -219,7 +253,8 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                         fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     }
-                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)){
+                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
+                        ||requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
