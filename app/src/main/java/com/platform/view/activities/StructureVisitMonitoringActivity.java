@@ -50,6 +50,7 @@ import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.presenter.StructureVisitMonitoringActivityPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
@@ -251,11 +252,12 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                     DatabaseManager.getDBInstance(Platform.getInstance()).getStructureVisitMonitoringDataDao()
                             .insert(requestData);
 
-                    List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
-                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getStructureVisitMonitoringDataDao().getAllStructure());
+                    SyncAdapterUtils.manualRefresh();
 
-                    uploadImage(structureVisitMonitoringList.get(0),1);
+//                    List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
+//                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getStructureVisitMonitoringDataDao().getAllStructure());
+//                    uploadImage(structureVisitMonitoringList.get(0),1);
 //                    presenter.submitVisitMonitoring(requestData, imageHashmap);
                 }
                 break;

@@ -19,7 +19,7 @@ public interface StructureVisitMonitoringDataDao {
     void deleteAll();
 
     @Query("DELETE FROM StructureVisitMonitoringData WHERE id  = :id")
-    void delete(String id);
+    void delete(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(StructureVisitMonitoringData structureData);

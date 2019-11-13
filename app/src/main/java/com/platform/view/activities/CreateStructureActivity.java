@@ -240,19 +240,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         structureData.setTaluka(selectedTaluka);
         structureData.setVillageId(selectedHostVillageId);
         structureData.setVillage(selectedHostVillage);
-        structureData.setHostVillagePopulation(etHostVillagePopulation.getText().toString());
-        structureData.setHostVillageID(android.text.TextUtils.join(",", selectedCatchmentVillageId));
-        structureData.setHostVillage(android.text.TextUtils.join(",", selectedCatchmentVillage));
-//        structureData.set(etGatNo.getText().toString());
-//        structureData.set(etWaterShedNo.getText().toString());
-//        structureData.set(etArea.getText().toString());
+        structureData.setVillagePopulation(etHostVillagePopulation.getText().toString());
+        structureData.setCatchmentVillagesIds(android.text.TextUtils.join(",", selectedCatchmentVillageId));
+        structureData.setCatchmentVillages(android.text.TextUtils.join(",", selectedCatchmentVillage));
+        structureData.setTotalPopulation(etCatchmentVillagePopulation.getText().toString());
+        structureData.setGatNo(etGatNo.getText().toString());
+        structureData.setWaterShedNo(etWaterShedNo.getText().toString());
+        structureData.setArea(etArea.getText().toString());
         structureData.setName(etStructureName.getText().toString());
         structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
         structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
-//        structureData.set(etNotaDetail.getText().toString());
-        structureData.setStructureType(etStructureType.getText().toString());
-//        structureData.set(etAdministrativeApprovalNo.getText().toString());
-//        structureData.set(etAdministrativeApprovalDate.getText().toString());
+        structureData.setNotaDetail(etNotaDetail.getText().toString());
+        structureData.setStructureType(selectedStructureTypeId);
+        structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
+        structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
         structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
         structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
         structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
@@ -260,7 +261,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
         structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
         structureData.setLat(location.getLatitude());
-        structureData.setLong(location.getLongitude());
+        structureData.setLog(location.getLongitude());
         structureData.setFfId(Util.getUserObjectFromPref().getId());
         structureData.setRemark(etRemark.getText().toString());
 
@@ -477,7 +478,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         }
                     }
                 }
-
                 break;
         }
     }

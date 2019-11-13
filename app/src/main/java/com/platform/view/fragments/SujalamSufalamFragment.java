@@ -126,7 +126,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         if(ssMasterDatabaseList.size() == 0) {
             sujalamSuphalamFragmentPresenter.getSSMasterData();
         }
-        sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
     }
 
     @Override
@@ -156,22 +155,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 }
                 getActivity().startActivity(intent);
                 break;
-            case R.id.fb_create:
-                if (viewType == 1) {
-                    if (Util.isConnected(getActivity())) {
-                        intent = new Intent(getActivity(), CreateStructureActivity.class);
-                        getActivity().startActivity(intent);
-                    } else {
-                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-                    }
-
-                } else {
-                    Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
-                    mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                    mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
-                    getActivity().startActivity(mouIntent);
-                    break;
-                }
         }
     }
 

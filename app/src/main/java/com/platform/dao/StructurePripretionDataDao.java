@@ -19,7 +19,7 @@ public interface StructurePripretionDataDao {
     void deleteAll();
 
     @Query("DELETE FROM StructurePripretionData WHERE id  = :id")
-    void delete(String id);
+    void delete(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(StructurePripretionData structureData);

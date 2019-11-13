@@ -45,6 +45,7 @@ import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.SujalamSuphalam.StructurePripretionData;
 import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.presenter.StructurePripretionsActivityPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
@@ -198,11 +199,13 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                             .insert(requestData);
 
-                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
-                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getStructurePripretionDataDao().getAllStructure());
+                    SyncAdapterUtils.manualRefresh();
 
-                    uploadImage(structureVisitMonitoringList.get(0), 2);
+//                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
+//                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getStructurePripretionDataDao().getAllStructure());
+
+//                    uploadImage(structureVisitMonitoringList.get(0), 2);
 //                    presenter.submitPripretion(requestData, imageHashmap);
                 }
                 break;
@@ -251,6 +254,11 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         }
 
         if (imageUri.size() == 0) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, click images of structure.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else if(imageUri.size() == 1){
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please, click images of structure.",
                     Snackbar.LENGTH_LONG);
