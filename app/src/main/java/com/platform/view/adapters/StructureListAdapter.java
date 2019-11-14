@@ -49,11 +49,12 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
         holder.tvWorkType.setText(structureData.getStructureWorkType());
         holder.tvStructureName.setText(structureData.getStructureName());
         holder.tvDepartment.setText(structureData.getStructureDepartmentName());
+        holder.tvLastUpdatedTime.setText(structureData.getUpdatedDate());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvReason, tvStructureCode, tvType, tvWorkType,
-                tvStructureName, tvStructureDepartment,tvDepartment;
+                tvStructureName, tvStructureDepartment,tvDepartment, tvLastUpdatedTime;
         RelativeLayout rlStructure;
         ViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +65,7 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
             tvStructureName = itemView.findViewById(R.id.tv_structure_name);
             tvStructureDepartment = itemView.findViewById(R.id.tv_structure_department);
             tvDepartment = itemView.findViewById(R.id.tv_department);
+            tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             rlStructure = itemView.findViewById(R.id.rl_structure);
             rlStructure.setOnClickListener(new View.OnClickListener() {
                 @Override

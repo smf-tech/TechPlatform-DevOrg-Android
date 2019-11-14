@@ -28,6 +28,18 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/et_selected_structure"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
                         android:id="@+id/et_is_diesel_filled"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/is_diesel_filled"
@@ -44,7 +56,8 @@
                         android:id="@+id/et_provided_by"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/provided_by"
-                        android:inputType="textMultiLine"/>
+                        android:focusable="false"
+                        android:longClickable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
