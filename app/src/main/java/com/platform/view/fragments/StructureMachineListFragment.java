@@ -212,18 +212,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
-        } else {
-            tvStateFilter.setEnabled(false);
         }
         if(isDistrictFilter) {
             tvDistrictFilter.setOnClickListener(this);
-        } else {
-            tvDistrictFilter.setEnabled(false);
         }
         if(isTalukaFilter) {
             tvTalukaFilter.setOnClickListener(this);
-        } else {
-            tvTalukaFilter.setEnabled(false);
         }
 //        if(isVillageFilter) {
 //            tvTalukaFilter.setOnClickListener(this);
