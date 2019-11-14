@@ -68,7 +68,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
-    private boolean isStructureAdd, isMachineAdd, isStructureView, isMachineView;
+    private boolean isStructureView, isMachineView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,7 +185,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         machineAnalyticsAdapter.notifyDataSetChanged();
         if(isMachineView) {
             btnSsView.setVisibility(View.VISIBLE);
-            btnSsView.setText("Machine View >");
+            btnSsView.setText("Machine View");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }
@@ -202,7 +202,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         structureAnalyticsAdapter.notifyDataSetChanged();
         if(isStructureView) {
             btnSsView.setVisibility(View.VISIBLE);
-            btnSsView.setText("Structure View >");
+            btnSsView.setText("Structure View");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }

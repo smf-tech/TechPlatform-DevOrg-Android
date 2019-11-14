@@ -126,7 +126,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         }
     }
 
-
     public void setActionBarTitle(String name) {
         toolbar = findViewById(R.id.home_toolbar);
         if (toolbar != null) {
