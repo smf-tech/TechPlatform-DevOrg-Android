@@ -33,7 +33,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.CommunityMobilizationActivity"></activity>
+        <activity android:name=".view.activities.StructureCompletionActivity"></activity>
+        <activity android:name=".view.activities.CommunityMobilizationActivity" />
         <activity android:name=".view.activities.StructureVisitMonitoringActivity" />
         <activity android:name=".view.activities.StructurePripretionsActivity" />
         <activity

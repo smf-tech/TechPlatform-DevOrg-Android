@@ -2,13 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_mobilization"
-        android:title="Community Mobilization"
-        />
+        android:title="Community Mobilization" />
     <item
         android:id="@+id/action_visit_monitoring"
-        android:title="TC structure visit and monitoring record" />
+        android:title="Visit and Monitoring" />
     <item
-        android:id="@+id/action_allocate_badge"
-        android:visible="false"
-        android:title="Allocate Badge" />
+        android:id="@+id/action_structure_completion"
+        android:title="Structure Completion" />
 </menu>

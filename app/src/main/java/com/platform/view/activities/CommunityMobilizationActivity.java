@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,7 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.R;
@@ -40,13 +39,10 @@ import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.CommunityMobilizationRequest;
 import com.platform.models.SujalamSuphalam.StructureData;
-import com.platform.models.SujalamSuphalam.StructureVisitMonitoringRequest;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CommunityMobilizationActivityPresenter;
-import com.platform.presenter.CreateStructureActivityPresenter;
 import com.platform.utility.Constants;
-import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -127,6 +123,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 "Tasks", taskList, false);
 
         initView();
+        setTitle("Community Mobilization");
     }
 
     private void initView() {
@@ -197,6 +194,12 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         etA2VillageName.setOnClickListener(this);
         etA5VillageName.setOnClickListener(this);
 
+    }
+
+    public void setTitle(String title) {
+        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
     @Override
@@ -270,6 +273,9 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             case R.id.iv_a5_photo:
                 selectedIV=ivA5Photo;
                 onAddImageClick();
+                break;
+            case R.id.toolbar_back_action:
+                finish();
                 break;
 
         }

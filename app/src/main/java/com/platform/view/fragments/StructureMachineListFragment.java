@@ -3,6 +3,7 @@ package com.platform.view.fragments;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ import com.platform.presenter.StructureMachineListFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
+import com.platform.view.activities.CreateStructureActivity;
+import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.adapters.MutiselectDialogAdapter;
 import com.platform.view.adapters.SSMachineListAdapter;
 import com.platform.view.adapters.SSStructureListAdapter;
@@ -175,7 +178,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         rvDataList.setAdapter(ssMachineListAdapter);
         ssMachineListAdapter = new SSMachineListAdapter(getActivity(), this, ssMachineListData);
         rvDataList.setAdapter(ssMachineListAdapter);
-        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), this, ssStructureListData);
+        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), ssStructureListData,true);
         rvDataList.setAdapter(ssStructureListAdapter);
 
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
@@ -224,6 +227,27 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //        } else {
 //            tvTalukaFilter.setEnabled(false);
 //        }
+        structureMachineListFragmentView.findViewById(R.id.fb_create)
+                .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewType == 1) {
+                    if (Util.isConnected(getActivity())) {
+                        Intent intent = new Intent(getActivity(), CreateStructureActivity.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
+
+                } else {
+                    Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
+                    mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                    mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
+                    getActivity().startActivity(mouIntent);
+
+                }
+            }
+        });
     }
 
     public void takeMouDoneAction(int position){

@@ -15,6 +15,9 @@ import com.platform.dao.NotificationDataDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SSMasterDatabaseDao;
+import com.platform.dao.StructureDataDao;
+import com.platform.dao.StructurePripretionDataDao;
+import com.platform.dao.StructureVisitMonitoringDataDao;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
 import com.platform.models.forms.FormData;
@@ -214,4 +217,20 @@ public class DatabaseManager {
         SSMasterDatabaseDao ssMasterDatabaseDao=appDatabase.ssMasterDatabaseDao();
         return ssMasterDatabaseDao;
     }
+
+    public StructureDataDao getStructureDataDao(){
+        StructureDataDao structureDataDao=appDatabase.structureDataDao();
+        return structureDataDao;
+    }
+
+    public StructureVisitMonitoringDataDao getStructureVisitMonitoringDataDao(){
+        StructureVisitMonitoringDataDao structureVisitMonitoringDataDao=appDatabase.structureVisitMonitoringDataDao();
+        return structureVisitMonitoringDataDao;
+    }
+
+    public StructurePripretionDataDao getStructurePripretionDataDao(){
+        StructurePripretionDataDao structurePripretionDataDao=appDatabase.structurePripretionDataDao();
+        return structurePripretionDataDao;
+    }
+
 }

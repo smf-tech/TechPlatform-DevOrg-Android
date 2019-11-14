@@ -36,16 +36,21 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.platform.BuildConfig;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.MasterDataValue;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.SujalamSuphalam.StructureData;
-import com.platform.models.SujalamSuphalam.StructurePripretionRequest;
-import com.platform.models.SujalamSuphalam.StructureVisitMonitoringRequest;
+import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.models.common.CustomSpinnerObject;
-import com.platform.presenter.CreateStructureActivityPresenter;
 import com.platform.presenter.StructureVisitMonitoringActivityPresenter;
+import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
@@ -57,11 +62,13 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -83,12 +90,15 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     private String selectedStatus, selectedStatusID, selectedIssue, selectedIssueID;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> issueList = new ArrayList<>();
+    private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
+
 
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private ArrayList<Uri> imageUri = new ArrayList<>();
     private int imageCount = 0;
-    StructureVisitMonitoringRequest requestData = new StructureVisitMonitoringRequest();
+    StructureVisitMonitoringData requestData = new StructureVisitMonitoringData();
     StructureData structureData;
 
     @Override
@@ -100,6 +110,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         presenter = new StructureVisitMonitoringActivityPresenter(this);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
+
+//        setMasterData();
 
         {// set list data
             CustomSpinnerObject object1 = new CustomSpinnerObject();
@@ -183,6 +195,34 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
+            if (obj.getForm().equalsIgnoreCase("structure_create")) {
+                masterDataLists.add(obj);
+            }
+        }
+        for (int i = 0; i < masterDataLists.size(); i++) {
+            if (masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
+                for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                    CustomSpinnerObject temp = new CustomSpinnerObject();
+                    temp.set_id(obj.getId());
+                    temp.setName(obj.getValue());
+                    temp.setSelected(false);
+//                    structureDepartmentList.add(temp);
+                }
+        }
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -206,9 +246,23 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                 break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
-                    uploadImage();
+
+                    Uri uri = imageUri.get(0);
+                    requestData.setStructureImage(uri.getPath());
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructureVisitMonitoringDataDao()
+                            .insert(requestData);
+
+                    SyncAdapterUtils.manualRefresh();
+
+//                    List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
+//                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getStructureVisitMonitoringDataDao().getAllStructure());
+//                    uploadImage(structureVisitMonitoringList.get(0),1);
 //                    presenter.submitVisitMonitoring(requestData, imageHashmap);
                 }
+                break;
+            case R.id.toolbar_back_action:
+                finish();
                 break;
 
         }
@@ -222,19 +276,28 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             location = gpsTracker.getLocation();
         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Location not available",
+                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);
             return false;
         }
 
-        requestData.setStructureId(structureData.getStructureId());
-        requestData.setIsSafetySignage(safetySignage);
-        requestData.setIsGuidelinesFollowed(guidelines);
-        requestData.setStatusRecordId(selectedStatusID);
-        requestData.setIssueRelated(selectedIssueID);
-        requestData.setIssueDescription(etIssuesDescription.getText().toString());
+        if(location!=null){
+            requestData.setStructureId(structureData.getStructureId());
+            requestData.setIsSafetySignage(safetySignage);
+            requestData.setIsGuidelinesFollowed(guidelines);
+            requestData.setStatusRecordId(selectedStatusID);
+            requestData.setIssueRelated(selectedIssueID);
+            requestData.setIssueDescription(etIssuesDescription.getText().toString());
+        } else {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
 
-        if (imageCount == 0) {
+
+
+        if (imageUri.size() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please, click images of structure.",
                     Snackbar.LENGTH_LONG);
@@ -332,10 +395,11 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         ivStructure.setImageURI(finalUri);
-                        imageHashmap.put("image" + imageCount, bitmap);
-                        imageCount++;
+                        imageUri.add(finalUri);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+//                        imageHashmap.put("image" + imageCount, bitmap);
+//                        imageCount++;
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -400,7 +464,7 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     public void closeCurrentActivity() {
 
     }
-    private void uploadImage() {
+    private void uploadImage(StructureVisitMonitoringData structureVisitMonitoringData, int noImages) {
 
         Log.d("request -",new Gson().toJson(requestData));
 
@@ -429,8 +493,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                params.put("formData", new Gson().toJson(structureVisitMonitoringData));
+                params.put("imageArraySize", String.valueOf(noImages));//add string parameters
                 return params;
             }
 
@@ -438,13 +502,13 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
-                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
-                for (int i = 0; i < imageHashmap.size(); i++) {
-                    String key = (String) myVeryOwnIterator.next();
-                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
+//                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+//                for (int i = 0; i < imageHashmap.size(); i++) {
+//                    String key = (String) myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), structureVisitMonitoringData.getStructureImage());
+                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
                             "image/jpeg"));
-                }
+//                }
                 return params;
             }
         };

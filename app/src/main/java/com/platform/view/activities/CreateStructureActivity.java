@@ -14,12 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.MasterDataValue;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.SujalamSuphalam.Structure;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionLocation;
@@ -72,7 +77,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateStructureActivityPresenter(this);
-        presenter.getMaster();
+        setMasterData();
         initView();
         setTitle("Create Structure");
 
@@ -235,19 +240,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         structureData.setTaluka(selectedTaluka);
         structureData.setVillageId(selectedHostVillageId);
         structureData.setVillage(selectedHostVillage);
-        structureData.setHostVillagePopulation(etHostVillagePopulation.getText().toString());
-        structureData.setHostVillageID(android.text.TextUtils.join(",", selectedCatchmentVillageId));
-        structureData.setHostVillage(android.text.TextUtils.join(",", selectedCatchmentVillage));
-//        structureData.set(etGatNo.getText().toString());
-//        structureData.set(etWaterShedNo.getText().toString());
-//        structureData.set(etArea.getText().toString());
+        structureData.setVillagePopulation(etHostVillagePopulation.getText().toString());
+        structureData.setCatchmentVillagesIds(android.text.TextUtils.join(",", selectedCatchmentVillageId));
+        structureData.setCatchmentVillages(android.text.TextUtils.join(",", selectedCatchmentVillage));
+        structureData.setTotalPopulation(etCatchmentVillagePopulation.getText().toString());
+        structureData.setGatNo(etGatNo.getText().toString());
+        structureData.setWaterShedNo(etWaterShedNo.getText().toString());
+        structureData.setArea(etArea.getText().toString());
         structureData.setName(etStructureName.getText().toString());
         structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
         structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
-//        structureData.set(etNotaDetail.getText().toString());
-        structureData.setStructureType(etStructureType.getText().toString());
-//        structureData.set(etAdministrativeApprovalNo.getText().toString());
-//        structureData.set(etAdministrativeApprovalDate.getText().toString());
+        structureData.setNotaDetail(etNotaDetail.getText().toString());
+        structureData.setStructureType(selectedStructureTypeId);
+        structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
+        structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
         structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
         structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
         structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
@@ -255,7 +261,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
         structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
         structureData.setLat(location.getLatitude());
-        structureData.setLong(location.getLongitude());
+        structureData.setLog(location.getLongitude());
         structureData.setFfId(Util.getUserObjectFromPref().getId());
         structureData.setRemark(etRemark.getText().toString());
 
@@ -383,15 +389,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         finish();
     }
 
-    public void setMasterData(MasterDataResponse masterDataResponse) {
-        if (masterDataResponse.getStatus() == 1000) {
-            logOutUser();
-        } else {
-            for (MasterDataList obj : masterDataResponse.getData()) {
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
                 if (obj.getForm().equalsIgnoreCase("structure_create")) {
                     masterDataLists.add(obj);
                 }
-            }
         }
     }
 
@@ -467,7 +478,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         }
                     }
                 }
-
                 break;
         }
     }
