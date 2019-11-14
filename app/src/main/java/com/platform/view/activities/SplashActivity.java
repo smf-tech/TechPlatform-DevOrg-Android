@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.platform.R;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppSignatureHelper;
+import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 
@@ -47,7 +48,13 @@ public class SplashActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
-                    intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
+                         intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
+                        intent.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+                        startActivity(intent);
+                    }else {
+                        intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    }
                 }
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |

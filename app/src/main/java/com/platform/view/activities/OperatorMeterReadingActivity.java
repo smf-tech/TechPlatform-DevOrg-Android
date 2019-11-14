@@ -544,7 +544,10 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             }
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
+            flag = true;
             final Throwable cropError = UCrop.getError(data);
+        }else if (resultCode !=RESULT_OK){
+            flag = true;
         }
     }
 
@@ -870,13 +873,23 @@ public String showReadingDialog(final Activity context, int pos){
     }
     public void setTodaysDate(){
         Calendar thatDay = Calendar.getInstance();
-        thatDay.set(DAY_OF_MONTH,Calendar.getInstance().get(DAY_OF_MONTH));
+        /*thatDay.set(DAY_OF_MONTH,Calendar.getInstance().get(DAY_OF_MONTH));
         thatDay.set(Calendar.MONTH,Calendar.getInstance().get(MONTH)); // 0-11 so 1 less
-        thatDay.set(Calendar.YEAR, Calendar.getInstance().YEAR);
+        thatDay.set(Calendar.YEAR, Calendar.getInstance().YEAR);*/
         thatDay.set(Calendar.HOUR_OF_DAY,00);
         thatDay.set(Calendar.MINUTE,00);
         thatDay.set(Calendar.SECOND,00);
         editor.putLong("todaysDate", thatDay.getTimeInMillis());
+        editor.apply();
+
+        //clear data here
+        editor.putInt("State",0);
+        editor.putInt("et_emeter_read",0);
+        editor.putInt("et_smeter_read",0);
+
+        editor.putInt("systemTime",0);
+        editor.putInt("systemClockTime",0);
+        editor.putInt("totalHours", 0);
         editor.apply();
     }
 }

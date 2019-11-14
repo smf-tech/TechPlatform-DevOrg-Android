@@ -32,7 +32,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnThirdPartMou, btnPreviousMou;
-    private EditText edtContractDate, edtRate1, edtRate1StartDate, edtRate1EndDate, edtRate2,
+    private EditText edtContractDate, edtMouExpiryDate, edtRate1, edtRate1StartDate, edtRate1EndDate, edtRate2,
             edtRate2StartDate, edtRate2EndDate, edtRate3, edtRate3StartDate, edtRate3EndDate;
 
     @Override
@@ -63,6 +63,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         btnPreviousMou.setOnClickListener(this);
         edtContractDate = machineMouThirdFragmentView.findViewById(R.id.edt_contract_date);
         edtContractDate.setOnClickListener(this);
+        edtMouExpiryDate = machineMouThirdFragmentView.findViewById(R.id.edt_mou_expiry_date);
+        edtMouExpiryDate.setOnClickListener(this);
         edtRate1 = machineMouThirdFragmentView.findViewById(R.id.edt_rate1);
         edtRate1StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate1_start_date);
         edtRate1StartDate.setOnClickListener(this);
@@ -95,6 +97,16 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         switch(view.getId()) {
             case R.id.edt_contract_date:
                 Util.showAllDateDialog(getActivity(), edtContractDate);
+                break;
+            case R.id.edt_mou_expiry_date:
+                if(edtContractDate.getText().toString().length()>0) {
+                    Util.showDateDialogEnableAfterMin(getActivity(), edtMouExpiryDate,
+                            edtContractDate.getText().toString());
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate1_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate1_start_date:
                 Util.showDateDialogMin(getActivity(), edtRate1StartDate);
@@ -142,6 +154,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.btn_previous_mou:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -151,6 +164,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning
                 (Util.dateTimeToTimeStamp(edtContractDate.getText().toString(), "00:00"));
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+                (Util.dateTimeToTimeStamp(edtContractDate.getText().toString(), "23:59"));
         RateDetail rateDetail = new RateDetail();
         rateDetail.setFromDate(Util.dateTimeToTimeStamp(edtRate1StartDate.getText().toString(), "00:00"));
         rateDetail.setToDate(Util.dateTimeToTimeStamp(edtRate1EndDate.getText().toString(), "23:59"));

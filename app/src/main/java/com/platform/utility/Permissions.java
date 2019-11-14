@@ -109,10 +109,26 @@ public class Permissions {
         }
     }
 
+    static <T> boolean isReadPhoneStatePermissionGranted(Activity context, T objectInstance) {
 
-
-
-
-
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                if (objectInstance instanceof Fragment) {
+                    ((Fragment) objectInstance).requestPermissions(
+                            new String[]{Manifest.permission.READ_PHONE_STATE},
+                            Constants.READ_PHONE_STORAGE);
+                } else {
+                    ActivityCompat.requestPermissions(context,
+                            new String[]{Manifest.permission.READ_PHONE_STATE},
+                            Constants.READ_PHONE_STORAGE);
+                }
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }

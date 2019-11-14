@@ -1,20 +1,15 @@
-package com.platform.models.profile;
+package com.platform.models.SujalamSuphalam;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
-public class JurisdictionType {
-
-    @SerializedName("_id")
+public class CatchmentVillagesData {
+    @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("role_code")
-    @Expose
-    private int roleCode;
 
     public String getId() {
         return id;
@@ -30,13 +25,5 @@ public class JurisdictionType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(int roleCode) {
-        this.roleCode = roleCode;
     }
 }

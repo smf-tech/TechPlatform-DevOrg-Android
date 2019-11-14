@@ -136,11 +136,16 @@ public class ForegroundService extends Service {
             currentSystemTime = ((int) System.currentTimeMillis() / 1000);
           //  currentHours = timeInterval;
             // Log.e("currentHours", "--" + currentHours);
-            totalHours = timeInterval + preferences.getInt("totalHours", 0);
+            //totalHours = timeInterval + preferences.getInt("totalHours", 0);
+            totalHours =  preferences.getInt("totalHours", 0);
             //getFormattedTime(currentClockTime);
             //intent.putExtra("STR_TIME", currentSystemTime - time + " " + "\n " + getFormattedTime(currentClockTime));
             currentClockTime = currentClockTime+1;
             totalHours = totalHours+1;
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("totalHours", totalHours);
+            editor.apply();
             currentHours = currentHours+1;
             intent.putExtra("STR_TIME", getFormattedTime(currentClockTime+systemClockTime));
             intent.putExtra("TOTAL_HOURS", totalHours);

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.platform.view.activities.StructureCompletionActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Completion Status*" />
+
+            <RadioGroup
+                android:id="@+id/rg_completion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_completion_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:id="@+id/rb_completion_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="No" />
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/iv_structure1"
+                android:layout_width="@dimen/dimen_160dp"
+                android:layout_height="@dimen/dimen_160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Photo of Structure 1*" />
+
+            <ImageView
+                android:id="@+id/iv_structure2"
+                android:layout_width="@dimen/dimen_160dp"
+                android:layout_height="@dimen/dimen_160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Photo of Structure 2*" />
+
+            <ImageView
+                android:id="@+id/iv_structure3"
+                android:layout_width="@dimen/dimen_160dp"
+                android:layout_height="@dimen/dimen_160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Photo of Structure 3*" />
+
+            <ImageView
+                android:id="@+id/iv_structure4"
+                android:layout_width="@dimen/dimen_160dp"
+                android:layout_height="@dimen/dimen_160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Photo of Structure 4*" />
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/submit" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

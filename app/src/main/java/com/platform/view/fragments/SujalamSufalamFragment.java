@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.Platform;
@@ -31,6 +32,9 @@ import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.platform.models.SujalamSuphalam.SSAnalyticsData;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
+import com.platform.models.home.RoleAccessAPIResponse;
+import com.platform.models.home.RoleAccessList;
+import com.platform.models.home.RoleAccessObject;
 import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
@@ -64,6 +68,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
+    private boolean isStructureAdd, isMachineAdd, isStructureView, isMachineView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +120,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
-        setStructureView();
         List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
                 getSSMasterDatabaseDao().getSSMasterData();
 
@@ -126,7 +130,18 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         if(ssMasterDatabaseList.size() == 0) {
             sujalamSuphalamFragmentPresenter.getSSMasterData();
         }
-        sujalamSufalamFragmentView.findViewById(R.id.fb_create).setOnClickListener(this);
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
+                isStructureView = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
+                isMachineView = true;
+            }
+        }
+        setStructureView();
     }
 
     @Override
@@ -156,22 +171,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 }
                 getActivity().startActivity(intent);
                 break;
-            case R.id.fb_create:
-                if (viewType == 1) {
-                    if (Util.isConnected(getActivity())) {
-                        intent = new Intent(getActivity(), CreateStructureActivity.class);
-                        getActivity().startActivity(intent);
-                    } else {
-                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-                    }
-
-                } else {
-                    Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
-                    mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                    mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
-                    getActivity().startActivity(mouIntent);
-                    break;
-                }
         }
     }
 
@@ -184,7 +183,12 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
         rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
         machineAnalyticsAdapter.notifyDataSetChanged();
-        btnSsView.setText("Machine View >");
+        if(isMachineView) {
+            btnSsView.setVisibility(View.VISIBLE);
+            btnSsView.setText("Machine View >");
+        } else {
+            btnSsView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setStructureView(){
@@ -196,7 +200,12 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
-        btnSsView.setText("Structure View >");
+        if(isStructureView) {
+            btnSsView.setVisibility(View.VISIBLE);
+            btnSsView.setText("Structure View >");
+        } else {
+            btnSsView.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void populateAnalyticsData(String requestCode, SSAnalyticsAPIResponse analyticsData) {

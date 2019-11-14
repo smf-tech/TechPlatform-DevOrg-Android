@@ -82,29 +82,30 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
+            Intent intent = new Intent(HomeActivity.this, OperatorMeterReadingActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
         initMenuView();
-
         initBrodcastResiver();
         subscribedToFirebaseTopics();
     }
 
     private void initBrodcastResiver() {
-
         mMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 updateUnreadNotificationsCount();
             }
         };
-
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
-
     }
 
     private void subscribedToFirebaseTopics() {
-        FirebaseMessaging.getInstance().subscribeToTopic("Test");
-/*
+//        FirebaseMessaging.getInstance().subscribeToTopic("Test");
         String userProject=Util.getUserObjectFromPref().getProjectIds().get(0).getName();
         String userRoll=Util.getUserObjectFromPref().getRoleNames();
         userProject =userProject.replaceAll(" ","_");
@@ -129,7 +130,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             FirebaseMessaging.getInstance().subscribeToTopic(userProject+"_"+userRoll);
             Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise,userProject+"_"+userRoll);
         }
-*/
     }
 
 
@@ -173,7 +173,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void initMenuView() {
         setActionBarTitle(getResources().getString(R.string.app_name_ss));
-
         DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
@@ -207,12 +206,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
         TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
         userRole.setText(Util.getUserObjectFromPref().getRoleNames());
-//        boolean notificationClicked = getIntent().getBooleanExtra(NOTIFICATION, false);
-//        if (notificationClicked) {
-//            loadTeamsPage();
-//        } else {
-//
-//        }
         loadHomePage();
     }
 
@@ -235,9 +228,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             userPic.setLayoutParams(params);
         }
-
         loadFromSDCard(userPic, profileUrl);
-
         Glide.with(this)
                 .load(profileUrl)
                 .apply(requestOptions)
@@ -250,7 +241,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 //                        return !loadFromSDCard(userPic);
                         return false;
                     }
-
                     @Override
                     public boolean onResourceReady(final Drawable resource, final Object model,
                                                    final Target<Drawable> target, final DataSource dataSource,
@@ -265,18 +255,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         if (TextUtils.isEmpty(profileUrl)) {
             return;
         }
-
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
-
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
             return;
         }
-
         Uri uri = Uri.fromFile(new File(dir.getPath() + "/" + url));
-
         runOnUiThread(() -> userPic.setImageURI(uri));
     }
 
@@ -285,11 +271,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             findViewById(R.id.home_bell_icon).setVisibility(View.VISIBLE);
             updateUnreadNotificationsCount();
         }
-
         for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
             getSupportFragmentManager().popBackStack();
         }
-
         Util.launchFragment(new HomeFragment(), this,
                 getString(R.string.app_name_ss), false);
     }
@@ -306,7 +290,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void loadTeamsPage() {
-
         /*Util.launchFragment(new TMUserLandingFragment(), this,
                 getString(R.string.approvals), true);*/
         Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
@@ -325,9 +308,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     @Override
     protected void onResume() {
         super.onResume();
-
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
-
         updateUnreadNotificationsCount();
     }
 
@@ -556,11 +537,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void logOutUser() {
         // remove user related shared pref data
-
         Util.saveLoginObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
         Util.removeDatabaseRecords(false);
-
         try {
             Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);
@@ -576,7 +555,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
-
                 try {
                     Intent startMain = new Intent(Intent.ACTION_MAIN);
                     startMain.addCategory(Intent.CATEGORY_HOME);
@@ -586,11 +564,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } catch (Exception e) {
                     Log.e(TAG, "Exception :: LoginActivity : onBackPressed");
                 }
-
                 finish();
                 return;
             }
-
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);

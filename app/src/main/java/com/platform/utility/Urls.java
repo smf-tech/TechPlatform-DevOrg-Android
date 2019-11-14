@@ -22,6 +22,7 @@ public class Urls {
 
     public class Home {
         public static final String GET_MODULES = "api/modules/%1$s/%2$s";
+        public static final String GET_ROLE_ACCESS = "api/roleAccess";
     }
 
     public class PM {
@@ -132,14 +133,13 @@ public class Urls {
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
         public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
+        public static final String CREATE_STRUCTURE = "api/createStructure";
         public static final String STRUCTURE_VISITE_MONITORING = "api/structureVisit";
         public static final String STRUCTURE_PREPARATION = "api/prepareStructure";
+        public static final String STRUCTURE_COMPLETION = "api/sowStructure";
         public static final String COMMUNITY_MOBILISATION = "api/communityMobilisation";
         public static final String NON_UTILIZATION_URL = "api/machineNonUtilization/%1$s/%2$s/%3$s";
-    }
-    public class Structure {
-        public static final String STRUCTURE_MASTER = "api/masterDataList";
-        public static final String CREATE_STRUCTURE = "api/createStructure";
+        public static final String CATCHMENT_VILLAGES = "api/catchmentVillages";
     }
 
     public class OperatorApi {

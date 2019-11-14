@@ -19,12 +19,21 @@ public class MachineData  implements Serializable {
     @SerializedName("state")
     @Expose
     private String state;
+    @SerializedName("stateId")
+    @Expose
+    private String stateId;
     @SerializedName("district")
     @Expose
     private String district;
+    @SerializedName("districtId")
+    @Expose
+    private String districtId;
     @SerializedName("taluka")
     @Expose
     private String taluka;
+    @SerializedName("talukaId")
+    @Expose
+    private String talukaId;
     @SerializedName("manufactured_year")
     @Expose
     private String manufacturedYear;
@@ -52,13 +61,34 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureId")
     @Expose
     private String deployedStrutureId;
+    @SerializedName("updatedDate")
+    @Expose
+    private String lastUpdatedTime;
 
-    public String isMeterWorking() {
+    public String getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(String lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
+
+    @SerializedName("is_meter_working")
+    @Expose
+    private String isMeterWorking;
+    @SerializedName("RTO_numner")
+    @Expose
+    private String rtoNumber;
+    @SerializedName("chassis_no")
+    @Expose
+    private String chasisNo;
+
+    public String getIsMeterWorking() {
         return isMeterWorking;
     }
 
-    public void setMeterWorking(String meterWorking) {
-        isMeterWorking = meterWorking;
+    public void setIsMeterWorking(String isMeterWorking) {
+        this.isMeterWorking = isMeterWorking;
     }
 
     public String getRtoNumber() {
@@ -69,12 +99,12 @@ public class MachineData  implements Serializable {
         this.rtoNumber = rtoNumber;
     }
 
-    public String getChasisNumber() {
-        return chasisNumber;
+    public String getChasisNo() {
+        return chasisNo;
     }
 
-    public void setChasisNumber(String chasisNumber) {
-        this.chasisNumber = chasisNumber;
+    public void setChasisNo(String chasisNo) {
+        this.chasisNo = chasisNo;
     }
 
     public String getExcavationCapacity() {
@@ -85,16 +115,7 @@ public class MachineData  implements Serializable {
         this.excavationCapacity = excavationCapacity;
     }
 
-    @SerializedName("isMeterWorking")
-    @Expose
-    private String isMeterWorking;
-    @SerializedName("rtoNumber")
-    @Expose
-    private String rtoNumber;
-    @SerializedName("chasisNumber")
-    @Expose
-    private String chasisNumber;
-    @SerializedName("excavationCapacity")
+    @SerializedName("excavation_capacity")
     @Expose
     private String excavationCapacity;
 
@@ -144,6 +165,30 @@ public class MachineData  implements Serializable {
 
     public void setTaluka(String taluka) {
         this.taluka = taluka;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(String talukaId) {
+        this.talukaId = talukaId;
     }
 
     public String getManufacturedYear() {

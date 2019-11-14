@@ -59,7 +59,7 @@ public class ProfileRequestCall {
 
         final String getOrgUrl = BuildConfig.BASE_URL + Urls.Profile.GET_ORGANIZATION;
 
-        Log.d(TAG, "Organization API: " + getOrgUrl);
+        Log.d(TAG, "ORGANIZATION API: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -94,6 +94,8 @@ public class ProfileRequestCall {
         final String getOrgProjectUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ORGANIZATION_PROJECTS, orgId);
 
+        Log.d(TAG, "ORGANIZATION_PROJECTS API: " + getOrgProjectUrl);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getOrgProjectUrl,
@@ -127,7 +129,7 @@ public class ProfileRequestCall {
         final String getOrgProjectUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ORGANIZATION_ROLES, orgId, projectId);
 
-        Log.d(TAG, "OrganizationRoles API: " + getOrgProjectUrl);
+        Log.d(TAG, "ORGANIZATION_ROLES API: " + getOrgProjectUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -163,6 +165,8 @@ public class ProfileRequestCall {
 //                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, "5c4ab05cd503a372d0391467", levelName);
         final String getStateUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+
+        Log.d(TAG, "JURISDICTION API: " + getStateUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

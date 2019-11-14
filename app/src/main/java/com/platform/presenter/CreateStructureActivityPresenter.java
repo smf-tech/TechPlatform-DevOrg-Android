@@ -21,8 +21,8 @@ import java.lang.ref.WeakReference;
 
 public class CreateStructureActivityPresenter implements APIPresenterListener {
 
-    final String STRUCTURE_MASTER="structureMasterData";
-    final String CREATE_STRUCTURE="createStructure";
+    final String STRUCTURE_MASTER = "structureMasterData";
+    final String CREATE_STRUCTURE = "createStructure";
     final String GET_DISTRICT = "getDistrict";
     final String GET_TALUKA = "getTaluka";
     final String GET_VILLAGE = "getvillage";
@@ -37,7 +37,7 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
     public void onFailureListener(String requestID, String message) {
         if (mContext != null && mContext.get() != null) {
             mContext.get().hideProgressBar();
-            mContext.get().onFailureListener(requestID,message);
+            mContext.get().onFailureListener(requestID, message);
         }
     }
 
@@ -46,7 +46,7 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         if (mContext != null && mContext.get() != null) {
             mContext.get().hideProgressBar();
             if (error != null) {
-                mContext.get().onErrorListener(requestID,error);
+                mContext.get().onErrorListener(requestID, error);
             }
         }
     }
@@ -59,47 +59,34 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         mContext.get().hideProgressBar();
         try {
             if (response != null) {
-                if(requestID.equalsIgnoreCase(STRUCTURE_MASTER)){
-                    MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
-                    mContext.get().setMasterData(masterDataResponse);
-                } else if(requestID.equalsIgnoreCase(CREATE_STRUCTURE)){
+                if (requestID.equalsIgnoreCase(CREATE_STRUCTURE)) {
                     MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
                     mContext.get().closeCurrentActivity();
-                } else if(requestID.equalsIgnoreCase(GET_DISTRICT) ||
+                } else if (requestID.equalsIgnoreCase(GET_DISTRICT) ||
                         requestID.equalsIgnoreCase(GET_TALUKA) ||
-                        requestID.equalsIgnoreCase(GET_VILLAGE)){
+                        requestID.equalsIgnoreCase(GET_VILLAGE)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
 
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
                             && !jurisdictionLevelResponse.getData().isEmpty()
                             && jurisdictionLevelResponse.getData().size() > 0) {
-                        if(requestID.equalsIgnoreCase(GET_DISTRICT)) {
+                        if (requestID.equalsIgnoreCase(GET_DISTRICT)) {
                             mContext.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        }else if(requestID.equalsIgnoreCase(GET_TALUKA)) {
+                        } else if (requestID.equalsIgnoreCase(GET_TALUKA)) {
                             mContext.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                        } else if(requestID.equalsIgnoreCase(GET_VILLAGE)) {
+                        } else if (requestID.equalsIgnoreCase(GET_VILLAGE)) {
                             mContext.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
                     }
                 }
             }
-        }catch (Exception e) {
-            mContext.get().onFailureListener(requestID,e.getMessage());
+        } catch (Exception e) {
+            mContext.get().onFailureListener(requestID, e.getMessage());
         }
-    }
-
-    public void getMaster(){
-        final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Structure.STRUCTURE_MASTER);
-        Log.d(STRUCTURE_MASTER, " url: " + getMatrimonyMeetTypesUrl);
-        mContext.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall(STRUCTURE_MASTER, getMatrimonyMeetTypesUrl);
     }
 
     public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
@@ -111,11 +98,11 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         Log.d("getLocationUrl", " url: " + getLocationUrl);
         mContext.get().showProgressBar();
 
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
+        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
             requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
             requestCall.getDataApiCall(GET_TALUKA, getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
             requestCall.getDataApiCall(GET_VILLAGE, getLocationUrl);
         }
     }
@@ -124,7 +111,7 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         Gson gson = new GsonBuilder().create();
         String params = gson.toJson(structureData);
 
-        final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL + Urls.Structure.CREATE_STRUCTURE;
+        final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL + Urls.SSModule.CREATE_STRUCTURE;
         Log.d(CREATE_STRUCTURE, " url: " + getMatrimonyMeetTypesUrl);
         mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();

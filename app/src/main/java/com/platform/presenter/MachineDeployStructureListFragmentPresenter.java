@@ -47,7 +47,6 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
 
     public void getDeployableStructuresList(String districtId, String talukaId, String villageId,
                                             String type, String currentStructureId){
-        //Gson gson = new GsonBuilder().create();
         String paramjson = getStructuresListJson(districtId, talukaId, villageId, type, currentStructureId);
         final String getMachineDeployableStructuresUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
@@ -56,6 +55,39 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_MACHINE_DEPLOY_STRUCTURE_LIST, paramjson, getMachineDeployableStructuresUrl);
+    }
+
+    public void getDistrictDeployableStructuresList(String districtId, String type, String currentStructureId){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_DISTRICT_ID, districtId);
+        map.put(KEY_TYPE, type);
+        map.put(KEY_STRUCTURE_ID, currentStructureId);
+
+        final String getMachineDeployableStructuresUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
+        Log.d(TAG, "getMachineDeployableStructuresUrl: url" + getMachineDeployableStructuresUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_MACHINE_DEPLOY_STRUCTURE_LIST, new JSONObject(map).toString(),
+                getMachineDeployableStructuresUrl);
+    }
+
+    public void getTalukaDeployableStructuresList(String districtId, String talukaId, String type, String currentStructureId){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_DISTRICT_ID, districtId);
+        map.put(KEY_TALUKA_ID, talukaId);
+        map.put(KEY_TYPE, type);
+        map.put(KEY_STRUCTURE_ID, currentStructureId);
+
+        final String getMachineDeployableStructuresUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
+        Log.d(TAG, "getMachineDeployableStructuresUrl: url" + getMachineDeployableStructuresUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_MACHINE_DEPLOY_STRUCTURE_LIST, new JSONObject(map).toString(),
+                getMachineDeployableStructuresUrl);
     }
 
     public void deployMachine(String structureId, String machineId){

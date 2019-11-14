@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,11 +7,24 @@
     android:background="@color/base_background_color">
 
     <LinearLayout
+        android:id="@+id/ly_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
+        android:weightSum="3"
         android:layout_margin="@dimen/dimen_10dp">
+
+        <TextView
+            android:id="@+id/tv_state_filter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_30dp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_blue_box"
+            android:hint="@string/state"
+            android:textColorHint="@color/medium_grey"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/tv_district_filter"
@@ -23,33 +36,41 @@
             android:hint="@string/district"
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
-            android:gravity="center_vertical"
-            android:editable="false"
-            android:longClickable="false"/>
+            android:gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/tv_taluka_filter"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_30dp"
-            android:layout_marginStart="@dimen/dimen_10dp"
             android:paddingStart="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:background="@drawable/bg_blue_box"
             android:hint="@string/taluka"
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
-            android:gravity="center_vertical"
-            android:editable="false"
-            android:longClickable="false"/>
+            android:gravity="center_vertical"/>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_data_list"
+        android:layout_below="@+id/ly_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_10dp">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_img"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:tint="@color/white"/>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
@@ -70,4 +91,4 @@
             android:indeterminateOnly="true"
             android:visibility="gone" />
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

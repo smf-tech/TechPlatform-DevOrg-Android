@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -38,15 +39,13 @@ import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.CatchmentVillagesData;
 import com.platform.models.SujalamSuphalam.CommunityMobilizationRequest;
 import com.platform.models.SujalamSuphalam.StructureData;
-import com.platform.models.SujalamSuphalam.StructureVisitMonitoringRequest;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CommunityMobilizationActivityPresenter;
-import com.platform.presenter.CreateStructureActivityPresenter;
 import com.platform.utility.Constants;
-import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
@@ -72,14 +71,14 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     private final String TAG = StructurePripretionsActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
 
-    EditText selecteETVillage,etActivity, etTask, etA1MeetingDate, etA1VillageName, etA1GrampanchayatName, etA1NoOfParticipant,
+    EditText selecteETVillage, etActivity, etTask, etA1MeetingDate, etA1VillageName, etA1GrampanchayatName, etA1NoOfParticipant,
             etA1NameOfSarpanch, etA1ContactOfSarpanch, etA1NameOfOopSarpanch, etA1ContactOfOopSarpanch,
             etA2VillageName, etA2GpName, etA2Date, etA2NoOfParticipant, etA3TaskforceLeader, etA3MemberName,
             etA3Gender, etA3PhoneNoTaskForceLeader, etA3Education, etA3Occupation, etA3DateOfFormation,
             etA4TopicOfTraining, etA4DateOfTraining, etA4NameOfParticipant, etA4DurationInDays,
             etA5VillageName, etA5NameOfOfficerDept, etA5Date, etA5NameOfFarmer, etA5PhoneNoOfFarmers,
             etA5FarmerLandHolding;
-    ImageView selectedIV,ivA1EntryLevel, ivA2EntryLevel, ivA4Photo, ivA5Photo;
+    ImageView selectedIV, ivA1EntryLevel, ivA2EntryLevel, ivA4Photo, ivA5Photo;
     Button btSubmit;
 
     private RelativeLayout progressBar;
@@ -111,8 +110,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CommunityMobilizationActivityPresenter(this);
         //get VIleges
-        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
-                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+        presenter.getCatchmentVillage(structureData.getStructureId());
 
 
         String[] activityList = getResources().getStringArray(R.array.activitys);
@@ -127,6 +125,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 "Tasks", taskList, false);
 
         initView();
+        setTitle("Community Mobilization");
     }
 
     private void initView() {
@@ -199,6 +198,12 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
 
     }
 
+    public void setTitle(String title) {
+        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -232,7 +237,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 Util.showDateDialog(this, etA5Date);
                 break;
             case R.id.et_a1_village_name:
-                selecteETVillage=etA1VillageName;
+                selecteETVillage = etA1VillageName;
                 CustomSpinnerDialogClass csdA1Village = new CustomSpinnerDialogClass(this, this,
                         "Select Village", villageList, false);
                 csdA1Village.show();
@@ -240,7 +245,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_a2_village_name:
-                selecteETVillage=etA2VillageName;
+                selecteETVillage = etA2VillageName;
                 CustomSpinnerDialogClass csdA2Village = new CustomSpinnerDialogClass(this, this,
                         "Select Village", villageList, false);
                 csdA2Village.show();
@@ -248,7 +253,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_a5_village_name:
-                selecteETVillage=etA5VillageName;
+                selecteETVillage = etA5VillageName;
                 CustomSpinnerDialogClass csdA5Village = new CustomSpinnerDialogClass(this, this,
                         "Select Village", villageList, false);
                 csdA5Village.show();
@@ -256,20 +261,23 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.iv_a1_entry_level:
-                selectedIV=ivA1EntryLevel;
+                selectedIV = ivA1EntryLevel;
                 onAddImageClick();
                 break;
             case R.id.iv_a2_entry_level:
-                selectedIV=ivA2EntryLevel;
+                selectedIV = ivA2EntryLevel;
                 onAddImageClick();
                 break;
             case R.id.iv_a4_photo:
-                selectedIV=ivA4Photo;
+                selectedIV = ivA4Photo;
                 onAddImageClick();
                 break;
             case R.id.iv_a5_photo:
-                selectedIV=ivA5Photo;
+                selectedIV = ivA5Photo;
                 onAddImageClick();
+                break;
+            case R.id.toolbar_back_action:
+                finish();
                 break;
 
         }
@@ -290,72 +298,159 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
 //        }
 
         requestData.setStructureId(structureData.getStructureId());
-        requestData.setActivityCode(selectedActivityID);
-        requestData.setActivityName(selectedActivity);
-        requestData.setTask(selectedTask);
+        if (TextUtils.isEmpty(selectedActivityID)
+                || TextUtils.isEmpty(selectedActivity)
+                || TextUtils.isEmpty(selectedTask)) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, feel proper information.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else {
+            requestData.setActivityCode(selectedActivityID);
+            requestData.setActivityName(selectedActivity);
+            requestData.setTask(selectedTask);
+        }
 
         switch (Integer.parseInt(selectedActivityID)) {
             case 1:
                 //Activity 1
-                requestData.setDate(etA1MeetingDate.getText().toString());
-                requestData.setVillageId(selectedVillageID);
-                requestData.setGrampanchayatName(etA1GrampanchayatName.getText().toString());
-                requestData.setNoParticipant(etA1NoOfParticipant.getText().toString());
-                requestData.setSarpanchName(etA1NameOfSarpanch.getText().toString());
-                requestData.setSarpanchPhoneNo(etA1ContactOfSarpanch.getText().toString());
-                requestData.setOopsarpanchName(etA1NameOfOopSarpanch.getText().toString());
-                requestData.setOopsarpanchPhoneNo(etA1NameOfOopSarpanch.getText().toString());
+                if (TextUtils.isEmpty(etA1MeetingDate.getText().toString())
+                        || TextUtils.isEmpty(selectedVillageID)
+                        || TextUtils.isEmpty(etA1GrampanchayatName.getText().toString())
+                        || TextUtils.isEmpty(etA1NoOfParticipant.getText().toString())
+                        || TextUtils.isEmpty(etA1NameOfSarpanch.getText().toString())
+                        || TextUtils.isEmpty(etA1ContactOfSarpanch.getText().toString())
+                        || TextUtils.isEmpty(etA1NameOfOopSarpanch.getText().toString())
+                        || TextUtils.isEmpty(etA1ContactOfOopSarpanch.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                } else {
+                    requestData.setDate(etA1MeetingDate.getText().toString());
+                    requestData.setVillageId(selectedVillageID);
+                    requestData.setGrampanchayatName(etA1GrampanchayatName.getText().toString());
+                    requestData.setNoParticipant(etA1NoOfParticipant.getText().toString());
+                    requestData.setSarpanchName(etA1NameOfSarpanch.getText().toString());
+                    requestData.setSarpanchPhoneNo(etA1ContactOfSarpanch.getText().toString());
+                    requestData.setOopsarpanchName(etA1NameOfOopSarpanch.getText().toString());
+                    requestData.setOopsarpanchPhoneNo(etA1ContactOfOopSarpanch.getText().toString());
+                }
+                if (imageCount == 0) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, click images of structure.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
                 break;
 
             case 2:
                 //Activity 2
-                requestData.setVillageId(selectedVillageID);
-                requestData.setGrampanchayatName(etA2GpName.getText().toString());
-                requestData.setDate(etA2Date.getText().toString());
-                requestData.setNoParticipant(etA2NoOfParticipant.getText().toString());
-                requestData.setDate(etA1MeetingDate.getText().toString());
+                if (TextUtils.isEmpty(selectedVillageID)
+                        || TextUtils.isEmpty(etA2GpName.getText().toString())
+                        || TextUtils.isEmpty(etA2Date.getText().toString())
+                        || TextUtils.isEmpty(etA2NoOfParticipant.getText().toString())
+                        || TextUtils.isEmpty(etA1MeetingDate.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                } else {
+                    requestData.setVillageId(selectedVillageID);
+                    requestData.setGrampanchayatName(etA2GpName.getText().toString());
+                    requestData.setDate(etA2Date.getText().toString());
+                    requestData.setNoParticipant(etA2NoOfParticipant.getText().toString());
+                    requestData.setDate(etA1MeetingDate.getText().toString());
+                }
+                if (imageCount == 0) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, click images of structure.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
                 break;
             case 3:
                 //Activity 3
-                requestData.setLeaderName(etA3TaskforceLeader.getText().toString());
-                requestData.setMemberName(etA3MemberName.getText().toString());
-                requestData.setMemberGander(etA3Gender.getText().toString());
-                requestData.setLeaderPhoneNo(etA3PhoneNoTaskForceLeader.getText().toString());
-                requestData.setEducation(etA3Education.getText().toString());
-                requestData.setEducation(etA3Occupation.getText().toString());
-                requestData.setDate(etA3DateOfFormation.getText().toString());
+
+                if (TextUtils.isEmpty(etA3TaskforceLeader.getText().toString())
+                        || TextUtils.isEmpty(etA3MemberName.getText().toString())
+                        || TextUtils.isEmpty(etA3Gender.getText().toString())
+                        || TextUtils.isEmpty(etA3PhoneNoTaskForceLeader.getText().toString())
+                        || TextUtils.isEmpty(etA3Education.getText().toString())
+                        || TextUtils.isEmpty(etA3Occupation.getText().toString())
+                        || TextUtils.isEmpty(etA3DateOfFormation.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                } else {
+                    requestData.setLeaderName(etA3TaskforceLeader.getText().toString());
+                    requestData.setMemberName(etA3MemberName.getText().toString());
+                    requestData.setMemberGander(etA3Gender.getText().toString());
+                    requestData.setLeaderPhoneNo(etA3PhoneNoTaskForceLeader.getText().toString());
+                    requestData.setEducation(etA3Education.getText().toString());
+                    requestData.setEducation(etA3Occupation.getText().toString());
+                    requestData.setDate(etA3DateOfFormation.getText().toString());
+                }
                 break;
             case 4:
                 //Activity 4
-                requestData.setTopicName(etA4TopicOfTraining.getText().toString());
-                requestData.setDate(etA4DateOfTraining.getText().toString());
-                requestData.setParticipantName(etA4NameOfParticipant.getText().toString());
-                requestData.setDuration(etA4DurationInDays.getText().toString());
-                break;
+                if (TextUtils.isEmpty(etA4TopicOfTraining.getText().toString())
+                        || TextUtils.isEmpty(etA4DateOfTraining.getText().toString())
+                        || TextUtils.isEmpty(etA4NameOfParticipant.getText().toString())
+                        || TextUtils.isEmpty(etA4DurationInDays.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                } else {
+                    requestData.setTopicName(etA4TopicOfTraining.getText().toString());
+                    requestData.setDate(etA4DateOfTraining.getText().toString());
+                    requestData.setParticipantName(etA4NameOfParticipant.getText().toString());
+                    requestData.setDuration(etA4DurationInDays.getText().toString());
+                }
+                if (imageCount == 0) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, click images of structure.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
+               break;
             case 5:
                 //Activity 5
-                requestData.setVillageId(selectedVillageID);
-                requestData.setGovtOfficerDept(etA5NameOfOfficerDept.getText().toString());
-                requestData.setDate(etA5Date.getText().toString());
-                requestData.setFormerName(etA5NameOfFarmer.getText().toString());
-                requestData.setFormerPhoneNo(etA5PhoneNoOfFarmers.getText().toString());
-                requestData.setFormerLandHolding(etA5FarmerLandHolding.getText().toString());
+                if (TextUtils.isEmpty(selectedVillageID)
+                        || TextUtils.isEmpty(etA5NameOfOfficerDept.getText().toString())
+                        || TextUtils.isEmpty(etA5Date.getText().toString())
+                        || TextUtils.isEmpty(etA5NameOfFarmer.getText().toString())
+                        || TextUtils.isEmpty(etA5PhoneNoOfFarmers.getText().toString())
+                        || TextUtils.isEmpty(etA5FarmerLandHolding.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                } else {
+                    requestData.setVillageId(selectedVillageID);
+                    requestData.setGovtOfficerDept(etA5NameOfOfficerDept.getText().toString());
+                    requestData.setDate(etA5Date.getText().toString());
+                    requestData.setFormerName(etA5NameOfFarmer.getText().toString());
+                    requestData.setFormerPhoneNo(etA5PhoneNoOfFarmers.getText().toString());
+                    requestData.setFormerLandHolding(etA5FarmerLandHolding.getText().toString());
+                }
+                if (imageCount == 0) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please, click images of structure.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
                 break;
         }
-
-//        if (imageCount == 0) {
-//            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Please, click images of structure.",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        }
         return true;
     }
 
     private void uploadImage() {
 
-        Log.d("url :",upload_URL);
-        Log.d("request :",new Gson().toJson(requestData));
+        Log.d("url :", upload_URL);
+        Log.d("request :", new Gson().toJson(requestData));
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -481,7 +576,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 etActivity.setText(selectedActivity);
                 break;
             case "Tasks":
-                for (CustomSpinnerObject obj : statusList) {
+                for (CustomSpinnerObject obj : taskList) {
                     if (obj.isSelected()) {
                         selectedTask = obj.getName();
                         selectedTaskID = obj.get_id();
@@ -491,10 +586,10 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 etTask.setText(selectedActivity);
                 break;
             case "Select Village":
-                for (CustomSpinnerObject obj : statusList) {
+                for (CustomSpinnerObject obj : villageList) {
                     if (obj.isSelected()) {
-                        selectedTask = obj.getName();
-                        selectedTaskID = obj.get_id();
+                        selectedVillageID = obj.getName();
+                        selectedVillage = obj.get_id();
                         break;
                     }
                 }
@@ -502,6 +597,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 break;
         }
     }
+
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
             showPictureDialog();
@@ -624,12 +720,12 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        Util.showToast(message,this);
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        Util.showToast(error.getMessage(),this);
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
@@ -659,63 +755,20 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     public void closeCurrentActivity() {
         finish();
     }
-    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
-        switch (levelName) {
-//            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-//                if (data != null && !data.isEmpty()) {
-//                    districtList.clear();
-//                    Collections.sort(data, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
-//
-//                    for (int i = 0; i < data.size(); i++) {
-//                        JurisdictionLocation location = data.get(i);
-//                        CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-//                        meetCountry.set_id(location.getDistrictId());
-//                        meetCountry.setName(location.getDistrict().getName());
-//                        meetCountry.setSelected(false);
-//                        districtList.add(meetCountry);
-//                    }
-//                }
-//                break;
-//            case Constants.JurisdictionLevelName.TALUKA_LEVEL:
-//                if (data != null && !data.isEmpty()) {
-//                    talukaList.clear();
-//                    Collections.sort(data, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
-//
-//                    for (int i = 0; i < data.size(); i++) {
-//                        if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
-//                            JurisdictionLocation location = data.get(i);
-//                            CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-//                            meetCountry.set_id(location.getTalukaId());
-//                            meetCountry.setName(location.getTaluka().getName());
-//                            meetCountry.setSelected(false);
-//                            talukaList.add(meetCountry);
-//                        }
-//                    }
-//                    //get Village
-//                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
-//                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-//
-//                }
-//                break;
-            case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
-                if (data != null && !data.isEmpty()) {
-                    villageList.clear();
-                    Collections.sort(data, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
-                    for (int i = 0; i < data.size(); i++) {
-                        if (data.get(i).getTaluka().getName().equalsIgnoreCase("Ahmednagar")) {
+    public void showCattachmentVileges(List<CatchmentVillagesData> data) {
+        if (data != null && !data.isEmpty()) {
+            villageList.clear();
+            Collections.sort(data, (j1, j2) -> j1.getName().compareTo(j2.getName()));
 
-                            JurisdictionLocation location = data.get(i);
-                            CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                            meetCountry.set_id(location.getVillageId());
-                            meetCountry.setName(location.getVillage().getName());
-                            meetCountry.setSelected(false);
-                            villageList.add(meetCountry);
-                        }
-                    }
-                }
-
-                break;
+            for (int i = 0; i < data.size(); i++) {
+                CatchmentVillagesData location = data.get(i);
+                CustomSpinnerObject meetCountry = new CustomSpinnerObject();
+                meetCountry.set_id(location.getId());
+                meetCountry.setName(location.getName());
+                meetCountry.setSelected(false);
+                villageList.add(meetCountry);
+            }
         }
     }
 }

@@ -5,26 +5,32 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
+import com.platform.listeners.APIPresenterListener;
 import com.platform.listeners.UserRequestCallListener;
 import com.platform.models.home.Home;
+import com.platform.models.home.RoleAccessAPIResponse;
 import com.platform.models.user.User;
 import com.platform.models.user.UserInfo;
+import com.platform.request.APIRequestCall;
 import com.platform.request.HomeRequestCall;
 import com.platform.request.LoginRequestCall;
 import com.platform.utility.Constants;
 import com.platform.utility.PlatformGson;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.view.fragments.HomeFragment;
 
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class HomeActivityPresenter implements UserRequestCallListener {
+public class HomeActivityPresenter implements UserRequestCallListener, APIPresenterListener {
 
     private final String TAG = HomeActivityPresenter.class.getName();
     private WeakReference<HomeFragment> homeFragment;
+    public static final String GET_ROLE_ACCESS ="getRoleAccesss";
 
     public HomeActivityPresenter(HomeFragment activity) {
         homeFragment = new WeakReference<>(activity);
@@ -44,6 +50,16 @@ public class HomeActivityPresenter implements UserRequestCallListener {
         requestCall.getHomeModules(user);
     }
 
+    public void getRoleAccess() {
+        final String getRoleAccessUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Home.GET_ROLE_ACCESS);
+        Log.d(TAG, "getRoleAccessUrl: url" + getRoleAccessUrl);
+        homeFragment.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall(GET_ROLE_ACCESS, getRoleAccessUrl);
+    }
+
     @Override
     public void onSuccessListener(String response) {
         Home models = PlatformGson.getPlatformGsonInstance().fromJson(response, Home.class);
@@ -56,7 +72,6 @@ public class HomeActivityPresenter implements UserRequestCallListener {
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
-
         getModules(user.getUserInfo());
     }
 
@@ -91,6 +106,38 @@ public class HomeActivityPresenter implements UserRequestCallListener {
                 Log.e("onErrorListener",
                         "Unexpected response code " + error.networkResponse.statusCode);
             }
+        }
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        if (homeFragment == null) {
+            return;
+        }
+        homeFragment.get().hideProgressBar();
+        try {
+            if (response != null) {
+                if (requestID.equalsIgnoreCase(HomeActivityPresenter.GET_ROLE_ACCESS)) {
+                    RoleAccessAPIResponse roleAccessAPIResponse = new Gson().fromJson(response, RoleAccessAPIResponse.class);
+                    if(roleAccessAPIResponse.getStatus() == 1000) {
+                        Util.logOutUser(homeFragment.get().getActivity());
+                    }else if(roleAccessAPIResponse.getStatus() == 200 && roleAccessAPIResponse.getData() != null) {
+                        Util.saveRoleAccessObjectInPref(response);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            homeFragment.get().showErrorMessage(homeFragment.get().getResources().getString(R.string.msg_something_went_wrong));
         }
     }
 }

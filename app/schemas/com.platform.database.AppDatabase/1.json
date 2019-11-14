@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "78989effca44977810505bd28ee6b18e",
+    "identityHash": "17d2da31c2cd62caf3d1fc9586eb2fbc",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -727,12 +727,282 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "StructureData",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, PRIMARY KEY(`structureId`))",
+        "fields": [
+          {
+            "fieldPath": "structureId",
+            "columnName": "structureId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "structureName",
+            "columnName": "structureName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureCode",
+            "columnName": "structureCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stateId",
+            "columnName": "stateId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "district",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtId",
+            "columnName": "districtId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "taluka",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "talukaId",
+            "columnName": "talukaId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureWorkType",
+            "columnName": "structureWorkType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureStatus",
+            "columnName": "structureStatus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureStatusCode",
+            "columnName": "structureStatusCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "_long",
+            "columnName": "long",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "structureDepartmentName",
+            "columnName": "structureDepartmentName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureSubDepartmentName",
+            "columnName": "structureSubDepartmentName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureType",
+            "columnName": "structureType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureMachineList",
+            "columnName": "structureMachineList",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "structureId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "StructureVisitMonitoringData",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structure_id` TEXT, `is_safety_signage` INTEGER NOT NULL, `is_guidelines_followed` INTEGER NOT NULL, `status_record_id` TEXT, `issue_related` TEXT, `issue_description` TEXT, `structureImage` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "structureId",
+            "columnName": "structure_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isSafetySignage",
+            "columnName": "is_safety_signage",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isGuidelinesFollowed",
+            "columnName": "is_guidelines_followed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusRecordId",
+            "columnName": "status_record_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "issueRelated",
+            "columnName": "issue_related",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "issueDescription",
+            "columnName": "issue_description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureImage",
+            "columnName": "structureImage",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "StructurePripretionData",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structure_id` TEXT, `lat` REAL NOT NULL, `long` REAL NOT NULL, `ff_identified` INTEGER, `ff_name` TEXT, `ff_mobile_number` TEXT, `ff_traning_done` INTEGER, `is_structure_fit` INTEGER, `reason` TEXT, `structureImg1` TEXT, `structureImg2` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "structureId",
+            "columnName": "structure_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "_long",
+            "columnName": "long",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ffIdentified",
+            "columnName": "ff_identified",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ffName",
+            "columnName": "ff_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ffMobileNumber",
+            "columnName": "ff_mobile_number",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ffTraningDone",
+            "columnName": "ff_traning_done",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isStructureFit",
+            "columnName": "is_structure_fit",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reason",
+            "columnName": "reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureImg1",
+            "columnName": "structureImg1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structureImg2",
+            "columnName": "structureImg2",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78989effca44977810505bd28ee6b18e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '17d2da31c2cd62caf3d1fc9586eb2fbc')"
     ]
   }
 }

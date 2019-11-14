@@ -56,7 +56,7 @@
                 <EditText
                     android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/district"/>
+                    android:hint="@string/state"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -168,7 +168,8 @@
                 <EditText
                     android:id="@+id/et_excavation_capacity"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/excavation_capacity"/>
+                    android:hint="@string/excavation_capacity"
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -183,6 +184,30 @@
                     android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_provider_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_name_hint"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_provider_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_contact"
+                    android:inputType="number"
+                    android:maxLength="10"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:id="@+id/ll_eligible"
                 android:layout_width="match_parent"
@@ -190,7 +215,8 @@
                 android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btn_eligible"
@@ -223,7 +249,8 @@
                 android:layout_margin="@dimen/dimen_10dp"
                 android:text="@string/meet_next_label"
                 android:layout_below="@+id/card_create_meet"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:visibility="gone"/>
 
         </LinearLayout>
         </ScrollView>

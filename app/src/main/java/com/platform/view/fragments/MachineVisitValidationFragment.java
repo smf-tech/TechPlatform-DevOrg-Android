@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -44,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
+import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
@@ -62,6 +64,10 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -257,7 +263,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
+                String imageFilePath = Util.getImageName();
                 if (imageFilePath == null) return;
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -267,7 +273,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
+                    String imageFilePath = Util.getImageName();
                     if (imageFilePath == null) return;
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
@@ -279,36 +285,18 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                if (Util.isConnected(getActivity())) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        clickedImageView.setImageURI(finalUri);
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        imageHashmap.put("image"+imageCount, bitmap);
-                        imageCount++;
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                clickedImageView.setImageURI(finalUri);
+                if (Util.isValidImageSize(imageFile)) {
+                    imageHashmap.put("image" + imageCount, bitmap);
+                    imageCount++;
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    Util.showToast(getString(R.string.msg_big_image), this);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         }
-    }
-
-    private String getImageName() {
-        long time = new Date().getTime();
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Log.e(TAG, "Failed to create directory!");
-                return null;
-            }
-        }
-        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
-                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
     private void backToMachineList(){
@@ -386,14 +374,23 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void setWorkingHoursData(MachineWorkingHoursRecord machineWorkingHoursRecord) {
+    public void setWorkingHoursData(MachineWorkingHoursAPIResponse machineWorkingHoursAPIResponse) {
         //set data received in api
-        etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
-        if(machineWorkingHoursRecord.isActionTaken()) {
+        if(machineWorkingHoursAPIResponse.getStatus() == 200) {
+            MachineWorkingHoursRecord machineWorkingHoursRecord = machineWorkingHoursAPIResponse.getData();
+            etWorkingHours.setText(machineWorkingHoursRecord.getWorkingHours());
+            if(machineWorkingHoursRecord.isActionTaken()) {
+                btnMatch.setClickable(false);
+                btnMismatch.setClickable(false);
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "You have already validated working hours for this date.",
+                        Snackbar.LENGTH_LONG);
+            }
+        } else if(machineWorkingHoursAPIResponse.getStatus() == 300) {
             btnMatch.setClickable(false);
             btnMismatch.setClickable(false);
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "You have already validated working hors for this date.",
+                            .findViewById(android.R.id.content), machineWorkingHoursAPIResponse.getMessage(),
                     Snackbar.LENGTH_LONG);
         }
     }

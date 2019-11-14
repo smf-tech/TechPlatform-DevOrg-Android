@@ -461,6 +461,11 @@
     <string name="enter_rate3_start_date">Please select start date for rate3.</string>
     <string name="deploy">Deploy</string>
     <string name="create_machine">Create Machine</string>
+    <string name="mou_expiry_date">Date of MOU Expiry</string>
+    <string name="machine_stop_alert_message">Please make sure that, operator has stooped the machine.</string>
+    <string name="release_machine_alert_message">Are you sure you want to release this machine?</string>
+    <string name="error_confirm_account_no">Please confirm your bank account number.</string>
+    <string name="provider_name_hint">Provider Name</string>
 
 
 </resources>

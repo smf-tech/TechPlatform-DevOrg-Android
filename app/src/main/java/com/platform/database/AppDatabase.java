@@ -11,11 +11,17 @@ import com.platform.dao.OperatorRequestResponseModelDao;
 import com.platform.dao.ProcessDataDao;
 import com.platform.dao.ReportsDataDao;
 import com.platform.dao.SSMasterDatabaseDao;
+import com.platform.dao.StructureDataDao;
+import com.platform.dao.StructurePripretionDataDao;
+import com.platform.dao.StructureVisitMonitoringDataDao;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.dao.UserCheckOutDao;
 import com.platform.models.Operator.OperatorRequestResponseModel;
 import com.platform.models.SavedForm;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
+import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.SujalamSuphalam.StructurePripretionData;
+import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.models.attendance.AttendaceCheckOut;
 import com.platform.models.attendance.AttendaceData;
 import com.platform.models.forms.FormData;
@@ -26,7 +32,8 @@ import com.platform.models.pm.ProcessData;
 import com.platform.models.reports.ReportData;
 
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
-        ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class},
+        ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
+        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class},
         version = 1)
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -50,5 +57,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract OperatorRequestResponseModelDao operatorRequestResponseModelDao();
 
     public abstract SSMasterDatabaseDao ssMasterDatabaseDao();
+
+    public abstract StructureDataDao structureDataDao();
+
+    public abstract StructureVisitMonitoringDataDao structureVisitMonitoringDataDao();
+
+    public abstract StructurePripretionDataDao structurePripretionDataDao();
 
 }

@@ -1,9 +1,15 @@
 package com.platform.view.activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.login.Login;
@@ -23,6 +34,7 @@ import com.platform.models.login.LoginInfo;
 import com.platform.presenter.LoginActivityPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.widgets.PlatformEditTextView;
 
@@ -186,9 +198,27 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == Constants.READ_PHONE_STORAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addDeviceId();
+            } else {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
+                        Snackbar.LENGTH_LONG);
+            }
+            return;
+        }
+
+    }
+
+    @Override
     public <T> void showNextScreen(T data) {
         if (data != null && ((Login) data).getLoginData() != null) {
             loginInfo.setOneTimePassword(((Login) data).getLoginData().getOtp());
+            addDeviceId();
             AppEvents.trackAppEvent(getString(R.string.event_login_success));
 
             try {
@@ -200,6 +230,29 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
             }
         }
     }
+
+    private void addDeviceId() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.
+                TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details. else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        Constants.READ_PHONE_STORAGE);
+            } else {
+                loginInfo.setDeviceId(telephonyManager.getDeviceId());
+            }
+        }
+    }
+
+
 
     @Override
     public void showErrorMessage(String result) {

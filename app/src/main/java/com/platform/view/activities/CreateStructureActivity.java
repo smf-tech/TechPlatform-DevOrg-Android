@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.MasterDataValue;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.SujalamSuphalam.Structure;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.profile.JurisdictionLocation;
@@ -72,7 +79,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateStructureActivityPresenter(this);
-        presenter.getMaster();
+        setMasterData();
         initView();
         setTitle("Create Structure");
 
@@ -85,7 +92,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private void initView() {
 
         //get District
-        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
+        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
 
         structureData = new Structure();
@@ -221,45 +228,77 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 Util.showDateDialog(this, etAdministrativeApprovalDate);
                 break;
             case R.id.bt_submit:
-                submitStructure();
+                if (isAllDataValid()) {
+                    presenter.submitStructure(structureData);
+                }
+
                 break;
 
         }
     }
 
-    private void submitStructure() {
-        structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
-        structureData.setDistrictId(selectedDistrictId);
-        structureData.setDistrict(selectedDistrict);
-        structureData.setTalukaId(selectedTalukaId);
-        structureData.setTaluka(selectedTaluka);
-        structureData.setVillageId(selectedHostVillageId);
-        structureData.setVillage(selectedHostVillage);
-        structureData.setHostVillagePopulation(etHostVillagePopulation.getText().toString());
-        structureData.setHostVillageID(android.text.TextUtils.join(",", selectedCatchmentVillageId));
-        structureData.setHostVillage(android.text.TextUtils.join(",", selectedCatchmentVillage));
-//        structureData.set(etGatNo.getText().toString());
-//        structureData.set(etWaterShedNo.getText().toString());
-//        structureData.set(etArea.getText().toString());
-        structureData.setName(etStructureName.getText().toString());
-        structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
-        structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
-//        structureData.set(etNotaDetail.getText().toString());
-        structureData.setStructureType(etStructureType.getText().toString());
-//        structureData.set(etAdministrativeApprovalNo.getText().toString());
-//        structureData.set(etAdministrativeApprovalDate.getText().toString());
-        structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
-        structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
-        structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
-        structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
-        structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
-        structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
-        structureData.setLat(location.getLatitude());
-        structureData.setLong(location.getLongitude());
-        structureData.setFfId(Util.getUserObjectFromPref().getId());
-        structureData.setRemark(etRemark.getText().toString());
+    private boolean isAllDataValid() {
+        if (TextUtils.isEmpty(selectedDistrict)
+                || TextUtils.isEmpty(selectedTaluka)
+                || TextUtils.isEmpty(selectedHostVillage)
+                || TextUtils.isEmpty(etHostVillagePopulation.getText().toString())
+                || TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))
+                || TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())
+                || TextUtils.isEmpty(etGatNo.getText().toString())
+                || TextUtils.isEmpty(etWaterShedNo.getText().toString())
+                || TextUtils.isEmpty(etArea.getText().toString())
+                || TextUtils.isEmpty(etStructureName.getText().toString())
+                || TextUtils.isEmpty(selectedStructureOwnerDepartmentId)
+                || TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)
+                || TextUtils.isEmpty(etNotaDetail.getText().toString())
+                || TextUtils.isEmpty(selectedStructureTypeId)
+                || TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())
+                || TextUtils.isEmpty(etAdministrativeApprovalDate.getText().toString())
+                || TextUtils.isEmpty(etTechnicalSanctionNo.getText().toString())
+                || TextUtils.isEmpty(etAdministrativeEstimateAmount.getText().toString())
+                || TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())
+                || TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())
+                || TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())
+                || TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
 
-        presenter.submitStructure(structureData);
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please, feel proper information.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else {
+            structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
+            structureData.setDistrictId(selectedDistrictId);
+            structureData.setDistrict(selectedDistrict);
+            structureData.setTalukaId(selectedTalukaId);
+            structureData.setTaluka(selectedTaluka);
+            structureData.setVillageId(selectedHostVillageId);
+            structureData.setVillage(selectedHostVillage);
+            structureData.setVillagePopulation(etHostVillagePopulation.getText().toString());
+            structureData.setCatchmentVillagesIds(android.text.TextUtils.join(",", selectedCatchmentVillageId));
+            structureData.setCatchmentVillages(android.text.TextUtils.join(",", selectedCatchmentVillage));
+            structureData.setTotalPopulation(etCatchmentVillagePopulation.getText().toString());
+            structureData.setGatNo(etGatNo.getText().toString());
+            structureData.setWaterShedNo(etWaterShedNo.getText().toString());
+            structureData.setArea(etArea.getText().toString());
+            structureData.setName(etStructureName.getText().toString());
+            structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
+            structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
+            structureData.setNotaDetail(etNotaDetail.getText().toString());
+            structureData.setStructureType(selectedStructureTypeId);
+            structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
+            structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
+            structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
+            structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
+            structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
+            structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
+            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
+            structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
+            structureData.setLat(location.getLatitude());
+            structureData.setLog(location.getLongitude());
+            structureData.setFfId(Util.getUserObjectFromPref().getId());
+            structureData.setRemark(etRemark.getText().toString());
+        }
+        return true;
     }
 
     @Override
@@ -275,7 +314,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etDistrict.setText(selectedDistrict);
                 //get Taluka
-                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
+                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 break;
             case "Select Taluka":
@@ -288,7 +327,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etTaluka.setText(selectedTaluka);
                 //get Taluka
-                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
+                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
                         Constants.JurisdictionLevelName.VILLAGE_LEVEL);
 
                 break;
@@ -347,12 +386,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        Util.showToast(message,this);
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        Util.showToast(error.getMessage(),this);
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
@@ -383,14 +422,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         finish();
     }
 
-    public void setMasterData(MasterDataResponse masterDataResponse) {
-        if (masterDataResponse.getStatus() == 1000) {
-            logOutUser();
-        } else {
-            for (MasterDataList obj : masterDataResponse.getData()) {
-                if (obj.getForm().equalsIgnoreCase("structure_create")) {
-                    masterDataLists.add(obj);
-                }
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
+            if (obj.getForm().equalsIgnoreCase("structure_create")) {
+                masterDataLists.add(obj);
             }
         }
     }
@@ -443,7 +488,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         }
                     }
                     //get Village
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5c4ab05cd503a372d0391467",
+                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
                             Constants.JurisdictionLevelName.VILLAGE_LEVEL);
 
                 }
@@ -467,7 +512,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         }
                     }
                 }
-
                 break;
         }
     }

@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Structure {
+import java.io.Serializable;
+
+public class Structure implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
@@ -31,6 +33,9 @@ public class Structure {
     @SerializedName("village")
     @Expose
     private String village;
+    @SerializedName("village_population")
+    @Expose
+    private String villagePopulation;
     @SerializedName("structure_type")
     @Expose
     private String structureType;
@@ -40,15 +45,12 @@ public class Structure {
     @SerializedName("sub_department_id")
     @Expose
     private String subDepartmentId;
-    @SerializedName("host_village_id")
+    @SerializedName("catchment_villages_ids")
     @Expose
-    private String hostVillageID;
-    @SerializedName("host_village")
+    private String catchmentVillagesIds;
+    @SerializedName("catchment_villages")
     @Expose
-    private String hostVillage;
-    @SerializedName("host_village_population")
-    @Expose
-    private String hostVillagePopulation;
+    private String catchmentVillages;
     @SerializedName("work_type")
     @Expose
     private String workType;
@@ -85,12 +87,30 @@ public class Structure {
     @SerializedName("lat")
     @Expose
     private double lat;
-    @SerializedName("long")
+    @SerializedName("log")
     @Expose
-    private double _long;
+    private double log;
     @SerializedName("ff_id")
     @Expose
     private String ffId;
+    @SerializedName("gatNo")
+    @Expose
+    private String gatNo;
+    @SerializedName("waterShedNo")
+    @Expose
+    private String waterShedNo;
+    @SerializedName("area")
+    @Expose
+    private String area;
+    @SerializedName("notaDetail")
+    @Expose
+    private String notaDetail;
+    @SerializedName("administrativeApprovalNo")
+    @Expose
+    private String administrativeApprovalNo;
+    @SerializedName("administrativeApprovalDate")
+    @Expose
+    private String administrativeApprovalDate;
 
     public String getName() {
         return name;
@@ -132,6 +152,46 @@ public class Structure {
         this.villageId = villageId;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getTaluka() {
+        return taluka;
+    }
+
+    public void setTaluka(String taluka) {
+        this.taluka = taluka;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public String getVillagePopulation() {
+        return villagePopulation;
+    }
+
+    public void setVillagePopulation(String villagePopulation) {
+        this.villagePopulation = villagePopulation;
+    }
+
     public String getStructureType() {
         return structureType;
     }
@@ -156,20 +216,20 @@ public class Structure {
         this.subDepartmentId = subDepartmentId;
     }
 
-    public String getHostVillage() {
-        return hostVillage;
+    public String getCatchmentVillagesIds() {
+        return catchmentVillagesIds;
     }
 
-    public void setHostVillage(String hostVillage) {
-        this.hostVillage = hostVillage;
+    public void setCatchmentVillagesIds(String catchmentVillagesIds) {
+        this.catchmentVillagesIds = catchmentVillagesIds;
     }
 
-    public String getHostVillagePopulation() {
-        return hostVillagePopulation;
+    public String getCatchmentVillages() {
+        return catchmentVillages;
     }
 
-    public void setHostVillagePopulation(String hostVillagePopulation) {
-        this.hostVillagePopulation = hostVillagePopulation;
+    public void setCatchmentVillages(String catchmentVillages) {
+        this.catchmentVillages = catchmentVillages;
     }
 
     public String getWorkType() {
@@ -268,12 +328,12 @@ public class Structure {
         this.lat = lat;
     }
 
-    public double getLong() {
-        return _long;
+    public double getLog() {
+        return log;
     }
 
-    public void setLong(double _long) {
-        this._long = _long;
+    public void setLog(double log) {
+        this.log = log;
     }
 
     public String getFfId() {
@@ -284,43 +344,51 @@ public class Structure {
         this.ffId = ffId;
     }
 
-    public String getState() {
-        return state;
+    public String getGatNo() {
+        return gatNo;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setGatNo(String gatNo) {
+        this.gatNo = gatNo;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getWaterShedNo() {
+        return waterShedNo;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setWaterShedNo(String waterShedNo) {
+        this.waterShedNo = waterShedNo;
     }
 
-    public String getTaluka() {
-        return taluka;
+    public String getArea() {
+        return area;
     }
 
-    public void setTaluka(String taluka) {
-        this.taluka = taluka;
+    public void setArea(String area) {
+        this.area = area;
     }
 
-    public String getVillage() {
-        return village;
+    public String getNotaDetail() {
+        return notaDetail;
     }
 
-    public void setVillage(String village) {
-        this.village = village;
+    public void setNotaDetail(String notaDetail) {
+        this.notaDetail = notaDetail;
     }
 
-    public String getHostVillageID() {
-        return hostVillageID;
+    public String getAdministrativeApprovalNo() {
+        return administrativeApprovalNo;
     }
 
-    public void setHostVillageID(String hostVillageID) {
-        this.hostVillageID = hostVillageID;
+    public void setAdministrativeApprovalNo(String administrativeApprovalNo) {
+        this.administrativeApprovalNo = administrativeApprovalNo;
+    }
+
+    public String getAdministrativeApprovalDate() {
+        return administrativeApprovalDate;
+    }
+
+    public void setAdministrativeApprovalDate(String administrativeApprovalDate) {
+        this.administrativeApprovalDate = administrativeApprovalDate;
     }
 }

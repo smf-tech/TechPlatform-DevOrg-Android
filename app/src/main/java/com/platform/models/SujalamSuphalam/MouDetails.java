@@ -16,6 +16,9 @@ public class MouDetails {
     @SerializedName("date_of_signing")
     @Expose
     private long dateOfSigning;
+    @SerializedName("mou_expiry_date")
+    @Expose
+    private long dateOfMouExpiry;
     @SerializedName("is_MOU_cancelled")
     @Expose
     private String isMOUCancelled;
@@ -45,6 +48,14 @@ public class MouDetails {
 
     public void setDateOfSigning(long dateOfSigning) {
         this.dateOfSigning = dateOfSigning;
+    }
+
+    public long getDateOfMouExpiry() {
+        return dateOfMouExpiry;
+    }
+
+    public void setDateOfMouExpiry(long dateOfMouExpiry) {
+        this.dateOfMouExpiry = dateOfMouExpiry;
     }
 
     public String getIsMOUCancelled() {

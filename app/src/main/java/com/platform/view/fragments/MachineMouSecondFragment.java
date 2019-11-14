@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -50,6 +51,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -74,6 +79,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private Uri outputUri;
     private Uri finalUri;
     private final String TAG = MachineMouSecondFragment.class.getName();
+    private File imageFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,10 +135,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
-        };
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
-        masterDataList.size();
+
         for(int i = 0; i<masterDataList.size(); i++) {
             if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
                     getField().equals("ownedBy")) {
@@ -185,10 +190,18 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 || TextUtils.isEmpty(etConfirmAccountNo.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountHolderName.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountType.getText().toString().trim())
-                || selectedOwnership == null) {
+                || selectedOwnership == null || isTurnoverBelow == null) {
+
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
                 Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if(!etAccountNo.getText().toString().trim().equals(etConfirmAccountNo.getText().
+                toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.error_confirm_account_no),
+                    Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
@@ -214,6 +227,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 }
                 break;
             case R.id.btn_previous_mou:
+                getActivity().onBackPressed();
                 break;
             case R.id.et_ownership:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,
@@ -274,8 +288,6 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setBankAddress("Kothrud, Pune");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountNo
                 (etAccountNo.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setCheckBookImage
-                ("www.google.com");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountName
                 (etAccountHolderName.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAccountType
@@ -348,7 +360,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
+                String imageFilePath = Util.getImageName();
                 if (imageFilePath == null) return;
                 finalUri = Util.getUri(imageFilePath);
                 Crop.of(outputUri, finalUri).start(getContext(), this);
@@ -358,7 +370,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
+                    String imageFilePath = Util.getImageName();
                     if (imageFilePath == null) return;
                     outputUri = data.getData();
                     finalUri = Util.getUri(imageFilePath);
@@ -369,37 +381,18 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
-                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                if (Util.isConnected(getActivity())) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        imgAccount.setImageURI(finalUri);
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), finalUri);
-                        ((MachineMouActivity) getActivity()).getImageHashmap().put("accountImage", bitmap);
-                        //imageHashmap.put("accountImage", bitmap);
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
+                imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                imgAccount.setImageURI(finalUri);
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                if (Util.isValidImageSize(imageFile)) {
+                    ((MachineMouActivity) getActivity()).getImageHashmap().put("accountImage", bitmap);
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    Util.showToast(getString(R.string.msg_big_image), this);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         }
-    }
-
-    private String getImageName() {
-        long time = new Date().getTime();
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Log.e(TAG, "Failed to create directory!");
-                return null;
-            }
-        }
-        return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
-                + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
     @Override

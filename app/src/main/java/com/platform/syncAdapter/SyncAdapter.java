@@ -26,11 +26,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
+import com.platform.Platform;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
+import com.platform.models.SujalamSuphalam.StructurePripretionData;
+import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.platform.models.Operator.OperatorRequestResponseModel;
 import com.platform.models.common.Microservice;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.forms.FormData;
 import com.platform.models.forms.FormResult;
 import com.platform.models.login.Login;
@@ -38,6 +53,10 @@ import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.OperatorMeterReadingActivity;
+import com.platform.utility.Urls;
+import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.StructurePripretionsActivity;
+import com.platform.view.activities.StructureVisitMonitoringActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +73,8 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,12 +83,14 @@ import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedFor
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private String upload_URL = "http://13.235.124.3/api/machineWorkLog";
     private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
+
 
     SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -90,6 +113,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         uploadImage("");
 
 
+        syncStructureVisitMonitoring();
+        syncStructurePripretion();
     }
 
     private void syncSavedForms() {
@@ -319,6 +344,30 @@ private void uploadImage(String receivedImage) {
         }
 
         @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Accept", "application/json, text/plain, */*");
+            headers.put("Content-Type", "application/json;charset=UTF-8");
+
+            Login loginObj = getLoginObjectFromPref();
+            if (loginObj != null && loginObj.getLoginData() != null &&
+                    loginObj.getLoginData().getAccessToken() != null) {
+                headers.put(Constants.Login.AUTHORIZATION,
+                        "Bearer " + loginObj.getLoginData().getAccessToken());
+                if (getUserObjectFromPref().getOrgId()!=null) {
+                    headers.put("orgId", getUserObjectFromPref().getOrgId());
+                }
+                if (getUserObjectFromPref().getProjectIds()!=null) {
+                    headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                }
+                if (getUserObjectFromPref().getRoleIds()!=null) {
+                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                }
+            }
+            return headers;
+        }
+
+        @Override
         protected Map<String, DataPart> getByteData() {
             Map<String, DataPart> params = new HashMap<>();
             Drawable drawable = null;
@@ -355,4 +404,154 @@ private void uploadImage(String receivedImage) {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
+
+    private void syncStructureVisitMonitoring() {
+        List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
+        structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getStructureVisitMonitoringDataDao().getAllStructure());
+
+        for (final StructureVisitMonitoringData data : structureVisitMonitoringList) {
+            submitData(data, 1);
+        }
+
+    }
+
+    private void submitData(StructureVisitMonitoringData requestData, int noImages) {
+
+        final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
+
+        Log.d("VISITE_MONITORING req:", new Gson().toJson(requestData));
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("VISITE_MONITORING resp:", jsonString);
+
+                            CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(res.getStatus()==200){
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getStructureVisitMonitoringDataDao()
+                                        .delete(requestData.getId());
+                            }
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Log.d("VISITE_MONITORING exp:", e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("VISITE_MONITORING err:", error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(requestData));
+                params.put("imageArraySize", String.valueOf(noImages));//add string parameters
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                drawable = new BitmapDrawable(getContext().getResources(), requestData.getStructureImage());
+                params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(volleyMultipartRequest);
+    }
+
+    private void syncStructurePripretion() {
+        List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
+        structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getStructurePripretionDataDao().getAllStructure());
+
+        for (final StructurePripretionData data : structureVisitMonitoringList) {
+            submitPripretionData(data, 2);
+        }
+
+    }
+
+    private void submitPripretionData(StructurePripretionData requestData, int imageCount) {
+
+        final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_PREPARATION;
+
+        Log.d("STR_PREPARATION req:", new Gson().toJson(requestData));
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("STR_PREPARATION res:", jsonString);
+
+                            CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(res.getStatus()==200){
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                                        .delete(requestData.getId());
+                            }
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Log.d("STR_PREPARATION exp:", e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("STR_PREPARATION exp:", error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(requestData));
+                params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
+                params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
+                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
+                params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
+                        "image/jpeg"));
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(volleyMultipartRequest);
+    }
+
+
+
+
 }
