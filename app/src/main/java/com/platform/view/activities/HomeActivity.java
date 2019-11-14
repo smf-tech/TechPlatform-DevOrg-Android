@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -53,6 +55,7 @@ import com.platform.database.DatabaseManager;
 import com.platform.models.attendance.AttendaceData;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
@@ -69,7 +72,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,ContentManagementFragment.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ContentManagementFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -100,29 +103,29 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void subscribedToFirebaseTopics() {
 //        FirebaseMessaging.getInstance().subscribeToTopic("Test");
-        String userProject=Util.getUserObjectFromPref().getProjectIds().get(0).getName();
-        String userRoll=Util.getUserObjectFromPref().getRoleNames();
-        userProject =userProject.replaceAll(" ","_");
-        userRoll =userRoll.replaceAll(" ","_");
+        String userProject = Util.getUserObjectFromPref().getProjectIds().get(0).getName();
+        String userRoll = Util.getUserObjectFromPref().getRoleNames();
+        userProject = userProject.replaceAll(" ", "_");
+        userRoll = userRoll.replaceAll(" ", "_");
 
-        if((userProject).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise))
-                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise).equals("")){
-            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise,userProject);
+        if ((userProject).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise))
+                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise).equals("")) {
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise, userProject);
             FirebaseMessaging.getInstance().subscribeToTopic(userProject);
         } else {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(Util.getStringFromPref(Constants.App.FirebaseTopicProjectWise));
             FirebaseMessaging.getInstance().subscribeToTopic(userProject);
-            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise,userProject);
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectWise, userProject);
         }
 
-        if((userProject+"_"+userRoll).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise))
-                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise).equals("")){
-            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise,userProject+"_"+userRoll);
-            FirebaseMessaging.getInstance().subscribeToTopic(userProject+"_"+userRoll);
+        if ((userProject + "_" + userRoll).equals(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise))
+                || Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise).equals("")) {
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise, userProject + "_" + userRoll);
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject + "_" + userRoll);
         } else {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise));
-            FirebaseMessaging.getInstance().subscribeToTopic(userProject+"_"+userRoll);
-            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise,userProject+"_"+userRoll);
+            FirebaseMessaging.getInstance().subscribeToTopic(userProject + "_" + userRoll);
+            Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise, userProject + "_" + userRoll);
         }
     }
 
@@ -234,6 +237,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 //                        return !loadFromSDCard(userPic);
                         return false;
                     }
+
                     @Override
                     public boolean onResourceReady(final Drawable resource, final Object model,
                                                    final Target<Drawable> target, final DataSource dataSource,
@@ -288,7 +292,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
         startActivity(startMain);
         Intent startMain1 = new Intent(HomeActivity.this, MatrimonyProfileListActivity.class);
-        startMain.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+        startMain.putExtra("meetid", "5d6f90c25dda765c2f0b5dd4");
         startActivity(startMain1);
 
     }
@@ -625,7 +629,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
                 Intent intent = new Intent(this, NotificationsActivity.class);
-                this.startActivityForResult(intent,Constants.Home.NEVIGET_TO);
+                this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
                 break;
 
             case R.id.home_sync_icon:

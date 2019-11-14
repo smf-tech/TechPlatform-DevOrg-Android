@@ -43,6 +43,7 @@ import com.platform.models.SujalamSuphalam.CatchmentVillagesData;
 import com.platform.models.SujalamSuphalam.CommunityMobilizationRequest;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CommunityMobilizationActivityPresenter;
 import com.platform.utility.Constants;
@@ -64,6 +65,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
 
 public class CommunityMobilizationActivity extends AppCompatActivity implements View.OnClickListener,
         CustomSpinnerListener, APIDataListener {
@@ -478,8 +482,32 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
-                return params;
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));
+                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId()!=null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override

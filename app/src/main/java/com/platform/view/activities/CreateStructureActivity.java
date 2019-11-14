@@ -47,15 +47,16 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private CreateStructureActivityPresenter presenter;
 
     private EditText etDistrict, etTaluka, etHostVillage, etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
-            etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, etStructureOwnerDepartment,
+            etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, etStructureWorkType, etStructureOwnerDepartment,
             etNotaDetail, etSubStructureOwnerDepartment, etAdministrativeApprovalNo, etAdministrativeApprovalDate,
             etTechnicalSanctionNo, etAdministrativeEstimateAmount, etApproximateWorkingHours, etApproximateDieselConsumptionAmount,
             etApproximateDieselLiters, etApproximateEstimateQuantity, etRemark;
     private Button btSubmit;
 
     private String selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka, selectedHostVillageId,
-            selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureOwnerDepartmentId,
-            selectedStructureOwnerDepartment, selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
+            selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureWorkTypeId,
+            selectedStructureWorkType,selectedStructureOwnerDepartmentId, selectedStructureOwnerDepartment,
+            selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
     private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
     private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
@@ -66,6 +67,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ArrayList<CustomSpinnerObject> structureDepartmentList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureSubDepartmentList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> structureWorkTypeList = new ArrayList<>();
 
     private Structure structureData;
 
@@ -111,6 +113,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
         etNotaDetail = findViewById(R.id.et_nota_detail);
         etStructureType = findViewById(R.id.et_structure_type);
+        etStructureWorkType = findViewById(R.id.et_structure_work_type);
         etAdministrativeApprovalNo = findViewById(R.id.et_administrative_approval_no);
         etAdministrativeApprovalDate = findViewById(R.id.et_administrative_approval_date);
         etTechnicalSanctionNo = findViewById(R.id.et_technical_sanction_no);
@@ -128,6 +131,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etAdministrativeApprovalDate.setOnClickListener(this);
         etCatchmentVillage.setOnClickListener(this);
         etStructureType.setOnClickListener(this);
+        etStructureWorkType.setOnClickListener(this);
         etStructureOwnerDepartment.setOnClickListener(this);
         etSubStructureOwnerDepartment.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
@@ -224,6 +228,23 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+            case R.id.et_structure_work_type:
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("work_type"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            structureWorkTypeList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdStructerWorkType = new CustomSpinnerDialogClass(this, this,
+                        "Select Structure Work Type", structureWorkTypeList, false);
+                csdStructerWorkType.show();
+                csdStructerWorkType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case R.id.et_administrative_approval_date:
                 Util.showDateDialog(this, etAdministrativeApprovalDate);
                 break;
@@ -285,6 +306,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
             structureData.setNotaDetail(etNotaDetail.getText().toString());
             structureData.setStructureType(selectedStructureTypeId);
+            structureData.setStructureWorkType(selectedStructureWorkTypeId);
             structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
             structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
             structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
@@ -380,8 +402,16 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etStructureType.setText(selectedStructureType);
                 break;
+                case "Select Structure Work Type":
+                for (CustomSpinnerObject obj : structureTypeList) {
+                    if (obj.isSelected()) {
+                        selectedStructureWorkType = obj.getName();
+                        selectedStructureWorkTypeId = obj.get_id();
+                    }
+                }
+                etStructureType.setText(selectedStructureType);
+                break;
         }
-
     }
 
     @Override
