@@ -168,7 +168,8 @@
                 <EditText
                     android:id="@+id/et_excavation_capacity"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/excavation_capacity"/>
+                    android:hint="@string/excavation_capacity"
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -181,6 +182,30 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/diesel_capacity"
                     android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_provider_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_name_hint"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_provider_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/provider_contact"
+                    android:inputType="number"
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

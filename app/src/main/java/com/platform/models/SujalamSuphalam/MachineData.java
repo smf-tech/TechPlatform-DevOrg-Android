@@ -65,12 +65,30 @@ public class MachineData  implements Serializable {
     @Expose
     private String lastUpdatedTime;
 
-    public String isMeterWorking() {
+    public String getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(String lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
+
+    @SerializedName("is_meter_working")
+    @Expose
+    private String isMeterWorking;
+    @SerializedName("RTO_numner")
+    @Expose
+    private String rtoNumber;
+    @SerializedName("chassis_no")
+    @Expose
+    private String chasisNo;
+
+    public String getIsMeterWorking() {
         return isMeterWorking;
     }
 
-    public void setMeterWorking(String meterWorking) {
-        isMeterWorking = meterWorking;
+    public void setIsMeterWorking(String isMeterWorking) {
+        this.isMeterWorking = isMeterWorking;
     }
 
     public String getRtoNumber() {
@@ -81,12 +99,12 @@ public class MachineData  implements Serializable {
         this.rtoNumber = rtoNumber;
     }
 
-    public String getChasisNumber() {
-        return chasisNumber;
+    public String getChasisNo() {
+        return chasisNo;
     }
 
-    public void setChasisNumber(String chasisNumber) {
-        this.chasisNumber = chasisNumber;
+    public void setChasisNo(String chasisNo) {
+        this.chasisNo = chasisNo;
     }
 
     public String getExcavationCapacity() {
@@ -97,24 +115,7 @@ public class MachineData  implements Serializable {
         this.excavationCapacity = excavationCapacity;
     }
 
-    public String getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-
-    public void setLastUpdatedTime(String lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-    }
-
-    @SerializedName("isMeterWorking")
-    @Expose
-    private String isMeterWorking;
-    @SerializedName("rtoNumber")
-    @Expose
-    private String rtoNumber;
-    @SerializedName("chasisNumber")
-    @Expose
-    private String chasisNumber;
-    @SerializedName("excavationCapacity")
+    @SerializedName("excavation_capacity")
     @Expose
     private String excavationCapacity;
 
