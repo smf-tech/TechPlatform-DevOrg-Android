@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
+import com.platform.models.SujalamSuphalam.CatchmentVillagesResponse;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.request.APIRequestCall;
@@ -13,11 +15,14 @@ import com.platform.utility.Constants;
 import com.platform.utility.Urls;
 import com.platform.view.activities.CommunityMobilizationActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommunityMobilizationActivityPresenter implements APIPresenterListener {
 
     final String GET_DISTRICT = "getDistrict";
     final String GET_TALUKA = "getTaluka";
-    final String GET_VILLAGE = "getvillage";
+    final String GET_CATACHMENT_VILLAGE = "getCatchmentvillage";
     
     CommunityMobilizationActivity mContext;
 
@@ -51,26 +56,14 @@ public class CommunityMobilizationActivityPresenter implements APIPresenterListe
         mContext.hideProgressBar();
         try {
             if (response != null) {
-               if(requestID.equalsIgnoreCase(GET_DISTRICT) ||
-                        requestID.equalsIgnoreCase(GET_TALUKA) ||
-                        requestID.equalsIgnoreCase(GET_VILLAGE)){
-                    JurisdictionLevelResponse jurisdictionLevelResponse
-                            = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+               if(requestID.equalsIgnoreCase(GET_CATACHMENT_VILLAGE)){
+                   CatchmentVillagesResponse response1 = new Gson().fromJson(response, CatchmentVillagesResponse.class);
+                   if(response1.getStatus()==200){
+                       mContext.showCattachmentVileges(response1.getData());
+                   } else {
+                       mContext.onFailureListener(GET_CATACHMENT_VILLAGE,response1.getMessage());
+                   }
 
-                    if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
-                            && !jurisdictionLevelResponse.getData().isEmpty()
-                            && jurisdictionLevelResponse.getData().size() > 0) {
-                        if(requestID.equalsIgnoreCase(GET_DISTRICT)) {
-                            mContext.showJurisdictionLevel(jurisdictionLevelResponse.getData(),
-                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        }else if(requestID.equalsIgnoreCase(GET_TALUKA)) {
-                            mContext.showJurisdictionLevel(jurisdictionLevelResponse.getData(),
-                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                        } else if(requestID.equalsIgnoreCase(GET_VILLAGE)) {
-                            mContext.showJurisdictionLevel(jurisdictionLevelResponse.getData(),
-                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-                        }
-                    }
                 }
             }
         }catch (Exception e) {
@@ -78,22 +71,19 @@ public class CommunityMobilizationActivityPresenter implements APIPresenterListe
         }
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+    public void getCatchmentVillage(String structId) {
+        Gson gson = new GsonBuilder().create();
+
+        Map<String,String> map = new HashMap<>();
+        map.put("structure_id",structId);
+        String params = gson.toJson(map);
+
+        final String url = BuildConfig.BASE_URL + Urls.SSModule.CATCHMENT_VILLAGES;
+        Log.d(GET_CATACHMENT_VILLAGE, " url: " + url);
+        mContext.showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-
-        final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
-        Log.d("getLocationUrl", " url: " + getLocationUrl);
-        mContext.showProgressBar();
-
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
-            requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-            requestCall.getDataApiCall(GET_TALUKA, getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-            requestCall.getDataApiCall(GET_VILLAGE, getLocationUrl);
-        }
+        requestCall.postDataApiCall(GET_CATACHMENT_VILLAGE, params, url);
     }
 
 
