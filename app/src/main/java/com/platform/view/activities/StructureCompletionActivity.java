@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Urls;
@@ -49,6 +50,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
 
 public class StructureCompletionActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -317,10 +321,31 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
-                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
-                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
-                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId()!=null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override

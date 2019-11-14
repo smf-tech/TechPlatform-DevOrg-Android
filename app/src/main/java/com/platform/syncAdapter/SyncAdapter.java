@@ -69,6 +69,7 @@ import static com.platform.presenter.PMFragmentPresenter.getAllNonSyncedSavedFor
 import static com.platform.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.platform.utility.Constants.Form.EXTRA_FORM_ID;
 import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -285,12 +286,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 .getStructureVisitMonitoringDataDao().getAllStructure());
 
         for (final StructureVisitMonitoringData data : structureVisitMonitoringList) {
-            submitData(data, 1);
+            submitVisitData(data, 1);
         }
 
     }
 
-    private void submitData(StructureVisitMonitoringData requestData, int imageCount) {
+    private void submitVisitData(StructureVisitMonitoringData requestData, int imageCount) {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
 
@@ -306,7 +307,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             Log.d("VISITE_MONITORING resp:", jsonString);
 
                             CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(res.getStatus()==200){
+                            if (res.getStatus() == 200) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getStructureVisitMonitoringDataDao()
                                         .delete(requestData.getId());
                             }
@@ -329,9 +330,31 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
-                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
-                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
-                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());return params;
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId()!=null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override
@@ -380,7 +403,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             Log.d("STR_PREPARATION res:", jsonString);
 
                             CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(res.getStatus()==200){
+                            if (res.getStatus() == 200) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                                         .delete(requestData.getId());
                             }
@@ -403,10 +426,31 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
-                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
-                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
-                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override
