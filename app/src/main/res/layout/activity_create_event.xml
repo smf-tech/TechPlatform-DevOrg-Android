@@ -7,10 +7,10 @@
     android:background="@color/base_background_color"
     tools:context="com.platform.view.activities.CreateEventTaskActivity">
 
-    <!--<include-->
-    <!--android:id="@+id/ly_app_bar"-->
-    <!--layout="@layout/app_toolbar" />-->
-    <!---->
+    <include
+        android:id="@+id/ly_app_bar"
+        layout="@layout/app_toolbar" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,21 +27,20 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_title"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_title"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/task_title"
-                    android:maxLength="50"
                     android:inputType="text|textCapWords"
-                    tools:ignore="Autofill"
-                    />
+                    android:maxLength="50"
+                    tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Start date time-->
@@ -58,12 +57,12 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_start_date"
                     style="@style/textinputstyle"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tly_title"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -75,8 +74,8 @@
                         android:focusable="false"
                         android:hint="@string/task_start_date"
                         android:inputType="date"
-                        tools:ignore="Autofill"
-                        android:longClickable="false"/>
+                        android:longClickable="false"
+                        tools:ignore="Autofill" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,11 +83,11 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_start_time"
                     style="@style/textinputstyle"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -96,12 +95,12 @@
                         android:id="@+id/et_start_time"
                         style="@style/RegistrationEditTextLayout"
                         android:clickable="false"
+                        android:drawableEnd="@drawable/ic_clock"
                         android:focusable="false"
                         android:hint="@string/task_start_time"
                         android:inputType="time"
-                        android:drawableEnd="@drawable/ic_clock"
-                        tools:ignore="Autofill"
-                        android:longClickable="false"/>
+                        android:longClickable="false"
+                        tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -113,19 +112,19 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_start_end_date"
                 android:baselineAligned="false"
-                android:weightSum="10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="10">
 
                 <!--End Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_date"
                     style="@style/textinputstyle"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tly_start_date"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -137,19 +136,19 @@
                         android:focusable="false"
                         android:hint="@string/task_end_date"
                         android:inputType="date"
-                        tools:ignore="Autofill"
-                        android:longClickable="false"/>
+                        android:longClickable="false"
+                        tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--End Time-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_time"
                     style="@style/textinputstyle"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="5"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -157,12 +156,12 @@
                         android:id="@+id/et_end_time"
                         style="@style/RegistrationEditTextLayout"
                         android:clickable="false"
+                        android:drawableEnd="@drawable/ic_clock"
                         android:focusable="false"
                         android:hint="@string/task_end_time"
                         android:inputType="time"
-                        android:drawableEnd="@drawable/ic_clock"
-                        tools:ignore="Autofill"
-                        android:longClickable="false"/>
+                        android:longClickable="false"
+                        tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -170,48 +169,48 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_description"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_start_end_time"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_description"
+                    style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans"
                     android:hint="@string/task_description"
-                    android:maxLines="10"
                     android:inputType="textMultiLine"
+                    android:maxLines="10"
                     android:textSize="@dimen/text_size_14"
-                    tools:ignore="Autofill"
-                    style="@style/RegistrationEditTextLayout"
-                    android:fontFamily="@font/opensans"/>
+                    tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Address-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_address"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tly_description"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans"
                     android:hint="@string/task_address"
                     android:inputType="textMultiLine"
                     android:textSize="@dimen/text_size_14"
-                    tools:ignore="Autofill"
-                    android:fontFamily="@font/opensans"/>
+                    tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
@@ -222,10 +221,10 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
                 android:text="@string/is_attendance_required"
-                android:textSize="@dimen/text_size_14"
                 android:textColor="@color/medium_grey"
-                android:fontFamily="@font/opensans"/>
+                android:textSize="@dimen/text_size_14" />
 
             <CheckBox
                 android:id="@+id/cb_is_registration_required"
@@ -235,21 +234,21 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
                 android:text="@string/is_registration_required"
-                android:textSize="@dimen/text_size_14"
                 android:textColor="@color/medium_grey"
-                android:fontFamily="@font/opensans"/>
+                android:textSize="@dimen/text_size_14" />
 
             <!--Registration Start Date-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_registration_start_date"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cb_is_registration_required"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -268,12 +267,12 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_registration_end_date"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tly_registration_start_date"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -294,10 +293,10 @@
                 style="@style/FormLabel"
                 android:layout_below="@+id/tly_registration_end_date"
                 android:layout_marginStart="@dimen/dimen_20dp"
-                android:textSize="@dimen/text_size_14"
-                android:textColor="@color/medium_grey"
                 android:fontFamily="@font/opensans"
-                android:text="@string/add_forms" />
+                android:text="@string/add_forms"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/text_size_14" />
 
             <com.platform.widgets.MultiSelectSpinner
                 android:id="@+id/sp_add_forms"
@@ -308,24 +307,24 @@
                 android:layout_below="@+id/tv_add_forms" />
 
             <!--<com.google.android.material.textfield.TextInputLayout-->
-                <!--android:id="@+id/input_add_forms"-->
-                <!--style="@style/textinputstyle"-->
-                <!--android:layout_marginStart="@dimen/dimen_10dp"-->
-                <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
-                <!--android:layout_marginTop="@dimen/dimen_10dp"-->
-                <!--android:visibility="gone"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/tly_registration_end_date"-->
-                <!--app:hintTextAppearance="@style/TextInputLayoutHint">-->
+            <!--android:id="@+id/input_add_forms"-->
+            <!--style="@style/textinputstyle"-->
+            <!--android:layout_marginStart="@dimen/dimen_10dp"-->
+            <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+            <!--android:layout_marginTop="@dimen/dimen_10dp"-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/tly_registration_end_date"-->
+            <!--app:hintTextAppearance="@style/TextInputLayoutHint">-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/et_add_forms"-->
-                    <!--style="@style/RegistrationEditTextLayout"-->
-                    <!--android:hint="@string/add_forms"-->
-                    <!--android:focusable="false"-->
-                    <!--android:inputType="text|textCapWords"-->
-                    <!--tools:ignore="Autofill" />-->
+            <!--<EditText-->
+            <!--android:id="@+id/et_add_forms"-->
+            <!--style="@style/RegistrationEditTextLayout"-->
+            <!--android:hint="@string/add_forms"-->
+            <!--android:focusable="false"-->
+            <!--android:inputType="text|textCapWords"-->
+            <!--tools:ignore="Autofill" />-->
             <!--</com.google.android.material.textfield.TextInputLayout>-->
 
 
@@ -343,16 +342,16 @@
                 <EditText
                     android:id="@+id/et_add_members"
                     style="@style/RegistrationEditTextLayout"
-                    android:clickable="false"
                     android:background="@null"
+                    android:clickable="false"
                     android:drawableEnd="@drawable/ic_add_membr"
                     android:focusable="false"
                     android:hint="@string/task_add_members"
                     android:inputType="text|textCapWords"
-                    android:textColorHint="@color/grey"
+                    android:longClickable="false"
                     android:padding="@dimen/dimen_10dp"
-                    tools:ignore="Autofill"
-                    android:longClickable="false"/>
+                    android:textColorHint="@color/grey"
+                    tools:ignore="Autofill" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_attendees_list"
@@ -369,8 +368,8 @@
                 android:id="@+id/ly_event_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/rl_add_members">
+                android:layout_below="@+id/rl_add_members"
+                android:layout_centerHorizontal="true">
 
                 <ImageView
                     android:id="@+id/event_pic"
@@ -387,10 +386,10 @@
                     android:layout_below="@+id/event_pic"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="0dp"
+                    android:fontFamily="@font/opensans"
                     android:gravity="center"
                     android:text="@string/event_pic"
                     android:textColor="@color/medium_grey"
-                    android:fontFamily="@font/opensans"
                     android:textSize="@dimen/text_size_14" />
 
             </RelativeLayout>
@@ -398,14 +397,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_event_submit"
+                style="@style/AppStyleButton"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/ly_event_pic"
-                style="@style/AppStyleButton"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:background="@drawable/bg_button"
-                android:textColor="@android:color/white"
-                />
+                android:textColor="@android:color/white" />
 
         </RelativeLayout>
 

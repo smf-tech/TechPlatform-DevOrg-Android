@@ -20,9 +20,15 @@ import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
+import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
 import com.platform.utility.GPSTracker;
@@ -31,6 +37,7 @@ import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MachineShiftingFormFragment extends Fragment implements APIDataListener,
         View.OnClickListener, CustomSpinnerListener {
@@ -38,7 +45,8 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     String machineId, currentStructureId, newStructureId, isDieselFilled , dieselProvidedBy;
-    private EditText etIsDieselFilled, etProvideBy, etDieselQuantity, etstartMeterReading, etTravelDistance,
+    private EditText etSelectedStructure, etIsDieselFilled, etProvideBy, etDieselQuantity,
+            etstartMeterReading, etTravelDistance,
      etTravelTime;
     private Button btnSubmit;
     private MachineShiftingFormFragmentPresenter machineShiftingFormFragmentPresenter;
@@ -74,6 +82,8 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         progressBarLayout = machineShiftingFormFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineShiftingFormFragmentView.findViewById(R.id.pb_profile_act);
         machineShiftingFormFragmentPresenter = new MachineShiftingFormFragmentPresenter(this);
+        etSelectedStructure = machineShiftingFormFragmentView.findViewById(R.id.et_selected_structure);
+        etSelectedStructure.setText(newStructureId);
         etIsDieselFilled = machineShiftingFormFragmentView.findViewById(R.id.et_is_diesel_filled);
         etIsDieselFilled.setOnClickListener(this);
         etProvideBy = machineShiftingFormFragmentView.findViewById(R.id.et_provided_by);
@@ -89,6 +99,26 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         btnSubmit = machineShiftingFormFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
         gpsTracker = new GPSTracker(getActivity());
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for(int i = 0; i<masterDataList.size(); i++) {
+            if(masterDataList.get(i).getForm().equals("shifting") && masterDataList.get(i).
+                    getField().equals("dieselProvidedBy")) {
+                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setSelected(false);
+                    isDieselProvidedByList.add(customSpinnerObject);
+                }
+            }
+        }
         showDialog();
     }
 

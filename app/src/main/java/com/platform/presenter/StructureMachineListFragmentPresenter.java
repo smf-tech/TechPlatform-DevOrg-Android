@@ -1,5 +1,6 @@
 package com.platform.presenter;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -53,15 +54,19 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         fragmentWeakReference = null;
     }
 
-    public void getStrucuresList(String district_id, String taluka_id, String village_id, String type){
+    public void getStrucuresList(String state_id, String district_id, String taluka_id){
         Gson gson = new GsonBuilder().create();
         fragmentWeakReference.get().showProgressBar();
 
         HashMap<String,String> map=new HashMap<>();
-        map.put("district_id", district_id);
-        map.put("taluka_id", taluka_id);
-        map.put("village_id", village_id);
-        map.put("type", type);
+        map.put("state_id", state_id);
+        if(!TextUtils.isEmpty(district_id)){
+            map.put("district_id", district_id);
+        }
+        if(!TextUtils.isEmpty(taluka_id)){
+            map.put("taluka_id", taluka_id);
+        }
+
 
         String paramjson = gson.toJson(map);
         final String getStructuresListUrl = BuildConfig.BASE_URL

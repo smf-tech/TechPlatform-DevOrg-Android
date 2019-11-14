@@ -39,6 +39,9 @@ public class Structure implements Serializable {
     @SerializedName("structure_type")
     @Expose
     private String structureType;
+    @SerializedName("work_type")
+    @Expose
+    private String structureWorkType;
     @SerializedName("department_id")
     @Expose
     private String departmentId;
@@ -198,6 +201,14 @@ public class Structure implements Serializable {
 
     public void setStructureType(String structureType) {
         this.structureType = structureType;
+    }
+
+    public String getStructureWorkType() {
+        return structureWorkType;
+    }
+
+    public void setStructureWorkType(String structureWorkType) {
+        this.structureWorkType = structureWorkType;
     }
 
     public String getDepartmentId() {

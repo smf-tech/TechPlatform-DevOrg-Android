@@ -5,14 +5,6 @@
     android:layout_height="wrap_content"
     app:elevation="0dp">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:paddingStart="@dimen/dimen_10dp"
-        android:paddingEnd="5dp"
-        app:titleTextColor="@android:color/white">
 
         <LinearLayout
             android:id="@+id/toolbar_action_view"
@@ -26,8 +18,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:padding="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:background="@drawable/ic_back_white" />
+                android:src="@drawable/ic_back_white" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -35,15 +28,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="1dp"
+                android:paddingTop ="@dimen/dimen_03dp"
+                android:paddingBottom ="@dimen/dimen_03dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_14"
+                android:textSize="@dimen/text_size_18"
                 android:textStyle="bold"
-                android:fontFamily="@font/opensans_regular"
+                android:fontFamily="@font/opensans_bold"
                 />
 
             <ImageView
@@ -61,12 +55,12 @@
                 android:id="@+id/toolbar_edit_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="center"
                 android:layout_marginEnd="2dp"
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_edit"
                 android:visibility="invisible" />
         </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+
 </com.google.android.material.appbar.AppBarLayout>

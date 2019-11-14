@@ -109,7 +109,7 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
         toolbar_title.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
         ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setImageResource(R.drawable.ic_bell);
+        toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
         toolbar_edit_action.setOnClickListener(this);
     }
 

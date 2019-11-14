@@ -571,9 +571,9 @@
     <string name="is_diesel_filled">Has diesel filled for shifting purpose?</string>
     <string name="provided_by">Diesel provided by</string>
     <string name="diesel_quantity">Diesel filled (in Liters) for shifting purpose</string>
-    <string name="start_meter_reading">Start Meter Reading *</string>
-    <string name="travel_distance">Approximate travel distance(Km) *</string>
-    <string name="travel_time">Approximate travel time(Hr) *</string>
+    <string name="start_meter_reading">Start Meter Reading</string>
+    <string name="travel_distance">Approximate travel distance(Km)</string>
+    <string name="travel_time">Approximate travel time(Hr)</string>
     <string name="diesel_provided_by">Diesel provided by</string>
     <string name="provider_last_name">Machine Provider Last name</string>
     <string name="enter_rate1_start_date">Please select start date for rate 1.</string>

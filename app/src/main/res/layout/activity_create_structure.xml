@@ -242,6 +242,22 @@
                     android:focusable="false"
                     android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
+            <!--Structure Work Type-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_structure_work_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Structure Work Type"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Approval Number-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"

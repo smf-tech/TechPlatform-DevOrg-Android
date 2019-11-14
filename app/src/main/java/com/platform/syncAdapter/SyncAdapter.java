@@ -54,6 +54,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.OperatorMeterReadingActivity;
 import com.platform.utility.Urls;
+import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.StructurePripretionsActivity;
 import com.platform.view.activities.StructureVisitMonitoringActivity;
@@ -411,12 +412,12 @@ private void uploadImage(String receivedImage) {
                 .getStructureVisitMonitoringDataDao().getAllStructure());
 
         for (final StructureVisitMonitoringData data : structureVisitMonitoringList) {
-            submitData(data, 1);
+            submitVisitData(data, 1);
         }
 
     }
 
-    private void submitData(StructureVisitMonitoringData requestData, int noImages) {
+    private void submitVisitData(StructureVisitMonitoringData requestData, int imageCount) {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
 
@@ -432,7 +433,7 @@ private void uploadImage(String receivedImage) {
                             Log.d("VISITE_MONITORING resp:", jsonString);
 
                             CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(res.getStatus()==200){
+                            if (res.getStatus() == 200) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getStructureVisitMonitoringDataDao()
                                         .delete(requestData.getId());
                             }
@@ -454,8 +455,32 @@ private void uploadImage(String receivedImage) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(noImages));//add string parameters
+                params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId()!=null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override
@@ -504,7 +529,7 @@ private void uploadImage(String receivedImage) {
                             Log.d("STR_PREPARATION res:", jsonString);
 
                             CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(res.getStatus()==200){
+                            if (res.getStatus() == 200) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                                         .delete(requestData.getId());
                             }
@@ -528,6 +553,30 @@ private void uploadImage(String receivedImage) {
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override

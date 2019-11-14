@@ -86,6 +86,10 @@ public class StructureData implements Serializable {
     @SerializedName("structureMachineList")
     @Expose
     private String structureMachineList;
+    @ColumnInfo(name = "updatedDate")
+    @SerializedName("updatedDate")
+    @Expose
+    private String updatedDate;
 
     public String getStructureId() {
         return structureId;
@@ -229,6 +233,14 @@ public class StructureData implements Serializable {
 
     public void setStructureMachineList(String structureMachineList) {
         this.structureMachineList = structureMachineList;
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(String updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
 }

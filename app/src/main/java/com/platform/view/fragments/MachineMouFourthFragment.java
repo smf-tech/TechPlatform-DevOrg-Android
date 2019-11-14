@@ -52,6 +52,7 @@ import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.events.CommonResponse;
+import com.platform.models.login.Login;
 import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineMouFourthFragmentPresenter;
 import com.platform.utility.Constants;
@@ -76,6 +77,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
 
 public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener,
         CustomSpinnerListener {
@@ -387,6 +390,30 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 }
                 params.put("imageArraySize", String.valueOf(((MachineMouActivity) getActivity()).getImageHashmap().size()));//add string parameters
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", "application/json;charset=UTF-8");
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId()!=null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override
