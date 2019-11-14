@@ -27,13 +27,20 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.home.RoleAccessAPIResponse;
+import com.platform.models.home.RoleAccessList;
+import com.platform.models.home.RoleAccessObject;
+import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.activities.CommunityMobilizationActivity;
+import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.StructureCompletionActivity;
 import com.platform.view.activities.StructurePripretionsActivity;
 import com.platform.view.activities.StructureVisitMonitoringActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureListAdapter.ViewHolder> {
@@ -42,13 +49,35 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
     private ArrayList<StructureData> ssDataList;
     Activity activity;
-    boolean isSave;
+    boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
+            isVisitMonitoring, isStructureComplete;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
         this.ssDataList = ssStructureListData;
         this.activity = activity;
         this.isSave = isSave;
+
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SAVE_OFFLINE_STRUCTURE)) {
+                isSaveOfflineStructure = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_PREPARED_STRUCTURE)) {
+                isStructurePreparation = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_COMMUNITY_MOBILISATION)) {
+                isCommunityMobilization = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VISIT_MONITORTNG)) {
+                isVisitMonitoring = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
+                isStructureComplete = true;
+            }
+        }
     }
 
     @NonNull
@@ -69,7 +98,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         }
         holder.tvStructureCode.setText(ssDataList.get(position).getStructureCode());
         holder.tvStructureType.setText(ssDataList.get(position).getStructureType());
-        holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
+        holder.tvWorkType.setText(ssDataList.get(position).getStructureType());
         holder.tvStructureName.setText(ssDataList.get(position).getStructureStatus());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -100,10 +129,14 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvStructureOwnerDepartment = itemView.findViewById(R.id.tv_structure_owner_department);
             tvContact = itemView.findViewById(R.id.tv_contact);
             btSave = itemView.findViewById(R.id.bt_save);
-            if (isSave){
+            if (isSave) {
                 btSave.setText("Save Offline");
             } else {
                 btSave.setText("Remove from Offline");
+            }
+
+            if(!isSaveOfflineStructure){
+                btSave.setVisibility(View.GONE);
             }
 
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
@@ -114,15 +147,29 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     popup.inflate(R.menu.structure_popup_menu);
                     popup.show();
 
+                    if (isCommunityMobilization) {
+                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+                    }
+                    if (isVisitMonitoring) {
+                        popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
+                    }
+                    if (isStructureComplete) {
+                        popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                    }
+
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent intent;
                             switch (item.getItemId()) {
                                 case R.id.action_mobilization:
-                                    intent = new Intent(activity, CommunityMobilizationActivity.class);
-                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-                                    activity.startActivity(intent);
+                                    if (Util.isConnected(activity)) {
+                                        intent = new Intent(activity, CommunityMobilizationActivity.class);
+                                        intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
+                                        activity.startActivity(intent);
+                                    } else {
+                                        Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                    }
                                     break;
                                 case R.id.action_visit_monitoring:
 //                                    if(ssDataList.get(getAdapterPosition()).getStructureStatus().equalsIgnoreCase("Approved")){
@@ -148,9 +195,9 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             lyStructure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode()==115) {
+                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115 && isVisitMonitoring) {
                         showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
-                                "Yes","No" ,getAdapterPosition());
+                                "Yes", "No", getAdapterPosition());
 
                     }
                 }
@@ -158,7 +205,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             btSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isSave){
+                    if (isSave) {
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
                                 .insert(ssDataList.get(getAdapterPosition()));
                     } else {

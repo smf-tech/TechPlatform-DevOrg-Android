@@ -373,6 +373,12 @@ public class Constants {
         public static final Integer ACCESS_CODE_DIESEL_RECORD_FORM = 117;
         public static final Integer ACCESS_CODE_MACHINE_SHIFT_FORM = 118;
         public static final Integer ACCESS_CODE_MACHINE_RELEASE = 119;
+        public static final Integer ACCESS_CODE_ADD_STRUCTURE = 100;
+        public static final Integer ACCESS_CODE_SAVE_OFFLINE_STRUCTURE = 102;
+        public static final Integer ACCESS_CODE_PREPARED_STRUCTURE = 103;
+        public static final Integer ACCESS_CODE_COMMUNITY_MOBILISATION = 105;
+        public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
+        public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
 
         public static final Integer ACCESS_CODE_STATE = 120;
         public static final Integer ACCESS_CODE_DISTRICT = 121;

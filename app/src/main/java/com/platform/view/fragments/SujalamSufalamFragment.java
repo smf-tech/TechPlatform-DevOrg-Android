@@ -61,7 +61,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private RelativeLayout progressBarLayout;
     private TextView tvStructureView, tvMachineView, tvToggle;
     private Button btnSsView;
-    private FloatingActionButton fbCreate;
     private RecyclerView rvSSAnalytics;
     private int viewType = 1;
     private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
@@ -116,14 +115,11 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvMachineView.setOnClickListener(this);
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
-        fbCreate = sujalamSufalamFragmentView.findViewById(R.id.fb_create);
-        fbCreate.setOnClickListener(this);
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
-        setStructureView();
         List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
                 getSSMasterDatabaseDao().getSSMasterData();
 
@@ -138,16 +134,14 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
         for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
-            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
-                isMachineAdd = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
                 isStructureView = true;
                 continue;
             } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
                 isMachineView = true;
             }
         }
+        setStructureView();
     }
 
     @Override
@@ -195,11 +189,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }
-        if(isMachineAdd) {
-            fbCreate.setVisibility(View.VISIBLE);
-        } else {
-            fbCreate.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void setStructureView(){
@@ -216,11 +205,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             btnSsView.setText("Structure View >");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
-        }
-        if(isStructureAdd) {
-            fbCreate.setVisibility(View.VISIBLE);
-        } else {
-            fbCreate.setVisibility(View.INVISIBLE);
         }
     }
 

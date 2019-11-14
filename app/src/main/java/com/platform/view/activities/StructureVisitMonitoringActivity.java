@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -282,13 +283,22 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         }
 
         if(location!=null){
-            requestData.setStructureId(structureData.getStructureId());
-            requestData.setIsSafetySignage(safetySignage);
-            requestData.setIsGuidelinesFollowed(guidelines);
-            requestData.setStatusRecordId(selectedStatusID);
-            requestData.setIssueRelated(selectedIssueID);
-            requestData.setIssueDescription(etIssuesDescription.getText().toString());
-        } else {
+            if (TextUtils.isEmpty(selectedStatusID)
+                    || TextUtils.isEmpty(selectedIssueID)
+                    || TextUtils.isEmpty(etIssuesDescription.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please, feel proper information.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            } else {
+                requestData.setStructureId(structureData.getStructureId());
+                requestData.setIsSafetySignage(safetySignage);
+                requestData.setIsGuidelinesFollowed(guidelines);
+                requestData.setStatusRecordId(selectedStatusID);
+                requestData.setIssueRelated(selectedIssueID);
+                requestData.setIssueDescription(etIssuesDescription.getText().toString());
+            }
+         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);

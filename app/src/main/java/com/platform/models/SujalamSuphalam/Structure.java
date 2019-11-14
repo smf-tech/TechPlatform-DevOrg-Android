@@ -3,7 +3,9 @@ package com.platform.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Structure {
+import java.io.Serializable;
+
+public class Structure implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
@@ -85,7 +87,7 @@ public class Structure {
     @SerializedName("lat")
     @Expose
     private double lat;
-    @SerializedName("long")
+    @SerializedName("log")
     @Expose
     private double log;
     @SerializedName("ff_id")

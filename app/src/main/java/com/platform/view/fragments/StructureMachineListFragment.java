@@ -79,8 +79,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             selectedDeployTalukaId;
     private int mouAction = 0;
     private boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm,
-            isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
+    public boolean isMachineAdd,isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
+            isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
+            isVillageFilter, isStructureAdd;
+
+    public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
+    public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +129,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
         for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
-            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
+            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
+                isMachineAdd = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
+                isStructureAdd = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
                 isMachineTerminate = true;
                 continue;
             } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_AVAILABLE_MACHINE)) {
@@ -233,8 +243,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //        } else {
 //            tvTalukaFilter.setEnabled(false);
 //        }
-        structureMachineListFragmentView.findViewById(R.id.fb_create)
-                .setOnClickListener(new View.OnClickListener() {
+        if (viewType == 1) {
+            if(isStructureAdd) {
+                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+            }
+        } else {
+            if(isMachineAdd) {
+                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+            }
+        }
+
+        structureMachineListFragmentView.findViewById(R.id.fb_create).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (viewType == 1) {

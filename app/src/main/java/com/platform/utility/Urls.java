@@ -139,5 +139,6 @@ public class Urls {
         public static final String STRUCTURE_COMPLETION = "api/sowStructure";
         public static final String COMMUNITY_MOBILISATION = "api/communityMobilisation";
         public static final String NON_UTILIZATION_URL = "api/machineNonUtilization/%1$s/%2$s/%3$s";
+        public static final String CATCHMENT_VILLAGES = "api/catchmentVillages";
     }
 }
