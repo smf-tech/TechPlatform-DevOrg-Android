@@ -221,7 +221,7 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
     public void onFailureListener(String requestID, String message) {
         ScrollView svMatrimonyFragment = matrimonyFragmentView.findViewById(R.id.sv_matrimony_fragment);
         svMatrimonyFragment.setVisibility(View.GONE);
-        showResponse(String.valueOf(R.string.msg_something_went_wrong));
+        showResponse(getResources().getString(R.string.msg_something_went_wrong));
     }
 
     @Override
@@ -461,9 +461,9 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
 
                     //-----------------------
                     if (TextUtils.isEmpty(strReason)) {
-                        Util.logger("Empty Reason", "Reason Can not be blank");
+                        Util.logger("Empty Reason", "Reason can not be blank");
                         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Reason Can not be blank",
+                                        .findViewById(android.R.id.content), "Reason can not be blank",
                                 Snackbar.LENGTH_LONG);
                     } else {
                     /*if (fragment instanceof TMUserLeavesApprovalFragment) {
