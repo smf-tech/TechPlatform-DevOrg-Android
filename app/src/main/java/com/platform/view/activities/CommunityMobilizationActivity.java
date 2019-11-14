@@ -478,7 +478,10 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));
+                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
+                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());//add string parameters
                 return params;
             }
 

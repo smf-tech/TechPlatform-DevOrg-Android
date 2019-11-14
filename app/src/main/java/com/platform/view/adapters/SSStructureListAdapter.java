@@ -98,10 +98,17 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         }
         holder.tvStructureCode.setText(ssDataList.get(position).getStructureCode());
         holder.tvStructureType.setText(ssDataList.get(position).getStructureType());
-        holder.tvWorkType.setText(ssDataList.get(position).getStructureType());
+        holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
         holder.tvStructureName.setText(ssDataList.get(position).getStructureStatus());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
 //        holder.tvContact.setText(ssDataList.get(position).get());
+
+//        if (ssDataList.get(position).getStructureStatusCode() == 115 && isVisitMonitoring) {
+//            holder.btSave.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.btSave.setVisibility(View.GONE);
+//        }
+
     }
 
     @Override

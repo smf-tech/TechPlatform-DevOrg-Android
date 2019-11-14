@@ -580,7 +580,6 @@ public class ContentManagementFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity(), "In Resume", Toast.LENGTH_LONG).show();
         if (expandableListAdapter != null) {
             expandableListAdapter.notifyDataSetChanged();
         }

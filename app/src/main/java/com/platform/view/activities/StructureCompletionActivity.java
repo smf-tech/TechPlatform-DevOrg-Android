@@ -317,6 +317,9 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
+                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());
                 return params;
             }
 

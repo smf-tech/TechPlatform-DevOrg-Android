@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -53,6 +55,7 @@ import com.platform.database.DatabaseManager;
 import com.platform.models.attendance.AttendaceData;
 import com.platform.models.home.Modules;
 import com.platform.models.user.UserInfo;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.ForceUpdateChecker;
@@ -69,7 +72,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,ContentManagementFragment.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener,View.OnClickListener,
+        ContentManagementFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -77,6 +81,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private boolean doubleBackToExitPressedOnce = false;
     private final String TAG = this.getClass().getSimpleName();
     private BroadcastReceiver mMessageReceiver;
+    BroadcastReceiver myReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         initMenuView();
         initBrodcastResiver();
         subscribedToFirebaseTopics();
+//        initBrodcastNetwork();
+//        myReceiver = new ConnectivityReceiver();
     }
+
+//    private void initBrodcastNetwork() {
+//        registerReceiver(myReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//    }
 
     private void initBrodcastResiver() {
         mMessageReceiver = new BroadcastReceiver() {
@@ -644,7 +655,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void onFragmentInteraction(String uri) {
 
     }
-
    /* @Override
     public void onFragmentInteraction(String uri) {
 

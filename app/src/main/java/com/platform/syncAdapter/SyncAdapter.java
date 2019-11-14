@@ -40,6 +40,7 @@ import com.platform.models.login.Login;
 import com.platform.models.pm.ProcessData;
 import com.platform.utility.Constants;
 import com.platform.utility.Urls;
+import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.StructurePripretionsActivity;
 import com.platform.view.activities.StructureVisitMonitoringActivity;
@@ -289,7 +290,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    private void submitData(StructureVisitMonitoringData requestData, int noImages) {
+    private void submitData(StructureVisitMonitoringData requestData, int imageCount) {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
 
@@ -327,8 +328,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                params.put("imageArraySize", String.valueOf(noImages));//add string parameters
-                return params;
+                params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
+                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
+                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());return params;
             }
 
             @Override
@@ -400,6 +403,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
+                params.put("orgId", Util.getUserObjectFromPref().getOrgId());
+                params.put("projectId", Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+                params.put("roleId", Util.getUserObjectFromPref().getRoleIds());
                 return params;
             }
 

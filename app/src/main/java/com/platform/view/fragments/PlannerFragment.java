@@ -239,8 +239,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             Util.showToast(getString(R.string.msg_no_network), this);
             setOfflineAttendance();
         }
-        // register connection status listener
-        Platform.getInstance().setConnectivityListener(this);
     }
 
     @Override
