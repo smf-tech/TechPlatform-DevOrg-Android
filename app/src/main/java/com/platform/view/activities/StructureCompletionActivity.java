@@ -119,23 +119,20 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         switch (view.getId()){
             case R.id.iv_structure1:
                 selecteIV = findViewById(R.id.iv_structure1);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
+
                 break;
             case R.id.iv_structure2:
                 selecteIV = findViewById(R.id.iv_structure2);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.iv_structure3:
                 selecteIV = findViewById(R.id.iv_structure3);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.iv_structure4:
                 selecteIV = findViewById(R.id.iv_structure4);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
@@ -175,7 +172,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-            showPictureDialog();
+//            showPictureDialog();
+            takePhotoFromCamera();
         }
     }
 
