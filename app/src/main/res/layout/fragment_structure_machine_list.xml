@@ -68,6 +68,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
         android:src="@android:drawable/ic_input_add"
         app:tint="@color/white"
         app:backgroundTint="@color/colorPrimary"

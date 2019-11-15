@@ -24,6 +24,11 @@
             android:layout_gravity="center"
             android:textColor="@color/text_lite_grey"
             android:layout_marginStart="@dimen/dimen_20dp"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/tv_toggle"
             android:layout_width="@dimen/dimen_80dp"
@@ -31,6 +36,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
+            android:visibility="gone"
             android:background="@drawable/ic_toggle_structure_view"/>
         <TextView
             android:id="@+id/tv_machine_view"

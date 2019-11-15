@@ -459,8 +459,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
-        };
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
@@ -517,10 +516,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                             talukaList.add(meetCountry);
                         }
                     }
-                    //get Village
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
-                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-
                 }
                 break;
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
