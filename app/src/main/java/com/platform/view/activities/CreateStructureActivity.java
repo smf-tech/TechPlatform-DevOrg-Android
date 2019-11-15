@@ -256,7 +256,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 if (isAllDataValid()) {
                     presenter.submitStructure(structureData);
                 }
-
                 break;
 
         }

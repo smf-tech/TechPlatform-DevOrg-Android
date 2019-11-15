@@ -119,19 +119,23 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         switch (view.getId()){
             case R.id.iv_structure1:
                 selecteIV = findViewById(R.id.iv_structure1);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.iv_structure2:
                 selecteIV = findViewById(R.id.iv_structure2);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.iv_structure3:
                 selecteIV = findViewById(R.id.iv_structure3);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.iv_structure4:
                 selecteIV = findViewById(R.id.iv_structure4);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
@@ -328,7 +332,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&

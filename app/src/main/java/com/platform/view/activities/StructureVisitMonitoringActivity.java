@@ -228,7 +228,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_structure:
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.et_status:
                 CustomSpinnerDialogClass csdStatus = new CustomSpinnerDialogClass(this, this,

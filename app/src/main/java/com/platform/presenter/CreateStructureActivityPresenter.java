@@ -10,6 +10,7 @@ import com.platform.BuildConfig;
 import com.platform.listeners.APIPresenterListener;
 import com.platform.models.SujalamSuphalam.MasterDataResponse;
 import com.platform.models.SujalamSuphalam.Structure;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.profile.JurisdictionLevelResponse;
 import com.platform.models.profile.OrganizationResponse;
 import com.platform.request.APIRequestCall;
@@ -60,8 +61,14 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(CREATE_STRUCTURE)) {
-                    MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
-                    mContext.get().closeCurrentActivity();
+                    CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
+                    if(commonResponse.getStatus()==200){
+                        mContext.get().onFailureListener(CREATE_STRUCTURE,commonResponse.getMessage());
+                        mContext.get().closeCurrentActivity();
+                    } else {
+                        mContext.get().onFailureListener(CREATE_STRUCTURE,commonResponse.getMessage());
+                    }
+
                 } else if (requestID.equalsIgnoreCase(GET_DISTRICT) ||
                         requestID.equalsIgnoreCase(GET_TALUKA) ||
                         requestID.equalsIgnoreCase(GET_VILLAGE)) {

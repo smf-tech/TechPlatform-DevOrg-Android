@@ -201,6 +201,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
                     SyncAdapterUtils.manualRefresh();
 
+                    Util.showToast("Structure will be prepared soon.",this);
+
+                    finish();
 //                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
 //                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
 //                            .getStructurePripretionDataDao().getAllStructure());
@@ -211,11 +214,13 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 break;
             case R.id.tv_structure_img1:
                 selectedIV = findViewById(R.id.tv_structure_img1);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.tv_structure_img2:
                 selectedIV = findViewById(R.id.tv_structure_img2);
-                onAddImageClick();
+//                onAddImageClick();
+                takePhotoFromCamera();
                 break;
             case R.id.toolbar_back_action:
                 finish();

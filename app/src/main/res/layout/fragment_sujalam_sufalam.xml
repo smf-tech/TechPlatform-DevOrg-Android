@@ -27,7 +27,8 @@
 
         <Switch
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_toggle"
@@ -36,7 +37,6 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
-            android:visibility="gone"
             android:background="@drawable/ic_toggle_structure_view"/>
         <TextView
             android:id="@+id/tv_machine_view"
