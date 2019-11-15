@@ -256,6 +256,10 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
                     SyncAdapterUtils.manualRefresh();
 
+                    Util.showToast("Structure visit is submitted successfully.",this);
+
+                    finish();
+
 //                    List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
 //                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
 //                            .getStructureVisitMonitoringDataDao().getAllStructure());

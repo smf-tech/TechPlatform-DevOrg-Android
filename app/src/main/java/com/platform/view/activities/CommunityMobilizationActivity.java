@@ -43,6 +43,7 @@ import com.platform.models.SujalamSuphalam.CatchmentVillagesData;
 import com.platform.models.SujalamSuphalam.CommunityMobilizationRequest;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CommunityMobilizationActivityPresenter;
@@ -463,7 +464,13 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(CommunityMobilizationActivity.this, jsonString, Toast.LENGTH_LONG).show();
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(commonResponse.getStatus()==200){
+                                Util.showToast(commonResponse.getMessage(),this);
+                                finish();
+                            } else {
+                                Util.showToast(commonResponse.getMessage(),this);
+                            }
                             Log.d("response :", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -611,7 +618,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         break;
                     }
                 }
-                etTask.setText(selectedActivity);
+                etTask.setText(selectedTask);
                 break;
             case "Select Village":
                 for (CustomSpinnerObject obj : villageList) {

@@ -109,6 +109,36 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 //            holder.btSave.setVisibility(View.GONE);
 //        }
 
+        if (isCommunityMobilization) {
+//            if (ssDataList.get(position).getStructureStatusCode() == 121) {
+//                holder.popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+//            } else {
+                holder.popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+//            }
+        } else {
+            holder.popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+        }
+        if (isVisitMonitoring) {
+            if (ssDataList.get(position).getStructureStatusCode() == 121) {
+                holder.popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
+            } else {
+                holder.popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
+            }
+        } else {
+            holder.popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
+        }
+        if (isStructureComplete) {
+            if (ssDataList.get(position).getStructureStatusCode() == 121) {
+                holder.popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+            } else {
+                holder.popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+            }
+        } else {
+            holder.popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+        }
+
+
+
     }
 
     @Override
@@ -153,16 +183,6 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.structure_popup_menu);
                     popup.show();
-
-                    if (isCommunityMobilization) {
-                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
-                    }
-                    if (isVisitMonitoring) {
-                        popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
-                    }
-                    if (isStructureComplete) {
-                        popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
-                    }
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

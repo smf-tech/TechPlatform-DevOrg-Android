@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -303,8 +304,14 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(StructureCompletionActivity.this, jsonString, Toast.LENGTH_LONG).show();
-                            Log.d("response -", jsonString);
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(commonResponse.getStatus()==200){
+                                Util.showToast(commonResponse.getMessage(),this);
+                                finish();
+                            } else {
+                                Util.showToast(commonResponse.getMessage(),this);
+                            }
+                              Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(StructureCompletionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
