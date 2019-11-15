@@ -439,7 +439,7 @@
     <string name="bank_account_no">Bank Account Number</string>
     <string name="confirm_account_no">Confirm Bank Account Number</string>
     <string name="account_image">Upload Image (Cancelled Cheque/Passbook front page)</string>
-    <string name="account_holder_name">Account Holder\'s NAme</string>
+    <string name="account_holder_name">Account Holder\'s Name</string>
     <string name="account_type">Account Type</string>
     <string name="operator_name">Machine Operator Name</string>
     <string name="operator_contact">Machine Operator Contact Number</string>
