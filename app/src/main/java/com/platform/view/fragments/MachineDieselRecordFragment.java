@@ -49,6 +49,7 @@ import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MachineDieselRecord;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
@@ -410,7 +411,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(responseOBJ.getStatus() == 200){
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                            }
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {

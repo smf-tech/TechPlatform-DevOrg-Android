@@ -359,7 +359,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         tlyTerminateReason.setVisibility(View.GONE);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         rvTaluka.setLayoutManager(layoutManager);
-                        MutiselectDialogAdapter mutiselectDialogAdapter = new MutiselectDialogAdapter(getActivity(), machineTalukaDeployList, false);
+                        MutiselectDialogAdapter mutiselectDialogAdapter = new MutiselectDialogAdapter(getActivity(),
+                                machineTalukaDeployList, false);
                         rvTaluka.setAdapter(mutiselectDialogAdapter);
                         rvTaluka.setVisibility(View.VISIBLE);
                         break;
