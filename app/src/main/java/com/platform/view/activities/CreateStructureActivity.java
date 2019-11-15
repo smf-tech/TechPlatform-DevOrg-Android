@@ -55,7 +55,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     private String selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka, selectedHostVillageId,
             selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureWorkTypeId,
-            selectedStructureWorkType,selectedStructureOwnerDepartmentId, selectedStructureOwnerDepartment,
+            selectedStructureWorkType, selectedStructureOwnerDepartmentId, selectedStructureOwnerDepartment,
             selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
     private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
     private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
@@ -178,6 +178,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_owner_department:
+                structureDepartmentList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
@@ -195,6 +196,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_sub_structure_owner_department:
+                structureSubDepartmentList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
@@ -212,6 +214,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_type:
+                structureTypeList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
@@ -229,6 +232,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_work_type:
+                structureWorkTypeList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("work_type"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
@@ -306,7 +310,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
             structureData.setNotaDetail(etNotaDetail.getText().toString());
             structureData.setStructureType(selectedStructureTypeId);
-            structureData.setStructureWorkType(selectedStructureWorkTypeId);
+            structureData.setWorkType(selectedStructureWorkTypeId);
             structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
             structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
             structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
@@ -336,9 +340,11 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etDistrict.setText(selectedDistrict);
                 //get Taluka
-                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                break;
+                if(!TextUtils.isEmpty(selectedDistrictId)){
+                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                }
+                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject obj : talukaList) {
                     if (obj.isSelected()) {
@@ -349,8 +355,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etTaluka.setText(selectedTaluka);
                 //get Taluka
-                presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
-                        Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                if(!TextUtils.isEmpty(selectedTalukaId)){
+                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
+                            Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                }
 
                 break;
             case "Select Host Village":
@@ -402,14 +410,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etStructureType.setText(selectedStructureType);
                 break;
-                case "Select Structure Work Type":
-                for (CustomSpinnerObject obj : structureTypeList) {
+            case "Select Structure Work Type":
+                for (CustomSpinnerObject obj : structureWorkTypeList) {
                     if (obj.isSelected()) {
                         selectedStructureWorkType = obj.getName();
                         selectedStructureWorkTypeId = obj.get_id();
                     }
                 }
-                etStructureType.setText(selectedStructureType);
+                etStructureWorkType.setText(selectedStructureWorkType);
                 break;
         }
     }
@@ -459,7 +467,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {

@@ -126,7 +126,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
-        //DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
         sujalamSuphalamFragmentPresenter.getSSMasterData();
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -239,6 +238,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 //                e.printStackTrace();
 //            }
             //String ssMasterDataList = json.toString();
+            DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
             Gson gson = new GsonBuilder().create();
             String ssMasterDataList = gson.toJson(masterDataResponse.getData());
             Date date = Calendar.getInstance().getTime();
