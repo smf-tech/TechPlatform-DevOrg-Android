@@ -73,7 +73,7 @@ import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
-        ContentManagementFragment.OnFragmentInteractionListener {
+        ContentManagementFragment.OnFragmentInteractionListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -655,6 +655,16 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected) {
+            Util.showToast("Connected",this);
+        } else {
+            Util.showToast("Not Connected",this);
+        }
+
+    }
+
    /* @Override
     public void onFragmentInteraction(String uri) {
 
@@ -683,6 +693,4 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Log.e(TAG, e.getMessage());
         }
     }
-
-
 }

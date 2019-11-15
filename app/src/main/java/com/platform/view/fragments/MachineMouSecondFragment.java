@@ -140,7 +140,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
         for(int i = 0; i<masterDataList.size(); i++) {
             if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
-                    getField().equals("ownedBy")) {
+                    getField().equals("ownerType")) {
                 for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
