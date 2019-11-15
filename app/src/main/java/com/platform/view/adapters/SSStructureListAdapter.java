@@ -253,6 +253,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 Intent intent = new Intent(activity, StructurePripretionsActivity.class);
                 intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                 activity.startActivity(intent);
+                dialog.dismiss();
             });
         }
 

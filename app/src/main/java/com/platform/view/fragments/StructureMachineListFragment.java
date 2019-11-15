@@ -506,8 +506,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     ssStructureListData.add(structureData);
                 }
             }
-//                rvDataList.setAdapter(ssStructureListAdapter);
             filteredStructureListData.addAll(ssStructureListData);
+//            rvDataList.setAdapter(ssStructureListAdapter);
             ssStructureListAdapter.notifyDataSetChanged();
 //            }
         }
