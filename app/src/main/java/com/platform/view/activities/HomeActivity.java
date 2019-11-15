@@ -46,9 +46,11 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.dao.UserAttendanceDao;
 import com.platform.database.DatabaseManager;
@@ -81,6 +83,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private boolean doubleBackToExitPressedOnce = false;
     private final String TAG = this.getClass().getSimpleName();
     private BroadcastReceiver mMessageReceiver;
+    private BroadcastReceiver connectionReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         initMenuView();
         initBrodcastResiver();
         subscribedToFirebaseTopics();
+        initConnectivityReceiver();
+    }
+
+    private void initConnectivityReceiver() {
+        connectionReceiver = new ConnectivityReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        Platform.getInstance().registerReceiver(connectionReceiver, filter);
     }
 
     private void initBrodcastResiver() {
@@ -313,6 +324,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onResume() {
         super.onResume();
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
     }
 
@@ -639,10 +651,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
                 break;
 
-            case R.id.home_sync_icon:
-                showUpdateDataPopup();
-                AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
-                break;
+//            case R.id.home_sync_icon:
+//                showUpdateDataPopup();
+//                AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
+//                break;
         }
     }
 
@@ -657,18 +669,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
+        ImageView sync = findViewById(R.id.home_sync_icon);
         if(isConnected) {
-            Util.showToast("Connected",this);
+            sync.setImageResource(R.drawable.ic_internet_connected);
+//            Util.snackBarToShowMsg(getWindow().getDecorView()
+//                            .findViewById(android.R.id.content), "Internet connection is available.",
+//                    Snackbar.LENGTH_LONG);
         } else {
-            Util.showToast("Not Connected",this);
+            sync.setImageResource(R.drawable.ic_internet_not_connected);
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No internet connection.",
+                    Snackbar.LENGTH_LONG);
         }
-
     }
-
-   /* @Override
-    public void onFragmentInteraction(String uri) {
-
-    }*/
 
     public interface OnSyncClicked {
         void onSyncButtonClicked();

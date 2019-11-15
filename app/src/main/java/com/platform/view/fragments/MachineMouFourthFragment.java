@@ -46,6 +46,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
@@ -58,6 +59,7 @@ import com.platform.presenter.MachineMouFourthFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.MachineMouActivity;
@@ -85,7 +87,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnFourthPartMou, btnPreviousMou;;
+    private Button btnFourthPartMou, btnPreviousMou;
     private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
             etAppInstalled;
@@ -99,7 +101,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private Uri finalUri;
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineMou";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -357,6 +358,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void uploadData(){
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -396,7 +398,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&

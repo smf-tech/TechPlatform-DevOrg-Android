@@ -41,6 +41,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.SiltTransportRecord;
@@ -49,6 +50,7 @@ import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.SiltTransportationRecordFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.soundcloud.android.crop.Crop;
@@ -82,7 +84,6 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/siltDetails";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
@@ -304,7 +305,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     private void uploadData(SiltTransportRecord siltTransportRecord){
-
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_SILT_TRANSPORT_RECORD_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -339,7 +340,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&
