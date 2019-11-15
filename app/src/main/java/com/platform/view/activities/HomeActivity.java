@@ -72,7 +72,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ContentManagementFragment.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
+        ContentManagementFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;

@@ -120,16 +120,14 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
-        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+//        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
+//                getSSMasterDatabaseDao().getSSMasterData();
 
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
         sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
         //DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
-        if(ssMasterDatabaseList.size() == 0) {
-            sujalamSuphalamFragmentPresenter.getSSMasterData();
-        }
+        sujalamSuphalamFragmentPresenter.getSSMasterData();
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
@@ -234,7 +232,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         if(masterDataResponse.getStatus()==1000){
             Util.logOutUser(getActivity());
         } else {
-            JSONObject json = new JSONObject();
+            //JSONObject json = new JSONObject();
 //            try {
 //                json.put("masterData", masterDataResponse.getData());
 //            } catch (JSONException e) {

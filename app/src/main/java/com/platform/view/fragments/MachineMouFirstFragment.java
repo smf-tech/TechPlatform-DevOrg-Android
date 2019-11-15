@@ -261,6 +261,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             etMachineTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
 
         if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
