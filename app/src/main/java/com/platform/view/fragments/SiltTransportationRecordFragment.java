@@ -54,6 +54,7 @@ import com.platform.utility.Permissions;
 import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
+import com.platform.view.activities.SSActionsActivity;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
@@ -78,7 +79,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private View siltTransportationRecordFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private SiltTransportationRecordFragmentPresenter siltTransportationRecordFragmentPresenter;
+    //private SiltTransportationRecordFragmentPresenter siltTransportationRecordFragmentPresenter;
     String machineId, currentStructureId;
     private ImageView imgRegisterOne, imgRegisterTwo, imgRegisterThree, clickedImageView;
     private Uri outputUri;
@@ -116,7 +117,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private void init() {
         progressBarLayout = siltTransportationRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = siltTransportationRecordFragmentView.findViewById(R.id.pb_profile_act);
-        siltTransportationRecordFragmentPresenter = new SiltTransportationRecordFragmentPresenter(this);
+        //siltTransportationRecordFragmentPresenter = new SiltTransportationRecordFragmentPresenter(this);
         etDate = siltTransportationRecordFragmentView.findViewById(R.id.et_date);
         etDate.setOnClickListener(this);
         etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tractor_trips_count);
@@ -131,6 +132,9 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         imgRegisterThree.setOnClickListener(this);
         btnSubmit = siltTransportationRecordFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -141,10 +145,10 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     @Override
     public void onDetach() {
         super.onDetach();
-        if (siltTransportationRecordFragmentPresenter != null) {
-            siltTransportationRecordFragmentPresenter.clearData();
-            siltTransportationRecordFragmentPresenter = null;
-        }
+//        if (siltTransportationRecordFragmentPresenter != null) {
+//            siltTransportationRecordFragmentPresenter.clearData();
+//            siltTransportationRecordFragmentPresenter = null;
+//        }
     }
 
     @Override
@@ -166,17 +170,21 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                if(isAllDataValid()) {
-                    SiltTransportRecord siltTransportRecord = new SiltTransportRecord();
-                    siltTransportRecord.setStructureId(currentStructureId);
-                    siltTransportRecord.setMachineId(machineId);
-                    siltTransportRecord.setSiltTransportDate(Util.dateTimeToTimeStamp(etDate.getText().toString(),
-                            "00:00"));
-                    siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
-                    siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
-                    siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
-                    siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
-                    uploadData(siltTransportRecord);
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        SiltTransportRecord siltTransportRecord = new SiltTransportRecord();
+                        siltTransportRecord.setStructureId(currentStructureId);
+                        siltTransportRecord.setMachineId(machineId);
+                        siltTransportRecord.setSiltTransportDate(Util.dateTimeToTimeStamp(etDate.getText().toString(),
+                                "00:00"));
+                        siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
+                        siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
+                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
+                        uploadData(siltTransportRecord);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
         }
@@ -321,6 +329,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                                 Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
                             }
                             Log.d("response -",jsonString);
+                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -394,6 +403,15 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    private void backToMachineList(){
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
     }
 
     @Override

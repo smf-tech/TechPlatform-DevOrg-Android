@@ -119,6 +119,9 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                 }
             }
         }
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
         showDialog();
     }
 
@@ -207,8 +210,12 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.btn_submit :
-                if (isAllDataValid()) {
-                    submitShiftingForm();
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        submitShiftingForm();
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
         }

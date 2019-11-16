@@ -54,7 +54,6 @@ import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
-import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineMouFourthFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
@@ -71,10 +70,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -88,7 +85,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnFourthPartMou, btnPreviousMou;
-    private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
+    //private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
             etAppInstalled;
     private ImageView imgLicense;
@@ -151,7 +148,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
-        machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
+        //machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
     }
 
     private void setMachineFourthData() {
@@ -183,7 +180,11 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         }
 
         //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        uploadData();
+        if(Util.isConnected(getActivity())) {
+            uploadData();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -194,18 +195,22 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineMouFourthFragmentPresenter != null) {
-            machineMouFourthFragmentPresenter.clearData();
-            machineMouFourthFragmentPresenter = null;
-        }
+//        if (machineMouFourthFragmentPresenter != null) {
+//            machineMouFourthFragmentPresenter.clearData();
+//            machineMouFourthFragmentPresenter = null;
+//        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_fourth_part_mou:
-                if(isAllDataValid()) {
-                    setMachineFourthData();
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        setMachineFourthData();
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_previous_mou:

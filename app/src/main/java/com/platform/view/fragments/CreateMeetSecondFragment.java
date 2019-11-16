@@ -113,7 +113,8 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         rvMeetReference.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvMeetReference.setAdapter(meetReferencesListAdapter);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
-        createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+        createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).
+                getMatrimonyMeet().getLocation()
                 .getCountry(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
                 .getState(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
                 .getCity());
