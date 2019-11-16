@@ -61,6 +61,9 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureId")
     @Expose
     private String deployedStrutureId;
+    @SerializedName("deployedStrutureCode")
+    @Expose
+    private String deployedStrutureCode;
     @SerializedName("updatedDate")
     @Expose
     private String lastUpdatedTime;
@@ -246,6 +249,15 @@ public class MachineData  implements Serializable {
     public void setDeployedStrutureId(String deployedStrutureId) {
         this.deployedStrutureId = deployedStrutureId;
     }
+
+    public String getDeployedStrutureCode() {
+        return deployedStrutureCode;
+    }
+
+    public void setDeployedStrutureCode(String deployedStrutureCode) {
+        this.deployedStrutureCode = deployedStrutureCode;
+    }
+
     public String getProviderName() {
         return providerName;
     }

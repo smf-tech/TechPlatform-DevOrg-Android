@@ -454,8 +454,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 break;
             case R.id.btn_eligible:
                 if(Util.isConnected(getActivity())) {
-                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
-                                    .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
+                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
                             Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -463,8 +464,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 break;
             case R.id.btn_not_eligible:
                 if(Util.isConnected(getActivity())) {
-                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
-                                    .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
+                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
                             Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());

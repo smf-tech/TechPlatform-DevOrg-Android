@@ -57,11 +57,13 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         holder.tvProvider.setText(machineData.getProviderName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
+        holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvLastUpdatedTime;
+        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvStructureCode,
+                tvLastUpdatedTime;
         ImageView btnPopupMenu;
         RelativeLayout rlMachine;
         PopupMenu popup;
@@ -74,6 +76,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
 
