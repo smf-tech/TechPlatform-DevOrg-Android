@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -106,7 +107,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
-    TextView tv_text;
+    TextView tv_text,tv_machine_code;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String imageFilePath;
@@ -119,14 +120,15 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int state_halt = 111;
     private int currentState = 0;
     private RequestOptions requestOptions;
-
+private Toolbar toolbar;
+private ImageView toolbar_edit_action;
     private void updateStatusAndProceed(int currentState) {
         Log.e("currentstate--3", "----"+currentState);
         if (currentState == state_start) {
             //editor.putInt("State", state_pause);
             startService();
             buttonPauseService.setVisibility(View.VISIBLE);
-            buttonPauseService.setText("Pause");
+            buttonPauseService.setText(getResources().getString(R.string.meter_pause));
             btnStartService.setVisibility(View.GONE);
             et_emeter_read.setText("");
             //-----------
@@ -137,7 +139,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
-            buttonPauseService.setText("Resume");
+            buttonPauseService.setText(getResources().getString(R.string.meter_resume));
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
@@ -168,7 +170,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
             buttonPauseService.setVisibility(View.VISIBLE);
             btnStartService.setVisibility(View.GONE);
-            buttonPauseService.setText("Resume");
+            buttonPauseService.setText(getResources().getString(R.string.meter_resume));
         } else if (currentState == state_stop) {
 
             buttonPauseService.setVisibility(View.GONE);
@@ -185,8 +187,10 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_operator_meter_reading);
-        requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
+        setContentView(R.layout.activity_operator_meter_reading_new);
+        toolbar =  findViewById(R.id.operator_toolbar);
+        toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
         GetLocationofOperator();
@@ -209,11 +213,15 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         buttonPauseService = findViewById(R.id.buttonPauseService);
         buttonHaltService = findViewById(R.id.buttonHaltService);
         tv_text = findViewById(R.id.tv_text);
+        tv_machine_code = findViewById(R.id.tv_machine_code);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
         img_start_meter = findViewById(R.id.img_start_meter);
         img_end_meter = findViewById(R.id.img_end_meter);
 
+        if (!preferences.getString("machine_id", "").equalsIgnoreCase("")){
+            tv_machine_code.setText(preferences.getString("machine_id", ""));
+        }
         clearDataForNewDate();
         if (preferences.getInt("State", 0) == 0) {
             currentState = state_stop;
@@ -247,6 +255,32 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             }
         });
         buttonHaltService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetLocationofOperator();
+                if (currentState != state_stop) {
+                    Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                }else {
+                    updateStatusAndProceed(state_halt);
+                    clearReadingImages();
+                    /*if (currentState==state_start){
+                        editor.putInt("State", state_pause);
+                        editor.apply();
+                        updateStatusAndProceed(state_pause);
+                        updateStatusAndProceed(state_halt);
+                        clearReadingImages();
+                    }else if (currentState==state_pause){
+                        *//*editor.putInt("State", state_pause);
+                        editor.apply();
+                        updateStatusAndProceed(state_pause);*//*
+                        updateStatusAndProceed(state_halt);
+                        clearReadingImages();
+                    }*/
+                }
+
+            }
+        });
+        toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetLocationofOperator();
@@ -841,6 +875,9 @@ public String showReadingDialog(final Activity context, int pos){
 
     public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
         machine_id = operatorMachineData.getMachine_id();
+        tv_machine_code.setText(machine_id);
+        editor.putString("machine_id",machine_id);
+        editor.apply();
     }
 
 

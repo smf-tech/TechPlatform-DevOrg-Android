@@ -466,6 +466,11 @@
     <string name="release_machine_alert_message">Are you sure you want to release this machine?</string>
     <string name="error_confirm_account_no">Please confirm your bank account number.</string>
     <string name="provider_name_hint">Provider Name</string>
+    <string name="meter_start">प्रारंभ करा</string>
+    <string name="meter_stop">बंद करा</string>
+    <string name="meter_pause">ब्रेक साठी थांबा</string>
+    <string name="meter_resume">पुन्हा सुरू करा</string>
+    <string name="machine_meter_reading">मशीन मीटर रीडिंग</string>
 
 
 </resources>
