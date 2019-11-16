@@ -261,16 +261,19 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             etMachineTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
-
-        if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
-            etMachineTaluka.setOnClickListener(this);
-            if(etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length()>0) {
-                UserInfo userInfo = Util.getUserObjectFromPref();
-                machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                        "5dc3f0c75dda7604a85b7b58",
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+        if(Util.isConnected(getActivity())) {
+            if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
+                etMachineTaluka.setOnClickListener(this);
+                if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
+                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                            "5dc3f0c75dda7604a85b7b58", Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                }
             }
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -369,7 +372,11 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 (etProviderName.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
-        machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
+        if(Util.isConnected(getActivity())) {
+            machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -434,22 +441,36 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         switch (view.getId()) {
             case R.id.btn_first_part_mou:
                 if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
-                    if(isAllDataValid()) {
-                        setCreateMachineData();
+                    if(Util.isConnected(getActivity())) {
+                        if (isAllDataValid()) {
+                            setCreateMachineData();
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                     }
                 } else {
                     ((MachineMouActivity) getActivity()).openFragment("MachineMouSecondFragment");
                 }
                 break;
             case R.id.btn_eligible:
-                machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
-                        .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
-                        Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                if(Util.isConnected(getActivity())) {
+                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
+                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                            Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
             case R.id.btn_not_eligible:
-                machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity) getActivity()).getMachineDetailData()
-                        .getMachine().getId(), ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
-                        Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                if(Util.isConnected(getActivity())) {
+                    machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
+                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
+                            Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
             case R.id.et_owner_type:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,

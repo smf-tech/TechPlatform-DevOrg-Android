@@ -43,6 +43,7 @@ import com.platform.models.SujalamSuphalam.CatchmentVillagesData;
 import com.platform.models.SujalamSuphalam.CommunityMobilizationRequest;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.common.CustomSpinnerObject;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.models.profile.JurisdictionLocation;
 import com.platform.presenter.CommunityMobilizationActivityPresenter;
@@ -88,10 +89,11 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     private RelativeLayout progressBar;
     private CommunityMobilizationActivityPresenter presenter;
 
-    String selectedActivity, selectedActivityID, selectedTask, selectedTaskID, selectedVillage, selectedVillageID;
+    String selectedActivity, selectedActivityID, selectedGander, selectedTask, selectedTaskID, selectedVillage, selectedVillageID;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> taskList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> genderList = new ArrayList<>();
     CustomSpinnerDialogClass csdTask;
 
     private Uri outputUri;
@@ -125,6 +127,16 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             statusList.add(obj);
         }
 
+        CustomSpinnerObject male = new CustomSpinnerObject();
+        male.set_id("1");
+        male.setName("Male");
+        genderList.add(male);
+        CustomSpinnerObject female = new CustomSpinnerObject();
+        female.set_id("2");
+        female.setName("Female");
+        genderList.add(female);
+
+
         csdTask = new CustomSpinnerDialogClass(this, this,
                 "Tasks", taskList, false);
 
@@ -133,7 +145,6 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     }
 
     private void initView() {
-
 
         etActivity = findViewById(R.id.et_activity);
         etTask = findViewById(R.id.et_tasks);
@@ -194,6 +205,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         etA1MeetingDate.setOnClickListener(this);
         etA2Date.setOnClickListener(this);
         etA3DateOfFormation.setOnClickListener(this);
+        etA3Gender.setOnClickListener(this);
         etA4DateOfTraining.setOnClickListener(this);
         etA5Date.setOnClickListener(this);
         etA1VillageName.setOnClickListener(this);
@@ -239,6 +251,13 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 break;
             case R.id.et_a5_date:
                 Util.showDateDialog(this, etA5Date);
+                break;
+            case R.id.et_a3_gender:
+                CustomSpinnerDialogClass csdGander = new CustomSpinnerDialogClass(this, this,
+                        "Select Gender", genderList, false);
+                csdGander.show();
+                csdGander.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_a1_village_name:
                 selecteETVillage = etA1VillageName;
@@ -306,7 +325,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 || TextUtils.isEmpty(selectedActivity)
                 || TextUtils.isEmpty(selectedTask)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please, feel proper information.",
+                            .findViewById(android.R.id.content), "Please fill proper information.",
                     Snackbar.LENGTH_LONG);
             return false;
         } else {
@@ -327,7 +346,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         || TextUtils.isEmpty(etA1NameOfOopSarpanch.getText().toString())
                         || TextUtils.isEmpty(etA1ContactOfOopSarpanch.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                                    .findViewById(android.R.id.content), "Please fill proper information.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 } else {
@@ -342,7 +361,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 }
                 if (imageCount == 0) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, click images of structure.",
+                                    .findViewById(android.R.id.content), "Please click images of structure.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 }
@@ -353,10 +372,9 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 if (TextUtils.isEmpty(selectedVillageID)
                         || TextUtils.isEmpty(etA2GpName.getText().toString())
                         || TextUtils.isEmpty(etA2Date.getText().toString())
-                        || TextUtils.isEmpty(etA2NoOfParticipant.getText().toString())
-                        || TextUtils.isEmpty(etA1MeetingDate.getText().toString())) {
+                        || TextUtils.isEmpty(etA2NoOfParticipant.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                                    .findViewById(android.R.id.content), "Please fill proper information.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 } else {
@@ -364,7 +382,6 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                     requestData.setGrampanchayatName(etA2GpName.getText().toString());
                     requestData.setDate(etA2Date.getText().toString());
                     requestData.setNoParticipant(etA2NoOfParticipant.getText().toString());
-                    requestData.setDate(etA1MeetingDate.getText().toString());
                 }
                 if (imageCount == 0) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
@@ -384,7 +401,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         || TextUtils.isEmpty(etA3Occupation.getText().toString())
                         || TextUtils.isEmpty(etA3DateOfFormation.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                                    .findViewById(android.R.id.content), "Please fill proper information.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 } else {
@@ -404,7 +421,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         || TextUtils.isEmpty(etA4NameOfParticipant.getText().toString())
                         || TextUtils.isEmpty(etA4DurationInDays.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                                    .findViewById(android.R.id.content), "Please fill proper information.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 } else {
@@ -429,7 +446,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         || TextUtils.isEmpty(etA5PhoneNoOfFarmers.getText().toString())
                         || TextUtils.isEmpty(etA5FarmerLandHolding.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please, feel proper information.",
+                                    .findViewById(android.R.id.content), "Please fill proper information.",
                             Snackbar.LENGTH_LONG);
                     return false;
                 } else {
@@ -463,7 +480,13 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(CommunityMobilizationActivity.this, jsonString, Toast.LENGTH_LONG).show();
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(commonResponse.getStatus()==200){
+                                Util.showToast(commonResponse.getMessage(),this);
+                                finish();
+                            } else {
+                                Util.showToast(commonResponse.getMessage(),this);
+                            }
                             Log.d("response :", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -490,7 +513,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&
@@ -611,7 +634,17 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         break;
                     }
                 }
-                etTask.setText(selectedActivity);
+                etTask.setText(selectedTask);
+                break;
+            case "Select Gender":
+                for (CustomSpinnerObject obj : genderList) {
+                    if (obj.isSelected()) {
+                        selectedGander = obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etA3Gender.setText(selectedGander);
                 break;
             case "Select Village":
                 for (CustomSpinnerObject obj : villageList) {
@@ -621,7 +654,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                         break;
                     }
                 }
-                selecteETVillage.setText(selectedActivity);
+                selecteETVillage.setText(selectedVillage);
                 break;
         }
     }

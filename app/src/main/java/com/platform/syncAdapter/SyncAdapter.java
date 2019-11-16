@@ -88,7 +88,6 @@ import static com.platform.utility.Util.getUserObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    private String upload_URL = "http://13.235.124.3/api/machineWorkLog";
     private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
 
@@ -301,6 +300,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 // operator record sync
 //api call to upload record -
 private void uploadImage(String receivedImage) {
+
+    final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
+
     List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
     if (list.size()>0){
         Log.e("sync--", "---" + new Gson().toJson(list.get(0)));
@@ -348,7 +350,7 @@ private void uploadImage(String receivedImage) {
         public Map<String, String> getHeaders() throws AuthFailureError {
             Map<String, String> headers = new HashMap<>();
             headers.put("Accept", "application/json, text/plain, */*");
-            headers.put("Content-Type", "application/json;charset=UTF-8");
+            headers.put("Content-Type", getBodyContentType());
 
             Login loginObj = getLoginObjectFromPref();
             if (loginObj != null && loginObj.getLoginData() != null &&
@@ -463,7 +465,7 @@ private void uploadImage(String receivedImage) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&
@@ -559,7 +561,7 @@ private void uploadImage(String receivedImage) {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&

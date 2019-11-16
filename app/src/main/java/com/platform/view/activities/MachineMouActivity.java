@@ -25,6 +25,7 @@ import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.presenter.MachineMouActivityPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 import com.platform.view.fragments.MachineMouFirstFragment;
 import com.platform.view.fragments.MachineMouFourthFragment;
 import com.platform.view.fragments.MachineMouSecondFragment;
@@ -74,7 +75,11 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                     toolbar_title.setText(R.string.machine_mou_form);
                     machineId = getIntent().getStringExtra("machineId");
                     statusCode = getIntent().getIntExtra("statusCode",0);
-                    machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+                    if(Util.isConnected(this)) {
+                        machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    }
                 }
             }
         }

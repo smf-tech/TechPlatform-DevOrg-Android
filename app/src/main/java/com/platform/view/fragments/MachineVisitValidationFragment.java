@@ -43,15 +43,18 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursAPIResponse;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.presenter.MachineVisitValidationFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.SSActionsActivity;
@@ -107,7 +110,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private Uri finalUri;
     private final String TAG = MachineVisitValidationFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineVisit";
     private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
@@ -174,6 +176,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             location = gpsTracker.getLocation();
+        }
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
     }
 
@@ -312,6 +317,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     }
 
     private void uploadImage(){
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_VISIT_VALIDATION_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -319,7 +325,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(responseOBJ.getStatus() == 200){
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                            }
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
@@ -351,7 +362,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&
@@ -516,8 +527,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                uploadImage();
-                //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                if(Util.isConnected(getActivity())) {
+                    uploadImage();
+                    //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
         }
     }

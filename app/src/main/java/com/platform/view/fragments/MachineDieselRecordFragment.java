@@ -43,17 +43,20 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MachineDieselRecord;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.presenter.MachineDieselRecordFragmentPresenter;
 import com.platform.presenter.MachineShiftingFormFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.SSActionsActivity;
@@ -96,13 +99,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     String machineId, currentStructureId;
     private EditText etMachineCode, etStructureCode, etDieselQuantity;
     private Button btnAdd, btnSubmit;
-    private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
+    //private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
     private RecyclerView rvDieselRecords;
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
     private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
-    private int selectedMonth;
     SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
     SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
     SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
@@ -111,8 +113,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/dieselRecord";
-    private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int dieselImageCount = 0, registerImageCount = 0;
     private String imageType, selectedDate;
@@ -144,7 +144,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private void init() {
         progressBarLayout = machineDieselRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineDieselRecordFragmentView.findViewById(R.id.pb_profile_act);
-        machineDieselRecordFragmentPresenter = new MachineDieselRecordFragmentPresenter(this);
+        //machineDieselRecordFragmentPresenter = new MachineDieselRecordFragmentPresenter(this);
         ivCalendarMode = machineDieselRecordFragmentView.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = machineDieselRecordFragmentView.findViewById(R.id.calendarView);
@@ -177,6 +177,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -187,10 +190,10 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineDieselRecordFragmentPresenter != null) {
-            machineDieselRecordFragmentPresenter.clearData();
-            machineDieselRecordFragmentPresenter = null;
-        }
+//        if (machineDieselRecordFragmentPresenter != null) {
+//            machineDieselRecordFragmentPresenter.clearData();
+//            machineDieselRecordFragmentPresenter = null;
+//        }
     }
 
     @Override
@@ -216,8 +219,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                if(isAllDataValid()) {
-                    uploadImage();
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        uploadData();
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_add:
@@ -400,7 +407,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         getActivity().startActivity(intent);
     }
 
-    private void uploadImage(){
+    private void uploadData(){
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_DIESEL_RECORD_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -408,7 +416,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(responseOBJ.getStatus() == 200){
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                            }
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
@@ -438,7 +451,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&

@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +28,7 @@ import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
-import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineNonUtilizationFragmentPresenter;
-import com.platform.presenter.SiltTransportationRecordFragmentPresenter;
 import com.platform.utility.Util;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;

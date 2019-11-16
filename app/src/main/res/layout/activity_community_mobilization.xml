@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:hint="No of Participant"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -171,7 +171,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Contact of Sarpanch"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="number"
+                        android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Name of OopSarpanch-->
@@ -205,7 +206,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Contact of OopSarpanch"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="number"
+                        android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -263,7 +265,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="GP Name"
+                        android:hint="Date"
                         android:focusable="false"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -281,7 +283,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="No of Participant"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -289,7 +292,14 @@
                     android:layout_width="@dimen/dimen_160dp"
                     android:layout_height="@dimen/dimen_160dp"
                     android:layout_gravity="center"
+                    android:layout_margin="@dimen/dimen_05dp"
                     android:src="@drawable/ic_add_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Photos upload"/>
 
             </LinearLayout>
 
@@ -346,7 +356,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Gender"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:focusable="false"
+                        android:longClickable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Phone no of task force -->
@@ -362,7 +374,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone no of task force"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Education-->
@@ -583,7 +597,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone number of the farmers"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Farmer's land holding (In Acres) - Category Options-->

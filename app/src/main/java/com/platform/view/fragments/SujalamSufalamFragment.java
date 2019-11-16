@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.platform.Platform;
@@ -39,16 +38,9 @@ import com.platform.presenter.SujalamSuphalamFragmentPresenter;
 import com.platform.utility.AppEvents;
 import com.platform.utility.Constants;
 import com.platform.utility.Util;
-import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.HomeActivity;
-import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.SSAnalyticsAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -120,15 +112,16 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
         machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
-        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+//        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
+//                getSSMasterDatabaseDao().getSSMasterData();
 
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
-        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
-        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
-        //DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
-        if(ssMasterDatabaseList.size() == 0) {
+        if(Util.isConnected(getActivity())) {
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
             sujalamSuphalamFragmentPresenter.getSSMasterData();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -234,13 +227,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         if(masterDataResponse.getStatus()==1000){
             Util.logOutUser(getActivity());
         } else {
-            JSONObject json = new JSONObject();
-//            try {
-//                json.put("masterData", masterDataResponse.getData());
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-            //String ssMasterDataList = json.toString();
+            DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().deleteSSMasterData();
             Gson gson = new GsonBuilder().create();
             String ssMasterDataList = gson.toJson(masterDataResponse.getData());
             Date date = Calendar.getInstance().getTime();

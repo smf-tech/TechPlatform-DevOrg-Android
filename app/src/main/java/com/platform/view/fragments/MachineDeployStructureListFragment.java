@@ -132,61 +132,46 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             }
         }
         machineDeployStructureListFragmentPresenter = new MachineDeployStructureListFragmentPresenter(this);
-//        if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)){
-//            tvTalukaFilter.setOnClickListener(this);
-//            if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {
-//                UserInfo userInfo = Util.getUserObjectFromPref();
-//                machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-//                        "5c4ab05cd503a372d0391467",
-//                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-//            }
-//        }
         rvStructureList = machineDeployStructureListFragmentView.findViewById(R.id.rv_structure_list);
         rvStructureList.setLayoutManager(new LinearLayoutManager(getActivity()));
         structureListAdapter = new StructureListAdapter(getActivity(), this, filteredStructureListData, type);
         rvStructureList.setAdapter(structureListAdapter);
-
-        if(type.equalsIgnoreCase("deployMachine")) {
-            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineDeployableStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineDeployableStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                        "machineDeployableStructures", "");
+        if(Util.isConnected(getActivity())) {
+            if (type.equalsIgnoreCase("deployMachine")) {
+                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            "machineDeployableStructures", "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            "machineDeployableStructures", "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                    machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                            "machineDeployableStructures", "");
+                }
+            } else if (type.equalsIgnoreCase("shiftMachine")) {
+                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            "machineShiftStructures", "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            "machineShiftStructures", "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                    machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                            "machineShiftStructures", "");
+                }
             }
-        } else if(type.equalsIgnoreCase("shiftMachine")) {
-            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineShiftStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineShiftStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                        "machineShiftStructures", "");
-            }
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
 
-//        if(type.equalsIgnoreCase("deployMachine")) {
-//            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-//                    "machineDeployableStructures", "");
-//        } else if(type.equalsIgnoreCase("shiftMachine")) {
-//            machineDeployStructureListFragmentPresenter.getDeployableStructuresList("5c669d13c7982d31cc6b86cd",
-//                    "5c66a468d42f283b440013e3","5c66a588d42f283b44001447",
-//                    "machineShiftStructures", currentStructureId);
-//        }
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
         }
@@ -399,45 +384,45 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.tv_taluka_filter){
-//            if(tvDistrictFilter.getText()!= null && tvDistrictFilter.getText().length()>0) {
-//                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(), this, "Select Taluka", machineTalukaList,
-//                        false);
-//                cddTaluka.show();
-//                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT);
-//            } else {
-//                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                                .findViewById(android.R.id.content), "Your District is not available in your profile." +
-//                                "Please update your profile.",
-//                        Snackbar.LENGTH_LONG);
-//            }
-            if(tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length()>0) {
-                UserInfo userInfo = Util.getUserObjectFromPref();
-                machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                        "5dc3f0c75dda7604a85b7b58",
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            if(Util.isConnected(getActivity())) {
+                if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                            "5dc3f0c75dda7604a85b7b58",
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Your District is not available in your profile." +
+                                    "Please update your profile.",
+                            Snackbar.LENGTH_LONG);
+                }
             } else {
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Your District is not available in your profile." +
-                                "Please update your profile.",
-                        Snackbar.LENGTH_LONG);
-            }
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
         } else if(view.getId() == R.id.tv_district_filter) {
-            if(tvStateFilter.getText() != null && tvStateFilter.getText().toString().length()>0) {
-                UserInfo userInfo = Util.getUserObjectFromPref();
-                machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                        "5dc3f0c75dda7604a85b7b58",
-                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+            if(Util.isConnected(getActivity())) {
+                if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
+                    UserInfo userInfo = Util.getUserObjectFromPref();
+                    machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                            "5dc3f0c75dda7604a85b7b58",
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                    "Please update your profile.",
+                            Snackbar.LENGTH_LONG);
+                }
             } else {
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                "Please update your profile.",
-                        Snackbar.LENGTH_LONG);
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else if(view.getId() == R.id.btn_deploy) {
-            showDeployDialog(getContext(), "CONFIRM", "Are you sure you want to deploy " +
-                    "machine( "+machineId+ " ) on structure( "+structureListData.get(selectedPosition)
-                    .getStructureId()+") ?", "Yes", "No");
+            if (Util.isConnected(getActivity())) {
+                showDeployDialog(getContext(), "CONFIRM", "Are you sure you want to deploy " +
+                        "machine( " + machineId + " ) on structure( " + structureListData.get(selectedPosition)
+                        .getStructureId() + ") ?", "Yes", "No");
+            }
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
     }
 
@@ -464,8 +449,12 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                machineDeployStructureListFragmentPresenter.deployMachine(structureListData.get
-                        (selectedPosition).getStructureId(), machineId);
+                if(Util.isConnected(getActivity())) {
+                    machineDeployStructureListFragmentPresenter.deployMachine(structureListData.get
+                            (selectedPosition).getStructureId(), machineId);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
             });
         }
 

@@ -538,7 +538,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         return "";
     }
 
-
     private boolean isAllInputsValid() {
         String msg = "";
 

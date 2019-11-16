@@ -132,7 +132,6 @@ public class Urls {
         public static final String MOU_TERMINATE_DEPLOY = "api/MOUTerminateDeployed";
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
-        public static final String SUBMIT_MACHINE_VISIT = "api/machineVisit";
         public static final String CREATE_STRUCTURE = "api/createStructure";
         public static final String STRUCTURE_VISITE_MONITORING = "api/structureVisit";
         public static final String STRUCTURE_PREPARATION = "api/prepareStructure";
@@ -140,6 +139,10 @@ public class Urls {
         public static final String COMMUNITY_MOBILISATION = "api/communityMobilisation";
         public static final String NON_UTILIZATION_URL = "api/machineNonUtilization/%1$s/%2$s/%3$s";
         public static final String CATCHMENT_VILLAGES = "api/catchmentVillages";
+        public static final String MACHINE_DIESEL_RECORD_FORM = "api/dieselRecord";
+        public static final String MACHINE_VISIT_VALIDATION_FORM = "api/machineVisit";
+        public static final String MACHINE_SILT_TRANSPORT_RECORD_FORM = "api/siltDetails";
+        public static final String MACHINE_MOU_FORM = "api/machineMou";
     }
 
     public class OperatorApi {

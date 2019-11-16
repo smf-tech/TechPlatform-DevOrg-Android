@@ -46,6 +46,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
@@ -53,11 +54,11 @@ import com.platform.models.SujalamSuphalam.OperatorDetails;
 import com.platform.models.common.CustomSpinnerObject;
 import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
-import com.platform.presenter.MachineDetailsFragmentPresenter;
 import com.platform.presenter.MachineMouFourthFragmentPresenter;
 import com.platform.utility.Constants;
 import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
+import com.platform.utility.Urls;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
 import com.platform.view.activities.MachineMouActivity;
@@ -69,10 +70,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -85,8 +84,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnFourthPartMou, btnPreviousMou;;
-    private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
+    private Button btnFourthPartMou, btnPreviousMou;
+    //private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
             etAppInstalled;
     private ImageView imgLicense;
@@ -99,7 +98,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private Uri finalUri;
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineMou";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,7 +148,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
-        machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
+        //machineMouFourthFragmentPresenter = new MachineMouFourthFragmentPresenter(this);
     }
 
     private void setMachineFourthData() {
@@ -182,7 +180,11 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         }
 
         //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        uploadData();
+        if(Util.isConnected(getActivity())) {
+            uploadData();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -193,18 +195,22 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineMouFourthFragmentPresenter != null) {
-            machineMouFourthFragmentPresenter.clearData();
-            machineMouFourthFragmentPresenter = null;
-        }
+//        if (machineMouFourthFragmentPresenter != null) {
+//            machineMouFourthFragmentPresenter.clearData();
+//            machineMouFourthFragmentPresenter = null;
+//        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_fourth_part_mou:
-                if(isAllDataValid()) {
-                    setMachineFourthData();
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        setMachineFourthData();
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_previous_mou:
@@ -357,6 +363,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void uploadData(){
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -364,7 +371,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(getActivity().getApplicationContext(),jsonString,Toast.LENGTH_LONG).show();
+                            CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(responseOBJ.getStatus() == 200){
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                            }
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
@@ -396,7 +408,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json, text/plain, */*");
-                headers.put("Content-Type", "application/json;charset=UTF-8");
+                headers.put("Content-Type", getBodyContentType());
 
                 Login loginObj = getLoginObjectFromPref();
                 if (loginObj != null && loginObj.getLoginData() != null &&

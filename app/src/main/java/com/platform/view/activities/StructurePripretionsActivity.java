@@ -201,6 +201,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
                     SyncAdapterUtils.manualRefresh();
 
+                    Util.showToast("Structure will be prepared soon.",this);
+
+                    finish();
 //                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
 //                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
 //                            .getStructurePripretionDataDao().getAllStructure());
@@ -335,7 +338,8 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-            showPictureDialog();
+//            showPictureDialog();
+            takePhotoFromCamera();
         }
     }
 
