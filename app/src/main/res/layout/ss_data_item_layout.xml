@@ -130,6 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_machine_label"
                 android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/tv_machine_label"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:fontFamily="@font/opensans_semibold"/>
 

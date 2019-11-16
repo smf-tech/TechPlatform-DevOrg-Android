@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.platform.R;
 import com.platform.view.fragments.MachineDeployStructureListFragment;
-import com.platform.view.fragments.MachineDetailsFragment;
 import com.platform.view.fragments.MachineDieselRecordFragment;
 import com.platform.view.fragments.MachineNonUtilizationFragment;
 import com.platform.view.fragments.MachineShiftingFormFragment;

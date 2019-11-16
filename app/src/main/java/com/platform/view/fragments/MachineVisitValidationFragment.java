@@ -177,6 +177,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             location = gpsTracker.getLocation();
         }
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     private void setCalendar() {
@@ -524,8 +527,12 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                uploadImage();
-                //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                if(Util.isConnected(getActivity())) {
+                    uploadImage();
+                    //machineVisitValidationFragmentPresenter.submitWorkingHours();
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
         }
     }

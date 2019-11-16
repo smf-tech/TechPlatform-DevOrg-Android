@@ -99,13 +99,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     String machineId, currentStructureId;
     private EditText etMachineCode, etStructureCode, etDieselQuantity;
     private Button btnAdd, btnSubmit;
-    private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
+    //private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
     private RecyclerView rvDieselRecords;
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
     private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
-    private int selectedMonth;
     SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
     SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
     SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
@@ -114,7 +113,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int dieselImageCount = 0, registerImageCount = 0;
     private String imageType, selectedDate;
@@ -146,7 +144,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private void init() {
         progressBarLayout = machineDieselRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineDieselRecordFragmentView.findViewById(R.id.pb_profile_act);
-        machineDieselRecordFragmentPresenter = new MachineDieselRecordFragmentPresenter(this);
+        //machineDieselRecordFragmentPresenter = new MachineDieselRecordFragmentPresenter(this);
         ivCalendarMode = machineDieselRecordFragmentView.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = machineDieselRecordFragmentView.findViewById(R.id.calendarView);
@@ -179,6 +177,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
+        if(!Util.isConnected(getActivity())) {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -189,10 +190,10 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDetach() {
         super.onDetach();
-        if (machineDieselRecordFragmentPresenter != null) {
-            machineDieselRecordFragmentPresenter.clearData();
-            machineDieselRecordFragmentPresenter = null;
-        }
+//        if (machineDieselRecordFragmentPresenter != null) {
+//            machineDieselRecordFragmentPresenter.clearData();
+//            machineDieselRecordFragmentPresenter = null;
+//        }
     }
 
     @Override
@@ -218,8 +219,12 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 onAddImageClick();
                 break;
             case R.id.btn_submit:
-                if(isAllDataValid()) {
-                    uploadImage();
+                if(Util.isConnected(getActivity())) {
+                    if (isAllDataValid()) {
+                        uploadData();
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_add:
@@ -402,7 +407,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         getActivity().startActivity(intent);
     }
 
-    private void uploadImage(){
+    private void uploadData(){
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_DIESEL_RECORD_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {

@@ -162,60 +162,68 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.action_machine_shifting:
-                                    Intent intent = new Intent(activity, SSActionsActivity.class);
-                                    intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                                    intent.putExtra("title", "Select Structure");
-                                    intent.putExtra("type", "shiftMachine");
-                                    intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    intent.putExtra("currentStructureId", ssDataList.get
-                                            (getAdapterPosition()).getDeployedStrutureId());
-                                    activity.startActivity(intent);
-                                    break;
-                                case R.id.action_machine_visit:
-                                    Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
-                                    machineVisitIntent.putExtra("SwitchToFragment", "MachineVisitValidationFragment");
-                                    machineVisitIntent.putExtra("title", "Machine Visit and Validation");
-                                    machineVisitIntent.putExtra("type", "visitMachine");
-                                    machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    machineVisitIntent.putExtra("currentStructureId", ssDataList.get
-                                            (getAdapterPosition()).getDeployedStrutureId());
-                                    activity.startActivity(machineVisitIntent);
-                                    break;
-                                case R.id.action_diesel_record:
-                                    Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
-                                    dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
-                                    dieselRecordIntent.putExtra("title", "Record of Diesel");
-                                    dieselRecordIntent.putExtra("type", "dieselRecord");
-                                    dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
-                                            (getAdapterPosition()).getDeployedStrutureId());
-                                    activity.startActivity(dieselRecordIntent);
-                                    break;
-                                case R.id.action_machine_non_utilization:
-                                    Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
-                                    machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
-                                    machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
-                                    machineNonUtilizationIntent.putExtra("type", "machineNonUtilization");
-                                    machineNonUtilizationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
-                                            (getAdapterPosition()).getDeployedStrutureId());
-                                    activity.startActivity(machineNonUtilizationIntent);
-                                    break;
-                                case R.id.action_silt_transportation_record:
-                                    Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
-                                    siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
-                                    siltTransportationIntent.putExtra("title", "Silt Transportation Record");
-                                    siltTransportationIntent.putExtra("type", "siltTransportRecord");
-                                    siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                    siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
-                                            (getAdapterPosition()).getDeployedStrutureId());
-                                    activity.startActivity(siltTransportationIntent);
-                                    break;
-                                case R.id.action_machine_release:
-                                    fragment.releaseMachine(getAdapterPosition());
-                                    break;
+                            if(Util.isConnected(activity)) {
+                                switch (item.getItemId()) {
+                                    case R.id.action_machine_shifting:
+                                        Intent intent = new Intent(activity, SSActionsActivity.class);
+                                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                                        intent.putExtra("title", "Select Structure");
+                                        intent.putExtra("type", "shiftMachine");
+                                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        intent.putExtra("currentStructureId", ssDataList.get
+                                                (getAdapterPosition()).getDeployedStrutureId());
+                                        activity.startActivity(intent);
+                                        break;
+                                    case R.id.action_machine_visit:
+                                        Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
+                                        machineVisitIntent.putExtra("SwitchToFragment", "MachineVisitValidationFragment");
+                                        machineVisitIntent.putExtra("title", "Machine Visit and Validation");
+                                        machineVisitIntent.putExtra("type", "visitMachine");
+                                        machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        machineVisitIntent.putExtra("currentStructureId", ssDataList.get
+                                                (getAdapterPosition()).getDeployedStrutureId());
+                                        activity.startActivity(machineVisitIntent);
+                                        break;
+                                    case R.id.action_diesel_record:
+                                        Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
+                                        dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
+                                        dieselRecordIntent.putExtra("title", "Record of Diesel");
+                                        dieselRecordIntent.putExtra("type", "dieselRecord");
+                                        dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
+                                                (getAdapterPosition()).getDeployedStrutureId());
+                                        activity.startActivity(dieselRecordIntent);
+                                        break;
+//                                    case R.id.action_machine_non_utilization:
+//                                        Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
+//                                        machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
+//                                        machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
+//                                        machineNonUtilizationIntent.putExtra("type", "machineNonUtilization");
+//                                        machineNonUtilizationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
+//                                                (getAdapterPosition()).getDeployedStrutureId());
+//                                        activity.startActivity(machineNonUtilizationIntent);
+//                                        break;
+                                    case R.id.action_silt_transportation_record:
+                                        Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+                                        siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                        siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                        siltTransportationIntent.putExtra("type", "siltTransportRecord");
+                                        siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
+                                                (getAdapterPosition()).getDeployedStrutureId());
+                                        activity.startActivity(siltTransportationIntent);
+                                        break;
+                                    case R.id.action_machine_release:
+                                        if (Util.isConnected(activity)) {
+                                            fragment.releaseMachine(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                        }
+                                        break;
+                                }
+                            } else {
+                                Util.showToast(activity.getString(R.string.msg_no_network), activity);
                             }
                             return false;
                         }
@@ -230,39 +238,55 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             MACHINE_ELIGIBLE_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
                                     MACHINE_NEW_STATUS_CODE) {
-                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
-                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                getId());
-                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
-                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
+                        if(Util.isConnected(activity)) {
+                            Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                            mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                            mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                    getId());
+                            if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
+                            } else {
+                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                            }
+                            activity.startActivity(mouIntent);
                         } else {
-                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
                         }
-                        activity.startActivity(mouIntent);
                     } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
-                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
-                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                getId());
-                        mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
-                        activity.startActivity(mouIntent);
+                        if(Util.isConnected(activity)) {
+                            Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                            mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                            mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                    getId());
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
+                            activity.startActivity(mouIntent);
+                        } else {
+                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                        }
                     } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
-                        fragment.takeMouDoneAction(getAdapterPosition());
+                        if(Util.isConnected(activity)) {
+                            fragment.takeMouDoneAction(getAdapterPosition());
+                        } else {
+                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                        }
                     } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
                         if (fragment.isMachineDepoly) {
-                            Intent intent = new Intent(activity, SSActionsActivity.class);
-                            intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                            intent.putExtra("type", "deployMachine");
-                            intent.putExtra("title", "Select Structure");
-                            intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                            activity.startActivity(intent);
+                            if(Util.isConnected(activity)) {
+                                Intent intent = new Intent(activity, SSActionsActivity.class);
+                                intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                                intent.putExtra("type", "deployMachine");
+                                intent.putExtra("title", "Select Structure");
+                                intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                activity.startActivity(intent);
+                            } else {
+                                Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                            }
                         } else {
                             Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
                                             .findViewById(android.R.id.content), "You can not take any action on this machine.",
