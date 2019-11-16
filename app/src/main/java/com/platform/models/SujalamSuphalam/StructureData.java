@@ -90,6 +90,7 @@ public class StructureData implements Serializable {
     @SerializedName("updatedDate")
     @Expose
     private String updatedDate;
+    private boolean isSavedOffine;
 
     public String getStructureId() {
         return structureId;
@@ -243,4 +244,11 @@ public class StructureData implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    public boolean isSavedOffine() {
+        return isSavedOffine;
+    }
+
+    public void setSavedOffine(boolean savedOffine) {
+        isSavedOffine = savedOffine;
+    }
 }
