@@ -186,9 +186,9 @@ public class ForegroundService extends Service {
             mTimeLeftString = hours + " " + hrsString + " " + minute + " " + minString + " " + second + " " + secStrind;
             //btn_join_quiz.setBackgroundColor(getResources().getColor(R.color.quiz_prizegray_color));//getColor(getActivity(),R.color.quiz_prizegray_color));
         } else if (minute > 0) {
-            mTimeLeftString = minute + " " + minString + " " + second + " " + secStrind;
+            mTimeLeftString = 0 + " " + hrsString + " " +minute + " " + minString + " " + second + " " + secStrind;
         } else if (second > 0) {
-            mTimeLeftString = second + " " + secStrind;
+            mTimeLeftString = 0 + " " + hrsString + " " +0 + " " + minString + " " + second + " " + secStrind;
         }
         return mTimeLeftString;
     }

@@ -5,17 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-
     android:background="#f2f2f2"
     android:orientation="vertical"
     tools:context=".view.activities.OperatorMeterReadingActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp">
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/operator_toolbar"
             android:layout_width="match_parent"
@@ -102,14 +99,28 @@
         android:src="@drawable/ic_jcb_image"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/dimen_16dp"
+        android:visibility="gone"
         android:layout_height="wrap_content" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_action"
+        android:layout_width="@dimen/dimen_150dp"
+        android:layout_height="@dimen/dimen_150dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        app:lottie_autoPlay="true"
+        android:visibility="visible"
+        app:lottie_fileName="loading_gears.json"
+        app:lottie_loop="true" />
 
     <TextView
         android:layout_width="match_parent"
         android:id="@+id/tv_machine_code"
         android:text="Machine Code"
         android:textColor="@color/red"
-        android:layout_margin="@dimen/dimen_07dp"
+        android:layout_margin="@dimen/dimen_05dp"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content" />
 
@@ -124,34 +135,26 @@
             android:orientation="vertical"
             android:layout_height="match_parent">
 
-
             <TextView
                 android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:layout_margin="@dimen/dimen_07dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/opensans_bold"
                 android:text="test text"
                 android:textSize="@dimen/dimen_16dp"
                 android:textColor="@color/colorAccent" />
-
-
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_07dp"
-                android:layout_marginBottom="@dimen/dimen_07dp"
-                android:orientation="horizontal"
-                >
-                <!--Start Date-->
-
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/img_start_meter"
@@ -183,7 +186,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_07dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
                 <!--Start Date-->
@@ -235,7 +238,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     android:layout_marginBottom="50dp">
 
 
