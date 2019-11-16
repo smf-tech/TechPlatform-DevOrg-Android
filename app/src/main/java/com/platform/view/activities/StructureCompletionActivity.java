@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import com.platform.BuildConfig;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.StructureData;
+import com.platform.models.events.CommonResponse;
 import com.platform.models.login.Login;
 import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
@@ -119,23 +120,20 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         switch (view.getId()){
             case R.id.iv_structure1:
                 selecteIV = findViewById(R.id.iv_structure1);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
+
                 break;
             case R.id.iv_structure2:
                 selecteIV = findViewById(R.id.iv_structure2);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.iv_structure3:
                 selecteIV = findViewById(R.id.iv_structure3);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.iv_structure4:
                 selecteIV = findViewById(R.id.iv_structure4);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
@@ -175,7 +173,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-            showPictureDialog();
+//            showPictureDialog();
+            takePhotoFromCamera();
         }
     }
 
@@ -305,8 +304,14 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(StructureCompletionActivity.this, jsonString, Toast.LENGTH_LONG).show();
-                            Log.d("response -", jsonString);
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if(commonResponse.getStatus()==200){
+                                Util.showToast(commonResponse.getMessage(),this);
+                                finish();
+                            } else {
+                                Util.showToast(commonResponse.getMessage(),this);
+                            }
+                              Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(StructureCompletionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();

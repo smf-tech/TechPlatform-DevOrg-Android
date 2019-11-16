@@ -191,48 +191,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (isTalukaFilter) {
             tvTalukaFilter.setOnClickListener(this);
         }
-
-        if (viewType == 1) {
-            if(Util.isConnected(getActivity())) {
-                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                    //State vise
-                    structureMachineListFragmentPresenter.getStrucuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-                    //District vise
-                    structureMachineListFragmentPresenter.getStrucuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                    //Taluka vise
-                    structureMachineListFragmentPresenter.getStrucuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-                }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
-        } else {
-            if(Util.isConnected(getActivity())) {
-                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                    structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-                            getUserLocation().getStateId().get(0).getId());
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-                    structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-                                    getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                    structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-                                    getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-                }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
-        }
         if (viewType == 1) {
             if (isStructureAdd) {
                 structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
@@ -413,6 +371,52 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (viewType == 1) {
+            if(Util.isConnected(getActivity())) {
+                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
+                    //State vise
+                    structureMachineListFragmentPresenter.getStrucuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
+                    //District vise
+                    structureMachineListFragmentPresenter.getStrucuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            "");
+                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
+                    //Taluka vise
+                    structureMachineListFragmentPresenter.getStrucuresList(
+                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
+                }
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+            }
+        } else {
+            if(Util.isConnected(getActivity())) {
+                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
+                    structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
+                            getUserLocation().getStateId().get(0).getId());
+                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
+                    structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
+                                    getUserLocation().getStateId().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
+                    structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
+                                    getUserLocation().getStateId().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
+                }
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+            }
+        }
     }
 
     @Override

@@ -44,7 +44,7 @@ import java.util.List;
 public class TMUserProfileApprovalFragment extends Fragment {
     private RequestOptions requestOptions;
     private View approvalsFragmentView;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
     private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title,tv_email_title_text,tv_leave_reason;
     private Button btn_approve, btn_reject;
     private ImageView img_user_profle;
@@ -96,7 +96,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         approvalsFragmentView = inflater.inflate(R.layout.fragment_user_profile_approval, container, false);
-        toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
+//        toolbar = approvalsFragmentView.findViewById(R.id.pm_toolbar);
         img_user_profle = approvalsFragmentView.findViewById(R.id.img_user_profle);
         tv_name_title = approvalsFragmentView.findViewById(R.id.tv_name_value);
         tv_role_title = approvalsFragmentView.findViewById(R.id.tv_role_value);
@@ -120,11 +120,11 @@ public class TMUserProfileApprovalFragment extends Fragment {
         }
 
 
-        if (toolbar != null) {
-            TextView title = toolbar.findViewById(R.id.toolbar_title);
+//        if (toolbar != null) {
+            TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
-        }
-        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+//        }
+        ImageView img_back = approvalsFragmentView.findViewById(R.id.toolbar_back_action);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -228,8 +228,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_structure:
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
+
                 break;
             case R.id.et_status:
                 CustomSpinnerDialogClass csdStatus = new CustomSpinnerDialogClass(this, this,
@@ -255,6 +255,10 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                             .insert(requestData);
 
                     SyncAdapterUtils.manualRefresh();
+
+                    Util.showToast("Structure visit is submitted successfully.",this);
+
+                    finish();
 
 //                    List<StructureVisitMonitoringData> structureVisitMonitoringList = new ArrayList<>();
 //                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
@@ -319,7 +323,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-            showPictureDialog();
+//            showPictureDialog();
+            takePhotoFromCamera();
         }
     }
 

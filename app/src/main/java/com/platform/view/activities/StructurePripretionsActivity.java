@@ -214,13 +214,11 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 break;
             case R.id.tv_structure_img1:
                 selectedIV = findViewById(R.id.tv_structure_img1);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.tv_structure_img2:
                 selectedIV = findViewById(R.id.tv_structure_img2);
-//                onAddImageClick();
-                takePhotoFromCamera();
+                onAddImageClick();
                 break;
             case R.id.toolbar_back_action:
                 finish();
@@ -340,7 +338,8 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-            showPictureDialog();
+//            showPictureDialog();
+            takePhotoFromCamera();
         }
     }
 

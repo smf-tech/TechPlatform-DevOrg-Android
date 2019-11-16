@@ -169,7 +169,8 @@
                         android:layout_height="wrap_content"
                         android:hint="FF's Mobile Number"
                         android:imeOptions="actionNext"
-                        android:inputType="text|textCapWords" />
+                        android:inputType="number"
+                        android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
