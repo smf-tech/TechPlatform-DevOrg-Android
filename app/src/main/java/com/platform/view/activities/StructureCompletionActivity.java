@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,18 +60,22 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private final String TAG = StructurePripretionsActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
+    final String STRUCTURE_STATUS = "StructureStatus";
 
     ImageView selecteIV;
 
     private Uri outputUri;
     private Uri finalUri;
 
+    RelativeLayout progressBar;
+
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_COMPLETION;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
-    Map<String,String> requestData = new HashMap<>();
+    Map<String, String> requestData = new HashMap<>();
     StructureData structureData;
+    int structureStatus;
 
     String completion = "true";
 
@@ -80,33 +85,56 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         setContentView(R.layout.activity_structure_completion);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
-        requestData.put("structure_id",structureData.getStructureId());
+        structureStatus = getIntent().getIntExtra(STRUCTURE_STATUS, 0);
+        requestData.put("structure_id", structureData.getStructureId());
+        progressBar = findViewById(R.id.progress_bar);
         initView();
-        setTitle("Structure Completion");
+        if (structureStatus == 120) {
+            setTitle("Structure Completion");
+        } else {
+            setTitle("Structure Completion");
+        }
     }
 
     private void initView() {
-        findViewById(R.id.iv_structure1).setOnClickListener(this);
-        findViewById(R.id.iv_structure2).setOnClickListener(this);
-        findViewById(R.id.iv_structure3).setOnClickListener(this);
-        findViewById(R.id.iv_structure4).setOnClickListener(this);
-        findViewById(R.id.bt_submit).setOnClickListener(this);
 
         RadioGroup rgCompletion = findViewById(R.id.rg_completion);
-        rgCompletion.check(R.id.rb_completion_yes);
-        rgCompletion.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_completion_yes:
-                        completion = "true";
-                        break;
-                    case R.id.rb_completion_no:
-                        completion = "false";
-                        break;
+
+        findViewById(R.id.iv_structure1).setOnClickListener(this);
+        findViewById(R.id.iv_structure2).setOnClickListener(this);
+        if (structureStatus == 120) {
+            findViewById(R.id.tv_complition).setVisibility(View.GONE);
+            rgCompletion.setVisibility(View.GONE);
+            findViewById(R.id.iv_structure3).setVisibility(View.GONE);
+            findViewById(R.id.iv_structure4).setVisibility(View.GONE);
+            TextView tv = findViewById(R.id.tv_img1);
+            tv.setText("Complition Certificat 1");
+            TextView tv1 = findViewById(R.id.tv_img2);
+            tv1.setText("Complition Certificat 2");
+            findViewById(R.id.tv_img3).setVisibility(View.GONE);
+            findViewById(R.id.tv_img4).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.iv_structure3).setOnClickListener(this);
+            findViewById(R.id.iv_structure4).setOnClickListener(this);
+            rgCompletion.check(R.id.rb_completion_yes);
+            rgCompletion.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (i) {
+                        case R.id.rb_completion_yes:
+                            completion = "true";
+                            break;
+                        case R.id.rb_completion_no:
+                            completion = "false";
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        findViewById(R.id.bt_submit).setOnClickListener(this);
+
+
     }
 
     public void setTitle(String title) {
@@ -117,7 +145,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_structure1:
                 selecteIV = findViewById(R.id.iv_structure1);
                 onAddImageClick();
@@ -159,7 +187,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //            return false;
 //        }
 
-        requestData.put("is_completed",completion);
+        requestData.put("is_completed", completion);
 
         if (imageCount == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
@@ -173,8 +201,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(this, this)) {
-//            showPictureDialog();
-            takePhotoFromCamera();
+            showPictureDialog();
+//            takePhotoFromCamera();
         }
     }
 
@@ -295,23 +323,24 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private void uploadImage() {
 
-        Log.d("request -",new Gson().toJson(requestData));
-
+        Log.d("request -", new Gson().toJson(requestData));
+        progressBar.setVisibility(View.VISIBLE);
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        progressBar.setVisibility(View.GONE);
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(commonResponse.getStatus()==200){
-                                Util.showToast(commonResponse.getMessage(),this);
+                            if (commonResponse.getStatus() == 200) {
+                                Util.showToast(commonResponse.getMessage(), this);
                                 finish();
                             } else {
-                                Util.showToast(commonResponse.getMessage(),this);
+                                Util.showToast(commonResponse.getMessage(), this);
                             }
-                              Log.d("response -", jsonString);
+                            Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(StructureCompletionActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -321,6 +350,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(StructureCompletionActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -329,6 +359,9 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
+                if (structureStatus == 120) {
+                    params.put("structureStatus", "121");
+                }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
@@ -344,13 +377,13 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                         loginObj.getLoginData().getAccessToken() != null) {
                     headers.put(Constants.Login.AUTHORIZATION,
                             "Bearer " + loginObj.getLoginData().getAccessToken());
-                    if (getUserObjectFromPref().getOrgId()!=null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
                         headers.put("orgId", getUserObjectFromPref().getOrgId());
                     }
-                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                    if (getUserObjectFromPref().getProjectIds() != null) {
                         headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                     }
-                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                    if (getUserObjectFromPref().getRoleIds() != null) {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }

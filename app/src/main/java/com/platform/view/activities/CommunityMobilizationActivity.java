@@ -205,6 +205,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         etA1MeetingDate.setOnClickListener(this);
         etA2Date.setOnClickListener(this);
         etA3DateOfFormation.setOnClickListener(this);
+        etA3Gender.setOnClickListener(this);
         etA4DateOfTraining.setOnClickListener(this);
         etA5Date.setOnClickListener(this);
         etA1VillageName.setOnClickListener(this);
