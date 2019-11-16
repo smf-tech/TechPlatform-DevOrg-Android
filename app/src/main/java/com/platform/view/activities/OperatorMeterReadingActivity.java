@@ -1,6 +1,7 @@
 package com.platform.view.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -179,6 +180,7 @@ private ImageView toolbar_edit_action;
         } else if (currentState == state_start) {
 
             buttonPauseService.setVisibility(View.VISIBLE);
+            buttonPauseService.setText(getResources().getString(R.string.meter_pause));
             btnStartService.setVisibility(View.GONE);
             startService();
         }
@@ -440,6 +442,8 @@ private ImageView toolbar_edit_action;
     }
 
     public void startService() {
+        if(!isMyServiceRunning(ForegroundService.class)){
+
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
         ContextCompat.startForegroundService(this, serviceIntent);
@@ -447,7 +451,19 @@ private ImageView toolbar_edit_action;
         /*editor.putInt("State", state_start);
         editor.apply();*/
         //buttonPauseService.setVisibility(View.VISIBLE);
+        }
     }
+
+    private boolean  isMyServiceRunning(Class<ForegroundService> foregroundServiceClass) {
+
+            ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (foregroundServiceClass.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     public void stopService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
