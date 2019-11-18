@@ -80,6 +80,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private Uri finalUri;
     private final String TAG = MachineMouSecondFragment.class.getName();
     private File imageFile;
+    private int statusCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void init() {
+        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouSecondFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouSecondFragmentView.findViewById(R.id.pb_profile_act);
         btnSecondPartMou = machineMouSecondFragmentView.findViewById(R.id.btn_second_part_mou);
@@ -173,8 +175,42 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         accountCurrent.set_id("2");
         accountCurrent.setSelected(false);
         accountTypesList.add(accountCurrent);
+        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+            setUIForMouUpdate();
+        }
     }
 
+    private void setUIForMouUpdate() {
+        etProviderFirstName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getFirstName());
+        etProviderLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getLastName());
+        etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMachine().getProviderContactNumber());
+        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getContactNumber());
+        isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getIsTurnover();
+        etTurnover.setText(isTurnoverBelow);
+        etTradeName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getTradeName());
+        etGstRegNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getGSTNumber());
+        etPanNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getPANNumber());
+        etBankName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getBankName());
+        etIfsc.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getIFSC());
+        etBranch.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getBranch());
+        etAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getAccountNo());
+        etAccountHolderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getAccountName());
+        etAccountType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getAccountType());
+    }
     public boolean isAllDataValid() {
         if (TextUtils.isEmpty(etProviderFirstName.getText().toString().trim())
                 || TextUtils.isEmpty(etProviderLastName.getText().toString().trim())

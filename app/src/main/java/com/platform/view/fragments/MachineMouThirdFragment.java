@@ -21,11 +21,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MouDetails;
 import com.platform.models.SujalamSuphalam.RateDetail;
+import com.platform.utility.Constants;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 
 public class MachineMouThirdFragment extends Fragment implements View.OnClickListener {
     private View machineMouThirdFragmentView;
@@ -34,6 +37,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     private Button btnThirdPartMou, btnPreviousMou;
     private EditText edtContractDate, edtMouExpiryDate, edtRate1, edtRate1StartDate, edtRate1EndDate, edtRate2,
             edtRate2StartDate, edtRate2EndDate, edtRate3, edtRate3StartDate, edtRate3EndDate;
+    private int statusCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
+        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
         btnThirdPartMou = machineMouThirdFragmentView.findViewById(R.id.btn_third_part_mou);
@@ -80,6 +85,27 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         edtRate3StartDate.setOnClickListener(this);
         edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
         edtRate3EndDate.setOnClickListener(this);
+        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+            setUIForMouUpdate();
+        }
+    }
+
+    private void setUIForMouUpdate() {
+        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
+        edtMouExpiryDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails().getDateOfMouExpiry(), DAY_MONTH_YEAR));
+        List<RateDetail> rateDetailsList = ((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails().getRateDetails();
+        edtRate1StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getFromDate(), DAY_MONTH_YEAR));
+        edtRate1EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getToDate(), DAY_MONTH_YEAR));
+        edtRate1.setText(rateDetailsList.get(0).getValue());
+        edtRate2StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getFromDate(), DAY_MONTH_YEAR));
+        edtRate2EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getToDate(), DAY_MONTH_YEAR));
+        edtRate1.setText(rateDetailsList.get(1).getValue());
+        edtRate3StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getFromDate(), DAY_MONTH_YEAR));
+        edtRate3EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getToDate(), DAY_MONTH_YEAR));
+        edtRate3.setText(rateDetailsList.get(2).getValue());
     }
 
     @Override
@@ -165,7 +191,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning
                 (Util.dateTimeToTimeStamp(edtContractDate.getText().toString(), "00:00"));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
-                (Util.dateTimeToTimeStamp(edtContractDate.getText().toString(), "23:59"));
+                (Util.dateTimeToTimeStamp(edtMouExpiryDate.getText().toString(), "23:59"));
         RateDetail rateDetail = new RateDetail();
         rateDetail.setFromDate(Util.dateTimeToTimeStamp(edtRate1StartDate.getText().toString(), "00:00"));
         rateDetail.setToDate(Util.dateTimeToTimeStamp(edtRate1EndDate.getText().toString(), "23:59"));
@@ -183,9 +209,9 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
         rateDetailsList.add(rateDetail1);
         rateDetailsList.add(rateDetail2);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setRateDetails(rateDetailsList);
-        List mouList = new ArrayList();
-        mouList.add("www.google.com");
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setMOUImages(mouList);
+//        List mouList = new ArrayList();
+//        mouList.add("www.google.com");
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setMOUImages(mouList);
         //((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setIsMOUCancelled("NO");
     }
 
