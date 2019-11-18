@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_code_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:textSize="@dimen/text_size_13"
                         android:fontFamily="@font/opensans_semibold" />
 
                 </RelativeLayout>
@@ -61,12 +62,15 @@
                         android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_toStartOf="@+id/btn_popmenu"
                         android:background="@drawable/bg_status_label"
                         android:fontFamily="@font/opensans_semibold"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_05dp"
+                        android:paddingBottom="@dimen/dimen_05dp"
+                        android:textSize="@dimen/text_size_11"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
 
@@ -86,6 +90,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_margin="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans"
+                        android:textSize="@dimen/text_size_13"
                         android:visibility="gone" />
                 </RelativeLayout>
 
@@ -117,6 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_capacity_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:textSize="@dimen/text_size_13"
                         android:fontFamily="@font/opensans_semibold" />
 
                 </RelativeLayout>
@@ -141,6 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_provider_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:textSize="@dimen/text_size_13"
                         android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
             </LinearLayout>
@@ -171,6 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_structure_lable"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:textSize="@dimen/text_size_13"
                         android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
 
@@ -194,6 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:textSize="@dimen/text_size_13"
                         android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
             </LinearLayout>

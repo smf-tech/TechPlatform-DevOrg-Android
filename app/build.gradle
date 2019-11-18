@@ -134,6 +134,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation 'com.airbnb.android:lottie:2.7.0'
 
     //circular progress bar
     implementation 'com.budiyev.android:circular-progress-bar:1.2.2'

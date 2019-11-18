@@ -140,6 +140,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
+        btnSsView.setEnabled(true);
     }
 
     @Override
@@ -153,6 +154,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                 setMachineView();
                 break;
             case R.id.btn_ss_view:
+                btnSsView.setEnabled(false);
                 intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if (viewType == 1) {

@@ -586,4 +586,9 @@
     <string name="release_machine_alert_message">Are you sure you want to release this machine?</string>
     <string name="error_confirm_account_no">Please confirm your bank account number.</string>
     <string name="provider_name_hint">Provider Name</string>
+    <string name="meter_start">Start</string>
+    <string name="meter_stop">Stop</string>
+    <string name="meter_pause">Pause</string>
+    <string name="meter_resume">Resume</string>
+    <string name="machine_meter_reading">Machine meter reading</string>
 </resources>

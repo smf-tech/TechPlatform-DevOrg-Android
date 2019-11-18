@@ -267,7 +267,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5dc3f0c75dda7604a85b7b58", Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
             }
         } else {
