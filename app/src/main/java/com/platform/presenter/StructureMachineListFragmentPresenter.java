@@ -193,12 +193,13 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         return requestObject;
     }
 
-    public JsonObject terminateDeployDataJson(String machineId, String machineCode, int status, String deployTaluka_terminateReason){
+    public JsonObject terminateDeployDataJson(String machineId, String machineCode, int status,
+                                              String deployTaluka_terminateReason){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_MACHINE_ID, machineId);
         map.put(KEY_MACHINE_CODE, machineCode);
         map.put(KEY_STATUS, String.valueOf(status));
-        if(status == Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE) {
+        if(status == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
             map.put(KEY_DEPLOY_TALUKA, deployTaluka_terminateReason);
         } else if(status == Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE) {
             map.put(KEY_TERMINATE_REASON, deployTaluka_terminateReason);
