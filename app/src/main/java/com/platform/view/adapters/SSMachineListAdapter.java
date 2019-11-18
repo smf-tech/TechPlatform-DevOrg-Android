@@ -240,7 +240,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
                             MACHINE_ELIGIBLE_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
-                                    MACHINE_NEW_STATUS_CODE) {
+                                    MACHINE_NEW_STATUS_CODE || ssDataList.get(getAdapterPosition()).
+                            getStatusCode() == Constants.SSModule.
+                            MACHINE_NEW_STATUS_CODE) {
                         if(Util.isConnected(activity)) {
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
@@ -249,8 +251,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
-                            } else {
+                            } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_NEW_STATUS_CODE){
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                            } else {
+                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE);
                             }
                             activity.startActivity(mouIntent);
                         } else {
