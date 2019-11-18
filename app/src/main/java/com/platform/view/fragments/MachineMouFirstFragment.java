@@ -53,9 +53,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
-    String machineId;
-    private ArrayList<CustomSpinnerObject> mOwnerTypeList = new ArrayList<>();
-    private EditText editOwnerType,etUniqueIdNumber, etMachineState, etMachineDistrict,etMachineTaluka,
+    private EditText editOwnerType, etMachineState, etMachineDistrict,etMachineTaluka,
             etMachineType,etYear, etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,
             etExcavationCapacity, etDieselCapacity, etProviderName, etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;

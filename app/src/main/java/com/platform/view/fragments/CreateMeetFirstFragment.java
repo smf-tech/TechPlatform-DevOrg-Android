@@ -180,7 +180,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
         UserInfo userInfo = Util.getUserObjectFromPref();
         matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                "5d68c6645dda765a632b4ac3",  //5d98330bee061834d23798b2
+                Util.getUserObjectFromPref().getJurisdictionTypeId(),  //5d98330bee061834d23798b2
                 Constants.JurisdictionLevelName.COUNTRY_LEVEL);
     }
 
@@ -447,7 +447,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetCountry.setText(selectedCountry);
                 if(selectedCountry!="" && selectedCountry!="Country") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d68c6645dda765a632b4ac3",
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
                 break;
@@ -465,7 +465,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 tvMeetState.setText(selectedState);
                 if(selectedState!="" && selectedState!="State") {
                     matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5d68c6645dda765a632b4ac3",
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
