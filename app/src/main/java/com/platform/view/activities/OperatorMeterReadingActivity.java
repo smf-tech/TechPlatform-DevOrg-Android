@@ -33,6 +33,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -80,6 +81,7 @@ import static java.util.Calendar.MONTH;
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener {
     private GPSTracker gpsTracker;
     private Location location;
+    LottieAnimationView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
@@ -137,6 +139,8 @@ private ImageView toolbar_edit_action;
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
+            gear_action_start.setVisibility(View.VISIBLE);
+            gear_action_stop.setVisibility(View.GONE);
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
@@ -146,6 +150,8 @@ private ImageView toolbar_edit_action;
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "pause",""+state_pause, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         } else if (currentState == state_stop) {
             editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
@@ -157,11 +163,15 @@ private ImageView toolbar_edit_action;
             saveOperatorStateData(machine_id, workTime, "stop",""+state_stop, lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
 
             image = "";
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "halt",""+state_halt, lat, lon, meter_reading, hours, totalHours, image);
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         }
         Log.e("currentstate--4", "----"+currentState);
     }
@@ -192,6 +202,8 @@ private ImageView toolbar_edit_action;
         setContentView(R.layout.activity_operator_meter_reading_new);
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
+        gear_action_start = findViewById(R.id.gear_action_start);
+        gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
