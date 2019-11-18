@@ -388,7 +388,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5dc3f0c75dda7604a85b7b58",
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -404,7 +404,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5dc3f0c75dda7604a85b7b58",
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()

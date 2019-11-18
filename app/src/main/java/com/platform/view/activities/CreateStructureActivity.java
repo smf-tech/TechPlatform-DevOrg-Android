@@ -94,7 +94,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private void initView() {
 
         //get District
-        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
+        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
 
         structureData = new Structure();
@@ -340,7 +341,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etDistrict.setText(selectedDistrict);
                 //get Taluka
                 if(!TextUtils.isEmpty(selectedDistrictId)){
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
+                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
                  break;
@@ -355,7 +357,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etTaluka.setText(selectedTaluka);
                 //get Taluka
                 if(!TextUtils.isEmpty(selectedTalukaId)){
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(), "5dc3f0c75dda7604a85b7b58",
+                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                 }
 

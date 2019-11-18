@@ -88,10 +88,16 @@ public class UserInfo implements Parcelable {
     @SerializedName("device_id")
     @Expose
     private String device_id;
+    @SerializedName("jurisdiction_type_id")
+    @Expose
+    private String jurisdictionTypeId;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
         return CREATOR;
+    }
+
+    public UserInfo() {
     }
 
     public String getOrgId() {
@@ -186,24 +192,6 @@ public class UserInfo implements Parcelable {
         this.approvers = approvers;
     }
 
-    public UserInfo() {
-
-    }
-
-    private UserInfo(Parcel in) {
-        id = in.readString();
-        userFirstName = in.readString();
-        userMiddleName = in.readString();
-        userLastName = in.readString();
-        userName = in.readString();
-        userBirthDate = in.readLong();
-        userMobileNumber = in.readString();
-        userEmailId = in.readString();
-        userGender = in.readString();
-        approveStatus = in.readString();
-        profilePic = in.readString();
-    }
-
     public String getId() {
         return id;
     }
@@ -292,17 +280,40 @@ public class UserInfo implements Parcelable {
         this.device_id = device_id;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
 
     public String getProfilePic() {
         return profilePic;
+    }
+
+    public String getJurisdictionTypeId() {
+        return jurisdictionTypeId;
+    }
+
+    public void setJurisdictionTypeId(String jurisdictionTypeId) {
+        this.jurisdictionTypeId = jurisdictionTypeId;
+    }
+
+    private UserInfo(Parcel in) {
+        id = in.readString();
+        userFirstName = in.readString();
+        userMiddleName = in.readString();
+        userLastName = in.readString();
+        userName = in.readString();
+        userBirthDate = in.readLong();
+        userMobileNumber = in.readString();
+        userEmailId = in.readString();
+        userGender = in.readString();
+        approveStatus = in.readString();
+        profilePic = in.readString();
+        jurisdictionTypeId = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
@@ -319,5 +330,6 @@ public class UserInfo implements Parcelable {
         parcel.writeString(approveStatus);
         parcel.writeString(profilePic);
         parcel.writeString(device_id);
+        parcel.writeString(jurisdictionTypeId);
     }
 }

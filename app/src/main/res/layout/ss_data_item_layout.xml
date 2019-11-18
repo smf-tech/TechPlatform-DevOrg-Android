@@ -27,6 +27,7 @@
                 android:layout_alignParentStart="true"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:textSize="@dimen/text_size_11"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:paddingStart="@dimen/dimen_10dp"
                 android:paddingEnd="@dimen/dimen_10dp"
@@ -77,6 +78,7 @@
                 android:layout_below="@+id/tv_code_label"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
                 android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
@@ -95,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_capacity_label"
                 android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
                 android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
@@ -113,6 +116,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_provider_label"
                 android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:layout_marginBottom="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
@@ -135,6 +140,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:gravity="end"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
                 android:fontFamily="@font/opensans_semibold"/>
 
             <TextView
@@ -175,6 +181,8 @@
                 android:layout_below="@+id/tv_contact_label"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:layout_marginBottom="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"/>
 
             <!--<Button-->
