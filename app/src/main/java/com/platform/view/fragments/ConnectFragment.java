@@ -39,10 +39,10 @@ public class ConnectFragment extends Fragment {
 
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_connect, container, false);
-        plannerView = inflater.inflate(R.layout.fragment_dashboard_planner, container, false);
-        Intent startMain1 = new Intent(getActivity(), OperatorMeterReadingActivity.class);
-        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-        startActivity(startMain1);
+//        plannerView = inflater.inflate(R.layout.fragment_dashboard_planner, container, false);
+//        Intent startMain1 = new Intent(getActivity(), OperatorMeterReadingActivity.class);
+//        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+//        startActivity(startMain1);
         return plannerView;
     }
 }

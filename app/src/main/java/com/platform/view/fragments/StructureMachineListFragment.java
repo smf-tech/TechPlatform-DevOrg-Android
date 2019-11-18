@@ -377,7 +377,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public void onResume() {
         super.onResume();
         if (viewType == 1) {
-            if(Util.isConnected(getActivity())) {
+            if (Util.isConnected(getActivity())) {
                 if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
                     //State vise
                     structureMachineListFragmentPresenter.getStrucuresList(
@@ -399,7 +399,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else {
-            if(Util.isConnected(getActivity())) {
+            if (Util.isConnected(getActivity())) {
                 if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
                     structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
                             getUserLocation().getStateId().get(0).getId());
@@ -589,11 +589,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tv_taluka_filter) {
-            if(Util.isConnected(getActivity())) {
+            if (Util.isConnected(getActivity())) {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5dc3f0c75dda7604a85b7b58",
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -605,11 +605,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else if (view.getId() == R.id.tv_district_filter) {
-            if(Util.isConnected(getActivity())) {
+            if (Util.isConnected(getActivity())) {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
                     structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            "5dc3f0c75dda7604a85b7b58",//5c4ab05cd503a372d0391467
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),//5c4ab05cd503a372d0391467
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
