@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -54,6 +55,7 @@ import com.platform.listeners.APIDataListener;
 import com.platform.models.Operator.OperatorMachineData;
 import com.platform.models.Operator.OperatorRequestResponseModel;
 import com.platform.presenter.OperatorMeterReadingActivityPresenter;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.services.ForegroundService;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
@@ -78,7 +80,8 @@ import java.util.Map;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 
-public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener {
+public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener{
+    private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
     private Location location;
     LottieAnimationView gear_action_start,gear_action_stop;
@@ -208,7 +211,7 @@ private ImageView toolbar_edit_action;
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
         GetLocationofOperator();
-
+        initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
 
         }
@@ -956,5 +959,26 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putInt("systemClockTime",0);
         editor.putInt("totalHours", 0);
         editor.apply();
+    }
+
+
+
+
+// connectivity broadcast--
+private void initConnectivityReceiver() {
+    connectionReceiver = new ConnectivityReceiver();
+    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+    filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+    Platform.getInstance().registerReceiver(connectionReceiver, filter);
+}
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (isConnected){
+            Util.showToast("Unable to get connected.", this);
+            SyncAdapterUtils.manualRefresh();
+        }else {
+            Util.showToast("Unable to get location.", this);
+        }
     }
 }
