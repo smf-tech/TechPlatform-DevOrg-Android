@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineWorkingHoursRecord;
+import com.platform.utility.Util;
 
 import java.util.List;
+
+import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 
 public class MachineWorkingHoursAdapter extends RecyclerView.Adapter<MachineWorkingHoursAdapter.ViewHolder>  {
     private List<MachineWorkingHoursRecord> workingHoursList;
@@ -44,7 +47,7 @@ public class MachineWorkingHoursAdapter extends RecyclerView.Adapter<MachineWork
 
     @Override
     public void onBindViewHolder(@NonNull MachineWorkingHoursAdapter.ViewHolder viewHolder, int position) {
-        viewHolder.tvDate.setText(String.valueOf(workingHoursList.get(position).getWorkingDate()));
+        viewHolder.tvDate.setText(Util.getDateFromTimestamp(workingHoursList.get(position).getWorkingDate(), DAY_MONTH_YEAR));
         viewHolder.tvWorkingHours.setText(workingHoursList.get(position).getWorkingHours());
         if(workingHoursList.get(position).getWorkingStatus()) {
             viewHolder.tvStatus.setText("Match");

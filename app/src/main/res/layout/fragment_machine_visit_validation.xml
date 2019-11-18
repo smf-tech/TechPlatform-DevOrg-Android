@@ -106,7 +106,9 @@
                 <EditText
                     android:id="@+id/et_working_hours"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Total Working Hours"/>
+                    android:hint="Total Working Hours"
+                    android:focusable="false"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
