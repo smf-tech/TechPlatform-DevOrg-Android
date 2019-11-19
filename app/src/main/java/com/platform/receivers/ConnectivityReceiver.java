@@ -20,9 +20,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null
-                && activeNetwork.isConnectedOrConnecting();
-
+        /*boolean isConnected = activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();*/
+        boolean isConnected = isConnected();
         if (connectivityReceiverListener != null) {
             connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
         }
