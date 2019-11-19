@@ -649,8 +649,8 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             case "Select Village":
                 for (CustomSpinnerObject obj : villageList) {
                     if (obj.isSelected()) {
-                        selectedVillageID = obj.getName();
-                        selectedVillage = obj.get_id();
+                        selectedVillageID = obj.get_id();
+                        selectedVillage = obj.getName();
                         break;
                     }
                 }
