@@ -361,6 +361,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 params.put("formData", new Gson().toJson(requestData));
                 if (structureStatus == 120) {
                     params.put("structureStatus", "121");
+                } else {
+                    params.put("structureStatus", "120");
                 }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;

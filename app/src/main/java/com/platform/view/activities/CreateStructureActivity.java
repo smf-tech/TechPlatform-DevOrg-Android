@@ -503,12 +503,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     Collections.sort(data, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
-                        CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                        meetCountry.set_id(location.getDistrictId());
-                        meetCountry.setName(location.getDistrict().getName());
-                        meetCountry.setSelected(false);
-                        districtList.add(meetCountry);
+                        if (Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId()
+                                .equalsIgnoreCase(data.get(i).getStateId())) {
+                            JurisdictionLocation location = data.get(i);
+                            CustomSpinnerObject meetCountry = new CustomSpinnerObject();
+                            meetCountry.set_id(location.getDistrictId());
+                            meetCountry.setName(location.getDistrict().getName());
+                            meetCountry.setSelected(false);
+                            districtList.add(meetCountry);
+                        }
                     }
                 }
                 break;

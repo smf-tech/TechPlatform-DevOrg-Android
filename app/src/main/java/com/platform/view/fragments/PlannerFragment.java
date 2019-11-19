@@ -1,5 +1,6 @@
 package com.platform.view.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -102,17 +103,25 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     Timer timer;
     private final String TAG = this.getClass().getSimpleName();
 
+    Activity mContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = (Activity)context;
+    }
+    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getActivity() != null && getArguments() != null) {
+        if (mContext != null && getArguments() != null) {
             String title = (String) getArguments().getSerializable("TITLE");
-            ((HomeActivity) getActivity()).setActionBarTitle(title);
-            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+            ((HomeActivity) mContext).setActionBarTitle(title);
+            ((HomeActivity) mContext).setSyncButtonVisibility(false);
 
             if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
-                ((HomeActivity) getActivity()).showBackArrow();
+                ((HomeActivity) mContext).showBackArrow();
             }
         }
         timer = new Timer();
@@ -131,9 +140,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        context = getActivity();
-        preferenceHelper = new PreferenceHelper(getActivity());
-        userAttendanceDao = DatabaseManager.getDBInstance(getActivity()).getAttendaceSchema();
+        context = mContext;
+        preferenceHelper = new PreferenceHelper(mContext);
+        userAttendanceDao = DatabaseManager.getDBInstance(mContext).getAttendaceSchema();
 
         getHoursDifferenceReceiver = new BroadcastReceiver() {
             @Override
@@ -159,7 +168,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             ArrayList<AttendaceData> unsyncAttendanceList = (ArrayList<AttendaceData>) userAttendanceDao.
                     getUnsyncAttendance(false);
             if (unsyncAttendanceList.size() > 0) {
-                Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
+                Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
                 for (AttendaceData attendaceData : unsyncAttendanceList) {
                     if (attendaceData.getAttendanceType().equals(CHECK_OUT)) {
 
@@ -181,7 +190,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
     private void initCardView() {
-        if (getActivity() == null) {
+        if (mContext == null) {
             return;
         }
 
@@ -195,7 +204,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         lyAttendance = plannerView.findViewById(R.id.ly_attendance);
         lyLeaves = plannerView.findViewById(R.id.ly_leave);
 
-        List<Modules> approveModules = DatabaseManager.getDBInstance(getActivity().getApplicationContext())
+        List<Modules> approveModules = DatabaseManager.getDBInstance(mContext.getApplicationContext())
                 .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
 
         Bundle bundle = new Bundle();
@@ -255,7 +264,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     @Override
     public void showProgressBar() {
-        getActivity().runOnUiThread(() -> {
+        mContext.runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);
                 progressBarLayout.setVisibility(View.VISIBLE);
@@ -265,7 +274,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
+        mContext.runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
                 progressBar.setVisibility(View.GONE);
                 progressBarLayout.setVisibility(View.GONE);
@@ -282,7 +291,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
         try {
-            Intent startMain = new Intent(getActivity(), LoginActivity.class);
+            Intent startMain = new Intent(mContext, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startMain);
@@ -293,7 +302,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     @Override
     public void showErrorMessage(String result) {
-        getActivity().runOnUiThread(() -> Util.showToast(result, this));
+        mContext.runOnUiThread(() -> Util.showToast(result, this));
         setOfflineAttendance();
     }
 
@@ -391,8 +400,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                     break;
                 case Constants.Planner.EVENTS_KEY:
                     if (obj.getEventData() != null && obj.getEventData().size() > 0) {
-                        RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(getActivity(),
+                        RecyclerView.LayoutManager mLayoutManagerEvent = new LinearLayoutManager(mContext.getApplicationContext());
+                        EventTaskListAdapter eventTaskListAdapter = new EventTaskListAdapter(mContext,
                                 obj.getEventData(), Constants.Planner.EVENTS_LABEL);
                         RecyclerView rvEvents = plannerView.findViewById(R.id.rv_events);
                         rvEvents.setLayoutManager(mLayoutManagerEvent);
@@ -422,8 +431,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                 case Constants.Planner.TASKS_KEY:
                     if (obj.getTaskData() != null && obj.getTaskData().size() > 0) {
 
-                        RecyclerView.LayoutManager mLayoutManagerTask = new LinearLayoutManager(getActivity().getApplicationContext());
-                        EventTaskListAdapter taskListAdapter = new EventTaskListAdapter(getActivity(),
+                        RecyclerView.LayoutManager mLayoutManagerTask = new LinearLayoutManager(mContext.getApplicationContext());
+                        EventTaskListAdapter taskListAdapter = new EventTaskListAdapter(mContext,
                                 obj.getTaskData(), Constants.Planner.TASKS_LABEL);
                         RecyclerView rvTask = plannerView.findViewById(R.id.rv_task);
                         rvTask.setLayoutManager(mLayoutManagerTask);
@@ -492,12 +501,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if(Util.isConnected(getContext())) {
-                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra("title", getActivity().getString(R.string.attendance));
+                    Intent intent = new Intent(mContext, GeneralActionsActivity.class);
+                    intent.putExtra("title", mContext.getString(R.string.attendance));
                     intent.putExtra("switch_fragments", "AttendancePlannerFragment");
-                    getActivity().startActivity(intent);
+                    mContext.startActivity(intent);
                 }else{
-                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    Util.showToast(mContext.getResources().getString(R.string.msg_no_network), mContext);
                 }
 
             }
@@ -513,9 +522,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    Intent intentEventList = new Intent(mContext, PlannerDetailActivity.class);
                     intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                    getActivity().startActivity(intentEventList);
+                    mContext.startActivity(intentEventList);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -525,9 +534,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    Intent intentCreateEvent = new Intent(mContext, CreateEventTaskActivity.class);
                     intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                    getActivity().startActivity(intentCreateEvent);
+                    mContext.startActivity(intentCreateEvent);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -546,9 +555,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intentEventList = new Intent(getActivity(), PlannerDetailActivity.class);
+                    Intent intentEventList = new Intent(mContext, PlannerDetailActivity.class);
                     intentEventList.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                    getActivity().startActivity(intentEventList);
+                    mContext.startActivity(intentEventList);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -558,9 +567,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intentCreateEvent = new Intent(getActivity(), CreateEventTaskActivity.class);
+                    Intent intentCreateEvent = new Intent(mContext, CreateEventTaskActivity.class);
                     intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                    getActivity().startActivity(intentCreateEvent);
+                    mContext.startActivity(intentCreateEvent);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -579,10 +588,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra("title", getActivity().getString(R.string.leave));
+                    Intent intent = new Intent(mContext, GeneralActionsActivity.class);
+                    intent.putExtra("title", mContext.getString(R.string.leave));
                     intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                    getActivity().startActivity(intent);
+                    mContext.startActivity(intent);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -592,12 +601,12 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 if (Util.isConnected(getContext())) {
-                    Intent intent = new Intent(getActivity(), GeneralActionsActivity.class);
-                    intent.putExtra("title", getActivity().getString(R.string.apply_leave));
+                    Intent intent = new Intent(mContext, GeneralActionsActivity.class);
+                    intent.putExtra("title", mContext.getString(R.string.apply_leave));
                     intent.putExtra("isEdit", false);
                     intent.putExtra("apply_type", "Leave");
                     intent.putExtra("switch_fragments", "LeaveApplyFragment");
-                    getActivity().startActivity(intent);
+                    mContext.startActivity(intent);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), getContext());
                 }
@@ -607,34 +616,34 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     private void enableButton(boolean b1, boolean b2) {
         if (b1 && !b2) {
-            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
-            btCheckIn.setTextColor(getResources().getColor(R.color.white));
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.colorPrimary));
+            btCheckIn.setTextColor(mContext.getResources().getColor(R.color.white));
             btCheckIn.setEnabled(true);
-            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-            btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.button_gray_color));
+            btCheckout.setTextColor(mContext.getResources().getColor(R.color.attendance_text_color));
             btCheckout.setEnabled(false);
         }
         if (!b1 && b2) {
-            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-            btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.button_gray_color));
+            btCheckIn.setTextColor(mContext.getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setEnabled(false);
-            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
-            btCheckout.setTextColor(getResources().getColor(R.color.white));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.colorPrimary));
+            btCheckout.setTextColor(mContext.getResources().getColor(R.color.white));
             btCheckout.setEnabled(true);
         }
         if (!b2 && !b1) {
-            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-            btCheckIn.setTextColor(getResources().getColor(R.color.attendance_text_color));
+            btCheckIn.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.button_gray_color));
+            btCheckIn.setTextColor(mContext.getResources().getColor(R.color.attendance_text_color));
             btCheckIn.setEnabled(false);
-            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.button_gray_color));
-            btCheckout.setTextColor(getResources().getColor(R.color.attendance_text_color));
+            btCheckout.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.button_gray_color));
+            btCheckout.setTextColor(mContext.getResources().getColor(R.color.attendance_text_color));
             btCheckout.setEnabled(false);
         }
     }
 
     public void markCheckIn() {
-        gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        gpsTracker = new GPSTracker(mContext);
+        if (gpsTracker.isGPSEnabled(mContext, this)) {
             Date currentDate = new Date();
             timeStamp = currentDate.getTime();
             Location location = gpsTracker.getLocation();
@@ -652,20 +661,20 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
                 btCheckIn.setText("Check in at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
                 updateTime(timeStamp, 0);
-                if (!Util.isConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "Checked in offline.", Toast.LENGTH_LONG).show();
+                if (!Util.isConnected(mContext)) {
+                    Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
                     attendaceCheckinData.setSync(false);
                     userAttendanceDao.insert(attendaceCheckinData);
                 } else {
                     attendaceCheckinData.setSync(true);
                     userAttendanceDao.insert(attendaceCheckinData);
                     SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                    Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
+                    Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
                     submitAttendanceFragmentPresenter.markAttendace(attendaceCheckinData);
                 }
-//                Util.showToast(getResources().getString(R.string.check_in_msg), getActivity());
+//                Util.showToast(getResources().getString(R.string.check_in_msg), mContext);
             } else {
-                Util.showToast("Unable to get location", getActivity());
+                Util.showToast("Unable to get location", mContext);
             }
 
         } else {
@@ -677,8 +686,8 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
     private void markOut() {
-        gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        gpsTracker = new GPSTracker(mContext);
+        if (gpsTracker.isGPSEnabled(mContext, this)) {
             Date currentDate = new Date();
             timeStamp = currentDate.getTime();
             Location location = gpsTracker.getLocation();
@@ -698,20 +707,20 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
                 btCheckout.setText("Check out at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
                 updateTime(attendaceCheckinData.getDate(), timeStamp);
-                if (!Util.isConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "Checked out offline.", Toast.LENGTH_LONG).show();
+                if (!Util.isConnected(mContext)) {
+                    Toast.makeText(mContext, "Checked out offline.", Toast.LENGTH_LONG).show();
                     attendaceCheckoutData.setSync(false);
                     userAttendanceDao.insert(attendaceCheckoutData);
                 } else {
                     attendaceCheckoutData.setSync(true);
                     userAttendanceDao.insert(attendaceCheckoutData);
                     SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                    Util.showSimpleProgressDialog(getActivity(), "Attendance", "Loading...", false);
+                    Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
                     submitAttendanceFragmentPresenter.markAttendace(attendaceCheckoutData);
                 }
-//                Util.showToast(getResources().getString(R.string.check_out_msg), getActivity());
+//                Util.showToast(getResources().getString(R.string.check_out_msg), mContext);
             } else {
-                Util.showToast("Unable to get location", getActivity());
+                Util.showToast("Unable to get location", mContext);
             }
 
         } else {
@@ -743,9 +752,9 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
                     userAttendanceDao.updateUserAttendace(attendanceId, true, attnDate, CHECK_IN);
 
-                    Util.showToast(getResources().getString(R.string.check_in_msg), getActivity());
+                    Util.showToast(mContext.getResources().getString(R.string.check_in_msg), mContext);
                 } else {
-                    Toast.makeText(getActivity(), "Checked in offline.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -754,7 +763,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
     public void checkOutResponse(String response, AttendaceData attendaceData) {
-        Util.showToast(getResources().getString(R.string.check_out_msg), getActivity());
+        Util.showToast(mContext.getResources().getString(R.string.check_out_msg), mContext);
 
         int status = 0;
         String attendanceId = "";
