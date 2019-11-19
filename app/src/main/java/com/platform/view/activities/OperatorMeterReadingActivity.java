@@ -77,6 +77,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.platform.receivers.ConnectivityReceiver.connectivityReceiverListener;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 
@@ -861,13 +862,14 @@ public String showReadingDialog(final Activity context, int pos){
             et_smeter_read.setText(strReason);
             editor.putInt("et_smeter_read", Integer.parseInt(strReason));
             editor.apply();
+            callStartButtonClick();
         }else {
             editor.putInt("et_emeter_read", Integer.parseInt(strReason));
             editor.apply();
             if (isMeterReadingRight(strReason))
             {
                 et_emeter_read.setText(strReason);
-
+                callStopButtonClick();
             }else {
                 Util.showToast("Please enter correct meter reading", OperatorMeterReadingActivity.this);
             }
@@ -966,19 +968,25 @@ public String showReadingDialog(final Activity context, int pos){
 
 // connectivity broadcast--
 private void initConnectivityReceiver() {
-    connectionReceiver = new ConnectivityReceiver();
+    /*connectionReceiver = new ConnectivityReceiver();
     IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-    Platform.getInstance().registerReceiver(connectionReceiver, filter);
+    Platform.getInstance().registerReceiver(connectionReceiver, filter);*/
+
+    connectionReceiver = new ConnectivityReceiver();
+    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+    IntentFilter intentFilter = new IntentFilter();
+    intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+    registerReceiver(new ConnectivityReceiver(), intentFilter);
+    connectivityReceiverListener =this::onNetworkConnectionChanged;
 }
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (isConnected){
-            Util.showToast("Unable to get connected.", this);
             SyncAdapterUtils.manualRefresh();
         }else {
-            Util.showToast("Unable to get location.", this);
+
         }
     }
 }
