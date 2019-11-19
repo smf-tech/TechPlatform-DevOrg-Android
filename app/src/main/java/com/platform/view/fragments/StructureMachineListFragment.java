@@ -254,8 +254,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.updateMachineStatus(ssMachineListData.get(position).getId(),
-                    ssMachineListData.get(position).getMachineCode(),
+            structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
+                    filteredMachineListData.get(position).getMachineCode(),
                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
             dialog.dismiss();
         });
@@ -337,8 +337,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     if (selectedDeployTalukaId != null) {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                ssMachineListData.get(position).getId(),
-                                ssMachineListData.get(position).getMachineCode(),
+                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
                                 selectedDeployTalukaId);
                     } else {
@@ -349,8 +349,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else if (mouAction == 2) {
                     if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                ssMachineListData.get(position).getId(),
-                                ssMachineListData.get(position).getMachineCode(),
+                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
                                 editTerminateReason.getText().toString());
                     } else {

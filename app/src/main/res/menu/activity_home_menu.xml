@@ -11,7 +11,7 @@
         <item
             android:id="@+id/action_home_sync"
             android:icon="@drawable/ic_sync"
-            android:title="@string/sy" />
+            android:title="@string/update_data" />
         <item
             android:id="@+id/action_menu_community"
             android:icon="@drawable/ic_menu_community"

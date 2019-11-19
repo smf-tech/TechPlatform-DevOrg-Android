@@ -471,6 +471,10 @@
     <string name="meter_pause">ब्रेक साठी थांबा</string>
     <string name="meter_resume">पुन्हा सुरू करा</string>
     <string name="machine_meter_reading">मशीन मीटर रीडिंग</string>
+    <string name="update_data">Update Data</string>
+    <string name="enter_expiry_date">Enter MOU Expiry date.</string>
+    <string name="enter_mou_start_date">Enter MOU start date</string>
+    <string name="enter_rate1_end_date">Enter rate 1 end date.</string>
 
 
 </resources>

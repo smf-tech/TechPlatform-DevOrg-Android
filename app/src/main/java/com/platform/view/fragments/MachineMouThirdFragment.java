@@ -130,17 +130,37 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                             edtContractDate.getText().toString());
                 } else  {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), getString(R.string.enter_rate1_start_date),
+                                    .findViewById(android.R.id.content), getString(R.string.enter_mou_start_date),
                             Snackbar.LENGTH_LONG);
                 }
                 break;
             case R.id.edt_rate1_start_date:
                 Util.showDateDialogMin(getActivity(), edtRate1StartDate);
+                if(edtContractDate.getText().toString().length()>0) {
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate1StartDate,
+                                edtContractDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_mou_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate1_end_date:
                 if(edtRate1StartDate.getText().toString().length()>0) {
-                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate1EndDate,
-                            edtRate1StartDate.getText().toString());
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate1EndDate,
+                                edtRate1StartDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
                 } else  {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), getString(R.string.enter_rate1_start_date),
@@ -148,12 +168,32 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.edt_rate2_start_date:
-                Util.showDateDialogMin(getActivity(), edtRate2StartDate);
+                if(edtRate1EndDate.getText().toString().length()>0) {
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate2StartDate,
+                                edtRate1EndDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
+
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate1_end_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate2_end_date:
                 if(edtRate2StartDate.getText().toString().length()>0) {
-                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate2EndDate,
-                            edtRate2StartDate.getText().toString());
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate2EndDate,
+                                edtRate2StartDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
                 } else  {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), getString(R.string.enter_rate2_start_date),
@@ -161,12 +201,31 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.edt_rate3_start_date:
-                Util.showDateDialogMin(getActivity(), edtRate3StartDate);
+                if(edtRate2EndDate.getText().toString().length()>0) {
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate3StartDate,
+                                edtRate2EndDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else  {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.enter_rate2_start_date),
+                            Snackbar.LENGTH_LONG);
+                }
                 break;
             case R.id.edt_rate3_end_date:
                 if(edtRate3StartDate.getText().toString().length()>0) {
-                    Util.showDateDialogEnableAfterMin(getActivity(), edtRate3EndDate,
-                            edtRate3StartDate.getText().toString());
+                    if(edtMouExpiryDate.getText().toString().length()>0) {
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), edtRate3EndDate,
+                                edtRate3StartDate.getText().toString(), edtMouExpiryDate.getText().toString());
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), getString(R.string.enter_expiry_date),
+                                Snackbar.LENGTH_LONG);
+                    }
                 } else  {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), getString(R.string.enter_rate3_start_date),
