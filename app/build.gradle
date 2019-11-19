@@ -68,7 +68,8 @@ android {
         Staging {
             dimension "server"
             buildConfigField 'String', 'SMS_VERIFICATION_CODE', "\"B7ElyJtHAe8\""
-            buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""  //http://13.235.124.3:8090 //"\"http://13.235.124.3/\""
+            buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""
+            //http://13.235.124.3:8090 //"\"http://13.235.124.3/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
             applicationId 'com.platform.debug'

@@ -26,6 +26,8 @@
                 android:id="@+id/tv_complition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_regular"
                 android:text="Completion Status*" />
 
@@ -33,6 +35,7 @@
                 android:id="@+id/rg_completion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -49,61 +52,113 @@
                     android:text="No" />
             </RadioGroup>
 
-            <ImageView
-                android:id="@+id/iv_structure1"
-                android:layout_width="@dimen/dimen_160dp"
-                android:layout_height="@dimen/dimen_160dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_add_img" />
-
-            <TextView
-                android:id="@+id/tv_img1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Photo of Structure 1*" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/iv_structure2"
-                android:layout_width="@dimen/dimen_160dp"
-                android:layout_height="@dimen/dimen_160dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_add_img" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/tv_img2"
-                android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/iv_structure1"
+                        android:layout_width="@dimen/dimen_160dp"
+                        android:layout_height="@dimen/dimen_160dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_img" />
+
+                    <TextView
+                        android:id="@+id/tv_img1"
+                        android:layout_below="@+id/iv_structure1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Photo of Structure 1*" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_structure2"
+                        android:layout_width="@dimen/dimen_160dp"
+                        android:layout_height="@dimen/dimen_160dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_img" />
+
+                    <TextView
+                        android:id="@+id/tv_img2"
+                        android:layout_below="@+id/iv_structure2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Photo of Structure 2*" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Photo of Structure 2*" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/iv_structure3"
-                android:layout_width="@dimen/dimen_160dp"
-                android:layout_height="@dimen/dimen_160dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_add_img" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/tv_img3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Photo of Structure 3*" />
+                    <ImageView
+                        android:id="@+id/iv_structure3"
+                        android:layout_width="@dimen/dimen_160dp"
+                        android:layout_height="@dimen/dimen_160dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_img" />
 
-            <ImageView
-                android:id="@+id/iv_structure4"
-                android:layout_width="@dimen/dimen_160dp"
-                android:layout_height="@dimen/dimen_160dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_add_img" />
+                    <TextView
+                        android:id="@+id/tv_img3"
+                        android:layout_below="@+id/iv_structure3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Photo of Structure 3*" />
 
-            <TextView
-                android:id="@+id/tv_img4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Photo of Structure 4*" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_structure4"
+                        android:layout_width="@dimen/dimen_160dp"
+                        android:layout_height="@dimen/dimen_160dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_add_img" />
+
+                    <TextView
+                        android:id="@+id/tv_img4"
+                        android:layout_below="@+id/iv_structure4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Photo of Structure 4*" />
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/bt_submit"

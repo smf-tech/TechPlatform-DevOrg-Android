@@ -99,7 +99,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
         holder.tvStructureName.setText(ssDataList.get(position).getStructureName());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
-
+        holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
         if (!isSaveOfflineStructure) {
             holder.btSave.setVisibility(View.GONE);
         } else {
@@ -118,7 +118,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
-                tvStructureOwnerDepartment, tvContact;
+                tvStructureOwnerDepartment, tvContact,tvUpdated;
         ImageView btnPopupMenu;
         LinearLayout lyStructure;
         PopupMenu popup;
@@ -134,6 +134,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvStructureName = itemView.findViewById(R.id.tv_structure_name);
             tvStructureOwnerDepartment = itemView.findViewById(R.id.tv_structure_owner_department);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            tvUpdated = itemView.findViewById(R.id.tv_updated);
             btSave = itemView.findViewById(R.id.bt_save);
             if (isSave) {
                 btSave.setText("Save Offline");
