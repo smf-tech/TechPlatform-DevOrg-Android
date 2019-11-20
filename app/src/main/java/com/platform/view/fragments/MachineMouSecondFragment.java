@@ -113,7 +113,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderLastName = machineMouSecondFragmentView.findViewById(R.id.et_provider_last_name);
         etProviderContact = machineMouSecondFragmentView.findViewById(R.id.et_provider_contact);
         etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
-        etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
+        //etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
         etTradeName = machineMouSecondFragmentView.findViewById(R.id.et_trade_name);
         etTurnover = machineMouSecondFragmentView.findViewById(R.id.et_turnover);
         etGstRegNo = machineMouSecondFragmentView.findViewById(R.id.et_gst_reg_no);
@@ -127,7 +127,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etAccountHolderName = machineMouSecondFragmentView.findViewById(R.id.et_account_holder_name);
         etAccountType = machineMouSecondFragmentView.findViewById(R.id.et_account_type);
 
-        etOwnership.setOnClickListener(this);
+        //etOwnership.setOnClickListener(this);
         etTurnover.setOnClickListener(this);
         etAccountType.setOnClickListener(this);
         imgAccount.setOnClickListener(this);
@@ -183,8 +183,12 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private void setUIForMouUpdate() {
         etProviderFirstName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getFirstName());
+        etProviderFirstName.setFocusable(false);
+        etProviderFirstName.setLongClickable(false);
         etProviderLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getLastName());
+        etProviderLastName.setFocusable(false);
+        etProviderLastName.setLongClickable(false);
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getProviderContactNumber());
         etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -206,6 +210,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 getProviderInformation().getBranch());
         etAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getAccountNo());
+        etConfirmAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation().getAccountNo());
         etAccountHolderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getAccountName());
         etAccountType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -226,7 +232,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 || TextUtils.isEmpty(etConfirmAccountNo.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountHolderName.getText().toString().trim())
                 || TextUtils.isEmpty(etAccountType.getText().toString().trim())
-                || selectedOwnership == null || isTurnoverBelow == null) {
+                || isTurnoverBelow == null) {
 
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
@@ -265,13 +271,13 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             case R.id.btn_previous_mou:
                 getActivity().onBackPressed();
                 break;
-            case R.id.et_ownership:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,
-                        false);
-                cdd.show();
-                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_ownership:
+//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,
+//                        false);
+//                cdd.show();
+//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
             case R.id.et_turnover:
                 CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Select option", isTurnOverAboveList,
                         false);
@@ -434,16 +440,16 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
-            case "Select Ownership Type":
-                for (CustomSpinnerObject ownershipType : ownershipList) {
-                    if (ownershipType.isSelected()) {
-                        selectedOwnership = ownershipType.getName();
-                        selectedOwnershipId = ownershipType.get_id();
-                        break;
-                    }
-                }
-                etOwnership.setText(selectedOwnership);
-                break;
+//            case "Select Ownership Type":
+//                for (CustomSpinnerObject ownershipType : ownershipList) {
+//                    if (ownershipType.isSelected()) {
+//                        selectedOwnership = ownershipType.getName();
+//                        selectedOwnershipId = ownershipType.get_id();
+//                        break;
+//                    }
+//                }
+//                etOwnership.setText(selectedOwnership);
+//                break;
             case "Select option":
                 for (CustomSpinnerObject isTurnover : isTurnOverAboveList) {
                     if (isTurnover.isSelected()) {

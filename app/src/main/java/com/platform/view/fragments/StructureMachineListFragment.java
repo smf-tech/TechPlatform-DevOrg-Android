@@ -48,6 +48,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.MachineMouActivity;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MutiselectDialogAdapter;
 import com.platform.view.adapters.SSMachineListAdapter;
 import com.platform.view.adapters.SSStructureListAdapter;
@@ -61,7 +62,7 @@ import java.util.Objects;
 public class StructureMachineListFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
     private View structureMachineListFragmentView;
     private int viewType;
-    private final Context context = getActivity();
+    private Context context;
     private RecyclerView rvDataList;
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
     private final ArrayList<MachineData> filteredMachineListData = new ArrayList<>();
@@ -97,6 +98,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         structureMachineListFragmentView = inflater.inflate(R.layout.fragment_structure_machine_list, container, false);
+        context = getActivity();
         return structureMachineListFragmentView;
     }
 
@@ -486,6 +488,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
         }
     }
@@ -504,6 +507,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             filteredStructureListData.addAll(ssStructureListData);
 //            rvDataList.setAdapter(ssStructureListAdapter);
             ssStructureListAdapter.notifyDataSetChanged();
+            ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
 //            }
         }
     }
@@ -643,6 +647,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             } else {
 
                 filteredMachineListData.clear();
@@ -653,6 +658,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
 
 
@@ -674,6 +680,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -683,6 +690,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
         }
     }

@@ -52,6 +52,7 @@ import java.util.Objects;
 public class MachineDeployStructureListFragment extends Fragment  implements APIDataListener,
         CustomSpinnerListener, View.OnClickListener {
     private View machineDeployStructureListFragmentView;
+    private Context context;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
     private RecyclerView rvStructureList;
     private ProgressBar progressBar;
@@ -62,8 +63,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     private ArrayList<StructureData> filteredStructureListData = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTalukaList = new ArrayList<>();
-    private String machineId;
-    private String type, currentStructureId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId;
+    private String machineId, machineCode;
+    private String type, currentStructureId ,selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId;
     private Button btnDeploy;
     private int selectedPosition;
     public boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
@@ -79,6 +80,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         // Inflate the layout for this fragment
         machineDeployStructureListFragmentView = inflater.inflate(R.layout.fragment_machine_deploy_structure_list,
                 container, false);
+        context = getActivity();
         return machineDeployStructureListFragmentView;
     }
 
@@ -88,6 +90,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
         //Bundle bundle = this.getArguments();
         machineId = getActivity().getIntent().getStringExtra("machineId");
+        machineCode = getActivity().getIntent().getStringExtra("machineCode");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         type = getActivity().getIntent().getStringExtra("type");
         //viewType = bundle.getInt("viewType");
@@ -196,7 +199,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         intent.putExtra("title", "Machine Shifting");
         intent.putExtra("machineId", machineId);
         intent.putExtra("currentStructureId", currentStructureId);
-        intent.putExtra("newStructureId", structureListData.get(position).getStructureId());
+        intent.putExtra("newStructureId", filteredStructureListData.get(position).getStructureId());
+        intent.putExtra("newStructureCode", filteredStructureListData.get(position).getStructureCode());
         startActivity(intent);
     }
 
@@ -338,6 +342,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 filteredStructureListData.addAll(structureListData);
                 rvStructureList.setAdapter(structureListAdapter);
                 structureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             }
         }
     }
@@ -378,6 +383,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             }
             rvStructureList.setAdapter(structureListAdapter);
             structureListAdapter.notifyDataSetChanged();
+            ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
         }
     }
 
@@ -418,8 +424,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         } else if(view.getId() == R.id.btn_deploy) {
             if (Util.isConnected(getActivity())) {
                 showDeployDialog(getContext(), "CONFIRM", "Are you sure you want to deploy " +
-                        "machine( " + machineId + " ) on structure( " + structureListData.get(selectedPosition)
-                        .getStructureId() + ") ?", "Yes", "No");
+                        "machine( " + machineCode + " ) on structure( " + structureListData.get(selectedPosition)
+                        .getStructureCode() + ") ?", "Yes", "No");
             }
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -450,7 +456,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 if(Util.isConnected(getActivity())) {
-                    machineDeployStructureListFragmentPresenter.deployMachine(structureListData.get
+                    machineDeployStructureListFragmentPresenter.deployMachine(filteredStructureListData.get
                             (selectedPosition).getStructureId(), machineId);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());

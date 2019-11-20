@@ -18,7 +18,8 @@
         <RelativeLayout
             android:id="@+id/rl_machine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_05dp">
 
             <TextView
                 android:id="@+id/tv_status"
@@ -117,8 +118,28 @@
                 android:layout_below="@+id/tv_provider_label"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
-                android:layout_marginBottom="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_operator_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_provider"
+                android:text="Operator Name"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_operator_label"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:fontFamily="@font/opensans_semibold"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_machine_label"
@@ -169,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_structure_code"
                 android:layout_alignParentEnd="true"
-                android:text="Contact Number"
+                android:text="Provider Contact Number"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:textSize="@dimen/dimen_10dp"/>
@@ -182,8 +203,30 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
-                android:layout_marginBottom="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"/>
+
+            <TextView
+                android:id="@+id/tv_operator_contact_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_contact"
+                android:layout_alignParentEnd="true"
+                android:text="Operator Contact Number"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_operator_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_operator_contact_label"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:fontFamily="@font/opensans_semibold"
+                android:visibility="gone"/>
 
             <!--<Button-->
                 <!--android:id="@+id/btn_details"-->

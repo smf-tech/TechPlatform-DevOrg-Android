@@ -120,6 +120,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void init() {
+        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouFourthFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
@@ -149,29 +150,29 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
-        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
-            setUIForMouUpdate();
-        }
+//        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+//            setUIForMouUpdate();
+//        }
     }
 
-    private void setUIForMouUpdate() {
-//        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
-        etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getFirstName());
-        etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getLastName());
-        etOperatorContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getContactNumnber());
-        etLicenseNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getLicenceNumber());
-        selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getIsTrainingDone();
-        etOperatorTraining.setText(selectedtrainingOption);
-        selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getIsAppInstalled();
-        etAppInstalled.setText(selectedAppInstalledOption);
-    }
+//    private void setUIForMouUpdate() {
+////        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
+////                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
+//        etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getFirstName());
+//        etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getLastName());
+//        etOperatorContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getContactNumnber());
+//        etLicenseNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getLicenceNumber());
+//        selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getIsTrainingDone();
+//        etOperatorTraining.setText(selectedtrainingOption);
+//        selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getOperatorDetails().getIsAppInstalled();
+//        etAppInstalled.setText(selectedAppInstalledOption);
+//    }
 
     private void setMachineFourthData() {
         OperatorDetails operatorDetails = new OperatorDetails();
@@ -395,12 +396,14 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             if(responseOBJ.getStatus() == 200){
+                                backToMachineList();
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else if(responseOBJ.getStatus() == 400){
                                 Util.showToast(responseOBJ.getMessage(), this);
                             } else {
                                 Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
                             }
                             Log.d("response -",jsonString);
-                            backToMachineList();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();

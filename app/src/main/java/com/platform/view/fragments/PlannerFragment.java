@@ -236,11 +236,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 

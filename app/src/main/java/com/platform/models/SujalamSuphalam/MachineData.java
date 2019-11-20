@@ -64,18 +64,15 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureCode")
     @Expose
     private String deployedStrutureCode;
+    @SerializedName("operator_name")
+    @Expose
+    private String operatorName;
+    @SerializedName("operator_contact_number")
+    @Expose
+    private String operatorContactNumber;
     @SerializedName("updatedDate")
     @Expose
     private String lastUpdatedTime;
-
-    public String getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-
-    public void setLastUpdatedTime(String lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-    }
-
     @SerializedName("is_meter_working")
     @Expose
     private String isMeterWorking;
@@ -266,11 +263,35 @@ public class MachineData  implements Serializable {
         this.providerName = providerName;
     }
 
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public String getOperatorContactNumber() {
+        return operatorContactNumber;
+    }
+
+    public void setOperatorContactNumber(String operatorContactNumber) {
+        this.operatorContactNumber = operatorContactNumber;
+    }
+
     public String getProviderContactNumber() {
         return providerContactNumber;
     }
 
     public void setProviderContactNumber(String providerContactNumber) {
         this.providerContactNumber = providerContactNumber;
+    }
+
+    public String getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+
+    public void setLastUpdatedTime(String lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
     }
 }

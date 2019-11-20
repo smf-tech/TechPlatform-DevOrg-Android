@@ -74,19 +74,19 @@
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+                <!--style="@style/textinputstyle"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:id="@+id/et_ownership"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/ownership_type"
-                    android:editable="false"
-                    android:longClickable="false"
-                    android:focusable="false"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_ownership"-->
+                    <!--style="@style/RegistrationEditTextLayout"-->
+                    <!--android:hint="@string/ownership_type"-->
+                    <!--android:editable="false"-->
+                    <!--android:longClickable="false"-->
+                    <!--android:focusable="false"/>-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"

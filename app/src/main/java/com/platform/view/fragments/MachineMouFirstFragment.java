@@ -134,8 +134,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             }
         } else if(statusCode == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
             if(isMachineMou) {
-                btnFirstPartMou.setVisibility(View.VISIBLE);
                 btnFirstPartMou.setOnClickListener(this);
+                btnFirstPartMou.setVisibility(View.VISIBLE);
             }
         } else if(statusCode == Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
             if(isMachineEligible) {
@@ -153,6 +153,10 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             btnFirstPartMou.setVisibility(View.VISIBLE);
             btnFirstPartMou.setText("Create Machine");
             setUIForMachineCreate();
+        } else if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE){
+            btnFirstPartMou.setOnClickListener(this);
+            btnFirstPartMou.setVisibility(View.VISIBLE);
+            setMachineFirstData();
         } else {
             setMachineFirstData();
         }
