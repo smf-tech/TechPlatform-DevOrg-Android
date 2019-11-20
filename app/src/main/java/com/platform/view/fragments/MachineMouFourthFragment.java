@@ -413,7 +413,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.msg_failure),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }) {
 

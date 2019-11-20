@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,9 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
@@ -84,6 +87,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
+    private FloatingActionButton fbCreate;
 
     public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
     public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
@@ -114,6 +118,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private void init() {
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
+        fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -195,19 +200,19 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         if (viewType == 1) {
             if (isStructureAdd) {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+                fbCreate.setVisibility(View.VISIBLE);
             } else {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+                fbCreate.setVisibility(View.INVISIBLE);
             }
         } else {
             if (isMachineAdd) {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+                fbCreate.setVisibility(View.VISIBLE);
             } else {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+                fbCreate.setVisibility(View.INVISIBLE);
             }
         }
 
-        structureMachineListFragmentView.findViewById(R.id.fb_create).setOnClickListener(new View.OnClickListener() {
+        fbCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (viewType == 1) {
@@ -222,10 +227,22 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                     mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
                     getActivity().startActivity(mouIntent);
-
                 }
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if(dy > 0){
+                        fbCreate.hide();
+                    } else{
+                        fbCreate.show();
+                    }
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        }
     }
 
     public void takeMouDoneAction(int position) {
