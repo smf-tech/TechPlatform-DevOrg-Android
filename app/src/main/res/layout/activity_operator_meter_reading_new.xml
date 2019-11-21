@@ -103,7 +103,7 @@
         android:layout_height="wrap_content" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lav_action"
+        android:id="@+id/gear_action_start"
         android:layout_width="@dimen/dimen_150dp"
         android:layout_height="@dimen/dimen_150dp"
         android:layout_gravity="center"
@@ -111,9 +111,22 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         app:lottie_autoPlay="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:lottie_fileName="loading_gears.json"
         app:lottie_loop="true" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/gear_action_stop"
+        android:layout_width="@dimen/dimen_150dp"
+        android:layout_height="@dimen/dimen_150dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        app:lottie_autoPlay="false"
+        android:visibility="visible"
+        app:lottie_fileName="loading_gears.json"
+        app:lottie_loop="false" />
 
     <TextView
         android:layout_width="match_parent"

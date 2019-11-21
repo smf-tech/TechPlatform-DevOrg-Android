@@ -1,6 +1,13 @@
 package com.platform.request;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -142,6 +149,7 @@ public class LoginRequestCall {
             try {
                 body.addProperty(Constants.Login.USER_PHONE, loginInfo.getMobileNumber());
                 body.addProperty(Constants.Login.USER_OTP, loginInfo.getOneTimePassword());
+                body.addProperty("device_id", loginInfo.getDeviceId());
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -150,6 +158,7 @@ public class LoginRequestCall {
         Log.i(TAG, "AUTH_BODY: " + body);
         return body;
     }
+
 
     public void getUserProfile() {
         Response.Listener<JSONObject> userProfileSuccessListener = response -> {

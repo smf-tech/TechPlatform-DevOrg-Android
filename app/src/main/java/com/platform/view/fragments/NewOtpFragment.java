@@ -1,11 +1,15 @@
 package com.platform.view.fragments;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -21,11 +25,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.PlatformTaskListener;
@@ -310,9 +316,38 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 //        tvOtpTimer.setVisibility(View.GONE);
 
         String otp = getOtp();
-        otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
+        if(getDeviceId().length()>0) {
+            sLoginInfo.setDeviceId(getDeviceId());
+            otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
+        } else {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
+                    Snackbar.LENGTH_LONG);
+        }
+
     }
 
+    //get device id for token api
+    private String getDeviceId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        Constants.READ_PHONE_STORAGE);
+            } else {
+                TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
+                        TELEPHONY_SERVICE);
+                String deviceId = telephonyManager.getDeviceId();
+                return deviceId;
+            }
+        }else {
+            TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
+                    TELEPHONY_SERVICE);
+            String deviceId = telephonyManager.getDeviceId();
+            return deviceId;
+        }
+        return "";
+    }
     private void setOtp(final String msg) {
         try {
             char[] otpChars = msg.toCharArray();

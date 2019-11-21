@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -53,6 +55,7 @@ import com.platform.listeners.APIDataListener;
 import com.platform.models.Operator.OperatorMachineData;
 import com.platform.models.Operator.OperatorRequestResponseModel;
 import com.platform.presenter.OperatorMeterReadingActivityPresenter;
+import com.platform.receivers.ConnectivityReceiver;
 import com.platform.services.ForegroundService;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
@@ -74,12 +77,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.platform.receivers.ConnectivityReceiver.connectivityReceiverListener;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 
-public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener {
+public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener{
+    private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
     private Location location;
+    LottieAnimationView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
@@ -137,6 +143,8 @@ private ImageView toolbar_edit_action;
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
+            gear_action_start.setVisibility(View.VISIBLE);
+            gear_action_stop.setVisibility(View.GONE);
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
@@ -146,8 +154,10 @@ private ImageView toolbar_edit_action;
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "pause",""+state_pause, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         } else if (currentState == state_stop) {
-            editor.putInt("State", 0);
+            //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
             btnStartService.setVisibility(View.VISIBLE);
             et_smeter_read.setText("");
@@ -157,11 +167,15 @@ private ImageView toolbar_edit_action;
             saveOperatorStateData(machine_id, workTime, "stop",""+state_stop, lat, lon, et_emeter_read.getText().toString(), hours, totalHours, image);
 
             image = "";
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
             saveOperatorStateData(machine_id, workTime, "halt",""+state_halt, lat, lon, meter_reading, hours, totalHours, image);
+            gear_action_start.setVisibility(View.GONE);
+            gear_action_stop.setVisibility(View.VISIBLE);
         }
         Log.e("currentstate--4", "----"+currentState);
     }
@@ -192,11 +206,13 @@ private ImageView toolbar_edit_action;
         setContentView(R.layout.activity_operator_meter_reading_new);
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
+        gear_action_start = findViewById(R.id.gear_action_start);
+        gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
         GetLocationofOperator();
-
+        initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
 
         }
@@ -435,6 +451,7 @@ private ImageView toolbar_edit_action;
             updateStatusAndProceed(state_stop);
             flag = true;
             image = "";
+            clearDataOnStop();
             //clearReadingImages();
            // et_smeter_read.requestFocus();
             Log.e("currentstate--2", "----"+currentState);
@@ -846,13 +863,14 @@ public String showReadingDialog(final Activity context, int pos){
             et_smeter_read.setText(strReason);
             editor.putInt("et_smeter_read", Integer.parseInt(strReason));
             editor.apply();
+            callStartButtonClick();
         }else {
             editor.putInt("et_emeter_read", Integer.parseInt(strReason));
             editor.apply();
             if (isMeterReadingRight(strReason))
             {
                 et_emeter_read.setText(strReason);
-
+                callStopButtonClick();
             }else {
                 Util.showToast("Please enter correct meter reading", OperatorMeterReadingActivity.this);
             }
@@ -944,5 +962,43 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putInt("systemClockTime",0);
         editor.putInt("totalHours", 0);
         editor.apply();
+    }
+
+    public void clearDataOnStop(){
+        editor.putInt("et_emeter_read",0);
+        editor.putInt("et_smeter_read",0);
+
+        editor.putInt("systemTime",0);
+        editor.putInt("systemClockTime",0);
+        editor.putInt("totalHours", 0);
+        editor.apply();
+
+        Util.logger("statenow", "statenow" + preferences.getInt("State", 0));
+    }
+
+
+
+// connectivity broadcast--
+private void initConnectivityReceiver() {
+    /*connectionReceiver = new ConnectivityReceiver();
+    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+    filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+    Platform.getInstance().registerReceiver(connectionReceiver, filter);*/
+
+    connectionReceiver = new ConnectivityReceiver();
+    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+    IntentFilter intentFilter = new IntentFilter();
+    intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+    registerReceiver(new ConnectivityReceiver(), intentFilter);
+    connectivityReceiverListener =this::onNetworkConnectionChanged;
+}
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (isConnected){
+            SyncAdapterUtils.manualRefresh();
+        }else {
+
+        }
     }
 }
