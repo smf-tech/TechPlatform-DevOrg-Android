@@ -58,12 +58,23 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
+        if(machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE ||
+                machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE ||
+                machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE ||
+                machineData.getStatusCode() != Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+            holder.tvOperatorLabel.setVisibility(View.VISIBLE);
+            holder.tvOperatorContactLabel.setVisibility(View.VISIBLE);
+            holder.tvOperator.setVisibility(View.VISIBLE);
+            holder.tvOperator.setText(machineData.getOperatorName());
+            holder.tvOperatorContact.setVisibility(View.VISIBLE);
+            holder.tvOperatorContact.setText(machineData.getOperatorContactNumber());
+        }
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvStructureCode,
-                tvLastUpdatedTime;
+                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact;
         ImageView btnPopupMenu;
         RelativeLayout rlMachine;
         PopupMenu popup;
@@ -77,6 +88,10 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
+            tvOperatorLabel = itemView.findViewById(R.id.tv_operator_label);
+            tvOperator = itemView.findViewById(R.id.tv_operator);
+            tvOperatorContactLabel = itemView.findViewById(R.id.tv_operator_contact_label);
+            tvOperatorContact = itemView.findViewById(R.id.tv_operator_contact);
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
 
@@ -173,6 +188,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         intent.putExtra("title", "Select Structure");
                                         intent.putExtra("type", "shiftMachine");
                                         intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        intent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         intent.putExtra("currentStructureId", ssDataList.get
                                                 (getAdapterPosition()).getDeployedStrutureId());
                                         activity.startActivity(intent);
@@ -242,7 +258,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
                                     MACHINE_NEW_STATUS_CODE || ssDataList.get(getAdapterPosition()).
                             getStatusCode() == Constants.SSModule.
-                            MACHINE_NEW_STATUS_CODE) {
+                            MACHINE_MOU_EXPIRED_STATUS_CODE) {
                         if(Util.isConnected(activity)) {
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
@@ -291,6 +307,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 intent.putExtra("type", "deployMachine");
                                 intent.putExtra("title", "Select Structure");
                                 intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                intent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                 activity.startActivity(intent);
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);

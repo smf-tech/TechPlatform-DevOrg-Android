@@ -375,6 +375,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 AppEvents.trackAppEvent(getString(R.string.event_menu_home_click));
                 break;
 
+            case R.id.action_home_sync:
+                showUpdateDataPopup();
+                AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
+                break;
+
             case R.id.action_menu_community:
                 break;
 
