@@ -339,6 +339,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     }
                 }
                 etDistrict.setText(selectedDistrict);
+                etTaluka.setText("");
+                selectedTaluka="";
+                selectedTalukaId="";
+                etHostVillage.setText("");
+                selectedHostVillage="";
+                selectedHostVillageId="";
                 //get Taluka
                 if(!TextUtils.isEmpty(selectedDistrictId)){
                     presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
@@ -355,6 +361,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     }
                 }
                 etTaluka.setText(selectedTaluka);
+                etHostVillage.setText("");
+                selectedHostVillage="";
+                selectedHostVillageId="";
                 //get Taluka
                 if(!TextUtils.isEmpty(selectedTalukaId)){
                     presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),

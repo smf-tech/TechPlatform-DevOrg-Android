@@ -90,7 +90,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         progressBar = findViewById(R.id.progress_bar);
         initView();
         if (structureStatus == 120) {
-            setTitle("Structure Completion");
+            setTitle("Close Structure");
         } else {
             setTitle("Structure Completion");
         }
