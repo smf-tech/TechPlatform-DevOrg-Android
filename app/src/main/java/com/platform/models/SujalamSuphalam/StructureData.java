@@ -3,12 +3,14 @@ package com.platform.models.SujalamSuphalam;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class StructureData implements Serializable {
@@ -90,6 +92,11 @@ public class StructureData implements Serializable {
     @SerializedName("updatedDate")
     @Expose
     private String updatedDate;
+    @Ignore
+    @SerializedName("deployedMachineDetails")
+    @Expose
+    private List<DeployedMachine> deployedMachineDetails;
+    @Ignore
     private boolean isSavedOffine;
 
     public String getStructureId() {
@@ -246,6 +253,14 @@ public class StructureData implements Serializable {
 
     public boolean isSavedOffine() {
         return isSavedOffine;
+    }
+
+    public List<DeployedMachine> getDeployedMachineDetails() {
+        return deployedMachineDetails;
+    }
+
+    public void setDeployedMachineDetails(List<DeployedMachine> deployedMachineDetails) {
+        this.deployedMachineDetails = deployedMachineDetails;
     }
 
     public void setSavedOffine(boolean savedOffine) {

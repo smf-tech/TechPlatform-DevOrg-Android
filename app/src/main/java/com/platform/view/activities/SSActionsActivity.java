@@ -27,6 +27,7 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
     private ImageView ivBackIcon;
     private FragmentManager fManager;
     private Fragment fragment;
+    private TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_ssactions);
         Bundle data = getIntent().getExtras();
         fManager = getSupportFragmentManager();
+        toolbar_title = findViewById(R.id.toolbar_title);
 
         if (data != null && data.containsKey("SwitchToFragment")) {
 
@@ -103,13 +105,16 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
                 .commit();
     }
 
-    void setTitle(String title) {
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
+    public void setTitle(String title) {
         toolbar_title.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
         ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
         toolbar_edit_action.setOnClickListener(this);
+    }
+
+    public void setActivityTitle(String title) {
+        toolbar_title.setText(title);
     }
 
     @Override
@@ -122,9 +127,6 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
                 Intent intent = new Intent(this, SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
                 intent.putExtra("title", "Saved Structure");
-//                intent.putExtra("machineId", machineId);
-//                intent.putExtra("currentStructureId", currentStructureId);
-//                intent.putExtra("newStructureId", structureListData.get(position).getStructureId());
                 startActivity(intent);
 
                 break;

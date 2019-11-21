@@ -16,7 +16,7 @@ public class MouDetails {
     @SerializedName("date_of_signing")
     @Expose
     private long dateOfSigning;
-    @SerializedName("mou_expiry_date")
+    @SerializedName("mou_expiry_datetime")
     @Expose
     private long dateOfMouExpiry;
     @SerializedName("is_MOU_cancelled")

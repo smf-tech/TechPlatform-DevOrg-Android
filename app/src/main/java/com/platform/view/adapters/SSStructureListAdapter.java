@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.platform.Platform;
@@ -100,11 +101,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvStructureName.setText(ssDataList.get(position).getStructureName());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
+        holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Deployed Machine");
         if (!isSaveOfflineStructure) {
             holder.btSave.setVisibility(View.GONE);
-        } else {
+        } /*else {
             // save button visibal
-        }
+        }*/
 
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -118,7 +120,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
-                tvStructureOwnerDepartment, tvContact,tvUpdated;
+                tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount;
         ImageView btnPopupMenu;
         LinearLayout lyStructure;
         PopupMenu popup;
@@ -135,6 +137,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvStructureOwnerDepartment = itemView.findViewById(R.id.tv_structure_owner_department);
             tvContact = itemView.findViewById(R.id.tv_contact);
             tvUpdated = itemView.findViewById(R.id.tv_updated);
+            tvMachinCount = itemView.findViewById(R.id.tv_machin_count);
             btSave = itemView.findViewById(R.id.bt_save);
             if (isSave) {
                 btSave.setText("Save Offline");
@@ -238,7 +241,14 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         ssDataList.remove(getAdapterPosition());
                         notifyDataSetChanged();
                     }
+                }
+            });
 
+            tvMachinCount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().size() > 0)
+                        dialogMachinList(getAdapterPosition());
                 }
             });
         }
@@ -291,6 +301,30 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 dialog.dismiss();
             });
         }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    void dialogMachinList(int adapterPosition) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(activity));
+        dialog.setContentView(R.layout.dialog_deployed_machine_list);
+
+        TextView title = dialog.findViewById(R.id.toolbar_title);
+        title.setText("Deployed Machine");
+
+        RecyclerView rvDeployedMachin = dialog.findViewById(R.id.rv_deployed_machin);
+        rvDeployedMachin.setLayoutManager(new LinearLayoutManager(activity));
+        DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
+                ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity);
+        rvDeployedMachin.setAdapter(adapter);
+
+        Button button = dialog.findViewById(R.id.bt_ok);
+        button.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

@@ -44,7 +44,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     private View machineShiftingFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    String machineId, currentStructureId, newStructureId, isDieselFilled , dieselProvidedBy;
+    String machineId, currentStructureId, newStructureId, newStructureCode,isDieselFilled , dieselProvidedBy;
     private EditText etSelectedStructure, etIsDieselFilled, etProvideBy, etDieselQuantity,
             etstartMeterReading, etTravelDistance,
      etTravelTime;
@@ -75,6 +75,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         newStructureId = getActivity().getIntent().getStringExtra("newStructureId");
+        newStructureCode = getActivity().getIntent().getStringExtra("newStructureCode");
         init();
     }
 
@@ -83,7 +84,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         progressBar = machineShiftingFormFragmentView.findViewById(R.id.pb_profile_act);
         machineShiftingFormFragmentPresenter = new MachineShiftingFormFragmentPresenter(this);
         etSelectedStructure = machineShiftingFormFragmentView.findViewById(R.id.et_selected_structure);
-        etSelectedStructure.setText(newStructureId);
+        etSelectedStructure.setText(newStructureCode);
         etIsDieselFilled = machineShiftingFormFragmentView.findViewById(R.id.et_is_diesel_filled);
         etIsDieselFilled.setOnClickListener(this);
         etProvideBy = machineShiftingFormFragmentView.findViewById(R.id.et_provided_by);

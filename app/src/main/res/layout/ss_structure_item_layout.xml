@@ -231,14 +231,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
+
                     <TextView
-                        android:id="@+id/tv_updated"
+                        android:id="@+id/tv_machin_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_alignParentBottom="true"
+                        android:textSize="@dimen/text_size_13"
+                        android:textColor="@color/medium_blue"
+                        android:fontFamily="@font/opensans_semibold" />
+
+                    <TextView
+                        android:id="@+id/tv_updated"
+                        android:layout_below="@+id/tv_machin_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
                         android:textSize="@dimen/dimen_10dp" />
+
                 </RelativeLayout>
             </LinearLayout>
 

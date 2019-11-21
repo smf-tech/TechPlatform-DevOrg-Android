@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,9 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.platform.R;
@@ -48,6 +51,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.activities.CreateStructureActivity;
 import com.platform.view.activities.MachineMouActivity;
+import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.adapters.MutiselectDialogAdapter;
 import com.platform.view.adapters.SSMachineListAdapter;
 import com.platform.view.adapters.SSStructureListAdapter;
@@ -61,7 +65,7 @@ import java.util.Objects;
 public class StructureMachineListFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
     private View structureMachineListFragmentView;
     private int viewType;
-    private final Context context = getActivity();
+    private Context context;
     private RecyclerView rvDataList;
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
     private final ArrayList<MachineData> filteredMachineListData = new ArrayList<>();
@@ -83,6 +87,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
+    private FloatingActionButton fbCreate;
 
     public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
     public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
@@ -97,6 +102,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         structureMachineListFragmentView = inflater.inflate(R.layout.fragment_structure_machine_list, container, false);
+        context = getActivity();
         return structureMachineListFragmentView;
     }
 
@@ -112,6 +118,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private void init() {
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
+        fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -193,19 +200,19 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         if (viewType == 1) {
             if (isStructureAdd) {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+                fbCreate.setVisibility(View.VISIBLE);
             } else {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+                fbCreate.setVisibility(View.INVISIBLE);
             }
         } else {
             if (isMachineAdd) {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.VISIBLE);
+                fbCreate.setVisibility(View.VISIBLE);
             } else {
-                structureMachineListFragmentView.findViewById(R.id.fb_create).setVisibility(View.INVISIBLE);
+                fbCreate.setVisibility(View.INVISIBLE);
             }
         }
 
-        structureMachineListFragmentView.findViewById(R.id.fb_create).setOnClickListener(new View.OnClickListener() {
+        fbCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (viewType == 1) {
@@ -220,10 +227,22 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                     mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
                     getActivity().startActivity(mouIntent);
-
                 }
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if(dy > 0){
+                        fbCreate.hide();
+                    } else{
+                        fbCreate.show();
+                    }
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        }
     }
 
     public void takeMouDoneAction(int position) {
@@ -254,8 +273,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.updateMachineStatus(ssMachineListData.get(position).getId(),
-                    ssMachineListData.get(position).getMachineCode(),
+            structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
+                    filteredMachineListData.get(position).getMachineCode(),
                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
             dialog.dismiss();
         });
@@ -337,8 +356,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     if (selectedDeployTalukaId != null) {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                ssMachineListData.get(position).getId(),
-                                ssMachineListData.get(position).getMachineCode(),
+                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
                                 selectedDeployTalukaId);
                     } else {
@@ -349,8 +368,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else if (mouAction == 2) {
                     if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                ssMachineListData.get(position).getId(),
-                                ssMachineListData.get(position).getMachineCode(),
+                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
                                 editTerminateReason.getText().toString());
                     } else {
@@ -486,6 +505,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
         }
     }
@@ -504,6 +524,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             filteredStructureListData.addAll(ssStructureListData);
 //            rvDataList.setAdapter(ssStructureListAdapter);
             ssStructureListAdapter.notifyDataSetChanged();
+            ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
 //            }
         }
     }
@@ -643,6 +664,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             } else {
 
                 filteredMachineListData.clear();
@@ -653,6 +675,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
 
 
@@ -674,6 +697,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -683,6 +707,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
         }
     }
