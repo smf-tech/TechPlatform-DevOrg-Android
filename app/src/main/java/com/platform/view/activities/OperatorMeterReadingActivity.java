@@ -157,7 +157,7 @@ private ImageView toolbar_edit_action;
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
         } else if (currentState == state_stop) {
-            editor.putInt("State", 0);
+            //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
             btnStartService.setVisibility(View.VISIBLE);
             et_smeter_read.setText("");
@@ -451,6 +451,7 @@ private ImageView toolbar_edit_action;
             updateStatusAndProceed(state_stop);
             flag = true;
             image = "";
+            clearDataOnStop();
             //clearReadingImages();
            // et_smeter_read.requestFocus();
             Log.e("currentstate--2", "----"+currentState);
@@ -963,6 +964,17 @@ public String showReadingDialog(final Activity context, int pos){
         editor.apply();
     }
 
+    public void clearDataOnStop(){
+        editor.putInt("et_emeter_read",0);
+        editor.putInt("et_smeter_read",0);
+
+        editor.putInt("systemTime",0);
+        editor.putInt("systemClockTime",0);
+        editor.putInt("totalHours", 0);
+        editor.apply();
+
+        Util.logger("statenow", "statenow" + preferences.getInt("State", 0));
+    }
 
 
 
