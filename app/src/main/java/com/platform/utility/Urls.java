@@ -11,7 +11,7 @@ public class Urls {
     }
 
     public class Profile {
-        public static final String SUBMIT_PROFILE = "api/updateuUser/%1$s";
+        public static final String SUBMIT_PROFILE = "api/updateUser/%1$s";
         public static final String GET_PROFILE = "api/getUserDetails";
         public static final String GET_ORGANIZATION = "api/organizations";
         public static final String GET_ORGANIZATION_PROJECTS = "api/projects/%1$s";
