@@ -97,7 +97,7 @@ public class StructureData implements Serializable {
     @Expose
     private List<DeployedMachine> deployedMachineDetails;
     @Ignore
-    private boolean isSavedOffine;
+    private boolean isSavedOffine = false;
 
     public String getStructureId() {
         return structureId;

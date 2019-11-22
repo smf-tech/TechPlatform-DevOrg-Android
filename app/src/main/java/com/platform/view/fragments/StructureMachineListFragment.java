@@ -32,7 +32,9 @@ import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.platform.Platform;
 import com.platform.R;
+import com.platform.database.DatabaseManager;
 import com.platform.listeners.APIDataListener;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MachineData;
@@ -454,12 +456,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message,this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(),this);
     }
 
     @Override
@@ -515,9 +517,22 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (structureListData != null) {
 //            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
             ssStructureListData.clear();
+             ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
+            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
+
             filteredStructureListData.clear();
             for (StructureData structureData : structureListData.getData()) {
-                if (structureData != null) {
+                boolean flag= false;
+                for(StructureData obj : offlineStructureListData){
+                    if(obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())){
+                        flag=true;
+                        break;
+                    }
+                }
+                if(flag){
+                    structureData.setSavedOffine(true);
+                    ssStructureListData.add(structureData);
+                } else {
                     ssStructureListData.add(structureData);
                 }
             }

@@ -101,12 +101,26 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvStructureName.setText(ssDataList.get(position).getStructureName());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
-        holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Deployed Machine");
+        if (isSave) {
+            if(ssDataList.get(position).getDeployedMachineDetails().size()==0){
+                holder.tvMachinCount.setText("None");
+            }else if(ssDataList.get(position).getDeployedMachineDetails().size()>1){
+                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
+            } else {
+                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
+            }
+
+        }
         if (!isSaveOfflineStructure) {
             holder.btSave.setVisibility(View.GONE);
-        } /*else {
+        } else {
             // save button visibal
-        }*/
+            if(ssDataList.get(position).isSavedOffine()){
+                holder.btSave.setEnabled(false);
+            } else {
+                holder.btSave.setEnabled(true);
+            }
+        }
 
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -235,6 +249,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     if (isSave) {
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
                                 .insert(ssDataList.get(getAdapterPosition()));
+                        ssDataList.get(getAdapterPosition()).setSavedOffine(true);
+                        notifyItemChanged(getAdapterPosition());
                     } else {
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
                                 .delete(ssDataList.get(getAdapterPosition()).getStructureId());
@@ -313,7 +329,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         dialog.setContentView(R.layout.dialog_deployed_machine_list);
 
         TextView title = dialog.findViewById(R.id.toolbar_title);
-        title.setText("Deployed Machine");
+        title.setText("Deployed Machine List");
 
         RecyclerView rvDeployedMachin = dialog.findViewById(R.id.rv_deployed_machin);
         rvDeployedMachin.setLayoutManager(new LinearLayoutManager(activity));
@@ -321,12 +337,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity);
         rvDeployedMachin.setAdapter(adapter);
 
-        Button button = dialog.findViewById(R.id.bt_ok);
-        button.setOnClickListener(v -> {
+        ImageView ivClose = dialog.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
-        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();

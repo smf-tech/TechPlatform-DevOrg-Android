@@ -100,17 +100,23 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
         RadioGroup rgCompletion = findViewById(R.id.rg_completion);
 
-        findViewById(R.id.iv_structure1).setOnClickListener(this);
-        findViewById(R.id.iv_structure2).setOnClickListener(this);
+        ImageView iv1=findViewById(R.id.iv_structure1);
+        iv1.setOnClickListener(this);
+        iv1.setImageResource(R.drawable.ic_certifict);
+        ImageView iv2=findViewById(R.id.iv_structure2);
+        iv2.setOnClickListener(this);
+        iv2.setImageResource(R.drawable.ic_certifict);
+
         if (structureStatus == 120) {
             findViewById(R.id.tv_complition).setVisibility(View.GONE);
             rgCompletion.setVisibility(View.GONE);
             findViewById(R.id.iv_structure3).setVisibility(View.GONE);
             findViewById(R.id.iv_structure4).setVisibility(View.GONE);
             TextView tv = findViewById(R.id.tv_img1);
-            tv.setText("Complition Certificat 1");
+            tv.setText("Completion Certificate 1");
             TextView tv1 = findViewById(R.id.tv_img2);
-            tv1.setText("Complition Certificat 2");
+            tv1.setText("Completion Certificate 2");
+
             findViewById(R.id.tv_img3).setVisibility(View.GONE);
             findViewById(R.id.tv_img4).setVisibility(View.GONE);
         } else {

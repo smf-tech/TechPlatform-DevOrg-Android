@@ -33,10 +33,14 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.StructureCompletionActivity"></activity>
-        <activity android:name=".view.activities.CommunityMobilizationActivity" />
-        <activity android:name=".view.activities.StructureVisitMonitoringActivity" />
-        <activity android:name=".view.activities.StructurePripretionsActivity" />
+        <activity android:name=".view.activities.StructureCompletionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.CommunityMobilizationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.StructureVisitMonitoringActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.StructurePripretionsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activities.CreateStructureActivity"
             android:screenOrientation="portrait" />

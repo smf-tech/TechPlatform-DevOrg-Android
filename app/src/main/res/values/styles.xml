@@ -35,15 +35,16 @@
     </style>
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="android:fontFamily">@font/opensans</item>
     </style>
     <style name="RegistrationEditTextLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColorHint">@color/medium_grey</item>
-        <item name="android:textColor">@color/dark_grey</item>
-        <item name="android:textSize">@dimen/text_size_title_14</item>
-        <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textColorHint">@color/lighter_grey</item>
+        <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/opensans_semibold</item>
         <!--<item name="android:background">@null</item>-->
     </style>
 
