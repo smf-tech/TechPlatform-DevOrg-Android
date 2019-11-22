@@ -2,16 +2,21 @@ package com.platform.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.platform.R;
+import com.platform.view.activities.FeedCreationActivity;
 import com.platform.view.activities.HomeActivity;
 import com.platform.view.activities.OperatorMeterReadingActivity;
+
+import java.util.Objects;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class ConnectFragment extends Fragment {
@@ -40,9 +45,27 @@ public class ConnectFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_connect, container, false);
         plannerView = inflater.inflate(R.layout.fragment_dashboard_planner, container, false);
-//        Intent startMain1 = new Intent(getActivity(), OperatorMeterReadingActivity.class);
-//        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-//        startActivity(startMain1);
+        Intent startMain1 = new Intent(getActivity(), FeedCreationActivity.class);
+        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+        startActivity(startMain1);
+
+
+        /*try {
+
+            Fragment fragment = new FeedCreateFragment();
+            FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
+                    .requireNonNull(getActivity()))
+                    .getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.home_page_container, fragment, "Create Feed");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            if (true)
+                fragmentTransaction.addToBackStack(fragment.getTag());
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }*/
+
         return plannerView;
     }
+
 }

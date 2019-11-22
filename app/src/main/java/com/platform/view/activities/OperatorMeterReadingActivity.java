@@ -909,7 +909,7 @@ public String showReadingDialog(final Activity context, int pos){
 
     public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
         machine_id = operatorMachineData.getMachine_id();
-        tv_machine_code.setText(machine_id);
+        tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
         editor.apply();
     }

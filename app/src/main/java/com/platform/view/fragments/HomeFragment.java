@@ -98,6 +98,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
         }
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
         DashboardFragment dashboardFragment = new DashboardFragment();
         if (homeData != null) {
