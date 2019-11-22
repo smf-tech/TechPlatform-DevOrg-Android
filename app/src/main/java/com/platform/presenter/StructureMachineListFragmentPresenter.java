@@ -37,6 +37,7 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     private final String TAG = StructureMachineListFragmentPresenter.class.getName();
     public static final String GET_STRUCTURE_LIST ="getStructureList";
     public static final String GET_MACHINE_LIST = "getMachineList";
+    public static final String GET_DISTRICT = "getDistrict";
     public static final String GET_TALUKAS = "getTalukas";
     private static final String KEY_MACHINE_ID = "machine_id";
     private static final String KEY_MACHINE_CODE = "machine_code";
@@ -133,7 +134,9 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         fragmentWeakReference.get().showProgressBar();
 
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
+            requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
             requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
         }
     }
@@ -249,6 +252,15 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                     MachineListAPIResponse machineListData = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineListAPIResponse.class);
                     if (machineListData.getCode() == 200) {
                             fragmentWeakReference.get().populateMachineData(requestID, machineListData);
+                    }
+                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_DISTRICT)){
+                    JurisdictionLevelResponse jurisdictionLevelResponse
+                            = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+                    if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
+                            && !jurisdictionLevelResponse.getData().isEmpty()
+                            && jurisdictionLevelResponse.getData().size() > 0) {
+                        fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                     }
                 } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_TALUKAS)){
                     JurisdictionLevelResponse jurisdictionLevelResponse

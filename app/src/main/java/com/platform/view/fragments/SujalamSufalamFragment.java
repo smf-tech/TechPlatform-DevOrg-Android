@@ -46,7 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SujalamSufalamFragment extends Fragment implements  View.OnClickListener , APIDataListener {
+public class SujalamSufalamFragment extends Fragment implements  View.OnClickListener, View.OnLongClickListener, APIDataListener {
 
     private View sujalamSufalamFragmentView;
     private ProgressBar progressBar;
@@ -107,6 +107,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         tvMachineView.setOnClickListener(this);
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
+        btnSsView.setOnLongClickListener(this);
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
@@ -295,5 +296,11 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             sujalamSuphalamFragmentPresenter.clearData();
             sujalamSuphalamFragmentPresenter = null;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        Util.showToast("long click",this);
+        return false;
     }
 }
