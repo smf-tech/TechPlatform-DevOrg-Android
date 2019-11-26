@@ -222,7 +222,6 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 || TextUtils.isEmpty(etProviderLastName.getText().toString().trim())
                 || TextUtils.isEmpty(etProviderContact.getText().toString().trim())
                 || TextUtils.isEmpty(etMachineMobile.getText().toString().trim())
-                || TextUtils.isEmpty(etTradeName.getText().toString().trim())
                 || TextUtils.isEmpty(etGstRegNo.getText().toString().trim())
                 || TextUtils.isEmpty(etPanNo.getText().toString().trim())
                 || TextUtils.isEmpty(etBankName.getText().toString().trim())

@@ -316,7 +316,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 //        tvOtpTimer.setVisibility(View.GONE);
 
         String otp = getOtp();
-        if(getDeviceId().length()>0) {
+        if (getDeviceId().length() > 0) {
             sLoginInfo.setDeviceId(getDeviceId());
             otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
         } else {
@@ -340,7 +340,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 String deviceId = telephonyManager.getDeviceId();
                 return deviceId;
             }
-        }else {
+        } else {
             TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
                     TELEPHONY_SERVICE);
             String deviceId = telephonyManager.getDeviceId();
@@ -348,6 +348,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         }
         return "";
     }
+
     private void setOtp(final String msg) {
         try {
             char[] otpChars = msg.toCharArray();
@@ -520,6 +521,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         try {
             Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
 
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA,sLoginInfo);
@@ -570,7 +573,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     @Override
     public void onDestroy() {
-
-        Platform.getInstance().unregisterReceiver(mIntentReceiver);super.onDestroy();
+        if (mIntentReceiver != null)
+            Platform.getInstance().unregisterReceiver(mIntentReceiver);
+        super.onDestroy();
     }
 }

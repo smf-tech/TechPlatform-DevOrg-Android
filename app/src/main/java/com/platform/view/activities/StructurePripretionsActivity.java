@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -239,13 +240,24 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             return false;
         }
         if (location != null) {
+            if(ffIdentified){
+                if (TextUtils.isEmpty(etFFName.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter FF Name.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etFFMobile.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter FF Mobile Number.", Snackbar.LENGTH_LONG);
+                    return false;
+                }else {
+                    requestData.setFfName(etFFName.getText().toString());
+                    requestData.setFfMobileNumber(etFFMobile.getText().toString());
+                }
+            }
             requestData.setStructureId(structureData.getStructureId());
             requestData.setLat(location.getLatitude());
             requestData.setLong(location.getLongitude());
             requestData.setFfIdentified(ffIdentified);
-            requestData.setFfName(etFFName.getText().toString());
-            requestData.setFfMobileNumber(etFFMobile.getText().toString());
-            requestData.setFfMobileNumber(etFFMobile.getText().toString());
             requestData.setFfTraningDone(ffTranningComplited);
             requestData.setIsStructureFit(structureFit);
             requestData.setReason(etReson.getText().toString());

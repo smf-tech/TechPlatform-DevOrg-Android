@@ -63,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Work Type"
                         android:textSize="@dimen/dimen_10dp" />
 
@@ -105,7 +104,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Structure Type"
                         android:textSize="@dimen/dimen_10dp" />
 
@@ -130,7 +128,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Structure Owner Department"
                         android:textSize="@dimen/dimen_10dp" />
 
@@ -246,7 +243,8 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_15"
-                        android:textColor="@color/colorPrimary"/>
+                        android:textColor="@color/colorPrimary"
+                        android:text="Ssssss"/>
                 </RelativeLayout>
 
                 <RelativeLayout

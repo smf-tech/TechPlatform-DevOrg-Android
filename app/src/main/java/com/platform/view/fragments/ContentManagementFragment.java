@@ -82,7 +82,6 @@ public class ContentManagementFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private View contentview;
-    private Toolbar toolbar;
     private ImageView backButton;
     private TextView txtTtiel;
     private ImageView imgDownload;

@@ -50,6 +50,11 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
         holder.tvStructureName.setText(structureData.getStructureName());
         holder.tvDepartment.setText(structureData.getStructureDepartmentName());
         holder.tvLastUpdatedTime.setText(structureData.getUpdatedDate());
+        if(structureData.isSelectedForDeployment()) {
+            holder.rlStructure.setBackgroundResource(R.drawable.bg_rect_primary_border);
+        } else {
+            holder.rlStructure.setBackgroundResource(0);
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,7 +76,15 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
                 @Override
                 public void onClick(View view) {
                     if(type.equalsIgnoreCase("deployMachine")) {
+                        for (int i = 0; i<ssStructureList.size(); i++) {
+                            if(i == getAdapterPosition()) {
+                                ssStructureList.get(i).setSelectedForDeployment(true);
+                            } else {
+                                ssStructureList.get(i).setSelectedForDeployment(false);
+                            }
+                        }
                         fragment.deployMachine(getAdapterPosition());
+                        notifyDataSetChanged();
                     } else if(type.equalsIgnoreCase("shiftMachine")) {
                         fragment.ShiftMachine(getAdapterPosition());
                     }

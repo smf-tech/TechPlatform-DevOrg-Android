@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lighter_grey"
     android:gravity="center"
     tools:ignore="RtlSymmetry">
 
@@ -15,80 +14,125 @@
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
-        <RelativeLayout
-            android:id="@+id/rl_machine"
+    <LinearLayout
+        android:id="@+id/rl_machine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+            <!--<TextView-->
+                <!--android:id="@+id/tv_status"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="@dimen/text_size_11"-->
+                <!--android:layout_margin="@dimen/dimen_10dp"-->
+                <!--android:paddingStart="@dimen/dimen_10dp"-->
+                <!--android:paddingEnd="@dimen/dimen_10dp"-->
+                <!--android:fontFamily="@font/opensans_semibold"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_last_updated_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_toRightOf="@+id/tv_status"-->
+                <!--android:layout_margin="@dimen/dimen_10dp"-->
+                <!--android:layout_marginStart="@dimen/dimen_20dp"-->
+                <!--android:fontFamily="@font/opensans"-->
+                <!--android:textSize="@dimen/dimen_10dp"-->
+                <!--android:visibility="visible"/>-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/btn_popmenu"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_margin="@dimen/dimen_10dp"-->
+                <!--android:background="@drawable/ic_options_icon"/>-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_05dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tv_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_11"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:paddingEnd="@dimen/dimen_10dp"
-                android:background="@drawable/bg_status_label"
-                android:fontFamily="@font/opensans_semibold"/>
-
-            <TextView
-                android:id="@+id/tv_last_updated_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_status"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:fontFamily="@font/opensans"
-                android:textSize="@dimen/dimen_10dp"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/btn_popmenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:background="@drawable/ic_options_icon"/>
-
-            <TextView
-                android:id="@+id/tv_reason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_status"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans"
-                android:visibility="visible"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_code_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_status"
                 android:text="Machine Code"
-                android:textSize="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_10dp"/>
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"/>
 
             <TextView
                 android:id="@+id/tv_machine_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_code_label"
-                android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
                 android:fontFamily="@font/opensans_semibold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_machine_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:text="Machine Model"
+                android:textSize="@dimen/dimen_10dp"/>
+
+            <TextView
+                android:id="@+id/tv_machine_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_machine_label"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:fontFamily="@font/opensans_semibold"/>
+
+            <ImageView
+                android:id="@+id/btn_popmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:background="@drawable/ic_options_icon"/>
+
+        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_capacity_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_machine_code"
                 android:text="Diesel Capacity"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/dimen_10dp"/>
 
@@ -101,13 +145,49 @@
                 android:textSize="@dimen/text_size_13"
                 android:fontFamily="@font/opensans_semibold"/>
 
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_structure_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deployed on structure"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_structure_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_structure_label"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
             <TextView
                 android:id="@+id/tv_provider_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_capacity"
                 android:text="Provider Name"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/dimen_10dp"/>
 
@@ -116,19 +196,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_provider_label"
-                android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
+                android:layout_marginStart="@dimen/dimen_10dp"
                 android:fontFamily="@font/opensans_semibold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_contact_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Provider Contact Number"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_contact_label"
+                    android:textSize="@dimen/text_size_13"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textColor="@color/colorPrimary"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_operator_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_provider"
                 android:text="Operator Name"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
                 android:visibility="gone"/>
 
             <TextView
@@ -136,85 +254,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_operator_label"
-                android:layout_marginStart="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
+                android:layout_marginStart="@dimen/dimen_10dp"
                 android:fontFamily="@font/opensans_semibold"
                 android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/tv_machine_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_status"
-                android:layout_alignParentEnd="true"
-                android:text="Machine Model"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"/>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_machine_model"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_machine_label"
-                android:layout_alignParentEnd="true"
-                android:layout_toRightOf="@+id/tv_machine_code"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:gravity="end"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:fontFamily="@font/opensans_semibold"/>
-
-            <TextView
-                android:id="@+id/tv_structure_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_machine_model"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:text="Deployed on structure"
-                android:textSize="@dimen/dimen_10dp"/>
-
-            <TextView
-                android:id="@+id/tv_structure_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_structure_label"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans_semibold"/>
-
-            <TextView
-                android:id="@+id/tv_contact_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_structure_code"
-                android:layout_alignParentEnd="true"
-                android:text="Provider Contact Number"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"/>
-
-            <TextView
-                android:id="@+id/tv_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_contact_label"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:fontFamily="@font/opensans_semibold"/>
+                android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_operator_contact_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_contact"
-                android:layout_alignParentEnd="true"
                 android:text="Operator Contact Number"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:textSize="@dimen/dimen_10dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
                 android:visibility="gone"/>
 
             <TextView
@@ -222,24 +280,75 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_operator_contact_label"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:textSize="@dimen/text_size_13"
+                android:layout_marginStart="@dimen/dimen_10dp"
                 android:fontFamily="@font/opensans_semibold"
+                android:textColor="@color/colorPrimary"
                 android:visibility="gone"/>
+            </RelativeLayout>
 
-            <!--<Button-->
-                <!--android:id="@+id/btn_details"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/tv_contact"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--style="@style/RegistrationEditTextLayout"-->
-                <!--android:paddingStart="@dimen/dimen_10dp"-->
-                <!--android:paddingBottom="@dimen/dimen_10dp"-->
-                <!--android:textColor="@android:color/white"-->
-                <!--android:text="View Details" />-->
+        </LinearLayout>
 
-        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_marginBottom="@dimen/dimen_03dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_status_lebal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:text="Structure Status"
+                    android:textSize="@dimen/dimen_10dp" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_status_lebal"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textSize="@dimen/text_size_15"
+                    android:textColor="@color/colorPrimary"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_updated_time_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:text="Structure Status"
+                    android:textSize="@dimen/dimen_10dp" />
+
+            <TextView
+                android:id="@+id/tv_last_updated_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_updated_time_label"
+                android:fontFamily="@font/opensans_semibold"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:textSize="@dimen/text_size_13"
+                android:visibility="visible"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

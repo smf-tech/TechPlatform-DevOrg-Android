@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -140,41 +141,10 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         structureListAdapter = new StructureListAdapter(getActivity(), this, filteredStructureListData, type);
         rvStructureList.setAdapter(structureListAdapter);
         if(Util.isConnected(getActivity())) {
-            if (type.equalsIgnoreCase("deployMachine")) {
-                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            "machineDeployableStructures", "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            "machineDeployableStructures", "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                    machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            "machineDeployableStructures", "");
-                }
-            } else if (type.equalsIgnoreCase("shiftMachine")) {
-                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            "machineShiftStructures", "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                    machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            "machineShiftStructures", "");
-                } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-                    machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            "machineShiftStructures", "");
-                }
-            }
+            getDeployableStructures();
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
-
         if(isStateFilter) {
             tvStateFilter.setOnClickListener(this);
         }
@@ -183,6 +153,49 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         }
         if(isTalukaFilter) {
             tvTalukaFilter.setOnClickListener(this);
+        }
+
+        final SwipeRefreshLayout pullToRefresh = machineDeployStructureListFragmentView.findViewById(R.id.pull_to_refresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDeployableStructures();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    private void getDeployableStructures() {
+        if (type.equalsIgnoreCase("deployMachine")) {
+            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        "machineDeployableStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        "machineDeployableStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                        "machineDeployableStructures", "");
+            }
+        } else if (type.equalsIgnoreCase("shiftMachine")) {
+            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        "machineShiftStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        "machineShiftStructures", "");
+            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
+                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
+                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                        "machineShiftStructures", "");
+            }
         }
     }
 

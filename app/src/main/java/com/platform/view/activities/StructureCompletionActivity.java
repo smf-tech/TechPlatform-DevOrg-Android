@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -63,6 +64,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
     final String STRUCTURE_STATUS = "StructureStatus";
 
     ImageView selecteIV;
+    EditText etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -100,14 +102,21 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
         RadioGroup rgCompletion = findViewById(R.id.rg_completion);
 
+        etSiltQantity = findViewById(R.id.et_silt_qantity);
+        etWorkStartDate = findViewById(R.id.et_work_start_date);
+        etWorkCompletionDate = findViewById(R.id.et_work_completion_date);
+        etOperationalDays = findViewById(R.id.et_operational_days);
+
         ImageView iv1=findViewById(R.id.iv_structure1);
         iv1.setOnClickListener(this);
-        iv1.setImageResource(R.drawable.ic_certifict);
         ImageView iv2=findViewById(R.id.iv_structure2);
         iv2.setOnClickListener(this);
-        iv2.setImageResource(R.drawable.ic_certifict);
 
         if (structureStatus == 120) {
+            findViewById(R.id.ly_closer).setVisibility(View.VISIBLE);
+            iv1.setImageResource(R.drawable.ic_certifict);
+            iv2.setImageResource(R.drawable.ic_certifict);
+
             findViewById(R.id.tv_complition).setVisibility(View.GONE);
             rgCompletion.setVisibility(View.GONE);
             findViewById(R.id.iv_structure3).setVisibility(View.GONE);
@@ -120,6 +129,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             findViewById(R.id.tv_img3).setVisibility(View.GONE);
             findViewById(R.id.tv_img4).setVisibility(View.GONE);
         } else {
+            findViewById(R.id.ly_closer).setVisibility(View.GONE);
             findViewById(R.id.iv_structure3).setOnClickListener(this);
             findViewById(R.id.iv_structure4).setOnClickListener(this);
             rgCompletion.check(R.id.rb_completion_yes);
@@ -194,13 +204,26 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //        }
 
         requestData.put("is_completed", completion);
-
-        if (imageCount == 0) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please, click images of structure.",
-                    Snackbar.LENGTH_LONG);
-            return false;
+        requestData.put("etSiltQantity", etSiltQantity.getText().toString());
+        requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
+        requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
+        requestData.put("etOperationalDays", etOperationalDays.getText().toString());
+        if (structureStatus == 120) {
+            if (imageCount < 2) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please, click images of structure.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+        } else {
+            if (imageCount < 4) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please, click images of structure.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
         }
+
         return true;
     }
 

@@ -595,4 +595,6 @@
     <string name="enter_expiry_date">Enter MOU Expiry date.</string>
     <string name="enter_mou_start_date">Enter MOU start date</string>
     <string name="enter_rate1_end_date">Enter rate 1 end date.</string>
+    <string name="date_already_selected">You have already selected this date.</string>
+    <string name="deploy_machine_alert_message">Are you sure you want to deploy this machine?</string>
 </resources>

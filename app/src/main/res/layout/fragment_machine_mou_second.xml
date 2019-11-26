@@ -33,7 +33,8 @@
                     android:id="@+id/et_provider_first_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/provider_name"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -45,7 +46,8 @@
                     android:id="@+id/et_provider_last_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/provider_last_name"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -147,7 +149,8 @@
                     android:id="@+id/et_bank_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/bank_name"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -159,7 +162,8 @@
                     android:id="@+id/et_branch"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/branch_name"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -183,7 +187,8 @@
                     android:id="@+id/et_account_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/bank_account_no"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="16"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -195,7 +200,8 @@
                     android:id="@+id/et_confirm_account_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/confirm_account_no"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="16"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -228,7 +234,8 @@
                     android:id="@+id/et_account_holder_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/account_holder_name"
-                    android:inputType="textMultiLine"/>
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

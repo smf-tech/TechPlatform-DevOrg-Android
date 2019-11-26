@@ -27,7 +27,6 @@
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
             android:gravity="center_vertical"
-            android:drawablePadding="@dimen/dimen_03dp"
             android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
         <TextView
@@ -61,12 +60,28 @@
 
     </LinearLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_filter">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_data_list"
         android:layout_below="@+id/ly_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_no_data_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/no_data_available"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_create"

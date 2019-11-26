@@ -93,7 +93,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private MachineVisitValidationFragmentPresenter presenter;
-    private String machineId, currentStructureId, newStructureId;
+    private String machineId, machineCode, currentStructureId, newStructureId;
     private RecyclerView rvWorkingHours;
     private ImageView ivCalendarMode, imgRegisterOne, imgRegisterTwo;
     private EditText etMachineCode, etStructureCode, etWorkingHours;
@@ -135,6 +135,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
+        machineCode = getActivity().getIntent().getStringExtra("machineCode");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         init();
     }
@@ -145,7 +146,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         ivCalendarMode = machineVisitValidationFragmenttView.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = machineVisitValidationFragmenttView.findViewById(R.id.calendarView);
-        etStructureCode = machineVisitValidationFragmenttView.findViewById(R.id.et_structure_code);
+        //etStructureCode = machineVisitValidationFragmenttView.findViewById(R.id.et_structure_code);
         etMachineCode = machineVisitValidationFragmenttView.findViewById(R.id.et_machine_code);
         etWorkingHours = machineVisitValidationFragmenttView.findViewById(R.id.et_working_hours);
         btnMatch = machineVisitValidationFragmenttView.findViewById(R.id.btn_match);
@@ -172,8 +173,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         Date d = new Date();
         selectedMonth=Integer.parseInt(mmFormat.format(d.getTime()));
-        etMachineCode.setText(machineId);
-        etStructureCode.setText(currentStructureId);
+        etMachineCode.setText(machineCode);
+        //etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             location = gpsTracker.getLocation();
@@ -192,12 +193,14 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
+                    .setMaximumDate(Calendar.getInstance().getTime())
                     .setCalendarDisplayMode(CalendarMode.MONTHS)
                     .commit();
             ivCalendarMode.setRotation(180);
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
+                    .setMaximumDate(Calendar.getInstance().getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
             ivCalendarMode.setRotation(0);
@@ -317,7 +320,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         getActivity().startActivity(intent);
     }
 
-    private void uploadImage(){
+    private void uploadData(){
+        showProgressBar();
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_VISIT_VALIDATION_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -327,6 +331,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
                                 Util.showToast(responseOBJ.getMessage(), this);
                             } else {
@@ -335,6 +340,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
+                            hideProgressBar();
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -343,6 +349,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -422,15 +429,16 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 btnMatch.setEnabled(false);
                 btnMismatch.setEnabled(false);
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "You have already validated working hours for this date.",
+                                .findViewById(android.R.id.content), "You have already validated" +
+                                " working hours for this date.",
                         Snackbar.LENGTH_LONG);
             } else {
                 btnMatch.setEnabled(true);
                 btnMismatch.setEnabled(true);
             }
-        } else if(machineWorkingHoursAPIResponse.getStatus() == 300) {
-            btnMatch.setEnabled(true);
-            btnMismatch.setEnabled(true);
+        } else if(machineWorkingHoursAPIResponse.getStatus() == 400) {
+            btnMatch.setEnabled(false);
+            btnMismatch.setEnabled(false);
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), machineWorkingHoursAPIResponse.getMessage(),
                     Snackbar.LENGTH_LONG);
@@ -532,7 +540,15 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                 break;
             case R.id.btn_submit:
                 if(Util.isConnected(getActivity())) {
-                    uploadImage();
+                    if(machineWorkingHoursList.size()>0) {
+                        if(imageCount>0) {
+                            uploadData();
+                        } else {
+                            Util.showToast("Please select image.", getActivity());
+                        }
+                    } else {
+                        Util.showToast("Please add machine working hours.", getActivity());
+                    }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
@@ -542,13 +558,18 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        Toast.makeText(getActivity(), "date:" + date, Toast.LENGTH_SHORT).show();
         selectedDate = date.getDate();
-//        btnMatch.setClickable(true);
-//        btnMismatch.setClickable(true);
+        etWorkingHours.setText("");
         if(Util.isConnected(getContext())) {
-            presenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
-        }else{
+            for (MachineWorkingHoursRecord machineWorkingHoursRecord: machineWorkingHoursList) {
+                if(machineWorkingHoursRecord.getWorkingDate() == selectedDate.getTime()) {
+                    Util.showToast(getResources().getString(R.string.date_already_selected), getActivity());
+                    break;
+                } else {
+                    presenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
+                }
+            }
+        } else{
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
     }
@@ -556,8 +577,6 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         if (selectedMonth != Integer.parseInt(mmFormat.format(date.getDate()))) {
-//            btnMatch.setClickable(true);
-//            btnMismatch.setClickable(true);
             selectedMonth=Integer.parseInt(mmFormat.format(date.getDate()));
         }
     }

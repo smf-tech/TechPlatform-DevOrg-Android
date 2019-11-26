@@ -299,7 +299,6 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_technical_sanction_no"
                     style="@style/RegistrationEditTextLayout"
@@ -308,6 +307,39 @@
                     android:hint="Technical Sanction Number"
                     android:imeOptions="actionNext"
                     android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Technical Sanction Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_technical_sanction_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Technical Sanction Date"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textCapWords"
+                    android:focusable="false"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Intervention-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_intervention"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Intervention"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Estimate  Amount-->
             <com.google.android.material.textfield.TextInputLayout
@@ -331,7 +363,6 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_working_hours"
                     style="@style/RegistrationEditTextLayout"
@@ -347,7 +378,6 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_liters"
                     style="@style/RegistrationEditTextLayout"
@@ -363,7 +393,6 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_consumption_amount"
                     style="@style/RegistrationEditTextLayout"
@@ -379,7 +408,6 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_estimate_quantity"
                     style="@style/RegistrationEditTextLayout"
@@ -412,9 +440,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/submit"/>
-
         </LinearLayout>
-
     </ScrollView>
 
     <RelativeLayout

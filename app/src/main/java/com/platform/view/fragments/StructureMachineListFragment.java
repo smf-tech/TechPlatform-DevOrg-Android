@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +91,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
+    private boolean isTalukaApiFirstCall;
+    private TextView tvNoData;
 
     public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
     public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
@@ -121,6 +124,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
         fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
+        tvNoData = structureMachineListFragmentView.findViewById(R.id.tv_no_data_msg);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -245,6 +249,30 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             });
         }
+
+        final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        if (Util.isConnected(getActivity())) {
+            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                UserInfo userInfo = Util.getUserObjectFromPref();
+                isTalukaApiFirstCall = true;
+                structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Your District is not available in your profile." +
+                                "Please update your profile.",
+                        Snackbar.LENGTH_LONG);
+            }
+        }
     }
 
     public void takeMouDoneAction(int position) {
@@ -255,6 +283,48 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                             .findViewById(android.R.id.content), "You can not take any action on this machine.",
                     Snackbar.LENGTH_LONG);
         }
+    }
+
+    public void deployMachine(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText("Sujalam Suphalam");
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.deploy_machine_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Deploy");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+            intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+            intent.putExtra("type", "deployMachine");
+            intent.putExtra("title", "Select Structure");
+            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+            getActivity().startActivity(intent);
+
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("Cancel");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     public void releaseMachine(int position) {
@@ -495,6 +565,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void populateMachineData(String requestID, MachineListAPIResponse machineListData) {
+        tvNoData.setVisibility(View.GONE);
         ssMachineListData.clear();
         filteredMachineListData.clear();
         if (machineListData != null) {
@@ -514,6 +585,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
+        tvNoData.setVisibility(View.GONE);
         if (structureListData != null) {
 //            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
             ssStructureListData.clear();
@@ -544,6 +616,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
+    public void showNoDataMessage() {
+        tvNoData.setVisibility(View.VISIBLE);
+    }
+
     public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
@@ -563,12 +639,14 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         }
                     }
                 }
-                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
-                        this, "Select Taluka", machineTalukaList,
-                        false);
-                cddTaluka.show();
-                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if(!isTalukaApiFirstCall) {
+                    CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
+                            this, "Select Taluka", machineTalukaList,
+                            false);
+                    cddTaluka.show();
+                    cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                }
 
                 break;
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
@@ -628,6 +706,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             if (Util.isConnected(getActivity())) {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
+                    isTalukaApiFirstCall = false;
                     structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);

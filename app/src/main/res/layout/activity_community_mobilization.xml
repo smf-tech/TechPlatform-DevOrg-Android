@@ -249,7 +249,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="GP Name"
+                        android:hint="Grampanchayat Name"
                         android:imeOptions="actionNext" />
                 </com.google.android.material.textfield.TextInputLayout>
 

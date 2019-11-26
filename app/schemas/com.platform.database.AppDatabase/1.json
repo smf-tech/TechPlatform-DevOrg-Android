@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f6522dd26d830ad844ce6c5985ebc4ce",
+    "identityHash": "cfb9d30cd4fd0604a18dda41fff23f25",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -736,7 +736,7 @@
       },
       {
         "tableName": "StructureData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, PRIMARY KEY(`structureId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, `isStructureComplete` INTEGER NOT NULL, PRIMARY KEY(`structureId`))",
         "fields": [
           {
             "fieldPath": "structureId",
@@ -851,6 +851,12 @@
             "columnName": "updatedDate",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isStructureComplete",
+            "columnName": "isStructureComplete",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -1014,7 +1020,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f6522dd26d830ad844ce6c5985ebc4ce')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cfb9d30cd4fd0604a18dda41fff23f25')"
     ]
   }
 }
