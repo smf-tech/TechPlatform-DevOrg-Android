@@ -397,4 +397,13 @@ public class Constants {
         public static final String OPERATOR = "Operator";
     }
 
+
+
+    public static class OperatorModule {
+        public static final String MACHINE_START_READING = "machinestartreading";
+        public static final String MACHINE_END_READING = "machineendreading";
+        public static final String MACHINE_START_IMAGE = "machinestartimage";
+        public static final String MACHINE_END_IMAGE = "machineendimage";
+    }
+
 }

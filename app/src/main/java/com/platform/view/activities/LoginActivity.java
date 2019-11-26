@@ -225,6 +225,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                 Intent intent = new Intent(this, OtpActivity.class);
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
                 startActivity(intent);
+
             } catch (Exception e) {
                 Log.e(TAG, "Exception :: LoginActivity : showNextScreen");
             }

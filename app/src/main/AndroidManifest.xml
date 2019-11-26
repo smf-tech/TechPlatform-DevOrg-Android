@@ -61,6 +61,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.OperatorMeterReadingActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.NotificationsActivity"

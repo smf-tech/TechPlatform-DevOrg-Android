@@ -6,17 +6,11 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncStatusObserver;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +35,6 @@ import com.platform.view.activities.HomeActivity;
 import com.platform.view.adapters.ViewPagerAdapter;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT;
 import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
@@ -50,6 +43,11 @@ import static com.platform.utility.Constants.RequestStatus.DEFAULT_MODULE;
 
 public class HomeFragment extends Fragment implements PlatformTaskListener, HomeActivity.OnSyncClicked {
 
+    private final int[] tabIcons = {
+            R.drawable.ic_home_icon_tab,
+            R.drawable.ic_stories_icon_tab,
+            R.drawable.ic_connect_icon_tab
+    };
     private Home homeData;
     private Context context;
     private View homeFragmentView;
@@ -57,10 +55,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     private AlertDialog dialogNotApproved;
     private Object mSyncObserverHandle;
     private boolean isSyncRequired;
-    private final int[] tabIcons = {
-            R.drawable.ic_home_icon_tab,
-            R.drawable.ic_stories_icon_tab,
-            R.drawable.ic_connect_icon_tab
+    @SuppressWarnings("CanBeFinal")
+    private
+    SyncStatusObserver mSyncStatusObserver = which -> {
+        Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
+
+        ContentResolver.isSyncActive(account, SyncAdapterUtils.AUTHORITY);
+        ContentResolver.isSyncPending(account, SyncAdapterUtils.AUTHORITY);
     };
 
     @Override
@@ -97,7 +98,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             mSyncObserverHandle = null;
         }
     }
-
 
     private void setupViewPager(ViewPager viewPager) {
         DashboardFragment dashboardFragment = new DashboardFragment();
@@ -305,16 +305,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             }
         }
     }
-
-
-    @SuppressWarnings("CanBeFinal")
-    private
-    SyncStatusObserver mSyncStatusObserver = which -> {
-        Account account = GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE);
-
-        ContentResolver.isSyncActive(account, SyncAdapterUtils.AUTHORITY);
-        ContentResolver.isSyncPending(account, SyncAdapterUtils.AUTHORITY);
-    };
 
     @Override
     public void onSyncButtonClicked() {

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "da9f6c5c97742a133dde8af049defcfc",
+    "identityHash": "f6522dd26d830ad844ce6c5985ebc4ce",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -618,7 +618,7 @@
       },
       {
         "tableName": "OperatorRequestResponseModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `status_code` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `status_code` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER, `reasonId` TEXT)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -684,6 +684,12 @@
             "fieldPath": "totalHours",
             "columnName": "totalHours",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reasonId",
+            "columnName": "reasonId",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -1008,7 +1014,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'da9f6c5c97742a133dde8af049defcfc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f6522dd26d830ad844ce6c5985ebc4ce')"
     ]
   }
 }
