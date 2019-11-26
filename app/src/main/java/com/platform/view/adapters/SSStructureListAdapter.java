@@ -6,9 +6,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,22 +106,23 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
         if (isSave) {
-            if(ssDataList.get(position).getDeployedMachineDetails().size()==0){
+            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
                 holder.tvMachinCount.setText("None");
-            }else if(ssDataList.get(position).getDeployedMachineDetails().size()>1){
+            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
             } else {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
             }
-
         }
         if (!isSaveOfflineStructure) {
-            holder.btSave.setVisibility(View.GONE);
+            holder.btSave.setVisibility(View.INVISIBLE);
         } else {
             // save button visibal
-            if(ssDataList.get(position).isSavedOffine()){
+            if (ssDataList.get(position).isSavedOffine()) {
+                holder.btSave.setTextColor(activity.getApplication().getResources().getColor(R.color.light_grey));
                 holder.btSave.setEnabled(false);
             } else {
+                holder.btSave.setTextColor(activity.getApplication().getResources().getColor(R.color.colorPrimaryDark));
                 holder.btSave.setEnabled(true);
             }
         }
@@ -217,29 +222,40 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 //                                    }
                                     break;
                                 case R.id.action_structure_completion:
-                                    intent = new Intent(activity, StructureCompletionActivity.class);
-                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-                                    intent.putExtra(STRUCTURE_STATUS, ssDataList.get(getAdapterPosition()).getStructureStatusCode());
-                                    activity.startActivity(intent);
-                                    break;
+                                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
+                                        showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
+                                                "Yes", "No", getAdapterPosition(),2);
+                                    } else {
+                                        if(ssDataList.get(getAdapterPosition()).isStructureComplete()){
+                                            showDialog(activity, "Alert", "Are you sure, want to Complete Structure?",
+                                                    "Yes", "No", getAdapterPosition(),2);
+                                        } else {
+                                            Util.showToast("Please release all the machine from Structure",activity);
+                                        }
+                                    }
 
+                                    break;
                             }
                             return false;
                         }
                     });
 
+//                    Menu menu = popup.getMenu();
+//                    for(int i = 0; i<menu.size();i++) {
+//                        MenuItem mi = menu.getItem(i);
+//                        applyFontToMenuItem(mi);
+//                    }
                 }
             });
+
+
             lyStructure = itemView.findViewById(R.id.rl_machine);
             lyStructure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115 && isVisitMonitoring) {
                         showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
-                                "Yes", "No", getAdapterPosition());
-                    } else if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
-                        showDialog(activity, "Alert", "Are you sure, want to close structure?",
-                                "Yes", "No", getAdapterPosition());
+                                "Yes", "No", getAdapterPosition(),1);
                     }
                 }
             });
@@ -270,8 +286,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         }
     }
 
+//    private void applyFontToMenuItem(MenuItem mi) {
+//        Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/YOUR_FONT.ttf");
+//        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+//        mNewTitle.setSpan(new CustomTypeFaceSpan("", font,Color.WHITE), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//        mi.setTitle(mNewTitle);
+//    }
+
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
-            btn2String, int adapterPosition) {
+            btn2String, int adapterPosition, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -293,11 +316,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                if (ssDataList.get(adapterPosition).getStructureStatusCode() == 115 && isVisitMonitoring) {
+                if (flag==1) {
                     Intent intent = new Intent(activity, StructurePripretionsActivity.class);
                     intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     activity.startActivity(intent);
-                } else if (ssDataList.get(adapterPosition).getStructureStatusCode() == 120) {
+                } else if (flag==2) {
                     Intent intent = new Intent(activity, StructureCompletionActivity.class);
                     intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     intent.putExtra(STRUCTURE_STATUS, ssDataList.get(adapterPosition).getStructureStatusCode());

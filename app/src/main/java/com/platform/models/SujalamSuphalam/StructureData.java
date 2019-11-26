@@ -92,6 +92,10 @@ public class StructureData implements Serializable {
     @SerializedName("updatedDate")
     @Expose
     private String updatedDate;
+    @ColumnInfo(name = "isStructureComplete")
+    @SerializedName("isStructureComplete")
+    @Expose
+    private boolean isStructureComplete;
     @Ignore
     @SerializedName("deployedMachineDetails")
     @Expose
@@ -253,6 +257,14 @@ public class StructureData implements Serializable {
 
     public boolean isSavedOffine() {
         return isSavedOffine;
+    }
+
+    public boolean isStructureComplete() {
+        return isStructureComplete;
+    }
+
+    public void setStructureComplete(boolean structureComplete) {
+        isStructureComplete = structureComplete;
     }
 
     public List<DeployedMachine> getDeployedMachineDetails() {

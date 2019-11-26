@@ -64,12 +64,9 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
                              @Nullable Bundle savedInstanceState) {
 
         View approvalsFragmentView = inflater.inflate(R.layout.fragment_user_leaves_approval, container, false);
-        Toolbar toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            TextView title = toolbar.findViewById(R.id.toolbar_title);
+            TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
-        }
-        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+        ImageView img_back = approvalsFragmentView.findViewById(R.id.toolbar_back_action);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

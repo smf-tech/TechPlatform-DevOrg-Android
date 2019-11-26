@@ -115,12 +115,11 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
     }
 
     public void submitStructure(Structure structureData) {
+        mContext.get().showProgressBar();
         Gson gson = new GsonBuilder().create();
         String params = gson.toJson(structureData);
-
         final String getMatrimonyMeetTypesUrl = BuildConfig.BASE_URL + Urls.SSModule.CREATE_STRUCTURE;
         Log.d(CREATE_STRUCTURE, " url: " + getMatrimonyMeetTypesUrl);
-        mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CREATE_STRUCTURE, params, getMatrimonyMeetTypesUrl);

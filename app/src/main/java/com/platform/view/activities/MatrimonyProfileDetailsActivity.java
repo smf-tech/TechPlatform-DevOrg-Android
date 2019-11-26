@@ -48,7 +48,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private String approvalType, filterTypeReceived;
     private ViewPager vpProfileImage;
     private CircleIndicator indicator;
-    private Toolbar toolbar;
+
     //personal
     private TextView tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
@@ -63,8 +63,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates;
-    private Button btn_mark_attendance,btn_interview_done;
-    private TextView tv_approval_status,tv_premium;
+    private Button btn_mark_attendance, btn_interview_done;
+    private TextView tv_approval_status, tv_premium;
     private String meetIdReceived;
 
 
@@ -97,19 +97,18 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         matrimonyProfilesDetailsActivityPresenter = new MatrimonyProfilesDetailsActivityPresenter(this);
         //for(int i=0;i<IMAGES.length;i++)
         {
-            if (userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null
-                    &&userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
+            if (userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
+                    && userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image().size() > 0) {
                 ProfileImageList.addAll(userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image());
             }
            /* ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
             ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
             ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");*/
         }
-        toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            TextView title = toolbar.findViewById(R.id.toolbar_title);
-            title.setText("Profile Details");
-        }
+
+        TextView title = findViewById(R.id.toolbar_title);
+        title.setText("Profile Details");
+
         ImageView img_back = findViewById(R.id.toolbar_back_action);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -130,7 +129,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
 
         btn_interview_done = findViewById(R.id.btn_interview_done);
-        btn_mark_attendance =  findViewById(R.id.btn_mark_attendance);
+        btn_mark_attendance = findViewById(R.id.btn_mark_attendance);
         //Personal details -
         tv_name = findViewById(R.id.tv_name);
         tv_birth_date = findViewById(R.id.tv_birth_date);
@@ -148,40 +147,39 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_smoke = findViewById(R.id.tv_smoke);
         tv_drink = findViewById(R.id.tv_drink);
         tv_approval_status = findViewById(R.id.tv_approval_status);
-        tv_premium  = findViewById(R.id.tv_premium);
-        if (userProfileList.isIsPremium()){
+        tv_premium = findViewById(R.id.tv_premium);
+        if (userProfileList.isIsPremium()) {
             tv_premium.setVisibility(View.VISIBLE);
         }
 
         tv_approval_status.setText(userProfileList.getIsApproved());
 
-        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")){
-            if (userProfileList.isMarkAttendance()){
+        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+            if (userProfileList.isMarkAttendance()) {
                 btn_interview_done.setVisibility(View.VISIBLE);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
                 btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
                 btn_mark_attendance.setEnabled(false);
-                if (userProfileList.isInterviewDone())
-                {
+                if (userProfileList.isInterviewDone()) {
                     btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
                     btn_interview_done.setEnabled(false);
                 }
-            }else {
+            } else {
                 btn_interview_done.setVisibility(View.VISIBLE);
                 btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
                 btn_interview_done.setEnabled(false);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
             }
 
-        }else {
+        } else {
             btn_interview_done.setVisibility(View.GONE);
             btn_mark_attendance.setVisibility(View.GONE);
         }
 
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
-        tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name()+" "+userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
-                +" "+userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
+        tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
+                + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
         tv_birth_date.setText(Util.getDateFromTimestamp(userProfileList.getMatrimonial_profile().getPersonal_details().getBirthDate(), Constants.EVENT_DATE_FORMAT));
         tv_birth_time.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_time());
         tv_age.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getAge());
@@ -342,12 +340,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 break;
             case R.id.btn_mark_attendance:
                 JSONObject jsonObject = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_ATTENDANCE);
-                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObject,1,Constants.MARK_ATTENDANCE);
+                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObject, 1, Constants.MARK_ATTENDANCE);
 
                 break;
             case R.id.btn_interview_done:
                 JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_INTERVIEW);
-                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObj,1,Constants.MARK_INTERVIEW);
+                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObj, 1, Constants.MARK_INTERVIEW);
                 break;
             case R.id.toolbar_back_action:
                 finish();
@@ -497,7 +495,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     }
 
     public void updateRequestStatus(String response, int position, String requestType) {
-        if (Constants.MARK_ATTENDANCE.equalsIgnoreCase(requestType)){
+        if (Constants.MARK_ATTENDANCE.equalsIgnoreCase(requestType)) {
             //Util.showToast(requestType+" Success",this);
             btn_interview_done.setEnabled(true);
             btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.colorPrimary));
@@ -505,7 +503,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
             Util.showSuccessFailureToast(response, this, getWindow().getDecorView()
                     .findViewById(android.R.id.content));
-        }else if (Constants.MARK_INTERVIEW.equalsIgnoreCase(requestType)){
+        } else if (Constants.MARK_INTERVIEW.equalsIgnoreCase(requestType)) {
             //Util.showToast(requestType+" Success",this);
             Util.showSuccessFailureToast(response, this, getWindow().getDecorView()
                     .findViewById(android.R.id.content));

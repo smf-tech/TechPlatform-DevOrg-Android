@@ -288,12 +288,17 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         }
 
         if(location!=null){
-            if (TextUtils.isEmpty(selectedStatusID)
-                    || TextUtils.isEmpty(selectedIssueID)
-                    || TextUtils.isEmpty(etIssuesDescription.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please, feel proper information.",
-                        Snackbar.LENGTH_LONG);
+            if (TextUtils.isEmpty(selectedStatusID)){
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, select Status.", Snackbar.LENGTH_LONG);
+                return false;
+            } else if(TextUtils.isEmpty(selectedIssueID)){
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, select Issue.", Snackbar.LENGTH_LONG);
+                return false;
+            } else if(TextUtils.isEmpty(etIssuesDescription.getText().toString())){
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Issues Description.", Snackbar.LENGTH_LONG);
                 return false;
             } else {
                 requestData.setStructureId(structureData.getStructureId());
@@ -309,8 +314,6 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                     Snackbar.LENGTH_LONG);
             return false;
         }
-
-
 
         if (imageUri.size() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()

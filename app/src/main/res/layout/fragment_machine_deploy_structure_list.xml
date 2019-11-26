@@ -23,19 +23,22 @@
             android:hint="@string/state"
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
         <TextView
             android:id="@+id/tv_district_filter"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_30dp"
             android:paddingStart="@dimen/dimen_10dp"
+            android:layout_marginStart="@dimen/dimen_03dp"
             android:layout_weight="1"
             android:background="@drawable/bg_blue_box"
             android:hint="@string/district"
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
         <TextView
             android:id="@+id/tv_taluka_filter"
@@ -43,11 +46,13 @@
             android:layout_height="@dimen/dimen_30dp"
             android:paddingStart="@dimen/dimen_10dp"
             android:layout_weight="1"
+            android:layout_marginStart="@dimen/dimen_03dp"
             android:background="@drawable/bg_blue_box"
             android:hint="@string/taluka"
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
     </LinearLayout>
 

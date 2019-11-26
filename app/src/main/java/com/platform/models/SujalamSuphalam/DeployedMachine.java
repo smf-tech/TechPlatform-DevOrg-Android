@@ -12,6 +12,10 @@ public class DeployedMachine implements Serializable {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("machineUpdatedDate")
+    @Expose
+    private String machineUpdatedDate;
+
 
     public String getCode() {
         return code;
@@ -27,5 +31,13 @@ public class DeployedMachine implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMachineUpdatedDate() {
+        return machineUpdatedDate;
+    }
+
+    public void setMachineUpdatedDate(String machineUpdatedDate) {
+        this.machineUpdatedDate = machineUpdatedDate;
     }
 }

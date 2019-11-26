@@ -27,7 +27,6 @@
             android:textColorHint="@color/medium_grey"
             android:fontFamily="@font/opensans"
             android:gravity="center_vertical"
-            android:drawablePadding="@dimen/dimen_03dp"
             android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
         <TextView
