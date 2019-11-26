@@ -35,9 +35,7 @@ public class MatrimonyBookletActivity extends Activity implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matrimony_booklet_layout);
-
         setActionbar("Create Booklet");
-
         meetId = getIntent().getStringExtra("meetId");
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);

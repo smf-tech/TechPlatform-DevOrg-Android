@@ -115,10 +115,11 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int dieselImageCount = 0, registerImageCount = 0;
-    private String imageType, selectedDate;
+    private String imageType;//, selectedDate;
     private ImageView clickedImageView;
     private GPSTracker gpsTracker;
     private Location location;
+    private Date selectedDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,9 +172,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         calendarView.getSelectedDate();
-        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
-                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
-                ddFormat.format(calendarView.getSelectedDate().getDate());
+//        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
+//                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
+//                ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineId);
         etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
@@ -228,29 +229,48 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 }
                 break;
             case R.id.btn_add:
-                if(etDieselQuantity.getText().toString()!=null && etDieselQuantity.getText().toString().length()>0) {
-                    if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-                        location = gpsTracker.getLocation();
-                        if (location != null) {
-                            MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
-                            machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
-                                    "00:00"));
-                            machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
-                            machineDieselRecord.setMachineId(machineId);
-                            machineDieselRecord.setStructureId(currentStructureId);
-                            machineDieselRecordsList.add(machineDieselRecord);
-                        } else {
-                            Util.showToast("Unable to get location", getActivity());
+                int dateAlreadySelected = 0;
+                if(selectedDate!= null) {
+                    dateAlreadySelected = 1;
+                    for (MachineDieselRecord machineDieselRecord : machineDieselRecordsList) {
+                        if (machineDieselRecord.getDieselDate() == selectedDate.getTime()) {
+                            //dateAlreadySelected = true;
+                            dateAlreadySelected = 2;
+                            break;
                         }
-                    }  else {
-                        gpsTracker.showSettingsAlert();
                     }
-                    machineDieselRecordsAdapter.notifyDataSetChanged();
+                    if(dateAlreadySelected == 2) {
+                        Util.showToast(getResources().getString(R.string.date_already_selected), getActivity());
+                    }
                 } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Enter diesel quantity.",
-                            Snackbar.LENGTH_LONG);
+                    Util.showToast("Please select calendar date", getActivity());
                 }
+                    if (dateAlreadySelected == 1) {
+                        if (etDieselQuantity.getText().toString() != null && etDieselQuantity.getText().toString().length() > 0) {
+                            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                                location = gpsTracker.getLocation();
+                                if (location != null) {
+                                    MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
+//                            machineDieselRecord.setDieselDate(Util.dateTimeToTimeStamp(selectedDate,
+//                                    "00:00"));
+                                    machineDieselRecord.setDieselDate(selectedDate.getTime());
+                                    machineDieselRecord.setDieselQuantity(etDieselQuantity.getText().toString());
+                                    machineDieselRecord.setMachineId(machineId);
+                                    machineDieselRecord.setStructureId(currentStructureId);
+                                    machineDieselRecordsList.add(machineDieselRecord);
+                                } else {
+                                    Util.showToast("Unable to get location", getActivity());
+                                }
+                            } else {
+                                gpsTracker.showSettingsAlert();
+                            }
+                            machineDieselRecordsAdapter.notifyDataSetChanged();
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Enter diesel quantity.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    }
                 break;
         }
     }
@@ -269,6 +289,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         } else {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
+                    .setMaximumDate(Calendar.getInstance().getTime())
                     .setCalendarDisplayMode(CalendarMode.WEEKS)
                     .commit();
             ivCalendarMode.setRotation(0);
@@ -408,6 +429,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     }
 
     private void uploadData(){
+        showProgressBar();
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_DIESEL_RECORD_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -417,6 +439,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
                                 Util.showToast(responseOBJ.getMessage(), this);
                             } else {
@@ -425,6 +448,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
+                            hideProgressBar();
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -433,6 +457,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -548,9 +573,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
-                ddFormat.format(date.getDate());
-        //selectedDate = date.getCalendar().toString();
+        selectedDate = date.getDate();
+//        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
+//                ddFormat.format(date.getDate());
         etDieselQuantity.setText("");
     }
 

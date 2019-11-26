@@ -63,7 +63,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Work Type"
                         android:textSize="@dimen/dimen_10dp" />
 
@@ -105,7 +104,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Structure Type"
                         android:textSize="@dimen/dimen_10dp" />
 
@@ -130,7 +128,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-
                         android:text="Structure Owner Department"
                         android:textSize="@dimen/dimen_10dp" />
 

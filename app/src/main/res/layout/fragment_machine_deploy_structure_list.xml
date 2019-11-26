@@ -51,6 +51,12 @@
 
     </LinearLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_filter">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_structure_list"
         android:layout_width="match_parent"
@@ -58,6 +64,8 @@
         android:layout_below="@+id/ly_filter"
         android:layout_margin="@dimen/dimen_10dp">
     </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_deploy"

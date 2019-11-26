@@ -2,11 +2,13 @@ package com.platform.view.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.platform.R;
 import com.platform.models.SujalamSuphalam.MachineData;
 import com.platform.utility.Constants;
+import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
@@ -58,9 +61,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
-        if(machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE ||
-                machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE ||
-                machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE ||
+        if(machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
+                machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
+                machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
             holder.tvOperatorLabel.setVisibility(View.VISIBLE);
             holder.tvOperatorContactLabel.setVisibility(View.VISIBLE);
@@ -76,7 +79,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvStructureCode,
                 tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact;
         ImageView btnPopupMenu;
-        RelativeLayout rlMachine;
+        LinearLayout rlMachine;
         PopupMenu popup;
 
         ViewHolder(View itemView) {
@@ -87,11 +90,31 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            tvContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Permissions.isCallPermission(activity, this)) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + tvContact.getText().toString()));
+                        activity.startActivity(callIntent);
+                    }
+                }
+            });
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
             tvOperatorLabel = itemView.findViewById(R.id.tv_operator_label);
             tvOperator = itemView.findViewById(R.id.tv_operator);
             tvOperatorContactLabel = itemView.findViewById(R.id.tv_operator_contact_label);
             tvOperatorContact = itemView.findViewById(R.id.tv_operator_contact);
+            tvOperatorContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Permissions.isCallPermission(activity, this)) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + tvOperatorContact.getText().toString()));
+                        activity.startActivity(callIntent);
+                    }
+                }
+            });
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
 
@@ -199,6 +222,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         machineVisitIntent.putExtra("title", "Machine Visit and Validation");
                                         machineVisitIntent.putExtra("type", "visitMachine");
                                         machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        machineVisitIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         machineVisitIntent.putExtra("currentStructureId", ssDataList.get
                                                 (getAdapterPosition()).getDeployedStrutureId());
                                         activity.startActivity(machineVisitIntent);
@@ -302,13 +326,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
                         if (fragment.isMachineDepoly) {
                             if(Util.isConnected(activity)) {
-                                Intent intent = new Intent(activity, SSActionsActivity.class);
-                                intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                                intent.putExtra("type", "deployMachine");
-                                intent.putExtra("title", "Select Structure");
-                                intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                intent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                activity.startActivity(intent);
+                                fragment.deployMachine(getAdapterPosition());
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);
                             }

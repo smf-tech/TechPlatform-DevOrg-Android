@@ -108,7 +108,8 @@
                             <EditText
                                 android:id="@+id/et_diesel_quantity"
                                 style="@style/RegistrationEditTextLayout"
-                                android:hint="Quantity of Diesel(in Litres)"/>
+                                android:hint="Quantity of Diesel(in Litres)"
+                                android:inputType="number"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button

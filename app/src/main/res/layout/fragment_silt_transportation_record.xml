@@ -47,7 +47,8 @@
                         android:id="@+id/et_tractor_trips_count"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Tractor trips count"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="3"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +60,8 @@
                         android:id="@+id/et_tipper_trips_count"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Tipper trips count"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="3"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

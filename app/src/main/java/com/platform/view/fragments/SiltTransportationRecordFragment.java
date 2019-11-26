@@ -86,7 +86,6 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
     private RequestQueue rQueue;
-    private Bitmap mProfileCompressBitmap = null;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
     private Button btnSubmit;
@@ -314,6 +313,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     private void uploadData(SiltTransportRecord siltTransportRecord){
+        showProgressBar();
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_SILT_TRANSPORT_RECORD_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -323,6 +323,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
                                 Util.showToast(responseOBJ.getMessage(), this);
                             } else {
@@ -331,6 +332,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                             Log.d("response -",jsonString);
                             backToMachineList();
                         } catch (UnsupportedEncodingException e) {
+                            hideProgressBar();
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -339,6 +341,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {

@@ -157,7 +157,8 @@
                 <EditText
                     android:id="@+id/et_chasis_number"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/chasis_number"/>
+                    android:hint="@string/chasis_number"
+                    android:maxLength="17"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -169,7 +170,7 @@
                     android:id="@+id/et_excavation_capacity"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/excavation_capacity"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -181,7 +182,7 @@
                     android:id="@+id/et_diesel_capacity"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/diesel_capacity"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -192,7 +193,9 @@
                 <EditText
                     android:id="@+id/et_provider_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/provider_name_hint"/>
+                    android:hint="@string/provider_name_hint"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

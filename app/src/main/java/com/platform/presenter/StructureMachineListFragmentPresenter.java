@@ -246,12 +246,16 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                     StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
                     if (structureListData.getCode() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
+                    } else if(structureListData.getCode() == 400){
+                        fragmentWeakReference.get().showNoDataMessage();
                     }
                 } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
                     //fragmentWeakReference.get().populateAnalyticsData(requestID, machineListData);
                     MachineListAPIResponse machineListData = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineListAPIResponse.class);
                     if (machineListData.getCode() == 200) {
                             fragmentWeakReference.get().populateMachineData(requestID, machineListData);
+                    } else if(machineListData.getCode() == 400){
+                        fragmentWeakReference.get().showNoDataMessage();
                     }
                 } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_DISTRICT)){
                     JurisdictionLevelResponse jurisdictionLevelResponse

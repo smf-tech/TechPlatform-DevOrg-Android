@@ -386,6 +386,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void uploadData(){
+        showProgressBar();
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -395,16 +396,18 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
                                 backToMachineList();
                                 Util.showToast(responseOBJ.getMessage(), this);
-                            } else if(responseOBJ.getStatus() == 400){
+                            } else if(responseOBJ.getStatus() == 300){
                                 Util.showToast(responseOBJ.getMessage(), this);
                             } else {
                                 Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
                             }
                             Log.d("response -",jsonString);
                         } catch (UnsupportedEncodingException e) {
+                            hideProgressBar();
                             e.printStackTrace();
                             Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                         }
@@ -413,6 +416,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.msg_failure),
                                 Toast.LENGTH_SHORT).show();
                     }

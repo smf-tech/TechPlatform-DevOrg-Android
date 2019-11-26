@@ -99,6 +99,17 @@ public class StructureData implements Serializable {
     @Ignore
     private boolean isSavedOffine = false;
 
+    public boolean isSelectedForDeployment() {
+        return isSelectedForDeployment;
+    }
+
+    public void setSelectedForDeployment(boolean selectedForDeployment) {
+        isSelectedForDeployment = selectedForDeployment;
+    }
+
+    @Ignore
+    private boolean isSelectedForDeployment = false;
+
     public String getStructureId() {
         return structureId;
     }

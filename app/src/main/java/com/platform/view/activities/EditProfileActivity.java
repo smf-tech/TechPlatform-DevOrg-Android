@@ -156,10 +156,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     private void initViews() {
         setActionbar(getString(R.string.registration_title));
-
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-
         backButton = findViewById(R.id.toolbar_back_action);
         etUserFirstName = findViewById(R.id.et_user_first_name);
         etUserMiddleName = findViewById(R.id.et_user_middle_name);
