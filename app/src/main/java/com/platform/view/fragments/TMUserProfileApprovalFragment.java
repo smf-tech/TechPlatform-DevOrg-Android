@@ -44,8 +44,7 @@ import java.util.List;
 public class TMUserProfileApprovalFragment extends Fragment {
     private RequestOptions requestOptions;
     private View approvalsFragmentView;
-//    private Toolbar toolbar;
-    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title,tv_email_title_text,tv_leave_reason;
+    private TextView tv_name_title, tv_role_title, tv_mobile_title, tv_email_title, tv_email_title_text, tv_leave_reason;
     private Button btn_approve, btn_reject;
     private ImageView img_user_profle;
     private LinearLayout linear_dynamic_textview;
@@ -109,28 +108,27 @@ public class TMUserProfileApprovalFragment extends Fragment {
         tv_leave_reason = approvalsFragmentView.findViewById(R.id.tv_leave_reason);
         PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
         String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
-        if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)){
+        if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)) {
             btn_reject.setVisibility(View.VISIBLE);
             btn_approve.setVisibility(View.VISIBLE);
             tv_leave_reason.setVisibility(View.GONE);
-        }else {
+        } else {
             btn_reject.setVisibility(View.GONE);
             btn_approve.setVisibility(View.GONE);
             tv_leave_reason.setVisibility(View.VISIBLE);
         }
 
 
-//        if (toolbar != null) {
-            TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
-            title.setText(strTitle);
-//        }
+        TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
+        title.setText(strTitle);
         ImageView img_back = approvalsFragmentView.findViewById(R.id.toolbar_back_action);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    getActivity().onBackPressed();}
-                ((TMUserProfileListActivity)getActivity()).finishwithResult();
+                    getActivity().onBackPressed();
+                }
+                ((TMUserProfileListActivity) getActivity()).finishwithResult();
             }
         });
 
@@ -181,21 +179,21 @@ public class TMUserProfileApprovalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(tv_mobile_title.getText()))
-                try {
-                    Intent dial = new Intent();
-                    dial.setAction("android.intent.action.DIAL");
-                    dial.setData(Uri.parse("tel:" + tv_mobile_title.getText()));
-                    startActivity(dial);
-                } catch (Exception e) {
-                    Log.e("Calling Phone", "" + e.getMessage());
-                }
+                    try {
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+                        dial.setData(Uri.parse("tel:" + tv_mobile_title.getText()));
+                        startActivity(dial);
+                    } catch (Exception e) {
+                        Log.e("Calling Phone", "" + e.getMessage());
+                    }
             }
         });
         return approvalsFragmentView;
     }
 
     private void callReasonDialog() {
-        String strReason = Util.showReasonDialog(getActivity(),0,this);
+        String strReason = Util.showReasonDialog(getActivity(), 0, this);
     }
 
     @Override
@@ -215,18 +213,20 @@ public class TMUserProfileApprovalFragment extends Fragment {
         userProfileApprovalRequestList = data;
         //handle respo
         Util.logger("name", data.get(0).getName());
-        if (data.get(0).getStatus()!=null) {
-            if (data.get(0).getStatus().getRejection_reason()!=null && !TextUtils.isEmpty(data.get(0).getStatus().getRejection_reason())) {
-                tv_leave_reason.setText("Rejected Reason:- "+data.get(0).getStatus().getRejection_reason());
-            }else {tv_leave_reason.setVisibility(View.GONE);}
-        }else {
+        if (data.get(0).getStatus() != null) {
+            if (data.get(0).getStatus().getRejection_reason() != null && !TextUtils.isEmpty(data.get(0).getStatus().getRejection_reason())) {
+                tv_leave_reason.setText("Rejected Reason:- " + data.get(0).getStatus().getRejection_reason());
+            } else {
+                tv_leave_reason.setVisibility(View.GONE);
+            }
+        } else {
             tv_leave_reason.setVisibility(View.GONE);
         }
         tv_name_title.setText(data.get(0).getName());
         tv_role_title.setText(data.get(0).getRole_id().getName());
-        if (data.get(0).getEmail()!=null && !TextUtils.isEmpty(data.get(0).getEmail())) {
+        if (data.get(0).getEmail() != null && !TextUtils.isEmpty(data.get(0).getEmail())) {
             tv_email_title.setText(data.get(0).getEmail());
-        }else {
+        } else {
             tv_email_title_text.setVisibility(View.GONE);
             tv_email_title.setVisibility(View.GONE);
         }
@@ -236,11 +236,11 @@ public class TMUserProfileApprovalFragment extends Fragment {
         Util.logger("uname", data.get(0).getUsername());
         Util.logger("mobile", data.get(0).getPhone());
 
-        Util.logger("mobile", "Size -"+data.get(0).getLocation().size());
+        Util.logger("mobile", "Size -" + data.get(0).getLocation().size());
         //add project to layout if available
 
         //tvProject.setText("Org"+": "+data.get(0).getOrg_id().getName());
-        if (data.get(0).getOrg_id()!=null) {
+        if (data.get(0).getOrg_id() != null) {
             if (data.get(0).getOrg_id().getName() != null) {
                 addDynamicTextsTitels("Organisation");
 
@@ -261,9 +261,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
         }*/
 
 
-
-        for (int i = 0; i <data.get(0).getLocation().size() ; i++)
-        {
+        for (int i = 0; i < data.get(0).getLocation().size(); i++) {
             addDynamicTextsTitels(data.get(0).getLocation().get(i).getDisplay_name());
 
             addDynamicTextsValues(data.get(0).getLocation().get(i).getValue().get(0));
@@ -279,18 +277,17 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
     public void updateRequestStatus(String response, int position) {
 
-        Util.showSuccessFailureToast(response,getActivity(),getActivity().getWindow().getDecorView()
+        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
         getActivity().finish();
     }
 
     public void onReceiveReason(String s, int pos) {
-        rejectApprovalRequest(s,pos);
+        rejectApprovalRequest(s, pos);
     }
 
-    public void rejectApprovalRequest(String strReason,int pos)
-    {
-        if (!TextUtils.isEmpty(strReason)){
+    public void rejectApprovalRequest(String strReason, int pos) {
+        if (!TextUtils.isEmpty(strReason)) {
             TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
             try {
                 tmApprovalRequestModel.setType("userapproval");
@@ -306,31 +303,33 @@ public class TMUserProfileApprovalFragment extends Fragment {
             Gson gson = new Gson();
             String jsonInString = gson.toJson(tmApprovalRequestModel);
             tmUserProfileApprovalFragmentPresenter.approveRejectRequest(jsonInString, 0);
-        }else {
+        } else {
 
-            Util.showSuccessFailureToast("Please enter reason to reject.",getActivity(),getActivity().getWindow().getDecorView()
+            Util.showSuccessFailureToast("Please enter reason to reject.", getActivity(), getActivity().getWindow().getDecorView()
                     .findViewById(android.R.id.content));
         }
     }
+
     // adding dynamic textviews below
-    public void addDynamicTextsValues(String value){
+    public void addDynamicTextsValues(String value) {
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lparams.setMargins(5,5,5,5);
+        lparams.setMargins(5, 5, 5, 5);
         TextView tv = new TextViewRegular(getActivity());
         tv.setLayoutParams(lparams);
-        tv.setText(value+"");
+        tv.setText(value + "");
         tv.setTextSize(14);
 
         linear_dynamic_textview.addView(tv);
     }
-    public void addDynamicTextsTitels(String strTitle){
+
+    public void addDynamicTextsTitels(String strTitle) {
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lparams.setMargins(5,50,5,5);
+        lparams.setMargins(5, 50, 5, 5);
         TextView tvtitle = new TextViewBold(getActivity());
         tvtitle.setLayoutParams(lparams);
-        tvtitle.setText(strTitle+" : ");
+        tvtitle.setText(strTitle + " : ");
         tvtitle.setTextSize(14);
         //tvtitle.setTypeface(null, Typeface.BOLD);
         linear_dynamic_textview.addView(tvtitle);

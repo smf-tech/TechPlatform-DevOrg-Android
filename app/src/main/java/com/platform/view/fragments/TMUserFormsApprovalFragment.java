@@ -37,23 +37,22 @@ import java.util.List;
 public class TMUserFormsApprovalFragment extends Fragment implements TMUserFormsApprovalRecyclerAdapter.OnRequestItemClicked, TMUserFormsApprovalRecyclerAdapter.OnApproveRejectClicked {
 
     private View approvalsFragmentView;
-    private Toolbar toolbar;
     private RecyclerView rvPendingRequests;
-    private String strTitle,filterTypeRequest;
+    private String strTitle, filterTypeRequest;
     TMUserFormsApprovalFragmentPresenter tmUserFormsApprovalFragmentPresenter;
     TMUserFormsApprovalRecyclerAdapter tmUserFormsApprovalRecyclerAdapter;
     JSONObject requetsObject;
     private List<TMUserFormsApprovalRequest.Form_detail> tmUserFormsApplicationsList;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        if (!(bundle == null))
-        {
-            strTitle =  bundle.getString("filter_type","");
+        if (!(bundle == null)) {
+            strTitle = bundle.getString("filter_type", "");
             filterTypeRequest = bundle.getString("filter_type_request", "");
-            Util.logger(getActivity().getLocalClassName(),filterTypeRequest);
+            Util.logger(getActivity().getLocalClassName(), filterTypeRequest);
             try {
                 requetsObject = new JSONObject(filterTypeRequest);
             } catch (JSONException e) {
@@ -68,18 +67,16 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
                              @Nullable Bundle savedInstanceState) {
 
         approvalsFragmentView = inflater.inflate(R.layout.fragment_user_forms_approval, container, false);
-        toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            TextView title = toolbar.findViewById(R.id.toolbar_title);
-            title.setText(strTitle);
+        TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
+        title.setText(strTitle);
 
-        }
-        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+        ImageView img_back = approvalsFragmentView.findViewById(R.id.toolbar_back_action);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    getActivity().onBackPressed();}
+                    getActivity().onBackPressed();
+                }
             }
         });
         rvPendingRequests = approvalsFragmentView.findViewById(R.id.rv_pendingapprovalpageview);
@@ -104,22 +101,22 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     }
 
     public void showFetchedUserProfileForApproval(List<TMUserFormsApprovalRequest.Form_detail> data) {
-        tmUserFormsApplicationsList =data;
+        tmUserFormsApplicationsList = data;
         tmUserFormsApprovalRecyclerAdapter = new TMUserFormsApprovalRecyclerAdapter(getActivity(), data,
-                this,this);
+                this, this);
         rvPendingRequests.setAdapter(tmUserFormsApprovalRecyclerAdapter);
     }
 
     @Override
     public void onItemClicked(int pos) {
-        Util.showToast("open form details here",getActivity());
+        Util.showToast("open form details here", getActivity());
     }
 
     public void updateRequestStatus(String response, int position) {
         //Util.showToast("form is approved or rejected",getActivity());
         tmUserFormsApplicationsList.remove(position);
         tmUserFormsApprovalRecyclerAdapter.notifyItemRemoved(position);
-        Util.showSuccessFailureToast(response,getActivity(),getActivity().getWindow().getDecorView()
+        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
     }
 
@@ -135,17 +132,17 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             tmApprovalRequestModel.setStartdate("");
             tmApprovalRequestModel.setEnddate("");
             tmApprovalRequestModel.setUserId(requetsObject.getString("user_id"));
-            tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
+            tmApprovalRequestModel.setId("" + tmUserFormsApplicationsList.get(pos).get_id().get$oid());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);
+        tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel), pos);
     }
 
     @Override
     public void onRejectClicked(int pos) {
         //Util.showToast("Form Reject",getActivity());
-        String strReason = Util.showReasonDialog(getActivity(),pos,this);
+        String strReason = Util.showReasonDialog(getActivity(), pos, this);
 
   /*      TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
         try {
@@ -164,12 +161,11 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
     }
 
     public void onReceiveReason(String s, int pos) {
-        rejectApprovalRequest(s,pos);
+        rejectApprovalRequest(s, pos);
     }
 
-    public void rejectApprovalRequest(String strReason,int pos)
-    {
-        if (!TextUtils.isEmpty(strReason)){
+    public void rejectApprovalRequest(String strReason, int pos) {
+        if (!TextUtils.isEmpty(strReason)) {
 
             TMApprovalRequestModel tmApprovalRequestModel = new TMApprovalRequestModel();
             try {
@@ -179,13 +175,13 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
                 tmApprovalRequestModel.setLeave_type("");
                 tmApprovalRequestModel.setStartdate("");
                 tmApprovalRequestModel.setEnddate("");
-                tmApprovalRequestModel.setId(""+tmUserFormsApplicationsList.get(pos).get_id().get$oid());
+                tmApprovalRequestModel.setId("" + tmUserFormsApplicationsList.get(pos).get_id().get$oid());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel),pos);
-        }else {
-            Util.showSuccessFailureToast("Please enter reason to reject.",getActivity(),getActivity().getWindow().getDecorView()
+            tmUserFormsApprovalFragmentPresenter.approveRejectRequest(Util.modelToJson(tmApprovalRequestModel), pos);
+        } else {
+            Util.showSuccessFailureToast("Please enter reason to reject.", getActivity(), getActivity().getWindow().getDecorView()
                     .findViewById(android.R.id.content));
         }
     }

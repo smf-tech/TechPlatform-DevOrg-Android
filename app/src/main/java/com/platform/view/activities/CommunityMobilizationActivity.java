@@ -337,17 +337,37 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         switch (Integer.parseInt(selectedActivityID)) {
             case 1:
                 //Activity 1
-                if (TextUtils.isEmpty(etA1MeetingDate.getText().toString())
-                        || TextUtils.isEmpty(selectedVillageID)
-                        || TextUtils.isEmpty(etA1GrampanchayatName.getText().toString())
-                        || TextUtils.isEmpty(etA1NoOfParticipant.getText().toString())
-                        || TextUtils.isEmpty(etA1NameOfSarpanch.getText().toString())
-                        || TextUtils.isEmpty(etA1ContactOfSarpanch.getText().toString())
-                        || TextUtils.isEmpty(etA1NameOfOopSarpanch.getText().toString())
-                        || TextUtils.isEmpty(etA1ContactOfOopSarpanch.getText().toString())) {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please fill proper information.",
-                            Snackbar.LENGTH_LONG);
+                if (TextUtils.isEmpty(etA1MeetingDate.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Meeting Date.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(selectedVillageID)){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, select Village.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1GrampanchayatName.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Grampanchayat Name.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1NoOfParticipant.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter No Of Participant.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1NameOfSarpanch.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Name Of Sarpanch.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1ContactOfSarpanch.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Contact Of Sarpanch.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1NameOfOopSarpanch.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Name Of Oop-Sarpanch.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA1ContactOfOopSarpanch.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Contact Of Oop-Sarpanch.", Snackbar.LENGTH_LONG);
                     return false;
                 } else {
                     requestData.setDate(etA1MeetingDate.getText().toString());
@@ -369,13 +389,21 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
 
             case 2:
                 //Activity 2
-                if (TextUtils.isEmpty(selectedVillageID)
-                        || TextUtils.isEmpty(etA2GpName.getText().toString())
-                        || TextUtils.isEmpty(etA2Date.getText().toString())
-                        || TextUtils.isEmpty(etA2NoOfParticipant.getText().toString())) {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please fill proper information.",
-                            Snackbar.LENGTH_LONG);
+                if (TextUtils.isEmpty(selectedVillageID)){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, select Village.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA2GpName.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Grampanchayt Name.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA2Date.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Date.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA2NoOfParticipant.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter No Of Participant.", Snackbar.LENGTH_LONG);
                     return false;
                 } else {
                     requestData.setVillageId(selectedVillageID);
@@ -393,16 +421,33 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             case 3:
                 //Activity 3
 
-                if (TextUtils.isEmpty(etA3TaskforceLeader.getText().toString())
-                        || TextUtils.isEmpty(etA3MemberName.getText().toString())
-                        || TextUtils.isEmpty(etA3Gender.getText().toString())
-                        || TextUtils.isEmpty(etA3PhoneNoTaskForceLeader.getText().toString())
-                        || TextUtils.isEmpty(etA3Education.getText().toString())
-                        || TextUtils.isEmpty(etA3Occupation.getText().toString())
-                        || TextUtils.isEmpty(etA3DateOfFormation.getText().toString())) {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please fill proper information.",
-                            Snackbar.LENGTH_LONG);
+                if (TextUtils.isEmpty(etA3TaskforceLeader.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Taskforce Leader.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA3MemberName.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Member Name.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA3Gender.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Gender.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA3PhoneNoTaskForceLeader.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Phone No. Task-force Leader.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA3Education.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Education.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA3Occupation.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Occupation.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA3DateOfFormation.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Date Of Formation.", Snackbar.LENGTH_LONG);
                     return false;
                 } else {
                     requestData.setLeaderName(etA3TaskforceLeader.getText().toString());
@@ -416,13 +461,21 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 break;
             case 4:
                 //Activity 4
-                if (TextUtils.isEmpty(etA4TopicOfTraining.getText().toString())
-                        || TextUtils.isEmpty(etA4DateOfTraining.getText().toString())
-                        || TextUtils.isEmpty(etA4NameOfParticipant.getText().toString())
-                        || TextUtils.isEmpty(etA4DurationInDays.getText().toString())) {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please fill proper information.",
-                            Snackbar.LENGTH_LONG);
+                if (TextUtils.isEmpty(etA4TopicOfTraining.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Topic Of Training.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA4DateOfTraining.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Date Of Training.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA4NameOfParticipant.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Name Of Participant.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA4DurationInDays.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Duration In Days.", Snackbar.LENGTH_LONG);
                     return false;
                 } else {
                     requestData.setTopicName(etA4TopicOfTraining.getText().toString());
@@ -439,15 +492,29 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                break;
             case 5:
                 //Activity 5
-                if (TextUtils.isEmpty(selectedVillageID)
-                        || TextUtils.isEmpty(etA5NameOfOfficerDept.getText().toString())
-                        || TextUtils.isEmpty(etA5Date.getText().toString())
-                        || TextUtils.isEmpty(etA5NameOfFarmer.getText().toString())
-                        || TextUtils.isEmpty(etA5PhoneNoOfFarmers.getText().toString())
-                        || TextUtils.isEmpty(etA5FarmerLandHolding.getText().toString())) {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please fill proper information.",
-                            Snackbar.LENGTH_LONG);
+                if (TextUtils.isEmpty(selectedVillageID)){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, selected Village.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA5NameOfOfficerDept.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter name of officer oepartment.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if(TextUtils.isEmpty(etA5Date.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, selected Date.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA5NameOfFarmer.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter name of Farmer.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA5PhoneNoOfFarmers.getText().toString())){
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter phone of Farmer.", Snackbar.LENGTH_LONG);
+                    return false;
+                } else if( TextUtils.isEmpty(etA5FarmerLandHolding.getText().toString())) {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please, enter Farmer Land Holding.", Snackbar.LENGTH_LONG);
                     return false;
                 } else {
                     requestData.setVillageId(selectedVillageID);
@@ -469,7 +536,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     }
 
     private void uploadImage() {
-
+        showProgressBar();
         Log.d("url :", upload_URL);
         Log.d("request :", new Gson().toJson(requestData));
 
@@ -478,6 +545,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                     @Override
                     public void onResponse(NetworkResponse response) {
                         rQueue.getCache().clear();
+                        hideProgressBar();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
@@ -497,6 +565,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(CommunityMobilizationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -567,6 +636,7 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
             case "Activity":
+                taskList.clear();
                 for (CustomSpinnerObject obj : statusList) {
                     if (obj.isSelected()) {
                         selectedActivity = obj.getName();
@@ -623,6 +693,9 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                     obj.setName(activityList[i]);
                     taskList.add(obj);
                 }
+                selectedTask="";
+                selectedTaskID="";
+                etTask.setText("");
                 csdTask = new CustomSpinnerDialogClass(this, this, "Tasks", taskList, false);
                 etActivity.setText(selectedActivity);
                 break;

@@ -52,6 +52,86 @@
                     android:text="No" />
             </RadioGroup>
 
+            <LinearLayout
+                android:id="@+id/ly_closer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--Actual Silt Qantity Excavated(CuM)-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_silt_qantity"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Actual Silt Qantity Excavated(CuM)"
+                        android:imeOptions="actionNext"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Actual Work Start Data-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_work_start_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Actual Work Start Data"
+                        android:imeOptions="actionNext"
+                        android:inputType="text|textCapWords"
+                        android:focusable="false"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Actual Work Completion Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_work_completion_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Actual Work Completion Date"
+                        android:imeOptions="actionNext"
+                        android:inputType="text|textCapWords"
+                        android:focusable="false"
+                        android:longClickable="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Total No. of operational days-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_operational_days"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Total No. of operational days"
+                        android:imeOptions="actionNext"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_photo_lbl"
                 android:layout_width="wrap_content"

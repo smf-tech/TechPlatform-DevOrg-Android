@@ -33,7 +33,6 @@ public class TMUserAttendanceApprovalFragment extends Fragment implements TMUser
 
     JSONObject requetsObject;
     private View approvalsFragmentView;
-    private Toolbar toolbar;
     private RecyclerView rvAttendenceList;
     private TMUserAttendenceApprovalFragmentPresenter tmUserAttendenceApprovalFragmentPresenter;
     private TMUserAttendanceApprovalRecyclerAdapter tmUserAttendanceApprovalRecyclerAdapter;
@@ -63,13 +62,10 @@ public class TMUserAttendanceApprovalFragment extends Fragment implements TMUser
                              @Nullable Bundle savedInstanceState) {
 
         approvalsFragmentView = inflater.inflate(R.layout.fragment_user_attendance_approval, container, false);
-        toolbar = approvalsFragmentView.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            TextView title = toolbar.findViewById(R.id.toolbar_title);
+            TextView title = approvalsFragmentView.findViewById(R.id.toolbar_title);
             title.setText(strTitle);
-        }
 
-        ImageView img_back = toolbar.findViewById(R.id.toolbar_back_action);
+        ImageView img_back = approvalsFragmentView.findViewById(R.id.toolbar_back_action);
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

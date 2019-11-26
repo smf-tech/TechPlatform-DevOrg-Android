@@ -111,6 +111,9 @@ public class Structure implements Serializable {
     @SerializedName("administrativeApprovalDate")
     @Expose
     private String administrativeApprovalDate;
+    @SerializedName("intervention_id")
+    @Expose
+    private String interventionId ;
 
     public String getName() {
         return name;
@@ -390,5 +393,13 @@ public class Structure implements Serializable {
 
     public void setAdministrativeApprovalDate(String administrativeApprovalDate) {
         this.administrativeApprovalDate = administrativeApprovalDate;
+    }
+
+    public String getInterventionId() {
+        return interventionId;
+    }
+
+    public void setInterventionId(String interventionId) {
+        this.interventionId = interventionId;
     }
 }

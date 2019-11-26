@@ -127,8 +127,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int state_halt = 111;
     private int currentState = 0;
     private RequestOptions requestOptions;
-private Toolbar toolbar;
-private ImageView toolbar_edit_action;
+    private ImageView toolbar_edit_action;
     private void updateStatusAndProceed(int currentState) {
         Log.e("currentstate--3", "----"+currentState);
         if (currentState == state_start) {
@@ -204,7 +203,6 @@ private ImageView toolbar_edit_action;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading_new);
-        toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
         gear_action_start = findViewById(R.id.gear_action_start);
         gear_action_stop = findViewById(R.id.gear_action_stop);
