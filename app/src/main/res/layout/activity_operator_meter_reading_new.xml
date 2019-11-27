@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#f2f2f2"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.activities.OperatorMeterReadingActivity">
 
@@ -99,20 +99,19 @@
         android:src="@drawable/ic_jcb_image"
         android:visibility="gone" />
 
-    <com.airbnb.lottie.LottieAnimationView
+    <ImageView
         android:id="@+id/gear_action_start"
-        android:layout_width="@dimen/dimen_150dp"
-        android:layout_height="@dimen/dimen_150dp"
+        android:layout_width="@dimen/dimen_120dp"
+        android:layout_height="@dimen/dimen_120dp"
         android:layout_gravity="center"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
+        android:src="@drawable/jcb_gif"
         android:visibility="gone"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="loading_gears.json"
-        app:lottie_loop="true" />
+        />
 
-    <com.airbnb.lottie.LottieAnimationView
+    <ImageView
         android:id="@+id/gear_action_stop"
         android:layout_width="@dimen/dimen_120dp"
         android:layout_height="@dimen/dimen_120dp"
@@ -120,10 +119,9 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
+        android:src="@drawable/jcb_stopped"
         android:visibility="visible"
-        app:lottie_autoPlay="false"
-        app:lottie_fileName="loading_gears.json"
-        app:lottie_loop="false" />
+        />
 
     <TextView
         android:id="@+id/tv_machine_code"
@@ -156,7 +154,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
-                android:text="0"
+                android:text="0 Hrs 0 Min 0 Sec"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/dimen_16dp" />
 
@@ -253,7 +251,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

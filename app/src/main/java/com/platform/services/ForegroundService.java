@@ -81,6 +81,15 @@ public class ForegroundService extends Service {
 // start it with:
         mHandler.post(runnable);
         Log.e("SystemService--Started", "--" + currentClockTime);
+        startTime =  preferences.getLong("startTime",0);
+        Log.e("startTime--checked", "--" + startTime);
+        if (startTime<1) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("startTime", SystemClock.elapsedRealtime());
+            editor.apply();
+        }
+        startTime =  preferences.getLong("startTime",0);
+        Log.e("startTime--saved", "--" + startTime);
         return START_NOT_STICKY;
     }
 
@@ -98,7 +107,9 @@ public class ForegroundService extends Service {
         editor.putInt("systemTime", currentSystemTime);
         editor.putInt("systemClockTime", currentClockTime+systemClockTime);
         Log.e("systemClockTime---destr", "---"+systemClockTime);
-        editor.putInt("totalHours", totalHours);
+        editor.apply();
+        systemClockTime = preferences.getInt("systemClockTime", 0);
+        editor.putInt("totalHours", systemClockTime);
         editor.apply();
         Log.e("totalHours---destr", "---"+totalHours);
     }
@@ -132,7 +143,8 @@ public class ForegroundService extends Service {
             Log.e("System--clock-", "--" + systemClockTime);
 
 // Calculate the time interval when the task is done
-            int timeInterval = (int) (SystemClock.elapsedRealtime() - startTime) / 1000;
+            int timeInterval = (int) (SystemClock.elapsedRealtime()- startTime) / 1000;
+            Log.e("SysscurClockelapsedTime", "--" + SystemClock.elapsedRealtime());
             if ((currentClockTime - timeInterval)>1){
                 Log.e("SysscurClockTime", "--" + currentClockTime);
                 Log.e("SysstimeInterval", "--" + timeInterval);
@@ -150,7 +162,8 @@ public class ForegroundService extends Service {
             totalHours =  preferences.getInt("totalHours", 0);
             //getFormattedTime(currentClockTime);
             //intent.putExtra("STR_TIME", currentSystemTime - time + " " + "\n " + getFormattedTime(currentClockTime));
-            currentClockTime = currentClockTime+1;
+            //currentClockTime = currentClockTime+1;
+            currentClockTime = timeInterval;
             totalHours = totalHours+1;
 
             SharedPreferences.Editor editor = preferences.edit();

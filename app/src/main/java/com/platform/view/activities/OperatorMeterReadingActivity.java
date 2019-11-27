@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -93,7 +94,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
     private Location location;
-    LottieAnimationView gear_action_start,gear_action_stop;
+    ImageView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
@@ -134,7 +135,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int state_pause = 113;
     private int state_halt = 111;
     private int currentState = 0;
-    private RequestOptions requestOptions;
+    private RequestOptions requestOptions,requestOptionsjcb;
 private Toolbar toolbar;
 private ImageView toolbar_edit_action;
     private void updateStatusAndProceed(int currentStateReceived) {
@@ -153,6 +154,7 @@ private ImageView toolbar_edit_action;
             saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
             gear_action_start.setVisibility(View.VISIBLE);
+            setWorkingAnime();
             gear_action_stop.setVisibility(View.GONE);
             Util.showToast("Machine started Working.",this);
             currentState =state_start;
@@ -169,6 +171,9 @@ private ImageView toolbar_edit_action;
             gear_action_stop.setVisibility(View.VISIBLE);
             Util.showToast("Machine is on break.",this);
             currentState =state_pause;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("startTime", 0);
+            editor.apply();
         } else if (currentState == state_stop) {
             //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
@@ -184,6 +189,9 @@ private ImageView toolbar_edit_action;
             gear_action_stop.setVisibility(View.VISIBLE);
             Util.showToast("Machine stopped Working.",this);
             currentState =state_stop;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("startTime", 0);
+            editor.apply();
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
@@ -195,6 +203,15 @@ private ImageView toolbar_edit_action;
             currentState =state_halt;
         }
         Log.e("currentstate--4", "----"+currentState);
+    }
+
+    private void setWorkingAnime() {
+        gear_action_stop.setVisibility(View.GONE);
+        gear_action_start.setVisibility(View.VISIBLE);
+        Glide.with(this)
+                .applyDefaultRequestOptions(requestOptionsjcb)
+                .load(R.drawable.jcb_gif)   //Uri.parse(list.get(0).getImage()))
+                .into(gear_action_start);
     }
 
     private void updateButtonsonRestart(int currentState) {
@@ -214,6 +231,7 @@ private ImageView toolbar_edit_action;
             buttonPauseService.setText(getResources().getString(R.string.meter_pause));
             btnStartService.setVisibility(View.GONE);
             startService();
+            setWorkingAnime();
         }
     }
 
@@ -229,6 +247,10 @@ private ImageView toolbar_edit_action;
         gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+
+        requestOptionsjcb= new RequestOptions().placeholder(R.drawable.jcb_stopped);
+        requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
+
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
 
 
@@ -690,9 +712,19 @@ private ImageView toolbar_edit_action;
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             flag = true;
+            if (isStartImage) {
+                et_smeter_read.setText("");
+            }else {
+                et_emeter_read.setText("");
+            }
             final Throwable cropError = UCrop.getError(data);
         }else if (resultCode !=RESULT_OK){
             flag = true;
+            if (isStartImage) {
+                et_smeter_read.setText("");
+            }else {
+                et_emeter_read.setText("");
+            }
         }
     }
 
@@ -992,7 +1024,7 @@ public String showReadingDialog(final Activity context, int pos){
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
-        editor.putString("machine_code",machine_id);
+        editor.putString("machine_code",operatorMachineData.getMachine_code());
         editor.apply();
         for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
