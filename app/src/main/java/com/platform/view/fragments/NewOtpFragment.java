@@ -523,11 +523,15 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA,sLoginInfo);
 
             OtpActivity activity = (OtpActivity) getActivity();
             if (activity != null) {
                 activity.startActivity(intent);
-                activity.finish();
+                ((OtpActivity) getActivity()).killActivity();
+
             }
         } catch (Exception e) {
             Log.e("NewOTPFragment", "Exception :: OtpFragment : showNextScreen");

@@ -315,7 +315,7 @@ private void uploadImage(String receivedImage) {
                     rQueue.getCache().clear();
                     try {
                         String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                        Toast.makeText(getContext(), jsonString, Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getContext(), jsonString, Toast.LENGTH_LONG).show();
                         Log.d("response Received -", jsonString);
 
                         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().deleteSinglSynccedOperatorRecord(list.get(0).get_id());

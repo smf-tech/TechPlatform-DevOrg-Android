@@ -31,7 +31,7 @@
             android:textStyle="normal"
             android:fontFamily="@font/opensans_regular"
             android:gravity="left|top"
-
+            android:maxLength="6"
             android:digits="0123456789"
             android:inputType="phone"
             android:hint="Enter meter reading"

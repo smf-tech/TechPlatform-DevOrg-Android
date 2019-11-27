@@ -62,7 +62,7 @@ public class ForegroundService extends Service {
                 0, notificationIntent, 0);
 
         final Builder builder = new Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
+                .setContentTitle("Operator Machine Reading")
                 .setContentText(input)
                 .setSmallIcon(R.mipmap.app_logo)
                 .setContentIntent(pendingIntent);
@@ -80,6 +80,7 @@ public class ForegroundService extends Service {
         };
 // start it with:
         mHandler.post(runnable);
+        Log.e("SystemService--Started", "--" + currentClockTime);
         return START_NOT_STICKY;
     }
 
@@ -99,6 +100,7 @@ public class ForegroundService extends Service {
         Log.e("systemClockTime---destr", "---"+systemClockTime);
         editor.putInt("totalHours", totalHours);
         editor.apply();
+        Log.e("totalHours---destr", "---"+totalHours);
     }
 
     @Nullable
@@ -131,6 +133,14 @@ public class ForegroundService extends Service {
 
 // Calculate the time interval when the task is done
             int timeInterval = (int) (SystemClock.elapsedRealtime() - startTime) / 1000;
+            if ((currentClockTime - timeInterval)>1){
+                Log.e("SysscurClockTime", "--" + currentClockTime);
+                Log.e("SysstimeInterval", "--" + timeInterval);
+            }else {
+                Log.e("SysscurClockTime", "--" + currentClockTime);
+                Log.e("SysstimeInterval", "--" + timeInterval);
+            }
+
             //currentClockTime = systemClockTime + timeInterval;
            // currentClockTime = timeInterval;
             currentSystemTime = ((int) System.currentTimeMillis() / 1000);

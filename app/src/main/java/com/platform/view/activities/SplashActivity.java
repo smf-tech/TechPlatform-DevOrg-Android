@@ -51,7 +51,10 @@ public class SplashActivity extends AppCompatActivity {
                     if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
                          intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
                         intent.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        finish();
                     }else {
                         intent = new Intent(SplashActivity.this, HomeActivity.class);
                     }

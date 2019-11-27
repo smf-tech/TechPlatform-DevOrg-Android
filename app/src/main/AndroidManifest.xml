@@ -61,6 +61,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.OperatorMeterReadingActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.NotificationsActivity"
@@ -171,6 +172,10 @@
             android:name=".view.activities.MatrimonyBookletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+
+        <activity
+            android:name=".view.activities.FeedCreationActivity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

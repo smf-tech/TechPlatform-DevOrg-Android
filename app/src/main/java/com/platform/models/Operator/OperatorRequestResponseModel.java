@@ -46,6 +46,10 @@ public class OperatorRequestResponseModel {
     @SerializedName("totalHours")
     @Expose
     private Integer totalHours;
+    @SerializedName("reason_id")
+    @Expose
+    private String reasonId;
+
 
     public String getMachine_id() {
         return machine_id;
@@ -134,5 +138,13 @@ public class OperatorRequestResponseModel {
 
     public void setStatus_code(String status_code) {
         this.status_code = status_code;
+    }
+
+    public String getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(String reasonId) {
+        this.reasonId = reasonId;
     }
 }

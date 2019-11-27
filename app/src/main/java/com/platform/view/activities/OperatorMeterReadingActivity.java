@@ -18,11 +18,14 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,6 +66,7 @@ import com.platform.utility.GPSTracker;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.utility.VolleyMultipartRequest;
+import com.platform.widgets.SingleSelectBottomSheet;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -70,6 +74,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,7 +86,10 @@ import static com.platform.receivers.ConnectivityReceiver.connectivityReceiverLi
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 
-public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener{
+public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
+    private String strReasonId="";
+    ArrayList<String> ListHaltReasons = new ArrayList<>();
+    private SingleSelectBottomSheet bottomSheetDialogFragment;
     private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
     private Location location;
@@ -127,9 +135,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int state_halt = 111;
     private int currentState = 0;
     private RequestOptions requestOptions;
-    private ImageView toolbar_edit_action;
-    private void updateStatusAndProceed(int currentState) {
+private Toolbar toolbar;
+private ImageView toolbar_edit_action;
+    private void updateStatusAndProceed(int currentStateReceived) {
         Log.e("currentstate--3", "----"+currentState);
+        currentState  =currentStateReceived;
         if (currentState == state_start) {
             //editor.putInt("State", state_pause);
             startService();
@@ -144,6 +154,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             image = "";
             gear_action_start.setVisibility(View.VISIBLE);
             gear_action_stop.setVisibility(View.GONE);
+            Util.showToast("Machine started Working.",this);
+            currentState =state_start;
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
@@ -155,6 +167,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             image = "";
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
+            Util.showToast("Machine is on break.",this);
+            currentState =state_pause;
         } else if (currentState == state_stop) {
             //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
@@ -168,6 +182,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             image = "";
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
+            Util.showToast("Machine stopped Working.",this);
+            currentState =state_stop;
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
@@ -175,6 +191,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             saveOperatorStateData(machine_id, workTime, "halt",""+state_halt, lat, lon, meter_reading, hours, totalHours, image);
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
+            Util.showToast("Machine facing issue and stopped working.",this);
+            currentState =state_halt;
         }
         Log.e("currentstate--4", "----"+currentState);
     }
@@ -203,12 +221,18 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading_new);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
         gear_action_start = findViewById(R.id.gear_action_start);
         gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
+
+
+
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -236,7 +260,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         img_end_meter = findViewById(R.id.img_end_meter);
 
         if (!preferences.getString("machine_id", "").equalsIgnoreCase("")){
-            tv_machine_code.setText(preferences.getString("machine_id", ""));
+            tv_machine_code.setText(preferences.getString("machine_code", ""));
         }
         clearDataForNewDate();
         if (preferences.getInt("State", 0) == 0) {
@@ -267,44 +291,68 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
                 //int systemTime = preferences.getInt("systemTime", 0);
                 //int systemClockTime = preferences.getInt("systemClockTime", 0);
-
+                buttonPauseService.setEnabled(false);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    buttonPauseService.setEnabled(true);
+                }, 1000);
             }
         });
-        buttonHaltService.setOnClickListener(new View.OnClickListener() {
+        /*buttonHaltService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetLocationofOperator();
                 if (currentState != state_stop) {
-                    Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                    if (currentState == state_halt) {
+                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
+                    }   else {
+                        Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                    }
                 }else {
-                    updateStatusAndProceed(state_halt);
-                    clearReadingImages();
-                    /*if (currentState==state_start){
+                    if (currentState == state_halt) {
+                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
+                    } else {
+                        showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
+
+                    *//*if (currentState==state_start){
                         editor.putInt("State", state_pause);
                         editor.apply();
                         updateStatusAndProceed(state_pause);
                         updateStatusAndProceed(state_halt);
                         clearReadingImages();
                     }else if (currentState==state_pause){
-                        *//*editor.putInt("State", state_pause);
+                        *//**//*editor.putInt("State", state_pause);
                         editor.apply();
-                        updateStatusAndProceed(state_pause);*//*
+                        updateStatusAndProceed(state_pause);*//**//*
                         updateStatusAndProceed(state_halt);
                         clearReadingImages();
-                    }*/
+                    }*//*
+                    }
                 }
 
             }
-        });
+        });*/
+
+
         toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetLocationofOperator();
                 if (currentState != state_stop) {
-                    Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                    if (currentState == state_halt) {
+                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
+                    }   else {
+                        Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
+                    }
                 }else {
-                    updateStatusAndProceed(state_halt);
-                    clearReadingImages();
+                    if (currentState == state_halt) {
+                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
+                    } else {
+                        strReasonId ="";
+                        showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
+
+                        /*updateStatusAndProceed(state_halt);
+                        clearReadingImages();*/
                     /*if (currentState==state_start){
                         editor.putInt("State", state_pause);
                         editor.apply();
@@ -318,6 +366,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                         updateStatusAndProceed(state_halt);
                         clearReadingImages();
                     }*/
+                    }
                 }
 
             }
@@ -414,9 +463,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 clearReadingImages();
                 showReadingDialog(this,1);
             } else if (flag) {
+                if (Permissions.isCameraPermissionGranted(this, this)) {
                 openCameraIntent();
                 flag = false;
                 isStartImage = true;
+                }
             } else {
                 editor.putInt("systemClockTime", 0);
                 editor.apply();
@@ -425,7 +476,12 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 currentState = state_start;
                         updateStatusAndProceed(state_start);
                 flag = true;
-
+                btnStopService.setBackgroundTintList(getResources().getColorStateList(R.color.red));
+                btnStartService.setEnabled(false);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    btnStartService.setEnabled(true);
+                }, 1000);
             }
         }
     }
@@ -436,10 +492,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             //takePhotoFromCamera();
             showReadingDialog(this,2);
         } else if (flag) {
-
-            openCameraIntent();
-            isStartImage = false;
-            flag = false;
+            if (Permissions.isCameraPermissionGranted(this, this)) {
+                openCameraIntent();
+                isStartImage = false;
+                flag = false;
+            }
         } else {
             stopService();
             Log.e("currentstate--1", "----"+currentState);
@@ -452,6 +509,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             clearDataOnStop();
             //clearReadingImages();
            // et_smeter_read.requestFocus();
+            btnStopService.setBackgroundTintList(getResources().getColorStateList(R.color.button_gray_color));
+
+            btnStopService.setEnabled(false);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                btnStopService.setEnabled(true);
+            }, 1000);
+
             Log.e("currentstate--2", "----"+currentState);
         }
     }
@@ -460,7 +525,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         if(!isMyServiceRunning(ForegroundService.class)){
 
         Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        serviceIntent.putExtra("inputExtra", "Operator meter reading");
         ContextCompat.startForegroundService(this, serviceIntent);
 
         /*editor.putInt("State", state_start);
@@ -491,6 +556,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         super.onResume();
         if (preferences.getInt("State", 0) == state_start) {
         }
+        setStartImage(preferences.getString(Constants.OperatorModule.MACHINE_START_IMAGE,""));
+        if (preferences.getInt("et_smeter_read", 0)==0)
+        {
+
+        }else {
+            et_smeter_read.setText(String.valueOf(preferences.getInt("et_smeter_read", 0)));
+        }
+
         Log.e("method--", "---OnResume");
     }
 
@@ -498,6 +571,12 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     protected void onPause() {
         super.onPause();
         Log.e("method--", "---OnPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("method--", "---OnStop");
     }
 
     @Override
@@ -517,6 +596,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         operatorRequestResponseModel.setMeter_reading(meter_reading);
         operatorRequestResponseModel.setHours(hours);
         operatorRequestResponseModel.setTotalHours(totalHours);
+        operatorRequestResponseModel.setReasonId("5daeb2b25b3fc94c4866c33f");//strReasonId
         operatorRequestResponseModel.setImage(image);
 
 
@@ -592,19 +672,19 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             image = resultUri.getPath();
             if (isStartImage) {
                 imageStartReading = image;
-                Glide.with(this)
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(image)   //Uri.parse(list.get(0).getImage()))
-                        .into(img_start_meter);
+                //CALL METHOD HERE
+                setStartImage(imageStartReading);
                 imageStartReading = image;
+                editor.putString(Constants.OperatorModule.MACHINE_START_IMAGE,imageStartReading);
+                editor.apply();
                 callStartButtonClick();
             } else {
                 imageEndReading = image;
-                Glide.with(this)
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(image)
-                        .into(img_end_meter);
+                //CALL METHOD HERE
+                setEndImage(imageEndReading);
                 imageEndReading = image;
+                editor.putString(Constants.OperatorModule.MACHINE_END_IMAGE,imageEndReading);
+                editor.apply();
                 callStopButtonClick();
             }
 
@@ -641,6 +721,9 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 .applyDefaultRequestOptions(requestOptions)
                 .load("")
                 .into(img_end_meter);
+
+        et_smeter_read.setText("");
+        et_emeter_read.setText("");
     }
 
     //api call to upload record -
@@ -823,9 +906,9 @@ public String showReadingDialog(final Activity context, int pos){
 
                 //-----------------------
                 if (TextUtils.isEmpty(strReason)) {
-                    Util.logger("Empty Reason", "Reason Can not be blank");
+                    Util.logger("Empty Reading", "Reading Can not be blank");
                     Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Reason Can not be blank",
+                                    .findViewById(android.R.id.content), "Reading Can not be blank",
                             Snackbar.LENGTH_LONG);
                 } else {
                     /*if (fragment instanceof TMUserLeavesApprovalFragment) {
@@ -909,6 +992,13 @@ public String showReadingDialog(final Activity context, int pos){
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
+        editor.putString("machine_code",machine_id);
+        editor.apply();
+        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
+            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
+        }
+        Gson gson = new Gson();
+        editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
     }
 
@@ -971,7 +1061,12 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putInt("totalHours", 0);
         editor.apply();
 
+        editor.putString(Constants.OperatorModule.MACHINE_START_IMAGE,"");
+        editor.putString(Constants.OperatorModule.MACHINE_END_IMAGE,"");
+        editor.apply();
+        clearReadingImages();
         Util.logger("statenow", "statenow" + preferences.getInt("State", 0));
+        Log.e("totalHours---destrdata", "---"+preferences.getInt("totalHours", 0));
     }
 
 
@@ -998,5 +1093,40 @@ private void initConnectivityReceiver() {
         }else {
 
         }
+    }
+
+
+    public void setStartImage(String image){
+        Glide.with(this)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(image)   //Uri.parse(list.get(0).getImage()))
+                .into(img_start_meter);
+    }
+
+    public void setEndImage(String image){
+        Glide.with(this)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(image)
+                .into(img_end_meter);
+    }
+
+    @Override
+    public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
+       String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+       Gson gson = new Gson();
+       OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
+        strReasonId = operatorMachineData.getNonutilisationTypeData().get(selectedPosition).getValue();
+        updateStatusAndProceed(state_halt);
+        clearReadingImages();
+
+    }
+
+    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
+
+        bottomSheetDialogFragment = new SingleSelectBottomSheet(this, selectedOption, List, this::onValuesSelected);
+        bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
+        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 }

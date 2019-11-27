@@ -46,4 +46,8 @@ public class OtpActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
 
     }
+    public void killActivity() {
+        finish();
+        Log.e("killActivity", "killActivity called");
+    }
 }
