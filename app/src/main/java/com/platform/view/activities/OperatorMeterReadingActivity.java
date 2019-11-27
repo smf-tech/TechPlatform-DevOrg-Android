@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -220,6 +221,8 @@ private ImageView toolbar_edit_action;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading_new);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
         gear_action_start = findViewById(R.id.gear_action_start);
