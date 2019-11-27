@@ -399,11 +399,11 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                             hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
                                 backToMachineList();
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else if(responseOBJ.getStatus() == 300){
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else {
-                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), getActivity());
                             }
                             Log.d("response -",jsonString);
                         } catch (UnsupportedEncodingException e) {
