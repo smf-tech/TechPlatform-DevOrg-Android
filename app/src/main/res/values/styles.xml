@@ -29,6 +29,17 @@
     </style>
 
 
+    <style name="textinputstyleoperator" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <item name="android:textSize">@dimen/text_size_10</item>
+    <item name="boxStrokeColor">@color/colorstatelistoperator</item>
+    </style>
+
+    <style name="TextInputLayoutHintoperator" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="android:fontFamily">@font/opensans</item>
+    </style>
+
+
     <style name="textinputstyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="boxStrokeColor">@color/colorPrimary</item>

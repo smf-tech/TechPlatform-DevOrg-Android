@@ -202,12 +202,12 @@
                 <!--Start Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_start_date1"
-                    style="@style/textinputstyle"
+                    style="@style/textinputstyleoperator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
                     <EditText
                         android:id="@+id/et_smeter_read"
@@ -215,7 +215,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="Start meter reading*"
+                        android:hint="Start reading*"
                         android:inputType="number"
                         android:longClickable="false"
                         android:maxLength="6" />
@@ -225,12 +225,12 @@
                 <!--End Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_date1"
-                    style="@style/textinputstyle"
+                    style="@style/textinputstyleoperator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
                     <EditText
                         android:id="@+id/et_emeter_read"
@@ -238,7 +238,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="End meter reading*"
+                        android:hint="End reading*"
                         android:inputType="number"
                         android:longClickable="false"
                         android:maxLength="6" />
