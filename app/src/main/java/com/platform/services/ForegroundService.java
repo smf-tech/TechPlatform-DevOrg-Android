@@ -26,7 +26,10 @@ import static androidx.core.app.NotificationCompat.Builder;
 
 
 public class ForegroundService extends Service {
-
+    private int state_start = 112;
+    private int state_stop = 110;
+    private int state_pause = 113;
+    private int state_halt = 111;
     public static final String
     ACTION_LOCATION_BROADCAST = ForegroundService.class.getName() + "LocationBroadcast";
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -109,8 +112,10 @@ public class ForegroundService extends Service {
         Log.e("systemClockTime---destr", "---"+systemClockTime);
         editor.apply();
         systemClockTime = preferences.getInt("systemClockTime", 0);
-        editor.putInt("totalHours", systemClockTime);
-        editor.apply();
+        if (preferences.getInt("State", 0) != state_stop) {
+            editor.putInt("totalHours", totalHours);
+            editor.apply();
+        }
         Log.e("totalHours---destr", "---"+totalHours);
     }
 

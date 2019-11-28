@@ -90,20 +90,26 @@
         android:text="Halt"
         android:textColor="#fff"
         android:visibility="gone" />
-
+    <TextView
+        android:id="@+id/tv_machine_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:text="Machine Code"
+        android:textColor="@color/red" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/dimen_16dp"
+        android:layout_margin="@dimen/dimen_10dp"
         android:src="@drawable/ic_jcb_image"
         android:visibility="gone" />
 
     <ImageView
         android:id="@+id/gear_action_start"
         android:layout_width="@dimen/dimen_120dp"
-        android:layout_height="@dimen/dimen_120dp"
-        android:layout_gravity="center"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
@@ -114,8 +120,8 @@
     <ImageView
         android:id="@+id/gear_action_stop"
         android:layout_width="@dimen/dimen_120dp"
-        android:layout_height="@dimen/dimen_120dp"
-        android:layout_gravity="center"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
@@ -124,12 +130,12 @@
         />
 
     <TextView
-        android:id="@+id/tv_machine_code"
+        android:id="@+id/tv_machine_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
+        android:text="Working"
         android:gravity="center_horizontal"
-        android:text="Machine Code"
         android:textColor="@color/red" />
 
     <androidx.cardview.widget.CardView
@@ -168,8 +174,8 @@
 
                 <ImageView
                     android:id="@+id/img_start_meter"
-                    android:layout_width="@dimen/dimen_145dp"
-                    android:layout_height="@dimen/dimen_145dp"
+                    android:layout_width="@dimen/dimen_130dp"
+                    android:layout_height="@dimen/dimen_130dp"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
@@ -180,8 +186,8 @@
 
                 <ImageView
                     android:id="@+id/img_end_meter"
-                    android:layout_width="@dimen/dimen_145dp"
-                    android:layout_height="@dimen/dimen_145dp"
+                    android:layout_width="@dimen/dimen_130dp"
+                    android:layout_height="@dimen/dimen_130dp"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
