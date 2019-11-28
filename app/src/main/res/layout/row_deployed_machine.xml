@@ -98,8 +98,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginBottom="@dimen/dimen_05dp"
                     android:fontFamily="@font/opensans_semibold"
-                    android:textSize="@dimen/text_size_13"
-                    android:text="12/12/2222 12:12 am"/>
+                    android:textSize="@dimen/text_size_13" />
             </RelativeLayout>
 
         </LinearLayout>

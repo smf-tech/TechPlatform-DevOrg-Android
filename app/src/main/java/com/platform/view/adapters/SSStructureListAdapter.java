@@ -189,7 +189,9 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
                     }
                     if (isStructureComplete) {
-                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 119
+                        if ( ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 116
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 119
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 121) {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
@@ -222,16 +224,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 //                                    }
                                     break;
                                 case R.id.action_structure_completion:
-                                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
-                                        showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
-                                                "Yes", "No", getAdapterPosition(),2);
+
+                                    if (ssDataList.get(getAdapterPosition()).isStructureComplete()) {
+                                        showDialog(activity, "Alert", "Are you sure, want to Complete Structure?",
+                                                "Yes", "No", getAdapterPosition(), 2);
                                     } else {
-                                        if(ssDataList.get(getAdapterPosition()).isStructureComplete()){
-                                            showDialog(activity, "Alert", "Are you sure, want to Complete Structure?",
-                                                    "Yes", "No", getAdapterPosition(),2);
-                                        } else {
-                                            Util.showToast("Please release all the machine from Structure",activity);
-                                        }
+                                        Util.showToast("Please release all the machine from Structure", activity);
                                     }
 
                                     break;
@@ -253,9 +251,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             lyStructure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115 && isVisitMonitoring) {
+                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
+                        showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
+                                "Yes", "No", getAdapterPosition(),2);
+                    } else if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115 && isVisitMonitoring) {
                         showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
-                                "Yes", "No", getAdapterPosition(),1);
+                                "Yes", "No", getAdapterPosition(), 1);
                     }
                 }
             });
@@ -316,11 +317,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                if (flag==1) {
+                if (flag == 1) {
                     Intent intent = new Intent(activity, StructurePripretionsActivity.class);
                     intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     activity.startActivity(intent);
-                } else if (flag==2) {
+                } else if (flag == 2) {
                     Intent intent = new Intent(activity, StructureCompletionActivity.class);
                     intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     intent.putExtra(STRUCTURE_STATUS, ssDataList.get(adapterPosition).getStructureStatusCode());

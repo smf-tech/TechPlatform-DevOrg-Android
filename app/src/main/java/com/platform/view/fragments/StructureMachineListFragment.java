@@ -208,7 +208,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             if (isStructureAdd) {
                 fbCreate.setVisibility(View.VISIBLE);
             } else {
-                fbCreate.setVisibility(View.INVISIBLE);
+                fbCreate.setVisibility(View.GONE);
             }
         } else {
             if (isMachineAdd) {
@@ -243,7 +243,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     if(dy > 0){
                         fbCreate.hide();
                     } else{
-                        fbCreate.show();
+                        if (viewType == 1) {
+                            if (isStructureAdd) {
+                                fbCreate.show();
+                            }
+                        } else {
+                            if (isMachineAdd) {
+                                fbCreate.show();
+                            }
+                        }
                     }
                     super.onScrolled(recyclerView, dx, dy);
                 }

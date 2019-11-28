@@ -113,7 +113,9 @@
                         android:layout_height="wrap_content"
                         android:hint=" Grampanchayat Name"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>/>
+                    />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--No of Participant-->
@@ -154,7 +156,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Name of Sarpanch"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Contact of Sarpanch-->
@@ -189,7 +192,8 @@
                         android:layout_height="wrap_content"
                         android:hint="Name of OopSarpanch"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz " />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Contact of OopSarpanch-->
@@ -250,7 +254,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Grampanchayat Name"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Date-->
@@ -284,7 +289,8 @@
                         android:layout_height="wrap_content"
                         android:hint="No of Participant"
                         android:imeOptions="actionNext"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -324,7 +330,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name of Taskforce / Leader name"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--  Member Name -->
@@ -340,7 +347,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Member Name"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Gender -->
@@ -392,7 +400,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Education"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Occupation-->
@@ -408,7 +417,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Occupation"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--date of formation-->
@@ -452,7 +462,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Topic of Training"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Date of Training-->
@@ -485,7 +496,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name of participant"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Duration in days-->
@@ -501,7 +513,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Duration in days"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -550,7 +563,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name of Govt officer / Dept"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--Date-->
@@ -582,7 +596,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name of the farmers (Potential Beneficiary)"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--phone number of the farmers-->

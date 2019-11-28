@@ -202,7 +202,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
                     SyncAdapterUtils.manualRefresh();
 
-                    Util.showToast("Structure will be prepared soon.",this);
+                    Util.showToast("Structure will be prepared soon.", this);
 
                     finish();
 //                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
@@ -240,16 +240,16 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             return false;
         }
         if (location != null) {
-            if(ffIdentified){
-                if (TextUtils.isEmpty(etFFName.getText().toString())){
+            if (ffIdentified) {
+                if (TextUtils.isEmpty(etFFName.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                             "Please, enter FF Name.", Snackbar.LENGTH_LONG);
                     return false;
-                } else if(TextUtils.isEmpty(etFFMobile.getText().toString())){
+                } else if (TextUtils.isEmpty(etFFMobile.getText().toString())) {
                     Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                             "Please, enter FF Mobile Number.", Snackbar.LENGTH_LONG);
                     return false;
-                }else {
+                } else {
                     requestData.setFfName(etFFName.getText().toString());
                     requestData.setFfMobileNumber(etFFMobile.getText().toString());
                 }
@@ -273,7 +273,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                             .findViewById(android.R.id.content), "Please, click images of structure.",
                     Snackbar.LENGTH_LONG);
             return false;
-        } else if(imageUri.size() == 1){
+        } else if (imageUri.size() == 1) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please, click images of structure.",
                     Snackbar.LENGTH_LONG);
@@ -436,20 +436,15 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                if (Util.isConnected(this)) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
-                        selectedIV.setImageURI(finalUri);
-                        imageUri.add(finalUri);
+                if (Util.isValidImageSize(imageFile)) {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                    selectedIV.setImageURI(finalUri);
+                    imageUri.add(finalUri);
 //                        imageHashmap.put("Structure" + imageCount, bitmap);
 //                        imageCount++;
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    Util.showToast(getString(R.string.msg_big_image), this);
                 }
-
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

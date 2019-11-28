@@ -48,7 +48,7 @@
     <string name="first_name">First Name *</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
-    <string name="birth_date">Birth Date</string>
+    <string name="birth_date">Birth Date *</string>
     <string name="mobile_no">Mobile Number *</string>
     <string name="email_id">Email Id</string>
     <string name="address">Address</string>
@@ -641,4 +641,5 @@
     <string name="enter_start_meter_reading">Enter start meter reading.</string>
     <string name="enter_distance">Enter travel distance</string>
     <string name="enter_travel_time">Enter travel time</string>
+    <string name="msg_enter_birth_date">Please enter birth date</string>
 </resources>
