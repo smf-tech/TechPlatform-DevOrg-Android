@@ -122,7 +122,7 @@
                 <EditText
                     android:id="@+id/et_user_birth_date"
                     style="@style/RegistrationEditTextLayout"
-                    android:clickable="false"
+                    android:longClickable="false"
                     android:focusable="false"
                     android:hint="@string/birth_date"
                     android:inputType="date"

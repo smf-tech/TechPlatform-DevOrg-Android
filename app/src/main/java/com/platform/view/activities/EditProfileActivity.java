@@ -545,6 +545,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
+        }  else if (etUserBirthDate.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_enter_birth_date);
         } else if (etUserEmailId.getText().toString().trim().length() != 0 &&
                 !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);

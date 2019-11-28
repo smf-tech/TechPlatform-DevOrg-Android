@@ -37,6 +37,7 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvMachinCode.setText(dataList.get(position).getCode());
         holder.tvMachinStatus.setText(dataList.get(position).getStatus());
+        holder.tvMachinUpdate.setText(dataList.get(position).getMachineUpdatedDate());
     }
 
     @Override
@@ -45,11 +46,12 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMachinCode, tvMachinStatus;
+        TextView tvMachinCode, tvMachinStatus, tvMachinUpdate;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMachinCode = itemView.findViewById(R.id.tv_machin_code);
             tvMachinStatus = itemView.findViewById(R.id.tv_machin_status);
+            tvMachinUpdate = itemView.findViewById(R.id.tv_machin_update);
         }
     }
 }

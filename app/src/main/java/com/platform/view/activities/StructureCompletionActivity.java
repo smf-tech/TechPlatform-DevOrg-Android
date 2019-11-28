@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -64,7 +65,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
     final String STRUCTURE_STATUS = "StructureStatus";
 
     ImageView selecteIV;
-    EditText etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays;
+    EditText etReason, etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -106,10 +107,11 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         etWorkStartDate = findViewById(R.id.et_work_start_date);
         etWorkCompletionDate = findViewById(R.id.et_work_completion_date);
         etOperationalDays = findViewById(R.id.et_operational_days);
+        etReason = findViewById(R.id.et_reason);
 
-        ImageView iv1=findViewById(R.id.iv_structure1);
+        ImageView iv1 = findViewById(R.id.iv_structure1);
         iv1.setOnClickListener(this);
-        ImageView iv2=findViewById(R.id.iv_structure2);
+        ImageView iv2 = findViewById(R.id.iv_structure2);
         iv2.setOnClickListener(this);
 
         if (structureStatus == 120) {
@@ -138,9 +140,11 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
                     switch (i) {
                         case R.id.rb_completion_yes:
+                            etReason.setVisibility(View.GONE);
                             completion = "true";
                             break;
                         case R.id.rb_completion_no:
+                            etReason.setVisibility(View.VISIBLE);
                             completion = "false";
                             break;
                     }
@@ -149,7 +153,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         }
 
         findViewById(R.id.bt_submit).setOnClickListener(this);
-
+        etWorkStartDate.setOnClickListener(this);
+        etWorkCompletionDate.setOnClickListener(this);
 
     }
 
@@ -179,6 +184,12 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 selecteIV = findViewById(R.id.iv_structure4);
                 onAddImageClick();
                 break;
+            case R.id.et_work_start_date:
+                Util.showDateDialog(this, etWorkStartDate);
+                break;
+            case R.id.et_work_completion_date:
+                Util.showDateDialog(this, etWorkCompletionDate);
+                break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
                     uploadImage();
@@ -204,11 +215,32 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //        }
 
         requestData.put("is_completed", completion);
-        requestData.put("etSiltQantity", etSiltQantity.getText().toString());
-        requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
-        requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
-        requestData.put("etOperationalDays", etOperationalDays.getText().toString());
         if (structureStatus == 120) {
+
+            if (TextUtils.isEmpty(etSiltQantity.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Silt Qantity.", Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etWorkStartDate.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Work Start Date.", Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etWorkCompletionDate.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Work Completion Date.", Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etOperationalDays.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Operational Days.", Snackbar.LENGTH_LONG);
+                return false;
+            } else {
+                requestData.put("etSiltQantity", etSiltQantity.getText().toString());
+                requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
+                requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
+                requestData.put("etOperationalDays", etOperationalDays.getText().toString());
+            }
+
+
             if (imageCount < 2) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "Please, click images of structure.",
@@ -216,6 +248,14 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 return false;
             }
         } else {
+            if (TextUtils.isEmpty(etReason.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Reason.", Snackbar.LENGTH_LONG);
+                return false;
+            } else {
+                requestData.put("etReason", etReason.getText().toString());
+            }
+
             if (imageCount < 4) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "Please, click images of structure.",

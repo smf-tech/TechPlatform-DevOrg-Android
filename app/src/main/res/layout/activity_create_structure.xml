@@ -83,7 +83,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Host Village Population"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--catchment villages-->
             <com.google.android.material.textfield.TextInputLayout
@@ -113,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Catchment Villages Population"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--gat no-->
             <com.google.android.material.textfield.TextInputLayout
@@ -129,7 +131,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Gat No."
                     android:imeOptions="actionNext"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Water Shed No.-->
             <com.google.android.material.textfield.TextInputLayout
@@ -145,7 +148,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Water Shed No."
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Area (If Required)-->
             <com.google.android.material.textfield.TextInputLayout
@@ -177,7 +181,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Structure Name"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Structure owner department-->
             <com.google.android.material.textfield.TextInputLayout
@@ -273,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Administrative Approval Number"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Approval Date-->
             <com.google.android.material.textfield.TextInputLayout
@@ -306,7 +312,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Technical Sanction Number"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Technical Sanction Date-->
             <com.google.android.material.textfield.TextInputLayout
@@ -370,7 +377,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Working Hours"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Diesel Consumption in Liters-->
             <com.google.android.material.textfield.TextInputLayout
@@ -385,7 +393,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Diesel Consumption in Liters"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Diesel Consumption in Rs-->
             <com.google.android.material.textfield.TextInputLayout
@@ -400,7 +409,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Diesel Consumption in Rs"
                     android:imeOptions="actionNext"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="7"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Approximate Estimate Quantity (CuM)-->
             <com.google.android.material.textfield.TextInputLayout
@@ -415,7 +425,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Approximate Estimate Quantity (CuM)"
                     android:imeOptions="actionNext"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Remark-->
             <com.google.android.material.textfield.TextInputLayout
@@ -428,10 +439,12 @@
                     android:id="@+id/et_remark"
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="Remark"
+                    android:singleLine="false"
                     android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="textMultiLine"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
