@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -93,7 +94,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
     private Location location;
-    LottieAnimationView gear_action_start,gear_action_stop;
+    ImageView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
@@ -122,7 +123,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
-    TextView tv_text,tv_machine_code;
+    TextView tv_text,tv_machine_code,tv_machine_state;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String imageFilePath;
@@ -133,8 +134,14 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int state_stop = 110;
     private int state_pause = 113;
     private int state_halt = 111;
+
+    private String state_start_string = "Working";
+    private String state_stop_string = "Stopped";
+    private String state_pause_string = "Break";
+    private String state_halt_string = "Halted";
+
     private int currentState = 0;
-    private RequestOptions requestOptions;
+    private RequestOptions requestOptions,requestOptionsjcb;
 private Toolbar toolbar;
 private ImageView toolbar_edit_action;
     private void updateStatusAndProceed(int currentStateReceived) {
@@ -153,8 +160,10 @@ private ImageView toolbar_edit_action;
             saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
             image = "";
             gear_action_start.setVisibility(View.VISIBLE);
+            setWorkingAnime();
             gear_action_stop.setVisibility(View.GONE);
             Util.showToast("Machine started Working.",this);
+            tv_machine_state.setText(state_start_string);
             currentState =state_start;
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
@@ -168,7 +177,11 @@ private ImageView toolbar_edit_action;
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
             Util.showToast("Machine is on break.",this);
+            tv_machine_state.setText(state_pause_string);
             currentState =state_pause;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("startTime", 0);
+            editor.apply();
         } else if (currentState == state_stop) {
             //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
@@ -183,7 +196,11 @@ private ImageView toolbar_edit_action;
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
             Util.showToast("Machine stopped Working.",this);
+            tv_machine_state.setText(state_stop_string);
             currentState =state_stop;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("startTime", 0);
+            editor.apply();
         }else if (currentState == state_halt){
             stopService();
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
@@ -192,9 +209,19 @@ private ImageView toolbar_edit_action;
             gear_action_start.setVisibility(View.GONE);
             gear_action_stop.setVisibility(View.VISIBLE);
             Util.showToast("Machine facing issue and stopped working.",this);
+            tv_machine_state.setText(state_halt_string);
             currentState =state_halt;
         }
         Log.e("currentstate--4", "----"+currentState);
+    }
+
+    private void setWorkingAnime() {
+        gear_action_stop.setVisibility(View.GONE);
+        gear_action_start.setVisibility(View.VISIBLE);
+        Glide.with(this)
+                .applyDefaultRequestOptions(requestOptionsjcb)
+                .load(R.drawable.jcb_gif)   //Uri.parse(list.get(0).getImage()))
+                .into(gear_action_start);
     }
 
     private void updateButtonsonRestart(int currentState) {
@@ -214,6 +241,7 @@ private ImageView toolbar_edit_action;
             buttonPauseService.setText(getResources().getString(R.string.meter_pause));
             btnStartService.setVisibility(View.GONE);
             startService();
+            setWorkingAnime();
         }
     }
 
@@ -229,6 +257,10 @@ private ImageView toolbar_edit_action;
         gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+
+        requestOptionsjcb= new RequestOptions().placeholder(R.drawable.jcb_stopped);
+        requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
+
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
 
 
@@ -254,6 +286,7 @@ private ImageView toolbar_edit_action;
         buttonHaltService = findViewById(R.id.buttonHaltService);
         tv_text = findViewById(R.id.tv_text);
         tv_machine_code = findViewById(R.id.tv_machine_code);
+        tv_machine_state= findViewById(R.id.tv_machine_state);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
         img_start_meter = findViewById(R.id.img_start_meter);
@@ -563,7 +596,9 @@ private ImageView toolbar_edit_action;
         }else {
             et_smeter_read.setText(String.valueOf(preferences.getInt("et_smeter_read", 0)));
         }
-
+        if (!preferences.getString("machine_code", "").equalsIgnoreCase("")){
+            tv_machine_code.setText(preferences.getString("machine_code", ""));
+        }
         Log.e("method--", "---OnResume");
     }
 
@@ -596,7 +631,7 @@ private ImageView toolbar_edit_action;
         operatorRequestResponseModel.setMeter_reading(meter_reading);
         operatorRequestResponseModel.setHours(hours);
         operatorRequestResponseModel.setTotalHours(totalHours);
-        operatorRequestResponseModel.setReasonId("5daeb2b25b3fc94c4866c33f");//strReasonId
+        operatorRequestResponseModel.setReasonId(strReasonId);//
         operatorRequestResponseModel.setImage(image);
 
 
@@ -690,9 +725,19 @@ private ImageView toolbar_edit_action;
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             flag = true;
+            if (isStartImage) {
+                et_smeter_read.setText("");
+            }else {
+                et_emeter_read.setText("");
+            }
             final Throwable cropError = UCrop.getError(data);
         }else if (resultCode !=RESULT_OK){
             flag = true;
+            if (isStartImage) {
+                et_smeter_read.setText("");
+            }else {
+                et_emeter_read.setText("");
+            }
         }
     }
 
@@ -727,7 +772,7 @@ private ImageView toolbar_edit_action;
     }
 
     //api call to upload record -
-    private void uploadImage(String receivedImage) {
+    /*private void uploadImage(String receivedImage) {
         String imageToSend = receivedImage;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -786,7 +831,7 @@ private ImageView toolbar_edit_action;
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(OperatorMeterReadingActivity.this);
         rQueue.add(volleyMultipartRequest);
-    }
+    }*/
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -992,7 +1037,7 @@ public String showReadingDialog(final Activity context, int pos){
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
-        editor.putString("machine_code",machine_id);
+        editor.putString("machine_code",operatorMachineData.getMachine_code());
         editor.apply();
         for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
@@ -1014,6 +1059,12 @@ public String showReadingDialog(final Activity context, int pos){
             long days = diff / (24 * 60 * 60 * 1000);
             Util.logger("Date difference", "-day-" + days);
             if (days>=1){
+                if (preferences.getInt("State", 0) != state_stop) {
+                et_emeter_read.setText("00");
+                flag = false;
+                image ="";
+                callStopButtonClick();
+                }
                 setTodaysDate();
                 //clear data here
                 editor.putInt("State",0);

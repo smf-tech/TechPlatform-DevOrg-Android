@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#f2f2f2"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.activities.OperatorMeterReadingActivity">
 
@@ -90,48 +90,52 @@
         android:text="Halt"
         android:textColor="#fff"
         android:visibility="gone" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/dimen_16dp"
-        android:src="@drawable/ic_jcb_image"
-        android:visibility="gone" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/gear_action_start"
-        android:layout_width="@dimen/dimen_150dp"
-        android:layout_height="@dimen/dimen_150dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:visibility="gone"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="loading_gears.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/gear_action_stop"
-        android:layout_width="@dimen/dimen_120dp"
-        android:layout_height="@dimen/dimen_120dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:visibility="visible"
-        app:lottie_autoPlay="false"
-        app:lottie_fileName="loading_gears.json"
-        app:lottie_loop="false" />
-
     <TextView
         android:id="@+id/tv_machine_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
-        android:gravity="center_horizontal"
         android:text="Machine Code"
+        android:textColor="@color/red" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:src="@drawable/ic_jcb_image"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/gear_action_start"
+        android:layout_width="@dimen/dimen_120dp"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/jcb_gif"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/gear_action_stop"
+        android:layout_width="@dimen/dimen_120dp"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/jcb_stopped"
+        android:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/tv_machine_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:text="Working"
+        android:gravity="center_horizontal"
         android:textColor="@color/red" />
 
     <androidx.cardview.widget.CardView
@@ -156,7 +160,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
-                android:text="0"
+                android:text="0 Hrs 0 Min 0 Sec"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/dimen_16dp" />
 
@@ -170,8 +174,8 @@
 
                 <ImageView
                     android:id="@+id/img_start_meter"
-                    android:layout_width="@dimen/dimen_145dp"
-                    android:layout_height="@dimen/dimen_145dp"
+                    android:layout_width="@dimen/dimen_130dp"
+                    android:layout_height="@dimen/dimen_130dp"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
@@ -182,8 +186,8 @@
 
                 <ImageView
                     android:id="@+id/img_end_meter"
-                    android:layout_width="@dimen/dimen_145dp"
-                    android:layout_height="@dimen/dimen_145dp"
+                    android:layout_width="@dimen/dimen_130dp"
+                    android:layout_height="@dimen/dimen_130dp"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
@@ -204,12 +208,12 @@
                 <!--Start Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_start_date1"
-                    style="@style/textinputstyle"
+                    style="@style/textinputstyleoperator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
                     <EditText
                         android:id="@+id/et_smeter_read"
@@ -217,7 +221,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="Start meter reading*"
+                        android:hint="Start reading*"
                         android:inputType="number"
                         android:longClickable="false"
                         android:maxLength="6" />
@@ -227,12 +231,12 @@
                 <!--End Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_date1"
-                    style="@style/textinputstyle"
+                    style="@style/textinputstyleoperator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
                     <EditText
                         android:id="@+id/et_emeter_read"
@@ -240,7 +244,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:hint="End meter reading*"
+                        android:hint="End reading*"
                         android:inputType="number"
                         android:longClickable="false"
                         android:maxLength="6" />
@@ -253,7 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
