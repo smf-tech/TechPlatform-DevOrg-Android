@@ -333,9 +333,9 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else {
-                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), getActivity());
                             }
                             Log.d("response -",jsonString);
                             backToMachineList();
@@ -561,13 +561,17 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         selectedDate = date.getDate();
         etWorkingHours.setText("");
         if(Util.isConnected(getContext())) {
-            for (MachineWorkingHoursRecord machineWorkingHoursRecord: machineWorkingHoursList) {
-                if(machineWorkingHoursRecord.getWorkingDate() == selectedDate.getTime()) {
-                    Util.showToast(getResources().getString(R.string.date_already_selected), getActivity());
-                    break;
-                } else {
-                    presenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
+            if(machineWorkingHoursList.size()>0) {
+                for (MachineWorkingHoursRecord machineWorkingHoursRecord : machineWorkingHoursList) {
+                    if (machineWorkingHoursRecord.getWorkingDate() == selectedDate.getTime()) {
+                        Util.showToast(getResources().getString(R.string.date_already_selected), getActivity());
+                        break;
+                    } else {
+                        presenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
+                    }
                 }
+            } else {
+                presenter.getWorkingHoursDetails(String.valueOf(selectedDate.getTime()), machineId);
             }
         } else{
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());

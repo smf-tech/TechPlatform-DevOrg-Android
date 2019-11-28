@@ -1,5 +1,7 @@
 package com.platform.models.SujalamSuphalam;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,6 +18,8 @@ public class MachineData  implements Serializable {
     @SerializedName("owned_by")
     @Expose
     private String ownedBy;
+    @Ignore
+    private String ownedByValue;
     @SerializedName("state")
     @Expose
     private String state;
@@ -141,6 +145,14 @@ public class MachineData  implements Serializable {
 
     public void setOwnedBy(String ownedBy) {
         this.ownedBy = ownedBy;
+    }
+
+    public String getOwnedByValue() {
+        return ownedByValue;
+    }
+
+    public void setOwnedByValue(String ownedByValue) {
+        this.ownedByValue = ownedByValue;
     }
 
     public String getState() {

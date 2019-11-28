@@ -146,7 +146,8 @@
                 <EditText
                     android:id="@+id/et_rto_number"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_rto_number"/>
+                    android:hint="@string/machine_rto_number"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -158,7 +159,8 @@
                     android:id="@+id/et_chasis_number"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/chasis_number"
-                    android:maxLength="17"/>
+                    android:maxLength="17"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -195,7 +197,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/provider_name_hint"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

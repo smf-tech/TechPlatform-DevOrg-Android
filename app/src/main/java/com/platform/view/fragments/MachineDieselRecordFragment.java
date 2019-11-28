@@ -96,7 +96,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private View machineDieselRecordFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    String machineId, currentStructureId;
+    String machineId, machineCode, currentStructureId;
     private EditText etMachineCode, etStructureCode, etDieselQuantity;
     private Button btnAdd, btnSubmit;
     //private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
@@ -138,6 +138,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
+        machineCode = getActivity().getIntent().getStringExtra("machineCode");
         currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
         init();
     }
@@ -149,7 +150,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         ivCalendarMode = machineDieselRecordFragmentView.findViewById(R.id.tv_calendar_mode);
         ivCalendarMode.setOnClickListener(this);
         calendarView = machineDieselRecordFragmentView.findViewById(R.id.calendarView);
-        etStructureCode = machineDieselRecordFragmentView.findViewById(R.id.et_structure_code);
+        //etStructureCode = machineDieselRecordFragmentView.findViewById(R.id.et_structure_code);
         etMachineCode = machineDieselRecordFragmentView.findViewById(R.id.et_machine_code);
         etDieselQuantity = machineDieselRecordFragmentView.findViewById(R.id.et_diesel_quantity);
         btnSubmit = machineDieselRecordFragmentView.findViewById(R.id.btn_submit);
@@ -175,8 +176,8 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
 //        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
 //                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
 //                ddFormat.format(calendarView.getSelectedDate().getDate());
-        etMachineCode.setText(machineId);
-        etStructureCode.setText(currentStructureId);
+        etMachineCode.setText(machineCode);
+        //etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
         if(!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -441,9 +442,9 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
                             if(responseOBJ.getStatus() == 200){
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else {
-                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), getActivity());
                             }
                             Log.d("response -",jsonString);
                             backToMachineList();

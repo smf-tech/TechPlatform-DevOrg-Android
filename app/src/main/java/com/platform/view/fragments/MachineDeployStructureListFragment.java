@@ -167,11 +167,12 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
     private void getDeployableStructures() {
         if (type.equalsIgnoreCase("deployMachine")) {
-            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineDeployableStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
+//            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+//                        "machineDeployableStructures", "");
+//            } else
+                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
                 machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
                         Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         "machineDeployableStructures", "");
@@ -182,19 +183,20 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                         "machineDeployableStructures", "");
             }
         } else if (type.equalsIgnoreCase("shiftMachine")) {
-            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+//            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
+//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
+//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+//                        "machineShiftStructures", currentStructureId);
+//            } else
+            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
                 machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
                         Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineShiftStructures", "");
-            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        "machineShiftStructures", "");
+                        "machineShiftStructures", currentStructureId);
             } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
                 machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
                         Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                         Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                        "machineShiftStructures", "");
+                        "machineShiftStructures", currentStructureId);
             }
         }
     }

@@ -26,6 +26,7 @@ import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
@@ -59,35 +60,47 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
-        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
-        progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
-        progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
-        btnThirdPartMou = machineMouThirdFragmentView.findViewById(R.id.btn_third_part_mou);
-        btnThirdPartMou.setOnClickListener(this);
-        btnPreviousMou = machineMouThirdFragmentView.findViewById(R.id.btn_previous_mou);
-        btnPreviousMou.setOnClickListener(this);
-        edtContractDate = machineMouThirdFragmentView.findViewById(R.id.edt_contract_date);
-        edtContractDate.setOnClickListener(this);
-        edtMouExpiryDate = machineMouThirdFragmentView.findViewById(R.id.edt_mou_expiry_date);
-        edtMouExpiryDate.setOnClickListener(this);
-        edtRate1 = machineMouThirdFragmentView.findViewById(R.id.edt_rate1);
-        edtRate1StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate1_start_date);
-        edtRate1StartDate.setOnClickListener(this);
-        edtRate1EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate1_end_date);
-        edtRate1EndDate.setOnClickListener(this);
-        edtRate2 = machineMouThirdFragmentView.findViewById(R.id.edt_rate2);
-        edtRate2StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate2_start_date);
-        edtRate2StartDate.setOnClickListener(this);
-        edtRate2EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate2_end_date);
-        edtRate2EndDate.setOnClickListener(this);
-        edtRate3 = machineMouThirdFragmentView.findViewById(R.id.edt_rate3);
-        edtRate3StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_start_date);
-        edtRate3StartDate.setOnClickListener(this);
-        edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
-        edtRate3EndDate.setOnClickListener(this);
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedByValue().
+                equalsIgnoreCase("BJS")) {
+            MouDetails mouDetails = new MouDetails();
+            ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
+            Date d = new Date();
+            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
+            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+                    (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+
+            ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+        } else {
+            statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
+            progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
+            progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
+            btnThirdPartMou = machineMouThirdFragmentView.findViewById(R.id.btn_third_part_mou);
+            btnThirdPartMou.setOnClickListener(this);
+            btnPreviousMou = machineMouThirdFragmentView.findViewById(R.id.btn_previous_mou);
+            btnPreviousMou.setOnClickListener(this);
+            edtContractDate = machineMouThirdFragmentView.findViewById(R.id.edt_contract_date);
+            edtContractDate.setOnClickListener(this);
+            edtMouExpiryDate = machineMouThirdFragmentView.findViewById(R.id.edt_mou_expiry_date);
+            edtMouExpiryDate.setOnClickListener(this);
+            edtRate1 = machineMouThirdFragmentView.findViewById(R.id.edt_rate1);
+            edtRate1StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate1_start_date);
+            edtRate1StartDate.setOnClickListener(this);
+            edtRate1EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate1_end_date);
+            edtRate1EndDate.setOnClickListener(this);
+            edtRate2 = machineMouThirdFragmentView.findViewById(R.id.edt_rate2);
+            edtRate2StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate2_start_date);
+            edtRate2StartDate.setOnClickListener(this);
+            edtRate2EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate2_end_date);
+            edtRate2EndDate.setOnClickListener(this);
+            edtRate3 = machineMouThirdFragmentView.findViewById(R.id.edt_rate3);
+            edtRate3StartDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_start_date);
+            edtRate3StartDate.setOnClickListener(this);
+            edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
+            edtRate3EndDate.setOnClickListener(this);
 //        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
 //            setUIForMouUpdate();
 //        }
+        }
     }
 
 //    private void setUIForMouUpdate() {
@@ -274,19 +287,45 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(edtContractDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate1.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate1StartDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate1EndDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate2.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate2StartDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate2EndDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate3.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate3StartDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtRate3EndDate.getText().toString().trim())) {
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                        .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
-                Snackbar.LENGTH_LONG);
+        if (TextUtils.isEmpty(edtContractDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_contract_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate1.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate1_value), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate1StartDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate1_start_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate1EndDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate1_end_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate2.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate2_value), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate2StartDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate2_start_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate2EndDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate2_end_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate3.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate3_value), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate3StartDate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rate3_start_date), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(edtRate3EndDate.getText().toString().trim())) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                getString(R.string.enter_rate3_end_date), Snackbar.LENGTH_LONG);
             return false;
         }
         return true;

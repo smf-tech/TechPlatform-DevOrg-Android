@@ -68,7 +68,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
 
-
         /*if (!preferenceHelper.getString(preferenceHelper.TOKEN).isEmpty()) {
             if (!preferenceHelper.getString(preferenceHelper.TOKEN).equalsIgnoreCase(Util.getUserObjectFromPref().getFirebaseId())) {
                 checkAndUpdateFirebase();

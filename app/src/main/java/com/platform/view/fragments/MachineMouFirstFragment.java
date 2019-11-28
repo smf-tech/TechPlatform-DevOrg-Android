@@ -2,6 +2,7 @@ package com.platform.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import com.platform.models.profile.JurisdictionLocation;
 import com.platform.models.user.UserInfo;
 import com.platform.presenter.MachineMouFragmentPresenter;
 import com.platform.utility.Constants;
+import com.platform.utility.GPSTracker;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.activities.SSActionsActivity;
@@ -70,6 +72,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             selectedMachineId, selectedMakeModel ="", selectedMakeModelId,
             selectedIsMeterWorking ="", selectedYear, selectedYearId;
     private boolean isMachineEligible, isMachineMou;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,6 +164,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         } else {
             setMachineFirstData();
         }
+        gpsTracker = new GPSTracker(getActivity());
     }
 
     private void setMachineFirstData() {
@@ -347,6 +352,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         ((MachineMouActivity) getActivity()).getMachineDetailData().setMachine(machineData);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy
                 (selectedOwnerId);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedByValue(selectedOwner);
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
 //                (etUniqueIdNumber.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setState(selectedStateId);
@@ -375,6 +381,13 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
         if(Util.isConnected(getActivity())) {
+            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                location = gpsTracker.getLocation();
+                if (location != null) {
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+                }
+            }
             machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -526,26 +539,66 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     public boolean isAllDataValid() {
-        if (selectedOwner.length()==0 || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
-                || TextUtils.isEmpty(etMachineState.getText().toString().trim())
-                || TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())
-                || TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())
-                || selectedMachine.length()==0 || TextUtils.isEmpty(etYear.getText().toString().trim())
-                || selectedMakeModel.length()==0 || selectedIsMeterWorking.length()==0
-                || TextUtils.isEmpty(etRtoNumber.getText().toString().trim())
-                || TextUtils.isEmpty(etChasisNumber.getText().toString().trim())
-                || TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())
-                || TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())
-                || TextUtils.isEmpty(etProviderName.getText().toString().trim())
-                || TextUtils.isEmpty(etProviderContact.getText().toString().trim())) {
+        if (selectedOwnerId.length()==0){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etMachineState.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.msg_select_state), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.msg_select_district), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.msg_select_taluka), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (selectedMachine.length()==0){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_machine_type), Snackbar.LENGTH_LONG);
+            return false;
+        } else if(TextUtils.isEmpty(etYear.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_year), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (selectedMakeModel.length()==0){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_machine_make_model), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (selectedIsMeterWorking.length()==0){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_meter_working_option), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etRtoNumber.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_rto_number), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etChasisNumber.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_chasis), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_excavation_capacity), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etProviderContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                            .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
     }
-
 
     @Override
     public void onCustomSpinnerSelection(String type) {

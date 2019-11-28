@@ -82,7 +82,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/start_meter_reading"
                         android:inputType="number"
-                        android:maxLength="6"/>
+                        android:maxLength="7"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -94,8 +94,7 @@
                         android:id="@+id/et_travel_distance"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/travel_distance"
-                        android:inputType="number"
-                        android:maxLength="3"/>
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +106,7 @@
                         android:id="@+id/et_travel_time"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/travel_time"
-                        android:inputType="number"/>
+                        android:digits=":0123456789"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                     <Button

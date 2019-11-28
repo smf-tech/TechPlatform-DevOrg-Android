@@ -233,6 +233,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         dieselRecordIntent.putExtra("title", "Record of Diesel");
                                         dieselRecordIntent.putExtra("type", "dieselRecord");
                                         dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        dieselRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
                                                 (getAdapterPosition()).getDeployedStrutureId());
                                         activity.startActivity(dieselRecordIntent);

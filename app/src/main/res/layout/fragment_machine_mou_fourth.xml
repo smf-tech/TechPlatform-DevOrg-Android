@@ -70,7 +70,8 @@
                     android:id="@+id/et_license_number"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/operator_license_number"
-                    android:inputType="textMultiLine"/>
+                    android:inputType="textMultiLine"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView

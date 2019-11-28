@@ -223,15 +223,29 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     }
 
     private boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etIsDieselFilled.getText().toString().trim())
-                || TextUtils.isEmpty(etProvideBy.getText().toString().trim())
-                || TextUtils.isEmpty(etDieselQuantity.getText().toString().trim())
-                || TextUtils.isEmpty(etstartMeterReading.getText().toString().trim())
-                || TextUtils.isEmpty(etTravelDistance.getText().toString().trim())
-                || TextUtils.isEmpty(etTravelTime.getText().toString().trim())) {
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                        .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
-                Snackbar.LENGTH_LONG);
+        if (TextUtils.isEmpty(etIsDieselFilled.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_diesel_field), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etProvideBy.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_provided_by), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etDieselQuantity.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_diesel_quantity), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etstartMeterReading.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_start_meter_reading), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etTravelDistance.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_distance), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etTravelTime.getText().toString().trim())) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                getString(R.string.enter_travel_time), Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
@@ -297,6 +311,5 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
                 etProvideBy.setText(dieselProvidedBy);
                 break;
         }
-
     }
 }

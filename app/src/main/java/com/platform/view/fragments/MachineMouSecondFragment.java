@@ -81,6 +81,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private final String TAG = MachineMouSecondFragment.class.getName();
     private File imageFile;
     private int statusCode;
+    private boolean isBJSMachine;
+    private int imgCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderLastName = machineMouSecondFragmentView.findViewById(R.id.et_provider_last_name);
         etProviderContact = machineMouSecondFragmentView.findViewById(R.id.et_provider_contact);
         etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
-        //etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
+        etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
         etTradeName = machineMouSecondFragmentView.findViewById(R.id.et_trade_name);
         etTurnover = machineMouSecondFragmentView.findViewById(R.id.et_turnover);
         etGstRegNo = machineMouSecondFragmentView.findViewById(R.id.et_gst_reg_no);
@@ -126,55 +128,74 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         imgAccount = machineMouSecondFragmentView.findViewById(R.id.img_account);
         etAccountHolderName = machineMouSecondFragmentView.findViewById(R.id.et_account_holder_name);
         etAccountType = machineMouSecondFragmentView.findViewById(R.id.et_account_type);
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedByValue().
+                equalsIgnoreCase("BJS")) {
+            isBJSMachine = true;
+        }
+        if(isBJSMachine) {
+            etOwnership.setVisibility(View.GONE);
+            etTradeName.setVisibility(View.GONE);
+            etTurnover.setVisibility(View.GONE);
+            etGstRegNo.setVisibility(View.GONE);
+            etPanNo.setVisibility(View.GONE);
+            etBankName.setVisibility(View.GONE);
+            etBranch.setVisibility(View.GONE);
+            etIfsc.setVisibility(View.GONE);
+            etAccountNo.setVisibility(View.GONE);
+            etConfirmAccountNo.setVisibility(View.GONE);
+            imgAccount.setVisibility(View.GONE);
+            etAccountHolderName.setVisibility(View.GONE);
+            etAccountType.setVisibility(View.GONE);
+        } else {
+            etOwnership.setOnClickListener(this);
+            etTurnover.setOnClickListener(this);
+            etAccountType.setOnClickListener(this);
+            imgAccount.setOnClickListener(this);
 
-        //etOwnership.setOnClickListener(this);
-        etTurnover.setOnClickListener(this);
-        etAccountType.setOnClickListener(this);
-        imgAccount.setOnClickListener(this);
+            List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                    getSSMasterDatabaseDao().getSSMasterData();
+            String masterDbString = list.get(0).getData();
 
-        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
-        String masterDbString = list.get(0).getData();
+            Gson gson = new Gson();
+            TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+            ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
-        Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
-        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
-
-        for(int i = 0; i<masterDataList.size(); i++) {
-            if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
-                    getField().equals("ownerType")) {
-                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
-                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
-                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
-                    customSpinnerObject.setSelected(false);
-                    ownershipList.add(customSpinnerObject);
+            for(int i = 0; i<masterDataList.size(); i++) {
+                if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
+                        getField().equals("ownerType")) {
+                    for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                        customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                        customSpinnerObject.setSelected(false);
+                        ownershipList.add(customSpinnerObject);
+                    }
                 }
             }
+            CustomSpinnerObject turnoverYes = new CustomSpinnerObject();
+            turnoverYes.setName("Yes");
+            turnoverYes.set_id("1");
+            turnoverYes.setSelected(false);
+            isTurnOverAboveList.add(turnoverYes);
+
+            CustomSpinnerObject turnoverNo = new CustomSpinnerObject();
+            turnoverNo.setName("No");
+            turnoverNo.set_id("2");
+            turnoverNo.setSelected(false);
+            isTurnOverAboveList.add(turnoverNo);
+
+            CustomSpinnerObject accountSavings = new CustomSpinnerObject();
+            accountSavings.setName("Savings Account");
+            accountSavings.set_id("1");
+            accountSavings.setSelected(false);
+            accountTypesList.add(accountSavings);
+
+            CustomSpinnerObject accountCurrent = new CustomSpinnerObject();
+            accountCurrent.setName("Current Account");
+            accountCurrent.set_id("2");
+            accountCurrent.setSelected(false);
+            accountTypesList.add(accountCurrent);
         }
-        CustomSpinnerObject turnoverYes = new CustomSpinnerObject();
-        turnoverYes.setName("Yes");
-        turnoverYes.set_id("1");
-        turnoverYes.setSelected(false);
-        isTurnOverAboveList.add(turnoverYes);
-
-        CustomSpinnerObject turnoverNo = new CustomSpinnerObject();
-        turnoverNo.setName("No");
-        turnoverNo.set_id("2");
-        turnoverNo.setSelected(false);
-        isTurnOverAboveList.add(turnoverNo);
-
-        CustomSpinnerObject accountSavings = new CustomSpinnerObject();
-        accountSavings.setName("Savings Account");
-        accountSavings.set_id("1");
-        accountSavings.setSelected(false);
-        accountTypesList.add(accountSavings);
-
-        CustomSpinnerObject accountCurrent = new CustomSpinnerObject();
-        accountCurrent.setName("Current Account");
-        accountCurrent.set_id("2");
-        accountCurrent.setSelected(false);
-        accountTypesList.add(accountCurrent);
         if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             setUIForMouUpdate();
         }
@@ -193,57 +214,121 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 getMachine().getProviderContactNumber());
         etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getContactNumber());
-        isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getIsTurnover();
-        etTurnover.setText(isTurnoverBelow);
-        etTradeName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getTradeName());
-        etGstRegNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getGSTNumber());
-        etPanNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getPANNumber());
-        etBankName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getBankName());
-        etIfsc.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getIFSC());
-        etBranch.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getBranch());
-        etAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getAccountNo());
-        etConfirmAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getAccountNo());
-        etAccountHolderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getAccountName());
-        etAccountType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getAccountType());
+        if(!isBJSMachine) {
+            isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getIsTurnover();
+            etTurnover.setText(isTurnoverBelow);
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getTradeName().length()>0) {
+                etTradeName.setVisibility(View.VISIBLE);
+                etTradeName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                        getProviderInformation().getTradeName());
+            } else {
+                etTradeName.setVisibility(View.GONE);
+            }
+            etGstRegNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getGSTNumber());
+            etPanNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getPANNumber());
+            etBankName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getBankName());
+            etIfsc.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getIFSC());
+            etBranch.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getBranch());
+            etAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getAccountNo());
+            etConfirmAccountNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getAccountNo());
+            etAccountHolderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getAccountName());
+            etAccountType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getAccountType());
+        }
     }
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etProviderFirstName.getText().toString().trim())
-                || TextUtils.isEmpty(etProviderLastName.getText().toString().trim())
-                || TextUtils.isEmpty(etProviderContact.getText().toString().trim())
-                || TextUtils.isEmpty(etMachineMobile.getText().toString().trim())
-                || TextUtils.isEmpty(etGstRegNo.getText().toString().trim())
-                || TextUtils.isEmpty(etPanNo.getText().toString().trim())
-                || TextUtils.isEmpty(etBankName.getText().toString().trim())
-                || TextUtils.isEmpty(etBranch.getText().toString().trim())
-                || TextUtils.isEmpty(etIfsc.getText().toString().trim())
-                || TextUtils.isEmpty(etAccountNo.getText().toString().trim())
-                || TextUtils.isEmpty(etConfirmAccountNo.getText().toString().trim())
-                || TextUtils.isEmpty(etAccountHolderName.getText().toString().trim())
-                || TextUtils.isEmpty(etAccountType.getText().toString().trim())
-                || isTurnoverBelow == null) {
-
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                        .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
-                Snackbar.LENGTH_LONG);
+        if (TextUtils.isEmpty(etProviderFirstName.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_provider_first_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etProviderLastName.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_provider_last_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etProviderContact.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_provider_contact), Snackbar.LENGTH_LONG);
+            return false;
+        } else if ( TextUtils.isEmpty(etMachineMobile.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_machine_mobile), Snackbar.LENGTH_LONG);
             return false;
         }
-        if(!etAccountNo.getText().toString().trim().equals(etConfirmAccountNo.getText().
-                toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.error_confirm_account_no),
-                    Snackbar.LENGTH_LONG);
-            return false;
+        if(!isBJSMachine) {
+            if (selectedOwnershipId == null){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etGstRegNo.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_gst_no), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etPanNo.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_pan_no), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etBankName.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_bank_name), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etBranch.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_branch), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etIfsc.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_ifsc), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etAccountNo.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_account_number), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etConfirmAccountNo.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_account_number), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etAccountHolderName.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_account_holder_name), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etAccountType.getText().toString().trim())){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.select_account_type), Snackbar.LENGTH_LONG);
+                return false;
+            } else if (isTurnoverBelow == null) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.select_turnover), Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if(!etAccountNo.getText().toString().trim().equals(etConfirmAccountNo.getText().
+                    toString().trim())) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), getString(R.string.error_confirm_account_no),
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if(selectedOwnership.equalsIgnoreCase("Firm")) {
+                if (TextUtils.isEmpty(etTradeName.getText().toString().trim())){
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                            getString(R.string.enter_trade_name), Snackbar.LENGTH_LONG);
+                    return false;
+                }
+            }
+            if(imgCount == 0) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.select_image), Snackbar.LENGTH_LONG);
+                return false;
+            }
         }
         return true;
     }
@@ -270,13 +355,13 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             case R.id.btn_previous_mou:
                 getActivity().onBackPressed();
                 break;
-//            case R.id.et_ownership:
-//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,
-//                        false);
-//                cdd.show();
-//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT);
-//                break;
+            case R.id.et_ownership:
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Ownership Type", ownershipList,
+                        false);
+                cdd.show();
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case R.id.et_turnover:
                 CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Select option", isTurnOverAboveList,
                         false);
@@ -426,6 +511,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 imgAccount.setImageURI(finalUri);
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 if (Util.isValidImageSize(imageFile)) {
+                    imgCount++;
                     ((MachineMouActivity) getActivity()).getImageHashmap().put("accountImage", bitmap);
                 } else {
                     Util.showToast(getString(R.string.msg_big_image), this);
@@ -439,16 +525,16 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
-//            case "Select Ownership Type":
-//                for (CustomSpinnerObject ownershipType : ownershipList) {
-//                    if (ownershipType.isSelected()) {
-//                        selectedOwnership = ownershipType.getName();
-//                        selectedOwnershipId = ownershipType.get_id();
-//                        break;
-//                    }
-//                }
-//                etOwnership.setText(selectedOwnership);
-//                break;
+            case "Select Ownership Type":
+                for (CustomSpinnerObject ownershipType : ownershipList) {
+                    if (ownershipType.isSelected()) {
+                        selectedOwnership = ownershipType.getName();
+                        selectedOwnershipId = ownershipType.get_id();
+                        break;
+                    }
+                }
+                etOwnership.setText(selectedOwnership);
+                break;
             case "Select option":
                 for (CustomSpinnerObject isTurnover : isTurnOverAboveList) {
                     if (isTurnover.isSelected()) {

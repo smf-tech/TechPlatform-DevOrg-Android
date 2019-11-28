@@ -99,6 +99,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
     private int statusCode;
+    private int imgCount =0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -262,14 +263,25 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())
-                || TextUtils.isEmpty(etOperatorContact.getText().toString().trim())
-                || TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())
-                || TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())
-                || TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
-                    Snackbar.LENGTH_LONG);
+        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_operator_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
             return false;
         }
         return true;
@@ -338,7 +350,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 String imageFilePath = Util.getImageName();
@@ -366,6 +377,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 imgLicense.setImageURI(finalUri);
                 if (Util.isValidImageSize(imageFile)) {
+                    imgCount++;
                     ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
                 } else {
                     Util.showToast(getString(R.string.msg_big_image), this);

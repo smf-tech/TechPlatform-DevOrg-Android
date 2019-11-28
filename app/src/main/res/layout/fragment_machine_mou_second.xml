@@ -30,11 +30,26 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/et_ownership"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/ownership_type"
+                    android:editable="false"
+                    android:longClickable="false"
+                    android:focusable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
                     android:id="@+id/et_provider_first_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/provider_name"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -47,7 +62,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/provider_last_name"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -76,20 +92,6 @@
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--<com.google.android.material.textfield.TextInputLayout-->
-                <!--style="@style/textinputstyle"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/et_ownership"-->
-                    <!--style="@style/RegistrationEditTextLayout"-->
-                    <!--android:hint="@string/ownership_type"-->
-                    <!--android:editable="false"-->
-                    <!--android:longClickable="false"-->
-                    <!--android:focusable="false"/>-->
-            <!--</com.google.android.material.textfield.TextInputLayout>-->
-
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
@@ -99,7 +101,9 @@
                     android:id="@+id/et_trade_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/trade_name"
-                    android:inputType="textMultiLine"/>
+                    android:inputType="textMultiLine"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    android:visibility="gone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +141,8 @@
                     android:id="@+id/et_pan_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/pan_number"
-                    android:maxLength="10"/>
+                    android:maxLength="10"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -150,7 +155,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/bank_name"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -163,7 +169,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/branch_name"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -175,7 +182,8 @@
                     android:id="@+id/et_ifsc"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/ifsc_code"
-                    android:maxLength="11"/>
+                    android:maxLength="11"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -235,7 +243,8 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/account_holder_name"
                     android:maxLength="50"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
