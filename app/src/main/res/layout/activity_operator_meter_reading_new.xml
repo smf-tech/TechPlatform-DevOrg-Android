@@ -136,7 +136,8 @@
         android:layout_margin="@dimen/dimen_05dp"
         android:text="Working"
         android:gravity="center_horizontal"
-        android:textColor="@color/red" />
+        android:fontFamily="@font/opensans_bold"
+        android:textColor="@color/dark_grey" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
