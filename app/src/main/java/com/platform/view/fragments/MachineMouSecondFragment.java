@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -44,6 +45,7 @@ import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
 import com.platform.view.customs.CustomSpinnerDialogClass;
+import com.platform.view.customs.TextViewSemiBold;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -72,6 +74,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
             etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
     private ImageView imgAccount;
+    private TextViewSemiBold eventPicLabel;
     private String selectedOwnership, selectedOwnershipId, isTurnoverBelow, selectedAccountType;
     private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isTurnOverAboveList = new ArrayList<>();
@@ -126,10 +129,11 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_account_no);
         etConfirmAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_confirm_account_no);
         imgAccount = machineMouSecondFragmentView.findViewById(R.id.img_account);
+        eventPicLabel = machineMouSecondFragmentView.findViewById(R.id.event_pic_label);
         etAccountHolderName = machineMouSecondFragmentView.findViewById(R.id.et_account_holder_name);
         etAccountType = machineMouSecondFragmentView.findViewById(R.id.et_account_type);
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedByValue().
-                equalsIgnoreCase("BJS")) {
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
             isBJSMachine = true;
         }
         if(isBJSMachine) {
@@ -144,6 +148,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             etAccountNo.setVisibility(View.GONE);
             etConfirmAccountNo.setVisibility(View.GONE);
             imgAccount.setVisibility(View.GONE);
+            eventPicLabel.setVisibility(View.GONE);
             etAccountHolderName.setVisibility(View.GONE);
             etAccountType.setVisibility(View.GONE);
         } else {

@@ -283,6 +283,10 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
             return false;
+        } else if(imgCount == 0) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
+            return false;
         }
         return true;
     }
@@ -486,7 +490,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
+                10000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(getActivity());

@@ -102,8 +102,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/trade_name"
                     android:inputType="textMultiLine"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-                    android:visibility="gone"/>
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 " />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -129,6 +128,7 @@
                     android:id="@+id/et_gst_reg_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/gst_reg_no"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                     android:maxLength="15"/>
             </com.google.android.material.textfield.TextInputLayout>
 

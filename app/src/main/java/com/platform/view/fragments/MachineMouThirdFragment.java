@@ -60,8 +60,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedByValue().
-                equalsIgnoreCase("BJS")) {
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
             MouDetails mouDetails = new MouDetails();
             ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
             Date d = new Date();

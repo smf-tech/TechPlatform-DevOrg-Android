@@ -69,6 +69,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     private Button btnDeploy;
     private int selectedPosition;
     public boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
+    private TextView tvNoData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     private void init() {
         progressBarLayout = machineDeployStructureListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineDeployStructureListFragmentView.findViewById(R.id.pb_profile_act);
+        tvNoData = machineDeployStructureListFragmentView.findViewById(R.id.tv_no_data_msg);
         btnDeploy = machineDeployStructureListFragmentView.findViewById(R.id.btn_deploy);
         btnDeploy.setOnClickListener(this);
         tvStateFilter = machineDeployStructureListFragmentView.findViewById(R.id.tv_state_filter);
@@ -345,6 +347,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     }
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureList) {
+        tvNoData.setVisibility(View.GONE);
         if (structureList != null) {
             if (requestID.equals(MachineDeployStructureListFragmentPresenter.GET_MACHINE_DEPLOY_STRUCTURE_LIST)) {
                 structureListData.clear();
@@ -360,6 +363,10 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             }
         }
+    }
+
+    public void showNoDataMessage() {
+        tvNoData.setVisibility(View.VISIBLE);
     }
 
     @Override

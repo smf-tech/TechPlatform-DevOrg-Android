@@ -406,7 +406,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
+                10000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(getActivity());

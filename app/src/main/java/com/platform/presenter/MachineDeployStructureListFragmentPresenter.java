@@ -166,6 +166,8 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
                     StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
                     if (structureListData.getStatus() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
+                    } else if(structureListData.getCode() == 400){
+                        fragmentWeakReference.get().showNoDataMessage();
                     }
                 }else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_TALUKAS)){
                     JurisdictionLevelResponse jurisdictionLevelResponse
