@@ -1166,7 +1166,7 @@ private void initConnectivityReceiver() {
        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
        Gson gson = new Gson();
        OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
-        strReasonId = operatorMachineData.getNonutilisationTypeData().get(selectedPosition).getValue();
+        strReasonId = operatorMachineData.getNonutilisationTypeData().get(selectedPosition).get_id();
         updateStatusAndProceed(state_halt);
         clearReadingImages();
 

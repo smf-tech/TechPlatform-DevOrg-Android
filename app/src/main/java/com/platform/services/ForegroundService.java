@@ -172,7 +172,7 @@ public class ForegroundService extends Service {
             totalHours = totalHours+1;
 
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("totalHours", totalHours);
+            editor.putInt("totalHours", currentClockTime+systemClockTime);
             editor.apply();
             currentHours = currentHours+1;
             intent.putExtra("STR_TIME", getFormattedTime(currentClockTime+systemClockTime));
