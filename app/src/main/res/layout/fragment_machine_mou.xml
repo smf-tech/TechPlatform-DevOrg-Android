@@ -147,7 +147,7 @@
                     android:id="@+id/et_rto_number"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_rto_number"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

@@ -587,7 +587,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 filteredMachineListData.addAll(ssMachineListData);
-                //rvDataList.setAdapter(ssMachineListAdapter);
+                rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
@@ -748,25 +748,31 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         } else if(view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
-                filteredMachineListData.clear();
-                filteredMachineListData.addAll(ssMachineListData);
-                ssMachineListAdapter.notifyDataSetChanged();
-            } else {
                 filteredStructureListData.clear();
                 filteredStructureListData.addAll(ssStructureListData);
                 ssStructureListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+            } else {
+                filteredMachineListData.clear();
+                filteredMachineListData.addAll(ssMachineListData);
+                rvDataList.setAdapter(ssMachineListAdapter);
+                ssMachineListAdapter.notifyDataSetChanged();
+                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
             if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+                tvStateFilter.setText("");
                 tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
             }
             if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+                tvDistrictFilter.setText("");
                 tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
             }
             if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
                 tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+                tvTalukaFilter.setText("");
             }
             btnFilterClear.setVisibility(View.GONE);
         }
