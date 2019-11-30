@@ -183,7 +183,7 @@ public class Util {
                 .getSharedPreferences(Constants.App.LANGUAGE_LOCALE, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.App.LANGUAGE_CODE,languageCode);
+        editor.putString(Constants.App.LANGUAGE_CODE, languageCode);
         editor.apply();
     }
 
@@ -210,13 +210,13 @@ public class Util {
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
-                if (getUserObjectFromPref().getOrgId()!=null) {
+                if (getUserObjectFromPref().getOrgId() != null) {
                     headers.put("orgId", getUserObjectFromPref().getOrgId());
                 }
-                if (getUserObjectFromPref().getProjectIds()!=null) {
+                if (getUserObjectFromPref().getProjectIds() != null) {
                     headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                 }
-                if (getUserObjectFromPref().getRoleIds()!=null) {
+                if (getUserObjectFromPref().getRoleIds() != null) {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
             }
@@ -410,7 +410,7 @@ public class Util {
         }
     }
 
-    public static void setStringInPref(String key,String value) {
+    public static void setStringInPref(String key, String value) {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
 
@@ -437,7 +437,7 @@ public class Util {
                 msg = Platform.getInstance().getString(R.string.msg_no_network);
             }
 
-            if(context instanceof Fragment ){
+            if (context instanceof Fragment) {
                 Toast.makeText(((Fragment) context).getActivity(), msg, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(((Activity) context), msg, Toast.LENGTH_LONG).show();
@@ -446,9 +446,11 @@ public class Util {
             Log.e(TAG, e.getMessage());
         }
     }
-    public static void logger(String tag,String msg){
-        Log.e(tag,"@@@@@2"+msg);
+
+    public static void logger(String tag, String msg) {
+        Log.e(tag, "@@@@@2" + msg);
     }
+
     public static String getAppVersion() {
         String result = "";
         try {
@@ -504,6 +506,7 @@ public class Util {
 
         return 0L;
     }
+
     public static long getDateInepoch(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
@@ -513,7 +516,7 @@ public class Util {
             SimpleDateFormat sdf = new SimpleDateFormat(DAY_MONTH_YEAR, Locale.getDefault());
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
-            int test = (int) (epoch/1000);
+            int test = (int) (epoch / 1000);
             return epoch;
 
         } catch (ParseException e) {
@@ -541,8 +544,8 @@ public class Util {
         }
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT,Locale.getDefault());
-            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT,Locale.getDefault());
+            DateFormat outputFormat = new SimpleDateFormat(Constants.LIST_DATE_FORMAT, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
             Date date1 = inputFormat.parse(date);
             return outputFormat.format(date1);
@@ -575,12 +578,14 @@ public class Util {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.getTime();
     }
+
     public static String getCurrentDate() {
 
         String currentDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(new Date());
 
         return currentDateString;
     }
+
     public static String getCurrentDatePreviousMonth() {
 
         SimpleDateFormat format = new SimpleDateFormat(DAY_MONTH_YEAR);
@@ -639,7 +644,7 @@ public class Util {
         return "";
     }
 
-    public static String getAmPmTimeStringFromTimeString(String time){
+    public static String getAmPmTimeStringFromTimeString(String time) {
 
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -674,7 +679,7 @@ public class Util {
             Bundle b = new Bundle();
             b.putSerializable("TITLE", titleName);
             b.putBoolean("SHOW_ALL", false);
-            if (fragment instanceof HomeFragment ||fragment instanceof PlannerFragment ||fragment instanceof ReportsFragment) {
+            if (fragment instanceof HomeFragment || fragment instanceof PlannerFragment || fragment instanceof ReportsFragment) {
                 b.putBoolean("SHOW_BACK", false);
             } else {
                 b.putBoolean("SHOW_BACK", true);
@@ -1064,10 +1069,10 @@ public class Util {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker1, int selectedHour, int selectedMinute) {
-                        String amPm ="AM";
+                        String amPm = "AM";
                         if (selectedHour >= 12) {
                             amPm = "PM";
-                            selectedHour = selectedHour-12;
+                            selectedHour = selectedHour - 12;
                         } else {
                             amPm = "AM";
                         }
@@ -1092,12 +1097,12 @@ public class Util {
             Date date1 = sdf.parse(startTime);
             Date date2 = sdf.parse(endTime);
 
-            if(date1.before(date2)) {
+            if (date1.before(date2)) {
                 return true;
             } else {
                 return false;
             }
-        } catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return false;
@@ -1461,87 +1466,87 @@ public class Util {
     }*/
 
 
-    public static void showSuccessFailureToast(String response,Context mContext,View view){
+    public static void showSuccessFailureToast(String response, Context mContext, View view) {
         try {
             JSONObject json = new JSONObject(response);
-            String str_value=json.getString("message");
+            String str_value = json.getString("message");
             Snackbar snackbar = Snackbar.make(view, str_value, Snackbar.LENGTH_LONG);
             snackbar.show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     //pojo to json string
-    public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel){
-        Gson gson =new Gson();
+    public static String modelToJson(TMApprovalRequestModel tmApprovalRequestModel) {
+        Gson gson = new Gson();
         String jsonInString = gson.toJson(tmApprovalRequestModel);
         return jsonInString;
     }
 
 
-   public static String showReasonDialog(final Activity context, int pos, Fragment fragment){
-           Dialog dialog;
-           Button btnSubmit,btn_cancel;
-           EditText edt_reason;
-           Activity activity =context;
+    public static String showReasonDialog(final Activity context, int pos, Fragment fragment) {
+        Dialog dialog;
+        Button btnSubmit, btn_cancel;
+        EditText edt_reason;
+        Activity activity = context;
 
-           dialog = new Dialog(context);
-           dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-           dialog.setContentView(R.layout.dialog_reason_layout);
-       dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_reason_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-            edt_reason = dialog.findViewById(R.id.edt_reason);
-       btn_cancel = dialog.findViewById(R.id.btn_cancel);
-       btnSubmit = dialog.findViewById(R.id.btn_submit);
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
 
-       btn_cancel.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               dialog.dismiss();
-           }
-       });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
-       btnSubmit.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                    /*Intent loginIntent = new Intent(context, LoginActivity.class);
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                    context.startActivity(loginIntent);*/
-                   String strReason  = edt_reason.getText().toString();
+                String strReason = edt_reason.getText().toString();
 
-                   if (TextUtils.isEmpty(strReason)){
-                    Util.logger("Empty Reason","Reason Can not be blank");
-                       Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-                                       .findViewById(android.R.id.content), "Reason Can not be blank",
-                               Snackbar.LENGTH_LONG);
-                   }else {
-                       if (fragment instanceof TMUserLeavesApprovalFragment) {
-                           ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                       }
-                       if (fragment instanceof TMUserAttendanceApprovalFragment) {
-                           ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                       }
-                       if (fragment instanceof TMUserProfileApprovalFragment) {
-                           ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                       }
-                       if (fragment instanceof TMUserFormsApprovalFragment) {
-                           ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                       }
+                if (TextUtils.isEmpty(strReason)) {
+                    Util.logger("Empty Reason", "Reason Can not be blank");
+                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Reason Can not be blank",
+                            Snackbar.LENGTH_LONG);
+                } else {
+                    if (fragment instanceof TMUserLeavesApprovalFragment) {
+                        ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                        ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserProfileApprovalFragment) {
+                        ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserFormsApprovalFragment) {
+                        ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
 
-                       dialog.dismiss();
-                   }
-               }
-           });
-           dialog.show();
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
 
 
-return "";
-   }
+        return "";
+    }
 
-    public static String getTodaysDate()
-    {
+    public static String getTodaysDate() {
         Date d = new Date();
         String pattern = "MM/dd/yyyy";
         SimpleDateFormat df = new SimpleDateFormat(pattern);
@@ -1553,34 +1558,32 @@ return "";
 
     }
 
-    public void startProgressDialog(Activity activity,String message)
-    {
-       pd=new ProgressDialog(activity);
-       pd.setMessage(message);
-       pd.setCanceledOnTouchOutside(false);
-       pd.show();
+    public void startProgressDialog(Activity activity, String message) {
+        pd = new ProgressDialog(activity);
+        pd.setMessage(message);
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
     }
 
-    public void stopProgressDialog()
-    {
-        if(pd.isShowing()){
+    public void stopProgressDialog() {
+        if (pd.isShowing()) {
             pd.dismiss();
         }
 
     }
 
-    public static void showDelayInCheckInDialog(Context context, String header, String msg, boolean b){
-        final Dialog dialog=new Dialog(context);
+    public static void showDelayInCheckInDialog(Context context, String header, String msg, boolean b) {
+        final Dialog dialog = new Dialog(context);
         dialog.setCancelable(b);
         dialog.setContentView(R.layout.attendance_dialog);
 
-        AppCompatTextView textHeader=dialog.findViewById(R.id.txt_delaycheck_header);
+        AppCompatTextView textHeader = dialog.findViewById(R.id.txt_delaycheck_header);
         textHeader.setText(header);
 
-        AppCompatTextView textMsg=dialog.findViewById(R.id.txt_delaycheck_title);
+        AppCompatTextView textMsg = dialog.findViewById(R.id.txt_delaycheck_title);
         textMsg.setText(msg);
 
-        AppCompatButton button=dialog.findViewById(R.id.btn_delaycheckin);
+        AppCompatButton button = dialog.findViewById(R.id.btn_delaycheckin);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1589,65 +1592,58 @@ return "";
         });
         dialog.show();
     }
-    public static Calendar setHours(int hours,int min){
-        Calendar calendar=Calendar.getInstance();
+
+    public static Calendar setHours(int hours, int min) {
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,hours);
-        calendar.set(Calendar.MINUTE,min);
-        return  calendar;
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, min);
+        return calendar;
     }
 
 
-
-
-//---------------------------
-public static void updateFirebaseIdRequests(JSONObject requestObject) {
-    Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
-        try {
-            if (response != null) {
-                String res = response.toString();
-                Log.d(TAG, "update firebase id Requests - Resp: " + res);
+    //---------------------------
+    public static void updateFirebaseIdRequests(JSONObject requestObject) {
+        Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "update firebase id Requests - Resp: " + res);
               /*  User user = new Gson().fromJson(res, User.class);
               //  listener.TMUserProfileApprovalRequestsFetched(res);
                 if (res != null && user.getUserInfo() != null) {
                     Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
                 }*/
 
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                //listener.onFailureListener(e.getMessage());
             }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            //listener.onFailureListener(e.getMessage());
-        }
-    };
+        };
 
-    Response.ErrorListener pendingRequestsErrorListener = error ->
-    {
-     //   listener.onErrorListener(error);
-        Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
-    };
+        Response.ErrorListener pendingRequestsErrorListener = error ->
+        {
+            //   listener.onErrorListener(error);
+            Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
+        };
 
-    Gson gson = new GsonBuilder().serializeNulls().create();
-    final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
 
-    GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
-            Request.Method.PUT,
-            getPendingRequestsUrl,
-            new TypeToken<JSONObject>() {
-            }.getType(),
-            gson,
-            pendingRequestsResponseListener,
-            pendingRequestsErrorListener
-    );
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.PUT,
+                getPendingRequestsUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                pendingRequestsResponseListener,
+                pendingRequestsErrorListener
+        );
 
-    gsonRequest.setHeaderParams(Util.requestHeader(true));
-    gsonRequest.setShouldCache(false);
-    gsonRequest.setBodyParams(requestObject);
-    Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
-}
-
-
-
-
-
-
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        gsonRequest.setBodyParams(requestObject);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
 }

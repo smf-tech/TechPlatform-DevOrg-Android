@@ -6,6 +6,10 @@
     tools:context="com.platform.view.fragments.MachineMouFirstFragment"
     android:background="@color/base_background_color">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -157,6 +161,8 @@
         </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

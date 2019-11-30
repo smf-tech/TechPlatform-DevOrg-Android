@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.PlatformTaskListener;
@@ -230,6 +231,8 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
     public <T> void showNextScreen(T data) {
         if (data != null) {
             homeData = (Home) data;
+
+            DatabaseManager.getDBInstance(Platform.getInstance()).deleteAllModules();
 
             List<Modules> defaultModules = homeData.getHomeData().getDefaultModules();
             for (final Modules module : defaultModules) {

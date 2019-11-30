@@ -52,6 +52,10 @@ public class StructureData implements Serializable {
     @SerializedName("talukaId")
     @Expose
     private String talukaId;
+    @ColumnInfo(name = "village")
+    @SerializedName("village")
+    @Expose
+    private String village;
     @ColumnInfo(name = "structureWorkType")
     @SerializedName("structureWorkType")
     @Expose
@@ -184,6 +188,14 @@ public class StructureData implements Serializable {
 
     public void setTalukaId(String talukaId) {
         this.talukaId = talukaId;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
     }
 
     public String getStructureWorkType() {
