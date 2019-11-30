@@ -246,7 +246,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:hint="End reading*"
-                        android:inputType="number"
+                        android:inputType="number|numberDecimal"
                         android:longClickable="false"
                         android:maxLength="6" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->

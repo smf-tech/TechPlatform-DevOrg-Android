@@ -149,4 +149,8 @@ public class Urls {
         public static final String MACHINE_WORKLOG = "api/machineWorkLog";
         public static final String MACHINE_DATA = "api/getMachineData";
     }
+
+    public class Configuration{
+        public static final String API_CONFIG = "api/configuration";
+    }
 }
