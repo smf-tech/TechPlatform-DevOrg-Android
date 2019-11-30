@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Reason"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
+                    android:inputType="textCapWords"
                     android:visibility="gone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -304,7 +304,7 @@
             android:clickable="true"
             android:focusable="true"
             android:indeterminateOnly="true"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 
 </RelativeLayout>

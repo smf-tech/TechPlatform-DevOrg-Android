@@ -1,126 +1,131 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/base_background_color">
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:background="@color/white"
+            app:cardCornerRadius="@dimen/dimen_10dp">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp">
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/et_selected_structure"
-                        style="@style/RegistrationEditTextLayout"
-                        android:focusable="false"
-                        android:longClickable="false"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_selected_structure"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_is_diesel_filled"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/is_diesel_filled"
-                        android:focusable="false"
-                        android:longClickable="false"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_is_diesel_filled"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:hint="@string/is_diesel_filled"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_provided_by"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/provided_by"
-                        android:focusable="false"
-                        android:longClickable="false"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_provided_by"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:hint="@string/provided_by"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_diesel_filled_quantity"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/diesel_quantity"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_diesel_filled_quantity"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/diesel_quantity"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_start_meter_reading"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/start_meter_reading"
-                        android:inputType="number"
-                        android:maxLength="7"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_start_meter_reading"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/start_meter_reading"
+                            android:inputType="number"
+                            android:maxLength="7" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_travel_distance"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/travel_distance"
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/et_travel_distance"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/travel_distance"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/et_travel_time"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/travel_time"
-                        android:digits=":0123456789"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/et_travel_time"
+                            style="@style/RegistrationEditTextLayout"
+                            android:digits=":0123456789"
+                            android:hint="@string/travel_time" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
                         android:id="@+id/btn_submit"
+                        style="@style/RegistrationEditTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/RegistrationEditTextLayout"
                         android:layout_margin="@dimen/dimen_10dp"
-                        android:textColor="@android:color/white"
-                        android:text="@string/submit" />
+                        android:text="@string/submit"
+                        android:textColor="@android:color/white" />
 
-            </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </ScrollView>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

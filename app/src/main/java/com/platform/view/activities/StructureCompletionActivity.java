@@ -248,7 +248,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 return false;
             }
         } else {
-            if (TextUtils.isEmpty(etReason.getText().toString())) {
+            if (etReason.getVisibility()== View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Reason.", Snackbar.LENGTH_LONG);
                 return false;

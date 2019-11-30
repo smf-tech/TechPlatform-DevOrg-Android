@@ -203,7 +203,8 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
@@ -256,7 +257,7 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
                     SyncAdapterUtils.manualRefresh();
 
-                    Util.showToast("Structure visit is submitted successfully.",this);
+                    Util.showToast("Structure visit is submitted successfully.", this);
 
                     finish();
 
@@ -287,16 +288,16 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             return false;
         }
 
-        if(location!=null){
-            if (TextUtils.isEmpty(selectedStatusID)){
+        if (location != null) {
+            if (TextUtils.isEmpty(selectedStatusID)) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, select Status.", Snackbar.LENGTH_LONG);
                 return false;
-            } else if(TextUtils.isEmpty(selectedIssueID)){
+            } else if (TextUtils.isEmpty(selectedIssueID)) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, select Issue.", Snackbar.LENGTH_LONG);
                 return false;
-            } else if(TextUtils.isEmpty(etIssuesDescription.getText().toString())){
+            } else if (TextUtils.isEmpty(etIssuesDescription.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Issues Description.", Snackbar.LENGTH_LONG);
                 return false;
@@ -308,7 +309,7 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                 requestData.setIssueRelated(selectedIssueID);
                 requestData.setIssueDescription(etIssuesDescription.getText().toString());
             }
-         } else {
+        } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);
@@ -412,20 +413,15 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                if (Util.isConnected(this)) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        ivStructure.setImageURI(finalUri);
-                        imageUri.add(finalUri);
+                if (Util.isValidImageSize(imageFile)) {
+                    ivStructure.setImageURI(finalUri);
+                    imageUri.add(finalUri);
 //                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
 //                        imageHashmap.put("image" + imageCount, bitmap);
 //                        imageCount++;
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    Util.showToast(getString(R.string.msg_big_image), this);
                 }
-
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -483,9 +479,10 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     public void closeCurrentActivity() {
 
     }
+
     private void uploadImage(StructureVisitMonitoringData structureVisitMonitoringData, int noImages) {
 
-        Log.d("request -",new Gson().toJson(requestData));
+        Log.d("request -", new Gson().toJson(requestData));
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -524,9 +521,9 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 //                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
 //                for (int i = 0; i < imageHashmap.size(); i++) {
 //                    String key = (String) myVeryOwnIterator.next();
-                    drawable = new BitmapDrawable(getResources(), structureVisitMonitoringData.getStructureImage());
-                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
-                            "image/jpeg"));
+                drawable = new BitmapDrawable(getResources(), structureVisitMonitoringData.getStructureImage());
+                params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
 //                }
                 return params;
             }
