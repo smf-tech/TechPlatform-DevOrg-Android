@@ -104,6 +104,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
         holder.tvStructureName.setText(ssDataList.get(position).getStructureName());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
+        holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
+        holder.tvVillage.setText(ssDataList.get(position).getVillage());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
         if (isSave) {
             if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
@@ -119,11 +121,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         } else {
             // save button visibal
             if (ssDataList.get(position).isSavedOffine()) {
-                holder.btSave.setTextColor(activity.getApplication().getResources().getColor(R.color.light_grey));
-                holder.btSave.setEnabled(false);
+                holder.btSave.setVisibility(View.INVISIBLE);
+                DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
+                        .insert(ssDataList.get(position));
             } else {
                 holder.btSave.setTextColor(activity.getApplication().getResources().getColor(R.color.colorPrimaryDark));
-                holder.btSave.setEnabled(true);
+                holder.btSave.setVisibility(View.VISIBLE);
             }
         }
 
@@ -139,7 +142,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
-                tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount;
+                tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage;
         ImageView btnPopupMenu;
         LinearLayout lyStructure;
         PopupMenu popup;
@@ -157,6 +160,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvContact = itemView.findViewById(R.id.tv_contact);
             tvUpdated = itemView.findViewById(R.id.tv_updated);
             tvMachinCount = itemView.findViewById(R.id.tv_machin_count);
+            tvTaluka = itemView.findViewById(R.id.tv_taluka);
+            tvVillage = itemView.findViewById(R.id.tv_village);
             btSave = itemView.findViewById(R.id.bt_save);
             if (isSave) {
                 btSave.setText("Save Offline");
@@ -189,7 +194,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
                     }
                     if (isStructureComplete) {
-                        if ( ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 116
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 119
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120
@@ -253,8 +258,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 public void onClick(View view) {
                     if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
                         showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
-                                "Yes", "No", getAdapterPosition(),2);
-                    } else if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115 && isVisitMonitoring) {
+                                "Yes", "No", getAdapterPosition(), 2);
+                    } else if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
+                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 122
+                            && isVisitMonitoring) {
                         showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
                                 "Yes", "No", getAdapterPosition(), 1);
                     }
@@ -268,11 +275,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 .insert(ssDataList.get(getAdapterPosition()));
                         ssDataList.get(getAdapterPosition()).setSavedOffine(true);
                         notifyItemChanged(getAdapterPosition());
+                        Util.showToast("Structure Saved Offline", activity);
                     } else {
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
                                 .delete(ssDataList.get(getAdapterPosition()).getStructureId());
                         ssDataList.remove(getAdapterPosition());
                         notifyDataSetChanged();
+                        Util.showToast("Structure Removed from Offline ", activity);
                     }
                 }
             });
