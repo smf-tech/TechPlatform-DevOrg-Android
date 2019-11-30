@@ -225,7 +225,7 @@
                         android:hint="Start reading*"
                         android:inputType="number|numberDecimal"
                         android:longClickable="false"
-                        android:maxLength="6" />
+                        android:maxLength="8" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -248,7 +248,7 @@
                         android:hint="End reading*"
                         android:inputType="number|numberDecimal"
                         android:longClickable="false"
-                        android:maxLength="6" />
+                        android:maxLength="8" />
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 

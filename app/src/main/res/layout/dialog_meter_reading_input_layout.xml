@@ -31,9 +31,9 @@
             android:textStyle="normal"
             android:fontFamily="@font/opensans_regular"
             android:gravity="left|top"
-            android:maxLength="6"
-            android:digits="0123456789"
-            android:inputType="phone"
+            android:maxLength="8"
+            android:digits="0123456789."
+            android:inputType="number|numberDecimal"
             android:hint="Enter meter reading"
             android:textSize="@dimen/text_size_12"
             android:background="@drawable/edittext_border"/>
