@@ -222,7 +222,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getProviderContactNumber());
         etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getContactNumber());
+                getMachine().getMachineMobileNumber());
         if(!isBJSMachine) {
             isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getIsTurnover();
@@ -416,7 +416,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAddress("Pune");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber
                 (etProviderContact.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setContactNumber
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
                 (etMachineMobile.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setOwnership
                 ((selectedOwnershipId));

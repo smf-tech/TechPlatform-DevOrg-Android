@@ -97,10 +97,10 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
             edtRate3StartDate.setOnClickListener(this);
             edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
             edtRate3EndDate.setOnClickListener(this);
-        }
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails()!=null) {
-            setUIvalues();
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getMouDetails()!=null) {
+                setUIvalues();
+            }
         }
     }
 

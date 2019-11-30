@@ -60,6 +60,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         holder.tvProvider.setText(machineData.getProviderName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
+        holder.tvLocation.setText(machineData.getMachineLocation());
+        holder.tvOwnerValue.setText(machineData.getOwnedBy());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
         if(machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
@@ -77,7 +79,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvStructureCode,
-                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact;
+                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
+                tvLocation, tvOwnerValue;
         ImageView btnPopupMenu;
         LinearLayout rlMachine;
         PopupMenu popup;
@@ -89,6 +92,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvCapacity = itemView.findViewById(R.id.tv_capacity);
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
+            tvLocation = itemView.findViewById(R.id.tv_location);
+            tvOwnerValue = itemView.findViewById(R.id.tv_owner_value);
             tvContact = itemView.findViewById(R.id.tv_contact);
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override

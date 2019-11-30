@@ -240,6 +240,62 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
+                <TextView
+                    android:id="@+id/tv_location_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Taluka"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_location_label"
+                    android:textSize="@dimen/text_size_13"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_ownedby_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Owned By"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_owner_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_ownedby_label"
+                    android:textSize="@dimen/text_size_13"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans_semibold"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
             <TextView
                 android:id="@+id/tv_operator_label"
                 android:layout_width="wrap_content"

@@ -152,7 +152,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
         if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails()!=null) {
+                getOperatorDetails()!=null) {
             setUIvalues();
         }
     }
