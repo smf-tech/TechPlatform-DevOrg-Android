@@ -326,6 +326,7 @@
                             android:id="@+id/edt_reg_amt"
                             style="@style/RegistrationEditTextLayout"
                             android:hint="@string/meet_registration_amount_label"
+                            android:maxLength="5"
                             android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
 

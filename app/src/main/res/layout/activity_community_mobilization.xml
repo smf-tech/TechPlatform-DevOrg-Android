@@ -178,7 +178,7 @@
                         android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--Name of OopSarpanch-->
+                <!--Name of UpSarpanch-->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
@@ -190,13 +190,13 @@
                         style="@style/RegistrationEditTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Name of OopSarpanch"
+                        android:hint="Name of UpSarpanch"
                         android:imeOptions="actionNext"
                         android:inputType="textCapWords"
                         android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz " />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--Contact of OopSarpanch-->
+                <!--Contact of UpSarpanch-->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
@@ -208,7 +208,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Contact of OopSarpanch"
+                        android:hint="Contact of UpSarpanch"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="10"/>
@@ -514,7 +514,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Duration in days"
                         android:imeOptions="actionNext"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
@@ -629,7 +629,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Farmer's land holding (In Acres) - Category Options"
-                        android:imeOptions="actionNext" />
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView

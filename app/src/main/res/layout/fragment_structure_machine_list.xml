@@ -1,69 +1,72 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.platform.view.fragments.StructureMachineListFragment"
+    android:background="@color/base_background_color"
     android:orientation="vertical"
-    android:background="@color/base_background_color">
+    tools:context="com.platform.view.fragments.StructureMachineListFragment">
 
     <LinearLayout
         android:id="@+id/ly_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp"
         android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_margin="@dimen/dimen_10dp">
+        android:weightSum="10">
 
         <TextView
             android:id="@+id/tv_state_filter"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_30dp"
             android:layout_marginEnd="@dimen/dimen_03dp"
-            android:paddingStart="@dimen/dimen_10dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@drawable/bg_blue_box"
-            android:hint="@string/state"
-            android:textColorHint="@color/medium_grey"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
             android:fontFamily="@font/opensans"
             android:gravity="center_vertical"
-            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
+            android:hint="@string/state"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:textColorHint="@color/medium_grey" />
 
         <TextView
             android:id="@+id/tv_district_filter"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_30dp"
             android:layout_marginEnd="@dimen/dimen_03dp"
-            android:paddingStart="@dimen/dimen_10dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@drawable/bg_blue_box"
-            android:hint="@string/district"
-            android:textColorHint="@color/medium_grey"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_10dp"
             android:fontFamily="@font/opensans"
             android:gravity="center_vertical"
-            android:drawablePadding="@dimen/dimen_10dp"
-            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
+            android:hint="@string/district"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:textColorHint="@color/medium_grey" />
 
         <TextView
             android:id="@+id/tv_taluka_filter"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_30dp"
-            android:paddingStart="@dimen/dimen_10dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:background="@drawable/bg_blue_box"
-            android:hint="@string/taluka"
-            android:textColorHint="@color/medium_grey"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_03dp"
             android:fontFamily="@font/opensans"
             android:gravity="center_vertical"
-            android:drawablePadding="@dimen/dimen_03dp"
-            android:drawableEnd="@drawable/ic_dropdown_arrow"/>
+            android:hint="@string/taluka"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:textColorHint="@color/medium_grey" />
 
-        <Button
+        <ImageView
             android:id="@+id/btn_filter_clear"
             android:layout_width="@dimen/dimen_20dp"
             android:layout_height="@dimen/dimen_30dp"
+            android:layout_weight="1"
             android:layout_marginStart="@dimen/dimen_05dp"
-            android:visibility="gone"/>
+            android:padding="@dimen/dimen_03dp"
+            android:src="@drawable/ic_cancel"
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -73,12 +76,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ly_filter">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_data_list"
-        android:layout_below="@+id/ly_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_data_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ly_filter"></androidx.recyclerview.widget.RecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -96,12 +98,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dimen_10dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
         android:src="@android:drawable/ic_input_add"
-        app:tint="@color/white"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
+        app:tint="@color/white"
         tools:ignore="RelativeOverlap" />
 
     <RelativeLayout

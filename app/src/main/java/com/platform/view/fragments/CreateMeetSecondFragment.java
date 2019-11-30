@@ -293,7 +293,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean isAllDataValid() {
-        if(selectedOrganizersList.size() == 0){
+        if(selectedNonOrganizersList.size() == 0){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.select_meet_organizers_references_msg),
                     Snackbar.LENGTH_LONG);

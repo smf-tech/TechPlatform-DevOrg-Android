@@ -130,7 +130,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
             presenter.getRoleAccess();
-
         }
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
         if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {

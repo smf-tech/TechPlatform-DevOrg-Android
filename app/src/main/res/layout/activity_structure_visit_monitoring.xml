@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Issue description"
                 android:imeOptions="actionNext"
-                android:inputType="text|textCapWords"
+                android:inputType="textMultiLine"
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
         </com.google.android.material.textfield.TextInputLayout>
 
