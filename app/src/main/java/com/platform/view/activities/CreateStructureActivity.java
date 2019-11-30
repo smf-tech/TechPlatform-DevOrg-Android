@@ -95,9 +95,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private void initView() {
 
         //get District
+//        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+//                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+        //get Village
         presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
 
         structureData = new Structure();
 
@@ -129,8 +133,21 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
 
-        etDistrict.setOnClickListener(this);
-        etTaluka.setOnClickListener(this);
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            etDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+            selectedDistrict = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName();
+        }
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
+            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
+        }
+
+//        etDistrict.setOnClickListener(this);
+//        etTaluka.setOnClickListener(this);
         etHostVillage.setOnClickListener(this);
         etAdministrativeApprovalDate.setOnClickListener(this);
         etTechnicalSanctionDate.setOnClickListener(this);

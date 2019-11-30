@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -93,7 +94,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
     private TextView tvNoData;
-    private Button btnFilterClear;
+    private ImageView btnFilterClear;
 
     public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
     public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
