@@ -590,11 +590,11 @@ private ImageView toolbar_edit_action;
         if (preferences.getInt("State", 0) == state_start) {
         }
         setStartImage(preferences.getString(Constants.OperatorModule.MACHINE_START_IMAGE,""));
-        if (preferences.getInt("et_smeter_read", 0)==0)
+        if (preferences.getFloat("et_smeter_read", 0)==0)
         {
 
         }else {
-            et_smeter_read.setText(String.valueOf(preferences.getInt("et_smeter_read", 0)));
+            et_smeter_read.setText(String.valueOf(preferences.getFloat("et_smeter_read", 0)));
         }
         if (!preferences.getString("machine_code", "").equalsIgnoreCase("")){
             tv_machine_code.setText(preferences.getString("machine_code", ""));
@@ -987,11 +987,11 @@ public String showReadingDialog(final Activity context, int pos){
         mobileNumberEntered = strReason;*/
         if (pos==1){
             et_smeter_read.setText(strReason);
-            editor.putInt("et_smeter_read", Integer.parseInt(strReason));
+            editor.putFloat("et_smeter_read", Float.parseFloat(strReason));
             editor.apply();
             callStartButtonClick();
         }else {
-            editor.putInt("et_emeter_read", Integer.parseInt(strReason));
+            editor.putFloat("et_emeter_read", Float.parseFloat(strReason));
             editor.apply();
             if (isMeterReadingRight(strReason))
             {
@@ -1005,9 +1005,9 @@ public String showReadingDialog(final Activity context, int pos){
     }
 
     private boolean isMeterReadingRight(String endMeterReading) {
-        Util.logger("emeter Reading", "--"+preferences.getInt("et_emeter_read", 0));
-        Util.logger("smeter Reading", "--"+preferences.getInt("et_smeter_read", 0));
-        if ((preferences.getInt("et_emeter_read", 0) - preferences.getInt("et_smeter_read", 0)) > 0) {
+        Util.logger("emeter Reading", "--"+preferences.getFloat("et_emeter_read", 0));
+        Util.logger("smeter Reading", "--"+preferences.getFloat("et_smeter_read", 0));
+        if ((preferences.getFloat("et_emeter_read", 0) - preferences.getFloat("et_smeter_read", 0)) > 0) {
             return true;
         } else {
             return false;
@@ -1068,8 +1068,8 @@ public String showReadingDialog(final Activity context, int pos){
                 setTodaysDate();
                 //clear data here
                 editor.putInt("State",0);
-                editor.putInt("et_emeter_read",0);
-                editor.putInt("et_smeter_read",0);
+                editor.putFloat("et_emeter_read",0);
+                editor.putFloat("et_smeter_read",0);
 
                 editor.putInt("systemTime",0);
                 editor.putInt("systemClockTime",0);
@@ -1094,8 +1094,8 @@ public String showReadingDialog(final Activity context, int pos){
 
         //clear data here
         editor.putInt("State",0);
-        editor.putInt("et_emeter_read",0);
-        editor.putInt("et_smeter_read",0);
+        editor.putFloat("et_emeter_read",0);
+        editor.putFloat("et_smeter_read",0);
 
         editor.putInt("systemTime",0);
         editor.putInt("systemClockTime",0);
@@ -1104,8 +1104,8 @@ public String showReadingDialog(final Activity context, int pos){
     }
 
     public void clearDataOnStop(){
-        editor.putInt("et_emeter_read",0);
-        editor.putInt("et_smeter_read",0);
+        editor.putFloat("et_emeter_read",0);
+        editor.putFloat("et_smeter_read",0);
 
         editor.putInt("systemTime",0);
         editor.putInt("systemClockTime",0);
