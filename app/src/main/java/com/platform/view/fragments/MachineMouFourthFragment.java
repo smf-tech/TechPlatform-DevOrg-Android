@@ -151,29 +151,30 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
-//        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
-//            setUIForMouUpdate();
-//        }
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails()!=null) {
+            setUIvalues();
+        }
     }
 
-//    private void setUIForMouUpdate() {
-////        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-////                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
-//        etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getFirstName());
-//        etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getLastName());
-//        etOperatorContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getContactNumnber());
-//        etLicenseNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getLicenceNumber());
-//        selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getIsTrainingDone();
-//        etOperatorTraining.setText(selectedtrainingOption);
-//        selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getOperatorDetails().getIsAppInstalled();
-//        etAppInstalled.setText(selectedAppInstalledOption);
-//    }
+    private void setUIvalues() {
+//        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
+        etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getFirstName());
+        etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getLastName());
+        etOperatorContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getContactNumnber());
+        etLicenseNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getLicenceNumber());
+        selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getIsTrainingDone();
+        etOperatorTraining.setText(selectedtrainingOption);
+        selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails().getIsAppInstalled();
+        etAppInstalled.setText(selectedAppInstalledOption);
+    }
 
     private void setMachineFourthData() {
         OperatorDetails operatorDetails = new OperatorDetails();

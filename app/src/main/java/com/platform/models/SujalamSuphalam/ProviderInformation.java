@@ -23,6 +23,18 @@ public class ProviderInformation {
     @SerializedName("machine_meter_working")
     @Expose
     private String machineMeterWorking;
+
+    public String getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(String ownership) {
+        this.ownership = ownership;
+    }
+
+    @SerializedName("ownership_type_id")
+    @Expose
+    private String ownership;
     @SerializedName("PAN_number")
     @Expose
     private String pANNumber;

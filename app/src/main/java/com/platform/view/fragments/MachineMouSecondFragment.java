@@ -204,6 +204,10 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             setUIForMouUpdate();
         }
+        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation()!=null) {
+            setUIForMouUpdate();
+        }
     }
 
     private void setUIForMouUpdate() {
@@ -223,6 +227,19 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getIsTurnover();
             etTurnover.setText(isTurnoverBelow);
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getProviderInformation().getOwnership().length()>0) {
+                for (CustomSpinnerObject ownershipType : ownershipList) {
+                        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                                getProviderInformation().getOwnership().equalsIgnoreCase(ownershipType.get_id())) {
+                            selectedOwnership = ownershipType.getName();
+                            selectedOwnershipId = ownershipType.get_id();
+                            break;
+                        }
+                }
+                etOwnership.setVisibility(View.VISIBLE);
+                etOwnership.setText(selectedOwnership);
+            }
             if(((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getTradeName().length()>0) {
                 etTradeName.setVisibility(View.VISIBLE);
@@ -358,6 +375,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 }
                 break;
             case R.id.btn_previous_mou:
+                setMachineSecondData();
                 getActivity().onBackPressed();
                 break;
             case R.id.et_ownership:
@@ -400,6 +418,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 (etProviderContact.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setContactNumber
                 (etMachineMobile.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setOwnership
+                ((selectedOwnershipId));
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineMeterWorking("Yes");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setIsTurnover(isTurnoverBelow);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineId(((MachineMouActivity)

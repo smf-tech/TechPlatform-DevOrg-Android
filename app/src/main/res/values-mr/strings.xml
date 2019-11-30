@@ -522,6 +522,7 @@
     <string name="enter_distance">Enter travel distance</string>
     <string name="enter_travel_time">Enter travel time</string>
     <string name="msg_enter_birth_date">Please enter birth date</string>
+    <string name="machine_eligible_form_title">Make Machine Eligible</string>
 
 
 </resources>

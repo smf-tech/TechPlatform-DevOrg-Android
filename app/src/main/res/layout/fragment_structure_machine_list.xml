@@ -58,6 +58,13 @@
             android:drawablePadding="@dimen/dimen_03dp"
             android:drawableEnd="@drawable/ic_dropdown_arrow"/>
 
+        <Button
+            android:id="@+id/btn_filter_clear"
+            android:layout_width="@dimen/dimen_20dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

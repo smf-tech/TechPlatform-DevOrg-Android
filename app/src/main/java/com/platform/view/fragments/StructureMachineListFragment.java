@@ -93,6 +93,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
     private TextView tvNoData;
+    private Button btnFilterClear;
 
     public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
     public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
@@ -128,6 +129,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
+        btnFilterClear = structureMachineListFragmentView.findViewById(R.id.btn_filter_clear);
+        btnFilterClear.setOnClickListener(this);
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
             tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
@@ -584,7 +587,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 filteredMachineListData.addAll(ssMachineListData);
-                rvDataList.setAdapter(ssMachineListAdapter);
+                //rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
@@ -743,6 +746,29 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
+        } else if(view.getId() == R.id.btn_filter_clear) {
+            if (viewType == 1) {
+                filteredMachineListData.clear();
+                filteredMachineListData.addAll(ssMachineListData);
+                ssMachineListAdapter.notifyDataSetChanged();
+            } else {
+                filteredStructureListData.clear();
+                filteredStructureListData.addAll(ssStructureListData);
+                ssStructureListAdapter.notifyDataSetChanged();
+            }
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+                tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            }
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+                tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            }
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+                tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            }
+            btnFilterClear.setVisibility(View.GONE);
         }
     }
 
@@ -768,7 +794,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 ssStructureListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
             } else {
-
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
                     if (machineData.getTalukaId().equalsIgnoreCase(selectedTalukaId)) {
@@ -779,8 +804,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 ssMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
-
-
+            btnFilterClear.setVisibility(View.VISIBLE);
         } else if (type.equals("Select District")) {
             for (CustomSpinnerObject mDistrict : machineDistrictList) {
                 if (mDistrict.isSelected()) {
@@ -790,7 +814,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             }
             tvDistrictFilter.setText(selectedDistrict);
-
             if (viewType == 1) {
                 filteredStructureListData.clear();
                 for (StructureData data : ssStructureListData) {
@@ -811,6 +834,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 ssMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
+            btnFilterClear.setVisibility(View.VISIBLE);
         }
     }
 }

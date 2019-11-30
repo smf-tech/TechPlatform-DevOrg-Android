@@ -73,7 +73,7 @@ public class DashboardFragment extends Fragment {
                 int size = tabNames.size();
                 for (int i = 0; i < size; i++) {
                     if (tabNames.get(i).getModuleType().equals(Constants.Home.FORMS) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.MEETINGS) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.PLANNER) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.APPROVALS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.REPORTS) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE) ||
@@ -119,7 +119,7 @@ public class DashboardFragment extends Fragment {
                     tabNames.get(i).setResId(R.id.action_menu_forms);
                     break;
 
-                case Constants.Home.MEETINGS:
+                case Constants.Home.PLANNER:
                     tabNames.get(i).setResId(R.id.action_menu_calendar);
                     break;
 
@@ -179,7 +179,7 @@ public class DashboardFragment extends Fragment {
                     adapter.addFragment(fragment);
                     break;
 
-                case Constants.Home.MEETINGS:
+                case Constants.Home.PLANNER:
                     adapter.addFragment(new PlannerFragment());
                     break;
 

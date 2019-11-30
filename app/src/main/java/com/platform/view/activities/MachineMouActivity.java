@@ -72,7 +72,12 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                     FragmentTransaction fTransaction = fManager.beginTransaction();
                     fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
                 } else {
-                    toolbar_title.setText(R.string.machine_mou_form);
+                    if(getIntent().getIntExtra("statusCode", 0) ==
+                            Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+                        toolbar_title.setText(R.string.machine_eligible_form_title);
+                    } else {
+                        toolbar_title.setText(R.string.machine_mou_form);
+                    }
                     machineId = getIntent().getStringExtra("machineId");
                     statusCode = getIntent().getIntExtra("statusCode",0);
                     if(Util.isConnected(this)) {

@@ -49,7 +49,8 @@
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:text="What would you like to do?"
-                android:fontFamily="@font/opensans_semibold" />
+                android:fontFamily="@font/opensans_semibold"
+                android:visibility="gone"/>
 
             <RadioGroup
                 android:id="@+id/rg_mou_action"
@@ -64,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="MOU Terminate"
+                    android:text="Terminate MOU"
                     android:textColor="@color/dark_grey"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"/>
@@ -74,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Machine ready for available"
+                    android:text="Allocate machine in taluka"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
                     android:textColor="@color/dark_grey"/>
@@ -96,7 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tly_description"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/edit_terminate_reason"
