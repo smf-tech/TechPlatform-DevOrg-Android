@@ -176,7 +176,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         etAppInstalled.setText(selectedAppInstalledOption);
     }
 
-    private void setMachineFourthData() {
+    private void setMachineFourthData(boolean isDataUpload) {
         OperatorDetails operatorDetails = new OperatorDetails();
         ((MachineMouActivity) getActivity()).getMachineDetailData().setOperatorDetails(operatorDetails);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setFirstName
@@ -205,10 +205,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         }
 
         //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        if(Util.isConnected(getActivity())) {
-            uploadData();
-        } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        if(isDataUpload) {
+            if (Util.isConnected(getActivity())) {
+                uploadData();
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+            }
         }
     }
 
@@ -232,13 +234,14 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             case R.id.btn_fourth_part_mou:
                 if(Util.isConnected(getActivity())) {
                     if (isAllDataValid()) {
-                        setMachineFourthData();
+                        setMachineFourthData(true);
                     }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_previous_mou:
+                setMachineFourthData(false);
                 getActivity().onBackPressed();
                 break;
             case R.id.et_operator_training:

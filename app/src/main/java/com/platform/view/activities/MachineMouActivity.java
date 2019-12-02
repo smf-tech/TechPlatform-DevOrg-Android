@@ -145,6 +145,17 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
             }
     }
 
+    public void openFragmentAtPosition(int position) {
+        try {
+            fManager.getBackStackEntryAt(position);
+        } catch (IllegalStateException e) {
+            Log.e("TAG", e.getMessage());
+        }
+        if (fManager.getBackStackEntryCount() == 0) {
+            finish();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         fragment = null;

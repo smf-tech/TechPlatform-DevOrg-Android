@@ -37,6 +37,7 @@ import com.platform.R;
 import com.platform.database.DatabaseManager;
 import com.platform.listeners.CustomSpinnerListener;
 import com.platform.models.SujalamSuphalam.MasterDataList;
+import com.platform.models.SujalamSuphalam.MouDetails;
 import com.platform.models.SujalamSuphalam.ProviderInformation;
 import com.platform.models.SujalamSuphalam.SSMasterDatabase;
 import com.platform.models.common.CustomSpinnerObject;
@@ -227,7 +228,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getIsTurnover();
             etTurnover.setText(isTurnoverBelow);
-            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().
+                    getOwnership()!= null && ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getOwnership().length()>0) {
                 for (CustomSpinnerObject ownershipType : ownershipList) {
                         if(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -240,7 +242,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 etOwnership.setVisibility(View.VISIBLE);
                 etOwnership.setText(selectedOwnership);
             }
-            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().
+                    getTradeName()!= null && ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getTradeName().length()>0) {
                 etTradeName.setVisibility(View.VISIBLE);
                 etTradeName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -371,7 +374,19 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             case R.id.btn_second_part_mou:
                 if(isAllDataValid()){
                     setMachineSecondData();
-                    ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
+                    if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                            getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+                        MouDetails mouDetails = new MouDetails();
+                        ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
+                        Date d = new Date();
+                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
+                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+                                (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+
+                        ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                    } else {
+                        ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
+                    }
                 }
                 break;
             case R.id.btn_previous_mou:
