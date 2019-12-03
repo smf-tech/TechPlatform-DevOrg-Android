@@ -60,17 +60,31 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
-            MouDetails mouDetails = new MouDetails();
-            ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
-            Date d = new Date();
-            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
-            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
-                    (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
-
-            ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
-        } else {
+//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMouDetails()!=null) {
+//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                    getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+//
+//            } else {
+//
+//            }
+//        }
+//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                    getMouDetails()!=null) {
+//                //getActivity().onBackPressed();
+//            } else {
+//                MouDetails mouDetails = new MouDetails();
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
+//                Date d = new Date();
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+//                        (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+//
+//                ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+//            }
+//        } else {
             statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
             progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
             progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
@@ -97,11 +111,11 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
             edtRate3StartDate.setOnClickListener(this);
             edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
             edtRate3EndDate.setOnClickListener(this);
-        }
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails()!=null) {
-            setUIvalues();
-        }
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getMouDetails()!=null && statusCode!= Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+                setUIvalues();
+            }
+        //}
     }
 
     private void setUIvalues() {

@@ -56,6 +56,17 @@ public class MachineData  implements Serializable {
     @SerializedName("provider_contact_number")
     @Expose
     private String providerContactNumber;
+
+    public String getMachineLocation() {
+        return machineLocation;
+    }
+
+    public void setMachineLocation(String machineLocation) {
+        this.machineLocation = machineLocation;
+    }
+    @SerializedName("machine_location")
+    @Expose
+    private String machineLocation;
     @SerializedName("status")
     @Expose
     private String status;
@@ -74,6 +85,18 @@ public class MachineData  implements Serializable {
     @SerializedName("operator_contact_number")
     @Expose
     private String operatorContactNumber;
+
+    public String getMachineMobileNumber() {
+        return machineMobileNumber;
+    }
+
+    public void setMachineMobileNumber(String machineMobileNumber) {
+        this.machineMobileNumber = machineMobileNumber;
+    }
+
+    @SerializedName("machine_mobile_number")
+    @Expose
+    private String machineMobileNumber;
     @SerializedName("updatedDate")
     @Expose
     private String lastUpdatedTime;

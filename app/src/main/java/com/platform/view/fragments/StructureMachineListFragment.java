@@ -590,7 +590,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
         }
     }
@@ -799,7 +799,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Structure List ("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -809,7 +809,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
             btnFilterClear.setVisibility(View.VISIBLE);
         } else if (type.equals("Select District")) {
@@ -829,7 +829,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Structure List ("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -839,7 +839,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
             btnFilterClear.setVisibility(View.VISIBLE);
         }
