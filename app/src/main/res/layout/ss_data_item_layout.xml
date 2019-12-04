@@ -416,7 +416,7 @@
                         android:fontFamily="@font/opensans_regular"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_12"
-                        android:text="Action"/>
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 

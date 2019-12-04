@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     ImageView selectedIV;
     EditText etFFName, etFFMobile, etReson;
 
+    private RelativeLayout progressBar;
     private Uri outputUri;
     private Uri finalUri;
     boolean ffIdentified = false;
@@ -99,6 +101,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_structure_pripretions);
 
+        progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new StructurePripretionsActivityPresenter(this);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
@@ -197,19 +200,18 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     requestData.setStructureImg1(uri1.getPath());
                     Uri uri2 = imageUri.get(0);
                     requestData.setStructureImg1(uri2.getPath());
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
-                            .insert(requestData);
 
-                    SyncAdapterUtils.manualRefresh();
+                    if(Util.isConnected(this)){
+                        uploadImage(requestData, 2);
+                    } else {
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                                .insert(requestData);
+                        SyncAdapterUtils.manualRefresh();
+                        Util.showToast("Structure will be prepared soon.", this);
+                        finish();
+                    }
 
-                    Util.showToast("Structure will be prepared soon.", this);
 
-                    finish();
-//                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
-//                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
-//                            .getStructurePripretionDataDao().getAllStructure());
-
-//                    uploadImage(structureVisitMonitoringList.get(0), 2);
 //                    presenter.submitPripretion(requestData, imageHashmap);
                 }
                 break;
@@ -284,12 +286,14 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     private void uploadImage(StructurePripretionData structurePripretionData, int imageCount) {
 
+        showProgressBar();
         Log.d("request -", new Gson().toJson(requestData));
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        hideProgressBar();
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
@@ -304,6 +308,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(StructurePripretionsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -482,12 +487,20 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     @Override
     public void showProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBar != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBar != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
