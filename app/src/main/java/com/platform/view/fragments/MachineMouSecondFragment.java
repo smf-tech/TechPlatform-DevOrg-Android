@@ -352,11 +352,16 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                     return false;
                 }
             }
-            if(imgCount == 0) {
+            if(((MachineMouActivity) getActivity()).chequeImageUri == null) {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.select_image), Snackbar.LENGTH_LONG);
                 return false;
             }
+//            if(imgCount == 0) {
+//                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                        getString(R.string.select_image), Snackbar.LENGTH_LONG);
+//                return false;
+//            }
         }
         return true;
     }

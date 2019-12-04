@@ -285,11 +285,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
             return false;
-        } else if(imgCount == 0) {
+        } else if(((MachineMouActivity) getActivity()).operatorLicenseImageUri == null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_image), Snackbar.LENGTH_LONG);
             return false;
         }
+//        else if(imgCount == 0) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
         return true;
     }
 
