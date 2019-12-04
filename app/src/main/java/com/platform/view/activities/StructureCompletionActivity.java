@@ -118,7 +118,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         ImageView iv2 = findViewById(R.id.iv_structure2);
         iv2.setOnClickListener(this);
 
-        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
+        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED
+                || structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
             findViewById(R.id.ly_closer).setVisibility(View.VISIBLE);
             iv1.setImageResource(R.drawable.ic_certifict);
             iv2.setImageResource(R.drawable.ic_certifict);
@@ -219,7 +220,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //        }
 
         requestData.put("is_completed", completion);
-        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
+        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED
+                || structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
 
             if (TextUtils.isEmpty(etSiltQantity.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -267,7 +269,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 return false;
             }
         } else {
-            if (etReason.getVisibility()== View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
+            if (etReason.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Reason.", Snackbar.LENGTH_LONG);
                 return false;
@@ -448,11 +450,11 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
                 if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
-                    params.put("structureStatus", Constants.SSModule.STRUCTURE_CLOSED+"");
-                } else  if (structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
-                    params.put("structureStatus", Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED+"");
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_CLOSED + "");
+                } else if (structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED + "");
                 } else {
-                    params.put("structureStatus", Constants.SSModule.STRUCTURE_COMPLETED+"");
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_COMPLETED + "");
                 }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;

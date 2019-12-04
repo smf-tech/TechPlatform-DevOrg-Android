@@ -210,20 +210,21 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PREPARED
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED) {
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED) {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
-                            if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-                                    || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
-                                popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
-                            } else {
-                                popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
-                            }
                         } else {
-//                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
-                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
+                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+                    }
+
+                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
+                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
+                        popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
+                    } else {
+                        popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                     }
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
