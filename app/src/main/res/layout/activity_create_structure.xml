@@ -66,7 +66,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Host village"
+                    android:hint="@string/host_village"
                     android:focusable="false"
                     android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -81,7 +81,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Host Village Population"
+                    android:hint="@string/host_village_pop"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="5"/>
@@ -97,7 +97,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Catchment villages"
+                    android:hint="@string/catchment_villages"
                     android:focusable="false"
                     android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +112,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Catchment Villages Population"
+                    android:hint="@string/catchment_villages_pop"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="5"/>
@@ -129,7 +129,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Gat No."
+                    android:hint="@string/gat_no"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="5"/>
@@ -146,7 +146,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Water Shed No."
+                    android:hint="@string/water_shed"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="5"/>
@@ -163,7 +163,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Area"
+                    android:hint="@string/area"
                     android:imeOptions="actionNext"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -179,7 +179,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Structure Name"
+                    android:hint="@string/structure_name"
                     android:imeOptions="actionNext"
                     android:inputType="text|textCapWords"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
@@ -195,7 +195,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Structure owner department"
+                    android:hint="@string/structure_owner_dep"
                     android:imeOptions="actionNext"
                     android:focusable="false"
                     android:longClickable="false"/>

@@ -65,7 +65,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
     final String STRUCTURE_STATUS = "StructureStatus";
 
     ImageView selecteIV;
-    EditText etReason, etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays;
+    EditText etReason, etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays, etDieselConsumedAmount,
+            etDieselConsumedQuantity, etWorkDimension;
 
     private Uri outputUri;
     private Uri finalUri;
@@ -92,7 +93,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         requestData.put("structure_id", structureData.getStructureId());
         progressBar = findViewById(R.id.progress_bar);
         initView();
-        if (structureStatus == 120) {
+        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
             setTitle("Close Structure");
         } else {
             setTitle("Structure Completion");
@@ -107,6 +108,9 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         etWorkStartDate = findViewById(R.id.et_work_start_date);
         etWorkCompletionDate = findViewById(R.id.et_work_completion_date);
         etOperationalDays = findViewById(R.id.et_operational_days);
+        etDieselConsumedAmount = findViewById(R.id.et_diesel_consumed_amount);
+        etDieselConsumedQuantity = findViewById(R.id.et_diesel_consumed_quantity);
+        etWorkDimension = findViewById(R.id.et_work_dimension);
         etReason = findViewById(R.id.et_reason);
 
         ImageView iv1 = findViewById(R.id.iv_structure1);
@@ -114,7 +118,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         ImageView iv2 = findViewById(R.id.iv_structure2);
         iv2.setOnClickListener(this);
 
-        if (structureStatus == 120) {
+        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
             findViewById(R.id.ly_closer).setVisibility(View.VISIBLE);
             iv1.setImageResource(R.drawable.ic_certifict);
             iv2.setImageResource(R.drawable.ic_certifict);
@@ -215,7 +219,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //        }
 
         requestData.put("is_completed", completion);
-        if (structureStatus == 120) {
+        if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
 
             if (TextUtils.isEmpty(etSiltQantity.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -233,11 +237,26 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Operational Days.", Snackbar.LENGTH_LONG);
                 return false;
+            } else if (TextUtils.isEmpty(etDieselConsumedAmount.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Amount of Diesel Consumed (Rs.).", Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etDieselConsumedQuantity.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Diesel Consumed (Liters).", Snackbar.LENGTH_LONG);
+                return false;
+            } else if (TextUtils.isEmpty(etWorkDimension.getText().toString())) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, enter Dimension of Work.", Snackbar.LENGTH_LONG);
+                return false;
             } else {
                 requestData.put("etSiltQantity", etSiltQantity.getText().toString());
                 requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
                 requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
                 requestData.put("etOperationalDays", etOperationalDays.getText().toString());
+                requestData.put("etDieselConsumedAmount", etDieselConsumedAmount.getText().toString());
+                requestData.put("etDieselConsumedQuantity", etDieselConsumedQuantity.getText().toString());
+                requestData.put("etWorkDimension", etWorkDimension.getText().toString());
             }
 
 
@@ -428,10 +447,12 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                if (structureStatus == 120) {
-                    params.put("structureStatus", "121");
+                if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_CLOSED+"");
+                } else  if (structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED+"");
                 } else {
-                    params.put("structureStatus", "120");
+                    params.put("structureStatus", Constants.SSModule.STRUCTURE_COMPLETED+"");
                 }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;

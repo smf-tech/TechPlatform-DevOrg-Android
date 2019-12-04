@@ -87,7 +87,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private String selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka,
             selectedDeployTalukaId;
     private int mouAction = 0;
-    private boolean isMachineTerminate, isMachineAvailable;
+    public boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineAdd, isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;

@@ -22,7 +22,7 @@
         android:text="@string/coming_soon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_leaves"
+        android:id="@+id/fab_add_feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

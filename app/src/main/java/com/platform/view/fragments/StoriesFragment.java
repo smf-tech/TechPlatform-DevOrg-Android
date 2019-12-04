@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.activities.FeedCreationActivity;
@@ -16,6 +18,8 @@ import com.platform.view.activities.HomeActivity;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment {
+
+    View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,21 @@ public class StoriesFragment extends Fragment {
         /*Intent startMain1 = new Intent(getActivity(), FeedCreationActivity.class);
         startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
         startActivity(startMain1);*/
+        view = inflater.inflate(R.layout.fragment_stories, container, false);
+        return view;
+    }
 
-        return inflater.inflate(R.layout.fragment_stories, container, false);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        FloatingActionButton fabAddFeed = view.findViewById(R.id.fab_add_feed);
+        fabAddFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
