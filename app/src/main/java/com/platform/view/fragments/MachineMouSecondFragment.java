@@ -252,7 +252,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 etTradeName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                         getProviderInformation().getTradeName());
             } else {
-                etTradeName.setVisibility(View.GONE);
+                //etTradeName.setVisibility(View.GONE);
             }
             etGstRegNo.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getGSTNumber());
