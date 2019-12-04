@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.FORM_DATE;
 
 public class MachineMouThirdFragment extends Fragment implements View.OnClickListener {
     private View machineMouThirdFragmentView;
@@ -120,21 +121,21 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
 
     private void setUIvalues() {
         edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
+                getMouDetails().getDateOfSigning(), FORM_DATE));
         edtMouExpiryDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails().getDateOfMouExpiry(), DAY_MONTH_YEAR));
+                getMouDetails().getDateOfMouExpiry(), FORM_DATE));
         if(!((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
             List<RateDetail> rateDetailsList = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getMouDetails().getRateDetails();
-            edtRate1StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getFromDate(), DAY_MONTH_YEAR));
-            edtRate1EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getToDate(), DAY_MONTH_YEAR));
+            edtRate1StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getFromDate(), FORM_DATE));
+            edtRate1EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getToDate(), FORM_DATE));
             edtRate1.setText(rateDetailsList.get(0).getValue());
-            edtRate2StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getFromDate(), DAY_MONTH_YEAR));
-            edtRate2EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getToDate(), DAY_MONTH_YEAR));
+            edtRate2StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getFromDate(), FORM_DATE));
+            edtRate2EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getToDate(), FORM_DATE));
             edtRate2.setText(rateDetailsList.get(1).getValue());
-            edtRate3StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getFromDate(), DAY_MONTH_YEAR));
-            edtRate3EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getToDate(), DAY_MONTH_YEAR));
+            edtRate3StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getFromDate(), FORM_DATE));
+            edtRate3EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getToDate(), FORM_DATE));
             edtRate3.setText(rateDetailsList.get(2).getValue());
         }
     }
