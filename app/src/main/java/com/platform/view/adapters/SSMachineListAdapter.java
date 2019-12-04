@@ -79,6 +79,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE
                 || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             if (Util.isConnected(activity)) {
+                holder.btAction.setVisibility(View.VISIBLE);
                 if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                     holder.btAction.setText("Do MOU");
                 } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
@@ -87,21 +88,23 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     holder.btAction.setText("Update MOU");
                 }
             } else {
-                holder.btAction.setVisibility(View.INVISIBLE);
-//                Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                holder.btAction.setVisibility(View.INVISIBLE);
+                Util.showToast(activity.getString(R.string.msg_no_network), activity);
             }
         } else if (ssDataList.get(position).getStatusCode() ==
                 Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
             if (Util.isConnected(activity)) {
+                holder.btAction.setVisibility(View.VISIBLE);
                 holder.btAction.setText("Make Eligible");
             } else {
 //                holder.btAction.setVisibility(View.INVISIBLE);
-                Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                Util.showToast(activity.getString(R.string.msg_no_network), activity);
             }
         } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE
                 || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
             if (Util.isConnected(activity)) {
                 if(fragment.isMachineTerminate || fragment.isMachineAvailable){
+                    holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Next Step");
                 } else {
                     holder.btAction.setVisibility(View.INVISIBLE);
@@ -112,10 +115,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
             if (fragment.isMachineDepoly) {
                 if (Util.isConnected(activity)) {
+                    holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Deploy Machine");
                 } else {
-                    holder.btAction.setVisibility(View.INVISIBLE);
-//                    Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                    holder.btAction.setVisibility(View.INVISIBLE);
+                    Util.showToast(activity.getString(R.string.msg_no_network), activity);
                 }
             } else {
                 holder.btAction.setVisibility(View.INVISIBLE);
@@ -123,6 +127,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                                .findViewById(android.R.id.content), "You can not take any action on this machine.",
 //                        Snackbar.LENGTH_LONG);
             }
+        } else {
+            holder.btAction.setVisibility(View.INVISIBLE);
         }
 
     }

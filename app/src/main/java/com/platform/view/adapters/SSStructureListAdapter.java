@@ -219,7 +219,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                             }
                         } else {
-                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+//                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
                             popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                         }
                     } else {

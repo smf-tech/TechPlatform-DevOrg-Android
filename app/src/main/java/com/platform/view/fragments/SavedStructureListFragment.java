@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.platform.Platform;
@@ -58,10 +59,13 @@ public class SavedStructureListFragment extends Fragment {
         ssStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
 
         TextView tv = view.findViewById(R.id.tv_no_data_msg);
+        ImageView iv = view.findViewById(R.id.iv_no_data);
         if(ssStructureListData.size()>0){
             tv.setVisibility(View.GONE);
+            iv.setVisibility(View.GONE);
         } else {
             tv.setVisibility(View.VISIBLE);
+            iv.setVisibility(View.VISIBLE);
         }
 
 

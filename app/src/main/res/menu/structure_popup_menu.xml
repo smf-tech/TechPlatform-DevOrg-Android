@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_preparation"
-        android:title="Community Mobilization" />
+        android:title="Structure Preparation" />
     <item
         android:id="@+id/action_mobilization"
         android:title="Community Mobilization" />
