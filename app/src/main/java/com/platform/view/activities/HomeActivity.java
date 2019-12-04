@@ -99,7 +99,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         initBrodcastResiver();
         subscribedToFirebaseTopics();
         initConnectivityReceiver();
-    }
+
+        // get Firebase tokan
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+            String newToken = instanceIdResult.getToken();
+            Log.d("Token", newToken);
+        });
+   }
 
     private void initConnectivityReceiver() {
         connectionReceiver = new ConnectivityReceiver();

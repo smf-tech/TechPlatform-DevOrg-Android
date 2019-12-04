@@ -567,7 +567,7 @@
     <string name="license_image">Machine Operator\'s License Image</string>
     <string name="operator_training">Operator\'s training completed?</string>
     <string name="app_installed">Mobile app installation and training done?</string>
-    <string name="terminate_reason">Terminate Reason</string>
+    <string name="terminate_reason">Reason of Termination</string>
     <string name="is_diesel_filled">Has diesel filled for shifting purpose?</string>
     <string name="provided_by">Diesel provided by</string>
     <string name="diesel_quantity">Diesel filled (in Liters) for shifting purpose</string>

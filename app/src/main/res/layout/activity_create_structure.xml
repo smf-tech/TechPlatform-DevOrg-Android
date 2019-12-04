@@ -164,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/area"
-                    android:imeOptionsf="actionNext"
+                    android:imeOptions="actionNext"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Structure Name-->

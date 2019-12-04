@@ -539,7 +539,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     public boolean isAllDataValid() {
-        if (selectedOwnerId.length()==0){
+        if (selectedOwnerId != null && selectedOwnerId.length()==0){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
             return false;

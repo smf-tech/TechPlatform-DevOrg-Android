@@ -149,6 +149,57 @@
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!--Actual Silt Qantity Excavated(CuM)-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_diesel_consumed_amount"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Amount of Diesel Consumed (Rs.)"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Actual Silt Qantity Excavated(CuM)-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_diesel_consumed_quantity"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Diesel Consumed (Liters)"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--Actual Silt Qantity Excavated(CuM)-->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_margin="@dimen/dimen_03dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_work_dimension"
+                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Dimension of Work"
+                        android:imeOptions="actionNext"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <TextView
