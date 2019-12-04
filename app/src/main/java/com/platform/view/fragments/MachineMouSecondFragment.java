@@ -224,6 +224,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 getMachine().getProviderContactNumber());
         etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getMachineMobileNumber());
+        if(((MachineMouActivity) getActivity()).chequeImageUri!= null) {
+            imgAccount.setImageURI(((MachineMouActivity) getActivity()).chequeImageUri);
+        }
         if(!isBJSMachine) {
             isTurnoverBelow = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getProviderInformation().getIsTurnover();
@@ -549,6 +552,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             try {
                 imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 imgAccount.setImageURI(finalUri);
+                ((MachineMouActivity) getActivity()).chequeImageUri = finalUri;
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 if (Util.isValidImageSize(imageFile)) {
                     imgCount++;

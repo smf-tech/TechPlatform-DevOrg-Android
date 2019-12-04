@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private int statusCode;
     private MachineMouActivityPresenter machineMouActivityPresenter;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    public Uri chequeImageUri, operatorLicenseImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
