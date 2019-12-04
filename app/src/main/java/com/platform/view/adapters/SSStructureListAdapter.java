@@ -56,7 +56,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     private ArrayList<StructureData> ssDataList;
     Activity activity;
     boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
-            isVisitMonitoring, isStructureComplete;
+            isVisitMonitoring, isStructureComplete, isStructureClose;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
@@ -82,6 +82,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 continue;
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
                 isStructureComplete = true;
+                continue;
+            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
+                isStructureClose = true;
+                continue;
             }
         }
     }
@@ -220,9 +224,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                     }
 
-                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
-                        popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
+                    if (isStructureClose) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
+                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
+                        }
                     } else {
                         popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                     }

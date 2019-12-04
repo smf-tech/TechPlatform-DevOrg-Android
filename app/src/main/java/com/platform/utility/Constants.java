@@ -379,6 +379,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_COMMUNITY_MOBILISATION = 105;
         public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
         public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
+        public static final Integer ACCESS_CODE_STRUCTURE_CLOSE = 124;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
