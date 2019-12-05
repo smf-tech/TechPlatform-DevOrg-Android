@@ -167,9 +167,9 @@ public class DashboardFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         DashboardViewPagerAdapter adapter = new DashboardViewPagerAdapter(getChildFragmentManager());
+        int allowedModulePosition = 0;
         for (int i = 0; i < tabNames.size(); i++) {
             Modules modules = tabNames.get(i);
-
             switch (modules.getModuleType()) {
                 case Constants.Home.FORMS:
                     Bundle b = new Bundle();
@@ -219,6 +219,13 @@ public class DashboardFragment extends Fragment {
             }
         }
         viewPager.setAdapter(adapter);
+        for (int i = 0; i < tabNames.size(); i++) {
+            if(tabNames.get(i).isActive()) {
+                allowedModulePosition = i;
+                break;
+            }
+        }
+        viewPager.setCurrentItem(allowedModulePosition);
     }
 
     private void setupTabIcons() {

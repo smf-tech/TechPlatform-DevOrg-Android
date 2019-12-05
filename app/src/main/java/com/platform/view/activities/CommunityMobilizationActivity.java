@@ -241,16 +241,16 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 }
                 break;
             case R.id.et_a1_meeting_date:
-                Util.showDateDialog(this, etA1MeetingDate);
+                Util.showAllDateDialog(this, etA1MeetingDate);
             case R.id.et_a2_date:
-                Util.showDateDialog(this, etA2Date);
+                Util.showAllDateDialog(this, etA2Date);
             case R.id.et_a3_date_of_formation:
-                Util.showDateDialog(this, etA3DateOfFormation);
+                Util.showAllDateDialog(this, etA3DateOfFormation);
             case R.id.et_a4_date_of_training:
-                Util.showDateDialog(this, etA4DateOfTraining);
+                Util.showAllDateDialog(this, etA4DateOfTraining);
                 break;
             case R.id.et_a5_date:
-                Util.showDateDialog(this, etA5Date);
+                Util.showAllDateDialog(this, etA5Date);
                 break;
             case R.id.et_a3_gender:
                 CustomSpinnerDialogClass csdGander = new CustomSpinnerDialogClass(this, this,
@@ -302,10 +302,8 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             case R.id.toolbar_back_action:
                 finish();
                 break;
-
         }
     }
-
 
     private boolean isAllDataValid() {
 

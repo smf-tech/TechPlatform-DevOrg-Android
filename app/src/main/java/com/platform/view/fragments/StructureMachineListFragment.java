@@ -88,7 +88,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             selectedDeployTalukaId;
     private int mouAction = 0;
     public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
+    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou, isMachineVisitValidationForm, isSiltTransportForm,
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
@@ -96,8 +96,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private TextView tvNoData;
     private ImageView btnFilterClear;
 
-    public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
-    public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,7 +161,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
                 isMachineDepoly = true;
                 continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
+                isMachineEligible = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
+                isMachineMou =true;
+            }else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
                 isMachineVisitValidationForm = true;
                 continue;
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {

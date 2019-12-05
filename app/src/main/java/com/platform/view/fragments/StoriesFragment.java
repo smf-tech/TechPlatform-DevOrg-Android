@@ -56,8 +56,8 @@ public class StoriesFragment extends Fragment {
         fabAddFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
+//                startActivity(intent);
             }
         });
     }

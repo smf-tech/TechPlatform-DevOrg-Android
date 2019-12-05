@@ -290,6 +290,11 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     getString(R.string.select_image), Snackbar.LENGTH_LONG);
             return false;
         }
+        if (etOperatorContact.getText().toString().trim().length() != 10){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        }
 //        else if(imgCount == 0) {
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.select_image), Snackbar.LENGTH_LONG);

@@ -357,6 +357,26 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         getString(R.string.select_image), Snackbar.LENGTH_LONG);
                 return false;
             }
+            if (etProviderContact.getText().toString().trim().length() != 10){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_proper_provider_contact), Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (etMachineMobile.getText().toString().trim().length() != 10){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (etGstRegNo.getText().toString().trim().length() != 15){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_proper_gst_no), Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (etPanNo.getText().toString().trim().length() != 10){
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.enter_proper_pan_no), Snackbar.LENGTH_LONG);
+                return false;
+            }
 //            if(imgCount == 0) {
 //                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                        getString(R.string.select_image), Snackbar.LENGTH_LONG);

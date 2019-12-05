@@ -533,6 +533,11 @@
     <string name="area">Area</string>
     <string name="structure_name">Structure Name</string>
     <string name="structure_owner_dep">Structure owner department</string>
+    <string name="enter_proper_gst_no">Enter proper GST number value.</string>
+    <string name="enter_proper_provider_contact">Enter proper value for provider\'s contact number</string>
+    <string name="enter_proper_machine_mobile">Enter proper value for machine mobile number.</string>
+    <string name="enter_proper_pan_no">Enter proper value for PAN</string>
+    <string name="enter_proper_operator_contact">Enter proper value for Operator\'s contact number.</string>
 
 
 </resources>
