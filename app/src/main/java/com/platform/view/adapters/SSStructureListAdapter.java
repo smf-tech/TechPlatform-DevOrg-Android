@@ -56,7 +56,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     private ArrayList<StructureData> ssDataList;
     Activity activity;
     boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
-            isVisitMonitoring, isStructureComplete;
+            isVisitMonitoring, isStructureComplete, isStructureClose;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
@@ -82,6 +82,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 continue;
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
                 isStructureComplete = true;
+                continue;
+            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
+                isStructureClose = true;
+                continue;
             }
         }
     }
@@ -180,12 +184,24 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     if (isCommunityMobilization) {
                         popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
                     } else {
-                        popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
                     }
+                    if (isStructurePreparation) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_NON_COMPLIANT
+                                && isVisitMonitoring) {
+                            popup.getMenu().findItem(R.id.action_preparation).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
+                        }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
+                    }
+
                     if (isVisitMonitoring) {
-                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 119
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 121) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED) {
                             popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
                         } else {
                             popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
@@ -194,11 +210,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
                     }
                     if (isStructureComplete) {
-                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 116
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 119
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120
-                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 121) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PREPARED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED) {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                         } else {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
@@ -207,11 +224,26 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                     }
 
+                    if (isStructureClose) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
+                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
+                        }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
+                    }
+
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent intent;
                             switch (item.getItemId()) {
+                                case R.id.action_preparation:
+                                    showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
+                                            "Yes", "No", getAdapterPosition(), 1);
+                                    break;
                                 case R.id.action_mobilization:
                                     if (Util.isConnected(activity)) {
                                         intent = new Intent(activity, CommunityMobilizationActivity.class);
@@ -229,14 +261,16 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 //                                    }
                                     break;
                                 case R.id.action_structure_completion:
-
                                     if (ssDataList.get(getAdapterPosition()).isStructureComplete()) {
                                         showDialog(activity, "Alert", "Are you sure, want to Complete Structure?",
                                                 "Yes", "No", getAdapterPosition(), 2);
                                     } else {
                                         Util.showToast("Please release all the machine from Structure", activity);
                                     }
-
+                                    break;
+                                case R.id.action_structure_close:
+                                    showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
+                                            "Yes", "No", getAdapterPosition(), 2);
                                     break;
                             }
                             return false;
@@ -252,21 +286,12 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             });
 
 
-            lyStructure = itemView.findViewById(R.id.rl_machine);
-            lyStructure.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 120) {
-                        showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
-                                "Yes", "No", getAdapterPosition(), 2);
-                    } else if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 115
-                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == 122
-                            && isVisitMonitoring) {
-                        showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
-                                "Yes", "No", getAdapterPosition(), 1);
-                    }
-                }
-            });
+//            lyStructure = itemView.findViewById(R.id.rl_machine);
+//            lyStructure.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                }
+//            });
             btSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

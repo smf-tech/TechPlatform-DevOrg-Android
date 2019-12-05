@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -86,17 +87,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private String selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka,
             selectedDeployTalukaId;
     private int mouAction = 0;
-    private boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isMachineDepoly, isMachineVisitValidationForm, isSiltTransportForm,
+    public boolean isMachineTerminate, isMachineAvailable;
+    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou, isMachineVisitValidationForm, isSiltTransportForm,
             isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
     private TextView tvNoData;
-    private Button btnFilterClear;
+    private ImageView btnFilterClear;
 
-    public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
-    public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,7 +161,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
                 isMachineDepoly = true;
                 continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
+                isMachineEligible = true;
+                continue;
+            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
+                isMachineMou =true;
+            }else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
                 isMachineVisitValidationForm = true;
                 continue;
             } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
@@ -589,7 +593,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
         }
     }
@@ -798,7 +802,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Structure List ("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -808,7 +812,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
             btnFilterClear.setVisibility(View.VISIBLE);
         } else if (type.equals("Select District")) {
@@ -828,7 +832,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                 }
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Structure List ("+filteredStructureListData.size()+")");
             } else {
                 filteredMachineListData.clear();
                 for (MachineData machineData : ssMachineListData) {
@@ -838,7 +842,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
             btnFilterClear.setVisibility(View.VISIBLE);
         }

@@ -279,7 +279,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_img" />
+                android:src="@drawable/ic_img"
+                android:visibility="gone"/>
 
             <com.platform.view.customs.TextViewSemiBold
                 android:id="@+id/event_pic_label"
@@ -291,7 +292,8 @@
                 android:text="@string/event_pic"
                 android:textColor="@color/medium_grey"
                 android:fontFamily="@font/opensans"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_14"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/ll_third_part"

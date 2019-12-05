@@ -8,6 +8,7 @@ import com.platform.models.appconfig.AppConfigResponseModel;
 import com.platform.models.events.CommonResponse;
 import com.platform.request.SplashActivityRequestCall;
 import com.platform.utility.Urls;
+import com.platform.utility.Util;
 import com.platform.view.activities.SplashActivity;
 
 public class SplashActivityPresenter implements APIDataListener {
@@ -67,12 +68,14 @@ public class SplashActivityPresenter implements APIDataListener {
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message,mContext);
+        mContext.GotoNextScreen();
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast("Not able to get Config Parameters",mContext);
+        mContext.GotoNextScreen();
     }
 
     @Override

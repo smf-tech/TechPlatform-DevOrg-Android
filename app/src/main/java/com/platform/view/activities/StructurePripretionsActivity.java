@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,8 @@ import com.platform.listeners.APIDataListener;
 import com.platform.models.SujalamSuphalam.StructureData;
 import com.platform.models.SujalamSuphalam.StructurePripretionData;
 import com.platform.models.SujalamSuphalam.StructureVisitMonitoringData;
+import com.platform.models.events.CommonResponse;
+import com.platform.models.login.Login;
 import com.platform.presenter.StructurePripretionsActivityPresenter;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.Constants;
@@ -67,6 +70,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.platform.utility.Util.getLoginObjectFromPref;
+import static com.platform.utility.Util.getUserObjectFromPref;
+
 public class StructurePripretionsActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
 
     private final String TAG = StructurePripretionsActivity.class.getName();
@@ -76,6 +82,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     ImageView selectedIV;
     EditText etFFName, etFFMobile, etReson;
 
+    private RelativeLayout progressBar;
     private Uri outputUri;
     private Uri finalUri;
     boolean ffIdentified = false;
@@ -99,6 +106,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_structure_pripretions);
 
+        progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new StructurePripretionsActivityPresenter(this);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
@@ -197,19 +205,18 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     requestData.setStructureImg1(uri1.getPath());
                     Uri uri2 = imageUri.get(0);
                     requestData.setStructureImg1(uri2.getPath());
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
-                            .insert(requestData);
 
-                    SyncAdapterUtils.manualRefresh();
+                    if(Util.isConnected(this)){
+                        uploadImage(requestData, 2);
+                    } else {
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                                .insert(requestData);
+                        SyncAdapterUtils.manualRefresh();
+                        Util.showToast("Structure will be prepared soon.", this);
+                        finish();
+                    }
 
-                    Util.showToast("Structure will be prepared soon.", this);
 
-                    finish();
-//                    List<StructurePripretionData> structureVisitMonitoringList = new ArrayList<>();
-//                    structureVisitMonitoringList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
-//                            .getStructurePripretionDataDao().getAllStructure());
-
-//                    uploadImage(structureVisitMonitoringList.get(0), 2);
 //                    presenter.submitPripretion(requestData, imageHashmap);
                 }
                 break;
@@ -284,17 +291,21 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     private void uploadImage(StructurePripretionData structurePripretionData, int imageCount) {
 
+        showProgressBar();
         Log.d("request -", new Gson().toJson(requestData));
 
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        hideProgressBar();
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Toast.makeText(StructurePripretionsActivity.this, jsonString, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(StructurePripretionsActivity.this, jsonString, Toast.LENGTH_LONG).show();
                             Log.d("response -", jsonString);
+                            Util.showToast("Structure is prepared", this);
+                            finish();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(StructurePripretionsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -304,7 +315,13 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
                         Toast.makeText(StructurePripretionsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                                .insert(requestData);
+                        SyncAdapterUtils.manualRefresh();
+                        Util.showToast("Structure will be prepared soon.", this);
+                        finish();
                     }
                 }) {
 
@@ -314,6 +331,30 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 params.put("formData", new Gson().toJson(structurePripretionData));
                 params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
             }
 
             @Override
@@ -340,6 +381,94 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         rQueue = Volley.newRequestQueue(this);
         rQueue.add(volleyMultipartRequest);
     }
+
+    private void submitPripretionData(StructurePripretionData requestData, int imageCount) {
+
+        final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_PREPARATION;
+
+        Log.d("STR_PREPARATION req:", new Gson().toJson(requestData));
+
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("STR_PREPARATION res:", jsonString);
+
+                            CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if (res.getStatus() == 200) {
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
+                                        .delete(requestData.getId());
+                            }
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Log.d("STR_PREPARATION exp:", e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("STR_PREPARATION exp:", error.getMessage());
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(requestData));
+                params.put("imageArraySize", String.valueOf(imageCount));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = new BitmapDrawable(getResources(), requestData.getStructureImg1());
+                params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
+                Drawable drawable1 = new BitmapDrawable(getResources(), requestData.getStructureImg1());
+                params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
+                        "image/jpeg"));
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(this);
+        rQueue.add(volleyMultipartRequest);
+    }
+
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -482,12 +611,20 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     @Override
     public void showProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBar != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBar != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

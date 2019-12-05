@@ -152,7 +152,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isAppInstalledList.add(optionNo);
         gpsTracker = new GPSTracker(getActivity());
         if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails()!=null) {
+                getOperatorDetails()!=null) {
             setUIvalues();
         }
     }
@@ -171,20 +171,21 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
                 getOperatorDetails().getIsTrainingDone();
         etOperatorTraining.setText(selectedtrainingOption);
+        if(((MachineMouActivity) getActivity()).operatorLicenseImageUri!= null) {
+            imgLicense.setImageURI(((MachineMouActivity) getActivity()).operatorLicenseImageUri);
+        }
         selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
                 getOperatorDetails().getIsAppInstalled();
         etAppInstalled.setText(selectedAppInstalledOption);
     }
 
-    private void setMachineFourthData() {
+    private void setMachineFourthData(boolean isDataUpload) {
         OperatorDetails operatorDetails = new OperatorDetails();
         ((MachineMouActivity) getActivity()).getMachineDetailData().setOperatorDetails(operatorDetails);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setFirstName
                 (etOperatorName.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLastName
                 (etOperatorLastName.getText().toString().trim());
-//        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setAddress
-//                (etProviderFirstName.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setContactNumnber
                 (etOperatorContact.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLicenceNumber
@@ -193,9 +194,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 setIsTrainingDone(selectedtrainingOption);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
                 setIsAppInstalled(selectedAppInstalledOption);
-//        List<String> operatorImages  = new ArrayList();
-//        operatorImages.add("www.google.com");
-//        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setOperatorImages(operatorImages);
         if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             location = gpsTracker.getLocation();
             if (location != null) {
@@ -205,10 +203,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         }
 
         //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        if(Util.isConnected(getActivity())) {
-            uploadData();
-        } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        if(isDataUpload) {
+            if (Util.isConnected(getActivity())) {
+                uploadData();
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+            }
         }
     }
 
@@ -232,13 +232,14 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             case R.id.btn_fourth_part_mou:
                 if(Util.isConnected(getActivity())) {
                     if (isAllDataValid()) {
-                        setMachineFourthData();
+                        setMachineFourthData(true);
                     }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
             case R.id.btn_previous_mou:
+                setMachineFourthData(false);
                 getActivity().onBackPressed();
                 break;
             case R.id.et_operator_training:
@@ -284,11 +285,21 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
             return false;
-        } else if(imgCount == 0) {
+        } else if(((MachineMouActivity) getActivity()).operatorLicenseImageUri == null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_image), Snackbar.LENGTH_LONG);
             return false;
         }
+        if (etOperatorContact.getText().toString().trim().length() != 10){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        }
+//        else if(imgCount == 0) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
         return true;
     }
 
@@ -381,6 +392,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 imgLicense.setImageURI(finalUri);
+                ((MachineMouActivity) getActivity()).operatorLicenseImageUri = finalUri;
                 if (Util.isValidImageSize(imageFile)) {
                     imgCount++;
                     ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);

@@ -6,7 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="220dp"
+        android:layout_height="160dp"
         android:layout_gravity="center_vertical"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="@dimen/dimen_05dp"
@@ -21,9 +21,9 @@
                 android:id="@+id/tv_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/opensans_regular"
-                android:textStyle="bold"
-                android:text="Approved"/>
+                android:text="Approved"
+                android:textSize="@dimen/text_size_13"
+                android:fontFamily="@font/opensans_semibold"/>
 
             <RelativeLayout
                 android:id="@+id/rl_circular_pb"
@@ -77,7 +77,8 @@
                 android:text="1 Lac"
                 android:textSize="@dimen/dimen_20dp"
                 android:layout_below="@id/rl_circular_pb"
-                android:layout_marginStart="@dimen/dimen_10dp"/>
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_value_unit"
@@ -87,7 +88,8 @@
                 android:textStyle="bold"
                 android:text="(Cubic Mtr)"
                 android:layout_below="@id/tv_value"
-                android:layout_marginStart="@dimen/dimen_10dp"/>
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:visibility="gone"/>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

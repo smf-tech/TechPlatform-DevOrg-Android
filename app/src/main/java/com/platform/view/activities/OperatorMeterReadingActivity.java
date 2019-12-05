@@ -998,7 +998,7 @@ public String showReadingDialog(final Activity context, int pos){
                 et_emeter_read.setText(strReason);
                 callStopButtonClick();
             }else {
-                Util.showToast("Please enter correct meter reading", OperatorMeterReadingActivity.this);
+                Util.showToast("End meter reading should be greater than Start meter reading", OperatorMeterReadingActivity.this);
             }
         }
 

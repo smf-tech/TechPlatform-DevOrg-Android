@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -57,28 +58,78 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         MachineData machineData = ssDataList.get(position);
         holder.tvStatus.setText(machineData.getStatus());
         holder.tvMachineCode.setText(machineData.getMachineCode());
-        holder.tvCapacity.setText(machineData.getDiselTankCapacity());
+//        holder.tvCapacity.setText(machineData.getDiselTankCapacity());
         holder.tvProvider.setText(machineData.getProviderName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
         holder.tvContact.setText(machineData.getProviderContactNumber());
+        holder.tvLocation.setText(machineData.getMachineLocation());
+        holder.tvOwnerValue.setText(machineData.getOwnedBy());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
-        if(machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
+        if (machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
-            holder.tvOperatorLabel.setVisibility(View.VISIBLE);
-            holder.tvOperatorContactLabel.setVisibility(View.VISIBLE);
             holder.tvOperator.setVisibility(View.VISIBLE);
             holder.tvOperator.setText(machineData.getOperatorName());
             holder.tvOperatorContact.setVisibility(View.VISIBLE);
             holder.tvOperatorContact.setText(machineData.getOperatorContactNumber());
         }
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
+
+        if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE
+                || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE
+                || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+            if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+                if (fragment.isMachineMou) {
+                    holder.btAction.setVisibility(View.VISIBLE);
+                    holder.btAction.setText("Do MOU");
+                }
+            } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+                if (fragment.isMachineEligible) {
+                    holder.btAction.setVisibility(View.VISIBLE);
+                    holder.btAction.setText("Set Eligibility");
+                }
+            } else {
+                if (fragment.isMachineMou) {
+                    holder.btAction.setVisibility(View.VISIBLE);
+                    holder.btAction.setText("Update MOU");
+                }
+            }
+        } else if (ssDataList.get(position).getStatusCode() ==
+                Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
+            if (fragment.isMachineEligible) {
+                holder.btAction.setVisibility(View.VISIBLE);
+                holder.btAction.setText("Make Eligible");
+            }
+        } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE
+                || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+            if (fragment.isMachineTerminate || fragment.isMachineAvailable) {
+                holder.btAction.setVisibility(View.VISIBLE);
+                holder.btAction.setText("Next Step");
+            } else {
+                holder.btAction.setVisibility(View.INVISIBLE);
+            }
+        } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
+            if (fragment.isMachineDepoly) {
+                holder.btAction.setVisibility(View.VISIBLE);
+                holder.btAction.setText("Deploy Machine");
+            } else {
+                holder.btAction.setVisibility(View.INVISIBLE);
+//                Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
+//                                .findViewById(android.R.id.content), "You can not take any action on this machine.",
+//                        Snackbar.LENGTH_LONG);
+            }
+        } else {
+            holder.btAction.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvMachineCode, tvCapacity, tvProvider, tvMachineModel, tvContact, tvStructureCode,
-                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact;
+        TextView tvStatus, tvMachineCode, tvProvider, tvMachineModel, tvContact, tvStructureCode,
+                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
+                tvLocation, tvOwnerValue;
+        Button btAction;
         ImageView btnPopupMenu;
         LinearLayout rlMachine;
         PopupMenu popup;
@@ -87,10 +138,13 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             super(itemView);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvMachineCode = itemView.findViewById(R.id.tv_machine_code);
-            tvCapacity = itemView.findViewById(R.id.tv_capacity);
+//            tvCapacity = itemView.findViewById(R.id.tv_capacity);
             tvProvider = itemView.findViewById(R.id.tv_provider);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
+            tvLocation = itemView.findViewById(R.id.tv_location);
+            tvOwnerValue = itemView.findViewById(R.id.tv_owner_value);
             tvContact = itemView.findViewById(R.id.tv_contact);
+            btAction = itemView.findViewById(R.id.bt_action);
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,18 +173,18 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
 
-            if(fragment.isSiltTransportForm) {
+            if (fragment.isSiltTransportForm) {
                 isSettingsRequired = true;
-            } else if(fragment.isDieselRecordForm) {
+            } else if (fragment.isDieselRecordForm) {
                 isSettingsRequired = true;
-            } else if(fragment.isMachineVisitValidationForm) {
+            } else if (fragment.isMachineVisitValidationForm) {
                 isSettingsRequired = true;
-            } else if(fragment.isMachineShiftForm) {
+            } else if (fragment.isMachineShiftForm) {
                 isSettingsRequired = true;
-            } else if(fragment.isMachineRelease) {
+            } else if (fragment.isMachineRelease) {
                 isSettingsRequired = true;
             }
-            if(isSettingsRequired) {
+            if (isSettingsRequired) {
                 btnPopupMenu.setVisibility(View.VISIBLE);
             } else {
                 btnPopupMenu.setVisibility(View.INVISIBLE);
@@ -205,7 +259,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            if(Util.isConnected(activity)) {
+                            if (Util.isConnected(activity)) {
                                 switch (item.getItemId()) {
                                     case R.id.action_machine_shifting:
                                         Intent intent = new Intent(activity, SSActionsActivity.class);
@@ -288,8 +342,14 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     });
                 }
             });
-            rlMachine = itemView.findViewById(R.id.rl_machine);
-            rlMachine.setOnClickListener(new View.OnClickListener() {
+//            rlMachine = itemView.findViewById(R.id.rl_machine);
+//            rlMachine.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
+            btAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
@@ -298,7 +358,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     MACHINE_NEW_STATUS_CODE || ssDataList.get(getAdapterPosition()).
                             getStatusCode() == Constants.SSModule.
                             MACHINE_MOU_EXPIRED_STATUS_CODE) {
-                        if(Util.isConnected(activity)) {
+                        if (Util.isConnected(activity)) {
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                             mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
@@ -306,8 +366,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
-                            } else if(ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_NEW_STATUS_CODE){
+                            } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
                             } else {
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE);
@@ -318,7 +378,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         }
                     } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
-                        if(Util.isConnected(activity)) {
+                        if (Util.isConnected(activity)) {
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                             mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
@@ -332,7 +392,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
-                        if(Util.isConnected(activity)) {
+                        if (Util.isConnected(activity)) {
                             fragment.takeMouDoneAction(getAdapterPosition());
                         } else {
                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
@@ -340,7 +400,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
                         if (fragment.isMachineDepoly) {
-                            if(Util.isConnected(activity)) {
+                            if (Util.isConnected(activity)) {
                                 fragment.deployMachine(getAdapterPosition());
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);

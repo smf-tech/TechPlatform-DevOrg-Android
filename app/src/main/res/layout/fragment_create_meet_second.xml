@@ -26,7 +26,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -70,7 +71,8 @@
                 android:id="@+id/rv_meet_organizer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"></androidx.recyclerview.widget.RecyclerView>
+                android:visibility="gone"
+                android:layout_margin="@dimen/dimen_10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -99,7 +101,7 @@
                         android:id="@+id/tv_references_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/references_label"
+                        android:text="@string/organizer_label"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"/>
 
@@ -111,7 +113,7 @@
                             android:paddingStart="@dimen/dimen_10dp"
                             android:background="@drawable/bg_blue_box"
                             android:gravity="center_vertical"
-                            android:hint="@string/meet_select_references"
+                            android:hint="@string/meet_select_organizers"
                             android:textColorHint="@color/medium_grey"
                             android:fontFamily="@font/opensans"
                             android:layout_marginBottom="@dimen/dimen_10dp"

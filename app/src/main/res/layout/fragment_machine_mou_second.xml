@@ -129,7 +129,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/gst_reg_no"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-                    android:maxLength="15"/>
+                    android:maxLength="15" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

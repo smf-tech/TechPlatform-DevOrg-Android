@@ -997,14 +997,11 @@ public class Util {
 
     public static void showDateDialogEnableBetweenMinMax(Context context, final EditText editText, String minDate, String maxDate) {
         final Calendar c = Calendar.getInstance();
-//        c.add();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
         long minDateLong = getDateInLong(minDate);
-        Date d = new Date(minDateLong);
-//        d.
         long maxDateLong = getDateInLong(maxDate);
         DatePickerDialog dateDialog
                 = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {

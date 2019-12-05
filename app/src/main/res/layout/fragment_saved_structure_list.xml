@@ -8,15 +8,28 @@
         android:id="@+id/rv_data_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_10dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_margin="@dimen/dimen_10dp"/>
 
-    <TextView
-        android:id="@+id/tv_no_data_msg"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="No Structure Saved Offline"/>
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="@dimen/dimen_100dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_offline_data" />
+
+        <TextView
+            android:id="@+id/tv_no_data_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_data"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="No Structure Saved Offline" />
+    </RelativeLayout>
 
 </RelativeLayout>

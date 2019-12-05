@@ -95,6 +95,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
         android:text="Machine Code"
         android:textColor="@color/red" />
     <ImageView
@@ -135,6 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
         android:text="Working"
+        android:textSize="@dimen/text_size_18"
         android:gravity="center_horizontal"
         android:fontFamily="@font/opensans_bold"
         android:textColor="@color/dark_grey" />
@@ -161,9 +164,9 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
-                android:text="0 Hrs 0 Min 0 Sec"
+                android:text="00 : 00 : 00"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/dimen_16dp" />
+                android:textSize="@dimen/text_size_18" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

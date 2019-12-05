@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
+import static com.platform.utility.Constants.FORM_DATE;
 
 public class MachineMouThirdFragment extends Fragment implements View.OnClickListener {
     private View machineMouThirdFragmentView;
@@ -60,17 +61,31 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
-            MouDetails mouDetails = new MouDetails();
-            ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
-            Date d = new Date();
-            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
-            ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
-                    (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
-
-            ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
-        } else {
+//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMouDetails()!=null) {
+//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                    getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+//
+//            } else {
+//
+//            }
+//        }
+//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                    getMouDetails()!=null) {
+//                //getActivity().onBackPressed();
+//            } else {
+//                MouDetails mouDetails = new MouDetails();
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
+//                Date d = new Date();
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
+//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+//                        (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+//
+//                ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+//            }
+//        } else {
             statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
             progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
             progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
@@ -97,30 +112,30 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
             edtRate3StartDate.setOnClickListener(this);
             edtRate3EndDate = machineMouThirdFragmentView.findViewById(R.id.edt_rate3_end_date);
             edtRate3EndDate.setOnClickListener(this);
-        }
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails()!=null) {
-            setUIvalues();
-        }
+            if(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getMouDetails()!=null && statusCode!= Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+                setUIvalues();
+            }
+        //}
     }
 
     private void setUIvalues() {
         edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
+                getMouDetails().getDateOfSigning(), FORM_DATE));
         edtMouExpiryDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails().getDateOfMouExpiry(), DAY_MONTH_YEAR));
+                getMouDetails().getDateOfMouExpiry(), FORM_DATE));
         if(!((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
             List<RateDetail> rateDetailsList = ((MachineMouActivity) getActivity()).getMachineDetailData().
                     getMouDetails().getRateDetails();
-            edtRate1StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getFromDate(), DAY_MONTH_YEAR));
-            edtRate1EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getToDate(), DAY_MONTH_YEAR));
+            edtRate1StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getFromDate(), FORM_DATE));
+            edtRate1EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(0).getToDate(), FORM_DATE));
             edtRate1.setText(rateDetailsList.get(0).getValue());
-            edtRate2StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getFromDate(), DAY_MONTH_YEAR));
-            edtRate2EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getToDate(), DAY_MONTH_YEAR));
+            edtRate2StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getFromDate(), FORM_DATE));
+            edtRate2EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(1).getToDate(), FORM_DATE));
             edtRate2.setText(rateDetailsList.get(1).getValue());
-            edtRate3StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getFromDate(), DAY_MONTH_YEAR));
-            edtRate3EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getToDate(), DAY_MONTH_YEAR));
+            edtRate3StartDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getFromDate(), FORM_DATE));
+            edtRate3EndDate.setText(Util.getDateFromTimestamp(rateDetailsList.get(2).getToDate(), FORM_DATE));
             edtRate3.setText(rateDetailsList.get(2).getValue());
         }
     }

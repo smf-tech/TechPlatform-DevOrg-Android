@@ -39,14 +39,14 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
                 holder.tvLabel.setText(ssAnalyticsData.getStatus());
                 holder.pbSsAnalytics.setProgress(ssAnalyticsData.getPercentValue());
                 holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()));
-                holder.tvValue.setVisibility(View.INVISIBLE);
-                holder.tvValueUnit.setVisibility(View.INVISIBLE);
+//                holder.tvValue.setVisibility(View.INVISIBLE);
+//                holder.tvValueUnit.setVisibility(View.INVISIBLE);
             } else{
                 holder.tvLabel.setText(ssAnalyticsData.getTitle());
                 holder.pbSsAnalytics.setVisibility(View.INVISIBLE);
                 holder.tvResult.setVisibility(View.INVISIBLE);
-                holder.tvValue.setText(ssAnalyticsData.getValue());
-                holder.tvValueUnit.setText(ssAnalyticsData.getUnit());
+//                holder.tvValue.setText(ssAnalyticsData.getValue());
+//                holder.tvValueUnit.setText(ssAnalyticsData.getUnit());
             }
     }
 
@@ -57,8 +57,8 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
             super(itemView);
             tvLabel = itemView.findViewById(R.id.tv_label);
             tvResult = itemView.findViewById(R.id.tv_result);
-            tvValue = itemView.findViewById(R.id.tv_value);
-            tvValueUnit = itemView.findViewById(R.id.tv_value_unit);
+            //tvValue = itemView.findViewById(R.id.tv_value);
+            //tvValueUnit = itemView.findViewById(R.id.tv_value_unit);
             pbSsAnalytics = itemView.findViewById(R.id.pb_ss_analytics);
         }
     }

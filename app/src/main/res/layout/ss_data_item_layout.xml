@@ -14,341 +14,414 @@
         android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
-    <LinearLayout
-        android:id="@+id/rl_machine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/rl_machine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <!--<TextView-->
-                <!--android:id="@+id/tv_status"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textSize="@dimen/text_size_11"-->
-                <!--android:layout_margin="@dimen/dimen_10dp"-->
-                <!--android:paddingStart="@dimen/dimen_10dp"-->
-                <!--android:paddingEnd="@dimen/dimen_10dp"-->
-                <!--android:fontFamily="@font/opensans_semibold"/>-->
+            <!--android:id="@+id/tv_status"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="@dimen/text_size_11"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:paddingStart="@dimen/dimen_10dp"-->
+            <!--android:paddingEnd="@dimen/dimen_10dp"-->
+            <!--android:fontFamily="@font/opensans_semibold"/>-->
 
             <!--<TextView-->
-                <!--android:id="@+id/tv_last_updated_time"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_toRightOf="@+id/tv_status"-->
-                <!--android:layout_margin="@dimen/dimen_10dp"-->
-                <!--android:layout_marginStart="@dimen/dimen_20dp"-->
-                <!--android:fontFamily="@font/opensans"-->
-                <!--android:textSize="@dimen/dimen_10dp"-->
-                <!--android:visibility="visible"/>-->
+            <!--android:id="@+id/tv_last_updated_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/tv_status"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:layout_marginStart="@dimen/dimen_20dp"-->
+            <!--android:fontFamily="@font/opensans"-->
+            <!--android:textSize="@dimen/dimen_10dp"-->
+            <!--android:visibility="visible"/>-->
 
             <!--<ImageView-->
-                <!--android:id="@+id/btn_popmenu"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_margin="@dimen/dimen_10dp"-->
-                <!--android:background="@drawable/ic_options_icon"/>-->
+            <!--android:id="@+id/btn_popmenu"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:background="@drawable/ic_options_icon"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:weightSum="2">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_code_label"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Machine Code"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tv_machine_code"
-                android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_code_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Machine Code"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_machine_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_code_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_machine_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Machine Model"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_machine_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_machine_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <ImageView
+                        android:id="@+id/btn_popmenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:background="@drawable/ic_options_icon" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_code_label"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:fontFamily="@font/opensans_semibold"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_machine_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_05dp"
-                android:text="Machine Model"
-                android:textSize="@dimen/dimen_10dp"/>
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tv_machine_model"
-                android:layout_width="wrap_content"
+                <!--<RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_capacity_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Diesel Capacity"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_capacity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_capacity_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_ownedby_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Owned By"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_owner_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_ownedby_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_structure_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Deployed on structure"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_structure_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_structure_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_machine_label"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:fontFamily="@font/opensans_semibold"/>
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/btn_popmenu"
-                android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_provider_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Provider Name"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_provider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_provider_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_contact_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Provider Contact Number"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_contact_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:background="@drawable/ic_options_icon"/>
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_location_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Taluka"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_location_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_operator_contact_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Operator Contact Number"
+                        android:textSize="@dimen/dimen_10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_operator_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_operator_contact_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_13"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_operator_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Operator Name"
+                        android:textSize="@dimen/dimen_10dp"
+                         />
+
+                    <TextView
+                        android:id="@+id/tv_operator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_operator_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_updated_time_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Updated Time"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_last_updated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_updated_time_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_03dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_status_lebal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Machine Status"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_status_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_15" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/bt_action"
+                        style="@style/AppStyleBorderButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_12"
+                        android:visibility="invisible" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_capacity_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Diesel Capacity"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"/>
-
-            <TextView
-                android:id="@+id/tv_capacity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_capacity_label"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:fontFamily="@font/opensans_semibold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_structure_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deployed on structure"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:textSize="@dimen/dimen_10dp"/>
-
-                <TextView
-                    android:id="@+id/tv_structure_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_structure_label"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:fontFamily="@font/opensans_semibold"/>
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_provider_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Provider Name"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"/>
-
-            <TextView
-                android:id="@+id/tv_provider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_provider_label"
-                android:textSize="@dimen/text_size_13"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans_semibold"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_contact_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Provider Contact Number"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:textSize="@dimen/dimen_10dp"/>
-
-                <TextView
-                    android:id="@+id/tv_contact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_contact_label"
-                    android:textSize="@dimen/text_size_13"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:fontFamily="@font/opensans_semibold"
-                    android:textColor="@color/colorPrimary"/>
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_operator_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Operator Name"
-                android:textSize="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tv_operator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_operator_label"
-                android:textSize="@dimen/text_size_13"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans_semibold"
-                android:visibility="gone"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_operator_contact_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Operator Contact Number"
-                android:textSize="@dimen/dimen_10dp"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tv_operator_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_operator_contact_label"
-                android:textSize="@dimen/text_size_13"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans_semibold"
-                android:textColor="@color/colorPrimary"
-                android:visibility="gone"/>
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:layout_marginBottom="@dimen/dimen_03dp"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_status_lebal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Machine Status"
-                    android:textSize="@dimen/dimen_10dp" />
-
-                <TextView
-                    android:id="@+id/tv_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_status_lebal"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:fontFamily="@font/opensans_semibold"
-                    android:textSize="@dimen/text_size_15"
-                    android:textColor="@color/colorPrimary"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_updated_time_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Updated Time"
-                    android:textSize="@dimen/dimen_10dp" />
-
-            <TextView
-                android:id="@+id/tv_last_updated_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_updated_time_label"
-                android:fontFamily="@font/opensans_semibold"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:textSize="@dimen/text_size_13"
-                android:visibility="visible"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -56,7 +56,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private String selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka, selectedHostVillageId,
             selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureWorkTypeId,
             selectedStructureWorkType, selectedStructureOwnerDepartmentId, selectedStructureOwnerDepartment,
-            selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment,selectedIntervention, selectedInterventionId;
+            selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment, selectedIntervention, selectedInterventionId;
     private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
     private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
@@ -95,9 +95,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private void initView() {
 
         //get District
+//        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+//                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+        //get Village
         presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
 
         structureData = new Structure();
 
@@ -129,8 +133,27 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
 
-        etDistrict.setOnClickListener(this);
-        etTaluka.setOnClickListener(this);
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            etDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+            selectedDistrict = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName();
+        } else {
+            //get District
+            presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+            etDistrict.setOnClickListener(this);
+        }
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
+            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
+        } else {
+            etTaluka.setOnClickListener(this);
+        }
+
         etHostVillage.setOnClickListener(this);
         etAdministrativeApprovalDate.setOnClickListener(this);
         etTechnicalSanctionDate.setOnClickListener(this);
@@ -289,91 +312,91 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     }
 
     private boolean isAllDataValid() {
-        if (TextUtils.isEmpty(selectedDistrict)){
+        if (TextUtils.isEmpty(selectedDistrict)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, selected District.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(selectedTaluka)){
+        } else if (TextUtils.isEmpty(selectedTaluka)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, selected Taluka.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(selectedHostVillage)){
+        } else if (TextUtils.isEmpty(selectedHostVillage)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, selected Host Village.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etHostVillagePopulation.getText().toString())){
+        } else if (TextUtils.isEmpty(etHostVillagePopulation.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Host Village Population.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))){
+        } else if (TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Catchment Village.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())){
+        } else if (TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Catchment Village Population.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etGatNo.getText().toString())){
+        } else if (TextUtils.isEmpty(etGatNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Gat No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etWaterShedNo.getText().toString())){
+        } else if (TextUtils.isEmpty(etWaterShedNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Water Shed No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etArea.getText().toString())){
+        } else if (TextUtils.isEmpty(etArea.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Area.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etStructureName.getText().toString())){
+        } else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel proper information.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(selectedStructureOwnerDepartmentId)){
+        } else if (TextUtils.isEmpty(selectedStructureOwnerDepartmentId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Structure Name.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)){
+        } else if (TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Sub-structure Owner DepartmentId.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etNotaDetail.getText().toString())){
+        } else if (TextUtils.isEmpty(etNotaDetail.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Nota Detail.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(selectedStructureTypeId)){
+        } else if (TextUtils.isEmpty(selectedStructureTypeId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Structure Type.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())){
+        } else if (TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Administrative Approval No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etAdministrativeApprovalDate.getText().toString())){
+        } else if (TextUtils.isEmpty(etAdministrativeApprovalDate.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Administrative Approval Date.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etTechnicalSanctionNo.getText().toString())){
+        } else if (TextUtils.isEmpty(etTechnicalSanctionNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Technical Sanction No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etAdministrativeEstimateAmount.getText().toString())){
+        } else if (TextUtils.isEmpty(etAdministrativeEstimateAmount.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Administrative Estimate Amount.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())){
+        } else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Approximate Working Hours.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())){
+        } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())){
+        } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel proper information.", Snackbar.LENGTH_LONG);
             return false;
-        } else if( TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
+        } else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
             return false;
@@ -429,18 +452,18 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etDistrict.setText(selectedDistrict);
                 etTaluka.setText("");
-                selectedTaluka="";
-                selectedTalukaId="";
+                selectedTaluka = "";
+                selectedTalukaId = "";
                 etHostVillage.setText("");
-                selectedHostVillage="";
-                selectedHostVillageId="";
+                selectedHostVillage = "";
+                selectedHostVillageId = "";
                 //get Taluka
-                if(!TextUtils.isEmpty(selectedDistrictId)){
+                if (!TextUtils.isEmpty(selectedDistrictId)) {
                     presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
-                 break;
+                break;
             case "Select Taluka":
                 for (CustomSpinnerObject obj : talukaList) {
                     if (obj.isSelected()) {
@@ -451,10 +474,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etTaluka.setText(selectedTaluka);
                 etHostVillage.setText("");
-                selectedHostVillage="";
-                selectedHostVillageId="";
+                selectedHostVillage = "";
+                selectedHostVillageId = "";
                 //get Taluka
-                if(!TextUtils.isEmpty(selectedTalukaId)){
+                if (!TextUtils.isEmpty(selectedTalukaId)) {
                     presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.VILLAGE_LEVEL);
