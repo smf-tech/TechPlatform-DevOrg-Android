@@ -40,6 +40,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String strRequestObject;
     private String machineId = "5de229c1ca632728f60f19aa";
+    private String machineCode ="";
     private long startDate = 1572692975000L, endDate = 1575284975000L;
     private RecyclerView rv_machinedataworklog;
     private MachineWorklogRecyclerAdapter machineWorklogRecyclerAdapter;
@@ -79,9 +80,9 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
             //toolbar_title.setText(machineId);
         }
         if (data != null && data.containsKey("machineName")) {
-            machineId = data.getString("machineName") != null
+            machineCode = data.getString("machineName") != null
                     ? data.getString("machineName") : "null";
-            toolbar_title.setText(machineId);
+            toolbar_title.setText(machineCode);
         }
 
 // inside your activity (if you did not enable transitions in your theme)
