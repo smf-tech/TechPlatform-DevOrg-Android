@@ -160,5 +160,34 @@
                 android:indeterminateOnly="true"
                 android:visibility="gone" />
         </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtTermService"
+                android:padding="@dimen/dimen_07dp"
+                android:textColor="@color/dark_grey"
+                android:layout_marginStart="@dimen/dimen_50dp"
+                android:layout_marginEnd="@dimen/dimen_50dp"
+                android:text="@string/text_terms_service"
+                android:gravity="center"
+                android:textColorLink="@color/colorAccent"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
     </RelativeLayout>
 </ScrollView>

@@ -157,7 +157,7 @@ private ImageView toolbar_edit_action;
             //-----------
             workTime = String.valueOf(new Date().getTime());//String.valueOf(Util.getDateInepoch(""));
             Log.e("Timestamp--", "---" + workTime);
-            saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, meter_reading, hours, totalHours, image);
+            saveOperatorStateData(machine_id, workTime, "start",""+state_start, lat, lon, et_smeter_read.getText().toString(), hours, totalHours, image);
             image = "";
             gear_action_start.setVisibility(View.VISIBLE);
             setWorkingAnime();
@@ -460,7 +460,7 @@ private ImageView toolbar_edit_action;
                 if (preferences.getInt("State", 0) != state_stop) {
                     callStopButtonClick();
                 }else {
-                    Util.showToast("Please enter Start meter reading", OperatorMeterReadingActivity.this);
+                    Util.showToast("Please Start the machine.", OperatorMeterReadingActivity.this);
                 }
             }
 

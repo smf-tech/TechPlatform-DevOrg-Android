@@ -6,10 +6,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -47,7 +49,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     private RelativeLayout pbVerifyLoginLayout;
     private PlatformEditTextView etUserMobileNumber;
 //    private EditText etUserMobileNumber;
-
+    TextView txtTermService;
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
     private LoginActivityPresenter loginPresenter;
@@ -71,6 +73,17 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
         etUserMobileNumber = findViewById(R.id.edt_mobile_number);
         etUserMobileNumber.setOnEditorActionListener(this);
+        txtTermService = findViewById(R.id.txtTermService);
+
+        findViewById(R.id.txtTermService).setOnClickListener(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            txtTermService.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>Terms of Service and Privacy Policy</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            txtTermService.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>Terms of Service and Privacy Policy</u></h7></p>"));
+        }
+
+
 
         TextView label = findViewById(R.id.enter_mobile_label);
         label.setText(getResources().getString(R.string.msg_enter_mobile));
@@ -295,6 +308,10 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
             case R.id.tv_resend_otp:
                 onResendOTPClick();
+                break;
+            case R.id.txtTermService:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://13.235.105.204/privacypolicy.html"));
+                startActivity(browserIntent);
                 break;
         }
     }

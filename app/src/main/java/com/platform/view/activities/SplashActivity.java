@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.airbnb.lottie.utils.Utils;
 import com.google.gson.Gson;
 import com.platform.R;
 import com.platform.models.appconfig.AppConfigResponseModel;
@@ -29,29 +28,36 @@ import com.platform.utility.Constants;
 import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class SplashActivity extends AppCompatActivity {
-    private SplashActivityPresenter splashActivityPresenter;
     private final static int SPLASH_TIME_OUT = 2000;
-
     private final String TAG = SplashActivity.class.getName();
     PreferenceHelper preferenceHelper;
+    private SplashActivityPresenter splashActivityPresenter;
+    private TextView tv_versionname;
+    private String appVersion = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        tv_versionname = findViewById(R.id.powered);
+
+        try {
+            appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tv_versionname.setText("Version"+" "+appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         preferenceHelper = new PreferenceHelper(SplashActivity.this);
         SyncAdapterUtils.createSyncAccount(getApplicationContext());
         splashActivityPresenter = new SplashActivityPresenter(SplashActivity.this);
         Util.setApplicationLocale();
 
         new AppSignatureHelper(this);
-        if (Util.isConnected(SplashActivity.this)){
+        if (Util.isConnected(SplashActivity.this)) {
             splashActivityPresenter.getAppConfig("");
-        }else {
+        } else {
             GotoNextScreen();
         }
         splashActivityPresenter.getAppConfig("");
@@ -146,7 +152,7 @@ public class SplashActivity extends AppCompatActivity {
                                 } else {
                                     showForceupdateDialog(SplashActivity.this, 0);
                                 }
-                            }else {
+                            } else {
                                 GotoNextScreen();
                             }
 //                                }
@@ -213,7 +219,7 @@ public class SplashActivity extends AppCompatActivity {
         return "";
     }
 
-    public void GotoNextScreen(){
+    public void GotoNextScreen() {
         new Handler().postDelayed(() -> {
             Intent intent;
 
@@ -226,14 +232,14 @@ public class SplashActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
-                    if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
-                         intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
-                        intent.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
+                    if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
+                        intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
+                        intent.putExtra("meetid", "5d6f90c25dda765c2f0b5dd4");
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                    }else {
+                    } else {
                         intent = new Intent(SplashActivity.this, HomeActivity.class);
                     }
                 }

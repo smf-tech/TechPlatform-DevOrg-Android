@@ -220,7 +220,7 @@ public class ForegroundService extends Service {
         } else if (second > 0) {
             mTimeLeftString = 0 + " " + hrsString + " " +0 + " " + minString + " " + second + " " + secStrind;
         }
-        mTimeLeftString = (new SimpleDateFormat("hh:mm:ss")).format(new Date(mTimeLeft));
+     //   mTimeLeftString = (new SimpleDateFormat("hh:mm:ss")).format(new Date(mTimeLeft));
         return mTimeLeftString;
     }
 }

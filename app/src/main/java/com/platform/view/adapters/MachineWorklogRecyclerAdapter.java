@@ -56,7 +56,7 @@ private RequestOptions requestOptions;
         holder.tv_work_date.setText(dataList.get(position).getStartDate());
         holder.tv_total_hours_value.setText(dataList.get(position).getTotalHrsCunt());
         holder.tv_value_start.setText(dataList.get(position).getStartReading());
-        holder.tv_value_end.setText(dataList.get(position).getStartReading());
+        holder.tv_value_end.setText(dataList.get(position).getEndReading());
 
         if (dataList.get(position).getStartMeterReadingImage() != null && !dataList.get(position).getStartMeterReadingImage().equals("")) {
             Glide.with(mContext)
