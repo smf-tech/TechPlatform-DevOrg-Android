@@ -23,6 +23,7 @@ import com.platform.utility.Constants;
 import com.platform.utility.Permissions;
 import com.platform.utility.Util;
 import com.platform.view.activities.MachineMouActivity;
+import com.platform.view.activities.MachineWorkingDataListActivity;
 import com.platform.view.activities.SSActionsActivity;
 import com.platform.view.fragments.StructureMachineListFragment;
 
@@ -139,6 +140,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
+                    popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -265,6 +267,18 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                                         }
                                         break;
+                                    case R.id.action_machine_worklog:
+                                        if (Util.isConnected(activity)) {
+                                            Intent startMain1 = new Intent(activity, MachineWorkingDataListActivity.class);
+                                            startMain1.putExtra("machineId",ssDataList.get(getAdapterPosition()).getId());
+                                            startMain1.putExtra("machineName",ssDataList.get(getAdapterPosition()).getMachineCode());
+
+                                            activity.startActivity(startMain1);
+                                        } else {
+                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                        }
+                                        break;
+
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);

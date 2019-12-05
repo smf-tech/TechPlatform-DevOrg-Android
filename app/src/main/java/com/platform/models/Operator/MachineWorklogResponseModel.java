@@ -5,12 +5,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class MachineWorklogResponseModel {
 
+
     @SerializedName("status")
     @Expose
     private Integer status;
     @SerializedName("msg")
     @Expose
     private String msg;
+    @SerializedName("totalWorkHrs")
+    @Expose
+    private String totalWorkHrs;
+
     @SerializedName("data")
     @Expose
     private List<MachineWorklogList> machineWorklogList = null;
@@ -50,5 +55,13 @@ public class MachineWorklogResponseModel {
 
     public void setMachineWorklogList(List<MachineWorklogList> machineWorklogList) {
         this.machineWorklogList = machineWorklogList;
+    }
+
+    public String getTotalWorkHrs() {
+        return totalWorkHrs;
+    }
+
+    public void setTotalWorkHrs(String totalWorkHrs) {
+        this.totalWorkHrs = totalWorkHrs;
     }
 }

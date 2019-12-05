@@ -45,7 +45,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     private MachineWorklogRecyclerAdapter machineWorklogRecyclerAdapter;
 
     private ImageView toolbar_back_action;
-    private TextView toolbar_title,tv_no_data_msg;
+    private TextView toolbar_title,tv_no_data_msg,tv_complete_total_hours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         rv_machinedataworklog = findViewById(R.id.rv_machinedataworklog);
         toolbar_back_action = findViewById(R.id.toolbar_back_action);
         tv_no_data_msg  = findViewById(R.id.tv_no_data_msg);
+        tv_complete_total_hours  = findViewById(R.id.tv_complete_total_hours);
         toolbar_title = findViewById(R.id.toolbar_title);
         btn_apply = findViewById(R.id.btn_apply);
         tv_startdate = findViewById(R.id.tv_startdate);
@@ -71,23 +72,18 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         //receive intent data
         Bundle data = getIntent().getExtras();
         toolbar_title.setText("Machine Worklog");
+
         if (data != null && data.containsKey("machineId")) {
             machineId = data.getString("machineId") != null
                     ? data.getString("machineId") : "null";
-            machineId = "5de229c1ca632728f60f19aa";
-
-
-            toolbar_title.setText(machineId);
-            // Util.showToast(switchToFragment, this);
-            //get filter request object to get the details
-            /*try {
-                JSONObject requestObject = new JSONObject(data.getString("filter_type_request"));
-                strRequestObject = data.getString("filter_type_request");
-                Util.logger(getLocalClassName(), strRequestObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
+            //toolbar_title.setText(machineId);
         }
+        if (data != null && data.containsKey("machineName")) {
+            machineId = data.getString("machineName") != null
+                    ? data.getString("machineName") : "null";
+            toolbar_title.setText(machineId);
+        }
+
 // inside your activity (if you did not enable transitions in your theme)
         Gson gson = new GsonBuilder().create();
         String paramjson = gson.toJson(getCheckProfileJson(machineId, startDate, endDate));
@@ -122,9 +118,11 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
             CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
             if (commonResponse.getStatus()!=200){
                 tv_no_data_msg.setVisibility(View.VISIBLE);
+                tv_complete_total_hours.setVisibility(View.GONE);
             }else {
                 tv_no_data_msg.setVisibility(View.GONE);
                 rv_machinedataworklog.setVisibility(View.VISIBLE);
+                tv_complete_total_hours.setVisibility(View.VISIBLE);
                 MachineWorklogResponseModel pendingRequestsResponse
                         = new Gson().fromJson(response, MachineWorklogResponseModel.class);
                 if (pendingRequestsResponse != null && pendingRequestsResponse.getMachineWorklogList() != null
@@ -134,9 +132,10 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                     machineWorklogRecyclerAdapter = new MachineWorklogRecyclerAdapter(this, pendingRequestsResponse.getMachineWorklogList(),
                             this);
                     rv_machinedataworklog.setAdapter(machineWorklogRecyclerAdapter);
-
+                    tv_complete_total_hours.setText("Total hours = "+pendingRequestsResponse.getTotalWorkHrs());
                 }else {
                     rv_machinedataworklog.setVisibility(View.GONE);
+                    tv_complete_total_hours.setVisibility(View.GONE);
                     tv_no_data_msg.setVisibility(View.VISIBLE);
                 }
             }

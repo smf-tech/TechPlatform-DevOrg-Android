@@ -3,6 +3,10 @@
 
     <!-- Default overflow menu items -->
     <item
+        android:id="@+id/action_machine_worklog"
+        android:title="Show Machine Work Record"
+        android:visible="false"/>
+    <item
         android:id="@+id/action_machine_shifting"
         android:title="Machine Shifting Record"
         android:visible="false"/>

@@ -38,9 +38,11 @@ public class StoriesFragment extends Fragment {
 //            }
 //        }
 
-        Intent startMain1 = new Intent(getActivity(), MachineWorkingDataListActivity.class);
-        startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-        startActivity(startMain1);
+        /*Intent startMain1 = new Intent(getActivity(), MachineWorkingDataListActivity.class);
+        startMain1.putExtra("machineId","5de229c1ca632728f60f19aa");
+        startMain1.putExtra("machineName","5de229c1ca632728f60f19aa");
+
+        startActivity(startMain1);*/
 
         return inflater.inflate(R.layout.fragment_stories, container, false);
     }

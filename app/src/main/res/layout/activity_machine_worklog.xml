@@ -139,6 +139,20 @@
             />
     </LinearLayout>
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_complete_total_hours"
+            android:text="Total hours = 00:00"
+            android:gravity="right"
+            android:fontFamily="@font/opensans_bold"
+            android:visibility="visible"
+            android:layout_marginEnd="@dimen/dimen_07dp"
+            android:textSize="@dimen/text_size_18"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/rv_machinedataworklog"
