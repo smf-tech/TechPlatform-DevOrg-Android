@@ -1,6 +1,5 @@
 package com.platform.view.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.utility.Constants;
-import com.platform.view.activities.FeedCreationActivity;
-import com.platform.view.activities.HomeActivity;
-import com.platform.view.activities.MachineWorkingDataListActivity;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment {
