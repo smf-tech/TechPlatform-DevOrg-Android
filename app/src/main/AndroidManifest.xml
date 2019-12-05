@@ -177,6 +177,10 @@
             android:name=".view.activities.FeedCreationActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".view.activities.MachineWorkingDataListActivity"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name=".receivers.SmsReceiver"
             android:exported="true"

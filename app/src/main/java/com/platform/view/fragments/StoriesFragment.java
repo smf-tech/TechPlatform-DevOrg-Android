@@ -13,6 +13,7 @@ import com.platform.R;
 import com.platform.utility.Constants;
 import com.platform.view.activities.FeedCreationActivity;
 import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.MachineWorkingDataListActivity;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment {
@@ -37,9 +38,9 @@ public class StoriesFragment extends Fragment {
 //            }
 //        }
 
-        /*Intent startMain1 = new Intent(getActivity(), FeedCreationActivity.class);
+        Intent startMain1 = new Intent(getActivity(), MachineWorkingDataListActivity.class);
         startMain1.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-        startActivity(startMain1);*/
+        startActivity(startMain1);
 
         return inflater.inflate(R.layout.fragment_stories, container, false);
     }

@@ -20,6 +20,8 @@ import com.platform.Platform;
 import com.platform.R;
 import com.platform.view.activities.OperatorMeterReadingActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static androidx.core.app.NotificationCompat.Builder;
@@ -218,6 +220,7 @@ public class ForegroundService extends Service {
         } else if (second > 0) {
             mTimeLeftString = 0 + " " + hrsString + " " +0 + " " + minString + " " + second + " " + secStrind;
         }
+        mTimeLeftString = (new SimpleDateFormat("hh:mm:ss")).format(new Date(mTimeLeft));
         return mTimeLeftString;
     }
 }
