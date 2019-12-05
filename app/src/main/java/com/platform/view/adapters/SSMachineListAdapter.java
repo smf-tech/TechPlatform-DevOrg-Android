@@ -36,7 +36,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
     private ArrayList<MachineData> ssDataList;
     private Activity activity;
     private StructureMachineListFragment fragment;
-    private boolean isSettingsRequired;
+    //private boolean isSettingsRequired;
 
     public SSMachineListAdapter(Activity activity, StructureMachineListFragment fragment,
                                 ArrayList<MachineData> ssDataList) {
@@ -173,22 +173,22 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
 
-            if (fragment.isSiltTransportForm) {
-                isSettingsRequired = true;
-            } else if (fragment.isDieselRecordForm) {
-                isSettingsRequired = true;
-            } else if (fragment.isMachineVisitValidationForm) {
-                isSettingsRequired = true;
-            } else if (fragment.isMachineShiftForm) {
-                isSettingsRequired = true;
-            } else if (fragment.isMachineRelease) {
-                isSettingsRequired = true;
-            }
-            if (isSettingsRequired) {
-                btnPopupMenu.setVisibility(View.VISIBLE);
-            } else {
-                btnPopupMenu.setVisibility(View.INVISIBLE);
-            }
+//            if (fragment.isSiltTransportForm) {
+//                isSettingsRequired = true;
+//            } else if (fragment.isDieselRecordForm) {
+//                isSettingsRequired = true;
+//            } else if (fragment.isMachineVisitValidationForm) {
+//                isSettingsRequired = true;
+//            } else if (fragment.isMachineShiftForm) {
+//                isSettingsRequired = true;
+//            } else if (fragment.isMachineRelease) {
+//                isSettingsRequired = true;
+//            }
+//            if (isSettingsRequired) {
+//                btnPopupMenu.setVisibility(View.VISIBLE);
+//            } else {
+//                btnPopupMenu.setVisibility(View.INVISIBLE);
+//            }
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
