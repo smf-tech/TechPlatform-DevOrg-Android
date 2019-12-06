@@ -17,10 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.tabs.TabLayout;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.database.DatabaseManager;
+import com.platform.listeners.APIDataListener;
 import com.platform.listeners.PlatformTaskListener;
 import com.platform.models.home.Home;
 import com.platform.models.home.HomeData;
@@ -42,7 +44,7 @@ import static com.platform.syncAdapter.SyncAdapterUtils.ACCOUNT_TYPE;
 import static com.platform.utility.Constants.RequestStatus.APPROVED_MODULE;
 import static com.platform.utility.Constants.RequestStatus.DEFAULT_MODULE;
 
-public class HomeFragment extends Fragment implements PlatformTaskListener, HomeActivity.OnSyncClicked {
+public class HomeFragment extends Fragment implements PlatformTaskListener, APIDataListener, HomeActivity.OnSyncClicked {
 
     private final int[] tabIcons = {
             R.drawable.ic_home_icon_tab,
@@ -129,8 +131,126 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             isSyncRequired = true;
             UserInfo user = Util.getUserObjectFromPref();
             presenter.getModules(user);
-            presenter.getRoleAccess();
         }
+        if(!Util.isConnected(context)) {
+            initiateViewPager();
+        }
+//        List<Modules> modulesFromDatabase = getModulesFromDatabase();
+//        if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
+//
+//            List<Modules> defaultModules = DatabaseManager.getDBInstance(context.getApplicationContext())
+//                    .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
+//
+//            List<Modules> approveModules = DatabaseManager.getDBInstance(context.getApplicationContext())
+//                    .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
+//
+//            HomeData homeData = new HomeData();
+//            homeData.setDefaultModules(defaultModules);
+//            homeData.setOnApproveModules(approveModules);
+//
+//            this.homeData = new Home();
+//            this.homeData.setHomeData(homeData);
+//
+//            UserInfo userInfo = Util.getUserObjectFromPref();
+//            this.homeData.setUserApproveStatus(
+//                    (userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+//                            userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
+//                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+//
+//            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+//                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
+////                if (!dialogNotApproved.isShowing()) {
+////                    //showApprovedDialog();
+////                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
+////                            "OK", "");
+////                }
+//            }
+//
+//            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+//            viewPager.setOffscreenPageLimit(3);
+//            setupViewPager(viewPager);
+//
+//            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
+//            tabLayout.setupWithViewPager(viewPager);
+//
+//            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+//            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+//            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+//
+//            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//                @Override
+//                public void onTabSelected(TabLayout.Tab tab) {
+//                    switch (tab.getPosition()) {
+//                        case 0:
+//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.HOME);
+//                            break;
+//
+//                        case 1:
+//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.STORIES);
+//                            break;
+//
+//                        case 2:
+//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONNECT);
+//                            break;
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onTabUnselected(TabLayout.Tab tab) {
+//                }
+//
+//                @Override
+//                public void onTabReselected(TabLayout.Tab tab) {
+//                }
+//            });
+//            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
+//            //return;
+//        }
+
+//        if (presenter != null && Util.isConnected(context)) {
+//            isSyncRequired = true;
+//            UserInfo user = Util.getUserObjectFromPref();
+//            presenter.getModules(user);
+//            presenter.getRoleAccess();
+//        }
+    }
+
+    private List<Modules> getModulesFromDatabase() {
+        return DatabaseManager.getDBInstance(context.getApplicationContext()).getAllModules();
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
+    }
+
+    public void initiateViewPager() {
         List<Modules> modulesFromDatabase = getModulesFromDatabase();
         if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
 
@@ -203,27 +323,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
             ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             //return;
         }
-
-//        if (presenter != null && Util.isConnected(context)) {
-//            isSyncRequired = true;
-//            UserInfo user = Util.getUserObjectFromPref();
-//            presenter.getModules(user);
-//            presenter.getRoleAccess();
-//        }
-    }
-
-    private List<Modules> getModulesFromDatabase() {
-        return DatabaseManager.getDBInstance(context.getApplicationContext()).getAllModules();
-    }
-
-    @Override
-    public void showProgressBar() {
-
-    }
-
-    @Override
-    public void hideProgressBar() {
-
     }
 
     @Override
@@ -245,36 +344,37 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, Home
                 DatabaseManager.getDBInstance(context.getApplicationContext()).insertModule(module);
             }
 
-            HomeData homeData = new HomeData();
-            homeData.setDefaultModules(defaultModules);
-            homeData.setOnApproveModules(approveModules);
-
-            this.homeData.setHomeData(homeData);
-            this.homeData.setUserApproveStatus(
-                    (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-                            this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
-                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
-
-            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
-
-                if (!dialogNotApproved.isShowing()) {
-                    //showApprovedDialog();
-                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
-                            "OK", "");
-                }
-            }
-
-            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
-            viewPager.setOffscreenPageLimit(3);
-            setupViewPager(viewPager);
-
-            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+//            HomeData homeData = new HomeData();
+//            homeData.setDefaultModules(defaultModules);
+//            homeData.setOnApproveModules(approveModules);
+//
+//            this.homeData.setHomeData(homeData);
+//            this.homeData.setUserApproveStatus(
+//                    (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+//                            this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
+//                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
+//
+//            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
+//                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
+//
+//                if (!dialogNotApproved.isShowing()) {
+//                    //showApprovedDialog();
+//                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
+//                            "OK", "");
+//                }
+//            }
+//
+//            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
+//            viewPager.setOffscreenPageLimit(3);
+//            setupViewPager(viewPager);
+//
+//            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
+//            tabLayout.setupWithViewPager(viewPager);
+//            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+//            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+//            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         }
+        presenter.getRoleAccess();
     }
 
     @Override

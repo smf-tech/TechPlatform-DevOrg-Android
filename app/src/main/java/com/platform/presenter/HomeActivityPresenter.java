@@ -111,12 +111,22 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        if (homeFragment != null && homeFragment.get() != null) {
+            homeFragment.get().initiateViewPager();
+            homeFragment.get().hideProgressBar();
+            homeFragment.get().onFailureListener(requestID,message);
+        }
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        if (homeFragment != null && homeFragment.get() != null) {
+            homeFragment.get().hideProgressBar();
+            homeFragment.get().initiateViewPager();
+            if (error != null) {
+                homeFragment.get().onErrorListener(requestID,error);
+            }
+        }
     }
 
     @Override
@@ -133,10 +143,12 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
                         Util.logOutUser(homeFragment.get().getActivity());
                     }else if(roleAccessAPIResponse.getStatus() == 200 && roleAccessAPIResponse.getData() != null) {
                         Util.saveRoleAccessObjectInPref(response);
+                        homeFragment.get().initiateViewPager();
                     }
                 }
             }
         } catch (Exception e) {
+            homeFragment.get().initiateViewPager();
             homeFragment.get().showErrorMessage(homeFragment.get().getResources().getString(R.string.msg_something_went_wrong));
         }
     }
