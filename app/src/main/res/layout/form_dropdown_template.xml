@@ -14,7 +14,7 @@
         android:ellipsize="end"
         android:maxLines="1" />
 
-    <com.platform.widgets.PlatformSpinner
+    <com.octopus.widgets.PlatformSpinner
         android:id="@+id/sp_single_select"
         android:layout_width="match_parent"
         android:layout_height="50dp"

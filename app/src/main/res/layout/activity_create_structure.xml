@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.platform.view.activities.CreateStructureActivity">
+    tools:context="com.octopus.view.activities.CreateStructureActivity">
 
     <include
         android:id="@+id/toolbar"

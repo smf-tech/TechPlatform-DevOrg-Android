@@ -159,7 +159,7 @@
                 android:padding="@dimen/dimen_10dp" />
         </LinearLayout>
 
-        <com.platform.view.customs.TextViewRegular
+        <com.octopus.view.customs.TextViewRegular
             android:id="@+id/txt_dia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.platform">
+    package="com.octopus">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".Platform"
+        android:name="com.octopus.Platform"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/app_logo"
@@ -33,50 +33,50 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.StructureCompletionActivity"
+        <activity android:name="com.octopus.view.activities.StructureCompletionActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.CommunityMobilizationActivity"
+        <activity android:name="com.octopus.view.activities.CommunityMobilizationActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.StructureVisitMonitoringActivity"
+        <activity android:name="com.octopus.view.activities.StructureVisitMonitoringActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.StructurePripretionsActivity"
+        <activity android:name="com.octopus.view.activities.StructurePripretionsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.activities.CreateStructureActivity"
+            android:name="com.octopus.view.activities.CreateStructureActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.MachineMouActivity"
+            android:name="com.octopus.view.activities.MachineMouActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.UserRegistrationMatrimonyActivity"
+            android:name="com.octopus.view.activities.UserRegistrationMatrimonyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.MatrimonyProfileListActivity"
+            android:name="com.octopus.view.activities.MatrimonyProfileListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.MatrimonyProfileDetailsActivity"
+            android:name="com.octopus.view.activities.MatrimonyProfileDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.SSActionsActivity"
+            android:name="com.octopus.view.activities.SSActionsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.OperatorMeterReadingActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.NotificationsActivity"
+            android:name="com.octopus.view.activities.NotificationsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.ContentDownloadedActivity"
+            android:name="com.octopus.view.activities.ContentDownloadedActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.CreateMatrimonyMeetActivity"
+            android:name="com.octopus.view.activities.CreateMatrimonyMeetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.ShowMeetBatchesActivity"
+            android:name="com.octopus.view.activities.ShowMeetBatchesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.BaseActivity"
+            android:name="com.octopus.view.activities.BaseActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.SplashActivity"
@@ -89,15 +89,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.LoginActivity"
+            android:name="com.octopus.view.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name="com.octopus.view.activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.ProfileActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity
-            android:name=".view.activities.EditProfileActivity"
+            android:name="com.octopus.view.activities.EditProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
@@ -112,77 +112,77 @@
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity
-            android:name=".view.activities.OtpActivity"
+            android:name="com.octopus.view.activities.OtpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.FormActivity"
+            android:name="com.octopus.view.activities.FormActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.HomeActivity"
+            android:name="com.octopus.view.activities.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.PMActivity"
+            android:name="com.octopus.view.activities.PMActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.ProcessListActivity"
+            android:name="com.octopus.view.activities.ProcessListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.TMActivity"
+            android:name="com.octopus.view.activities.TMActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.TMFiltersListActivity"
+            android:name="com.octopus.view.activities.TMFiltersListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.TMUserProfileListActivity"
+            android:name="com.octopus.view.activities.TMUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.PlannerDetailActivity"
+            android:name="com.octopus.view.activities.PlannerDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.CreateEventTaskActivity"
+            android:name="com.octopus.view.activities.CreateEventTaskActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.AddMembersFilterActivity"
+            android:name="com.octopus.view.activities.AddMembersFilterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.EventDetailActivity"
+            android:name="com.octopus.view.activities.EventDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.AddMembersListActivity"
+            android:name="com.octopus.view.activities.AddMembersListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".view.activities.GeneralActionsActivity"
+            android:name="com.octopus.view.activities.GeneralActionsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
-            android:name=".view.activities.MatrimonyBookletActivity"
+            android:name="com.octopus.view.activities.MatrimonyBookletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
-            android:name=".view.activities.FeedCreationActivity"
+            android:name="com.octopus.view.activities.FeedCreationActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".view.activities.MachineWorkingDataListActivity"
+            android:name="com.octopus.view.activities.MachineWorkingDataListActivity"
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".receivers.SmsReceiver"
+            android:name="com.octopus.receivers.SmsReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver">
             <intent-filter>
@@ -190,7 +190,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".receivers.ConnectivityReceiver"
+            android:name="com.octopus.receivers.ConnectivityReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -198,14 +198,14 @@
         </receiver>
 
         <service
-            android:name=".services.MyFirebaseMessagingService"
+            android:name="com.octopus.services.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".services.AttendanceService"
+            android:name="com.octopus.services.AttendanceService"
             android:enabled="true"
             android:exported="false" />
 
@@ -219,12 +219,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <provider
-            android:name=".syncAdapter.ContentProvider"
-            android:authorities="com.platform"
+            android:name="com.octopus.syncAdapter.ContentProvider"
+            android:authorities="com.octopus"
             android:exported="false" />
 
         <service
-            android:name=".syncAdapter.SyncService"
+            android:name="com.octopus.syncAdapter.SyncService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
@@ -236,7 +236,7 @@
                 android:resource="@xml/sync_adapter" />
         </service>
         <service
-            android:name=".syncAdapter.GenericAccountService"
+            android:name="com.octopus.syncAdapter.GenericAccountService"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -247,24 +247,24 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name=".services.DownloadService"
+            android:name="com.octopus.services.DownloadService"
             android:exported="true" />
         <service
-            android:name=".services.ShowTimerService"
+            android:name="com.octopus.services.ShowTimerService"
             android:exported="true" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
-        <meta-data
+        <!--<meta-data
             android:name="com.google.android.actions"
-            android:resource="@xml/circle_background" />
+            android:resource="@xml/circle_background" />-->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
         <service
-            android:name=".services.ForegroundService"
+            android:name="com.octopus.services.ForegroundService"
             android:enabled="true"
             android:exported="true" />
     </application>

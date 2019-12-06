@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/base_background_color"
     android:orientation="vertical"
-    tools:context="com.platform.view.fragments.StructureMachineListFragment">
+    tools:context="com.octopus.view.fragments.StructureMachineListFragment">
 
     <LinearLayout
         android:id="@+id/ly_filter"
