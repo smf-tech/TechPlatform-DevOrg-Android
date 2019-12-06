@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighter_grey_tab"
-    tools:context="com.platform.view.activities.EventDetailActivity">
+    tools:context="com.octopus.view.activities.EventDetailActivity">
 
     <include
     android:id="@+id/profile_toolbar"
