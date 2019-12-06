@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -258,7 +259,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         Constants.READ_PHONE_STORAGE);
             } else {
-                loginInfo.setDeviceId(telephonyManager.getDeviceId());
+                String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                loginInfo.setDeviceId(deviceId);
             }
         }
     }

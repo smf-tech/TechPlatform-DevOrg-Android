@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -529,7 +530,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             } else {
                 TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.
                         TELEPHONY_SERVICE);
-                String deviceId = telephonyManager.getDeviceId();
+                //String deviceId = telephonyManager.getDeviceId();
+                String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 return deviceId;
             }
         }
