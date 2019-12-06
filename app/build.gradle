@@ -63,7 +63,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.platform.debug'
+            applicationId 'com.octopus.debug'
         }
         Staging {
             dimension "server"
@@ -71,7 +71,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.platform.debug'
+            applicationId 'com.octopus.debug'
             signingConfig signingConfigs.config
         }
         Production {
@@ -80,7 +80,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.105.204/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.platform'
+            applicationId 'com.octopus'
             signingConfig signingConfigs.config
         }
     }
