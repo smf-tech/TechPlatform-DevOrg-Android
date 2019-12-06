@@ -27,11 +27,11 @@
             android:icon="@drawable/ic_menu_calendar"
             android:title="@string/menu_calendar"
             android:visible="false" />
-        <item
-            android:id="@+id/action_menu_teams"
-            android:icon="@drawable/ic_menu_teams"
-            android:title="@string/approvals"
-            android:visible="false" />
+        <!--<item-->
+            <!--android:id="@+id/action_menu_teams"-->
+            <!--android:icon="@drawable/ic_menu_teams"-->
+            <!--android:title="@string/approvals"-->
+            <!--android:visible="false" />-->
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"

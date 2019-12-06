@@ -381,27 +381,27 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 break;
 
             case R.id.action_menu_forms:
-                loadFormsPage();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_forms_click));
+//                loadFormsPage();
+//                AppEvents.trackAppEvent(getString(R.string.event_menu_forms_click));
                 break;
 
-            case R.id.action_menu_teams:
-                loadTeamsPage();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_teams_click));
-                break;
+//            case R.id.action_menu_teams:
+////                loadTeamsPage();
+////                AppEvents.trackAppEvent(getString(R.string.event_menu_teams_click));
+//                break;
 
             case R.id.action_menu_calendar:
-                loadMeetingsPage();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_meeting_click));
+//                loadMeetingsPage();
+//                AppEvents.trackAppEvent(getString(R.string.event_menu_meeting_click));
                 break;
 
             case R.id.action_menu_assets:
                 break;
 
-            case R.id.action_menu_reports:
-                loadReportsPage();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_reports_click));
-                break;
+//            case R.id.action_menu_reports:
+////                loadReportsPage();
+////                AppEvents.trackAppEvent(getString(R.string.event_menu_reports_click));
+//                break;
 
             case R.id.action_menu_connect:
                 break;

@@ -12,8 +12,8 @@ public class SyncAdapterUtils {
 
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
     public static final String ACCOUNT = "TechPlatform-DevOrg";
-    public static final String AUTHORITY = "com.platform";
-    public static final String ACCOUNT_TYPE = "com.platform.account";
+    public static final String AUTHORITY = "com.octopus";
+    public static final String ACCOUNT_TYPE = "com.octopus.account";
     public static final String EVENT_SYNC_COMPLETED = "SyncCompleted";
     public static final String EVENT_SYNC_FAILED = "SyncFailed";
     public static final String EVENT_FORM_ADDED = "formAdded";

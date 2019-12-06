@@ -122,13 +122,13 @@ public class DashboardFragment extends Fragment {
                     tabNames.get(i).setResId(R.id.action_menu_calendar);
                     break;
 
-                case Constants.Home.APPROVALS:
-                    tabNames.get(i).setResId(R.id.action_menu_teams);
-                    break;
+//                case Constants.Home.APPROVALS:
+//                    tabNames.get(i).setResId(R.id.action_menu_teams);
+//                    break;
 
-                case Constants.Home.REPORTS:
-                    tabNames.get(i).setResId(R.id.action_menu_reports);
-                    break;
+//                case Constants.Home.REPORTS:
+//                    tabNames.get(i).setResId(R.id.action_menu_reports);
+//                    break;
 
                 case Constants.Home.WEBMODULE:
                     tabNames.get(i).setResId(R.id.action_menu_reports);
