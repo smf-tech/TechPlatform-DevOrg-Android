@@ -211,8 +211,8 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
     public void onImageUploadedListener(final String response, final String formName) {
 
         Log.e(TAG, "onImageUploadedListener:\n" + response);
-        profileActivity.get().runOnUiThread(() -> Util.showToast(
-                profileActivity.get().getResources().getString(R.string.image_upload_success), profileActivity.get()));
+//        profileActivity.get().runOnUiThread(() -> Util.showToast(
+//                profileActivity.get().getResources().getString(R.string.image_upload_success), profileActivity.get()));
         profileActivity.get().hideProgressBar();
 
         try {

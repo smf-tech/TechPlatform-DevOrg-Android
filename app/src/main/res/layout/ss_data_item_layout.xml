@@ -369,6 +369,12 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_01dp"
+                android:layout_marginTop="@dimen/dimen_03dp"
+                android:background="@color/lighter_grey"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

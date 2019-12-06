@@ -69,7 +69,7 @@
             android:layout_weight="0.4"
             android:padding="@dimen/dimen_03dp"
             android:src="@drawable/ic_cancel"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -279,11 +279,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 structureMachineListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
-            } else {
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Your District is not available in your profile." +
-                                "Please update your profile.",
-                        Snackbar.LENGTH_LONG);
             }
         }
     }
@@ -761,20 +756,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 ssMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
             }
+            tvStateFilter.setText("");
             if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
                 tvStateFilter.setText("");
                 tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
             }
+            tvDistrictFilter.setText("");
             if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-                tvDistrictFilter.setText("");
                 tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
             }
+            tvTalukaFilter.setText("");
             if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                     Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
                 tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-                tvTalukaFilter.setText("");
             }
             btnFilterClear.setVisibility(View.GONE);
         }
