@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -337,13 +338,16 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             } else {
                 TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
                         TELEPHONY_SERVICE);
-                String deviceId = telephonyManager.getDeviceId();
+               // String deviceId = telephonyManager.getDeviceId();
+                String deviceId =Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
                 return deviceId;
             }
         } else {
             TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
                     TELEPHONY_SERVICE);
-            String deviceId = telephonyManager.getDeviceId();
+           // String deviceId = telephonyManager.getDeviceId();
+            String deviceId =Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             return deviceId;
         }
         return "";
