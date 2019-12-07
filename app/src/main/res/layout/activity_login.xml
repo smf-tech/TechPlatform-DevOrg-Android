@@ -76,7 +76,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <com.octopus.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/enter_mobile_label"
                     style="@style/roboto_regular_light_black_12"
                     android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                     app:cardCornerRadius="4dp"
                     app:cardElevation="@dimen/dimen_07dp">
 
-                    <com.octopus.widgets.PlatformEditTextView
+                    <com.octopusbjsindia.widgets.PlatformEditTextView
                         android:id="@+id/edt_mobile_number"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/dimen_50dp"
@@ -156,7 +156,7 @@
                     android:textSize="@dimen/text_size_16"
                     android:visibility="gone" />
 
-                <com.octopus.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/tv_resend_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

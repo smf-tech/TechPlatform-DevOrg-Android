@@ -15,7 +15,7 @@
         android:id="@+id/linear_row"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content">
-    <com.octopus.view.customs.TextViewSemiBold
+    <com.octopusbjsindia.view.customs.TextViewSemiBold
         android:id="@+id/tv_filters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

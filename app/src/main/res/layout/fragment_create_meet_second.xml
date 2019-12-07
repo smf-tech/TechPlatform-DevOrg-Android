@@ -3,7 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="com.octopus.view.fragments.CreateMeetSecondFragment"
+        tools:context="com.octopusbjsindia.view.fragments.CreateMeetSecondFragment"
         android:background="@color/lighter_grey">
 
     <ScrollView

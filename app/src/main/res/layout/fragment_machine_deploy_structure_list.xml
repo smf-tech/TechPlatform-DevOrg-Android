@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.octopus.view.fragments.StructureMachineListFragment"
+    tools:context="com.octopusbjsindia.view.fragments.StructureMachineListFragment"
     android:background="@color/base_background_color">
 
     <LinearLayout

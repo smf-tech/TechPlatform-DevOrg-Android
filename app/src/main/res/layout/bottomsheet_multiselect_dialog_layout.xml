@@ -31,7 +31,7 @@
                 android:visibility="gone"
                 android:orientation="horizontal">
 
-                <com.octopus.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/view_startdate"
@@ -46,7 +46,7 @@
                     android:layout_height="10dp"
                     android:layout_centerHorizontal="true" />
 
-                <com.octopus.view.customs.TextViewSemiBold
+                <com.octopusbjsindia.view.customs.TextViewSemiBold
                     android:id="@+id/tv_startdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.octopus.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/view_enddate"
@@ -73,13 +73,13 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/text_size_title_14" />
 
-                <com.octopus.view.customs.TextViewSemiBold
+                <com.octopusbjsindia.view.customs.TextViewSemiBold
                     android:id="@+id/view_enddate"
                     android:layout_width="1dp"
                     android:layout_height="10dp"
                     android:layout_centerHorizontal="true" />
 
-                <com.octopus.view.customs.TextViewSemiBold
+                <com.octopusbjsindia.view.customs.TextViewSemiBold
                     android:id="@+id/tv_enddate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                 android:padding="@dimen/dimen_10dp" />
         </LinearLayout>
 
-        <com.octopus.view.customs.TextViewRegular
+        <com.octopusbjsindia.view.customs.TextViewRegular
             android:id="@+id/txt_dia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

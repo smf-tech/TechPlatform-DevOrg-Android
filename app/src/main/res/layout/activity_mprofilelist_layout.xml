@@ -108,7 +108,7 @@
             android:groupIndicator="@null"
             android:visibility="gone" />
 
-        <com.octopus.view.customs.TextViewRegular
+        <com.octopusbjsindia.view.customs.TextViewRegular
             android:id="@+id/txt_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
             android:textSize="@dimen/text_size_16"
             android:visibility="gone" />
 
-        <com.octopus.view.customs.TextViewRegular
+        <com.octopusbjsindia.view.customs.TextViewRegular
             android:id="@+id/txt_view_all_approvals"
             style="@style/roboto_medium_pink_16"
             android:layout_width="match_parent"

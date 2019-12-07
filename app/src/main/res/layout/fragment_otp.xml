@@ -18,7 +18,7 @@
             android:layout_marginTop="@dimen/dimen_80dp"
             android:orientation="vertical">
 
-            <com.octopus.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -30,7 +30,7 @@
                 android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold" />
 
-            <com.octopus.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:id="@+id/enter_mobile_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

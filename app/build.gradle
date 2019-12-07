@@ -31,7 +31,7 @@ android {
         versionCode 1
         versionName "1.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        applicationId 'com.octopus'
+        applicationId 'com.octopusbjsindia'
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation":
@@ -47,7 +47,7 @@ android {
         release {
             minifyEnabled false
             shrinkResources false
-            debuggable true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -63,7 +63,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopus.debug'
+            applicationId 'com.octopusbjsindia.debug'
         }
         Staging {
             dimension "server"
@@ -71,7 +71,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopus.debug'
+            applicationId 'com.octopusbjsindia.debug'
             signingConfig signingConfigs.config
         }
         Production {
@@ -80,7 +80,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.105.204/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopus'
+            applicationId 'com.octopusbjsindia'
             signingConfig signingConfigs.config
         }
     }

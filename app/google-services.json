@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:841982499623:android:64db2d1e4b4c2515f26702",
+        "mobilesdk_app_id": "1:841982499623:android:13c2bec371787646f26702",
         "android_client_info": {
-          "package_name": "com.octopus"
+          "package_name": "com.octopusbjsindia"
         }
       },
       "oauth_client": [
