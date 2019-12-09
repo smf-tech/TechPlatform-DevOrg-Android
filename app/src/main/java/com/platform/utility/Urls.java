@@ -153,4 +153,11 @@ public class Urls {
     public class Configuration{
         public static final String API_CONFIG = "api/configuration";
     }
+
+    public class Feeds {
+        public static final String NEW_FEED = "api/newFeed";
+        public static final String FEED_LIST = "api/getFeedList";
+        public static final String DELETE_FEED = "api/deleteFeed";
+    }
+
 }

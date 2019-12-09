@@ -12,9 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.platform.R;
-import com.platform.utility.Constants;
-import com.platform.view.activities.FeedCreationActivity;
-import com.platform.view.activities.HomeActivity;
+import com.platform.view.activities.CreateFeedActivity;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment {
@@ -56,7 +54,7 @@ public class StoriesFragment extends Fragment {
         fabAddFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
+                Intent intent = new Intent(getActivity(), CreateFeedActivity.class);
                 startActivity(intent);
             }
         });
