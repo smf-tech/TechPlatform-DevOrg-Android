@@ -30,7 +30,8 @@ public class PreferenceHelper {
         editor.apply();
 
     }
-    public boolean showTotalHours(String key){
+    public boolean showTotalHours(String key)
+    {
         return pref.getBoolean(key,false);
     }
 
@@ -70,5 +71,24 @@ public class PreferenceHelper {
 
     public String getCheckOutText(String key){
         return pref.getString(key,"CheckOut");
+    }
+
+    public void insertTotalHoursAfterCheckOut(String key,String value){
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString(key,value);
+    }
+
+    public String getTotalHoursAfterCheckOut(String key){
+        return pref.getString(key,"");
+    }
+
+
+    public void isCheckOut(String keyIscheckout, boolean b) {
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putBoolean(keyIscheckout,b);
+        editor.apply();
+    }
+    public boolean getCheckOutStatus(String key){
+        return  pref.getBoolean(key,false);
     }
 }

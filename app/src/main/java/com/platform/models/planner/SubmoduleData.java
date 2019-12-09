@@ -23,7 +23,7 @@ public class SubmoduleData {
     private ArrayList<EventTask> taskData = null;
     @SerializedName("leave")
     @Expose
-    private List<LeaveDetail> leave = null;
+    private LeaveData leave = null;
 
     public SubmoduleData(String subModule) {
         this.subModule = subModule;
@@ -61,11 +61,11 @@ public class SubmoduleData {
         this.taskData = taskData;
     }
 
-    public List<LeaveDetail> getLeave() {
+    public LeaveData getLeave() {
         return leave;
     }
 
-    public void setLeave(List<LeaveDetail> leave) {
+    public void setLeave(LeaveData leave) {
         this.leave = leave;
     }
 }

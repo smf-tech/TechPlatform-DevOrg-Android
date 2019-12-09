@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <include
         android:id="@+id/pm_toolbar"
         layout="@layout/app_toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,14 +19,14 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/dimen_10dp"
-            android:layout_margin="@dimen/dimen_10dp">
+            android:layout_margin="@dimen/dimen_10dp"
+            app:cardCornerRadius="@dimen/dimen_10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="@dimen/dimen_08dp"
-                android:paddingBottom="@dimen/dimen_08dp"
-                android:layout_height="wrap_content">
+                android:paddingBottom="@dimen/dimen_08dp">
 
                 <ImageView
                     android:id="@+id/img_user_profle"
@@ -51,21 +53,24 @@
                     android:layout_alignLeft="@+id/tv_name_title"
                     android:text=" "
                     android:visibility="visible" />
+
                 <LinearLayout
+                    android:id="@+id/layout_linear_role"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_name_value"
                     android:layout_alignLeft="@+id/tv_name_value"
-                    android:layout_toRightOf="@+id/img_user_profle"
-                    android:layout_toEndOf="@+id/img_user_profle"
-                    android:orientation="horizontal"
                     android:layout_marginTop="@dimen/dimen_08dp"
                     android:layout_marginBottom="@dimen/dimen_08dp"
-                    android:id="@+id/layout_linear_role"
-                    android:layout_height="wrap_content">
+                    android:layout_toEndOf="@+id/img_user_profle"
+                    android:layout_toRightOf="@+id/img_user_profle"
+                    android:orientation="horizontal">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_role_title"
                             android:layout_width="wrap_content"
@@ -84,10 +89,12 @@
                             android:visibility="visible" />
 
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <com.platform.view.customs.TextViewBold
                             android:id="@+id/tv_mobile_title"
                             android:layout_width="wrap_content"
@@ -108,8 +115,6 @@
                     </RelativeLayout>
 
                 </LinearLayout>
-
-
 
 
                 <com.platform.view.customs.TextViewBold
@@ -138,20 +143,22 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/dimen_10dp"
-            android:layout_margin="@dimen/dimen_10dp">
+            android:layout_margin="@dimen/dimen_10dp"
+            app:cardCornerRadius="@dimen/dimen_10dp">
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <LinearLayout
-                android:id="@+id/linear_dynamic_textview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:id="@+id/linear_dynamic_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_10dp">
 
 
-            </LinearLayout>
+                </LinearLayout>
             </ScrollView>
         </androidx.cardview.widget.CardView>
 
@@ -165,26 +172,36 @@
         android:background="@color/base_background_color"
         android:gravity="bottom"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Reason"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:id="@+id/tv_leave_reason"
+            android:textSize="@dimen/text_size_12"
+            android:layout_height="wrap_content" />
 
-        <Button
-
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_reject"
             style="@style/AppStyleBorderButton"
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Reject"
-            android:textColor="@color/dark_grey" />
+            android:textColor="@color/medium_grey" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
 
             android:id="@+id/btn_approve"
-            style="@style/AppStyleButton"
+            style="@style/AppStyleBorderButton"
+
             android:layout_gravity="center"
             android:layout_margin="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Approve"
-            android:textColor="@color/white" />
+            android:textColor="@color/medium_grey" />
     </LinearLayout>
 
 </LinearLayout>

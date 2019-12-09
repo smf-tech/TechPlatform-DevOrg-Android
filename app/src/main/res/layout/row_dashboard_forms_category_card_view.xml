@@ -34,7 +34,8 @@
 
         <TextView
             android:id="@+id/txt_dashboard_form_title"
-            style="@style/roboto_medium_dark_grey_14"
+            android:fontFamily="@font/opensans"
+            android:textSize="@dimen/text_size_14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

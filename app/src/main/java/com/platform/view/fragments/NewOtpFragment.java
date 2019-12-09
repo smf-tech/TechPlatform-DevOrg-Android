@@ -302,12 +302,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     private void verifyUser() {
-        if (timer != null) {
-            timer.cancel();
-        }
+//        if (timer != null) {
+//            timer.cancel();
+//        }
 
-        tvOtpTimer.setText("");
-        tvOtpTimer.setVisibility(View.GONE);
+//        tvOtpTimer.setText("");
+//        tvOtpTimer.setVisibility(View.GONE);
 
         String otp = getOtp();
         otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
@@ -381,7 +381,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             timer = null;
         }
 
-        timer = new CountDownTimer(300000, 1000) {
+        timer = new CountDownTimer(30000, 1000) {
 
             @Override
             public void onTick(long l) {
@@ -468,6 +468,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (isResendOtpRequest) {
             isResendOtpRequest = false;
             return;
+        }
+
+        if (timer != null) {
+            timer.cancel();
         }
 
         User userObj = (User) data;

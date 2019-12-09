@@ -10,6 +10,7 @@
         android:layout_centerInParent="true"
         android:text="@string/who_working"
         android:textSize="@dimen/text_size_20"
+        android:fontFamily="@font/opensans"
         android:textStyle="bold" />
 
     <TextView
@@ -17,5 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/who_working_dummy_text"
         android:layout_centerHorizontal="true"
+        android:fontFamily="@font/opensans"
         android:text="@string/coming_soon" />
 </RelativeLayout>

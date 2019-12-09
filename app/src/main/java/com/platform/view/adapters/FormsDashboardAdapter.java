@@ -48,7 +48,7 @@ public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAd
         }else if(formStatusCountData.getType().equalsIgnoreCase(Constants.PM.SAVED_STATUS)){
             holder.imgIcon.setImageResource(R.drawable.ic_saved_icon_db);
         }
-        holder.txtStatus.setText(formStatusCountData.getType()+" Forms: ");
+        holder.txtStatus.setText(formStatusCountData.getType());
         holder.txtCount.setText(String.valueOf(formStatusCountData.getCount()));
     }
 

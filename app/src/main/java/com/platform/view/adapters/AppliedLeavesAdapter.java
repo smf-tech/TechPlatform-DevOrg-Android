@@ -3,8 +3,10 @@ package com.platform.view.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.platform.R;
 import com.platform.models.leaves.LeaveData;
 import com.platform.utility.Constants;
+import com.platform.utility.Util;
 
 import java.util.List;
 
 import static com.platform.utility.Constants.DAY_MONTH_YEAR;
 import static com.platform.utility.Util.getDateFromTimestamp;
-import static com.platform.utility.Util.getDateTimeFromTimestamp;
 
 @SuppressWarnings("CanBeFinal")
 public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdapter.ViewHolder> {
@@ -32,15 +34,19 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout leaveTitleLayout;
-        TextView leaveHeader, leaveSubHeader;
-        ImageView deleteClick;
+        RelativeLayout leaveTitleLayout;
+        TextView tvLeaveCategory, tvStartdate, tvEnddate, tvStatus, tvLeaveReason, tvType;
+        Button deleteClick;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             leaveTitleLayout = itemView.findViewById(R.id.leave_title_layout);
-            leaveHeader = itemView.findViewById(R.id.tv_leave_header);
-            leaveSubHeader = itemView.findViewById(R.id.tv_leave_sub_header);
-            deleteClick = itemView.findViewById(R.id.img_delete);
+            tvLeaveCategory = itemView.findViewById(R.id.tv_leave_category);
+            tvStartdate = itemView.findViewById(R.id.tv_startdate);
+            tvEnddate = itemView.findViewById(R.id.tv_enddate);
+            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvLeaveReason = itemView.findViewById(R.id.tv_leave_reason);
+            tvType = itemView.findViewById(R.id.tv_leave_type);
+            deleteClick = itemView.findViewById(R.id.btn_delete);
         }
     }
 
@@ -54,9 +60,14 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
 
     @Override
     public void onBindViewHolder(@NonNull AppliedLeavesAdapter.ViewHolder viewHolder, int position) {
-        viewHolder.leaveSubHeader.setText("from "+ getDateFromTimestamp
-                (leavesList.get(position).getStartdate(), DAY_MONTH_YEAR)+ " to " + getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
-        viewHolder.leaveHeader.setText(leavesList.get(position).getStatus());
+        viewHolder.tvStartdate.setText(Util.getDateFromTimestamp(leavesList.get(position).getStartdate(), DAY_MONTH_YEAR));
+        viewHolder.tvEnddate.setText(Util.getDateFromTimestamp(leavesList.get(position).getEnddate(), DAY_MONTH_YEAR));
+        viewHolder.tvStatus.setText(leavesList.get(position).getStatus());
+        viewHolder.tvLeaveCategory.setText(leavesList.get(position).getLeaveType());
+        viewHolder.tvLeaveReason.setText(leavesList.get(position).getReason());
+        viewHolder.tvType.setText("("+leavesList.get(position).getFullHalfDay()+")");
+
+
         viewHolder.leaveTitleLayout.setOnClickListener(v ->
                 leavesListener.editLeaves(leavesList.get(position)));
         if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){

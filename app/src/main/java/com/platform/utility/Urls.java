@@ -44,8 +44,9 @@ public class Urls {
         public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
 
 
-
+        public static final String PUT_UPDATE_FIREBASEID_TO_SERVER ="api/updateFirebaseId";
     }
+
 
     public class Report {
         public static final String GET_ALL_REPORTS = "api/reports";
@@ -66,8 +67,10 @@ public class Urls {
         public static final String SET_ATTENDANCE_CODE = "api/submitAttendanceEvent";
         public static final String GET_EVENT_TASK_MEMBERS_LIST = "api/getEventMembers";
         public static final String GET_TASK_MEMBERS_LIST = "api/addmembertask";
+        public static final String UPDATE_MEMBER_LIST = "api/addmembertoevent";
         public static final String SET_TASK_MARK_COMPLETE = "api/taskMarkComplete";
         public static final String DELETE_EVENT_TASK_MEMBERS = "api/deletemember";
+        public static final String GET_ORGANIZATION_ROLES = "api/roleEvent";
     }
 
     public class Leaves {
@@ -76,13 +79,14 @@ public class Urls {
         public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
         public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
         public static final String HOLIDAY_LIST= "api/getYearHolidayList";
+        public static final String LEAVE_BALANCE= "api/getUserLeaveBalance";
     }
 
     public class Attendance
     {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
         public static final String SUBMIT_ATTENDANCE="/api/insertAttendance";
-
+        public static final String GET_TEAM_ATTENDANCE="/api/getTeamAttendance";
     }
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";

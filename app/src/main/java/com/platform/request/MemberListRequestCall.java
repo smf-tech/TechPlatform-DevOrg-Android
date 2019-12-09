@@ -11,6 +11,7 @@ import com.platform.BuildConfig;
 import com.platform.Platform;
 import com.platform.R;
 import com.platform.listeners.MemberListListener;
+import com.platform.models.events.Participant;
 import com.platform.presenter.AddMembersListPresenter;
 import com.platform.utility.GsonRequestFactory;
 import com.platform.utility.Urls;
@@ -18,6 +19,10 @@ import com.platform.utility.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MemberListRequestCall {
 
@@ -76,5 +81,91 @@ public class MemberListRequestCall {
         gsonRequest.setBodyParams(jsonObj);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
 
+    }
+
+    public void getTaskMemberList() {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "GET_TASK_MEMBERS_LIST - Resp: " + res);
+                    listener.onTaskMembersFetched(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.GET_TASK_MEMBERS_LIST;
+        Log.d(TAG, "GET_TASK_MEMBERS_LIST: " + getOrgUrl);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+
+    public void setMemberToEventTask(String eventTaskID, ArrayList<Participant> list) {
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "GET_TASK_MEMBERS_LIST - Resp: " + res);
+                    listener.onMemberListUpdated(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> listener.onErrorListener(error);
+
+        final String getOrgUrl = BuildConfig.BASE_URL + Urls.Events.UPDATE_MEMBER_LIST;
+
+        Map<String, Object> request = new HashMap<String, Object>();
+        request.put("_id",eventTaskID);
+        request.put("participants",list);
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(request);
+
+        Log.d(TAG, "UPDATE_MEMBER_LIST: url" + getOrgUrl);
+        Log.d(TAG, "UPDATE_MEMBER_LIST: req" + json);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                getOrgUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(json));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+    private JSONObject createBodyParams(String json) {
+
+        Log.d(TAG, "Request json: " + json);
+        try {
+            return  new JSONObject(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -47,4 +47,15 @@ public class DownloadContent {
 
     private List<DownloadContent> listDownloadData;
 
+    public DownloadInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(DownloadInfo info) {
+        this.info = info;
+    }
+
+    private DownloadInfo info;
+
+
 }

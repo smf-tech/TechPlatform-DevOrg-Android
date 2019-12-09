@@ -26,6 +26,10 @@ public class TMApprovalRequestModel {
     @SerializedName("enddate")
     @Expose
     private String enddate;
+    @SerializedName("userId")
+    @Expose
+    private String userId;
+
 
     public String getType() {
         return type;
@@ -83,4 +87,11 @@ public class TMApprovalRequestModel {
         this.enddate = enddate;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

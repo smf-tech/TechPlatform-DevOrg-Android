@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.platform.R;
 import com.platform.adapter.DownloadListAdapter;
@@ -20,13 +21,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentDownloadedActivity extends AppCompatActivity {
+public class ContentDownloadedActivity extends AppCompatActivity implements DownloadListAdapter.fileFilterListener{
 
     RecyclerView recyclerView;
     Context context;
     private SearchView searchView;
-    private String path= Environment.getExternalStorageDirectory().getPath()+"/MV";
+    private String path= Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private ArrayList<String>filenames;
+    private DownloadListAdapter downloadListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +44,7 @@ public class ContentDownloadedActivity extends AppCompatActivity {
 
     private void getFilesFromDirectory(String path) {
         File directory=new File(path);
-
-
         if(directory.exists()){
-
             if(directory.isDirectory()){
 
                 filenames=new ArrayList<>();
@@ -58,8 +58,12 @@ public class ContentDownloadedActivity extends AppCompatActivity {
     }
 
     private void setUpRecycleView() {
-        DownloadListAdapter downloadListAdapter=new DownloadListAdapter(context,filenames);
-        recyclerView.setAdapter(downloadListAdapter);
+
+        if(filenames!=null&&filenames.size()>0){
+            downloadListAdapter=new DownloadListAdapter(context,filenames,path,this);
+            recyclerView.setAdapter(downloadListAdapter);
+        }
+
     }
 
     private void initViews() {
@@ -85,13 +89,13 @@ public class ContentDownloadedActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //adapter.getFilter().filter(query);
+                downloadListAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                //adapter.getFilter().filter(query);
+                downloadListAdapter.getFilter().filter(query);
                 return false;
             }
         });
@@ -106,5 +110,19 @@ public class ContentDownloadedActivity extends AppCompatActivity {
             return  true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSelected(String name) {
+        Toast.makeText(this, "Selected: " + filenames, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
     }
 }

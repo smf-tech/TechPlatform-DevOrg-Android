@@ -39,13 +39,14 @@ public class TMUserProfileListActivity extends BaseActivity {
             try {
                 JSONObject requestObject = new JSONObject(data.getString("filter_type_request"));
                 strRequestObject = data.getString("filter_type_request");
-                Util.logger(getLocalClassName().toString(), strRequestObject);
+                Util.logger(getLocalClassName(), strRequestObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             selectApprovalTypeFragment(switchToFragment);
 
         }
+// inside your activity (if you did not enable transitions in your theme)
 
     }
 
@@ -84,6 +85,14 @@ public class TMUserProfileListActivity extends BaseActivity {
                     fragment.setArguments(bundle);
                     openFragment();
                     break;
+
+                case "compoff":
+                    fragment = new TMUserLeavesApprovalFragment();
+                    bundle.putString("filter_type", "CompOff Approval");
+                    bundle.putString("filter_type_request", strRequestObject);
+                    fragment.setArguments(bundle);
+                    openFragment();
+                    break;
             }
         }
     }
@@ -100,4 +109,7 @@ public class TMUserProfileListActivity extends BaseActivity {
         super.onResume();
     }
 
+    public void finishwithResult() {
+
+    }
 }

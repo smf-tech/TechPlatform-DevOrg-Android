@@ -11,19 +11,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.platform.R;
 import com.platform.syncAdapter.SyncAdapterUtils;
 import com.platform.utility.AppSignatureHelper;
+import com.platform.utility.PreferenceHelper;
 import com.platform.utility.Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SplashActivity extends AppCompatActivity {
 
     private final static int SPLASH_TIME_OUT = 2000;
 
     private final String TAG = SplashActivity.class.getName();
+    PreferenceHelper preferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        preferenceHelper = new PreferenceHelper(SplashActivity.this);
         SyncAdapterUtils.createSyncAccount(getApplicationContext());
 
         Util.setApplicationLocale();
@@ -52,5 +57,26 @@ public class SplashActivity extends AppCompatActivity {
                 Log.e(TAG, e.getMessage());
             }
         }, SPLASH_TIME_OUT);
+
+
+        /*if (!preferenceHelper.getString(preferenceHelper.TOKEN).isEmpty()) {
+            if (!preferenceHelper.getString(preferenceHelper.TOKEN).equalsIgnoreCase(Util.getUserObjectFromPref().getFirebaseId())) {
+                checkAndUpdateFirebase();
+            }
+        }*/
     }
+
+    /*public void checkAndUpdateFirebase() {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("firebase_id", preferenceHelper.getString(preferenceHelper.TOKEN));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            Util.updateFirebaseIdRequests(jsonObject);
+        }
+    }*/
+
 }

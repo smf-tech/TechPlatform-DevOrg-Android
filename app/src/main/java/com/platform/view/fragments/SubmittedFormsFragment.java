@@ -115,6 +115,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         progressBarLayout = FormsFragment.getProgressBarView();
         progressBar = FormsFragment.getProgressBar();
 
+        adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
+        mExpandableListView.setAdapter(adapter);
+
         // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
 
         setPendingForms();
@@ -324,8 +327,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             }
 
             mFilteredProcessDataMap.putAll(mProcessDataMap);
-            adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
-            mExpandableListView.setAdapter(adapter);
+//            adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
+//            mExpandableListView.setAdapter(adapter);
 
             updateView();
         }

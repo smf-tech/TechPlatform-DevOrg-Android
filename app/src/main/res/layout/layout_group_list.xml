@@ -26,6 +26,7 @@
                 android:layout_toStartOf="@+id/group_list_arrow"
                 android:gravity="start"
                 android:textColor="@color/black"
+                android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_16" />
 
             <ImageView

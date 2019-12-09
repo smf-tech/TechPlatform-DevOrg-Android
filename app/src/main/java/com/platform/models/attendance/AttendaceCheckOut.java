@@ -6,9 +6,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "UserChheckOutAttendance")
 public class AttendaceCheckOut {
 
-
-
-
         @PrimaryKey
         @NonNull
         public String uid;

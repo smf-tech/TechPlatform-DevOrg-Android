@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/lighter_grey">
 
         <LinearLayout
@@ -14,20 +15,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_forms_divider1"
-                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layout_margin="@dimen/dimen_05dp"
                 android:layerType="software"/>
 
         </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/txt_view_all_forms"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_view_all_icon"/>
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/white"
+        android:src="@drawable/ic_form_category"/>
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"

@@ -24,18 +24,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans"
                 android:text="@string/create_filter_screen_msg"/>
 
             <!--Organization-->
-            <TextView
-                style="@style/FormLabel"
-                android:text="@string/organization" />
+            <!--<TextView-->
+                <!--style="@style/FormLabel"-->
+                <!--android:text="@string/organization" />-->
 
-            <com.platform.widgets.MultiSelectSpinner
-                android:id="@+id/sp_user_organization"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+            <!--<com.platform.widgets.MultiSelectSpinner-->
+                <!--android:id="@+id/sp_user_organization"-->
+                <!--style="@style/FormSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Project-->
 
@@ -132,7 +133,7 @@
             <!--style="@style/FormSpinner"-->
             <!--android:prompt="@string/school" />-->
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_apply_filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,8 +141,8 @@
                 android:background="@drawable/bg_button"
                 android:text="@string/apply_filters"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_22" />
+
+                 />
 
         </LinearLayout>
     </ScrollView>

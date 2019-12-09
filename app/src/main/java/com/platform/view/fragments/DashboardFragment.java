@@ -37,14 +37,15 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private boolean isSyncRequired;
     private boolean isUserApproved;
-    private final int[] tabIcons = {
-            R.drawable.ic_form_icon_db,
-            R.drawable.ic_planner_icon_db,
-            R.drawable.ic_approvals,
-            R.drawable.ic_reports_icon_db,
-            R.drawable.ic_webview_icon_db,
-            R.drawable.ic_matrimony_icon_db
-    };
+//    private final int[] tabIcons = {
+//            R.drawable.ic_form_icon_db,
+//            R.drawable.ic_planner_icon_db,
+//            R.drawable.ic_approvals,
+//            R.drawable.ic_reports_icon_db,
+//            R.drawable.ic_webview_icon_db,
+//            R.drawable.ic_webview_icon_db,
+//            R.drawable.ic_matrimony_icon_db
+//    };
     private final int[] disableTabIcons = {
             R.drawable.ic_lock
     };
@@ -235,7 +236,7 @@ public class DashboardFragment extends Fragment {
                         break;
 
                     case 1:
-                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.MEETINGS);
+                        ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.PLANNER);
                         AppEvents.trackAppEvent(getString(R.string.event_meetings_tab_click));
                         break;
 
@@ -274,36 +275,36 @@ public class DashboardFragment extends Fragment {
 
             switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
-                    resId = tabIcons[0];
+//                    resId = tabIcons[0];
                     pendingActionCount = getFormsPendingActionCount();
                     break;
 
                 case Constants.Home.PLANNER:
-                    resId = tabIcons[1];
+//                    resId = tabIcons[1];
                     break;
 
                 case Constants.Home.APPROVALS:
-                    resId = tabIcons[2];
+//                    resId = tabIcons[2];
                     pendingActionCount = getApprovalCount();
                     break;
 
                 case Constants.Home.REPORTS:
-                    resId = tabIcons[3];
+//                    resId = tabIcons[3];
                     break;
 
                 case Constants.Home.WEBMODULE_NAME:
-                    resId = tabIcons[4];
+//                    resId = tabIcons[4];
                     break;
 
                 case Constants.Home.CONTENT:
-                    resId = tabIcons[4];
+//                    resId = tabIcons[4];
                     break;
                 default:
-                    resId = R.drawable.bg_circle_default;
+//                    resId = R.drawable.bg_circle_default;
                     break;
             }
 
-            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
+//            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
                 pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));

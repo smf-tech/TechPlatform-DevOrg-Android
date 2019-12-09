@@ -43,7 +43,8 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_14"
                 android:textStyle="bold"
-                android:fontFamily="@font/opensans"/>
+                android:fontFamily="@font/opensans_regular"
+                />
 
             <ImageView
                 android:id="@+id/toolbar_action"

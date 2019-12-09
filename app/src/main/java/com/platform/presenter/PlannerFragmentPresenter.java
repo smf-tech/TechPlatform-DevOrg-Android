@@ -36,7 +36,6 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
         if (!TextUtils.isEmpty(response)) {
 
             PlannerSummerResopnse data = PlatformGson.getPlatformGsonInstance().fromJson(response,PlannerSummerResopnse.class);
-
             if (data != null && data.getData() != null
                     && !data.getData().isEmpty()
                     && data.getData().size() > 0) {

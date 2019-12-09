@@ -19,12 +19,12 @@ import java.util.List;
 
 public class TMUserFormsApprovalRecyclerAdapter extends RecyclerView.Adapter<TMUserFormsApprovalRecyclerAdapter.EmployeeViewHolder> {
 
-        private List<TMUserFormsApprovalRequest> dataList;
+        private List<TMUserFormsApprovalRequest.Form_detail> dataList;
         private Context mContext;
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 private PreferenceHelper preferenceHelper;
-        public TMUserFormsApprovalRecyclerAdapter(Context context, List<TMUserFormsApprovalRequest> dataList, final OnRequestItemClicked clickListener,final OnApproveRejectClicked approveRejectClickedListner) {
+        public TMUserFormsApprovalRecyclerAdapter(Context context, List<TMUserFormsApprovalRequest.Form_detail> dataList, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
             mContext = context;
             this.dataList = dataList;
             this.clickListener =clickListener;
@@ -44,12 +44,20 @@ private PreferenceHelper preferenceHelper;
             holder.txtTitle.setText(dataList.get(position).getForm_title());
             holder.txtValue.setText(String.valueOf(dataList.get(position).getSurvey_name().getDefault()));
             String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
+
+
             if (ispending.equalsIgnoreCase(PreferenceHelper.IS_PENDING)){
                 holder.btn_reject.setVisibility(View.VISIBLE);
                 holder.btn_approve.setVisibility(View.VISIBLE);
+                holder.tv_leave_reason.setVisibility(View.GONE);
             }else {
                 holder.btn_reject.setVisibility(View.GONE);
                 holder.btn_approve.setVisibility(View.GONE);
+                holder.tv_leave_reason.setVisibility(View.VISIBLE);
+                if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
+
+                    holder.tv_leave_reason.setText("Rejected Reason:- "+dataList.get(position).getStatus().getRejection_reason());
+                }
             }
         }
 
@@ -60,13 +68,14 @@ private PreferenceHelper preferenceHelper;
 
         class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtTitle, txtValue;
+            TextView txtTitle, txtValue,tv_leave_reason;
             Button btn_approve,btn_reject;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
-                txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
-                txtValue = (TextView) itemView.findViewById(R.id.tv_value);
+                txtTitle = itemView.findViewById(R.id.tv_title);
+                txtValue = itemView.findViewById(R.id.tv_value);
+                tv_leave_reason = itemView.findViewById(R.id.tv_leave_reason);
                 btn_approve = itemView.findViewById(R.id.btn_approve);
                 btn_reject  = itemView.findViewById(R.id.btn_reject);
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));

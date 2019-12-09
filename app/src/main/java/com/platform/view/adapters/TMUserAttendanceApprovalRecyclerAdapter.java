@@ -63,6 +63,22 @@ public class TMUserAttendanceApprovalRecyclerAdapter extends RecyclerView.Adapte
             holder.btn_reject.setVisibility(View.GONE);
             holder.btn_approve.setVisibility(View.GONE);
         }
+        if (dataList.get(position).getReason()!=null){
+            if (TextUtils.isEmpty(dataList.get(position).getReason())){
+              holder.tv_reason.setVisibility(View.GONE);
+              holder.tv_reason_value.setVisibility(View.GONE);
+                //holder.tv_leave_reason.setText(String.valueOf(dataList.get(position).getReason()));
+            }
+        }
+            if (dataList.get(position).getStatus()!=null){
+                if (dataList.get(position).getStatus().getRejection_reason()!=null && !TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
+                    holder.tv_reason.setVisibility(View.GONE);
+                    holder.tv_reason_value.setVisibility(View.VISIBLE);
+                    holder.tv_reason_value.setText("Rejected Reason:- " + String.valueOf(dataList.get(position).getStatus().getRejection_reason()));
+                }
+            }
+
+
 
     }
 
@@ -73,17 +89,23 @@ public class TMUserAttendanceApprovalRecyclerAdapter extends RecyclerView.Adapte
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_title_checkin, tv_title_checkout, tv_address_checkin, tv_address_checkout;
+        TextView tv_title_checkin, tv_title_checkout, tv_address_checkin, tv_address_checkout,
+        tv_reason,tv_reason_value;
         Button btn_approve, btn_reject;
+
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
-            tv_title_checkin = (TextView) itemView.findViewById(R.id.tv_title_checkin_value);
-            tv_title_checkout = (TextView) itemView.findViewById(R.id.tv_title_checkout_value);
-            tv_address_checkin = (TextView) itemView.findViewById(R.id.tv_address_checkin_value);
-            tv_address_checkout = (TextView) itemView.findViewById(R.id.tv_address_checkout_value);
+            tv_title_checkin = itemView.findViewById(R.id.tv_title_checkin_value);
+            tv_title_checkout = itemView.findViewById(R.id.tv_title_checkout_value);
+            tv_address_checkin = itemView.findViewById(R.id.tv_address_checkin_value);
+            tv_address_checkout = itemView.findViewById(R.id.tv_address_checkout_value);
             btn_approve = itemView.findViewById(R.id.btn_approve);
             btn_reject = itemView.findViewById(R.id.btn_reject);
+            tv_reason = itemView.findViewById(R.id.tv_reason);
+            tv_reason_value  = itemView.findViewById(R.id.tv_reason_value);
+
+
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             btn_approve.setOnClickListener(new View.OnClickListener() {
                 @Override

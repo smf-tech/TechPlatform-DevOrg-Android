@@ -1,65 +1,112 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="5dp"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/layoutMain"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/white">
 
-        <TextView
-            android:id="@+id/txtCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text=""
-            android:textColor="@color/dark_grey"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/txtName"
+        <RelativeLayout
+            android:id="@+id/layoutMain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_toLeftOf="@+id/imgDownload"
-            android:layout_toRightOf="@+id/txtCount"
-            android:gravity="left"
-            android:text=""
-            android:textColor="@color/dark_grey"
-            android:textSize="14sp" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imgDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:paddingLeft="@dimen/dimen_20dp"
-            android:src="@drawable/download_file"
-            android:visibility="gone"
-            />
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="left"
+                android:text=""
+                android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/imgshare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:paddingLeft="@dimen/dimen_20dp"
-            android:src="@drawable/download"
-            android:visibility="gone"
-            />
+            <TextView
+                android:id="@+id/txtCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/txtName"
+                android:fontFamily="@font/opensans_bold"
+                android:text="10%"
+                android:visibility="gone"
+                android:textSize="14sp" />
 
 
-    </RelativeLayout>
+            <FrameLayout
+                android:id="@+id/frame_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
 
-</androidx.cardview.widget.CardView>
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:visibility="invisible"
+                    android:progressDrawable="@drawable/circular"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/imgDownload"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/download_file" />
+
+
+                <ImageView
+                    android:id="@+id/imgshare"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:src="@drawable/download" />
+
+            </FrameLayout>
+        <!--    <ImageView
+                android:id="@+id/imgDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:padding="@dimen/dimen_20dp"
+                android:src="@drawable/download_file"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/imgshare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:padding="@dimen/dimen_20dp"
+                android:src="@drawable/download"
+                android:visibility="gone" />-->
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:background="#cccccc"
+        android:layout_marginRight="@dimen/dimen_10dp" />
+</LinearLayout>

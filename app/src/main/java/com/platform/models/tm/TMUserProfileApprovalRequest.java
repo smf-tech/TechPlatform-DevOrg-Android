@@ -7,6 +7,18 @@ import java.util.List;
 
 public class TMUserProfileApprovalRequest {
 
+    @SerializedName("status")
+    @Expose
+    private Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @SerializedName("_id")
     @Expose
     private String _id;
@@ -271,6 +283,56 @@ public class TMUserProfileApprovalRequest {
 
         public void setDisplay_name(String display_name) {
             this.display_name = display_name;
+        }
+
+    }
+
+
+    public class Status {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("action_by")
+        @Expose
+        private String action_by;
+        @SerializedName("action_on")
+        @Expose
+        private String action_on;
+        @SerializedName("rejection_reason")
+        @Expose
+        private String rejection_reason;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getAction_by() {
+            return action_by;
+        }
+
+        public void setAction_by(String action_by) {
+            this.action_by = action_by;
+        }
+
+        public String getAction_on() {
+            return action_on;
+        }
+
+        public void setAction_on(String action_on) {
+            this.action_on = action_on;
+        }
+
+        public String getRejection_reason() {
+            return rejection_reason;
+        }
+
+        public void setRejection_reason(String rejection_reason) {
+            this.rejection_reason = rejection_reason;
         }
 
     }

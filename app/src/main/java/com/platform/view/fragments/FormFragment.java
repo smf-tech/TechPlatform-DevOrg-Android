@@ -1,7 +1,7 @@
 package com.platform.view.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -655,10 +656,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
-                    showDiscardPopUp();
-                } else {
+//                if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
+//                    showDiscardPopUp();
+//                } else {
+//                    getActivity().finish();
+//                }
+                if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE ||
+                        formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE ||
+                        formModel.getData().getEditable().equalsIgnoreCase("false")) {
                     getActivity().finish();
+                } else {
+                    showDiscardPopUp();
                 }
                 break;
 
@@ -1171,10 +1179,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     @Override
     public void onDeviceBackButtonPressed() {
         if (formFragmentView.findViewById(R.id.no_offline_form).getVisibility() == View.VISIBLE ||
-                formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE) {
+                formFragmentView.findViewById(R.id.btn_submit).getVisibility() != View.VISIBLE ||
+                formModel.getData().getEditable().equalsIgnoreCase("false")) {
             getActivity().finish();
         } else {
-            showDiscardPopUp();
+                showDiscardPopUp();
         }
     }
 

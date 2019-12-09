@@ -7,7 +7,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class OrganizationResponse {
     @SerializedName("status")
-    private String status;
+    private int status;
 
     @SerializedName("data")
     private List<Organization> data;
@@ -15,11 +15,11 @@ public class OrganizationResponse {
     @SerializedName("message")
     private String message;
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

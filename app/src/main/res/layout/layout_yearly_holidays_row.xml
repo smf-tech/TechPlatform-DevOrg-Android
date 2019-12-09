@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:text="Diwali Holidays"
         android:padding="@dimen/dimen_10dp"
+        android:fontFamily="@font/opensans"
         android:textColor="@color/attendance_list_item"
         android:textSize="@dimen/text_size_16" />
 
@@ -20,6 +21,7 @@
         android:text="22 Jun @019"
         android:textColor="@color/attendance_list_item"
         android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/opensans"
         android:layout_alignParentRight="true"/>
 
     <ImageView

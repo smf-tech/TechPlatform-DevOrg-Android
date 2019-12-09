@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dimen_10dp"
-    android:paddingBottom="@dimen/dimen_10dp"
+    android:paddingTop="@dimen/dimen_05dp"
+    android:paddingBottom="@dimen/dimen_05dp"
     tools:ignore="PrivateResource">
 
     <TextView
@@ -17,10 +17,10 @@
     <com.platform.widgets.PlatformSpinner
         android:id="@+id/sp_single_select"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:background="@drawable/bg_form_spinner"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/dimen_01dp"
+        android:layout_marginBottom="@dimen/dimen_01dp"
+        android:background="@drawable/bg_blue_box"
         android:dropDownHeight="@dimen/dimen_175dp"
         android:dropDownVerticalOffset="@dimen/dimen_35dp"
         android:paddingStart="@dimen/dimen_05dp"

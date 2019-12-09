@@ -83,7 +83,7 @@ public class TMUserLeavesApprovalRequestCall {
         Response.ErrorListener approveRejectRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String approveRejectUrl = BuildConfig.BASE_URL + String.format(Urls.TM.GET_TM_USER_APPROVE_REJECT_REQUEST);
+        final String approveRejectUrl = BuildConfig.BASE_URL + Urls.TM.GET_TM_USER_APPROVE_REJECT_REQUEST;
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,

@@ -232,7 +232,11 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                onLoginClick();
+                if(Util.isConnected(this)) {
+                    onLoginClick();
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
                 break;
 
             case R.id.tv_resend_otp:

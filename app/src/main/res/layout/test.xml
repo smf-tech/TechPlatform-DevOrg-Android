@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_date_label"
                     android:layout_marginStart="@dimen/dimen_10dp"
-
+                    android:fontFamily="@font/opensans"
                     android:text="Total Hours"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -52,6 +52,7 @@
                     android:contentDescription="@string/content_description"
                     android:textColor="@color/black"
                     android:textStyle="bold"
+                    android:fontFamily="@font/opensans"
                     android:text="8:30"/>
 
 
@@ -64,7 +65,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="8">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/bt_check_in"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_40dp"
@@ -87,9 +88,10 @@
                     android:textSize="@dimen/text_size_12"
                     android:textStyle="bold"
                     android:text="test1"
+                    android:fontFamily="@font/opensans"
                     android:visibility="gone" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/bt_checkout"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_40dp"
@@ -112,6 +114,7 @@
                     android:text="test2"
                     android:textSize="@dimen/text_size_12"
                     android:textStyle="bold"
+                    android:fontFamily="@font/opensans"
                     android:visibility="gone" />
 
 

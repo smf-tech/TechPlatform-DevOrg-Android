@@ -18,6 +18,12 @@ public class LeaveDetail implements Serializable {
     @SerializedName("balanceLeaves")
     @Expose
     private Integer balanceLeaves;
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("balance")
+    @Expose
+    private double balance;
 
     public Integer getYear() {
         return year;
@@ -43,13 +49,6 @@ public class LeaveDetail implements Serializable {
         this.balanceLeaves = balanceLeaves;
     }
 
-    @SerializedName("type")
-    @Expose
-    private String type;
-    @SerializedName("balance")
-    @Expose
-    private String balance;
-
     public String getType() {
         return type;
     }
@@ -58,11 +57,11 @@ public class LeaveDetail implements Serializable {
         this.type = type;
     }
 
-    public String getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

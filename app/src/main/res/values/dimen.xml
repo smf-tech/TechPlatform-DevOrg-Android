@@ -40,6 +40,8 @@
     <dimen name="dimen_235dp">235dp</dimen>
     <dimen name="dimen_250dp">250dp</dimen>
     <dimen name="dimen_277dp">277dp</dimen>
+    <dimen name="dimen_300dp">300dp</dimen>
+    <dimen name="dimen_350dp">350dp</dimen>
 
     <dimen name="circle_size">30dp</dimen>
     <dimen name="dimen_65dp">65dp</dimen>
@@ -57,6 +59,7 @@
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="text_size_36">36sp</dimen>
     <dimen name="text_size_40">40sp</dimen>
+    <dimen name="text_size_50">50sp</dimen>
     <dimen name="form_item_status_indicator_width">6dp</dimen>
 
     <dimen name="standard_60">60dp</dimen>

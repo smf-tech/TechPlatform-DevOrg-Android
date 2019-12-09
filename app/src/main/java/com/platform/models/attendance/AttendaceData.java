@@ -5,17 +5,29 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "UserAttendance")
 public class AttendaceData {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    public String uid;
+    public int uid;
+    @SerializedName("lattitude")
     public double latitude;
+    @SerializedName("longitude")
     public double longitude;
-    public String Address;
+    @SerializedName("attendanceId")
+    public String attendanceId;
     public Long attendaceDate;
+    @SerializedName("type")
     public String attendanceType;
+    @SerializedName("dates")
+    public Long date;
+    public String attendanceFormattedDate;
+    public String Address;
+    @SerializedName("isSync")
+    public Boolean isSync;
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -35,16 +47,29 @@ public class AttendaceData {
         this.attendanceFormattedDate = attendanceFormattedDate;
     }
 
-    public String attendanceFormattedDate;
-    public String getTime() {
-        return time;
+    public String getAttendanceId() {
+        return attendanceId;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setAttendanceId(String attendanceId) {
+        this.attendanceId = attendanceId;
     }
 
-    public String time;
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
+    public Long getTime() {
+        return date;
+    }
+
+    public void setTime(Long date) {
+        this.date = date;
+    }
 
     public Boolean getSync() {
         return isSync;
@@ -54,13 +79,11 @@ public class AttendaceData {
         isSync = sync;
     }
 
-    public Boolean isSync;
-
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 

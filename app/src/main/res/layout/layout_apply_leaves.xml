@@ -1,215 +1,256 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/lighter_grey">
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/tv_leave_balance"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_20dp"
-        android:paddingTop="@dimen/dimen_15dp"
-        android:text="@string/leave_details"
-        android:textAllCaps="false"
-        android:textColor="@color/leave_form_text_color"
-        android:textSize="@dimen/text_size_13"
-        tools:ignore="RtlSymmetry" />
+        android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_leave_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_10dp"
-        android:orientation="horizontal"/>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_margin="@dimen/dimen_10dp"
-        app:cardCornerRadius="@dimen/dimen_10dp">
-
-        <LinearLayout
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
-            android:paddingTop="@dimen/dimen_15dp"
-            android:text="@string/category"
-            android:textAllCaps="false"
-            android:textColor="@color/leave_form_text_color"
-            android:textSize="@dimen/text_size_13"
-            tools:ignore="RtlSymmetry" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_leave_category"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ly_cv_leaves"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:elevation="2dp"
+                app:cardCornerRadius="@dimen/dimen_10dp">
+
+                <RelativeLayout
+                    android:id="@+id/ly_leave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:paddingBottom="@dimen/dimen_10dp">
+
+                    <TextView
+                        android:id="@+id/tv_leave_balance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:paddingTop="@dimen/dimen_15dp"
+                        android:text="@string/leave_balance"
+                        android:textAllCaps="false"
+                        android:textColor="@color/leave_form_text_color"
+                        android:textSize="@dimen/text_size_14"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_leave_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_leave_balance"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:orientation="horizontal" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:orientation="horizontal"/>
+                android:background="@color/white"
+                app:cardCornerRadius="@dimen/dimen_10dp">
 
-        <LinearLayout
-            android:id="@+id/lv_category_type"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_below="@+id/lv_category_selection"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
-            android:layout_marginBottom="@dimen/dimen_25dp"
-            android:weightSum="2">
+                <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_full_day"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:text="@string/full_day"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="ButtonStyle" />
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:paddingTop="@dimen/dimen_15dp"
+                        android:text="@string/leave_type_label"
+                        android:textAllCaps="false"
+                        android:textColor="@color/leave_form_text_color"
+                        android:textSize="@dimen/text_size_14"
+                        tools:ignore="RtlSymmetry" />
 
-            <Button
-                android:id="@+id/btn_half_day"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:text="@string/half_day"
-                android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="ButtonStyle" />
-        </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_leave_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:orientation="horizontal" />
 
-        <LinearLayout
-            android:id="@+id/lv_category_date"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_25dp"
-            android:weightSum="2">
 
-            <EditText
-                android:id="@+id/btn_start_date"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_marginEnd="@dimen/dimen_25dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:drawableEnd="@drawable/ic_cal_event"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/dimen_15dp"
-                android:paddingEnd="@dimen/dimen_15dp"
-                android:hint="@string/start_date"
-                android:textColorHint="@color/leave_form_text_color"
-                android:textAllCaps="false"
-                android:clickable="false"
-                android:focusable="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
+                    <RadioGroup
+                        android:id="@+id/radio_group_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:orientation="horizontal"
 
-            <EditText
-                android:id="@+id/btn_end_date"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_weight="1"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:drawableEnd="@drawable/ic_cal_event"
-                android:drawablePadding="-10dp"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/dimen_15dp"
-                android:paddingEnd="@dimen/dimen_15dp"
-                android:hint="@string/end_date"
-                android:textColorHint="@color/leave_form_text_color"
-                android:textAllCaps="false"
-                android:clickable="false"
-                android:focusable="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13" />
-        </LinearLayout>
+                        android:paddingTop="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_10dp">
 
-        <EditText
-            android:id="@+id/edt_reason"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_75dp"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_20dp"
-            android:background="@drawable/leave_form_view_unfocused"
-            android:gravity="top"
-            android:hint="@string/reason"
-            android:importantForAutofill="no"
-            android:paddingStart="@dimen/dimen_15dp"
-            android:paddingTop="@dimen/dimen_10dp"
-            android:textAllCaps="false"
-            android:textColor="@color/leave_form_text_color"
-            android:textColorHint="@color/leave_form_text_color"
-            android:textSize="@dimen/text_size_13"
-            tools:ignore="RtlSymmetry,TextFields,UnusedAttribute" />
+                        <RadioButton
+                            android:id="@+id/rb_full_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/rbn_bg_selector_leaves"
+                            android:button="@android:color/transparent"
+                            android:fontFamily="@font/opensans"
+                            android:gravity="center"
+                            android:text="@string/full_day"
+                            android:textColor="@drawable/rb_txt_selector_leaves" />
 
-            <EditText
-                android:id="@+id/edt_rejected_reason"
+                        <RadioButton
+                            android:id="@+id/rb_half_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/rbn_bg_selector_leaves"
+                            android:button="@android:color/transparent"
+                            android:fontFamily="@font/opensans"
+                            android:gravity="center"
+                            android:text="@string/half_day"
+                            android:textColor="@drawable/rb_txt_selector_leaves" />
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/lv_category_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2">
+
+                        <!--Start Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tly_start_date"
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/btn_start_date"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:drawableEnd="@drawable/ic_cal_event"
+                                android:focusable="false"
+                                android:hint="@string/task_start_date"
+                                android:inputType="date"
+                                android:longClickable="false"
+                                tools:ignore="Autofill" />
+                            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <!--end Date-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tly_end_date"
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_weight="1"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <EditText
+                                android:id="@+id/btn_end_date"
+                                style="@style/RegistrationEditTextLayout"
+                                android:clickable="false"
+                                android:drawableEnd="@drawable/ic_cal_event"
+                                android:focusable="false"
+                                android:hint="@string/task_end_date"
+                                android:inputType="date"
+                                android:longClickable="false"
+                                tools:ignore="Autofill" />
+                            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!--Reason-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_reson"
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/edt_reason"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_75dp"
+                            android:gravity="top"
+                            android:hint="@string/reason"
+                            tools:ignore="Autofill"
+                            android:textColor="@color/dark_grey"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/text_size_title_14"/>
+                        <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--Rejected Reason-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tly_rejected_reason"
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginBottom="@dimen/dimen_10dp"
+                        android:visibility="gone"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/edt_rejected_reason"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_75dp"
+                            android:fontFamily="@font/opensans"
+                            android:gravity="top"
+                            android:hint="@string/rejected_reason"
+                            android:textColor="@color/dark_grey"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/text_size_title_14"
+                            tools:ignore="Autofill" />.
+                        <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_apply_leave"
+                style="@style/AppStyleButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_75dp"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_20dp"
-                android:background="@drawable/leave_form_view_unfocused"
-                android:gravity="top"
-                android:hint="@string/rejected_reason"
-                android:importantForAutofill="no"
-                android:paddingStart="@dimen/dimen_15dp"
-                android:paddingTop="@dimen/dimen_10dp"
+                android:elevation="@dimen/dimen_03dp"
+                android:text="@string/btn_leave_apply_str"
                 android:textAllCaps="false"
-                android:textColor="@color/leave_form_text_color"
-                android:textColorHint="@color/leave_form_text_color"
-                android:textSize="@dimen/text_size_13"
-                tools:ignore="RtlSymmetry,TextFields,UnusedAttribute"
-                android:visibility="gone"/>
+                android:textColor="@color/white" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-        <Button
-            android:id="@+id/btn_apply_leave"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_marginTop="@dimen/dimen_25dp"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:layout_marginEnd="@dimen/dimen_20dp"
-            android:layout_marginBottom="@dimen/dimen_05dp"
-            android:background="@drawable/bg_button"
-            android:elevation="@dimen/dimen_03dp"
-            android:text="@string/btn_leave_apply_str"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16" />
 
-</LinearLayout>
-
-</ScrollView>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

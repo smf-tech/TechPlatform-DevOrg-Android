@@ -41,6 +41,8 @@ public class FormStatusRequestCall {
 
         Response.ErrorListener processDetailsErrorListener = error -> listener.onErrorListener(error);
 
+        Log.d(TAG, "getSubmittedForms - url: " + url);
+
         Gson gson = new GsonBuilder().serializeNulls().create();
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
@@ -77,6 +79,8 @@ public class FormStatusRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getProcessUrl = BuildConfig.BASE_URL + Urls.PM.GET_PROCESS;
+
+        Log.d(TAG, "GET_PROCESS - url: " + getProcessUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

@@ -46,6 +46,7 @@
             android:id="@+id/form_title"
             style="@style/FormLabel.Title"
             android:layout_width="match_parent"
+            android:fontFamily="@font/opensans_regular"
             android:layout_height="wrap_content"
             android:text="@string/category_title" />
 
