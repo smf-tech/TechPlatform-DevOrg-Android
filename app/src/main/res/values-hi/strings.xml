@@ -537,5 +537,6 @@
     <string name="enter_proper_pan_no">Enter proper value for PAN</string>
     <string name="enter_proper_operator_contact">Enter proper value for Operator\'s contact number.</string>
     <string name="text_terms_service">By continuing you agree to the Terms of Service and Privacy Policy</string>
+    <string name="create_feed">Create Feed</string>
 
 </resources>
