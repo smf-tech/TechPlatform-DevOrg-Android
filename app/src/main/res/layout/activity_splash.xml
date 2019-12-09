@@ -26,7 +26,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
             android:textSize="@dimen/text_size_16"
-            android:text="Powered by"/>
+            android:text="Version"/>
         <TextView
             android:id="@+id/by"
             android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
             android:layout_marginLeft="@dimen/dimen_05dp"
             android:layout_alignParentBottom="true"
             android:textSize="@dimen/text_size_20"
+            android:visibility="gone"
             android:gravity="center_horizontal"
             android:text="Octopus"/>
     </RelativeLayout>

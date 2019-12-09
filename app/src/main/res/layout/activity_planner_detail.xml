@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.platform.view.activities.PlannerDetailActivity">
+    tools:context="com.octopusbjsindia.view.activities.PlannerDetailActivity">
 
     <FrameLayout
         android:id="@+id/fly_events_list"

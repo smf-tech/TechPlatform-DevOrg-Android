@@ -10,8 +10,6 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
-
-
     <style name="TextInputLayoutForLabel" parent="Theme.AppCompat.Light">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
         <item name="android:textColorLink">@color/colorPrimaryDark</item>
@@ -31,22 +29,33 @@
     </style>
 
 
+    <style name="textinputstyleoperator" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <item name="android:textSize">@dimen/text_size_10</item>
+    <item name="boxStrokeColor">@color/colorstatelistoperator</item>
+    </style>
+
+    <style name="TextInputLayoutHintoperator" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="android:fontFamily">@font/opensans</item>
+    </style>
+
+
     <style name="textinputstyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="boxStrokeColor">@color/colorPrimary</item>
     </style>
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/text_size_10</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/opensans</item>
     </style>
     <style name="RegistrationEditTextLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColorHint">@color/grey</item>
-        <item name="android:textColor">@color/dark_grey</item>
-        <item name="android:textSize">@dimen/text_size_title_14</item>
-        <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textColorHint">@color/lighter_grey</item>
+        <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
         <!--<item name="android:background">@null</item>-->
     </style>
 
@@ -58,11 +67,11 @@
     </style>
     <style name="AppStyleButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
 
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dimen_60dp</item>
+        <item name="android:layout_height">@dimen/dimen_50dp</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
     <style name="AppStyleBorderButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -249,5 +258,20 @@
     </style>
 
 
+    <style name="StyleTextViewLable">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="android:layout_marginTop">@dimen/dimen_10dp</item>
+    </style>
+
+    <style name="StyleTextViewValue">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:fontFamily">@font/opensans_semibold</item>
+    <item name="android:textSize">@dimen/text_size_12</item>
+    <item name="android:layout_marginTop">@dimen/dimen_02dp</item>
+    </style>
 
 </resources>

@@ -1,0 +1,258 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/base_background_color">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp">
+
+    <RelativeLayout
+        android:id="@+id/ly_calender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        android:elevation="@dimen/dimen_03dp"
+        android:visibility="visible">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_calendarMode="month"
+            app:mcv_selectionColor="#00F"
+            app:mcv_showOtherDates="all"
+            app:mcv_tileHeight="@dimen/dimen_30dp" />
+
+        <ImageView
+            android:id="@+id/tv_calendar_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/calendarView"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/content_description"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_05dp"
+            android:paddingTop="@dimen/dimen_05dp"
+            android:paddingRight="@dimen/dimen_05dp"
+            android:tint="@color/medium_grey"
+            android:src="@drawable/ic_down_arrow_light_blue" />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rl_structure_code"
+            style="@style/textinputstyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/et_structure_code"
+                style="@style/RegistrationEditTextLayout"
+                android:hint="Structure Code"
+                android:text="bsdaciuabdviubviubdcuibew" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_machine_hours"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/rl_machine_code"
+                style="@style/textinputstyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/rl_structure_code">
+
+                <EditText
+                    android:id="@+id/et_machine_code"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Machine Code"
+                    android:text="MBJS- 100004"
+                    android:focusable="false"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/rl_working_hours"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp">
+
+                <EditText
+                    android:id="@+id/et_working_hours"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Total Working Hours"
+                    android:focusable="false"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_working_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_machine_hours"
+            android:weightSum="2">
+
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+                <!--style="@style/textinputstyle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1">-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/et_working_hours"-->
+                    <!--style="@style/RegistrationEditTextLayout"-->
+                    <!--android:hint="Total Working Hours"-->
+                    <!--android:focusable="false"-->
+                    <!--android:longClickable="false"/>-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
+
+            <Button
+                android:id="@+id/btn_match"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:text="Match"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_mismatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:text="Mismatch"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_working_hours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ll_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/rl_working_hours"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/ll_image1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_register_one"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:src="@drawable/ic_add_img"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image 1 of Register"
+                android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_image2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_register_two"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:src="@drawable/ic_add_img"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image 2 of Register"
+                android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:padding="@dimen/dimen_10dp"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:text="@string/submit"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

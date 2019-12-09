@@ -41,7 +41,7 @@
 
 
 
-            <com.platform.view.customs.TextViewSemiBold
+            <com.octopusbjsindia.view.customs.TextViewSemiBold
                 android:id="@+id/user_profile_pic_label"
                 style="@style/FormLabel"
                 android:layout_gravity="center"
@@ -66,6 +66,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/first_name"
                     android:inputType="text|textCapWords"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,7 +122,7 @@
                 <EditText
                     android:id="@+id/et_user_birth_date"
                     style="@style/RegistrationEditTextLayout"
-                    android:clickable="false"
+                    android:longClickable="false"
                     android:focusable="false"
                     android:hint="@string/birth_date"
                     android:inputType="date"
@@ -169,7 +170,7 @@
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--Geo Location-->
+            <!--Geo JurisdictionLocation-->
             <LinearLayout
                 android:id="@+id/user_geo_location_view"
                 android:layout_width="match_parent"
@@ -230,7 +231,7 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:padding="@dimen/dimen_10dp">
 
-                <com.platform.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/tv_user_gender_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -306,7 +307,13 @@
                 android:paddingStart="@dimen/dimen_10dp"
                 android:text="@string/mandatory_project" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <!--<com.platform.widgets.MultiSelectSpinner-->
+                <!--android:id="@+id/sp_project"-->
+                <!--style="@style/FormSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dimen_50dp" />-->
+
+            <Spinner
                 android:id="@+id/sp_project"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -323,6 +330,17 @@
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp" />
+
+            <TextView
+                android:id="@+id/txt_country"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_country" />
+
+            <Spinner
+                android:id="@+id/sp_user_country"
+                style="@style/FormSpinner"
+                android:prompt="@string/country" />
 
             <!--State-->
             <TextView
@@ -344,8 +362,23 @@
                 android:text="@string/mandatory_district"
                 android:visibility="gone" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_district"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:visibility="gone" />
+
+            <!--City-->
+            <TextView
+                android:id="@+id/txt_city"
+                style="@style/FormLabel"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:text="@string/mandatory_city"
+                android:visibility="gone" />
+
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
+                android:id="@+id/sp_city"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp"
@@ -359,7 +392,7 @@
                 android:text="@string/mandatory_taluka"
                 android:visibility="gone" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_taluka"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -374,7 +407,7 @@
                 android:text="@string/mandatory_cluster"
                 android:visibility="gone" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_cluster"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -389,7 +422,7 @@
                 android:text="@string/mandatory_village"
                 android:visibility="gone" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_village"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"

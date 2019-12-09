@@ -35,7 +35,7 @@
                     android:padding="@dimen/dimen_10dp"
                     android:src="@drawable/ic_user_avatar" />
 
-                <com.platform.view.customs.TextViewBold
+                <com.octopusbjsindia.view.customs.TextViewBold
                     android:id="@+id/tv_name_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:text="Name:"
                     android:textStyle="bold" />
 
-                <com.platform.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/tv_name_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.platform.view.customs.TextViewBold
+                        <com.octopusbjsindia.view.customs.TextViewBold
                             android:id="@+id/tv_role_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                             android:text="Role:"
                             android:textStyle="bold" />
 
-                        <com.platform.view.customs.TextViewRegular
+                        <com.octopusbjsindia.view.customs.TextViewRegular
                             android:id="@+id/tv_role_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.platform.view.customs.TextViewBold
+                        <com.octopusbjsindia.view.customs.TextViewBold
                             android:id="@+id/tv_mobile_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                             android:text="Mobile:"
                             android:textStyle="bold" />
 
-                        <com.platform.view.customs.TextViewRegular
+                        <com.octopusbjsindia.view.customs.TextViewRegular
                             android:id="@+id/tv_mobile_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 </LinearLayout>
 
 
-                <com.platform.view.customs.TextViewBold
+                <com.octopusbjsindia.view.customs.TextViewBold
                     android:id="@+id/tv_email_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                     android:text="Email:"
                     android:textStyle="bold" />
 
-                <com.platform.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/tv_email_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

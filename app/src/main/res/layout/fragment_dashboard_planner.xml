@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="2dp"
-
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
@@ -184,7 +183,6 @@
                 android:layout_below="@+id/ly_cv_attendance"
                 android:layout_margin="@dimen/dimen_05dp"
                 android:elevation="2dp"
-
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout

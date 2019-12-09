@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="#f2f2f2"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".view.activities.OperatorMeterReadingActivity">
+    <Button
+        android:id="@+id/buttonHaltService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/red"
+        android:backgroundTint="@color/red"
+        android:text="Halt"
+        android:textColor="#fff" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_date1"
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_smeter_read"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:hint="Start meter reading*"
+                        android:inputType="number"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:longClickable="false" />
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_date1"
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_emeter_read"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:hint="End meter reading*"
+                        android:inputType="number"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:longClickable="false" />
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_100dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <!--Start Date-->
+
+
+                    <ImageView
+                        android:id="@+id/img_start_meter"
+                        android:layout_width="match_parent"
+                        android:src="@drawable/ic_img"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:longClickable="false" />
+
+
+                <ImageView
+                        android:id="@+id/img_end_meter"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/ic_img"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:longClickable="false" />
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp">
+
+                    <Button
+                        android:id="@+id/buttonStartService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/colorAccent"
+                        android:text="@string/meter_start"
+                        android:backgroundTint="@color/green"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:id="@+id/buttonPauseService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/colorAccent"
+                        android:text="Pause"
+                        android:textColor="#fff" />
+
+
+                    <Button
+                        android:id="@+id/buttonStopService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/colorAccent"
+                        android:backgroundTint="@color/red"
+                        android:text="@string/meter_stop"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:id="@+id/tv_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:visibility="invisible"
+                        android:text="test text"
+                        android:textColor="@color/colorAccent" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/opensans_bold"
+        android:text="test text"
+        android:textSize="@dimen/dimen_16dp"
+        android:textColor="@color/colorAccent" />
+</LinearLayout>

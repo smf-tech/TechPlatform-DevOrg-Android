@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include
+        android:id="@+id/pm_toolbar"
+        layout="@layout/app_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:layout_weight="1">
+
+             <com.platform.view.customs.TextViewRegular
+                 android:id="@+id/start_date_lbl"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toLeftOf="@+id/view_startdate"
+                 android:padding="@dimen/dimen_10dp"
+                 android:text="Start Date"
+                 android:textColor="@color/dark_grey"
+                 android:fontFamily="@font/opensans_semibold"
+                 android:textSize="@dimen/text_size_title_14" />
+
+             <com.platform.view.customs.TextViewSemiBold
+                 android:id="@+id/tv_startdate"
+                 android:layout_below="@+id/start_date_lbl"
+                 android:layout_width="140dp"
+                 android:layout_height="wrap_content"
+                 android:drawableStart="@drawable/ic_calender_sml"
+                 android:drawablePadding="@dimen/dimen_05dp"
+                 android:padding="@dimen/dimen_10dp"
+                 android:text="Start Date"
+                 android:textColor="@color/dark_grey"
+                 android:textSize="@dimen/text_size_title_14" />
+         </RelativeLayout>-->
+
+        <!--Start Date-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tly_start_date"
+            style="@style/textinputstyle"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tly_title"
+            android:layout_weight="1"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/tv_startdate"
+                style="@style/RegistrationEditTextLayout"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="@string/task_start_date"
+                android:inputType="date"
+                android:longClickable="false"/>
+            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_weight="1">
+
+             <com.platform.view.customs.TextViewRegular
+                 android:id="@+id/end_date_lbl"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toLeftOf="@+id/view_enddate"
+                 android:padding="@dimen/dimen_10dp"
+                 android:text="End Date"
+                 android:textColor="@color/dark_grey"
+                 android:textSize="@dimen/text_size_title_14"
+                 android:fontFamily="@font/opensans_semibold"/>
+
+             <com.platform.view.customs.TextViewSemiBold
+                 android:id="@+id/tv_enddate"
+                 android:layout_width="140dp"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/end_date_lbl"
+                 android:padding="@dimen/dimen_10dp"
+                 android:text="End Date"
+                 android:textColor="@color/dark_grey"
+                 android:textSize="@dimen/text_size_title_14"
+                 android:drawableStart="@drawable/ic_calender_sml"
+                 android:drawablePadding="@dimen/dimen_05dp"/>
+         </RelativeLayout>-->
+
+        <!--End Date-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tly_end_date"
+            style="@style/textinputstyle"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tly_title"
+            android:layout_weight="1"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/tv_enddate"
+                style="@style/RegistrationEditTextLayout"
+                android:clickable="false"
+
+                android:focusable="false"
+                android:hint="@string/task_end_date"
+                android:inputType="date"
+                android:longClickable="false"/>
+            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_apply"
+            style="@style/AppStyleBorderButton"
+            android:layout_width="wrap_content"
+            android:text="Apply"
+
+            android:visibility="visible"
+            android:layout_margin="@dimen/dimen_10dp"
+            />
+    </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_complete_total_hours"
+            android:text="Total hours = 00:00"
+            android:gravity="right"
+            android:fontFamily="@font/opensans_bold"
+            android:visibility="visible"
+            android:layout_marginEnd="@dimen/dimen_07dp"
+            android:textSize="@dimen/text_size_18"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rv_machinedataworklog"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dimen_05dp"/>
+
+    <FrameLayout
+        android:id="@+id/container_fragment"
+        android:background="@color/lighter_grey"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_height="0dp" />
+
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/tv_no_data_msg"
+        android:text="@string/no_data_available"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

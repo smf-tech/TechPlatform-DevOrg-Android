@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Default overflow menu items -->
+    <item
+        android:id="@+id/action_machine_worklog"
+        android:title="Show Machine Work Record"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_machine_shifting"
+        android:title="Machine Shifting Record"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_machine_visit"
+        android:title="Machine Visit and Validation"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_diesel_record"
+        android:title="Record of Diesel"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_machine_non_utilization"
+        android:title="Machine Non-utilization"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_silt_transportation_record"
+        android:title="Silt Transportation Record"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_machine_release"
+        android:title="Release Machine from taluka"
+        android:visible="false"/>
+
+</menu>

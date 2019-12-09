@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/action_home_sync"
+            android:icon="@drawable/ic_sync"
+            android:title="@string/update_data" />
+        <item
             android:id="@+id/action_menu_community"
             android:icon="@drawable/ic_menu_community"
             android:title="@string/menu_community"
@@ -23,11 +27,11 @@
             android:icon="@drawable/ic_menu_calendar"
             android:title="@string/menu_calendar"
             android:visible="false" />
-        <item
-            android:id="@+id/action_menu_teams"
-            android:icon="@drawable/ic_menu_teams"
-            android:title="@string/approvals"
-            android:visible="false" />
+        <!--<item-->
+            <!--android:id="@+id/action_menu_teams"-->
+            <!--android:icon="@drawable/ic_menu_teams"-->
+            <!--android:title="@string/approvals"-->
+            <!--android:visible="false" />-->
         <item
             android:id="@+id/action_menu_assets"
             android:icon="@drawable/ic_menu_assets"
@@ -35,6 +39,11 @@
             android:visible="false" />
         <item
             android:id="@+id/action_menu_reports"
+            android:icon="@drawable/ic_menu_reports"
+            android:title="@string/menu_reports"
+            android:visible="false" />
+        <item
+            android:id="@+id/action_menu_webmodule"
             android:icon="@drawable/ic_menu_reports"
             android:title="@string/menu_reports"
             android:visible="false" />

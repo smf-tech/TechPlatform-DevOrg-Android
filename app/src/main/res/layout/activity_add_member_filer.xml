@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.platform.view.activities.AddMembersFilterActivity">
+    tools:context="com.octopusbjsindia.view.activities.AddMembersFilterActivity">
 
     <include
         android:id="@+id/profile_toolbar"
@@ -55,7 +55,7 @@
                 style="@style/FormLabel"
                 android:text="@string/role" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_role"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 style="@style/FormLabel"
                 android:text="@string/state" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_user_state"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 style="@style/FormLabel"
                 android:text="@string/district" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_district"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 style="@style/FormLabel"
                 android:text="@string/taluka" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_taluka"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                 android:text="@string/cluster"
                 android:visibility="gone"/>
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_cluster"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                 style="@style/FormLabel"
                 android:text="@string/village" />
 
-            <com.platform.widgets.MultiSelectSpinner
+            <com.octopusbjsindia.widgets.MultiSelectSpinner
                 android:id="@+id/sp_village"
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"

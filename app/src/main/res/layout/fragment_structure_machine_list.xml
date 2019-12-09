@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_background_color"
+    android:orientation="vertical"
+    tools:context="com.octopusbjsindia.view.fragments.StructureMachineListFragment">
+
+    <LinearLayout
+        android:id="@+id/ly_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tv_state_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_03dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/state"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <TextView
+            android:id="@+id/tv_district_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_03dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_10dp"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/district"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <TextView
+            android:id="@+id/tv_taluka_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_03dp"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/taluka"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <ImageView
+            android:id="@+id/btn_filter_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_weight="0.4"
+            android:padding="@dimen/dimen_03dp"
+            android:src="@drawable/ic_cancel"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_filter">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_data_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ly_filter"></androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_no_data_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/no_data_available"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        app:tint="@color/white"
+        tools:ignore="RelativeOverlap" />
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>
