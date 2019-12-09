@@ -75,16 +75,15 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_feed);
-
         setTitle(getResources().getString(R.string.create_feed));
         progressBar = findViewById(R.id.ly_progress_bar);
-
         etTitle = findViewById(R.id.et_title);
         etDescription = findViewById(R.id.et_description);
         etUrl = findViewById(R.id.et_url);
         ivFeedImage = findViewById(R.id.iv_feed_image);
         ivFeedImage.setOnClickListener(this);
         findViewById(R.id.bt_publish).setOnClickListener(this);
+
     }
 
     @Override
