@@ -111,7 +111,7 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:weightSum="10">
 
-                <com.platform.view.customs.TextViewRegular
+                <com.octopusbjsindia.view.customs.TextViewRegular
                     android:id="@+id/tv_leave_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

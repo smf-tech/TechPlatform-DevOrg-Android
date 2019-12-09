@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:layout_margin="@dimen/dimen_10dp"
             android:layout_height="match_parent">
-            <com.platform.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_title_checkin"
                 android:text="Check in :"
@@ -29,7 +29,7 @@
                 android:textSize="@dimen/text_size_title_14"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
-            <com.platform.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_title_checkin_value"
                 android:text=" "
@@ -40,7 +40,7 @@
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
 
-            <com.platform.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:id="@+id/tv_address_checkin"
                 android:layout_width="@dimen/dimen_80dp"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:text="Address:"
                 android:textSize="@dimen/text_size_title_14"
                 android:textStyle="bold" />
-            <com.platform.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_address_checkin_value"
                 android:text=" "
@@ -69,7 +69,7 @@
 
                 android:layout_height="wrap_content" />
 
-            <com.platform.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_title_checkout"
                 android:text="Check out:"
@@ -81,7 +81,7 @@
                 android:textSize="@dimen/text_size_title_14"
                 android:layout_height="wrap_content" />
 
-            <com.platform.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_title_checkout_value"
                 android:text=" "
@@ -97,7 +97,7 @@
 
 
 
-            <com.platform.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_address_checkout"
                 android:text="Address:"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content" />
 
 
-            <com.platform.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_address_checkout_value"
                 android:text=" "
@@ -129,7 +129,7 @@
 
 
 
-            <com.platform.view.customs.TextViewBold
+            <com.octopusbjsindia.view.customs.TextViewBold
                 android:layout_width="@dimen/dimen_80dp"
                 android:id="@+id/tv_reason"
                 android:text="Reason:"
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content" />
 
 
-            <com.platform.view.customs.TextViewRegular
+            <com.octopusbjsindia.view.customs.TextViewRegular
                 android:layout_width="match_parent"
                 android:id="@+id/tv_reason_value"
                 android:text=""

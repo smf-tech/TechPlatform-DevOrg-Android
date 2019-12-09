@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/user_profile_pic">
 
-                    <com.platform.view.customs.TextViewBold
+                    <com.octopusbjsindia.view.customs.TextViewBold
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                         android:layout_centerVertical="true"
                         android:background="@android:color/transparent" />
 
-                    <com.platform.view.customs.TextViewRegular
+                    <com.octopusbjsindia.view.customs.TextViewRegular
                         android:id="@+id/tv_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

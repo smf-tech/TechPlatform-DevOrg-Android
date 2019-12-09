@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_preparation"
+        android:title="Structure Preparation" />
+    <item
+        android:id="@+id/action_mobilization"
+        android:title="Community Mobilization" />
+    <item
+        android:id="@+id/action_visit_monitoring"
+        android:title="Visit and Monitoring" />
+    <item
+        android:id="@+id/action_structure_completion"
+        android:title="Structure Completion" />
+    <item
+        android:id="@+id/action_structure_close"
+        android:title="Structure Close" />
+</menu>
