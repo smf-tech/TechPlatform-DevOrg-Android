@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.view.activities.CreateFeedActivity;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment {
@@ -56,6 +58,8 @@ public class StoriesFragment extends Fragment {
             public void onClick(View view) {
 //                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
 //                startActivity(intent);
+                Intent intent = new Intent(getActivity(), CreateFeedActivity.class);
+                startActivity(intent);
             }
         });
     }
