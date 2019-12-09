@@ -65,12 +65,9 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
     Map<String,String> requestData = new HashMap<>();
-
     private Uri outputUri;
     private Uri finalUri;
-
     RelativeLayout progressBar;
-
     EditText etTitle, etDescription, etUrl;
     ImageView ivFeedImage;
 
