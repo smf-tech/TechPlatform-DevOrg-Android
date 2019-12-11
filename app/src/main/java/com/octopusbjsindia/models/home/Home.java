@@ -8,9 +8,17 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class Home implements Serializable {
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @SerializedName("status")
     @Expose
-    private String status;
+    private int status;
     @SerializedName("data")
     @Expose
     private HomeData data;
@@ -21,13 +29,7 @@ public class Home implements Serializable {
     @Expose
     private String userApproveStatus;
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public HomeData getHomeData() {
         return data;

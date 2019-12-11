@@ -46,6 +46,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.home.Modules;
@@ -421,6 +422,20 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.action_menu_change_language:
                 showLanguageChangeDialog();
                 AppEvents.trackAppEvent(getString(R.string.event_menu_change_lang_click));
+                break;
+            case R.id.action_menu_share_app:
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Octopus share");
+                    String shareMessage= "\nPlease checkout the Octopus app from Bhartiya Jain Sanghatana\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(Intent.createChooser(shareIntent, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+                AppEvents.trackAppEvent(getString(R.string.share_app));
                 break;
 
             case R.id.action_menu_rate_us:
