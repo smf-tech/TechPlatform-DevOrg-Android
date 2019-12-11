@@ -37,12 +37,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.ProfileTaskListener;
 import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.models.profile.Jurisdiction;
@@ -72,9 +74,7 @@ import java.util.Objects;
 @SuppressWarnings("CanBeFinal")
 public class EditProfileActivity extends BaseActivity implements ProfileTaskListener,
         View.OnClickListener, AdapterView.OnItemSelectedListener,
-        MultiSelectSpinner.MultiSpinnerListener {
-
-    private BottomSheetDialogFragment bottomSheetDialogFragment;
+        MultiSelectSpinner.MultiSpinnerListener, APIDataListener {
 
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
@@ -950,7 +950,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     if(spState.getVisibility() == View.VISIBLE){
                         if(Util.isConnected(this)){
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            profilePresenter.getLocationData(selectedCountries.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.STATE_LEVEL);
                         }
@@ -978,7 +978,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     if (spCity.getVisibility() == View.VISIBLE) {
                         if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            profilePresenter.getLocationData(selectedStates.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.CITY_LEVEL);
                         }
@@ -999,7 +999,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     if (spDistrict.getVisibility() == View.VISIBLE) {
                         if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            profilePresenter.getLocationData(selectedStates.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                         }
@@ -1041,6 +1041,21 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(message,this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        Util.showToast(error.getMessage(),this);
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
     public void showProgressBar() {
         runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
@@ -1058,6 +1073,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
     }
 
     @Override
@@ -1178,7 +1198,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 spCountry.setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_country).setVisibility(View.VISIBLE);
                 if (Util.isConnected(this)) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                    profilePresenter.getLocationData("",
                             selectedRole.getProject().getJurisdictionTypeId(), level);
                 } else {
                     List<String> countryNames = new ArrayList<>();
@@ -1198,8 +1218,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 spState.setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_state).setVisibility(View.VISIBLE);
                 if (Util.isConnected(this)) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(), level);
+                    if(selectedCountries.size()>0 && selectedCountries.get(0).getId().length()>0) {
+                        profilePresenter.getLocationData(selectedCountries.get(0).getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(), level);
+                    } else {
+                        profilePresenter.getLocationData("",
+                                selectedRole.getProject().getJurisdictionTypeId(), level);
+                    }
                 } else {
                     List<String> stateNames = new ArrayList<>();
                     UserInfo userInfo = Util.getUserObjectFromPref();
@@ -1394,12 +1419,15 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.countries.clear();
                     List<String> countryNames = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCountry().getName().compareTo(j2.getCountry().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCountry().getName().compareTo(j2.getCountry().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        countryNames.add(location.getCountry().getName());
-                        this.countries.add(location.getCountry());
+                        countryNames.add(location.getName());
+                        JurisdictionType jurisdictionType = new JurisdictionType();
+                        jurisdictionType.setId(location.getId());
+                        jurisdictionType.setName(location.getName());
+                        this.countries.add(jurisdictionType);
                     }
 
                     setCountryData(countryNames);
@@ -1410,12 +1438,15 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.states.clear();
                     List<String> stateNames = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        stateNames.add(location.getState().getName());
-                        this.states.add(location.getState());
+                        stateNames.add(location.getName());
+                        JurisdictionType jurisdictionType = new JurisdictionType();
+                        jurisdictionType.setId(location.getId());
+                        jurisdictionType.setName(location.getName());
+                        this.states.add(jurisdictionType);
                     }
                     setStateData(stateNames);
                 }
@@ -1426,16 +1457,19 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.districts.clear();
                     List<String> districts = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                districts.add(location.getDistrict().getName());
-                                this.districts.add(location.getDistrict());
-                            }
-                        }
+//                        for (JurisdictionType state : selectedStates) {
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                districts.add(location.getName());
+                            JurisdictionType jurisdictionType = new JurisdictionType();
+                            jurisdictionType.setId(location.getId());
+                            jurisdictionType.setName(location.getName());
+                                this.districts.add(jurisdictionType);
+                            //}
+                        //}
                     }
                     setDistrictData(districts);
                 }
@@ -1446,16 +1480,19 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.cities.clear();
                     List<String> cities = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                cities.add(location.getCity().getName());
-                                this.cities.add(location.getCity());
-                            }
-                        }
+//                        for (JurisdictionType state : selectedStates) {
+                            //if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+                                cities.add(location.getName());
+                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                jurisdictionType.setId(location.getId());
+                                jurisdictionType.setName(location.getName());
+                                this.cities.add(jurisdictionType);
+                            //}
+                        //}
                     }
                     setCityData(cities);
                 }
@@ -1466,20 +1503,23 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.talukas.clear();
                     List<String> talukas = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        talukas.add(location.getTaluka().getName());
-                                        this.talukas.add(location.getTaluka());
-                                    }
-                                }
-                            }
-                        }
+//                        for (JurisdictionType state : selectedStates) {
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+                                    //if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+                                        talukas.add(location.getName());
+                                        JurisdictionType jurisdictionType = new JurisdictionType();
+                                        jurisdictionType.setId(location.getId());
+                                        jurisdictionType.setName(location.getName());
+                                        this.talukas.add(jurisdictionType);
+                                    //}
+                                //}
+//                            }
+//                        }
                     }
                     setTalukaData(talukas);
                 }
@@ -1490,24 +1530,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.villages.clear();
                     List<String> villages = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                villages.add(location.getVillage().getName());
-                                                this.villages.add(location.getVillage());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+//                        for (JurisdictionType state : selectedStates) {
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+//                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+//                                        for (JurisdictionType taluka : selectedTalukas) {
+//                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+                                                villages.add(location.getName());
+                                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                                jurisdictionType.setId(location.getId());
+                                                jurisdictionType.setName(location.getName());
+                                                this.villages.add(jurisdictionType);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
                     }
                     setVillageData(villages);
                 }
@@ -1518,24 +1561,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     this.clusters.clear();
                     List<String> clusters = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                clusters.add(location.getCluster().getName());
-                                                this.clusters.add(location.getCluster());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+//                        for (JurisdictionType state : selectedStates) {
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+//                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+//                                        for (JurisdictionType taluka : selectedTalukas) {
+//                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+                                                clusters.add(location.getName());
+                                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                                jurisdictionType.setId(location.getId());
+                                                jurisdictionType.setName(location.getName());
+                                                this.clusters.add(jurisdictionType);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+                        //}
                     }
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
@@ -1620,7 +1666,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     if (spTaluka.getVisibility() == View.VISIBLE) {
                         if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            profilePresenter.getLocationData(selectedDistricts.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL);
                         } else {
@@ -1650,7 +1696,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     if (spVillage.getVisibility() == View.VISIBLE) {
                         if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
+                            profilePresenter.getLocationData(selectedTalukas.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         } else {
@@ -1691,11 +1737,5 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } catch (Exception e) {
             Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
         }
-    }
-
-    private void showMultiSelectBottomsheet() {
-
-       /* bottomSheetDialogFragment = new MultiSelectBottomSheet();
-        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());*/
     }
 }

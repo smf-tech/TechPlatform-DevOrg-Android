@@ -296,17 +296,15 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     structureTalukaList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        if (tvDistrictFilter.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
-                            talukaList.set_id(location.getTalukaId());
-                            talukaList.setName(location.getTaluka().getName());
+                            talukaList.set_id(location.getId());
+                            talukaList.setName(location.getName());
                             talukaList.setSelected(false);
                             structureTalukaList.add(talukaList);
-                        }
                     }
                 }
                 CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
@@ -319,18 +317,16 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     structureDistrictList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
-                            compareTo(j2.getDistrict().getName()));
+//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
+//                            compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        if (tvStateFilter.getText().toString().equalsIgnoreCase(location.getState().getName())) {
                             CustomSpinnerObject districtList = new CustomSpinnerObject();
-                            districtList.set_id(location.getDistrictId());
-                            districtList.setName(location.getDistrict().getName());
+                            districtList.set_id(location.getId());
+                            districtList.setName(location.getName());
                             districtList.setSelected(false);
                             structureDistrictList.add(districtList);
-                        }
                     }
                 }
                 CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
@@ -415,7 +411,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             if(Util.isConnected(getActivity())) {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
-                    machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    machineDeployStructureListFragmentPresenter.getLocationData(selectedDistrictId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 } else {
@@ -430,8 +426,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             if(Util.isConnected(getActivity())) {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
-                    machineDeployStructureListFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                    machineDeployStructureListFragmentPresenter.getLocationData(userInfo.getUserLocation().
+                                    getStateId().get(0).getId(), Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()

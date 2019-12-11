@@ -93,15 +93,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     private void initView() {
 
-        //get District
-//        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
-//                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-        //get Village
-        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
-                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-
         structureData = new Structure();
 
         etDistrict = findViewById(R.id.et_district);
@@ -139,7 +130,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             selectedDistrict = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName();
         } else {
             //get District
-            presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+            presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
             etDistrict.setOnClickListener(this);
@@ -163,6 +154,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etStructureOwnerDepartment.setOnClickListener(this);
         etSubStructureOwnerDepartment.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
+
+        //get District
+//        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+//                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+        //get Village
+        presenter.getLocationData(selectedTalukaId,
+                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                Constants.JurisdictionLevelName.VILLAGE_LEVEL);
     }
 
     public void setTitle(String title) {
@@ -458,7 +458,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 selectedHostVillageId = "";
                 //get Taluka
                 if (!TextUtils.isEmpty(selectedDistrictId)) {
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                    presenter.getLocationData(selectedDistrictId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
@@ -477,7 +477,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 selectedHostVillageId = "";
                 //get Taluka
                 if (!TextUtils.isEmpty(selectedTalukaId)) {
-                    presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                    presenter.getLocationData(selectedTalukaId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                 }
@@ -629,35 +629,35 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (data != null && !data.isEmpty()) {
                     districtList.clear();
-                    Collections.sort(data, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
+                    //Collections.sort(data, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
-                        if (Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId()
-                                .equalsIgnoreCase(data.get(i).getStateId())) {
+//                        if (Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId()
+//                                .equalsIgnoreCase(data.get(i).getStateId())) {
                             JurisdictionLocation location = data.get(i);
                             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                            meetCountry.set_id(location.getDistrictId());
-                            meetCountry.setName(location.getDistrict().getName());
+                            meetCountry.set_id(location.getId());
+                            meetCountry.setName(location.getName());
                             meetCountry.setSelected(false);
                             districtList.add(meetCountry);
-                        }
+                    //    }
                     }
                 }
                 break;
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (data != null && !data.isEmpty()) {
                     talukaList.clear();
-                    Collections.sort(data, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(data, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
-                        if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
+                        //if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
                             JurisdictionLocation location = data.get(i);
                             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                            meetCountry.set_id(location.getTalukaId());
-                            meetCountry.setName(location.getTaluka().getName());
+                            meetCountry.set_id(location.getId());
+                            meetCountry.setName(location.getName());
                             meetCountry.setSelected(false);
                             talukaList.add(meetCountry);
-                        }
+                        //}
                     }
                 }
                 break;
@@ -665,19 +665,19 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 if (data != null && !data.isEmpty()) {
                     villageList.clear();
                     catchmentVillageList.clear();
-                    Collections.sort(data, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
+                    //Collections.sort(data, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
-                        if (selectedTaluka.equalsIgnoreCase(data.get(i).getTaluka().getName())) {
+                        //if (selectedTaluka.equalsIgnoreCase(data.get(i).getTaluka().getName())) {
 
                             JurisdictionLocation location = data.get(i);
                             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                            meetCountry.set_id(location.getVillageId());
-                            meetCountry.setName(location.getVillage().getName());
+                            meetCountry.set_id(location.getId());
+                            meetCountry.setName(location.getName());
                             meetCountry.setSelected(false);
                             villageList.add(meetCountry);
                             catchmentVillageList.add(meetCountry);
-                        }
+                        //}
                     }
                 }
                 break;

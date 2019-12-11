@@ -275,7 +275,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 etMachineTaluka.setOnClickListener(this);
                 if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
-                    machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    machineMouFragmentPresenter.getLocationData(selectedDistrictId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
             }
@@ -691,16 +691,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        if (etMachineDistrict.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
                             CustomSpinnerObject talukaList = new CustomSpinnerObject();
-                            talukaList.set_id(location.getTalukaId());
-                            talukaList.setName(location.getTaluka().getName());
+                            talukaList.set_id(location.getId());
+                            talukaList.setName(location.getName());
                             talukaList.setSelected(false);
                             machineTalukaList.add(talukaList);
-                        }
                     }
                 }
                 break;

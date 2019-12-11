@@ -336,12 +336,12 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     this.states.clear();
                     List<String> stateNames = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
+//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        stateNames.add(location.getState().getName());
-                        this.states.add(location.getState());
+                        stateNames.add(location.getName());
+                        //this.states.add(location.getState());
                     }
 
                     spState.setItems(stateNames, getString(R.string.state), this);
@@ -354,15 +354,15 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     this.districts.clear();
                     List<String> districts = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
+//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                districts.add(location.getDistrict().getName());
-                                this.districts.add(location.getDistrict());
-                            }
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                districts.add(location.getDistrict().getName());
+//                                this.districts.add(location.getDistrict());
+//                            }
                         }
                     }
                     spDistrict.setItems(districts, getString(R.string.district), this);
@@ -375,19 +375,19 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     this.talukas.clear();
                     List<String> talukas = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        talukas.add(location.getTaluka().getName());
-                                        this.talukas.add(location.getTaluka());
-                                    }
-                                }
-                            }
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+//                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+//                                        talukas.add(location.getTaluka().getName());
+//                                        this.talukas.add(location.getTaluka());
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
@@ -400,23 +400,23 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     this.villages.clear();
                     List<String> villages = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                villages.add(location.getVillage().getName());
-                                                this.villages.add(location.getVillage());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+//                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+//                                        for (JurisdictionType taluka : selectedTalukas) {
+//                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+//                                                villages.add(location.getVillage().getName());
+//                                                this.villages.add(location.getVillage());
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     spVillage.setItems(villages, getString(R.string.village), this);
@@ -429,23 +429,23 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     this.clusters.clear();
                     List<String> clusters = new ArrayList<>();
 
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                clusters.add(location.getCluster().getName());
-                                                this.clusters.add(location.getCluster());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+//                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
+//                                for (JurisdictionType district : selectedDistricts) {
+//                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
+//                                        for (JurisdictionType taluka : selectedTalukas) {
+//                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
+//                                                clusters.add(location.getCluster().getName());
+//                                                this.clusters.add(location.getCluster());
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     spCluster.setItems(clusters, getString(R.string.cluster), this);

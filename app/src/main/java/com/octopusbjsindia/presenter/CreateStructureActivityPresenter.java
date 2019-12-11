@@ -15,7 +15,10 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class CreateStructureActivityPresenter implements APIPresenterListener {
 
@@ -24,6 +27,11 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
     final String GET_DISTRICT = "getDistrict";
     final String GET_TALUKA = "getTaluka";
     final String GET_VILLAGE = "getvillage";
+
+    private static final String KEY_SELECTED_ID = "selected_location_id";
+    private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
+    private static final String KEY_LEVEL = "jurisdictionLevel";
+    private final String TAG = CreateStructureActivityPresenter.class.getName();
 
     private WeakReference<CreateStructureActivity> mContext;
 
@@ -93,21 +101,43 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         }
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+//    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//
+//        final String getLocationUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+//        Log.d("getLocationUrl", " url: " + getLocationUrl);
+//        mContext.get().showProgressBar();
+//
+//        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+//            requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
+//        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+//            requestCall.getDataApiCall(GET_TALUKA, getLocationUrl);
+//        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+//            requestCall.getDataApiCall(GET_VILLAGE, getLocationUrl);
+//        }
+//    }
+
+    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        mContext.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-
-        final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
-        Log.d("getLocationUrl", " url: " + getLocationUrl);
-        mContext.get().showProgressBar();
-
-        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
-            requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
-        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-            requestCall.getDataApiCall(GET_TALUKA, getLocationUrl);
-        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-            requestCall.getDataApiCall(GET_VILLAGE, getLocationUrl);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.postDataApiCall(GET_TALUKA, new JSONObject(map).toString(), getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)){
+            requestCall.postDataApiCall(GET_VILLAGE, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
