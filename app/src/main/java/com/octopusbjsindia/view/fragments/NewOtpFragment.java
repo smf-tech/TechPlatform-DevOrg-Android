@@ -290,7 +290,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                verifyUser();
+                if(Util.isConnected(getActivity())) {
+                    verifyUser();
+                }else{
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
+
                 break;
 
             case R.id.tv_resend_otp:

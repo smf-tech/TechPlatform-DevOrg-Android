@@ -84,7 +84,7 @@ public class Urls {
     public class Attendance
     {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
-        public static final String SUBMIT_ATTENDANCE="/api/insertAttendance";
+        public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
         public static final String GET_TEAM_ATTENDANCE="/api/getTeamAttendance";
     }
     public class ContentManagement{
