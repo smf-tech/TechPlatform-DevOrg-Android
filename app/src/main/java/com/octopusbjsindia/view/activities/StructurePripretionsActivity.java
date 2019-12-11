@@ -109,6 +109,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
         initView();
         setTitle("Structure Preparation");
+
     }
 
     private void initView() {

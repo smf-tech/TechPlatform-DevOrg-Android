@@ -150,7 +150,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
                 }
             }
         } catch (Exception e) {
-            homeFragment.get().initiateViewPager();
+//            homeFragment.get().initiateViewPager();
             homeFragment.get().showErrorMessage(homeFragment.get().getResources().getString(R.string.msg_something_went_wrong));
         }
     }

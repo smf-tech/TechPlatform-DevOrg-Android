@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".view.activities.CreateFeedActivity">
 
     <include layout="@layout/app_toolbar" />

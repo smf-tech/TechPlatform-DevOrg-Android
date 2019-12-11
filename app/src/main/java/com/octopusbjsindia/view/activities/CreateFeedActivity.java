@@ -130,6 +130,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             requestData.put("title",etTitle.getText().toString());
             requestData.put("description",etDescription.getText().toString());
             requestData.put("external_url",etUrl.getText().toString());
+            requestData.put("is_published","true");
         }
 
         return true;
@@ -166,7 +167,12 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
-                        Toast.makeText(CreateFeedActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(TextUtils.isEmpty( error.getMessage())){
+                            Toast.makeText(CreateFeedActivity.this, getResources().getString(
+                                    R.string.msg_something_went_wrong), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CreateFeedActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
 
