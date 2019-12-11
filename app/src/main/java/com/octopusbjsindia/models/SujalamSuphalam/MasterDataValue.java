@@ -13,6 +13,9 @@ public class MasterDataValue implements Serializable {
     @SerializedName("value")
     @Expose
     private String value;
+    @SerializedName("type_code")
+    @Expose
+    private Integer typeCode = -1;
 
     public String getId() {
         return id;
@@ -28,5 +31,13 @@ public class MasterDataValue implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Integer getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(Integer typeCode) {
+        this.typeCode = typeCode;
     }
 }

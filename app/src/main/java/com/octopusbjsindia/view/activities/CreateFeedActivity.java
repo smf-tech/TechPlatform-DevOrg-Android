@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -118,18 +119,24 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
 
     private boolean isAllDataValid() {
 
-        if (TextUtils.isEmpty(etTitle.getText().toString())) {
+        if(!TextUtils.isEmpty(etDescription.getText().toString().trim())) {
+            if(!URLUtil.isValidUrl(etUrl.getText().toString().trim())){
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please enter valid URL.", Snackbar.LENGTH_LONG);
+                return false;
+            }
+        }
+
+        if (TextUtils.isEmpty(etTitle.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please Enter Title.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etDescription.getText().toString())) {
+        } else if(TextUtils.isEmpty(etDescription.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please Enter Description.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             requestData.put("title",etTitle.getText().toString());
-            requestData.put("description",etDescription.getText().toString());
-            requestData.put("external_url",etUrl.getText().toString());
             requestData.put("is_published","true");
         }
 
@@ -151,10 +158,10 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
                             if (commonResponse.getStatus() == 200) {
-                                Util.showToast(commonResponse.getMessage(), this);
+                                Util.showToast(commonResponse.getMessage(), CreateFeedActivity.this);
                                 finish();
                             } else {
-                                Util.showToast(commonResponse.getMessage(), this);
+                                Util.showToast(commonResponse.getMessage(), CreateFeedActivity.this);
                             }
                             Log.d("response :", jsonString);
                         } catch (UnsupportedEncodingException e) {
@@ -180,6 +187,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
+                params.put("description",etDescription.getText().toString());
+                params.put("external_url",etUrl.getText().toString());
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));
                 return params;
             }
@@ -224,8 +233,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5,
+                0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(this);
         rQueue.add(volleyMultipartRequest);
@@ -329,7 +338,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         ivFeedImage.setImageURI(finalUri);
                         imageHashmap.put("image" + imageCount, bitmap);
                         imageCount++;

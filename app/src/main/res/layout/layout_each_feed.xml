@@ -138,7 +138,7 @@
                     android:id="@+id/tv_description_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_title"
+                    android:layout_below="@+id/tv_external_url"
                     android:layout_marginStart="@dimen/dimen_05dp"
                     android:layout_marginEnd="@dimen/dimen_05dp"
                     android:layout_marginBottom="@dimen/dimen_05dp"

@@ -91,7 +91,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
-    private TextView tvNoData;
     private ImageView btnFilterClear;
 
 
@@ -122,7 +121,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
         fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
-        tvNoData = structureMachineListFragmentView.findViewById(R.id.tv_no_data_msg);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -573,7 +571,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void populateMachineData(String requestID, MachineListAPIResponse machineListData) {
-        tvNoData.setVisibility(View.GONE);
+
         ssMachineListData.clear();
         filteredMachineListData.clear();
         if (machineListData != null) {
@@ -589,11 +587,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 ((SSActionsActivity)context).setActivityTitle("Machine List ("+filteredMachineListData.size()+")");
             }
         }
+        if(ssMachineListData.size()>0){
+            structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
-        tvNoData.setVisibility(View.GONE);
+
         if (structureListData != null) {
 //            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
             ssStructureListData.clear();
@@ -622,10 +625,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
 //            }
         }
+        if(ssStructureListData.size()>0){
+            structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
     public void showNoDataMessage() {
-        tvNoData.setVisibility(View.VISIBLE);
+        structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
     }
 
     public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {

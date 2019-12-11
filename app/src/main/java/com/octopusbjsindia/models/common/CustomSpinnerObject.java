@@ -11,7 +11,12 @@ public class CustomSpinnerObject{
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("type_code")
+    @Expose
+    private int typeCode;
+
     private boolean isSelected =false;
+
     public String get_id() {
         return _id;
     }
@@ -36,5 +41,12 @@ public class CustomSpinnerObject{
         isSelected = selected;
     }
 
+    public int getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(int typeCode) {
+        this.typeCode = typeCode;
+    }
 
 }

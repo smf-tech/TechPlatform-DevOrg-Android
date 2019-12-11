@@ -43,6 +43,26 @@
         tools:ignore="RelativeOverlap" />
 
     <RelativeLayout
+        android:id="@+id/ly_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="@dimen/standard_240"
+            android:layout_height="@dimen/standard_240"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_data"/>
+        <TextView
+            android:layout_below="@+id/iv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="No Data"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/ly_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

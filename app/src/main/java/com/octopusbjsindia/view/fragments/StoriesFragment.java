@@ -111,7 +111,11 @@ public class StoriesFragment extends Fragment implements APIDataListener {
         } else {
             Util.showToast(message,mContext );
         }
-
+        if(feedList.size()>0){
+            view.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -125,12 +129,12 @@ public class StoriesFragment extends Fragment implements APIDataListener {
 
     @Override
     public void showProgressBar() {
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -142,6 +146,11 @@ public class StoriesFragment extends Fragment implements APIDataListener {
         feedList.clear();
         feedList.addAll(responseData.getData());
         adapter.notifyDataSetChanged();
+        if(feedList.size()>0){
+            view.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
     public void feedDeleted() {

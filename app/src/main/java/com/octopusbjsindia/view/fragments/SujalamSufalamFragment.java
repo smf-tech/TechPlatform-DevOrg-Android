@@ -185,6 +185,11 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }
+        if(machineAnalyticsDataList.size()>0){
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
     private void setStructureView(){
@@ -201,6 +206,11 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             btnSsView.setText("Structure View");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
+        }
+        if(structureAnalyticsDataList.size()>0){
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         }
     }
 
@@ -223,6 +233,11 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     }
                 }
             }
+        }
+        if(structureAnalyticsDataList.size()>0){
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         }
     }
 

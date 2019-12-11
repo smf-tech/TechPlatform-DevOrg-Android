@@ -379,7 +379,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         selecteIV.setImageURI(finalUri);
                         imageHashmap.put("Structure" + imageCount, bitmap);
                         imageCount++;

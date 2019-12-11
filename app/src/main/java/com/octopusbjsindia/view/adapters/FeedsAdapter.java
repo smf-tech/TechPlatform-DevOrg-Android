@@ -33,6 +33,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
+import com.octopusbjsindia.view.activities.WebViewActivity;
 import com.octopusbjsindia.view.fragments.StoriesFragment;
 
 import java.util.ArrayList;
@@ -185,16 +186,21 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             tvExternalUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String urlString = feedList.get(getAdapterPosition()).getExternalUrl();
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(urlString));
-                    intent.setPackage("com.android.chrome");
-                    try {
+                    if(!TextUtils.isEmpty(feedList.get(getAdapterPosition()).getExternalUrl())){
+                        Intent intent = new Intent(mContext.getActivity(), WebViewActivity.class);
+                        intent.putExtra("URL",feedList.get(getAdapterPosition()).getExternalUrl());
                         mContext.startActivity(intent);
-                    } catch (ActivityNotFoundException ex) {
-                        // Incorrect Link.. OR Chrome browser presumably not installed
-                        Util.showToast("Incorrect Link..",mContext);
                     }
+//                    String urlString = feedList.get(getAdapterPosition()).getExternalUrl();
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(urlString));
+//                    intent.setPackage("com.android.chrome");
+//                    try {
+//                        mContext.startActivity(intent);
+//                    } catch (ActivityNotFoundException ex) {
+//                        // Incorrect Link.. OR Chrome browser presumably not installed
+//                        Util.showToast("Incorrect Link..",mContext);
+//                    }
                 }
             });
 //            lyMain.setOnClickListener(new View.OnClickListener() {
