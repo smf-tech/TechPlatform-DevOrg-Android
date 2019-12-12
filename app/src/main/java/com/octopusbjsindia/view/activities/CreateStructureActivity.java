@@ -532,6 +532,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         selectedType = obj.getTypeCode();
                     }
                 }
+                selectedStructureType = "";
+                selectedStructureTypeId = "";
+                etStructureType.setText("");
                 structureTypeList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType")

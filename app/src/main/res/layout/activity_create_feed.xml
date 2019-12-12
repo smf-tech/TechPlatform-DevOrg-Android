@@ -56,7 +56,6 @@
                     android:gravity="top"
                     android:hint="Description *"
                     android:inputType="text|textCapWords|textMultiLine"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-#;:,. "
                     android:minHeight="@dimen/dimen_150dp" />
             </com.google.android.material.textfield.TextInputLayout>
 

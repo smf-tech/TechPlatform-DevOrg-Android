@@ -24,14 +24,19 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.stories.FeedData;
 import com.octopusbjsindia.models.stories.FeedListResponse;
 import com.octopusbjsindia.presenter.StoriesFragmentPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateFeedActivity;
 import com.octopusbjsindia.view.adapters.FeedsAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
 public class StoriesFragment extends Fragment implements APIDataListener {
@@ -47,6 +52,7 @@ public class StoriesFragment extends Fragment implements APIDataListener {
     private RecyclerView rvFeeds;
     int position=0;
 
+    boolean isCreateFeed,isDalete;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,14 +79,33 @@ public class StoriesFragment extends Fragment implements APIDataListener {
         presentr = new StoriesFragmentPresenter(this);
         progressBar = view.findViewById(R.id.ly_progress_bar);
 
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
+                isCreateFeed = true;
+                break;
+            } /*else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
+                isDalete = true;
+                continue;
+            } */
+        }
+
         rvFeeds = view.findViewById(R.id.rv_feeds);
         rvFeeds.setNestedScrollingEnabled(false);
 
         feedList = new ArrayList<FeedData>();
-        adapter = new FeedsAdapter(this, feedList, presentr);
+        adapter = new FeedsAdapter(this, feedList, presentr,isCreateFeed);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         rvFeeds.setLayoutManager(mLayoutManager);
         rvFeeds.setAdapter(adapter);
+
+        if(isCreateFeed){
+            view.findViewById(R.id.fab_add_feed).setVisibility(View.VISIBLE);
+        } else {
+            view.findViewById(R.id.fab_add_feed).setVisibility(View.GONE);
+        }
 
         FloatingActionButton fabAddFeed = view.findViewById(R.id.fab_add_feed);
         fabAddFeed.setOnClickListener(new View.OnClickListener() {

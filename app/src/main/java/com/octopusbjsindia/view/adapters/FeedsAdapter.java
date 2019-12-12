@@ -47,12 +47,14 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     ArrayList<FeedData> feedList;
     StoriesFragment mContext;
     StoriesFragmentPresenter presentr;
+    boolean isCreateFeed;
 //    private RequestOptions requestOptionsCirculer, requestOptions;
 
-    public FeedsAdapter(StoriesFragment context, List<FeedData> feedList, StoriesFragmentPresenter presentr) {
+    public FeedsAdapter(StoriesFragment context, List<FeedData> feedList, StoriesFragmentPresenter presentr, boolean isCreateFeed) {
         this.feedList = (ArrayList<FeedData>) feedList;
         this.mContext = context;
         this.presentr = presentr;
+        this.isCreateFeed = isCreateFeed;
 //        requestOptionsCirculer = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
 //        requestOptionsCirculer = requestOptionsCirculer.apply(RequestOptions.circleCropTransform());
 //        requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
@@ -79,7 +81,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.ivUserProfilePic);
         }
-        if (feedList.get(position).getMediaUrl() != null && feedList.get(position).getMediaUrl().size()>0) {
+        if (feedList.get(position).getMediaUrl() != null && feedList.get(position).getMediaUrl().size() > 0) {
             holder.ivFeedPic.setVisibility(View.VISIBLE);
             Glide.with(mContext)
 //                    .applyDefaultRequestOptions(requestOptions)
@@ -149,6 +151,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             tvReadLess = itemView.findViewById(R.id.tv_read_less);
             tvReadMore = itemView.findViewById(R.id.tv_read_more);
             tvExternalUrl = itemView.findViewById(R.id.tv_external_url);
+
+            if (isCreateFeed) {
+                ivDelete.setVisibility(View.VISIBLE);
+            } else {
+                ivDelete.setVisibility(View.GONE);
+            }
+
             tvReadLess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -174,7 +183,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
                 public void onClick(View view) {
                     showDialog(mContext.getActivity(), "Alert", "Are you sure, want to Delete Feed?",
                             "Yes", "No", getAdapterPosition(), 1);
-               }
+                }
             });
 
             ivFeedPic.setOnClickListener(new View.OnClickListener() {
@@ -186,9 +195,9 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             tvExternalUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!TextUtils.isEmpty(feedList.get(getAdapterPosition()).getExternalUrl())){
+                    if (!TextUtils.isEmpty(feedList.get(getAdapterPosition()).getExternalUrl())) {
                         Intent intent = new Intent(mContext.getActivity(), WebViewActivity.class);
-                        intent.putExtra("URL",feedList.get(getAdapterPosition()).getExternalUrl());
+                        intent.putExtra("URL", feedList.get(getAdapterPosition()).getExternalUrl());
                         mContext.startActivity(intent);
                     }
 //                    String urlString = feedList.get(getAdapterPosition()).getExternalUrl();
@@ -252,6 +261,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
 //            });
         }
     }
+
     private void enlargePhoto(String photoUrl) {
         // stop the video if playing
 
@@ -293,6 +303,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         dialog.show();
 
     }
+
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
             btn2String, int adapterPosition, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
