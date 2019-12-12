@@ -1,9 +1,14 @@
 package com.octopusbjsindia.view.activities;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +17,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.URLUtil;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -91,7 +98,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
             case R.id.iv_feed_image:
                 onAddImageClick();
@@ -119,21 +126,21 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
 
     private boolean isAllDataValid() {
 
-        if(!TextUtils.isEmpty(etDescription.getText().toString().trim())) {
+        if(!TextUtils.isEmpty(etUrl.getText().toString().trim())) {
             if(!URLUtil.isValidUrl(etUrl.getText().toString().trim())){
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please enter valid URL.", Snackbar.LENGTH_LONG);
+                        "Please enter valid Url.", Snackbar.LENGTH_LONG);
                 return false;
             }
         }
 
         if (TextUtils.isEmpty(etTitle.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please Enter Title.", Snackbar.LENGTH_LONG);
+                    "Please enter title.", Snackbar.LENGTH_LONG);
             return false;
         } else if(TextUtils.isEmpty(etDescription.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please Enter Description.", Snackbar.LENGTH_LONG);
+                    "Please enter description.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             requestData.put("title",etTitle.getText().toString());
@@ -370,5 +377,42 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
+    @Override
+    public void onBackPressed() {
+
+        final Dialog dialog = new Dialog(Objects.requireNonNull(this));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText("Alert");
+            title.setVisibility(View.VISIBLE);
+
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText("Are you sure you want to discard.");
+            text.setVisibility(View.VISIBLE);
+
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText("Yes");
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+                super.onBackPressed();
+            });
+
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText("No");
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+            });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
 
 }

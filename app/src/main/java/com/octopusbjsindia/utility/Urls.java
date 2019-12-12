@@ -157,6 +157,7 @@ public class Urls {
         public static final String NEW_FEED = "api/newFeed";
         public static final String FEED_LIST = "api/getFeedList";
         public static final String DELETE_FEED = "api/deleteFeed";
+        public static final String COMMENT_LIST = "api/commentList";
     }
 
 }
