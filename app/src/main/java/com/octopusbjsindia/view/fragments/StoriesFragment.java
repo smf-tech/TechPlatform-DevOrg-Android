@@ -83,20 +83,20 @@ public class StoriesFragment extends Fragment implements APIDataListener {
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
         for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
+            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_CREATE_FEED)) {
                 isCreateFeed = true;
-                break;
-            } /*else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
+                continue;
+            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DELETE_FEED)) {
                 isDalete = true;
                 continue;
-            } */
+            }
         }
 
         rvFeeds = view.findViewById(R.id.rv_feeds);
         rvFeeds.setNestedScrollingEnabled(false);
 
         feedList = new ArrayList<FeedData>();
-        adapter = new FeedsAdapter(this, feedList, presentr,isCreateFeed);
+        adapter = new FeedsAdapter(this, feedList, presentr,isDalete);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         rvFeeds.setLayoutManager(mLayoutManager);
         rvFeeds.setAdapter(adapter);

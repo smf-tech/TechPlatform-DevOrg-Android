@@ -31,6 +31,7 @@ import com.octopusbjsindia.models.stories.FeedData;
 import com.octopusbjsindia.presenter.StoriesFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.CommentActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
 import com.octopusbjsindia.view.activities.WebViewActivity;
@@ -47,14 +48,14 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     ArrayList<FeedData> feedList;
     StoriesFragment mContext;
     StoriesFragmentPresenter presentr;
-    boolean isCreateFeed;
+    boolean isDeleteFeed;
 //    private RequestOptions requestOptionsCirculer, requestOptions;
 
-    public FeedsAdapter(StoriesFragment context, List<FeedData> feedList, StoriesFragmentPresenter presentr, boolean isCreateFeed) {
+    public FeedsAdapter(StoriesFragment context, List<FeedData> feedList, StoriesFragmentPresenter presentr, boolean isDeleteFeed) {
         this.feedList = (ArrayList<FeedData>) feedList;
         this.mContext = context;
         this.presentr = presentr;
-        this.isCreateFeed = isCreateFeed;
+        this.isDeleteFeed = isDeleteFeed;
 //        requestOptionsCirculer = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
 //        requestOptionsCirculer = requestOptionsCirculer.apply(RequestOptions.circleCropTransform());
 //        requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
@@ -152,7 +153,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             tvReadMore = itemView.findViewById(R.id.tv_read_more);
             tvExternalUrl = itemView.findViewById(R.id.tv_external_url);
 
-            if (isCreateFeed) {
+            if (isDeleteFeed) {
                 ivDelete.setVisibility(View.VISIBLE);
             } else {
                 ivDelete.setVisibility(View.GONE);
@@ -221,15 +222,15 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
 //                    mContext.startActivityForResult(intent,Constants.FEED_DATA);
 //                }
 //            });
-//            lyComment.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mContext.setPosition(getAdapterPosition());
-//                    Intent intent = new Intent(mContext.getActivity(), CommentActivity.class);
-//                    intent.putExtra(FEED_DATA, feedList.get(getAdapterPosition()));
-//                    mContext.startActivityForResult(intent,Constants.COMMENT_COUNT);
-//               }
-//            });
+            lyComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.setPosition(getAdapterPosition());
+                    Intent intent = new Intent(mContext.getActivity(), CommentActivity.class);
+                    intent.putExtra(FEED_DATA, feedList.get(getAdapterPosition()).getFeedId());
+                    mContext.startActivity(intent);
+               }
+            });
 //            lyShare.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
