@@ -50,17 +50,13 @@ public class CommentActivity extends AppCompatActivity implements APIDataListene
         commentList = new ArrayList<CommentData>();
 
 
-        feedId =getIntent().getStringExtra(FEED_DATA);
-        if(Util.isConnected(this)){
-            if(Util.isConnected(this)){
-                presentr.getCommentList(feedId);
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network),this);
-                findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
-            }
+        feedId = getIntent().getStringExtra(FEED_DATA);
 
+        if (Util.isConnected(this)) {
+            presentr.getCommentList(feedId);
         } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network),this);
+            Util.showToast(getResources().getString(R.string.msg_no_network), this);
+            findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         }
 
 //        etComment = findViewById(R.id.et_comment);
@@ -77,7 +73,7 @@ public class CommentActivity extends AppCompatActivity implements APIDataListene
 
     }
 
-    public void setToolbar(String title){
+    public void setToolbar(String title) {
         TextView tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
@@ -94,7 +90,7 @@ public class CommentActivity extends AppCompatActivity implements APIDataListene
         commentList.addAll(data);
 //        rvComments.smoothScrollToPosition(commentList.size()-1);
         adapter.notifyDataSetChanged();
-        if(commentList.size()>0){
+        if (commentList.size() > 0) {
             findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
             findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
@@ -103,12 +99,12 @@ public class CommentActivity extends AppCompatActivity implements APIDataListene
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        if(TextUtils.isEmpty(message)){
-            Util.showToast(getResources().getString(R.string.msg_no_network),this);
+        if (TextUtils.isEmpty(message)) {
+            Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
         } else {
-            Util.showToast(message,this);
+            Util.showToast(message, this);
         }
-        if(commentList.size()>0){
+        if (commentList.size() > 0) {
             findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
             findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
