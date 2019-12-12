@@ -533,11 +533,37 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     @Override
     public void onFailureListener(String requestID, String message) {
         Util.showToast(message,this);
+        if(viewType == 1){
+            if(ssStructureListData.size()>0 ){
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+        } else {
+            if(ssMachineListData.size()>0 ){
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
         Util.showToast(error.getMessage(),this);
+        if(viewType == 1){
+            if(ssStructureListData.size()>0 ){
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+        } else {
+            if(ssMachineListData.size()>0 ){
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                structureMachineListFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
