@@ -431,8 +431,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
             structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
             structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
-            structureData.setLat(location.getLatitude());
-            structureData.setLog(location.getLongitude());
+            if (location != null) {
+                structureData.setLat(location.getLatitude());
+                structureData.setLog(location.getLongitude());
+            }
             structureData.setFfId(Util.getUserObjectFromPref().getId());
             structureData.setRemark(etRemark.getText().toString());
         }
