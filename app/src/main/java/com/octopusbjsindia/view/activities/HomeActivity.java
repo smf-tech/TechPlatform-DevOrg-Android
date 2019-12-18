@@ -76,6 +76,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private final String TAG = this.getClass().getSimpleName();
     private BroadcastReceiver mMessageReceiver;
     private BroadcastReceiver connectionReceiver;
+    private String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             String newToken = instanceIdResult.getToken();
             Log.d("Token", newToken);
         });
+        toOpen = getIntent().getStringExtra("toOpen");
    }
 
     private void initConnectivityReceiver() {
@@ -118,7 +120,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void subscribedToFirebaseTopics() {
-//        FirebaseMessaging.getInstance().subscribeToTopic("Test");
+        FirebaseMessaging.getInstance().subscribeToTopic("Test");
         String userProject = Util.getUserObjectFromPref().getProjectIds().get(0).getName();
         String userRoll = Util.getUserObjectFromPref().getRoleNames();
         userProject = userProject.replaceAll(" ", "_");
