@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,6 +73,7 @@ import java.util.Locale;
 import static com.octopusbjsindia.receivers.ConnectivityReceiver.connectivityReceiverListener;
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
+    private long mLastClickTime = 0;
     private String strReasonId="";
     ArrayList<String> ListHaltReasons = new ArrayList<>();
     private SingleSelectBottomSheet bottomSheetDialogFragment;
@@ -292,7 +294,20 @@ private ImageView toolbar_edit_action;
         buttonPauseService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Preventing multiple clicks, using threshold of 1 second
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                Log.e("clickTime cuurent", "" + SystemClock.elapsedRealtime());
+                Log.e("clickTime Lastt", "" + mLastClickTime);
+                mLastClickTime = SystemClock.elapsedRealtime();
+                buttonPauseService.setEnabled(false);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    buttonPauseService.setEnabled(true);
+                }, 1000);
                 GetLocationofOperator();
                 if (preferences.getInt("State", 0) == state_start) {
                     editor.putInt("State", state_pause);
@@ -308,11 +323,7 @@ private ImageView toolbar_edit_action;
 
                 //int systemTime = preferences.getInt("systemTime", 0);
                 //int systemClockTime = preferences.getInt("systemClockTime", 0);
-                buttonPauseService.setEnabled(false);
-                Handler handler = new Handler();
-                handler.postDelayed(() -> {
-                    buttonPauseService.setEnabled(true);
-                }, 1000);
+
             }
         });
         /*buttonHaltService.setOnClickListener(new View.OnClickListener() {
@@ -392,6 +403,12 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 GetLocationofOperator();
            /*     if (Permissions.isCameraPermissionGranted(OperatorMeterReadingActivity.this, this)) {
 
@@ -420,6 +437,14 @@ private ImageView toolbar_edit_action;
         btnStopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 GetLocationofOperator();
                 /*if (TextUtils.isEmpty(et_emeter_read.getText())) {
                     Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
