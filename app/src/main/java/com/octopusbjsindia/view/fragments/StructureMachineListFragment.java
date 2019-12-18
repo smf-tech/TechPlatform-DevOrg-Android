@@ -140,54 +140,56 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
-                isMachineAdd = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
-                isStructureAdd = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
-                isMachineTerminate = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_AVAILABLE_MACHINE)) {
-                isMachineAvailable = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
-                isMachineDepoly = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
-                isMachineEligible = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
-                isMachineMou =true;
-            }else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
-                isMachineVisitValidationForm = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
-                isSiltTransportForm = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DIESEL_RECORD_FORM)) {
-                isDieselRecordForm = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SHIFT_FORM)) {
-                isMachineShiftForm = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
-                isMachineRelease = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
-                isStateFilter = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
-                isDistrictFilter = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
-                isTalukaFilter = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
-                isVillageFilter = true;
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
+                    isMachineAdd = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
+                    isStructureAdd = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
+                    isMachineTerminate = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_AVAILABLE_MACHINE)) {
+                    isMachineAvailable = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
+                    isMachineDepoly = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
+                    isMachineEligible = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
+                    isMachineMou = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
+                    isMachineVisitValidationForm = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
+                    isSiltTransportForm = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DIESEL_RECORD_FORM)) {
+                    isDieselRecordForm = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SHIFT_FORM)) {
+                    isMachineShiftForm = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
+                    isMachineRelease = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
+                    isStateFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
+                    isDistrictFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
+                    isTalukaFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
+                    isVillageFilter = true;
+                }
             }
         }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
@@ -259,6 +261,25 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     super.onScrolled(recyclerView, dx, dy);
                 }
             });
+            if (viewType != 1) {
+                if (Util.isConnected(getActivity())) {
+                    if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
+                        structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
+                                getUserLocation().getStateId().get(0).getId());
+                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
+                        structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
+                                        getUserLocation().getStateId().get(0).getId(),
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
+                        structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
+                                        getUserLocation().getStateId().get(0).getId(),
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+            }
         }
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
@@ -489,24 +510,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     //Taluka vise
                     structureMachineListFragmentPresenter.getStrucuresList(
                             Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-                }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
-        } else {
-            if (Util.isConnected(getActivity())) {
-                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                    structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-                            getUserLocation().getStateId().get(0).getId());
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-                    structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-                                    getUserLocation().getStateId().get(0).getId(),
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                    structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-                                    getUserLocation().getStateId().get(0).getId(),
                             Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                             Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
                 }

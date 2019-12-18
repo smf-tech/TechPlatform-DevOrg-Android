@@ -52,7 +52,7 @@ public class StoriesFragment extends Fragment implements APIDataListener {
     private RecyclerView rvFeeds;
     int position=0;
 
-    boolean isCreateFeed,isDalete;
+    boolean isCreateFeed = false,isDalete = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -81,16 +81,19 @@ public class StoriesFragment extends Fragment implements APIDataListener {
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_CREATE_FEED)) {
-                isCreateFeed = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DELETE_FEED)) {
-                isDalete = true;
-                continue;
+        if(roleAccessList != null){
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_CREATE_FEED)) {
+                    isCreateFeed = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DELETE_FEED)) {
+                    isDalete = true;
+                    continue;
+                }
             }
         }
+
 
         rvFeeds = view.findViewById(R.id.rv_feeds);
         rvFeeds.setNestedScrollingEnabled(false);

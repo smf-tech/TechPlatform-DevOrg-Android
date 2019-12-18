@@ -79,6 +79,13 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         }
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
 
+        if (machineData.getStatusCode() == Constants.SSModule.MACHINE_HALTED_STATUS_CODE){
+            holder.lyReason.setVisibility(View.VISIBLE);
+            holder.tvReason.setText(machineData.getHaltReason());
+        } else {
+            holder.lyReason.setVisibility(View.GONE);
+        }
+
         if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE
                 || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE
                 || ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
@@ -131,10 +138,10 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvMachineCode, tvProvider, tvMachineModel, tvContact, tvStructureCode,
                 tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
-                tvLocation, tvOwnerValue;
+                tvLocation, tvOwnerValue,tvReason;
         Button btAction;
         ImageView btnPopupMenu;
-        LinearLayout rlMachine;
+        LinearLayout rlMachine,lyReason;
         PopupMenu popup;
 
         ViewHolder(View itemView) {
@@ -148,6 +155,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             tvOwnerValue = itemView.findViewById(R.id.tv_owner_value);
             tvContact = itemView.findViewById(R.id.tv_contact);
             btAction = itemView.findViewById(R.id.bt_action);
+            lyReason = itemView.findViewById(R.id.ly_reason);
+            tvReason = itemView.findViewById(R.id.tv_reason);
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
