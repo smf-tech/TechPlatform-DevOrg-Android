@@ -82,7 +82,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
+        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
             Intent intent = new Intent(HomeActivity.this, OperatorMeterReadingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -99,7 +99,67 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Log.d("Token", newToken);
         });
         toOpen = getIntent().getStringExtra("toOpen");
-   }
+        if (toOpen != null) {
+            Intent intent;
+            switch (toOpen) {
+                case "formApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "forms");
+                    this.startActivity(intent);
+                    break;
+                case "userApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "userapproval");
+                    this.startActivity(intent);
+                    break;
+                case "leaveApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "leave");
+                    this.startActivity(intent);
+                    break;
+                case "attendanceApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "attendance");
+                    this.startActivity(intent);
+                    break;
+                case "compoffApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "compoff");
+                    this.startActivity(intent);
+                    break;
+                case "event":
+                    intent = new Intent(this, PlannerDetailActivity.class);
+                    intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    this.startActivity(intent);
+                    break;
+                case "task":
+                    intent = new Intent(this, PlannerDetailActivity.class);
+                    intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    this.startActivity(intent);
+                    break;
+                case "leave":
+                    intent = new Intent(this, GeneralActionsActivity.class);
+                    intent.putExtra("title", this.getString(R.string.leave));
+                    intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                    this.startActivity(intent);
+                    break;
+                case "structure":
+                    intent = new Intent(this, SSActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("viewType", 1);
+                    intent.putExtra("title", "Structure List");
+                    this.startActivity(intent);
+                    break;
+                case "machine":
+                    intent = new Intent(this, SSActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("viewType", 2);
+                    intent.putExtra("title", "Machine List");
+                    this.startActivity(intent);
+                    break;
+            }
+        }
+    }
 
     private void initConnectivityReceiver() {
         connectionReceiver = new ConnectivityReceiver();
@@ -430,11 +490,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Octopus share");
-                    String shareMessage= "\nPlease checkout the Octopus app from Bhartiya Jain Sanghatana\n\n";
-                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                    String shareMessage = "\nPlease checkout the Octopus app from Bhartiya Jain Sanghatana\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, "choose one"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     //e.toString();
                 }
                 AppEvents.trackAppEvent(getString(R.string.share_app));
@@ -689,7 +749,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         ImageView sync = findViewById(R.id.home_sync_icon);
-        if(isConnected) {
+        if (isConnected) {
             sync.setImageResource(R.drawable.ic_internet_connected);
 //            Util.snackBarToShowMsg(getWindow().getDecorView()
 //                            .findViewById(android.R.id.content), "Internet connection is available.",

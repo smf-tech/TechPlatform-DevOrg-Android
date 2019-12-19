@@ -111,8 +111,8 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        structureAnalyticsAdapter = new SSAnalyticsAdapter(structureAnalyticsDataList);
-        machineAnalyticsAdapter = new SSAnalyticsAdapter(machineAnalyticsDataList);
+        structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),structureAnalyticsDataList,1, "Structure List");
+        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),machineAnalyticsDataList,2,"Machine List");
 //        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
 //                getSSMasterDatabaseDao().getSSMasterData();
 

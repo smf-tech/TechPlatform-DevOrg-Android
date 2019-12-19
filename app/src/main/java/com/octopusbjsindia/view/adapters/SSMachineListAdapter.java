@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,8 +83,10 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         if (machineData.getStatusCode() == Constants.SSModule.MACHINE_HALTED_STATUS_CODE){
             holder.lyReason.setVisibility(View.VISIBLE);
             holder.tvReason.setText(machineData.getHaltReason());
+            holder.lyAction.setVisibility(View.GONE);
         } else {
             holder.lyReason.setVisibility(View.GONE);
+            holder.lyAction.setVisibility(View.VISIBLE);
         }
 
         if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE
@@ -141,7 +144,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 tvLocation, tvOwnerValue,tvReason;
         Button btAction;
         ImageView btnPopupMenu;
-        LinearLayout rlMachine,lyReason;
+        LinearLayout rlMachine;
+        RelativeLayout lyAction,lyReason;
         PopupMenu popup;
 
         ViewHolder(View itemView) {
@@ -157,6 +161,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             btAction = itemView.findViewById(R.id.bt_action);
             lyReason = itemView.findViewById(R.id.ly_reason);
             tvReason = itemView.findViewById(R.id.tv_reason);
+            lyAction = itemView.findViewById(R.id.ly_action);
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
