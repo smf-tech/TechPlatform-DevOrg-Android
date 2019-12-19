@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -43,6 +44,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -86,6 +88,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private static final int REQUEST_CAPTURE_IMAGE = 100;
     Uri photoURI;
     Uri finalUri;
+    String currentPhotoPath = "";
     OperatorRequestResponseModel operatorRequestResponseModel;
     boolean flag = true;
     boolean isStartImage = true;
@@ -300,9 +303,10 @@ private ImageView toolbar_edit_action;
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
                 }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Log.e("clickTime cuurent", "" + SystemClock.elapsedRealtime());
                 Log.e("clickTime Lastt", "" + mLastClickTime);
-                mLastClickTime = SystemClock.elapsedRealtime();
+
                 buttonPauseService.setEnabled(false);
                 Handler handler = new Handler();
                 handler.postDelayed(() -> {
@@ -377,6 +381,12 @@ private ImageView toolbar_edit_action;
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
                         strReasonId ="";
+                        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+                        Gson gson = new Gson();
+                        OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
+                        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
+                            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
+                        }
                         showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
 
                         /*updateStatusAndProceed(state_halt);
@@ -506,7 +516,8 @@ private ImageView toolbar_edit_action;
                 showReadingDialog(this,1);
             } else if (flag) {
                 if (Permissions.isCameraPermissionGranted(this, this)) {
-                openCameraIntent();
+                //openCameraIntent();
+                    openCamera();
                 flag = false;
                 isStartImage = true;
                 }
@@ -535,7 +546,8 @@ private ImageView toolbar_edit_action;
             showReadingDialog(this,2);
         } else if (flag) {
             if (Permissions.isCameraPermissionGranted(this, this)) {
-                openCameraIntent();
+                //openCameraIntent();
+                openCamera();
                 isStartImage = false;
                 flag = false;
             }
@@ -631,7 +643,9 @@ private ImageView toolbar_edit_action;
 
     public void saveOperatorStateData(String machine_id, String workTime,String status, String statusCode, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
         operatorRequestResponseModel = new OperatorRequestResponseModel();
-        operatorRequestResponseModel.setMachine_id(machine_id);
+        if (!preferences.getString("machine_id", "").equalsIgnoreCase("")) {
+            operatorRequestResponseModel.setMachine_id(preferences.getString("machine_id", ""));
+        }
         operatorRequestResponseModel.setWorkTime(workTime);
         operatorRequestResponseModel.setStatus_code(statusCode);
         operatorRequestResponseModel.setStatus(status);
@@ -695,19 +709,24 @@ private ImageView toolbar_edit_action;
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
 
-                try {
-                    String imageFilePath = getImageName();
+               /* try {
+                    *//*String imageFilePath = getImageName();
                     if (imageFilePath == null) {
                         return;
-                    }
+                    }*//*
+                    Uri uri = Uri.parse(imageFilePath);
                     finalUri = Util.getUri(imageFilePath);
-                    UCrop.of(photoURI, finalUri)
+                    UCrop.of(photoURI, uri)
                             .withAspectRatio(1, 1)
                             .withMaxResultSize(500, 500)
                             .start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
-                }
+                }*/
+
+               // Uri uri = Uri.parse(currentPhotoPath);
+                Uri uri=Uri.fromFile(new File(currentPhotoPath));
+                openCropActivity(uri, uri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -750,6 +769,14 @@ private ImageView toolbar_edit_action;
         }
     }
 
+    private void openCropActivity(Uri sourceUri, Uri destinationUri) {
+        UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(500, 500)
+                .withAspectRatio(5f, 5f)
+                .start(this);
+    }
+
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -762,6 +789,52 @@ private ImageView toolbar_edit_action;
         }
         return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+
+    private File getImageFile() {
+        /*String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM
+                ), "Octopus"
+        );
+        File file = null;
+        try {
+            file = File.createTempFile(
+                    imageFileName, ".jpg", storageDir
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentPhotoPath = "file:" + file.getAbsolutePath();
+        return file;*/
+
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+
+        return file;
+
     }
 
     public void clearReadingImages() {
@@ -898,6 +971,18 @@ private ImageView toolbar_edit_action;
                         REQUEST_CAPTURE_IMAGE);
             }
         }
+    }
+
+    private void openCamera() {
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getImageFile(); // 1
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+            uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+        else
+            uri = Uri.fromFile(file); // 3
+        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+        startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
     }
 
     private File createImageFile() throws IOException {

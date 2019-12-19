@@ -14,7 +14,7 @@ public class Permissions {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED ||
+                    == PackageManager.PERMISSION_GRANTED &&
                     context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED) {
                 return true;

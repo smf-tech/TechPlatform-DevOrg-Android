@@ -5,6 +5,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class MachineWorklogList {
 
+    @SerializedName("machineId")
+    @Expose
+    private String machineId;
+
+    @SerializedName("workDate")
+    @Expose
+    private String workDate;
+
+
+
     @SerializedName("startDate")
     @Expose
     private String startDate;
@@ -72,4 +82,19 @@ public class MachineWorklogList {
         this.totalHrsCunt = totalHrsCunt;
     }
 
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
+    public String getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(String workDate) {
+        this.workDate = workDate;
+    }
 }

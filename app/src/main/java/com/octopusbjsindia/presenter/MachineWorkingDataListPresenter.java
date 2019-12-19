@@ -15,6 +15,7 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
 
 
     private final String GET_APP_CONFIG = "getappconfig";
+    private final String GET_WORKLOG_DETAILS = "getworklogdetails";
 
     private MachineWorkingDataListActivity mContext;
 
@@ -70,6 +71,13 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
         MachineWorkingDataListRequestCall requestCall = new MachineWorkingDataListRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_APP_CONFIG,requestJson ,url);
+    }
+
+    public void getMachineWorklogDetails(String requestJson){
+        final String url = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_WORKLOG__DETAILS);
+        MachineWorkingDataListRequestCall requestCall = new MachineWorkingDataListRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_WORKLOG_DETAILS,requestJson ,url);
     }
 
 
