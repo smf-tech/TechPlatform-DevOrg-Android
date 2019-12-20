@@ -83,6 +83,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         toolbar_back_action.setOnClickListener(this);
         toolbar_edit_action.setOnClickListener(this);
+        toolbar_edit_action.setVisibility(View.GONE);
         rv_machinedataworklog.setLayoutManager(layoutManager);
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
         rv_machinedetailsworklog.setLayoutManager(layoutManager2);
@@ -151,10 +152,10 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                             && !machineWorklogDetailModel.getMachineWorklogDetails().isEmpty()
                             && machineWorklogDetailModel.getMachineWorklogDetails().size() > 0) {
                         rv_machinedetailsworklog.setVisibility(View.VISIBLE);
-                        toolbar_edit_action.setVisibility(View.VISIBLE);
+                        toolbar_edit_action.setVisibility(View.GONE);
                         toolbar_edit_action.setImageResource(R.drawable.ic_dialog_close_dark);
 
-                        toolbar_back_action.setVisibility(View.GONE);
+                        toolbar_back_action.setVisibility(View.VISIBLE);
                         machineWorkDetaillogAdapter = new MachineWorkDetaillogAdapter(this,machineWorklogDetailModel.getMachineWorklogDetails());
                         rv_machinedetailsworklog.setAdapter(machineWorkDetaillogAdapter);
                         layout_machine_worklist.setVisibility(View.GONE);
@@ -210,7 +211,17 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+
+                if (tv_complete_total_hours.getVisibility()==View.VISIBLE){
+                    finish();
+                }else {
+                    layout_machine_worklist.setVisibility(View.VISIBLE);
+                    tv_complete_total_hours.setVisibility(View.VISIBLE);
+                    rv_machinedataworklog.setVisibility(View.VISIBLE);
+                    rv_machinedetailsworklog.setVisibility(View.GONE);
+                    toolbar_edit_action.setVisibility(View.GONE);
+                    toolbar_back_action.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.toolbar_action:
                 //finish();
@@ -311,5 +322,19 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tv_complete_total_hours.getVisibility()==View.VISIBLE){
+            finish();
+        }else {
+            layout_machine_worklist.setVisibility(View.VISIBLE);
+            tv_complete_total_hours.setVisibility(View.VISIBLE);
+            rv_machinedataworklog.setVisibility(View.VISIBLE);
+            rv_machinedetailsworklog.setVisibility(View.GONE);
+            toolbar_edit_action.setVisibility(View.GONE);
+            toolbar_back_action.setVisibility(View.VISIBLE);
+        }
     }
 }

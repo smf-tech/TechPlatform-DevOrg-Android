@@ -38,7 +38,7 @@
                         android:text="Date"
                         android:visibility="gone"
                         android:gravity="center"
-
+                        android:background="@drawable/bg_status_label_gray"
                         android:textSize="@dimen/text_size_16"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
@@ -61,8 +61,8 @@
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_02dp"
-
-                        android:textColor="@color/dark_grey"
+                        android:background="@drawable/bg_status_label_gray"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/opensans_regular"
                         />
 
@@ -71,19 +71,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tv_workhours_title"
-                        android:layout_width="@dimen/dimen_150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginStart="@dimen/dimen_07dp"
+                        android:layout_marginEnd="@dimen/dimen_07dp"
 
-                        android:text="Work hours"
+                        android:text="Work hours(HH:MM)"
                         android:gravity="left"
 
-                        android:textSize="@dimen/text_size_16"
+                        android:textSize="@dimen/text_size_14"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_02dp"
@@ -114,13 +121,13 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-
+                    android:orientation="vertical"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tv_machine_state_title"
-                        android:layout_width="@dimen/dimen_150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
@@ -128,7 +135,7 @@
                         android:text="staus"
                         android:gravity="left"
 
-                        android:textSize="@dimen/text_size_16"
+                        android:textSize="@dimen/text_size_14"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_02dp"
@@ -156,7 +163,8 @@
                         />
 
                 </LinearLayout>
-                <!--<TextView
+                </LinearLayout>
+                    <!--<TextView
                     android:layout_width="wrap_content"
                     android:text="Total hours"
                     android:id="@+id/tv_total_hours"
