@@ -318,12 +318,13 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
 //        }
 
         requestData.setStructureId(structureData.getStructureId());
-        if (TextUtils.isEmpty(selectedActivityID)
-                || TextUtils.isEmpty(selectedActivity)
-                || TextUtils.isEmpty(selectedTask)) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please fill proper information.",
-                    Snackbar.LENGTH_LONG);
+        if (TextUtils.isEmpty(selectedActivityID)){
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, enter select Activity.", Snackbar.LENGTH_LONG);
+            return false;
+        } else if( TextUtils.isEmpty(selectedTask)) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, enter select Task.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             requestData.setActivityCode(selectedActivityID);

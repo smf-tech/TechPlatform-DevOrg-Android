@@ -172,7 +172,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
