@@ -49,6 +49,7 @@ import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
 import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
@@ -112,7 +113,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
-    TextView tv_text,tv_machine_code,tv_machine_state;
+    public TextView tv_text,tv_machine_code,tv_machine_state;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String imageFilePath;
@@ -274,7 +275,7 @@ private ImageView toolbar_edit_action;
         buttonPauseService = findViewById(R.id.buttonPauseService);
         buttonHaltService = findViewById(R.id.buttonHaltService);
         tv_text = findViewById(R.id.tv_text);
-        tv_machine_code = findViewById(R.id.tv_machine_code);
+        tv_machine_code = findViewById(R.id.tv_machine_code_new);
         tv_machine_state= findViewById(R.id.tv_machine_state);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
@@ -383,10 +384,25 @@ private ImageView toolbar_edit_action;
                         strReasonId ="";
                         String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
                         Gson gson = new Gson();
-                        OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
-                        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
-                            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
+                        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
+/*                        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+                        }*/
+                        ListHaltReasons.clear();
+                        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")){
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getMr().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getMr().get(i).getValue());
+                            }
+                        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")){
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getHi().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getHi().get(i).getValue());
+                            }
+                        }else {
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+                            }
                         }
+
                         showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
 
                         /*updateStatusAndProceed(state_halt);
@@ -1127,15 +1143,28 @@ public String showReadingDialog(final Activity context, int pos){
         }
     }
 
-    public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
+    public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
         editor.putString("machine_code",operatorMachineData.getMachine_code());
+
         editor.apply();
-        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
-            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
+
+        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")){
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getMr().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getMr().get(i).getValue());
+            }
+        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")){
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getHi().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getHi().get(i).getValue());
+            }
+        }else {
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+            }
         }
+
         Gson gson = new Gson();
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
@@ -1259,8 +1288,14 @@ private void initConnectivityReceiver() {
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
        Gson gson = new Gson();
-       OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
-        strReasonId = operatorMachineData.getNonutilisationTypeData().get(selectedPosition).get_id();
+        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
+        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")) {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getMr().get(selectedPosition).get_id();
+        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")) {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getHi().get(selectedPosition).get_id();
+        }else {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getEn().get(selectedPosition).get_id();
+        }
         updateStatusAndProceed(state_halt);
         clearReadingImages();
 

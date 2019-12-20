@@ -7,38 +7,50 @@ import java.util.List;
 
 public class OperatorMachineData {
 
-    @SerializedName("machine_id")
+    @SerializedName("status")
     @Expose
-    private String machine_id;
-    @SerializedName("machine_code")
+    private Integer status;
+    @SerializedName("msg")
     @Expose
-    private String machine_code;
-    @SerializedName("nonutilisationTypeData")
+    private String msg;
+    @SerializedName("data")
     @Expose
-    private List<NonutilisationTypeDataList> nonutilisationTypeData = null;
+    private OperatorMachineCodeDataModel OperatorMachineCodeDataModel;
+    @SerializedName("code")
+    @Expose
+    private Integer code;
 
-    public String getMachine_id() {
-        return machine_id;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setMachine_id(String machine_id) {
-        this.machine_id = machine_id;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public String getMachine_code() {
-        return machine_code;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMachine_code(String machine_code) {
-        this.machine_code = machine_code;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public List<NonutilisationTypeDataList> getNonutilisationTypeData() {
-        return nonutilisationTypeData;
+
+
+    public Integer getCode() {
+        return code;
     }
 
-    public void setNonutilisationTypeData(List<NonutilisationTypeDataList> nonutilisationTypeData) {
-        this.nonutilisationTypeData = nonutilisationTypeData;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
+    public com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel getOperatorMachineCodeDataModel() {
+        return OperatorMachineCodeDataModel;
+    }
+
+    public void setOperatorMachineCodeDataModel(com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel operatorMachineCodeDataModel) {
+        OperatorMachineCodeDataModel = operatorMachineCodeDataModel;
+    }
 }
