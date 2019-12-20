@@ -342,7 +342,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         }
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/profile");
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
             return;

@@ -1074,7 +1074,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()

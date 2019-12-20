@@ -267,19 +267,19 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         }
                     }
 
-                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
-                    if (orgData != null && orgData.size() > 0) {
-                        int id = 0;
-                        showOrganizations(orgData);
-
-                        for (int i = 0; i < orgData.size(); i++) {
-                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
-                                id = i;
-                                this.selectedOrg = orgData.get(i);
-                            }
-                        }
-                        spOrganization.setSelection(id);
-                    } else {
+//                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
+//                    if (orgData != null && orgData.size() > 0) {
+//                        int id = 0;
+//                        showOrganizations(orgData);
+//
+//                        for (int i = 0; i < orgData.size(); i++) {
+//                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
+//                                id = i;
+//                                this.selectedOrg = orgData.get(i);
+//                            }
+//                        }
+//                        spOrganization.setSelection(id);
+//                    } else {
                         if (Util.isConnected(this)) {
                             profilePresenter.getOrganizations();
                         } else {
@@ -294,7 +294,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             orgList.add(orgObj);
                             this.organizations = orgList;
                         }
-                    }
+                   // }
                     if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
 
                         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
@@ -626,6 +626,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void takePhotoFromCamera() {
+     try {
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = getImageFile(); // 1
         Uri uri;
@@ -635,6 +636,14 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             uri = Uri.fromFile(file); // 3
         pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
         startActivityForResult(pictureIntent,Constants.CHOOSE_IMAGE_FROM_CAMERA);
+    } catch (ActivityNotFoundException e) {
+        //display an error message
+        Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
+                Toast.LENGTH_SHORT).show();
+    } catch (SecurityException e) {
+        Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
+                Toast.LENGTH_SHORT).show();
+    }
     }
 
     private File getImageFile() {
