@@ -27,6 +27,9 @@ public class UserLocation {
     @SerializedName("village")
     private List<JurisdictionType> villageIds;
 
+    @SerializedName("school")
+    private List<JurisdictionType> schoolIds;
+
     public List<JurisdictionType> getCountryId() {
         return countryId;
     }
@@ -81,5 +84,13 @@ public class UserLocation {
 
     public void setVillageIds(List<JurisdictionType> villageIds) {
         this.villageIds = villageIds;
+    }
+
+    public List<JurisdictionType> getSchoolIds() {
+        return schoolIds;
+    }
+
+    public void setSchoolIds(List<JurisdictionType> schoolIds) {
+        this.schoolIds = schoolIds;
     }
 }

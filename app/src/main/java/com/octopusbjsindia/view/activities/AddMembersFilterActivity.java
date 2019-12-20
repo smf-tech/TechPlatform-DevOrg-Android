@@ -9,7 +9,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.AddMemberListener;
 import com.octopusbjsindia.models.events.ParametersFilterMember;
 import com.octopusbjsindia.models.events.Participant;
@@ -29,7 +31,7 @@ import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
 public class AddMembersFilterActivity extends BaseActivity implements AddMemberListener,
-        View.OnClickListener, MultiSelectSpinner.MultiSpinnerListener {
+        View.OnClickListener, MultiSelectSpinner.MultiSpinnerListener, APIDataListener {
 
 //    private MultiSelectSpinner spOrganization;
     private MultiSelectSpinner spState;
@@ -182,7 +184,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 //                        selectedRoles.get(0),selectedRole.getProject().getJurisdictionTypeId(),
 //                        Constants.JurisdictionLevelName.STATE_LEVEL);
                 if(selectedRolesJurisdictionTypeId.size()!=0) {
-                    addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                    addMemberFilerPresenter.getLocationData("",
                             selectedRolesJurisdictionTypeId.get(0),
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
@@ -197,7 +199,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 }
                 if (spDistrict.getVisibility() == View.VISIBLE) {
                     if(selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                        addMemberFilerPresenter.getLocationData(selectedStates.get(0).getId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                     }
@@ -214,7 +216,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                 if (spTaluka.getVisibility() == View.VISIBLE) {
                     if(selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                        addMemberFilerPresenter.getLocationData(selectedDistricts.get(0).getId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     }
@@ -231,7 +233,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                 if (spVillage.getVisibility() == View.VISIBLE) {
                     if(selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
+                        addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                     }
@@ -341,7 +343,10 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         stateNames.add(location.getName());
-                        //this.states.add(location.getState());
+                        JurisdictionType jurisdictionType = new JurisdictionType();
+                        jurisdictionType.setId(location.getId());
+                        jurisdictionType.setName(location.getName());
+                        this.states.add(jurisdictionType);
                     }
 
                     spState.setItems(stateNames, getString(R.string.state), this);
@@ -358,12 +363,15 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
+                        //for (JurisdictionType state : selectedStates) {
 //                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-//                                districts.add(location.getDistrict().getName());
-//                                this.districts.add(location.getDistrict());
-//                            }
-                        }
+                                districts.add(location.getName());
+                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                jurisdictionType.setId(location.getId());
+                                jurisdictionType.setName(location.getName());
+                                this.districts.add(jurisdictionType);
+                            //}
+                        //}
                     }
                     spDistrict.setItems(districts, getString(R.string.district), this);
 
@@ -379,16 +387,19 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
+//                        for (JurisdictionType state : selectedStates) {
 //                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
 //                                for (JurisdictionType district : selectedDistricts) {
 //                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-//                                        talukas.add(location.getTaluka().getName());
-//                                        this.talukas.add(location.getTaluka());
+                                        talukas.add(location.getName());
+                                        JurisdictionType jurisdictionType = new JurisdictionType();
+                                        jurisdictionType.setId(location.getId());
+                                        jurisdictionType.setName(location.getName());
+                                        this.talukas.add(jurisdictionType);
 //                                    }
 //                                }
 //                            }
-                        }
+//                        }
                     }
                     spTaluka.setItems(talukas, getString(R.string.taluka), this);
 
@@ -404,20 +415,23 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
+//                        for (JurisdictionType state : selectedStates) {
 //                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
 //                                for (JurisdictionType district : selectedDistricts) {
 //                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
 //                                        for (JurisdictionType taluka : selectedTalukas) {
 //                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-//                                                villages.add(location.getVillage().getName());
-//                                                this.villages.add(location.getVillage());
+                                                villages.add(location.getName());
+                                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                                jurisdictionType.setId(location.getId());
+                                                jurisdictionType.setName(location.getName());
+                                                this.villages.add(jurisdictionType);
 //                                            }
 //                                        }
 //                                    }
 //                                }
 //                            }
-                        }
+//                        }
                     }
                     spVillage.setItems(villages, getString(R.string.village), this);
 
@@ -433,20 +447,23 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
+//                        for (JurisdictionType state : selectedStates) {
 //                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
 //                                for (JurisdictionType district : selectedDistricts) {
 //                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
 //                                        for (JurisdictionType taluka : selectedTalukas) {
 //                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-//                                                clusters.add(location.getCluster().getName());
-//                                                this.clusters.add(location.getCluster());
+                                                clusters.add(location.getName());
+                                                JurisdictionType jurisdictionType = new JurisdictionType();
+                                                jurisdictionType.setId(location.getId());
+                                                jurisdictionType.setName(location.getName());
+                                                this.clusters.add(jurisdictionType);
 //                                            }
 //                                        }
 //                                    }
 //                                }
 //                            }
-                        }
+//                        }
                     }
                     spCluster.setItems(clusters, getString(R.string.cluster), this);
 
@@ -483,6 +500,21 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     }
 
     @Override
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(message,this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        Util.showToast(error.getMessage(),this);
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
     public void showProgressBar() {
         runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
@@ -500,6 +532,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
     }
 
     @Override
