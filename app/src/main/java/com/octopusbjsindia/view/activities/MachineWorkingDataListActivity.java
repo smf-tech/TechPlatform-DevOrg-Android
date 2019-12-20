@@ -10,6 +10,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +57,8 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     private ImageView toolbar_back_action;
     private ImageView toolbar_edit_action;
     private TextView toolbar_title,tv_no_data_msg,tv_complete_total_hours;
-
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
     private LinearLayout layout_machine_worklist;
 
     @Override
@@ -63,6 +66,8 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_machine_worklog);
         layout_machine_worklist = findViewById(R.id.layout_machine_worklist);
+        progressBarLayout = findViewById(R.id.profile_act_progress_bar);
+        progressBar = findViewById(R.id.pb_profile_act);
         rv_machinedataworklog = findViewById(R.id.rv_machinedataworklog);
         rv_machinedetailsworklog = findViewById(R.id.rv_machinedetailsworklog);
         toolbar_back_action = findViewById(R.id.toolbar_back_action);
@@ -336,5 +341,23 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
             toolbar_edit_action.setVisibility(View.GONE);
             toolbar_back_action.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void showProgressBar() {
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void hideProgressBar() {
+        runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 }
