@@ -1234,7 +1234,7 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putInt("systemClockTime",0);
         editor.putInt("totalHours", 0);
         editor.apply();
-
+        totalHours = 0;
         editor.putString(Constants.OperatorModule.MACHINE_START_IMAGE,"");
         editor.putString(Constants.OperatorModule.MACHINE_END_IMAGE,"");
         editor.apply();
