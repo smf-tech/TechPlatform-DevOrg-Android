@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -105,6 +106,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private int statusCode;
     private int imgCount =0;
     private String currentPhotoPath = "";
+    private Activity activity;
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        activity = getActivity();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -371,7 +379,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri=Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getActivity());
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -381,7 +389,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     getImageFile();
                     outputUri = data.getData();
                     finalUri=Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getActivity());
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }

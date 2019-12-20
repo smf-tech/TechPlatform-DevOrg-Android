@@ -574,7 +574,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                finalUri = Util.getUri(imageFilePath);
 //                Crop.of(outputUri, finalUri).start(getContext(), this);
                 finalUri=Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getActivity());
+                Crop.of(finalUri, finalUri).start(getContext(),this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -589,7 +589,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                     getImageFile();
                     outputUri = data.getData();
                     finalUri=Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getActivity());
+                    Crop.of(outputUri, finalUri).start(getContext(),this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }

@@ -211,7 +211,7 @@ public class UserRegistrationMatrimonyAboutmeFragment extends Fragment implement
                     getImageFile();
                     outputUri = data.getData();
                     finalUri=Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getActivity());
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }

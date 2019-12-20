@@ -353,7 +353,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri=Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getActivity());
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -363,7 +363,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                     getImageFile();
                     outputUri = data.getData();
                     finalUri=Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getActivity());
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }

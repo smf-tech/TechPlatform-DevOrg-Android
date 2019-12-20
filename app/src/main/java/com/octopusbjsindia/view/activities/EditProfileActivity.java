@@ -263,19 +263,19 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         }
                     }
 
-                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
-                    if (orgData != null && orgData.size() > 0) {
-                        int id = 0;
-                        showOrganizations(orgData);
-
-                        for (int i = 0; i < orgData.size(); i++) {
-                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
-                                id = i;
-                                this.selectedOrg = orgData.get(i);
-                            }
-                        }
-                        spOrganization.setSelection(id);
-                    } else {
+//                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
+//                    if (orgData != null && orgData.size() > 0) {
+//                        int id = 0;
+//                        showOrganizations(orgData);
+//
+//                        for (int i = 0; i < orgData.size(); i++) {
+//                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
+//                                id = i;
+//                                this.selectedOrg = orgData.get(i);
+//                            }
+//                        }
+//                        spOrganization.setSelection(id);
+//                    } else {
                         if (Util.isConnected(this)) {
                             profilePresenter.getOrganizations();
                         } else {
@@ -290,7 +290,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             orgList.add(orgObj);
                             this.organizations = orgList;
                         }
-                    }
+                   // }
                     if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
 
                         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
