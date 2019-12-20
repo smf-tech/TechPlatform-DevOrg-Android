@@ -1,11 +1,10 @@
 package com.octopusbjsindia.models.Operator;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class OperatorMachineData {
+public class MachineWorklogDetailModel {
 
     @SerializedName("status")
     @Expose
@@ -15,7 +14,7 @@ public class OperatorMachineData {
     private String msg;
     @SerializedName("data")
     @Expose
-    private OperatorMachineCodeDataModel OperatorMachineCodeDataModel;
+    private List<MachineWorklogDetail> machineWorklogDetails = null;
     @SerializedName("code")
     @Expose
     private Integer code;
@@ -37,7 +36,6 @@ public class OperatorMachineData {
     }
 
 
-
     public Integer getCode() {
         return code;
     }
@@ -46,11 +44,11 @@ public class OperatorMachineData {
         this.code = code;
     }
 
-    public com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel getOperatorMachineCodeDataModel() {
-        return OperatorMachineCodeDataModel;
+    public List<MachineWorklogDetail> getMachineWorklogDetails() {
+        return machineWorklogDetails;
     }
 
-    public void setOperatorMachineCodeDataModel(com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel operatorMachineCodeDataModel) {
-        OperatorMachineCodeDataModel = operatorMachineCodeDataModel;
+    public void setMachineWorklogDetails(List<MachineWorklogDetail> machineWorklogDetails) {
+        this.machineWorklogDetails = machineWorklogDetails;
     }
 }

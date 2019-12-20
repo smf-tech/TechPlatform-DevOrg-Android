@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/button_gray_color">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:padding="@dimen/dimen_10dp"
+        app:cardBackgroundColor="@color/button_gray_color"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_work_date_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:text="Date"
+                        android:visibility="gone"
+                        android:gravity="center"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_regular"
+                        />
+                    <TextView
+                        android:id="@+id/tv_work_date_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+
+                        android:text=""
+                        android:gravity="center"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_regular"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_workhours_title"
+                        android:layout_width="@dimen/dimen_150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+
+                        android:text="Work hours"
+                        android:gravity="left"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_regular"
+                        />
+                    <TextView
+                        android:id="@+id/tv_workhours__value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+
+                        android:text=""
+                        android:gravity="center"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_semibold"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_machine_state_title"
+                        android:layout_width="@dimen/dimen_150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+
+                        android:text="staus"
+                        android:gravity="left"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_regular"
+                        />
+                    <TextView
+                        android:id="@+id/tv_machine_state_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+
+                        android:text="Not Available"
+                        android:gravity="center"
+
+                        android:textSize="@dimen/text_size_16"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+
+                        android:textColor="@color/dark_grey"
+                        android:fontFamily="@font/opensans_semibold"
+                        />
+
+                </LinearLayout>
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:text="Total hours"
+                    android:id="@+id/tv_total_hours"
+                    android:layout_toLeftOf="@+id/tv_total_hours_value"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:textColor="@color/dark_grey"
+                    android:visibility="gone"
+                    android:fontFamily="@font/opensans_regular"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="00 Hours"
+                    android:id="@+id/tv_total_hours_value"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_16"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:layout_height="wrap_content" />-->
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
