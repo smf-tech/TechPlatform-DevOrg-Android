@@ -116,6 +116,12 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
     public void setActivityTitle(String title) {
         toolbar_title.setText(title);
     }
+    public void hideToolbar() {
+        findViewById(R.id.toolbar).setVisibility(View.GONE);
+    }
+    public void showToolbar() {
+        findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void onClick(View view) {

@@ -83,7 +83,7 @@
             android:id="@+id/rv_data_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ly_filter"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_below="@+id/ly_filter"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

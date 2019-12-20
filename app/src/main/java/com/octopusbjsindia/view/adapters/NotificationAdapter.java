@@ -19,6 +19,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.GeneralActionsActivity;
 import com.octopusbjsindia.view.activities.NotificationsActivity;
 import com.octopusbjsindia.view.activities.PlannerDetailActivity;
+import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.activities.TMFiltersListActivity;
 
 import java.util.List;
@@ -129,7 +130,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 intent.putExtra("switch_fragments", "AttendancePlannerFragment");
                                 context.startActivity(intent);
                                 break;
-
+                            case "structure":
+                                intent = new Intent(context, SSActionsActivity.class);
+                                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                                intent.putExtra("viewType", 1);
+                                intent.putExtra("title", "Structure List");
+                                context.startActivity(intent);
+                                break;
+                            case "machine":
+                                intent = new Intent(context, SSActionsActivity.class);
+                                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                                intent.putExtra("viewType", 2);
+                                intent.putExtra("title", "Machine List");
+                                context.startActivity(intent);
+                                break;
                             default:
                                 context.finish();
                         }

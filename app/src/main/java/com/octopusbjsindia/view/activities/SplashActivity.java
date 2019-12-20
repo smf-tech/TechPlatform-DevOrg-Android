@@ -20,14 +20,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
+import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class SplashActivity extends AppCompatActivity {
     private final static int SPLASH_TIME_OUT = 2000;
@@ -44,7 +50,17 @@ public class SplashActivity extends AppCompatActivity {
         tv_versionname = findViewById(R.id.powered);
 
         toOpen = getIntent().getStringExtra("toOpen");
-        Util.showToast(toOpen,this);
+        if(toOpen != null){
+            Date crDate = Calendar.getInstance().getTime();
+            String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.FORM_DATE_FORMAT);
+            NotificationData data = new NotificationData();
+            data.setDateTime(strDate);
+            data.setTitle(getIntent().getStringExtra("title"));
+            data.setText(getIntent().getStringExtra("message"));
+            data.setToOpen(toOpen);
+            data.setUnread(false);
+            DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().insert(data);
+        }
 
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -64,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             GotoNextScreen();
         }
-        splashActivityPresenter.getAppConfig("");
+//        splashActivityPresenter.getAppConfig("");
 
     }
 
