@@ -155,7 +155,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                         toolbar_edit_action.setImageResource(R.drawable.ic_dialog_close_dark);
 
                         toolbar_back_action.setVisibility(View.GONE);
-                        machineWorkDetaillogAdapter = new MachineWorkDetaillogAdapter(this,machineWorklogDetailModel.getMachineWorklogDetails(),this::onItemClicked);
+                        machineWorkDetaillogAdapter = new MachineWorkDetaillogAdapter(this,machineWorklogDetailModel.getMachineWorklogDetails());
                         rv_machinedetailsworklog.setAdapter(machineWorkDetaillogAdapter);
                         layout_machine_worklist.setVisibility(View.GONE);
                         tv_complete_total_hours.setVisibility(View.GONE);
@@ -202,7 +202,6 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
 
     @Override
     public void onItemClicked(int pos) {
-Util.showToast("MAchine id is"+pendingRequestsResponse.getMachineWorklogList().get(pos).getMachineId(),MachineWorkingDataListActivity.this);
         String paramjson = new Gson().toJson(getWorkDetailReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getMachineId(),pendingRequestsResponse.getMachineWorklogList().get(pos).getWorkDate(), endDate));
         machineWorkingDataListPresenter.getMachineWorklogDetails(paramjson);
     }

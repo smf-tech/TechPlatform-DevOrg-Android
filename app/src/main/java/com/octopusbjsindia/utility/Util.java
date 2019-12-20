@@ -213,6 +213,7 @@ public class Util {
                 if (getUserObjectFromPref().getRoleIds() != null) {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
+                headers.put("versionName",getAppVersion());
             }
         }
 
