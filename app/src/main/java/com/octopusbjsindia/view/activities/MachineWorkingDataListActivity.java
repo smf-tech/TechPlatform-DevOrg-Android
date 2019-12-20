@@ -284,8 +284,27 @@ Util.showToast("MAchine id is"+pendingRequestsResponse.getMachineWorklogList().g
                             }
 
                         }else {
-                            textview.setText(selectedDateString);
-                            tv_enddate.setText("");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR);//new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            Date startDate = null;
+                            Date endDate = null;
+                            Date currentDate = null;
+                            try {
+                                startDate = formatter.parse(selectedDateString);
+                                endDate = formatter.parse(tv_startdate.getText().toString());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (startDate.getTime() > endDate.getTime()) {
+                                String msg = getResources().getString(R.string.msg_enter_proper_date);
+                                Toast.makeText(MachineWorkingDataListActivity.this, msg, Toast.LENGTH_LONG).show();
+                            }else {
+                                textview.setText(selectedDateString);
+                            }
+                            //---
+                            //textview.setText(selectedDateString);
+                            //tv_enddate.setText("");
                         }
                         //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
