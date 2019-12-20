@@ -389,11 +389,11 @@ private ImageView toolbar_edit_action;
                             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
                         }*/
                         ListHaltReasons.clear();
-                        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")){
+                        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)){
                             for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getMr().size() ; i++) {
                                 ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getMr().get(i).getValue());
                             }
-                        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")){
+                        }else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)){
                             for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getHi().size() ; i++) {
                                 ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getHi().get(i).getValue());
                             }
@@ -1289,9 +1289,9 @@ private void initConnectivityReceiver() {
        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
        Gson gson = new Gson();
         OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
-        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")) {
+        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             strReasonId = operatorMachineData.getNonutilisationTypeData().getMr().get(selectedPosition).get_id();
-        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")) {
+        }else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)) {
             strReasonId = operatorMachineData.getNonutilisationTypeData().getHi().get(selectedPosition).get_id();
         }else {
             strReasonId = operatorMachineData.getNonutilisationTypeData().getEn().get(selectedPosition).get_id();
