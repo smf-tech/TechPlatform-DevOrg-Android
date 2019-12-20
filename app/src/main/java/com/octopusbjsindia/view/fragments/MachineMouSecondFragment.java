@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -48,9 +50,11 @@ import com.octopusbjsindia.view.customs.TextViewSemiBold;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -76,6 +80,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private int statusCode;
     private boolean isBJSMachine;
     private int imgCount = 0;
+    private String currentPhotoPath = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -513,20 +518,41 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         }
     }
 
+//    private void takePhotoFromCamera() {
+//        try {
+//            //use standard intent to capture an image
+//            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+//                    + "/Octopus/Image/picture.jpg";
+//
+//            File imageFile = new File(imageFilePath);
+//            outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
+//                    + ".file_provider", imageFile);
+//
+//            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+//            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+//        } catch (ActivityNotFoundException e) {
+//            //display an error message
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
+//                    Toast.LENGTH_SHORT).show();
+//        } catch (SecurityException e) {
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
@@ -543,21 +569,27 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Util.getImageName();
-                if (imageFilePath == null) return;
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(getContext(), this);
+//                String imageFilePath = Util.getImageName();
+//                if (imageFilePath == null) return;
+//                finalUri = Util.getUri(imageFilePath);
+//                Crop.of(outputUri, finalUri).start(getContext(), this);
+                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getActivity());
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = Util.getImageName();
-                    if (imageFilePath == null) return;
+//                    String imageFilePath = Util.getImageName();
+//                    if (imageFilePath == null) return;
+//                    outputUri = data.getData();
+//                    finalUri = Util.getUri(imageFilePath);
+//                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    Crop.of(outputUri, finalUri).start(getActivity());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -578,6 +610,28 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 Log.e(TAG, e.getMessage());
             }
         }
+    }
+
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
     }
 
     @Override
