@@ -404,14 +404,16 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_15" />
+                        android:textSize="@dimen/text_size_13"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/ly_action"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/bt_action"
@@ -425,7 +427,47 @@
                         android:visibility="invisible" />
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ly_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
+                    <TextView
+                        android:id="@+id/tv_reason_lebal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Halt Reason"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_reason"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_reason_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:textColor="@color/tab_select"
+                        android:textSize="@dimen/text_size_13"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_03dp"
+                android:orientation="horizontal">
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1">-->
+                <!--</RelativeLayout>-->
             </LinearLayout>
 
         </LinearLayout>

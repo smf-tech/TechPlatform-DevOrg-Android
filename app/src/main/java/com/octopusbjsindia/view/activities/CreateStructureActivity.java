@@ -53,9 +53,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private Button btSubmit;
 
     private String selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka, selectedHostVillageId,
-            selectedHostVillage, selectedStructureTypeId, selectedStructureType, selectedStructureWorkTypeId,
-            selectedStructureWorkType, selectedStructureOwnerDepartmentId, selectedStructureOwnerDepartment,
-            selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment, selectedIntervention, selectedInterventionId;
+            selectedHostVillage, selectedStructureTypeId, selectedIntervention, selectedInterventionId,
+            selectedStructureType, selectedStructureWorkTypeId, selectedStructureWorkType, selectedStructureOwnerDepartmentId,
+            selectedStructureOwnerDepartment, selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
     private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
     private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
@@ -241,18 +241,37 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.et_structure_type:
-                structureTypeList.clear();
+            case R.id.et_intervention:
+                interventionList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("intervention"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
                             CustomSpinnerObject temp = new CustomSpinnerObject();
                             temp.set_id(obj.getId());
                             temp.setName(obj.getValue());
+                            temp.setTypeCode(obj.getTypeCode());
                             temp.setSelected(false);
-                            structureTypeList.add(temp);
+                            interventionList.add(temp);
                         }
                 }
+                CustomSpinnerDialogClass csdIntervention = new CustomSpinnerDialogClass(this, this,
+                        "Select Intervention", interventionList, false);
+                csdIntervention.show();
+                csdIntervention.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_structure_type:
+//                structureTypeList.clear();
+//                for (int i = 0; i < masterDataLists.size(); i++) {
+//                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
+//                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+//                            CustomSpinnerObject temp = new CustomSpinnerObject();
+//                            temp.set_id(obj.getId());
+//                            temp.setName(obj.getValue());
+//                            temp.setSelected(false);
+//                            structureTypeList.add(temp);
+//                        }
+//                }
                 CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(this, this,
                         "Select Structure Type", structureTypeList, false);
                 csdStructerType.show();
@@ -275,24 +294,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         "Select Structure Work Type", structureWorkTypeList, false);
                 csdStructerWorkType.show();
                 csdStructerWorkType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
-            case R.id.et_intervention:
-                interventionList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("intervention"))
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setSelected(false);
-                            interventionList.add(temp);
-                        }
-                }
-                CustomSpinnerDialogClass csdIntervention = new CustomSpinnerDialogClass(this, this,
-                        "Select Intervention", interventionList, false);
-                csdIntervention.show();
-                csdIntervention.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_administrative_approval_date:
@@ -430,8 +431,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
             structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
             structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
-            structureData.setLat(location.getLatitude());
-            structureData.setLog(location.getLongitude());
+            if (location != null) {
+                structureData.setLat(location.getLatitude());
+                structureData.setLog(location.getLongitude());
+            }
             structureData.setFfId(Util.getUserObjectFromPref().getId());
             structureData.setRemark(etRemark.getText().toString());
         }
@@ -522,7 +525,35 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etSubStructureOwnerDepartment.setText(selectedSubStructureOwnerDepartment);
                 break;
+            case "Select Intervention":
+                int selectedType=-1;
+                for (CustomSpinnerObject obj : interventionList) {
+                    if (obj.isSelected()) {
+                        selectedIntervention = obj.getName();
+                        selectedInterventionId = obj.get_id();
+                        selectedType = obj.getTypeCode();
+                    }
+                }
+                selectedStructureType = "";
+                selectedStructureTypeId = "";
+                etStructureType.setText("");
+                structureTypeList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType")
+                            && masterDataLists.get(i).getStructureTypeCode()== selectedType){
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            structureTypeList.add(temp);
+                        }
+                        break;
+                    }
 
+                }
+                etIntervention.setText(selectedIntervention);
+                break;
             case "Select Structure Type":
                 for (CustomSpinnerObject obj : structureTypeList) {
                     if (obj.isSelected()) {
@@ -540,15 +571,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     }
                 }
                 etStructureWorkType.setText(selectedStructureWorkType);
-                break;
-            case "Select Intervention":
-                for (CustomSpinnerObject obj : interventionList) {
-                    if (obj.isSelected()) {
-                        selectedIntervention = obj.getName();
-                        selectedInterventionId = obj.get_id();
-                    }
-                }
-                etIntervention.setText(selectedIntervention);
                 break;
         }
     }

@@ -16,9 +16,11 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,10 +44,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
 import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
@@ -72,6 +76,7 @@ import java.util.Locale;
 import static com.octopusbjsindia.receivers.ConnectivityReceiver.connectivityReceiverListener;
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
+    private long mLastClickTime = 0;
     private String strReasonId="";
     ArrayList<String> ListHaltReasons = new ArrayList<>();
     private SingleSelectBottomSheet bottomSheetDialogFragment;
@@ -84,6 +89,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private static final int REQUEST_CAPTURE_IMAGE = 100;
     Uri photoURI;
     Uri finalUri;
+    String currentPhotoPath = "";
     OperatorRequestResponseModel operatorRequestResponseModel;
     boolean flag = true;
     boolean isStartImage = true;
@@ -107,7 +113,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
-    TextView tv_text,tv_machine_code,tv_machine_state;
+    public TextView tv_text,tv_machine_code,tv_machine_state;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String imageFilePath;
@@ -269,7 +275,7 @@ private ImageView toolbar_edit_action;
         buttonPauseService = findViewById(R.id.buttonPauseService);
         buttonHaltService = findViewById(R.id.buttonHaltService);
         tv_text = findViewById(R.id.tv_text);
-        tv_machine_code = findViewById(R.id.tv_machine_code);
+        tv_machine_code = findViewById(R.id.tv_machine_code_new);
         tv_machine_state= findViewById(R.id.tv_machine_state);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
@@ -292,7 +298,21 @@ private ImageView toolbar_edit_action;
         buttonPauseService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Preventing multiple clicks, using threshold of 1 second
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Log.e("clickTime cuurent", "" + SystemClock.elapsedRealtime());
+                Log.e("clickTime Lastt", "" + mLastClickTime);
 
+                buttonPauseService.setEnabled(false);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    buttonPauseService.setEnabled(true);
+                }, 1000);
                 GetLocationofOperator();
                 if (preferences.getInt("State", 0) == state_start) {
                     editor.putInt("State", state_pause);
@@ -308,11 +328,7 @@ private ImageView toolbar_edit_action;
 
                 //int systemTime = preferences.getInt("systemTime", 0);
                 //int systemClockTime = preferences.getInt("systemClockTime", 0);
-                buttonPauseService.setEnabled(false);
-                Handler handler = new Handler();
-                handler.postDelayed(() -> {
-                    buttonPauseService.setEnabled(true);
-                }, 1000);
+
             }
         });
         /*buttonHaltService.setOnClickListener(new View.OnClickListener() {
@@ -366,6 +382,27 @@ private ImageView toolbar_edit_action;
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
                         strReasonId ="";
+                        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+                        Gson gson = new Gson();
+                        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
+/*                        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+                        }*/
+                        ListHaltReasons.clear();
+                        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")){
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getMr().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getMr().get(i).getValue());
+                            }
+                        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")){
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getHi().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getHi().get(i).getValue());
+                            }
+                        }else {
+                            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+                            }
+                        }
+
                         showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
 
                         /*updateStatusAndProceed(state_halt);
@@ -392,6 +429,12 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 GetLocationofOperator();
            /*     if (Permissions.isCameraPermissionGranted(OperatorMeterReadingActivity.this, this)) {
 
@@ -420,6 +463,14 @@ private ImageView toolbar_edit_action;
         btnStopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 GetLocationofOperator();
                 /*if (TextUtils.isEmpty(et_emeter_read.getText())) {
                     Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
@@ -481,7 +532,8 @@ private ImageView toolbar_edit_action;
                 showReadingDialog(this,1);
             } else if (flag) {
                 if (Permissions.isCameraPermissionGranted(this, this)) {
-                openCameraIntent();
+                //openCameraIntent();
+                    openCamera();
                 flag = false;
                 isStartImage = true;
                 }
@@ -510,7 +562,8 @@ private ImageView toolbar_edit_action;
             showReadingDialog(this,2);
         } else if (flag) {
             if (Permissions.isCameraPermissionGranted(this, this)) {
-                openCameraIntent();
+                //openCameraIntent();
+                openCamera();
                 isStartImage = false;
                 flag = false;
             }
@@ -606,7 +659,9 @@ private ImageView toolbar_edit_action;
 
     public void saveOperatorStateData(String machine_id, String workTime,String status, String statusCode, String lat, String lon, String meter_reading, int hours, int totalHours, String image) {
         operatorRequestResponseModel = new OperatorRequestResponseModel();
-        operatorRequestResponseModel.setMachine_id(machine_id);
+        if (!preferences.getString("machine_id", "").equalsIgnoreCase("")) {
+            operatorRequestResponseModel.setMachine_id(preferences.getString("machine_id", ""));
+        }
         operatorRequestResponseModel.setWorkTime(workTime);
         operatorRequestResponseModel.setStatus_code(statusCode);
         operatorRequestResponseModel.setStatus(status);
@@ -670,19 +725,24 @@ private ImageView toolbar_edit_action;
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
 
-                try {
-                    String imageFilePath = getImageName();
+               /* try {
+                    *//*String imageFilePath = getImageName();
                     if (imageFilePath == null) {
                         return;
-                    }
+                    }*//*
+                    Uri uri = Uri.parse(imageFilePath);
                     finalUri = Util.getUri(imageFilePath);
-                    UCrop.of(photoURI, finalUri)
+                    UCrop.of(photoURI, uri)
                             .withAspectRatio(1, 1)
                             .withMaxResultSize(500, 500)
                             .start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
-                }
+                }*/
+
+               // Uri uri = Uri.parse(currentPhotoPath);
+                Uri uri=Uri.fromFile(new File(currentPhotoPath));
+                openCropActivity(uri, uri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -725,6 +785,14 @@ private ImageView toolbar_edit_action;
         }
     }
 
+    private void openCropActivity(Uri sourceUri, Uri destinationUri) {
+        UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(500, 500)
+                .withAspectRatio(5f, 5f)
+                .start(this);
+    }
+
     private String getImageName() {
         long time = new Date().getTime();
         File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -737,6 +805,52 @@ private ImageView toolbar_edit_action;
         }
         return Constants.Image.IMAGE_STORAGE_DIRECTORY + Constants.Image.FILE_SEP
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
+    }
+
+
+    private File getImageFile() {
+        /*String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM
+                ), "Octopus"
+        );
+        File file = null;
+        try {
+            file = File.createTempFile(
+                    imageFileName, ".jpg", storageDir
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentPhotoPath = "file:" + file.getAbsolutePath();
+        return file;*/
+
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+
+        return file;
+
     }
 
     public void clearReadingImages() {
@@ -873,6 +987,18 @@ private ImageView toolbar_edit_action;
                         REQUEST_CAPTURE_IMAGE);
             }
         }
+    }
+
+    private void openCamera() {
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getImageFile(); // 1
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+            uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+        else
+            uri = Uri.fromFile(file); // 3
+        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+        startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
     }
 
     private File createImageFile() throws IOException {
@@ -1017,15 +1143,28 @@ public String showReadingDialog(final Activity context, int pos){
         }
     }
 
-    public void showPendingApprovalRequests(OperatorMachineData operatorMachineData) {
+    public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
         editor.putString("machine_code",operatorMachineData.getMachine_code());
+
         editor.apply();
-        for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().size() ; i++) {
-            ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().get(i).getValue());
+
+        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")){
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getMr().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getMr().get(i).getValue());
+            }
+        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")){
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getHi().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getHi().get(i).getValue());
+            }
+        }else {
+            for (int i = 0; i <operatorMachineData.getNonutilisationTypeData().getEn().size() ; i++) {
+                ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
+            }
         }
+
         Gson gson = new Gson();
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
@@ -1149,8 +1288,14 @@ private void initConnectivityReceiver() {
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
        Gson gson = new Gson();
-       OperatorMachineData operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineData.class);
-        strReasonId = operatorMachineData.getNonutilisationTypeData().get(selectedPosition).get_id();
+        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
+        if (Locale.getDefault().getLanguage().equalsIgnoreCase("mr")) {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getMr().get(selectedPosition).get_id();
+        }else if (Locale.getDefault().getLanguage().equalsIgnoreCase("hi")) {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getHi().get(selectedPosition).get_id();
+        }else {
+            strReasonId = operatorMachineData.getNonutilisationTypeData().getEn().get(selectedPosition).get_id();
+        }
         updateStatusAndProceed(state_halt);
         clearReadingImages();
 

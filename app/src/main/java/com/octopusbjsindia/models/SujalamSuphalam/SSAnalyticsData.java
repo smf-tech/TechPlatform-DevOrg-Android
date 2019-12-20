@@ -16,6 +16,9 @@ public class SSAnalyticsData {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("statusCode")
+    @Expose
+    private int statusCode;
 
     @SerializedName("percentValue")
     @Expose
@@ -51,6 +54,14 @@ public class SSAnalyticsData {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public Integer getPercentValue() {

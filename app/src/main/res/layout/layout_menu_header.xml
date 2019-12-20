@@ -14,7 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:orientation="horizontal"
-        android:padding="@dimen/dimen_15dp">
+        android:paddingTop="@dimen/dimen_15dp"
+        android:paddingStart="@dimen/dimen_10dp"
+        android:paddingEnd="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_05dp">
 
         <RelativeLayout
             android:layout_width="@dimen/dimen_80dp"
@@ -54,7 +57,7 @@
                 android:id="@+id/menu_user_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginTop="@dimen/dimen_03dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:fontFamily="@font/opensans"
@@ -69,6 +72,17 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/opensans"
                 android:textSize="@dimen/text_size_12"
+                />
+
+            <TextView
+                android:id="@+id/menu_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="@font/opensans"
+                android:textSize="@dimen/text_size_10"
                 />
 
         </LinearLayout>

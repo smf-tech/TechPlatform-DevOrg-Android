@@ -18,15 +18,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
+import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class SplashActivity extends AppCompatActivity {
     private final static int SPLASH_TIME_OUT = 2000;
@@ -35,12 +42,25 @@ public class SplashActivity extends AppCompatActivity {
     private SplashActivityPresenter splashActivityPresenter;
     private TextView tv_versionname;
     private String appVersion = "";
-
+    String toOpen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         tv_versionname = findViewById(R.id.powered);
+
+        toOpen = getIntent().getStringExtra("toOpen");
+        if(toOpen != null){
+            Date crDate = Calendar.getInstance().getTime();
+            String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.FORM_DATE_FORMAT);
+            NotificationData data = new NotificationData();
+            data.setDateTime(strDate);
+            data.setTitle(getIntent().getStringExtra("title"));
+            data.setText(getIntent().getStringExtra("message"));
+            data.setToOpen(toOpen);
+            data.setUnread(false);
+            DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().insert(data);
+        }
 
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -60,59 +80,9 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             GotoNextScreen();
         }
-        splashActivityPresenter.getAppConfig("");
-/*        new Handler().postDelayed(() -> {
-            Intent intent;
+//        splashActivityPresenter.getAppConfig("");
 
-            try {
-                // Check user has registered mobile number or not
-                if (Util.getLoginObjectFromPref() == null ||
-                        Util.getLoginObjectFromPref().getLoginData() == null ||
-                        TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
-                    intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
-                    intent = new Intent(SplashActivity.this, EditProfileActivity.class);
-                } else {
-                    if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
-                         intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
-                        intent.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        intent = new Intent(SplashActivity.this, HomeActivity.class);
-                    }
-                }
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }, SPLASH_TIME_OUT);*/
-
-        /*if (!preferenceHelper.getString(preferenceHelper.TOKEN).isEmpty()) {
-            if (!preferenceHelper.getString(preferenceHelper.TOKEN).equalsIgnoreCase(Util.getUserObjectFromPref().getFirebaseId())) {
-                checkAndUpdateFirebase();
-            }
-        }*/
     }
-
-    /*public void checkAndUpdateFirebase() {
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("firebase_id", preferenceHelper.getString(preferenceHelper.TOKEN));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (jsonObject != null) {
-            Util.updateFirebaseIdRequests(jsonObject);
-        }
-    }*/
-
 
     public void checkForceUpdate(String requestID, String message, int code) {
         //if (requestID.equalsIgnoreCase(presenter.GET_APP_CONFIG))
@@ -241,6 +211,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     } else {
                         intent = new Intent(SplashActivity.this, HomeActivity.class);
+                        intent.putExtra("toOpen",toOpen);
                     }
                 }
 

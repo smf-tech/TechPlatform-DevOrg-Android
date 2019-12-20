@@ -84,7 +84,7 @@ public class Urls {
     public class Attendance
     {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
-        public static final String SUBMIT_ATTENDANCE="/api/insertAttendance";
+        public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
         public static final String GET_TEAM_ATTENDANCE="/api/getTeamAttendance";
     }
     public class ContentManagement{
@@ -147,6 +147,7 @@ public class Urls {
         public static final String MACHINE_WORKLOG = "api/machineWorkLog";
         public static final String MACHINE_DATA = "api/getMachineData";
         public static final String MACHINE_DATA_WORKLOG = "api/getMachineWorkLogData";
+        public static final String MACHINE_WORKLOG__DETAILS = "api/logDetails";
     }
 
     public class Configuration{
@@ -157,6 +158,7 @@ public class Urls {
         public static final String NEW_FEED = "api/newFeed";
         public static final String FEED_LIST = "api/getFeedList";
         public static final String DELETE_FEED = "api/deleteFeed";
+        public static final String COMMENT_LIST = "api/commentList";
     }
 
 }

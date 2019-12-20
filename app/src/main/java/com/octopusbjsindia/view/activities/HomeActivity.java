@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -46,8 +47,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
@@ -75,12 +78,13 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private final String TAG = this.getClass().getSimpleName();
     private BroadcastReceiver mMessageReceiver;
     private BroadcastReceiver connectionReceiver;
+    private String toOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
+        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
             Intent intent = new Intent(HomeActivity.this, OperatorMeterReadingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -96,7 +100,68 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             String newToken = instanceIdResult.getToken();
             Log.d("Token", newToken);
         });
-   }
+        toOpen = getIntent().getStringExtra("toOpen");
+        if (toOpen != null) {
+            Intent intent;
+            switch (toOpen) {
+                case "formApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "forms");
+                    this.startActivity(intent);
+                    break;
+                case "userApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "userapproval");
+                    this.startActivity(intent);
+                    break;
+                case "leaveApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "leave");
+                    this.startActivity(intent);
+                    break;
+                case "attendanceApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "attendance");
+                    this.startActivity(intent);
+                    break;
+                case "compoffApproval":
+                    intent = new Intent(this, TMFiltersListActivity.class);
+                    intent.putExtra("filter_type", "compoff");
+                    this.startActivity(intent);
+                    break;
+                case "event":
+                    intent = new Intent(this, PlannerDetailActivity.class);
+                    intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
+                    this.startActivity(intent);
+                    break;
+                case "task":
+                    intent = new Intent(this, PlannerDetailActivity.class);
+                    intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
+                    this.startActivity(intent);
+                    break;
+                case "leave":
+                    intent = new Intent(this, GeneralActionsActivity.class);
+                    intent.putExtra("title", this.getString(R.string.leave));
+                    intent.putExtra("switch_fragments", "LeaveDetailsFragment");
+                    this.startActivity(intent);
+                    break;
+                case "structure":
+                    intent = new Intent(this, SSActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("viewType", 1);
+                    intent.putExtra("title", "Structure List");
+                    this.startActivity(intent);
+                    break;
+                case "machine":
+                    intent = new Intent(this, SSActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("viewType", 2);
+                    intent.putExtra("title", "Machine List");
+                    this.startActivity(intent);
+                    break;
+            }
+        }
+    }
 
     private void initConnectivityReceiver() {
         connectionReceiver = new ConnectivityReceiver();
@@ -117,7 +182,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     }
 
     private void subscribedToFirebaseTopics() {
-//        FirebaseMessaging.getInstance().subscribeToTopic("Test");
+        FirebaseMessaging.getInstance().subscribeToTopic("Test");
         String userProject = Util.getUserObjectFromPref().getProjectIds().get(0).getName();
         String userRoll = Util.getUserObjectFromPref().getRoleNames();
         userProject = userProject.replaceAll(" ", "_");
@@ -217,6 +282,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
         TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
         userRole.setText(Util.getUserObjectFromPref().getRoleNames());
+        TextView tvAppVersion = headerLayout.findViewById(R.id.menu_app_version);
+        String appVersion;
+        try {
+            appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tvAppVersion.setText("Version"+" "+appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         loadHomePage();
     }
 
@@ -269,7 +342,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         }
         String[] split = profileUrl.split("/");
         String url = split[split.length - 1];
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/profile");
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Image/profile");
         if (!dir.exists()) {
             Log.e(TAG, "Failed to load image from SD card");
             return;
@@ -421,6 +494,20 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.action_menu_change_language:
                 showLanguageChangeDialog();
                 AppEvents.trackAppEvent(getString(R.string.event_menu_change_lang_click));
+                break;
+            case R.id.action_menu_share_app:
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Octopus share");
+                    String shareMessage = "\nPlease checkout the Octopus app from Bhartiya Jain Sanghatana\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(Intent.createChooser(shareIntent, "choose one"));
+                } catch (Exception e) {
+                    //e.toString();
+                }
+                AppEvents.trackAppEvent(getString(R.string.share_app));
                 break;
 
             case R.id.action_menu_rate_us:
@@ -672,7 +759,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         ImageView sync = findViewById(R.id.home_sync_icon);
-        if(isConnected) {
+        if (isConnected) {
             sync.setImageResource(R.drawable.ic_internet_connected);
 //            Util.snackBarToShowMsg(getWindow().getDecorView()
 //                            .findViewById(android.R.id.content), "Internet connection is available.",

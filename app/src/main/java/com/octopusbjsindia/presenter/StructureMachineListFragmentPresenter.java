@@ -13,10 +13,12 @@ import com.octopusbjsindia.models.SujalamSuphalam.MachineListAPIResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureListAPIResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
+import com.octopusbjsindia.models.stories.CommentResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
 
 import org.json.JSONObject;
@@ -239,14 +241,27 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
+
+
                 if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_STRUCTURE_LIST)) {
+                    CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
+                    if (commentResponse.getStatus() == 1000) {
+                        Util.logOutUser(fragmentWeakReference.get().getActivity());
+                        return;
+                    }
                     StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
                     if (structureListData.getCode() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
                     } else if(structureListData.getCode() == 400){
                         fragmentWeakReference.get().showNoDataMessage();
                     }
+
                 } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
+                    CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
+                    if (commentResponse.getStatus() == 1000) {
+                        Util.logOutUser(fragmentWeakReference.get().getActivity());
+                        return;
+                    }
                     //fragmentWeakReference.get().populateAnalyticsData(requestID, machineListData);
                     MachineListAPIResponse machineListData = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineListAPIResponse.class);
                     if (machineListData.getCode() == 200) {

@@ -33,7 +33,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.CreateFeedActivity"></activity>
+        <activity android:name=".view.activities.CommentActivity"></activity>
+        <activity android:name=".view.activities.WebViewActivity" />
+        <activity android:name=".view.activities.CreateFeedActivity" />
         <activity
             android:name=".view.activities.StructureCompletionActivity"
             android:screenOrientation="portrait" />
@@ -108,13 +110,14 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.soundcloud.android.crop.CropImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".view.activities.OtpActivity"
             android:screenOrientation="portrait"
@@ -176,7 +179,6 @@
             android:name=".view.activities.MatrimonyBookletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-
         <activity
             android:name=".view.activities.MachineWorkingDataListActivity"
             android:screenOrientation="portrait" />
@@ -256,9 +258,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
-        <!--<meta-data
+        <!--
+<meta-data
             android:name="com.google.android.actions"
-            android:resource="@xml/circle_background" />-->
+            android:resource="@xml/circle_background" />
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
