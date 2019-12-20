@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -49,6 +50,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
@@ -280,6 +282,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
         TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
         userRole.setText(Util.getUserObjectFromPref().getRoleNames());
+        TextView tvAppVersion = headerLayout.findViewById(R.id.menu_app_version);
+        String appVersion;
+        try {
+            appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tvAppVersion.setText("Version"+" "+appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         loadHomePage();
     }
 
