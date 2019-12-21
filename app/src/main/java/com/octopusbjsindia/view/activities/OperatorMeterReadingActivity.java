@@ -252,9 +252,7 @@ private ImageView toolbar_edit_action;
         requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
 
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
-
-
-
+        //SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -299,7 +297,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View view) {
                 // Preventing multiple clicks, using threshold of 1 second
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -382,7 +380,7 @@ private ImageView toolbar_edit_action;
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
 
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
                             Log.e("clickTime retuned", "" + "Return");
                             mLastClickTime = SystemClock.elapsedRealtime();
                             return;
@@ -438,7 +436,7 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -473,7 +471,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View v) {
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -687,7 +685,7 @@ private ImageView toolbar_edit_action;
         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(operatorRequestResponseModel);
         //uploadImage(image);
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
-            SyncAdapterUtils.manualRefresh();
+            //SyncAdapterUtils.periodicSyncRequest();
         }
 
         List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
@@ -1273,7 +1271,7 @@ private void initConnectivityReceiver() {
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (isConnected){
-            SyncAdapterUtils.manualRefresh();
+            //SyncAdapterUtils.periodicSyncRequest();
         }else {
 
         }

@@ -16,6 +16,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Config;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
@@ -45,6 +46,7 @@ public class Platform extends Application {
         createNotificationChannel();
         FirebaseApp.initializeApp(this);
         initFireBase();
+        SyncAdapterUtils.periodicSyncRequest();
 
         if (mFirebaseAnalytics == null) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);

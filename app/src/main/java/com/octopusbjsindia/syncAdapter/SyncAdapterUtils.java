@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 @SuppressWarnings("unused")
 public class SyncAdapterUtils {
@@ -79,12 +80,23 @@ public class SyncAdapterUtils {
      */
     public static void manualRefresh() {
         Bundle b = new Bundle();
-        // Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
+        //Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
         b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+       b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(
                 GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE), // Sync account
                 AUTHORITY,
                 b);                                             // Extras
+
     }
+
+    public static void periodicSyncRequest() {
+        Bundle b = new Bundle();
+        ContentResolver.addPeriodicSync (GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE),
+                AUTHORITY,
+                b,901);
+        Log.d("periodicSyncRequest","called");
+    }
+
+
 }

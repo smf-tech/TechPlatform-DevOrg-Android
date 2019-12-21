@@ -93,9 +93,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i(TAG, "onPerformSync: \n");
         syncSavedForms();
-        uploadImage("");
-
-
+        syncMachineOperatorData();
         syncStructureVisitMonitoring();
         syncStructurePripretion();
     }
@@ -280,17 +278,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    private void syncMachineOperatorData() {
+
+        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+        for (final OperatorRequestResponseModel data : list) {
+            uploadMachineLog(data);
+        }
+    }
 // operator record sync
 //api call to upload record -
-private void uploadImage(String receivedImage) {
+private void uploadMachineLog(OperatorRequestResponseModel data) {
 
     final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
-    List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
-    if (list.size()>0){
-        Log.e("sync--", "---" + new Gson().toJson(list.get(0)));
-    OperatorRequestResponseModel operatorRequestResponseModel = list.get(0);
-    String imageToSend = operatorRequestResponseModel.getImage();
+        Log.e("sync--", "---" + new Gson().toJson(data));
+    String imageToSend = data.getImage();
     VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
             new Response.Listener<NetworkResponse>() {
                 @Override
@@ -298,15 +300,9 @@ private void uploadImage(String receivedImage) {
                     rQueue.getCache().clear();
                     try {
                         String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                       // Toast.makeText(getContext(), jsonString, Toast.LENGTH_LONG).show();
                         Log.d("response Received -", jsonString);
-
-                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().deleteSinglSynccedOperatorRecord(list.get(0).get_id());
-                        if (list.size() > 0) {
-                            uploadImage("");
-                        } else {
-                            Toast.makeText(getContext(), "Sync Complete", Toast.LENGTH_LONG).show();
-                        }
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                deleteSinglSynccedOperatorRecord(data.get_id());
 
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -324,7 +320,7 @@ private void uploadImage(String receivedImage) {
         @Override
         protected Map<String, String> getParams() throws AuthFailureError {
             Map<String, String> params = new HashMap<>();
-            params.put("formData", new Gson().toJson(operatorRequestResponseModel));
+            params.put("formData", new Gson().toJson(data));
             params.put("imageArraySize", String.valueOf("1"));//add string parameters
             return params;
         }
@@ -357,10 +353,7 @@ private void uploadImage(String receivedImage) {
         protected Map<String, DataPart> getByteData() {
             Map<String, DataPart> params = new HashMap<>();
             Drawable drawable = null;
-            //   Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
-            //for (int i = 0;i<imageHashmap.size(); i++)
             {
-                // String key=(String)myVeryOwnIterator.next();
                 if (TextUtils.isEmpty(imageToSend)) {
                     params.put("image0", new DataPart("image0", new byte[0],
                             "image/jpeg"));
@@ -382,7 +375,6 @@ private void uploadImage(String receivedImage) {
     rQueue = Volley.newRequestQueue(getContext());
     rQueue.add(volleyMultipartRequest);
 }
-}
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -399,7 +391,6 @@ private void uploadImage(String receivedImage) {
         for (final StructureVisitMonitoringData data : structureVisitMonitoringList) {
             submitVisitData(data, 1);
         }
-
     }
 
     private void submitVisitData(StructureVisitMonitoringData requestData, int imageCount) {
