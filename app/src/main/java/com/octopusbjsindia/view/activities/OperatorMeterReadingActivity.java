@@ -414,6 +414,7 @@ private ImageView toolbar_edit_action;
                         showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
 
                         /*updateStatusAndProceed(state_halt);
+
                         clearReadingImages();*/
                     /*if (currentState==state_start){
                         editor.putInt("State", state_pause);
@@ -521,8 +522,8 @@ private ImageView toolbar_edit_action;
                         hours = currentHours;
                         if (!TextUtils.isEmpty(timestr)) {
                          //   Log.e("current Time", timestr);
-                            Log.e("Total_hours", "" + totalHours);
-                            Log.e("current_hours", "" + currentHours);
+                           // Log.e("Total_hours", "" + totalHours);
+                          //  Log.e("current_hours", "" + currentHours);
                         }
 
                     }
@@ -681,7 +682,8 @@ private ImageView toolbar_edit_action;
         operatorRequestResponseModel.setReasonId(strReasonId);//
         operatorRequestResponseModel.setImage(image);
 
-
+        String JsontoString = new Gson().toJson(operatorRequestResponseModel);
+        Log.e("REQJSOs entry",JsontoString);
         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(operatorRequestResponseModel);
         //uploadImage(image);
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
@@ -692,7 +694,7 @@ private ImageView toolbar_edit_action;
 
         Log.e("list--2","---"+list.size());
         for (int i = 0; i < list.size(); i++) {
-            Log.e("list--2--2","---"+list.get(i).getTotalHours());
+            Log.e("list--2--2","---"+list.get(i).getStatus()+" "+list.get(i).getWorkTime());
         }
 
         //List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();

@@ -319,7 +319,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                             Date currentDate = null;
                             try {
                                 startDate = formatter.parse(selectedDateString);
-                                endDate = formatter.parse(tv_startdate.getText().toString());
+                                endDate = formatter.parse(tv_enddate.getText().toString());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

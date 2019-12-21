@@ -376,7 +376,7 @@ private void uploadImage(String receivedImage) {
     };
 
     volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-            3000,
+            12000,
             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     rQueue = Volley.newRequestQueue(getContext());
