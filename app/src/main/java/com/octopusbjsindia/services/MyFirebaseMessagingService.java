@@ -146,63 +146,52 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     case "formApproval":
                         intent = new Intent(getApplicationContext(), TMFiltersListActivity.class);
                         intent.putExtra("filter_type", "forms");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "userApproval":
                         intent = new Intent(getApplicationContext(), TMFiltersListActivity.class);
                         intent.putExtra("filter_type", "userapproval");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "leaveApproval":
                         intent = new Intent(getApplicationContext(), TMFiltersListActivity.class);
                         intent.putExtra("filter_type", "leave");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "attendanceApproval":
                         intent = new Intent(getApplicationContext(), TMFiltersListActivity.class);
                         intent.putExtra("filter_type", "attendance");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "compoffApproval":
                         intent = new Intent(getApplicationContext(), TMFiltersListActivity.class);
                         intent.putExtra("filter_type", "compoff");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "event":
                         intent = new Intent(getApplicationContext(), PlannerDetailActivity.class);
                         intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.EVENTS_LABEL);
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "task":
                         intent = new Intent(getApplicationContext(), PlannerDetailActivity.class);
                         intent.putExtra(Constants.Planner.TO_OPEN, Constants.Planner.TASKS_LABEL);
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "leave":
                         intent = new Intent(getApplicationContext(), GeneralActionsActivity.class);
                         intent.putExtra("title", getApplicationContext().getString(R.string.leave));
                         intent.putExtra("switch_fragments", "LeaveDetailsFragment");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "attendance":
                         intent = new Intent(getApplicationContext(), GeneralActionsActivity.class);
                         intent.putExtra("title", getApplicationContext().getString(R.string.attendance));
                         intent.putExtra("switch_fragments", "AttendancePlannerFragment");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "structure":
                         intent = new Intent(getApplicationContext(), SSActionsActivity.class);
                         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                         intent.putExtra("viewType", 1);
                         intent.putExtra("title", "Structure List");
-                        getApplicationContext().startActivity(intent);
                         break;
                     case "machine":
                         intent = new Intent(getApplicationContext(), SSActionsActivity.class);
                         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                         intent.putExtra("viewType", 2);
                         intent.putExtra("title", "Machine List");
-                        getApplicationContext().startActivity(intent);
                         break;
                     default:
                         intent = new Intent(getApplicationContext(), HomeActivity.class);

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -208,8 +209,14 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
 
     @Override
     public void onItemClicked(int pos) {
-        String paramjson = new Gson().toJson(getWorkDetailReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getMachineId(),pendingRequestsResponse.getMachineWorklogList().get(pos).getWorkDate(), endDate));
-        machineWorkingDataListPresenter.getMachineWorklogDetails(paramjson);
+        if (Util.isConnected(this)) {
+            String paramjson = new Gson().toJson(getWorkDetailReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getMachineId(), pendingRequestsResponse.getMachineWorklogList().get(pos).getWorkDate(), endDate));
+            machineWorkingDataListPresenter.getMachineWorklogDetails(paramjson);
+        }else {
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No internet connection.",
+                    Snackbar.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -248,13 +255,19 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                 selectStartDate(tv_enddate, 2);
                 break;
             case R.id.btn_apply:
-                if (!TextUtils.isEmpty(tv_startdate.getText())&&!TextUtils.isEmpty(tv_enddate.getText())) {
-                    Gson gson = new GsonBuilder().create();
-                    String paramjson = gson.toJson(getCheckProfileJson(machineId, startDate, endDate));
-                    //machineWorkingDataListPresenter = new MachineWorkingDataListPresenter(MachineWorkingDataListActivity.this);
-                    machineWorkingDataListPresenter.getMachineWorkData(paramjson);
+                if (Util.isConnected(this)) {
+                    if (!TextUtils.isEmpty(tv_startdate.getText()) && !TextUtils.isEmpty(tv_enddate.getText())) {
+                        Gson gson = new GsonBuilder().create();
+                        String paramjson = gson.toJson(getCheckProfileJson(machineId, startDate, endDate));
+                        //machineWorkingDataListPresenter = new MachineWorkingDataListPresenter(MachineWorkingDataListActivity.this);
+                        machineWorkingDataListPresenter.getMachineWorkData(paramjson);
+                    } else {
+                        Toast.makeText(MachineWorkingDataListActivity.this, "Please select date range.", Toast.LENGTH_LONG).show();
+                    }
                 }else {
-                    Toast.makeText(MachineWorkingDataListActivity.this, "Please select date range.", Toast.LENGTH_LONG).show();
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "No internet connection.",
+                            Snackbar.LENGTH_LONG);
                 }
                 break;
 

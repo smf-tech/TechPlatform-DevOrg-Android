@@ -381,6 +381,14 @@ private ImageView toolbar_edit_action;
                     if (currentState == state_halt) {
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
+
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                            Log.e("clickTime retuned", "" + "Return");
+                            mLastClickTime = SystemClock.elapsedRealtime();
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
                         strReasonId ="";
                         String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
                         Gson gson = new Gson();
