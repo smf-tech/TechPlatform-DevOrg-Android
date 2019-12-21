@@ -116,14 +116,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
 //        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
 //                getSSMasterDatabaseDao().getSSMasterData();
 
-        sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
-        if(Util.isConnected(getActivity())) {
-            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
-            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
-            sujalamSuphalamFragmentPresenter.getSSMasterData();
-        } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-        }
+
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if(roleAccessList != null) {
@@ -144,6 +137,14 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     public void onResume() {
         super.onResume();
         btnSsView.setEnabled(true);
+        sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
+        if(Util.isConnected(getActivity())) {
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
+            sujalamSuphalamFragmentPresenter.getSSMasterData();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     @Override
@@ -225,8 +226,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                         structureAnalyticsDataList.add(data);
                     }
                 }
-                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
-                structureAnalyticsAdapter.notifyDataSetChanged();
+
             } else if(requestCode.equals(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
                 machineAnalyticsDataList.clear();
                 for (SSAnalyticsData data : analyticsData.getData()) {
@@ -235,6 +235,12 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     }
                 }
             }
+            if(viewType==1){
+                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
+            } else {
+                rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
+            }
+            structureAnalyticsAdapter.notifyDataSetChanged();
         }
         if(structureAnalyticsDataList.size()>0){
             sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);

@@ -8,12 +8,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Operator.MachineWorklogDetail;
-import com.octopusbjsindia.models.Operator.MachineWorklogDetailModel;
 import com.octopusbjsindia.utility.PreferenceHelper;
 
 import java.util.List;
@@ -22,14 +20,14 @@ public class MachineWorkDetaillogAdapter extends RecyclerView.Adapter<MachineWor
 
     Context mContext;
     private List<MachineWorklogDetail> dataList;
-    private OnRequestItemClicked clickListener;
+
     private RequestOptions requestOptions;
     private PreferenceHelper preferenceHelper;
 
-    public MachineWorkDetaillogAdapter(Context context, List<MachineWorklogDetail> dataList, final OnRequestItemClicked clickListener) {
+    public MachineWorkDetaillogAdapter(Context context, List<MachineWorklogDetail> dataList) {
         mContext = context;
         this.dataList = dataList;
-        this.clickListener = clickListener;
+
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
@@ -95,9 +93,9 @@ public class MachineWorkDetaillogAdapter extends RecyclerView.Adapter<MachineWor
         return dataList.size();
     }
 
-    public interface OnRequestItemClicked {
+   /* public interface OnRequestItemClicked {
         void onItemClicked(int pos);
-    }
+    }*/
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
@@ -111,12 +109,9 @@ public class MachineWorkDetaillogAdapter extends RecyclerView.Adapter<MachineWor
             tv_workhours_title = itemView.findViewById(R.id.tv_workhours_title);
             tv_machine_state_title = itemView.findViewById(R.id.tv_machine_state_title);
 
-            tv_work_date_value  = itemView.findViewById(R.id.tv_work_date_value);
-            tv_workhours_value  = itemView.findViewById(R.id.tv_workhours__value);
-            tv_machine_state_value  = itemView.findViewById(R.id.tv_machine_state_value);
-
-
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            tv_work_date_value = itemView.findViewById(R.id.tv_work_date_value);
+            tv_workhours_value = itemView.findViewById(R.id.tv_workhours__value);
+            tv_machine_state_value = itemView.findViewById(R.id.tv_machine_state_value);
 
 
         }
