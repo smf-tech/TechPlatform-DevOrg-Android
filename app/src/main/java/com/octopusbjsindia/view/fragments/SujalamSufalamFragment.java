@@ -226,8 +226,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                         structureAnalyticsDataList.add(data);
                     }
                 }
-                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
-                structureAnalyticsAdapter.notifyDataSetChanged();
+
             } else if(requestCode.equals(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
                 machineAnalyticsDataList.clear();
                 for (SSAnalyticsData data : analyticsData.getData()) {
@@ -236,6 +235,12 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     }
                 }
             }
+            if(viewType==1){
+                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
+            } else {
+                rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
+            }
+            structureAnalyticsAdapter.notifyDataSetChanged();
         }
         if(structureAnalyticsDataList.size()>0){
             sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
