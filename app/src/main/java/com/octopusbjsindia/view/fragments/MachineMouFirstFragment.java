@@ -593,7 +593,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etProviderContact.getText().toString().trim())) {
+        } else if (etProviderContact.getText().toString().trim().length() != 10){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);

@@ -71,6 +71,7 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
         MachineWorkingDataListRequestCall requestCall = new MachineWorkingDataListRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_APP_CONFIG,requestJson ,url);
+        showProgressBar();
     }
 
     public void getMachineWorklogDetails(String requestJson){
@@ -83,16 +84,17 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        hideProgressBar();
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        hideProgressBar();
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
+        hideProgressBar();
         Log.d("machineWorklog", requestID + " response Json : " + response);
         /*AppConfigResponseModel appConfigResponseModel
                 = new Gson().fromJson(response, AppConfigResponseModel.class);*/
@@ -103,12 +105,12 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
 
     @Override
     public void showProgressBar() {
-
+        mContext.showProgressBar();
     }
 
     @Override
     public void hideProgressBar() {
-
+        mContext.hideProgressBar();
     }
 
     @Override
