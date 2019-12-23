@@ -181,7 +181,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     popup.show();
 
                     if (isCommunityMobilization) {
-                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+                        if (isSave) {
+                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
+                        }
                     } else {
                         popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
                     }
@@ -223,7 +227,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED) {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                         } else {
-                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                            if (isSave) {
+                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+                            }
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);

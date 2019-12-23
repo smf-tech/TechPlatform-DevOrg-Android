@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -105,21 +106,37 @@ public class StoriesFragment extends Fragment implements APIDataListener {
         rvFeeds.setAdapter(adapter);
 
         if(isCreateFeed){
-            view.findViewById(R.id.fab_add_feed).setVisibility(View.VISIBLE);
+            FloatingActionButton fabAddFeed = view.findViewById(R.id.fab_add_feed);
+            fabAddFeed.setVisibility(View.VISIBLE);
+            fabAddFeed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), CreateFeedActivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             view.findViewById(R.id.fab_add_feed).setVisibility(View.GONE);
         }
 
-        FloatingActionButton fabAddFeed = view.findViewById(R.id.fab_add_feed);
-        fabAddFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), FeedCreationActivity.class);
-//                startActivity(intent);
-                Intent intent = new Intent(getActivity(), CreateFeedActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            rvFeeds.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if (dy > 0) {
+                        view.findViewById(R.id.fab_add_feed).setVisibility(View.GONE);
+                    } else {
+                        if (isCreateFeed) {
+                            view.findViewById(R.id.fab_add_feed).setVisibility(View.VISIBLE);
+                        } else {
+                            view.findViewById(R.id.fab_add_feed).setVisibility(View.GONE);
+                        }
+                    }
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        }
     }
 
     @Override
