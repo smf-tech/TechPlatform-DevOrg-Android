@@ -80,7 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(RemoteMessage remoteMessage) {
         String messageTitle = remoteMessage.getNotification().getTitle();
-        String messageBody = remoteMessage.getNotification().getTitle();
+        String messageBody = remoteMessage.getNotification().getBody();
         Intent intent = null;
         if (TextUtils.isEmpty(remoteMessageId)) {
             intent = getIntent(remoteMessage.getData().get("toOpen"));
