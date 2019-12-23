@@ -46,7 +46,7 @@ public class Platform extends Application {
         createNotificationChannel();
         FirebaseApp.initializeApp(this);
         initFireBase();
-        SyncAdapterUtils.periodicSyncRequest();
+        //SyncAdapterUtils.periodicSyncRequest();
 
         if (mFirebaseAnalytics == null) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);

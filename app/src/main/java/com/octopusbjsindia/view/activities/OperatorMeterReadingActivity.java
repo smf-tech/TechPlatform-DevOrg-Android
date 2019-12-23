@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -82,6 +83,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
+    private TextView tv_version_code,tv_device_name;
     private Location location;
     ImageView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
@@ -240,7 +242,8 @@ private ImageView toolbar_edit_action;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading_new);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        tv_version_code = findViewById(R.id.tv_version_code);
+        tv_device_name = findViewById(R.id.tv_device_name);
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
         gear_action_start = findViewById(R.id.gear_action_start);
@@ -252,7 +255,7 @@ private ImageView toolbar_edit_action;
         requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
 
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
-        //SyncAdapterUtils.periodicSyncRequest();
+        SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -297,7 +300,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View view) {
                 // Preventing multiple clicks, using threshold of 1 second
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -380,7 +383,7 @@ private ImageView toolbar_edit_action;
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
 
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                             Log.e("clickTime retuned", "" + "Return");
                             mLastClickTime = SystemClock.elapsedRealtime();
                             return;
@@ -436,7 +439,7 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -471,7 +474,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View v) {
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 31000) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -527,6 +530,22 @@ private ImageView toolbar_edit_action;
                     }
                 }, new IntentFilter(ForegroundService.ACTION_LOCATION_BROADCAST)
         );
+
+        try {
+            String appVersion  = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tv_version_code.setText("Version-"+appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            String deviceName = android.os.Build.MODEL;
+            String deviceMake = Build.MANUFACTURER;
+            tv_device_name.setText(deviceMake+" "+deviceName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void callStartButtonClick() {
