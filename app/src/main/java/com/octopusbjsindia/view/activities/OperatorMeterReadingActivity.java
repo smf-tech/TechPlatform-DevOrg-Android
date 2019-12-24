@@ -56,6 +56,7 @@ import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.services.ForegroundService;
+import com.octopusbjsindia.syncAdapter.SyncAdapter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
@@ -255,7 +256,7 @@ private ImageView toolbar_edit_action;
         requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
 
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
-        SyncAdapterUtils.periodicSyncRequest();
+       // SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -695,7 +696,8 @@ private ImageView toolbar_edit_action;
         operatorRequestResponseModel.setLong(lon);
         operatorRequestResponseModel.setMeter_reading(meter_reading);
         operatorRequestResponseModel.setHours(hours);
-        operatorRequestResponseModel.setTotalHours(totalHours);
+        int totalHourstoSend =  preferences.getInt("totalHours", 0);
+        operatorRequestResponseModel.setTotalHours(totalHourstoSend);
         operatorRequestResponseModel.setReasonId(strReasonId);//
         operatorRequestResponseModel.setImage(image);
 
@@ -705,6 +707,7 @@ private ImageView toolbar_edit_action;
         //uploadImage(image);
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
             //SyncAdapterUtils.periodicSyncRequest();
+            SyncAdapterUtils.manualRefresh();
         }
 
         List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
@@ -1291,6 +1294,7 @@ private void initConnectivityReceiver() {
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (isConnected){
             //SyncAdapterUtils.periodicSyncRequest();
+            SyncAdapterUtils.manualRefresh();
         }else {
 
         }

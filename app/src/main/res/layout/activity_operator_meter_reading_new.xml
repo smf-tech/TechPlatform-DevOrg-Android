@@ -162,9 +162,9 @@
         android:id="@+id/tv_machine_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_margin="@dimen/dimen_03dp"
         android:text=""
-        android:textSize="@dimen/text_size_18"
+        android:textSize="@dimen/text_size_16"
         android:gravity="center_horizontal"
         android:fontFamily="@font/opensans_bold"
         android:textColor="@color/dark_grey" />
