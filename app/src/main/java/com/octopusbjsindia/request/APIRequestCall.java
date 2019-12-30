@@ -78,6 +78,45 @@ public class APIRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void postDataCustomizeHeaderApiCall(String requestID, String paramJson, String url, String orgId,
+                                               String projectId, String roleId) {
+
+        Log.d(TAG, requestID + " url : " + url);
+        Log.d(TAG, requestID + " request Jeson : " + paramJson);
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            if (apiPresenterListener == null) {
+                return;
+            }
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, requestID + " Resp: " + res);
+                    apiPresenterListener.onSuccessListener(requestID, res);
+                }
+            } catch (Exception e) {
+                apiPresenterListener.onFailureListener(requestID, e.getMessage());
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID, error);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestCustomHeader(true, orgId, projectId, roleId));
+        gsonRequest.setBodyParams(createBodyParams(paramJson));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void getDataApiCall(String requestID, String url) {
 
         Log.d(TAG, requestID + " url : " + url);
