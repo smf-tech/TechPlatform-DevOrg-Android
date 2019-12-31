@@ -496,7 +496,7 @@
                 <EditText
                     android:id="@+id/etUserVillage"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/mandatory_taluka"
+                    android:hint="@string/mandatory_village"
                     android:inputType="text|textCapWords"
                     android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
@@ -516,7 +516,7 @@
                 <EditText
                     android:id="@+id/etUserSchool"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/mandatory_taluka"
+                    android:hint="@string/mandatory_school"
                     android:inputType="text|textCapWords"
                     android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
