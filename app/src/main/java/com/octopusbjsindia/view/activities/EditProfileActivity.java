@@ -130,7 +130,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private List<OrganizationRole> roles = new ArrayList<>();
 
     private List<JurisdictionType> countries = new ArrayList<>();
-    private List<JurisdictionType> states = new ArrayList<>();
+    //private List<JurisdictionType> states = new ArrayList<>();
     private List<JurisdictionType> districts = new ArrayList<>();
     private List<JurisdictionType> cities = new ArrayList<>();
     private List<JurisdictionType> talukas = new ArrayList<>();
@@ -1000,7 +1000,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         etUserState.setVisibility(View.GONE);
         //findViewById(R.id.txt_state).setVisibility(View.GONE);
-        states.clear();
+        //states.clear();
         selectedStates.clear();
 
         etUserDistrict.setVisibility(View.GONE);
@@ -1861,7 +1861,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.states.clear();
+                    //this.states.clear();
                     customSpinnerStates.clear();
                     List<String> stateNames = new ArrayList<>();
 
@@ -2422,7 +2422,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } else if (type.equals("Select Country")) {
             selectedCountries.clear();
             JurisdictionType selectedCountry = new JurisdictionType();
-            for (CustomSpinnerObject country : customSpinnerStates) {
+            for (CustomSpinnerObject country : customSpinnerCountries) {
                 if (country.isSelected()) {
                     selectedCountry.setName(country.getName());
                     selectedCountry.setId(country.get_id());
@@ -2651,7 +2651,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } else if (type.equals("Select Village")) {
             selectedVillages.clear();
             JurisdictionType selectedVillage = new JurisdictionType();
-            for (CustomSpinnerObject cluster : customSpinnerClusters) {
+            for (CustomSpinnerObject cluster : customSpinnerVillages) {
                 if (cluster.isSelected()) {
                     selectedVillage.setName(cluster.getName());
                     selectedVillage.setId(cluster.get_id());
