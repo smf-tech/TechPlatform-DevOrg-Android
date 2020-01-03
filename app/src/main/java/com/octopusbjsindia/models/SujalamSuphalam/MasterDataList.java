@@ -13,6 +13,9 @@ public class MasterDataList implements Serializable {
     @SerializedName("field")
     @Expose
     private String field;
+    @SerializedName("structureTypeCode")
+    @Expose
+    private int structureTypeCode;
     @SerializedName("data")
     @Expose
     private List<MasterDataValue> data = null;
@@ -31,6 +34,14 @@ public class MasterDataList implements Serializable {
 
     public void setField(String field) {
         this.field = field;
+    }
+
+    public int getStructureTypeCode() {
+        return structureTypeCode;
+    }
+
+    public void setStructureTypeCode(int structureTypeCode) {
+        this.structureTypeCode = structureTypeCode;
     }
 
     public List<MasterDataValue> getData() {

@@ -50,7 +50,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     private ArrayList<StructureData> ssDataList;
     Activity activity;
     boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
-            isVisitMonitoring, isStructureComplete, isStructureClose;
+            isVisitMonitoring, isStructureComplete, isStructureClose, isStructureBoundary;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
@@ -60,26 +60,31 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-            if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SAVE_OFFLINE_STRUCTURE)) {
-                isSaveOfflineStructure = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_PREPARED_STRUCTURE)) {
-                isStructurePreparation = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_COMMUNITY_MOBILISATION)) {
-                isCommunityMobilization = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VISIT_MONITORTNG)) {
-                isVisitMonitoring = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
-                isStructureComplete = true;
-                continue;
-            } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
-                isStructureClose = true;
-                continue;
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SAVE_OFFLINE_STRUCTURE)) {
+                    isSaveOfflineStructure = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_PREPARED_STRUCTURE)) {
+                    isStructurePreparation = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_COMMUNITY_MOBILISATION)) {
+                    isCommunityMobilization = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VISIT_MONITORTNG)) {
+                    isVisitMonitoring = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
+                    isStructureComplete = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
+                    isStructureClose = true;
+                    continue;
+                } /*else if (true) {
+                    isStructureBoundary = true;
+                    continue;
+                }*/
             }
         }
     }
@@ -176,9 +181,19 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     popup.show();
 
                     if (isCommunityMobilization) {
-                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+                        if (isSave) {
+                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
+                        }
                     } else {
                         popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
+                    }
+                    if (isStructureBoundary) {
+//                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(true);
+                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
+                    } else {
+                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
                     }
                     if (isStructurePreparation) {
                         if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
@@ -212,7 +227,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED) {
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                         } else {
-                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                            if (isSave) {
+                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
+                            }
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
@@ -266,6 +285,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                     showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
                                             "Yes", "No", getAdapterPosition(), 2);
                                     break;
+//                                case R.id.action_structure_boundary:
+//                                    showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
+//                                            "Yes", "No", getAdapterPosition(), 2);
+//                                    break;
                             }
                             return false;
                         }

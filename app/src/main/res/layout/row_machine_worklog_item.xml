@@ -42,6 +42,24 @@
                     android:textColor="@color/white"
                     android:fontFamily="@font/opensans_semibold"
                     />
+                <TextView
+                    android:id="@+id/tv_view_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_alignParentRight="true"
+                    android:text="View Activity"
+                    android:gravity="center"
+                    android:background="@drawable/circular_rect_atten"
+                    android:textSize="@dimen/text_size_12"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_05dp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:textColor="@color/dark_grey"
+                    android:fontFamily="@font/opensans_semibold"
+                    />
                 <!--<TextView
                     android:layout_width="wrap_content"
                     android:text="Total hours"

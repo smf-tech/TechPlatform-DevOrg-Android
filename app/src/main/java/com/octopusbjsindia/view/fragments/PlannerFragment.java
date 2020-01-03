@@ -718,7 +718,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             }
 
         } else {
-//            gpsTracker.showSettingsAlert();
+            gpsTracker.showSettingsAlert();
         }
         if (!isCheckOut) {
             getDiffBetweenTwoHours();

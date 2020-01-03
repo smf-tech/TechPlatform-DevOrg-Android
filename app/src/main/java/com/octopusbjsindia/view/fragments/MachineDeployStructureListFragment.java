@@ -122,19 +122,21 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         }
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-        for (RoleAccessObject roleAccessObject: roleAccessObjectList) {
-            if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
-                isStateFilter = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
-                isDistrictFilter = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
-                isTalukaFilter = true;
-                continue;
-            } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
-                isVillageFilter = true;
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
+                    isStateFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
+                    isDistrictFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
+                    isTalukaFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
+                    isVillageFilter = true;
+                }
             }
         }
         machineDeployStructureListFragmentPresenter = new MachineDeployStructureListFragmentPresenter(this);

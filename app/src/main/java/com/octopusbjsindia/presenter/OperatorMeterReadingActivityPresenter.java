@@ -7,6 +7,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
+import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorMachineDataResponseModel;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.SubFilterset;
@@ -51,11 +52,11 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            OperatorMachineDataResponseModel pendingRequestsResponse
-                    = new Gson().fromJson(response, OperatorMachineDataResponseModel.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineData() != null )
+            OperatorMachineData pendingRequestsResponse
+                    = new Gson().fromJson(response, OperatorMachineData.class);
+            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null )
             {
-                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineData());
+                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
             }
         }
     }

@@ -80,7 +80,6 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
 
         pendingFragmentPresenter = new TMUserLandingFragmentPresenter(this);
-        pendingFragmentPresenter.getAllPendingRequests();
 
         init();
     }
@@ -113,6 +112,18 @@ public class TMUserLandingFragment extends Fragment implements View.OnClickListe
             Intent startMain = new Intent(getActivity(), TMFiltersListActivity.class);
             startActivity(startMain);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(Util.isConnected(this.getContext())){
+            pendingFragmentPresenter.getAllPendingRequests();
+        } else {
+            Util.showToast(getString(R.string.msg_no_network),this.getContext());
+        }
+
+
     }
 
     @Override

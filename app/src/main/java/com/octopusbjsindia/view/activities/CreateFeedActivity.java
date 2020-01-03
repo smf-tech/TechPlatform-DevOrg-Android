@@ -1,17 +1,26 @@
 package com.octopusbjsindia.view.activities;
 
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.webkit.URLUtil;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -47,9 +56,11 @@ import com.soundcloud.android.crop.Crop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,6 +81,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     RelativeLayout progressBar;
     EditText etTitle, etDescription, etUrl;
     ImageView ivFeedImage;
+    String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +102,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
             case R.id.iv_feed_image:
                 onAddImageClick();
@@ -118,18 +130,25 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
 
     private boolean isAllDataValid() {
 
-        if (TextUtils.isEmpty(etTitle.getText().toString())) {
+        if(!TextUtils.isEmpty(etUrl.getText().toString().trim())) {
+            if(!URLUtil.isValidUrl(etUrl.getText().toString().trim())){
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please enter valid Url.", Snackbar.LENGTH_LONG);
+                return false;
+            }
+        }
+
+        if (TextUtils.isEmpty(etTitle.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please Enter Title.", Snackbar.LENGTH_LONG);
+                    "Please enter title.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etDescription.getText().toString())) {
+        } else if(TextUtils.isEmpty(etDescription.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please Enter Description.", Snackbar.LENGTH_LONG);
+                    "Please enter description.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             requestData.put("title",etTitle.getText().toString());
-            requestData.put("description",etDescription.getText().toString());
-            requestData.put("external_url",etUrl.getText().toString());
+            requestData.put("is_published","true");
         }
 
         return true;
@@ -150,10 +169,10 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
                             if (commonResponse.getStatus() == 200) {
-                                Util.showToast(commonResponse.getMessage(), this);
+                                Util.showToast(commonResponse.getMessage(), CreateFeedActivity.this);
                                 finish();
                             } else {
-                                Util.showToast(commonResponse.getMessage(), this);
+                                Util.showToast(commonResponse.getMessage(), CreateFeedActivity.this);
                             }
                             Log.d("response :", jsonString);
                         } catch (UnsupportedEncodingException e) {
@@ -166,7 +185,12 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
-                        Toast.makeText(CreateFeedActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(TextUtils.isEmpty( error.getMessage())){
+                            Toast.makeText(CreateFeedActivity.this, getResources().getString(
+                                    R.string.msg_something_went_wrong), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CreateFeedActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
 
@@ -174,6 +198,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
+                params.put("description",etDescription.getText().toString());
+                params.put("external_url",etUrl.getText().toString());
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));
                 return params;
             }
@@ -218,8 +244,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
         };
 
         volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5,
+                0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(this);
         rQueue.add(volleyMultipartRequest);
@@ -271,18 +297,15 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(this, this.getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
@@ -293,26 +316,47 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
-                if (imageFilePath == null) return;
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(this);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
-                    if (imageFilePath == null) return;
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -323,7 +367,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         ivFeedImage.setImageURI(finalUri);
                         imageHashmap.put("image" + imageCount, bitmap);
                         imageCount++;
@@ -354,5 +399,42 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                 + Constants.Image.IMAGE_PREFIX + time + Constants.Image.IMAGE_SUFFIX;
     }
 
+    @Override
+    public void onBackPressed() {
+
+        final Dialog dialog = new Dialog(Objects.requireNonNull(this));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText("Alert");
+            title.setVisibility(View.VISIBLE);
+
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText("Are you sure you want to discard.");
+            text.setVisibility(View.VISIBLE);
+
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText("Yes");
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+                super.onBackPressed();
+            });
+
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText("No");
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+            });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
 
 }

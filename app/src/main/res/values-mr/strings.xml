@@ -542,6 +542,8 @@
     <string name="create_feed">Create Feed</string>
     <string name="msg_select_org">Please select organization.</string>
     <string name="msg_select_school">Please select school</string>
+    <string name="share_app">Share app</string>
+    <string name="enter_meter_reading">मीटर रीडिंग टाकावे</string>
 
 
 </resources>

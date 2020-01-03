@@ -15,4 +15,7 @@
     <item
         android:id="@+id/action_structure_close"
         android:title="Structure Close" />
+    <item
+        android:id="@+id/action_structure_boundary"
+        android:title="Record Boundary" />
 </menu>

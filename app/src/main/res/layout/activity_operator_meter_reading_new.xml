@@ -91,7 +91,7 @@
         android:textColor="#fff"
         android:visibility="gone" />
     <TextView
-        android:id="@+id/tv_machine_code"
+        android:id="@+id/tv_machine_code_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"

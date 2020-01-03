@@ -50,11 +50,11 @@ public class DownloadService extends IntentService {
     private int totalFileSize;
     private String url, fragment_flag;
 
-    private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
+    private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Zip/";
     //private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() +"/MV";
     private String fileName;
     private String tempFileName;
-    private String DirectoryName = Environment.getExternalStorageDirectory() +"/MV/UnZip/";
+    private String DirectoryName = Environment.getExternalStorageDirectory() +"/Octopus/UnZip/";
     private String filetype;
     private Intent intent;
     String CHANNEL_ID = "my_channel_01";
@@ -247,7 +247,7 @@ public class DownloadService extends IntentService {
             Download download = new Download();
             download.setProgress(100);
 
-            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/");
+            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Zip/");
             if(dir.exists()){
                 File from = new File(dir,tempFileName);
                 File to = new File(dir,fileName);
