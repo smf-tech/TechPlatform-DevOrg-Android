@@ -165,11 +165,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         calendarView.getSelectedDate();
-//        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
-//                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
-//                ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineCode);
-        //etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
         if(!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -513,11 +509,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-//                    if(imageType.equals("dieselReceipt")) {
-//                        imageHashmap.put("diesel"+i, bitmap);
-//                    } else if(imageType.equals("registerImage")) {
-//                        imageHashmap.put("register"+i, bitmap);
-//                    }
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
@@ -583,8 +574,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         selectedDate = date.getDate();
-//        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
-//                ddFormat.format(date.getDate());
         etDieselQuantity.setText("");
     }
 

@@ -263,20 +263,6 @@
                 </RadioGroup>
             </RelativeLayout>
 
-            <!--Organization-->
-            <TextView
-                style="@style/FormLabel"
-                android:visibility="visible"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:text="@string/mandatory_organization" />
-
-            <!--<Spinner-->
-                <!--android:id="@+id/sp_user_organization"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:visibility="visible"-->
-                <!--android:background="@drawable/bg_blue_box"-->
-                <!--android:prompt="@string/organization" />-->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_organization"
                 style="@style/textinputstyle"
@@ -316,22 +302,6 @@
                     android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
-            <!--<TextView-->
-                <!--style="@style/FormLabel"-->
-                <!--android:paddingStart="@dimen/dimen_10dp"-->
-                <!--android:text="@string/mandatory_project" />-->
-
-            <!--<com.platform.widgets.MultiSelectSpinner-->
-                <!--android:id="@+id/sp_project"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dimen_50dp" />-->
-
-            <!--<Spinner-->
-                <!--android:id="@+id/sp_project"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Role-->
             <com.google.android.material.textfield.TextInputLayout
@@ -352,16 +322,6 @@
                     android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
-            <!--<TextView-->
-                <!--style="@style/FormLabel"-->
-                <!--android:paddingStart="@dimen/dimen_10dp"-->
-                <!--android:text="@string/mandatory_role" />-->
-
-            <!--<Spinner-->
-                <!--android:id="@+id/sp_role"-->
-                <!--style="@style/FormSpinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dimen_50dp" />-->
             <!--Country-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_country"
