@@ -74,6 +74,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+
         if(roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
