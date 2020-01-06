@@ -682,15 +682,28 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedClusters != null && selectedClusters.size()>0 &&
-                    !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
-                        profilePresenter.getProfileLocationData(selectedClusters.get(0).getId(),
-                                selectedRole.getProject().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
-                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    if(etUserCluster.getVisibility()==View.VISIBLE) {
+                        if (selectedClusters != null && selectedClusters.size()>0 &&
+                                !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
+                            profilePresenter.getProfileLocationData(selectedClusters.get(0).getId(),
+                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_cluster), Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
+                        if (selectedTalukas != null && selectedTalukas.size()>0 &&
+                                !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
+                            profilePresenter.getProfileLocationData(selectedTalukas.get(0).getId(),
+                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
+                        }
                     }
+
                 }
                 break;
             case R.id.etUserCluster:
@@ -709,7 +722,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
-                        Toast.makeText(this, getString(R.string.msg_select_state), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
@@ -729,7 +742,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
-                        Toast.makeText(this, getString(R.string.msg_select_state), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
