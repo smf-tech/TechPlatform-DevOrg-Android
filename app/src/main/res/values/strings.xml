@@ -662,6 +662,7 @@
     <string name="create_feed">Create Feed</string>
     <string name="share_app">Share app</string>
     <string name="enter_meter_reading">Enter meter reading</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

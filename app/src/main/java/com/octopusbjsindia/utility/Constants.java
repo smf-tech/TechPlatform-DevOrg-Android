@@ -382,6 +382,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_STRUCTURE_CLOSE = 124;
         public static final Integer ACCESS_CODE_CREATE_FEED = 125;
         public static final Integer ACCESS_CODE_DELETE_FEED = 126;
+        public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
@@ -403,6 +404,7 @@ public class Constants {
         public static final Integer ROLE_CODE_SS_DM = 110;
         public static final Integer ROLE_CODE_SS_TC = 111;
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";
