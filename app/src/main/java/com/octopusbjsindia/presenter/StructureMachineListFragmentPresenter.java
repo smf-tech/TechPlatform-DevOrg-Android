@@ -32,6 +32,11 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     private static final String KEY_STATE_ID = "state";
     private static final String KEY_DISTRICT_ID = "district";
     private static final String KEY_TALUKA_ID = "taluka";
+
+    private static final String KEY_SELECTED_ID = "selected_location_id";
+    private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
+    private static final String KEY_LEVEL = "jurisdictionLevel";
+
     private WeakReference<StructureMachineListFragment> fragmentWeakReference;
     private final String TAG = StructureMachineListFragmentPresenter.class.getName();
     public static final String GET_STRUCTURE_LIST ="getStructureList";
@@ -124,12 +129,12 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+    public void getJurisdictionLevelData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         fragmentWeakReference.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, selectedLocationId, jurisdictionTypeId, levelName);
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         fragmentWeakReference.get().showProgressBar();
 
@@ -137,6 +142,26 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
             requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
         }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
             requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+        }
+    }
+
+    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        fragmentWeakReference.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.postDataApiCall(GET_TALUKAS, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 

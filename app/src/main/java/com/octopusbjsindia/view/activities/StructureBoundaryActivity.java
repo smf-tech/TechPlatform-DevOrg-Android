@@ -67,7 +67,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
     private String mLastUpdateTime;
 
     private LottieAnimationView lavWalking;
-    private TextView tvStartRecording, toolbarTitle;
+    private TextView tvStartRecording, toolbarTitle,tvMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
         lavWalking = findViewById(R.id.lav_walking);
         tvStartRecording = findViewById(R.id.tv_start_recording);
         toolbarTitle = findViewById(R.id.toolbar_title);
+        tvMessage = findViewById(R.id.tv_message);
 
         findViewById(R.id.bt_start).setOnClickListener(this);
         findViewById(R.id.bt_stop).setOnClickListener(this);
@@ -99,17 +100,13 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 super.onLocationResult(locationResult);
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
-//                Toast.makeText(getApplicationContext(), "Lat=" + mCurrentLocation.getLatitude() +
-//                        "Long=" + mCurrentLocation.getLongitude() +
-//                        "Alti=" + mCurrentLocation.getAltitude() +
-//                        "Accur=" + mCurrentLocation.getAccuracy(), Toast.LENGTH_SHORT).show();
-//                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
                 tvStartRecording.setVisibility(View.VISIBLE);
                 tvStartRecording.setText("Location Accuracy = " + mCurrentLocation.getAccuracy());
                 if (recording) {
                     locationList.add(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 } else if (mCurrentLocation.getAccuracy() < 25) {
+                    tvMessage.setText("Now you can start recording structure boundary");
                     findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
                     findViewById(R.id.lav_location).setVisibility(View.GONE);
                     lavWalking.setVisibility(View.VISIBLE);
@@ -149,6 +146,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
             case R.id.bt_start:
 //                tvStartRecording.setVisibility(View.VISIBLE);
                 recording = true;
+                tvMessage.setText("Structure boundary's Recording..");
                 findViewById(R.id.bt_start).setVisibility(View.GONE);
                 findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
                 lavWalking.setVisibility(View.VISIBLE);
@@ -156,6 +154,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 break;
             case R.id.bt_stop:
                 recording = false;
+                tvMessage.setText("Structure boundary's Recorded");
                 stopLocationUpdates();
                 findViewById(R.id.bt_stop).setVisibility(View.GONE);
                 findViewById(R.id.bt_preview).setVisibility(View.VISIBLE);

@@ -220,6 +220,28 @@ public class Util {
         return headers;
     }
 
+    public static Map<String, String> requestCustomHeader(boolean isTokenPresent, String orgId,
+                                                          String projectId, String roleId) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json, text/plain, */*");
+        headers.put("Content-Type", "application/json;charset=UTF-8");
+//        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
+
+        if (isTokenPresent) {
+            Login loginObj = getLoginObjectFromPref();
+            if (loginObj != null && loginObj.getLoginData() != null &&
+                    loginObj.getLoginData().getAccessToken() != null) {
+                headers.put(Constants.Login.AUTHORIZATION,
+                        "Bearer " + loginObj.getLoginData().getAccessToken());
+                headers.put("orgId", orgId);
+                headers.put("projectId", projectId);
+                headers.put("roleId", roleId);
+            }
+        }
+
+        return headers;
+    }
+
     public static String getTwoDigit(int i) {
         if (i < 10) {
             return "0" + i;

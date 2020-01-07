@@ -7,8 +7,10 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.listeners.ProfileRequestCallListener;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
@@ -17,9 +19,11 @@ import com.octopusbjsindia.models.profile.OrganizationResponse;
 import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
 import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.models.user.UserInfo;
+import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.request.ProfileRequestCall;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.EditProfileActivity;
 
@@ -27,13 +31,24 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 @SuppressWarnings("CanBeFinal")
 public class ProfileActivityPresenter implements ProfileRequestCallListener,
-        ImageRequestCallListener {
+        ImageRequestCallListener, APIPresenterListener {
 
     private final String TAG = ProfileActivityPresenter.class.getName();
     private WeakReference<EditProfileActivity> profileActivity;
+//    public static final String GET_COUNTRY = "getCountry";
+//    public static final String GET_STATE = "getState";
+//    public static final String GET_DISTRICT = "getDistrict";
+//    public static final String GET_CITY = "getCity";
+//    public static final String GET_TALUKAS = "getTalukas";
+//    public static final String GET_VILLAGE = "getVillage";
+//    public static final String GET_CLUSTER = "getCluster";
+    private static final String KEY_SELECTED_ID = "selected_location_id";
+    private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
+    private static final String KEY_LEVEL = "jurisdictionLevel";
 
     public ProfileActivityPresenter(EditProfileActivity activity) {
         profileActivity = new WeakReference<>(activity);
@@ -71,12 +86,80 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         requestCall.getOrganizationRoles(orgId, projectId);
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
+//    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+//        ProfileRequestCall requestCall = new ProfileRequestCall();
+//        requestCall.setListener(this);
+//
+//        profileActivity.get().showProgressBar();
+//        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
+//    }
+
+    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
 
         profileActivity.get().showProgressBar();
-        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        profileActivity.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.COUNTRY_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.STATE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.DISTRICT_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)){
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.CITY_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.TALUKA_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)){
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)){
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        }
+    }
+
+    public void getProfileLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName, String orgId,
+                                       String projectId, String roleId) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        profileActivity.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        profileActivity.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.COUNTRY_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.STATE_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.DISTRICT_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)){
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CITY_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.TALUKA_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)){
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)){
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -227,6 +310,43 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            profileActivity.get().onFailureListener(requestID,message);
+        }
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        if (profileActivity != null && profileActivity.get() != null) {
+            profileActivity.get().hideProgressBar();
+            if (error != null) {
+                profileActivity.get().onErrorListener(requestID,error);
+            }
+        }
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        if (profileActivity == null) {
+            return;
+        }
+        profileActivity.get().hideProgressBar();
+        if (!TextUtils.isEmpty(response)) {
+            JurisdictionLevelResponse jurisdictionLevelResponse
+                    = new Gson().fromJson(response, JurisdictionLevelResponse.class);
+
+            if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
+                    && !jurisdictionLevelResponse.getData().isEmpty()
+                    && jurisdictionLevelResponse.getData().size() > 0) {
+
+                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), requestID);
+            }
         }
     }
 }
