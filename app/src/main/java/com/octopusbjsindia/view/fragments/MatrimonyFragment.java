@@ -369,6 +369,10 @@ public class MatrimonyFragment extends Fragment implements  View.OnClickListener
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
+        if(matrimonyMeetList.size()==0) {
+            rl_meetLayout.setVisibility(View.GONE);
+            rlNoMeet.setVisibility(View.VISIBLE);
+        }
     }
 
     public void showResponse(String responseStatus, int status) {

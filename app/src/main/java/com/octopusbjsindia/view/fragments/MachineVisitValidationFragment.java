@@ -185,7 +185,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
 
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-        Calendar instance = Calendar.getInstance();
+        //Calendar instance = Calendar.getInstance();
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(2019, Calendar.JANUARY, 1);
