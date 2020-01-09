@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -55,6 +56,7 @@ import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.services.ForegroundService;
+import com.octopusbjsindia.syncAdapter.SyncAdapter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
@@ -82,6 +84,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private BroadcastReceiver connectionReceiver;
     private GPSTracker gpsTracker;
+    private TextView tv_version_code,tv_device_name;
     private Location location;
     ImageView gear_action_start,gear_action_stop;
     private OperatorMeterReadingActivityPresenter operatorMeterReadingActivityPresenter;
@@ -240,7 +243,8 @@ private ImageView toolbar_edit_action;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operator_meter_reading_new);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        tv_version_code = findViewById(R.id.tv_version_code);
+        tv_device_name = findViewById(R.id.tv_device_name);
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
         gear_action_start = findViewById(R.id.gear_action_start);
@@ -252,9 +256,7 @@ private ImageView toolbar_edit_action;
         requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
 
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
-
-
-
+       // SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -299,7 +301,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View view) {
                 // Preventing multiple clicks, using threshold of 1 second
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -382,7 +384,7 @@ private ImageView toolbar_edit_action;
                         Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
                     } else {
 
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                             Log.e("clickTime retuned", "" + "Return");
                             mLastClickTime = SystemClock.elapsedRealtime();
                             return;
@@ -414,6 +416,7 @@ private ImageView toolbar_edit_action;
                         showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
 
                         /*updateStatusAndProceed(state_halt);
+
                         clearReadingImages();*/
                     /*if (currentState==state_start){
                         editor.putInt("State", state_pause);
@@ -437,7 +440,7 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -472,7 +475,7 @@ private ImageView toolbar_edit_action;
             @Override
             public void onClick(View v) {
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                     Log.e("clickTime retuned", "" + "Return");
                     mLastClickTime = SystemClock.elapsedRealtime();
                     return;
@@ -521,13 +524,29 @@ private ImageView toolbar_edit_action;
                         hours = currentHours;
                         if (!TextUtils.isEmpty(timestr)) {
                          //   Log.e("current Time", timestr);
-                            Log.e("Total_hours", "" + totalHours);
-                            Log.e("current_hours", "" + currentHours);
+                           // Log.e("Total_hours", "" + totalHours);
+                          //  Log.e("current_hours", "" + currentHours);
                         }
 
                     }
                 }, new IntentFilter(ForegroundService.ACTION_LOCATION_BROADCAST)
         );
+
+        try {
+            String appVersion  = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tv_version_code.setText("Version-"+appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            String deviceName = android.os.Build.MODEL;
+            String deviceMake = Build.MANUFACTURER;
+            tv_device_name.setText(deviceMake+" "+deviceName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void callStartButtonClick() {
@@ -677,14 +696,17 @@ private ImageView toolbar_edit_action;
         operatorRequestResponseModel.setLong(lon);
         operatorRequestResponseModel.setMeter_reading(meter_reading);
         operatorRequestResponseModel.setHours(hours);
-        operatorRequestResponseModel.setTotalHours(totalHours);
+        int totalHourstoSend =  preferences.getInt("totalHours", 0);
+        operatorRequestResponseModel.setTotalHours(totalHourstoSend);
         operatorRequestResponseModel.setReasonId(strReasonId);//
         operatorRequestResponseModel.setImage(image);
 
-
+        String JsontoString = new Gson().toJson(operatorRequestResponseModel);
+        Log.e("REQJSOs entry",JsontoString);
         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(operatorRequestResponseModel);
         //uploadImage(image);
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
+            //SyncAdapterUtils.periodicSyncRequest();
             SyncAdapterUtils.manualRefresh();
         }
 
@@ -692,7 +714,7 @@ private ImageView toolbar_edit_action;
 
         Log.e("list--2","---"+list.size());
         for (int i = 0; i < list.size(); i++) {
-            Log.e("list--2--2","---"+list.get(i).getTotalHours());
+            Log.e("list--2--2","---"+list.get(i).getStatus()+" "+list.get(i).getWorkTime());
         }
 
         //List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
@@ -1271,6 +1293,7 @@ private void initConnectivityReceiver() {
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (isConnected){
+            //SyncAdapterUtils.periodicSyncRequest();
             SyncAdapterUtils.manualRefresh();
         }else {
 

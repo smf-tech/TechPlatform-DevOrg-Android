@@ -83,16 +83,16 @@ public class ForegroundService extends Service {
         };
 // start it with:
         mHandler.post(runnable);
-        Log.e("SystemService--Started", "--" + currentClockTime);
+    //    Log.e("SystemService--Started", "--" + currentClockTime);
         startTime =  preferences.getLong("startTime",0);
-        Log.e("startTime--checked", "--" + startTime);
+   //     Log.e("startTime--checked", "--" + startTime);
         if (startTime<1) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putLong("startTime", SystemClock.elapsedRealtime());
             editor.apply();
         }
         startTime =  preferences.getLong("startTime",0);
-        Log.e("startTime--saved", "--" + startTime);
+   //     Log.e("startTime--saved", "--" + startTime);
         return START_NOT_STICKY;
     }
 
@@ -100,8 +100,8 @@ public class ForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        Log.d(ACTION_LOCATION_BROADCAST, "on destroy called");
-        Log.e("System--DESTROYED", "--" + currentClockTime);
+    //    Log.d(ACTION_LOCATION_BROADCAST, "on destroy called");
+     //   Log.e("System--DESTROYED", "--" + currentClockTime);
         saveTimerObjectInPref();
     }
 
@@ -109,7 +109,7 @@ public class ForegroundService extends Service {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("systemTime", currentSystemTime);
         editor.putInt("systemClockTime", currentClockTime+systemClockTime);
-        Log.e("systemClockTime---destr", "---"+systemClockTime);
+        Log.e("systemClockTime---destr", "---"+currentClockTime+systemClockTime);
         editor.apply();
         systemClockTime = preferences.getInt("systemClockTime", 0);
         if (preferences.getInt("State", 0) != state_stop) {
@@ -143,19 +143,19 @@ public class ForegroundService extends Service {
             Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
             int systemTime = preferences.getInt("systemTime", 0);
             systemClockTime = preferences.getInt("systemClockTime", 0);
-            Log.e("systemClockTime---serv", "---"+systemClockTime);
-            Log.e("System---", "--" + systemTime);
-            Log.e("System--clock-", "--" + systemClockTime);
+        //    Log.e("systemClockTime---serv", "---"+systemClockTime);
+        //    Log.e("System---", "--" + systemTime);
+        //    Log.e("System--clock-", "--" + systemClockTime);
 
 // Calculate the time interval when the task is done
             int timeInterval = (int) (SystemClock.elapsedRealtime()- startTime) / 1000;
-            Log.e("SysscurClockelapsedTime", "--" + SystemClock.elapsedRealtime());
+          //  Log.e("SysscurClockelapsedTime", "--" + SystemClock.elapsedRealtime());
             if ((currentClockTime - timeInterval)>1){
-                Log.e("SysscurClockTime", "--" + currentClockTime);
-                Log.e("SysstimeInterval", "--" + timeInterval);
+              //  Log.e("SysscurClockTime", "--" + currentClockTime);
+              //  Log.e("SysstimeInterval", "--" + timeInterval);
             }else {
-                Log.e("SysscurClockTime", "--" + currentClockTime);
-                Log.e("SysstimeInterval", "--" + timeInterval);
+              //  Log.e("SysscurClockTime", "--" + currentClockTime);
+              //  Log.e("SysstimeInterval", "--" + timeInterval);
             }
 
             //currentClockTime = systemClockTime + timeInterval;

@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/dimen_10dp"
-        android:layout_margin="@dimen/dimen_10dp"
-        android:background="@color/white">
+        app:cardCornerRadius="@dimen/dimen_10dp">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/ly_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/ly_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="@dimen/dimen_50dp"
+                android:background="@color/colorPrimary">
 
                 <TextView
                     android:id="@+id/tv_dialog_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_50dp"
-                    android:background="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="Select action"
                     android:textColor="@color/white"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_16"/>
+                    android:textSize="@dimen/text_size_16" />
 
                 <TextView
                     android:id="@+id/tv_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/crop__ic_cancel"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:background="@drawable/ic_back_white"
+                    android:backgroundTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:backgroundTint="@color/white"/>
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:background="@drawable/ic_check_mark"
+                    android:backgroundTint="@color/white" />
 
             </RelativeLayout>
 
@@ -50,78 +58,70 @@
                 android:id="@+id/tv_rg_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_toolbar"
                 android:layout_marginStart="@dimen/dimen_20dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:text="What would you like to do?"
                 android:fontFamily="@font/opensans_semibold"
-                android:visibility="gone"/>
+                android:text="What would you like to do?" />
 
             <RadioGroup
                 android:id="@+id/rg_mou_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_below="@+id/tv_rg_title"
                 android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp">
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/rb_terminate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Terminate MOU"
-                    android:textColor="@color/dark_grey"
                     android:fontFamily="@font/opensans"
-                    android:padding="@dimen/dimen_10dp"/>
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="Terminate MOU"
+                    android:textColor="@color/dark_grey" />
 
                 <RadioButton
                     android:id="@+id/rb_deploy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_10dp"
-                    android:text="Allocate machine in taluka"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
-                    android:textColor="@color/dark_grey"/>
+                    android:text="Allocate machine in taluka"
+                    android:textColor="@color/dark_grey" />
 
             </RadioGroup>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_taluka"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rg_mou_action"
+                android:layout_marginBottom="@dimen/dimen_05dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_terminate_reason"
                 style="@style/textinputstyle"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tly_description"
-                app:hintTextAppearance="@style/TextInputLayoutHint"
-                android:visibility="gone">
+                android:layout_below="@+id/rg_mou_action"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
                     android:id="@+id/edit_terminate_reason"
                     style="@style/RegistrationEditTextLayout"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/terminate_reason"/>
+                    android:hint="@string/terminate_reason"
+                    android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_40dp"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_margin="@dimen/dimen_05dp"
-                    android:text="@string/submit"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"/>
 
-        </LinearLayout>
-        </ScrollView>
+        </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
+
 </LinearLayout>

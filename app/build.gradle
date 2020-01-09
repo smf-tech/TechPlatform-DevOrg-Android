@@ -28,8 +28,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.04"
+        versionCode 5
+        versionName "1.05"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationId 'com.octopusbjsindia'
         javaCompileOptions {
@@ -130,12 +130,15 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     annotationProcessor "androidx.room:room-compiler:2.1.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     implementation 'com.airbnb.android:lottie:2.7.0'
+
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     //circular progress bar
     implementation 'com.budiyev.android:circular-progress-bar:1.2.2'

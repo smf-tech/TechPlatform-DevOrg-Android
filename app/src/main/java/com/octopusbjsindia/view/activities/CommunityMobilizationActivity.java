@@ -57,6 +57,7 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -839,11 +840,11 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                selectedIV.setImageURI(finalUri);
+
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
-                        //selectedIV.setImageURI(finalUri);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        selectedIV.setImageURI(finalUri);
                         imageHashmap.put("image" + imageCount, bitmap);
                         imageCount++;
                     } else {

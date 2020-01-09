@@ -1,13 +1,22 @@
 package com.octopusbjsindia.view.adapters;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Looper;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +26,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -34,6 +47,7 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
+import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
 import com.octopusbjsindia.view.activities.StructureVisitMonitoringActivity;
@@ -60,6 +74,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+
         if(roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
@@ -81,10 +96,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
                     isStructureClose = true;
                     continue;
-                } /*else if (true) {
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
                     isStructureBoundary = true;
                     continue;
-                }*/
+                }
             }
         }
     }
@@ -190,8 +205,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
                     }
                     if (isStructureBoundary) {
-//                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(true);
-                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(true);
+//                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
                     } else {
                         popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
                     }
@@ -285,10 +300,43 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                     showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
                                             "Yes", "No", getAdapterPosition(), 2);
                                     break;
-//                                case R.id.action_structure_boundary:
-//                                    showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
-//                                            "Yes", "No", getAdapterPosition(), 2);
-//                                    break;
+                                case R.id.action_structure_boundary:
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        //noinspection MissingPermission
+                                        if (activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                                && activity.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                            ActivityCompat.requestPermissions(activity,
+                                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                                            Manifest.permission.ACCESS_FINE_LOCATION},
+                                                    Constants.GPS_REQUEST);
+                                        } else {
+                                            LocationManager lm = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
+                                            boolean gps_enabled = false;
+
+                                            try {
+                                                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                                            } catch(Exception ex) {}
+                                            if(gps_enabled){
+                                                intent = new Intent(activity, StructureBoundaryActivity.class);
+                                                intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
+                                                activity.startActivity(intent);
+                                            } else {
+                                                new AlertDialog.Builder(activity)
+                                                        .setTitle("Alert")
+                                                        .setMessage("Your GPS is not on please turn it on")
+                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                                                activity.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                                            }
+                                                        })
+                                                        .setNegativeButton("Cancel", null)
+                                                        .show();
+                                            }
+                                        }
+                                    }
+                                    break;
                             }
                             return false;
                         }

@@ -44,7 +44,6 @@ public class StructurePripretionsActivityPresenter implements APIPresenterListen
     public void submitPripretion(StructurePripretionData requestData, HashMap<String, Bitmap> imageHashmap){
         activity.showProgressBar();
         Gson gson = new GsonBuilder().create();
-
         String paramjson =gson.toJson(requestData);
 
         final String checkProfileUrl = BuildConfig.BASE_URL

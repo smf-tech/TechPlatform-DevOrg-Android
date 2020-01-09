@@ -271,7 +271,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri=Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getActivity());
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

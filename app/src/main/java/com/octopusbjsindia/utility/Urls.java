@@ -87,7 +87,7 @@ public class Urls {
     {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
         public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
-        public static final String GET_TEAM_ATTENDANCE="/api/getTeamAttendance";
+        public static final String GET_TEAM_ATTENDANCE="api/getTeamAttendance";
     }
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";
@@ -143,6 +143,7 @@ public class Urls {
         public static final String MACHINE_VISIT_VALIDATION_FORM = "api/machineVisit";
         public static final String MACHINE_SILT_TRANSPORT_RECORD_FORM = "api/siltDetails";
         public static final String MACHINE_MOU_FORM = "api/machineMou";
+        public static final String STRUCTURE_BOUNDARY = "api/structureBoundary";
     }
 
     public class OperatorApi {
