@@ -11,6 +11,7 @@ import com.octopusbjsindia.dao.OperatorRequestResponseModelDao;
 import com.octopusbjsindia.dao.ProcessDataDao;
 import com.octopusbjsindia.dao.ReportsDataDao;
 import com.octopusbjsindia.dao.SSMasterDatabaseDao;
+import com.octopusbjsindia.dao.StructureBoundaryDao;
 import com.octopusbjsindia.dao.StructureDataDao;
 import com.octopusbjsindia.dao.StructurePripretionDataDao;
 import com.octopusbjsindia.dao.StructureVisitMonitoringDataDao;
@@ -19,6 +20,7 @@ import com.octopusbjsindia.dao.UserCheckOutDao;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.SavedForm;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
@@ -33,8 +35,8 @@ import com.octopusbjsindia.models.reports.ReportData;
 
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
         ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
-        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class},
-        version = 1)
+        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class},
+        version = 2)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -63,5 +65,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract StructureVisitMonitoringDataDao structureVisitMonitoringDataDao();
 
     public abstract StructurePripretionDataDao structurePripretionDataDao();
+
+    public abstract StructureBoundaryDao structureBoundaryDao();
 
 }

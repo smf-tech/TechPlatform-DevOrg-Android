@@ -147,6 +147,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 holder.btSave.setVisibility(View.VISIBLE);
             }
         }
+        if(ssDataList.get(position).isStructureBoundary()){
+            holder.tvBoundary.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvBoundary.setVisibility(View.GONE);
+        }
 
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -160,7 +165,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
-                tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage;
+                tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
+                tvBoundary;
         ImageView btnPopupMenu;
         LinearLayout lyStructure;
         PopupMenu popup;
@@ -181,6 +187,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvTaluka = itemView.findViewById(R.id.tv_taluka);
             tvVillage = itemView.findViewById(R.id.tv_village);
             btSave = itemView.findViewById(R.id.bt_save);
+            tvBoundary = itemView.findViewById(R.id.tv_boundary);
             if (isSave) {
                 btSave.setText("Save Offline");
             } else {
@@ -324,7 +331,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                             } else {
                                                 new AlertDialog.Builder(activity)
                                                         .setTitle("Alert")
-                                                        .setMessage("Your GPS is not on please turn it on")
+                                                        .setMessage("Your GPS Location is OFF, Please turn it ON")
                                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface paramDialogInterface, int paramInt) {

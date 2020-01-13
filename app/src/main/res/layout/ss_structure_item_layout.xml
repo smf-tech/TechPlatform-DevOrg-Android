@@ -298,9 +298,20 @@
                         android:layout_below="@+id/tv_status_lebal"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_15"
+                        android:textSize="@dimen/text_size_12"
                         android:textColor="@color/colorPrimary"
                         android:text="Ssssss"/>
+
+                    <TextView
+                        android:id="@+id/tv_boundary"
+                        android:layout_below="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Structure boundary recorded"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/dimen_10dp"
+                        android:visibility="gone"/>
                 </RelativeLayout>
 
                 <RelativeLayout

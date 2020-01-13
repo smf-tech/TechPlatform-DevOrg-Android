@@ -100,6 +100,10 @@ public class StructureData implements Serializable {
     @SerializedName("isStructureComplete")
     @Expose
     private boolean isStructureComplete;
+    @ColumnInfo(name = "structureBoundary")
+    @SerializedName("structureBoundary")
+    @Expose
+    private boolean structureBoundary = false;
     @Ignore
     @SerializedName("deployedMachineDetails")
     @Expose
@@ -300,5 +304,14 @@ public class StructureData implements Serializable {
 
     public void setSavedOffine(boolean savedOffine) {
         isSavedOffine = savedOffine;
+    }
+
+
+    public boolean isStructureBoundary() {
+        return structureBoundary;
+    }
+
+    public void setStructureBoundary(boolean structureBoundary) {
+        this.structureBoundary = structureBoundary;
     }
 }

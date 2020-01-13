@@ -16,6 +16,7 @@ import com.octopusbjsindia.dao.OperatorRequestResponseModelDao;
 import com.octopusbjsindia.dao.ProcessDataDao;
 import com.octopusbjsindia.dao.ReportsDataDao;
 import com.octopusbjsindia.dao.SSMasterDatabaseDao;
+import com.octopusbjsindia.dao.StructureBoundaryDao;
 import com.octopusbjsindia.dao.StructureDataDao;
 import com.octopusbjsindia.dao.StructurePripretionDataDao;
 import com.octopusbjsindia.dao.StructureVisitMonitoringDataDao;
@@ -236,6 +237,11 @@ public class DatabaseManager {
     public StructurePripretionDataDao getStructurePripretionDataDao(){
         StructurePripretionDataDao structurePripretionDataDao=appDatabase.structurePripretionDataDao();
         return structurePripretionDataDao;
+    }
+
+    public StructureBoundaryDao getStructureBoundaryDao(){
+        StructureBoundaryDao structureBoundaryDao=appDatabase.structureBoundaryDao();
+        return structureBoundaryDao;
     }
 
 }
