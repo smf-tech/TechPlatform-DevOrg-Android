@@ -143,6 +143,7 @@ public class Urls {
         public static final String MACHINE_VISIT_VALIDATION_FORM = "api/machineVisit";
         public static final String MACHINE_SILT_TRANSPORT_RECORD_FORM = "api/siltDetails";
         public static final String MACHINE_MOU_FORM = "api/machineMou";
+        public static final String MACHINE_MOU_UPLOAD = "api/machineMouUpload";
         public static final String STRUCTURE_BOUNDARY = "api/structureBoundary";
     }
 

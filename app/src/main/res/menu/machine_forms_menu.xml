@@ -36,4 +36,9 @@
         android:title="Release Machine from taluka"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_machine_mou_upload"
+        android:title="Upload Machine MOU"
+        android:visible="false"/>
+
 </menu>

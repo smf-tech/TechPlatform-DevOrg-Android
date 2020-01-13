@@ -81,6 +81,17 @@ public class MachineData  implements Serializable {
     @Expose
     private String haltReason;
 
+    public Boolean getMouUploaded() {
+        return isMouUploaded;
+    }
+
+    public void setMouUploaded(Boolean mouUploaded) {
+        isMouUploaded = mouUploaded;
+    }
+
+    @SerializedName("isMouUploaded")
+    @Expose
+    private Boolean isMouUploaded;
 
     public String getMachineLocation() {
         return machineLocation;

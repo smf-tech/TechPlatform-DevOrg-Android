@@ -266,6 +266,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
                         }
                     }
+                    //if(!ssDataList.get(getAdapterPosition()).getMouUploaded()) {
+                        popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
+                    //}
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -338,13 +341,19 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                             Intent startMain1 = new Intent(activity, MachineWorkingDataListActivity.class);
                                             startMain1.putExtra("machineId",ssDataList.get(getAdapterPosition()).getId());
                                             startMain1.putExtra("machineName",ssDataList.get(getAdapterPosition()).getMachineCode());
-
                                             activity.startActivity(startMain1);
                                         } else {
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                                         }
                                         break;
-
+                                    case R.id.action_machine_mou_upload:
+                                        Intent mouUploadIntent = new Intent(activity, SSActionsActivity.class);
+                                        mouUploadIntent.putExtra("SwitchToFragment", "MouUploadFragment");
+                                        mouUploadIntent.putExtra("title", "Upload MOU");
+                                        mouUploadIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        mouUploadIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+                                        activity.startActivity(mouUploadIntent);
+                                        break;
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);
