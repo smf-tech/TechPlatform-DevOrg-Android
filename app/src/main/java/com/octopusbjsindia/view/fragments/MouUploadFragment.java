@@ -143,7 +143,7 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
     }
 
     public void removeUri(int position) {
-        mouUriList.remove(mouUriList.size()-position);
+        mouUriList.remove(position);
         mouUploadAdapter.notifyDataSetChanged();
     }
 
@@ -264,15 +264,16 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
 
     @Override
     public void onClick(View view) {
-        if(Util.isConnected(getActivity())) {
-            if(imageCount>0 && machineId!=null) {
-                uploadData();
-            } else {
-                Util.showToast("Please select image.", getActivity());
-            }
-        } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-        }
+        mouUriList.get(0);
+//        if(Util.isConnected(getActivity())) {
+//            if(imageCount>0 && machineId!=null) {
+//                uploadData();
+//            } else {
+//                Util.showToast("Please select image.", getActivity());
+//            }
+//        } else {
+//            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+//        }
     }
 
     private void uploadData(){
