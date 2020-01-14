@@ -90,8 +90,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0;
     public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou, isMachineVisitValidationForm, isSiltTransportForm,
-            isDieselRecordForm, isMachineShiftForm, isMachineRelease, isStateFilter, isDistrictFilter, isTalukaFilter,
+    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
+            isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
+            isMachineRelease, isMouImagesUpload, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
@@ -185,6 +186,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
                     isMachineRelease = true;
+                    continue;
+                }  else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
+                    isMouImagesUpload = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
                     isStateFilter = true;

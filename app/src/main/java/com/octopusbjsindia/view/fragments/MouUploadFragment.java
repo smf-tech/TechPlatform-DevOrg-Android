@@ -152,6 +152,7 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
 
     public void removeUri(int position) {
         mouUriList.remove(position);
+        imageHashmap.remove("image" + (position-1));
         mouUploadAdapter.notifyDataSetChanged();
     }
 
