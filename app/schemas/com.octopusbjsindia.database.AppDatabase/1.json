@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f11764f053015ca0caad56baa60170d9",
+    "identityHash": "e243ad412f5cb5016a0a82799f1dd3b7",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -736,7 +736,7 @@
       },
       {
         "tableName": "StructureData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `village` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, `isStructureComplete` INTEGER NOT NULL, `structureBoundary` INTEGER NOT NULL, PRIMARY KEY(`structureId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `village` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, `isStructureComplete` INTEGER NOT NULL, PRIMARY KEY(`structureId`))",
         "fields": [
           {
             "fieldPath": "structureId",
@@ -861,12 +861,6 @@
           {
             "fieldPath": "isStructureComplete",
             "columnName": "isStructureComplete",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "structureBoundary",
-            "columnName": "structureBoundary",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -1027,44 +1021,12 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "StructureBoundaryData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structureId` TEXT, `structureBoundary` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "structureId",
-            "columnName": "structureId",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "structureBoundary",
-            "columnName": "structureBoundary",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f11764f053015ca0caad56baa60170d9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e243ad412f5cb5016a0a82799f1dd3b7')"
     ]
   }
 }

@@ -55,8 +55,11 @@ public class DatabaseManager {
     private static final Migration MIGRATION_OLD_TO_NEW = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // Since we didn't alter the table, there's nothing else to do here.
-          //database.execSQL("CREATE TABLE IF NOT EXISTS `${Notifications}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `text` TEXT, `toOpen` TEXT, `unread` INTEGER, `dateTime` TEXT)");
+
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN structureBoundary INTEGER NOT NULL DEFAULT 0");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS `StructureBoundaryData`" +
+                    " (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structureId` TEXT, `structureBoundary` TEXT)");
         }
     };
 
@@ -204,43 +207,43 @@ public class DatabaseManager {
         Log.d(TAG, "insertModule");
     }
 
-    public UserAttendanceDao getAttendaceSchema(){
-        UserAttendanceDao userAttendanceDao=appDatabase.userAttendanceDao();
+    public UserAttendanceDao getAttendaceSchema() {
+        UserAttendanceDao userAttendanceDao = appDatabase.userAttendanceDao();
         return userAttendanceDao;
     }
 
-    public NotificationDataDao getNotificationDataDeo(){
-        NotificationDataDao notificationDataDao=appDatabase.notificationsDataDao();
+    public NotificationDataDao getNotificationDataDeo() {
+        NotificationDataDao notificationDataDao = appDatabase.notificationsDataDao();
         return notificationDataDao;
     }
 
-    public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao(){
-        OperatorRequestResponseModelDao notificationDataDao=appDatabase.operatorRequestResponseModelDao();
+    public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao() {
+        OperatorRequestResponseModelDao notificationDataDao = appDatabase.operatorRequestResponseModelDao();
         return notificationDataDao;
     }
 
-    public SSMasterDatabaseDao getSSMasterDatabaseDao(){
-        SSMasterDatabaseDao ssMasterDatabaseDao=appDatabase.ssMasterDatabaseDao();
+    public SSMasterDatabaseDao getSSMasterDatabaseDao() {
+        SSMasterDatabaseDao ssMasterDatabaseDao = appDatabase.ssMasterDatabaseDao();
         return ssMasterDatabaseDao;
     }
 
-    public StructureDataDao getStructureDataDao(){
-        StructureDataDao structureDataDao=appDatabase.structureDataDao();
+    public StructureDataDao getStructureDataDao() {
+        StructureDataDao structureDataDao = appDatabase.structureDataDao();
         return structureDataDao;
     }
 
-    public StructureVisitMonitoringDataDao getStructureVisitMonitoringDataDao(){
-        StructureVisitMonitoringDataDao structureVisitMonitoringDataDao=appDatabase.structureVisitMonitoringDataDao();
+    public StructureVisitMonitoringDataDao getStructureVisitMonitoringDataDao() {
+        StructureVisitMonitoringDataDao structureVisitMonitoringDataDao = appDatabase.structureVisitMonitoringDataDao();
         return structureVisitMonitoringDataDao;
     }
 
-    public StructurePripretionDataDao getStructurePripretionDataDao(){
-        StructurePripretionDataDao structurePripretionDataDao=appDatabase.structurePripretionDataDao();
+    public StructurePripretionDataDao getStructurePripretionDataDao() {
+        StructurePripretionDataDao structurePripretionDataDao = appDatabase.structurePripretionDataDao();
         return structurePripretionDataDao;
     }
 
-    public StructureBoundaryDao getStructureBoundaryDao(){
-        StructureBoundaryDao structureBoundaryDao=appDatabase.structureBoundaryDao();
+    public StructureBoundaryDao getStructureBoundaryDao() {
+        StructureBoundaryDao structureBoundaryDao = appDatabase.structureBoundaryDao();
         return structureBoundaryDao;
     }
 

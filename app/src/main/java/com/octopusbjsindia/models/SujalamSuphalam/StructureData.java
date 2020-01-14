@@ -306,7 +306,6 @@ public class StructureData implements Serializable {
         isSavedOffine = savedOffine;
     }
 
-
     public boolean isStructureBoundary() {
         return structureBoundary;
     }
