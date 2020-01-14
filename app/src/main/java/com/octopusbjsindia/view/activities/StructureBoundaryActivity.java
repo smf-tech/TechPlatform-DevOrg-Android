@@ -182,6 +182,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                     intent.putExtra(STRUCTURE_DATA, structureData);
                     intent.putExtra(STRUCTURE_BOUNDARY, locationList);
                     startActivity(intent);
+                    finish();
                 } else {
                     showDialog(this, "Alert", "Due to no internet connectivity," +
                             " structure boundry data will be saved offline and it will be synced when internet " +
@@ -285,6 +286,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
+
                 StructureBoundaryData requestData = new StructureBoundaryData();
                 requestData.setStructureId(structureData.getStructureId());
                 Gson gson = new GsonBuilder().create();
