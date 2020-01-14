@@ -116,7 +116,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
-    public TextView tv_text,tv_machine_code,tv_machine_state;
+    public TextView tv_text,tv_machine_code,tv_machine_state,tv_date_today;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String imageFilePath;
@@ -279,11 +279,13 @@ private ImageView toolbar_edit_action;
         tv_text = findViewById(R.id.tv_text);
         tv_machine_code = findViewById(R.id.tv_machine_code_new);
         tv_machine_state= findViewById(R.id.tv_machine_state);
+        tv_date_today= findViewById(R.id.tv_date_today);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
         img_start_meter = findViewById(R.id.img_start_meter);
         img_end_meter = findViewById(R.id.img_end_meter);
 
+        tv_date_today.setText(Util.getCurrentDate());
         if (!preferences.getString("machine_id", "").equalsIgnoreCase("")){
             tv_machine_code.setText(preferences.getString("machine_code", ""));
         }

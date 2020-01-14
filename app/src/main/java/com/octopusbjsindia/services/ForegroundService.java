@@ -149,7 +149,8 @@ public class ForegroundService extends Service {
 
 // Calculate the time interval when the task is done
             int timeInterval = (int) (SystemClock.elapsedRealtime()- startTime) / 1000;
-          //  Log.e("SysscurClockelapsedTime", "--" + SystemClock.elapsedRealtime());
+            Log.e("elapsedRealtime", "--" + SystemClock.elapsedRealtime());
+            Log.e("elapsedReal startTime", "--" + startTime);
             if ((currentClockTime - timeInterval)>1){
               //  Log.e("SysscurClockTime", "--" + currentClockTime);
               //  Log.e("SysstimeInterval", "--" + timeInterval);

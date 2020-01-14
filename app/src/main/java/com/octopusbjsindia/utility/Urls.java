@@ -16,7 +16,6 @@ public class Urls {
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s/%2$s";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String GET_LOCATION_DATA = "api/location/level";
-
         public static final String UPLOAD_IMAGE = "api/upload-image";
     }
 
@@ -143,6 +142,7 @@ public class Urls {
         public static final String MACHINE_VISIT_VALIDATION_FORM = "api/machineVisit";
         public static final String MACHINE_SILT_TRANSPORT_RECORD_FORM = "api/siltDetails";
         public static final String MACHINE_MOU_FORM = "api/machineMou";
+        public static final String MACHINE_MOU_UPLOAD = "api/machineMouUpload";
         public static final String STRUCTURE_BOUNDARY = "api/structureBoundary";
     }
 
