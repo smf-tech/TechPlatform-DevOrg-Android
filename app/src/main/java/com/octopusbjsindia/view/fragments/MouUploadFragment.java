@@ -1,11 +1,15 @@
 package com.octopusbjsindia.view.fragments;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +62,7 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -222,6 +227,7 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                //bitmap = rotateImageIfRequired(bitmap, getContext(), finalUri);
                 //clickedImageView.setImageURI(finalUri);
                 if (Util.isValidImageSize(imageFile)) {
                     imageHashmap.put("image" + imageCount, bitmap);
@@ -257,7 +263,41 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
                 + "IMG_" + timeStamp + ".jpg");
         currentPhotoPath = file.getPath();
         return file;
+    }
 
+    public static Bitmap rotateImageIfRequired(Bitmap img, Context context, Uri selectedImage) throws IOException {
+
+        if (selectedImage.getScheme().equals("content")) {
+            String[] projection = { MediaStore.Images.ImageColumns.ORIENTATION };
+            Cursor c = context.getContentResolver().query(selectedImage, projection, null, null, null);
+            if (c.moveToFirst()) {
+                final int rotation = c.getInt(0);
+                c.close();
+                return rotateImage(img, rotation);
+            }
+            return img;
+        } else {
+            ExifInterface ei = new ExifInterface(selectedImage.getPath());
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateImage(img, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateImage(img, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateImage(img, 270);
+                default:
+                    return img;
+            }
+        }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        return rotatedImg;
     }
 
     @Override
