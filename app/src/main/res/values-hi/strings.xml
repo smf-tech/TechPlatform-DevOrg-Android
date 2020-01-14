@@ -543,5 +543,11 @@
     <string name="share_app">Share app</string>
     <string name="enter_meter_reading">मीटर रीडिंग दर्ज करें</string>
     <string name="msg_images_limit">You can not attach more than 10 images.</string>
+    <string name="boundry_befor_satrt">Please click the start button and start walking..</string>
+    <string name="boundry_when_satrted">Recording your location..</string>
+    <string name="boundry_ended">Structure boundary\'s Recorded</string>
+    <string name="alert">Alert</string>
+    <string name="msg_structure_boundary_no_net">Due to no internet connectivity, structure boundry data will be saved offline and it will be synced when internet connectivity is available.</string>
+    <string name="msg_structure_boundary_discard">Are you sure you want to discard</string>
 
 </resources>
