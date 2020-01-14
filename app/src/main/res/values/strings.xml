@@ -665,6 +665,7 @@
     <string name="share_app">Share app</string>
     <string name="enter_meter_reading">Enter meter reading</string>
     <string name="title_activity_maps">Map</string>
+    <string name="msg_images_limit">You can not attach more than 10 images.</string>
 
 
 </resources>

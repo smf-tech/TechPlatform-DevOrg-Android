@@ -141,7 +141,12 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
 
     public void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            showPictureDialog();
+            if(imageCount<10) {
+                showPictureDialog();
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.msg_images_limit),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -227,8 +232,6 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                //bitmap = rotateImageIfRequired(bitmap, getContext(), finalUri);
-                //clickedImageView.setImageURI(finalUri);
                 if (Util.isValidImageSize(imageFile)) {
                     imageHashmap.put("image" + imageCount, bitmap);
                     imageCount++;
@@ -263,41 +266,6 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
                 + "IMG_" + timeStamp + ".jpg");
         currentPhotoPath = file.getPath();
         return file;
-    }
-
-    public static Bitmap rotateImageIfRequired(Bitmap img, Context context, Uri selectedImage) throws IOException {
-
-        if (selectedImage.getScheme().equals("content")) {
-            String[] projection = { MediaStore.Images.ImageColumns.ORIENTATION };
-            Cursor c = context.getContentResolver().query(selectedImage, projection, null, null, null);
-            if (c.moveToFirst()) {
-                final int rotation = c.getInt(0);
-                c.close();
-                return rotateImage(img, rotation);
-            }
-            return img;
-        } else {
-            ExifInterface ei = new ExifInterface(selectedImage.getPath());
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    return rotateImage(img, 90);
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    return rotateImage(img, 180);
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    return rotateImage(img, 270);
-                default:
-                    return img;
-            }
-        }
-    }
-
-    private static Bitmap rotateImage(Bitmap img, int degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
-        return rotatedImg;
     }
 
     @Override
