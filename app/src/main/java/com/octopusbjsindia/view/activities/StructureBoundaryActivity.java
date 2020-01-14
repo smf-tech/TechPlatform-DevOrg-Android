@@ -120,8 +120,8 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 tvStartRecording.setText("Location Accuracy = " + mCurrentLocation.getAccuracy());
                 if (recording) {
                     locationList.add(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-                } else if (mCurrentLocation.getAccuracy() < 25) {
-                    tvMessage.setText("Now you can start recording structure boundary");
+                } else if (mCurrentLocation.getAccuracy() < 15) {
+                    tvMessage.setText(getResources().getString(R.string.boundry_befor_satrt));
                     findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
                     findViewById(R.id.lav_location).setVisibility(View.GONE);
                     lavWalking.setVisibility(View.VISIBLE);
@@ -156,12 +156,12 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
             case R.id.bt_start:
 //                tvStartRecording.setVisibility(View.VISIBLE);
                 recording = true;
-                tvMessage.setText("Structure boundary's Recording..");
+                tvMessage.setText(getResources().getString(R.string.boundry_when_satrted));
                 findViewById(R.id.bt_start).setVisibility(View.GONE);
                 findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
                 lavWalking.setVisibility(View.VISIBLE);
@@ -169,7 +169,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 break;
             case R.id.bt_stop:
                 recording = false;
-                tvMessage.setText("Structure boundary's Recorded");
+                tvMessage.setText(getResources().getString(R.string.boundry_ended));
                 stopLocationUpdates();
                 findViewById(R.id.bt_stop).setVisibility(View.GONE);
                 findViewById(R.id.bt_preview).setVisibility(View.VISIBLE);
@@ -177,20 +177,38 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 lavWalking.cancelAnimation();
                 break;
             case R.id.bt_preview:
-                if(Util.isConnected(StructureBoundaryActivity.this)){
-                    Intent intent = new Intent(this, MapsActivity.class);
-                    intent.putExtra(STRUCTURE_DATA, structureData);
-                    intent.putExtra(STRUCTURE_BOUNDARY, locationList);
-                    startActivity(intent);
-                    finish();
+                if(locationList.size()>0){
+                    if(Util.isConnected(StructureBoundaryActivity.this)){
+                        Intent intent = new Intent(this, MapsActivity.class);
+                        intent.putExtra(STRUCTURE_DATA, structureData);
+                        intent.putExtra(STRUCTURE_BOUNDARY, locationList);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        showDialog(this, getResources().getString(R.string.alert),
+                                getResources().getString(R.string.msg_structure_boundary_no_net),
+                                getResources().getString(R.string.yes),
+                                getResources().getString(R.string.no),
+                                1);
+                    }
                 } else {
-                    showDialog(this, "Alert", "Due to no internet connectivity," +
-                            " structure boundry data will be saved offline and it will be synced when internet " +
-                            "connectivity is available.", "Yes", "No");
+                    Util.showToast("No boundary was recorded",StructureBoundaryActivity.this);
                 }
-
                 break;
 
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(recording){
+            showDialog(this, getResources().getString(R.string.alert),
+                    getResources().getString(R.string.msg_structure_boundary_discard),
+                    getResources().getString(R.string.yes),
+                    getResources().getString(R.string.no),
+                    2);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -264,7 +282,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
     }
 
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
-            btn2String) {
+            btn2String, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -286,20 +304,23 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
+                if(flag == 1){
+                    StructureBoundaryData requestData = new StructureBoundaryData();
+                    requestData.setStructureId(structureData.getStructureId());
+                    Gson gson = new GsonBuilder().create();
+                    String locationListjson =gson.toJson(locationList);
+                    requestData.setStructureBoundary(locationListjson);
 
-                StructureBoundaryData requestData = new StructureBoundaryData();
-                requestData.setStructureId(structureData.getStructureId());
-                Gson gson = new GsonBuilder().create();
-                String locationListjson =gson.toJson(locationList);
-                requestData.setStructureBoundary(locationListjson);
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                            .insert(requestData);
+                    Util.showToast("Boundary data saved offline",StructureBoundaryActivity.this);
 
-                DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
-                        .insert(requestData);
-                Util.showToast("Boundary data saved offline",StructureBoundaryActivity.this);
+                    dialog.dismiss();
+                    finish();
+                } else {
+                    super.onBackPressed();
+                }
 
-                //Close dialog
-                dialog.dismiss();
-                finish();
 
             });
         }

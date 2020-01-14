@@ -36,6 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/opensans_regular"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:text="Waiting for location Accuracy" />
 
@@ -46,6 +49,8 @@
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dimen_70dp"
+        android:textSize="@dimen/text_size_12"
+        android:fontFamily="@font/opensans_regular"
         android:text="Accuracy :29.92"
         android:visibility="gone" />
 
