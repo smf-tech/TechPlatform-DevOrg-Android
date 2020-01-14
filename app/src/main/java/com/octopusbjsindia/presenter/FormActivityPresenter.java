@@ -124,7 +124,7 @@ public class FormActivityPresenter implements FormRequestCallListener,
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file, type, formName);
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, formName,null,null);
                 return null;
             }
         }.execute();

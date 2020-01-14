@@ -172,7 +172,7 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file, type, null);
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, null,null,null);
                 return null;
             }
         }.execute();

@@ -25,6 +25,7 @@ public class Constants {
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
+    public static final Integer CHOOSE_PDF_FROM_STORAGE = 111;
 
     public static final Integer TIMEOUT_ERROR_CODE = 504;
 
@@ -256,9 +257,11 @@ public class Constants {
         public static final String IMAGE_PREFIX = "picture_";
         public static final String IMAGE_SUFFIX = ".jpg";
         public static final String IMAGE_STORAGE_DIRECTORY = "/Octopus/Image/profile";
+        public static final String PDF_STORAGE_DIRECTORY = "/Octopus/DOC";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
+        public static final String PDF = "pdf";
 
 
         //-------

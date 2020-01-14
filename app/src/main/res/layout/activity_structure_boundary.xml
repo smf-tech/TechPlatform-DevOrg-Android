@@ -31,12 +31,22 @@
         android:visibility="gone"/>
 
     <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_40dp"
+        android:text="Waiting for location Accuracy" />
+
+    <TextView
         android:id="@+id/tv_start_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_60dp"
+        android:layout_marginTop="@dimen/dimen_70dp"
+        android:text="Accuracy :29.92"
         android:visibility="gone" />
 
     <Button

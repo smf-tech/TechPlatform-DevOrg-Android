@@ -295,7 +295,8 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
                         } catch (UnsupportedEncodingException e) {
                             hideProgressBar();
                             e.printStackTrace();
-                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(),getResources().getString
+                                    (R.string.msg_something_went_wrong),Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -303,7 +304,8 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
-                        Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), getResources().getString
+                                (R.string.msg_something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 }) {
 

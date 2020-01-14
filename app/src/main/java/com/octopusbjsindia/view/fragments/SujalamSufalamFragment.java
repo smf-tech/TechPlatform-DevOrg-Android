@@ -35,6 +35,7 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.presenter.SujalamSuphalamFragmentPresenter;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -76,6 +77,8 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             }
         }
         AppEvents.trackAppEvent(getString(R.string.ss_screen_visit));
+        // Start data sync
+        SyncAdapterUtils.manualRefresh();
     }
 
     @Override

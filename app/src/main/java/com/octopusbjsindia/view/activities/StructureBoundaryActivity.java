@@ -6,15 +6,23 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +46,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class StructureBoundaryActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,7 +82,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
     private String mLastUpdateTime;
 
     private LottieAnimationView lavWalking;
-    private TextView tvStartRecording, toolbarTitle;
+    private TextView tvStartRecording, toolbarTitle,tvMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +100,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
         lavWalking = findViewById(R.id.lav_walking);
         tvStartRecording = findViewById(R.id.tv_start_recording);
         toolbarTitle = findViewById(R.id.toolbar_title);
+        tvMessage = findViewById(R.id.tv_message);
 
         findViewById(R.id.bt_start).setOnClickListener(this);
         findViewById(R.id.bt_stop).setOnClickListener(this);
@@ -99,17 +115,13 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 super.onLocationResult(locationResult);
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
-//                Toast.makeText(getApplicationContext(), "Lat=" + mCurrentLocation.getLatitude() +
-//                        "Long=" + mCurrentLocation.getLongitude() +
-//                        "Alti=" + mCurrentLocation.getAltitude() +
-//                        "Accur=" + mCurrentLocation.getAccuracy(), Toast.LENGTH_SHORT).show();
-//                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
                 tvStartRecording.setVisibility(View.VISIBLE);
                 tvStartRecording.setText("Location Accuracy = " + mCurrentLocation.getAccuracy());
                 if (recording) {
                     locationList.add(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 } else if (mCurrentLocation.getAccuracy() < 25) {
+                    tvMessage.setText("Now you can start recording structure boundary");
                     findViewById(R.id.bt_start).setVisibility(View.VISIBLE);
                     findViewById(R.id.lav_location).setVisibility(View.GONE);
                     lavWalking.setVisibility(View.VISIBLE);
@@ -120,8 +132,8 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
 
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -149,6 +161,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
             case R.id.bt_start:
 //                tvStartRecording.setVisibility(View.VISIBLE);
                 recording = true;
+                tvMessage.setText("Structure boundary's Recording..");
                 findViewById(R.id.bt_start).setVisibility(View.GONE);
                 findViewById(R.id.bt_stop).setVisibility(View.VISIBLE);
                 lavWalking.setVisibility(View.VISIBLE);
@@ -156,6 +169,7 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 break;
             case R.id.bt_stop:
                 recording = false;
+                tvMessage.setText("Structure boundary's Recorded");
                 stopLocationUpdates();
                 findViewById(R.id.bt_stop).setVisibility(View.GONE);
                 findViewById(R.id.bt_preview).setVisibility(View.VISIBLE);
@@ -163,11 +177,17 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                 lavWalking.cancelAnimation();
                 break;
             case R.id.bt_preview:
-                Intent intent = new Intent(this, MapsActivity.class);
-                intent.putExtra(STRUCTURE_DATA, structureData);
-                intent.putExtra(STRUCTURE_BOUNDARY, locationList);
-                startActivity(intent);
-                finish();
+                if(Util.isConnected(StructureBoundaryActivity.this)){
+                    Intent intent = new Intent(this, MapsActivity.class);
+                    intent.putExtra(STRUCTURE_DATA, structureData);
+                    intent.putExtra(STRUCTURE_BOUNDARY, locationList);
+                    startActivity(intent);
+                } else {
+                    showDialog(this, "Alert", "Due to no internet connectivity," +
+                            " structure boundry data will be saved offline and it will be synced when internet " +
+                            "connectivity is available.", "Yes", "No");
+                }
+
                 break;
 
         }
@@ -240,6 +260,62 @@ public class StructureBoundaryActivity extends AppCompatActivity implements View
                         Toast.makeText(getApplicationContext(), "Location updates stopped!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                StructureBoundaryData requestData = new StructureBoundaryData();
+                requestData.setStructureId(structureData.getStructureId());
+                Gson gson = new GsonBuilder().create();
+                String locationListjson =gson.toJson(locationList);
+                requestData.setStructureBoundary(locationListjson);
+
+                DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                        .insert(requestData);
+                Util.showToast("Boundary data saved offline",StructureBoundaryActivity.this);
+
+                //Close dialog
+                dialog.dismiss();
+                finish();
+
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
 }

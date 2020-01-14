@@ -24,7 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
@@ -44,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     StructureData structureData;
     ArrayList<LatLng> locationList;
     private RelativeLayout progressBar;
+    private StructureBoundaryData requestData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +67,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         findViewById(R.id.bt_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                requestData = new StructureBoundaryData();
+                requestData.setStructureId(structureData.getStructureId());
+                Gson gson = new GsonBuilder().create();
+                String locationListjson =gson.toJson(locationList);
+                requestData.setStructureBoundary(locationListjson);
                 if(Util.isConnected(MapsActivity.this)){
-                    StructureBoundaryData requestData = new StructureBoundaryData();
-                    requestData.setStructureId(structureData.getStructureId());
-                    requestData.setStructureBoundary(locationList);
                     presenter.submitBoundatys(requestData);
                 } else {
-                    Util.showToast(getString(R.string.msg_no_network),MapsActivity.this);
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                            .insert(requestData);
+                    Util.showToast("Boundary data saved offline, will be sicked",MapsActivity.this);
+                    finish();
                 }
             }
         });
@@ -158,30 +167,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.addPolyline(polylineOptions);
 
-        // Add polylines and polygons to the map. This section shows just
-        // a single polyline. Read the rest of the tutorial to learn more.
-//        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
-//                .clickable(true)
-//                .add(
-//                        new LatLng(-35.016, 143.321),
-//                        new LatLng(-34.747, 145.592),
-//                        new LatLng(-34.364, 147.891),
-//                        new LatLng(-33.501, 150.217),
-//                        new LatLng(-32.306, 149.248),
-//                        new LatLng(-32.491, 147.309)));
-
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationList.get(0), 19));
+        mMap.addMarker(new MarkerOptions().position(locationList.get(0)).title("Start"));
+        mMap.addMarker(new MarkerOptions().position(locationList.get(locationList.size()-1)).title("Stop"));
 
     }
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                .insert(requestData);
+        Util.showToast("Boundary data saved offline, will be sicked",MapsActivity.this);
+        finish();
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                .insert(requestData);
+        Util.showToast("Boundary data saved offline. will be sicked",MapsActivity.this);
+        finish();
     }
 
     @Override
@@ -191,7 +196,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Util.showToast(masterDataResponse.getMessage(),this);
             finish();
         } else {
-            Util.showToast(masterDataResponse.getMessage(),this);
+            DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                    .insert(requestData);
+            Util.showToast("Boundary data saved offline. will be sicked",MapsActivity.this);
         }
     }
 

@@ -45,11 +45,11 @@ public class MapsActivityPresenter implements APIPresenterListener {
         Gson gson = new GsonBuilder().create();
         String paramjson =gson.toJson(requestData);
 
-       final String checkProfileUrl = BuildConfig.BASE_URL
+       final String url = BuildConfig.BASE_URL
                 + Urls.SSModule.STRUCTURE_BOUNDARY;
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall("STRUCTURE_BOUNDARY",paramjson,checkProfileUrl);
+        requestCall.postDataApiCall("STRUCTURE_BOUNDARY",paramjson,url);
     }
 
 }
