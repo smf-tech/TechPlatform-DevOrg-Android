@@ -79,7 +79,6 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
     private RelativeLayout progressBarLayout;
     private MouUploadAdapter mouUploadAdapter;
     private RecyclerView rvMouUpload;
-    private final ArrayList<MouUploadData> mouUploadList = new ArrayList<>();
     private final ArrayList<Uri> mouUriList = new ArrayList<>();
     private Button btnSubmit;
     private String machineId, machineCode;
@@ -116,15 +115,14 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
     }
 
     private void init() {
+        progressBarLayout = mouUploadFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = mouUploadFragmentView.findViewById(R.id.pb_profile_act);
         Uri uri = null;
         btnSubmit = mouUploadFragmentView.findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
         mouUriList.add(uri);
         mouUploadAdapter = new MouUploadAdapter(mouUriList, this);
         rvMouUpload = mouUploadFragmentView.findViewById(R.id.rv_mou_upload);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, true);
-//        gridLayoutManager.setReverseLayout(true);
-//        gridLayoutManager.setStackFromEnd(true);
         rvMouUpload.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvMouUpload.setAdapter(mouUploadAdapter);
         gpsTracker = new GPSTracker(getActivity());
@@ -264,16 +262,15 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
 
     @Override
     public void onClick(View view) {
-        mouUriList.get(0);
-//        if(Util.isConnected(getActivity())) {
-//            if(imageCount>0 && machineId!=null) {
-//                uploadData();
-//            } else {
-//                Util.showToast("Please select image.", getActivity());
-//            }
-//        } else {
-//            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-//        }
+        if(Util.isConnected(getActivity())) {
+            if(imageCount>0 && machineId!=null) {
+                uploadData();
+            } else {
+                Util.showToast("Please select image.", getActivity());
+            }
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
     }
 
     private void uploadData(){

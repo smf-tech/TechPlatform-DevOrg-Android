@@ -70,6 +70,8 @@ public class MouUploadAdapter extends RecyclerView.Adapter<MouUploadAdapter.View
     public void onBindViewHolder(@NonNull MouUploadAdapter.ViewHolder viewHolder, int position) {
         if(mouUriList.get(position)!= null) {
             viewHolder.imgMou.setImageURI(mouUriList.get(position));
+        } else {
+            viewHolder.imgMou.setImageResource(R.drawable.ic_add_img);
         }
         if(position+1 == mouUriList.size()) {
             viewHolder.imgRemove.setVisibility(View.GONE);
