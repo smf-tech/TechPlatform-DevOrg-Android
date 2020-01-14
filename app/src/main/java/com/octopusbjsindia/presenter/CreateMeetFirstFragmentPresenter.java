@@ -87,7 +87,9 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+            requestCall.postDataApiCall(GET_COUNTRIES, new JSONObject(map).toString(), getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
             requestCall.postDataApiCall(GET_STATES, new JSONObject(map).toString(), getLocationUrl);
         }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)){
             requestCall.postDataApiCall(GET_CITIES, new JSONObject(map).toString(), getLocationUrl);
@@ -136,7 +138,7 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                         if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_COUNTRIES)) {
                             fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.COUNTRY_LEVEL);
-                        }else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)) {
+                        } else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES)) {
                             fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.STATE_LEVEL);
                         } else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_CITIES)) {
