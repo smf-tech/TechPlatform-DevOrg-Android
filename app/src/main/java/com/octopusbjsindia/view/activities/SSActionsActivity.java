@@ -19,6 +19,7 @@ import com.octopusbjsindia.view.fragments.MachineDieselRecordFragment;
 import com.octopusbjsindia.view.fragments.MachineNonUtilizationFragment;
 import com.octopusbjsindia.view.fragments.MachineShiftingFormFragment;
 import com.octopusbjsindia.view.fragments.MachineVisitValidationFragment;
+import com.octopusbjsindia.view.fragments.MouUploadFragment;
 import com.octopusbjsindia.view.fragments.SavedStructureListFragment;
 import com.octopusbjsindia.view.fragments.SiltTransportationRecordFragment;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
@@ -90,6 +91,11 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case "SavedStructureListFragment":
                         fragment = new SavedStructureListFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "MouUploadFragment":
+                        fragment = new MouUploadFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;

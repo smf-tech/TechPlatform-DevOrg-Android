@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -92,7 +93,8 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
     private String machineId, machineCode, currentStructureId, newStructureId;
     private RecyclerView rvWorkingHours;
     private ImageView ivCalendarMode, imgRegisterOne, imgRegisterTwo;
-    private EditText etMachineCode, etStructureCode, etWorkingHours;
+    private EditText etMachineCode, etStructureCode;
+    private TextView etWorkingHours;
     private Button btnMatch, btnMismatch, btnSubmit;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
@@ -183,10 +185,10 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
 
     private void setCalendar() {
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
-        Calendar instance = Calendar.getInstance();
+        //Calendar instance = Calendar.getInstance();
 
         Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        instance1.set(2019, Calendar.JANUARY, 1);
         if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())

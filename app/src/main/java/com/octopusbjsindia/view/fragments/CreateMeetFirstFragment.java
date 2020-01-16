@@ -179,9 +179,10 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             //meetTypes.add(m.getType());
         }
         UserInfo userInfo = Util.getUserObjectFromPref();
-        matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+        matrimonyMeetFirstFragmentPresenter.getLocationData("",
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),  //5d98330bee061834d23798b2
                 Constants.JurisdictionLevelName.COUNTRY_LEVEL);
+
     }
 
     public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
@@ -189,13 +190,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     meetCountryList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
-                        meetCountry.set_id(location.getCountryId());
-                        meetCountry.setName(location.getCountry().getName());
+                        meetCountry.set_id(location.getId());
+                        meetCountry.setName(location.getName());
                         meetCountry.setSelected(false);
                         meetCountryList.add(meetCountry);
                     }
@@ -205,13 +206,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     meetStateList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                             CustomSpinnerObject meetState = new CustomSpinnerObject();
-                            meetState.set_id(location.getStateId());
-                            meetState.setName(location.getState().getName());
+                            meetState.set_id(location.getId());
+                            meetState.setName(location.getName());
                             meetState.setSelected(false);
                             meetStateList.add(meetState);
                     }
@@ -222,17 +223,15 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case Constants.JurisdictionLevelName.CITY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     meetCityList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                            if (selectedState.equalsIgnoreCase(location.getState().getName())) {
                                 CustomSpinnerObject meetCity = new CustomSpinnerObject();
-                                meetCity.set_id(location.getCityId());
-                                meetCity.setName(location.getCity().getName());
+                                meetCity.set_id(location.getId());
+                                meetCity.setName(location.getName());
                                 meetCity.setSelected(false);
                                 meetCityList.add(meetCity);
-                        }
                     }
                 }
                 break;
@@ -446,7 +445,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 tvMeetCountry.setText(selectedCountry);
                 if(selectedCountry!="" && selectedCountry!="Country") {
-                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedCountryId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.STATE_LEVEL);
                 }
@@ -464,7 +463,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 tvMeetState.setText(selectedState);
                 if(selectedState!="" && selectedState!="State") {
-                    matrimonyMeetFirstFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedStateId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }

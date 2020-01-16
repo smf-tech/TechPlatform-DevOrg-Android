@@ -80,7 +80,21 @@ public class MachineData  implements Serializable {
     @SerializedName("haltReason")
     @Expose
     private String haltReason;
+    @SerializedName("mouURL")
+    @Expose
+    private String mouURL;
 
+    public Boolean getMouUploaded() {
+        return isMouUploaded;
+    }
+
+    public void setMouUploaded(Boolean mouUploaded) {
+        isMouUploaded = mouUploaded;
+    }
+
+    @SerializedName("isMouUploaded")
+    @Expose
+    private Boolean isMouUploaded;
 
     public String getMachineLocation() {
         return machineLocation;
@@ -340,5 +354,13 @@ public class MachineData  implements Serializable {
 
     public void setHaltReason(String haltReason) {
         this.haltReason = haltReason;
+    }
+
+    public String getMouURL() {
+        return mouURL;
+    }
+
+    public void setMouURL(String mouURL) {
+        this.mouURL = mouURL;
     }
 }

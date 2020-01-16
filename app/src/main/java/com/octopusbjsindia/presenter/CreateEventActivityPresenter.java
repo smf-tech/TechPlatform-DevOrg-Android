@@ -67,7 +67,7 @@ public class CreateEventActivityPresenter implements CreateEventListener, ImageR
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(imageFile, imageTypeProfile, null);
+                requestCall.uploadImageUsingHttpURLEncoded(imageFile, imageTypeProfile, null , null,null);
                 return null;
             }
         }.execute();

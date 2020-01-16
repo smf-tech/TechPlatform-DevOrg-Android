@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.octopusbjsindia.view.activities.AddMembersFilterActivity">
 
     <include
@@ -51,77 +52,118 @@
                   android:layout_height="@dimen/dimen_50dp" />-->
 
             <!--Role-->
-            <TextView
-                style="@style/FormLabel"
-                android:text="@string/role" />
-
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_role"
-                style="@style/FormSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_role"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserRole"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_role"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--State-->
-            <TextView
-                android:id="@+id/txt_state"
-                style="@style/FormLabel"
-                android:text="@string/state" />
-
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_user_state"
-                style="@style/FormSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_state"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserState"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_state"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--District-->
-            <TextView
-                android:id="@+id/txt_district"
-                style="@style/FormLabel"
-                android:text="@string/district" />
-
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_district"
-                style="@style/FormSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_district"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserDistrict"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_district"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Taluka-->
-            <TextView
-                android:id="@+id/txt_taluka"
-                style="@style/FormLabel"
-                android:text="@string/taluka" />
-
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_taluka"
-                style="@style/FormSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_taluka"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-            <!--Cluster-->
-            <TextView
-                android:id="@+id/txt_cluster"
-                style="@style/FormLabel"
-                android:text="@string/cluster"
-                android:visibility="gone"/>
+                <EditText
+                    android:id="@+id/etUserTaluka"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_taluka"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_cluster"
-                style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp"
-                android:visibility="gone"/>
+            <!--&lt;!&ndash;Cluster&ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:id="@+id/txt_cluster"-->
+                <!--style="@style/FormLabel"-->
+                <!--android:text="@string/cluster"-->
+                <!--android:visibility="gone"/>-->
+
+            <!--<com.octopusbjsindia.widgets.MultiSelectSpinner-->
+                <!--android:id="@+id/sp_cluster"-->
+                <!--style="@style/FormSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dimen_50dp"-->
+                <!--android:visibility="gone"/>-->
 
             <!--Village-->
-            <TextView
-                android:id="@+id/txt_village"
-                style="@style/FormLabel"
-                android:text="@string/village" />
-
-            <com.octopusbjsindia.widgets.MultiSelectSpinner
-                android:id="@+id/sp_village"
-                style="@style/FormSpinner"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_village"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_50dp" />
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserVillage"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_village"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--School-->
             <!--<TextView-->

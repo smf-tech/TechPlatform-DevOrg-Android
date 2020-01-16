@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -48,15 +49,18 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.SujalamSuphalam.OperatorDetails;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.MachineMouFourthFragmentPresenter;
+import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
@@ -67,6 +71,8 @@ import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,8 +90,8 @@ import static android.app.Activity.RESULT_OK;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener,
-        CustomSpinnerListener {
+public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
+        , CustomSpinnerListener {
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -107,6 +113,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private int imgCount =0;
     private String currentPhotoPath = "";
     private Activity activity;
+    private String pdfURL="";
 
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
@@ -274,6 +281,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             case R.id.img_license:
                 onAddImageClick();
                 break;
+//            case R.id.btn_pdf:
+//                Intent intent = new Intent();
+//                intent.setType("application/pdf");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Select PDF"), Constants.CHOOSE_PDF_FROM_STORAGE);
+//                break;
         }
     }
 
@@ -308,7 +321,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
             return false;
         }
-//        else if(imgCount == 0) {
+//        if(pdfURL != null && !TextUtils.isEmpty(pdfURL)) {
+//            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMouURL(pdfURL);
+//        } else {
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
 //            return false;
@@ -409,6 +424,27 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        } else if (requestCode == Constants.CHOOSE_PDF_FROM_STORAGE && resultCode == RESULT_OK) {
+//            try {
+//                Uri path = data.getData();
+//                if (Util.isConnected(getActivity())) {
+//                    ImageRequestCall requestCall = new ImageRequestCall();
+//                    requestCall.setListener(this);
+//
+//                    new AsyncTask<Void, Void, Void>() {
+//                        @Override
+//                        protected Void doInBackground(final Void... voids) {
+//                            showProgressBar();
+//                            requestCall.uploadImageUsingHttpURLEncoded(null, Constants.Image.PDF, "MOU", path, getActivity());
+//                            return null;
+//                        }
+//                    }.execute();
+//                } else {
+//                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+//                }
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
         }
     }
 
@@ -679,4 +715,29 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 break;
         }
     }
+
+    @Override
+    public void onImageUploadedListener(String response, String formName) {
+        hideProgressBar();
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                pdfURL = (String) data.get("url");
+                Log.e(TAG, "PDF Url: " + pdfURL);
+
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public void onFailureListener(String error) {
+        hideProgressBar();
+        Util.showToast(error,getActivity());
+    }
+
+
 }

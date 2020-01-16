@@ -25,6 +25,7 @@ public class Constants {
 
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
+    public static final Integer CHOOSE_PDF_FROM_STORAGE = 111;
 
     public static final Integer TIMEOUT_ERROR_CODE = 504;
 
@@ -152,6 +153,7 @@ public class Constants {
         public static final String TALUKA_LEVEL = "Taluka";
         public static final String CLUSTER_LEVEL = "Cluster";
         public static final String VILLAGE_LEVEL = "Village";
+        public static final String SCHOOL_LEVEL = "School";
     }
 
     public static class Home {
@@ -255,9 +257,11 @@ public class Constants {
         public static final String IMAGE_PREFIX = "picture_";
         public static final String IMAGE_SUFFIX = ".jpg";
         public static final String IMAGE_STORAGE_DIRECTORY = "/Octopus/Image/profile";
+        public static final String PDF_STORAGE_DIRECTORY = "/Octopus/DOC";
         public static final String IMAGE_TYPE_FILE = "form";
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
+        public static final String PDF = "pdf";
 
 
         //-------
@@ -382,6 +386,8 @@ public class Constants {
         public static final Integer ACCESS_CODE_STRUCTURE_CLOSE = 124;
         public static final Integer ACCESS_CODE_CREATE_FEED = 125;
         public static final Integer ACCESS_CODE_DELETE_FEED = 126;
+        public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
+        public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
@@ -403,6 +409,7 @@ public class Constants {
         public static final Integer ROLE_CODE_SS_DM = 110;
         public static final Integer ROLE_CODE_SS_TC = 111;
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";

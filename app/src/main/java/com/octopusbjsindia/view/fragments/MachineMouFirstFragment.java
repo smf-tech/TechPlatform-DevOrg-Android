@@ -1,15 +1,24 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +27,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
@@ -38,25 +50,42 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
+import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.soundcloud.android.crop.Crop;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
-public class MachineMouFirstFragment extends Fragment  implements APIDataListener, CustomSpinnerListener,
+public class MachineMouFirstFragment extends Fragment implements APIDataListener, CustomSpinnerListener,
         View.OnClickListener {
+    private static final String TAG = "MachineMouFirstFragment";
     private View machineMouFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
-    private EditText editOwnerType, etMachineState, etMachineDistrict,etMachineTaluka,
-            etMachineType,etYear, etMachineMakeModel,etMeterWorking,etRtoNumber,etChasisNumber,
+    private EditText editOwnerType, etMachineState, etMachineDistrict, etMachineTaluka,
+            etMachineType, etYear, etMachineMakeModel, etMeterWorking, etRtoNumber, etChasisNumber,
             etExcavationCapacity, etDieselCapacity, etProviderName, etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
@@ -68,9 +97,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
     private String selectedOwner = "", selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka,
-            selectedTalukaId, selectedMachine ="",
-            selectedMachineId, selectedMakeModel ="", selectedMakeModelId,
-            selectedIsMeterWorking ="", selectedYear, selectedYearId;
+            selectedTalukaId, selectedMachine = "",
+            selectedMachineId, selectedMakeModel = "", selectedMakeModelId,
+            selectedIsMeterWorking = "", selectedYear, selectedYearId;
     private boolean isMachineEligible, isMachineMou;
     private GPSTracker gpsTracker;
     private Location location;
@@ -95,7 +124,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     }
 
     private void init() {
-        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
+        statusCode = getActivity().getIntent().getIntExtra("statusCode", 0);
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
@@ -118,7 +147,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        if(roleAccessList != null) {
+        if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                 if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
@@ -129,8 +158,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 }
             }
         }
-        if(statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
-            if(isMachineEligible) {
+        if (statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+            if (isMachineEligible) {
                 llEligible.setVisibility(View.VISIBLE);
                 btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
                 btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
@@ -138,13 +167,13 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 btnNotEligible.setOnClickListener(this);
                 btnFirstPartMou.setVisibility(View.GONE);
             }
-        } else if(statusCode == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
-            if(isMachineMou) {
+        } else if (statusCode == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+            if (isMachineMou) {
                 btnFirstPartMou.setOnClickListener(this);
                 btnFirstPartMou.setVisibility(View.VISIBLE);
             }
-        } else if(statusCode == Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
-            if(isMachineEligible) {
+        } else if (statusCode == Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
+            if (isMachineEligible) {
                 llEligible.setVisibility(View.VISIBLE);
                 btnEligilble = machineMouFragmentView.findViewById(R.id.btn_eligible);
                 btnNotEligible = machineMouFragmentView.findViewById(R.id.btn_not_eligible);
@@ -154,12 +183,12 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             }
         }
         machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
-        if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+        if (statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
             btnFirstPartMou.setOnClickListener(this);
             btnFirstPartMou.setVisibility(View.VISIBLE);
             btnFirstPartMou.setText("Create Machine");
             setUIForMachineCreate();
-        } else if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE){
+        } else if (statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             btnFirstPartMou.setOnClickListener(this);
             btnFirstPartMou.setVisibility(View.VISIBLE);
             setMachineFirstData();
@@ -167,6 +196,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             setMachineFirstData();
         }
         gpsTracker = new GPSTracker(getActivity());
+
     }
 
     private void setMachineFirstData() {
@@ -272,12 +302,12 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             etMachineTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
-        if(Util.isConnected(getActivity())) {
-            if(Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
+        if (Util.isConnected(getActivity())) {
+            if (Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
                 etMachineTaluka.setOnClickListener(this);
                 if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
                     UserInfo userInfo = Util.getUserObjectFromPref();
-                    machineMouFragmentPresenter.getJurisdictionLevelData(userInfo.getOrgId(),
+                    machineMouFragmentPresenter.getLocationData(selectedDistrictId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 }
             }
@@ -294,10 +324,10 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         };
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
-        for(int i = 0; i<masterDataList.size(); i++) {
-            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+        for (int i = 0; i < masterDataList.size(); i++) {
+            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
                     getField().equals("ownedBy")) {
-                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
@@ -305,9 +335,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                     ownershipList.add(customSpinnerObject);
                 }
             }
-            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
                     getField().equals("machineType")) {
-                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
@@ -315,9 +345,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                     machineTypesList.add(customSpinnerObject);
                 }
             }
-            if(masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
                     getField().equals("machineMake")) {
-                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
@@ -325,9 +355,9 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                     makeModelList.add(customSpinnerObject);
                 }
             }
-            if(masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
+            if (masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
                     getField().equals("manufactured_year")) {
-                for(int j = 0; j<masterDataList.get(i).getData().size(); j++) {
+                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
@@ -382,7 +412,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 (etProviderName.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
-        if(Util.isConnected(getActivity())) {
+        if (Util.isConnected(getActivity())) {
             if (gpsTracker.isGPSEnabled(getActivity(), this)) {
                 location = gpsTracker.getLocation();
                 if (location != null) {
@@ -457,8 +487,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_first_part_mou:
-                if(statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
-                    if(Util.isConnected(getActivity())) {
+                if (statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
+                    if (Util.isConnected(getActivity())) {
                         if (isAllDataValid()) {
                             setCreateMachineData();
                         }
@@ -470,7 +500,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 }
                 break;
             case R.id.btn_eligible:
-                if(Util.isConnected(getActivity())) {
+                if (Util.isConnected(getActivity())) {
                     machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
                                     getActivity()).getMachineDetailData().getMachine().getId(),
                             ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
@@ -480,7 +510,7 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 }
                 break;
             case R.id.btn_not_eligible:
-                if(Util.isConnected(getActivity())) {
+                if (Util.isConnected(getActivity())) {
                     machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
                                     getActivity()).getMachineDetailData().getMachine().getId(),
                             ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
@@ -539,61 +569,60 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 break;
         }
     }
-
     public boolean isAllDataValid() {
-        if (selectedOwnerId != null && selectedOwnerId.length()==0){
+        if (selectedOwnerId != null && selectedOwnerId.length() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etMachineState.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etMachineState.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.msg_select_state), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etMachineDistrict.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.msg_select_district), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etMachineTaluka.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.msg_select_taluka), Snackbar.LENGTH_LONG);
             return false;
-        } else if (selectedMachine.length()==0){
+        } else if (selectedMachine.length() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_machine_type), Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etYear.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etYear.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_year), Snackbar.LENGTH_LONG);
             return false;
-        } else if (selectedMakeModel.length()==0){
+        } else if (selectedMakeModel.length() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_machine_make_model), Snackbar.LENGTH_LONG);
             return false;
-        } else if (selectedIsMeterWorking.length()==0){
+        } else if (selectedIsMeterWorking.length() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_meter_working_option), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etRtoNumber.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etRtoNumber.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_rto_number), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etChasisNumber.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etChasisNumber.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_chasis), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etExcavationCapacity.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_excavation_capacity), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (etProviderContact.getText().toString().trim().length() != 10){
+        } else if (etProviderContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);
@@ -671,8 +700,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if(requestId.equals(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)){
-            if(status == 200){
+        if (requestId.equals(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)) {
+            if (status == 200) {
                 getActivity().finish();
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
@@ -681,8 +710,8 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
                 getActivity().startActivity(intent);
             }
         }
-        if(requestId.equals(MachineMouFragmentPresenter.UPDATE_STRUCTURE_STATUS)){
-            if(status == 200){
+        if (requestId.equals(MachineMouFragmentPresenter.UPDATE_STRUCTURE_STATUS)) {
+            if (status == 200) {
 
             }
         }
@@ -693,16 +722,14 @@ public class MachineMouFirstFragment extends Fragment  implements APIDataListene
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
-                        if (etMachineDistrict.getText().toString().equalsIgnoreCase(location.getDistrict().getName())) {
-                            CustomSpinnerObject talukaList = new CustomSpinnerObject();
-                            talukaList.set_id(location.getTalukaId());
-                            talukaList.setName(location.getTaluka().getName());
-                            talukaList.setSelected(false);
-                            machineTalukaList.add(talukaList);
-                        }
+                        CustomSpinnerObject talukaList = new CustomSpinnerObject();
+                        talukaList.set_id(location.getId());
+                        talukaList.setName(location.getName());
+                        talukaList.setSelected(false);
+                        machineTalukaList.add(talukaList);
                     }
                 }
                 break;

@@ -583,8 +583,9 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 if (Util.isValidImageSize(imageFile)) {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+
                     selectedIV.setImageURI(finalUri);
                     imageUri.add(finalUri);
 //                        imageHashmap.put("Structure" + imageCount, bitmap);

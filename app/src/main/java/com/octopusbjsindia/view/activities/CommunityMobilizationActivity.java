@@ -57,6 +57,7 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -244,16 +245,19 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 }
                 break;
             case R.id.et_a1_meeting_date:
-                Util.showAllDateDialog(this, etA1MeetingDate);
+                Util.showDateDialog(this, etA1MeetingDate);
+                break;
             case R.id.et_a2_date:
-                Util.showAllDateDialog(this, etA2Date);
+                Util.showDateDialog(this, etA2Date);
+                break;
             case R.id.et_a3_date_of_formation:
-                Util.showAllDateDialog(this, etA3DateOfFormation);
+                Util.showDateDialog(this, etA3DateOfFormation);
+                break;
             case R.id.et_a4_date_of_training:
-                Util.showAllDateDialog(this, etA4DateOfTraining);
+                Util.showDateDialog(this, etA4DateOfTraining);
                 break;
             case R.id.et_a5_date:
-                Util.showAllDateDialog(this, etA5Date);
+                Util.showDateDialog(this, etA5Date);
                 break;
             case R.id.et_a3_gender:
                 CustomSpinnerDialogClass csdGander = new CustomSpinnerDialogClass(this, this,
@@ -838,10 +842,12 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                selectedIV.setImageURI(finalUri);
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
-                        selectedIV.setImageURI(finalUri);
+                        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        //selectedIV.setImageURI(finalUri);
                         imageHashmap.put("image" + imageCount, bitmap);
                         imageCount++;
                     } else {
@@ -850,7 +856,6 @@ public class CommunityMobilizationActivity extends AppCompatActivity implements 
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
-
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }

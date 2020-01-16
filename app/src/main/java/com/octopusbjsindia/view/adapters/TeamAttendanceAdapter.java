@@ -63,6 +63,8 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
                     .applyDefaultRequestOptions(requestOptions)
                     .load(leavesList.get(i).getImageUrl())
                     .into(viewHolder.ivUserImage);
+        } else {
+            viewHolder.ivUserImage.setImageResource(R.drawable.ic_user_avatar);
         }
         viewHolder.tvName.setText(leavesList.get(i).getName());
         viewHolder.tvRole.setText(leavesList.get(i).getRoleName());

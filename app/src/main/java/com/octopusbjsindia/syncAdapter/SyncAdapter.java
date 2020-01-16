@@ -26,10 +26,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
+import com.octopusbjsindia.models.SujalamSuphalam.Structure;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
@@ -40,6 +44,8 @@ import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GsonRequestFactory;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.octopusbjsindia.utility.Urls;
 
@@ -96,7 +102,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncMachineOperatorData();
         syncStructureVisitMonitoring();
         syncStructurePripretion();
+        syncStructureBoundary();
     }
+
 
     private void syncSavedForms() {
         List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
@@ -285,98 +293,97 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             uploadMachineLog(data);
         }
     }
-// operator record sync
-//api call to upload record -
-private void uploadMachineLog(OperatorRequestResponseModel data) {
 
-    final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
+    // operator record sync
+//api call to upload record -
+    private void uploadMachineLog(OperatorRequestResponseModel data) {
+
+        final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
         Log.e("sync--", "---" + new Gson().toJson(data));
-    String imageToSend = data.getImage();
-    VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
-            new Response.Listener<NetworkResponse>() {
-                @Override
-                public void onResponse(NetworkResponse response) {
-                    rQueue.getCache().clear();
-                    try {
-                        String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                        Log.d("response Received -", jsonString);
-                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                deleteSinglSynccedOperatorRecord(data.get_id());
+        String imageToSend = data.getImage();
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("response Received -", jsonString);
+                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                    deleteSinglSynccedOperatorRecord(data.get_id());
 
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                        Log.d("error:", e.getMessage());
-                     //   Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(data));
+                params.put("imageArraySize", String.valueOf("1"));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("error:", error.getMessage());
-                    //Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }) {
-
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> params = new HashMap<>();
-            params.put("formData", new Gson().toJson(data));
-            params.put("imageArraySize", String.valueOf("1"));//add string parameters
-            return params;
-        }
-
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Accept", "application/json, text/plain, */*");
-            headers.put("Content-Type", getBodyContentType());
-
-            Login loginObj = getLoginObjectFromPref();
-            if (loginObj != null && loginObj.getLoginData() != null &&
-                    loginObj.getLoginData().getAccessToken() != null) {
-                headers.put(Constants.Login.AUTHORIZATION,
-                        "Bearer " + loginObj.getLoginData().getAccessToken());
-                if (getUserObjectFromPref().getOrgId()!=null) {
-                    headers.put("orgId", getUserObjectFromPref().getOrgId());
-                }
-                if (getUserObjectFromPref().getProjectIds()!=null) {
-                    headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
-                }
-                if (getUserObjectFromPref().getRoleIds()!=null) {
-                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
-                }
+                return headers;
             }
-            return headers;
-        }
 
-        @Override
-        protected Map<String, DataPart> getByteData() {
-            Map<String, DataPart> params = new HashMap<>();
-            Drawable drawable = null;
-            {
-                if (TextUtils.isEmpty(imageToSend)) {
-                    params.put("image0", new DataPart("image0", new byte[0],
-                            "image/jpeg"));
-                } else {
-                    drawable = new BitmapDrawable(getContext().getResources(), imageToSend);
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                {
+                    if (TextUtils.isEmpty(imageToSend)) {
+                        params.put("image0", new DataPart("image0", new byte[0],
+                                "image/jpeg"));
+                    } else {
+                        drawable = new BitmapDrawable(getContext().getResources(), imageToSend);
 
-                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
-                            "image/jpeg"));
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
                 }
+                return params;
             }
-            return params;
-        }
-    };
+        };
 
-    volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-            12000,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    rQueue = Volley.newRequestQueue(getContext());
-    rQueue.add(volleyMultipartRequest);
-}
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                12000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(volleyMultipartRequest);
+    }
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -448,13 +455,13 @@ private void uploadMachineLog(OperatorRequestResponseModel data) {
                         loginObj.getLoginData().getAccessToken() != null) {
                     headers.put(Constants.Login.AUTHORIZATION,
                             "Bearer " + loginObj.getLoginData().getAccessToken());
-                    if (getUserObjectFromPref().getOrgId()!=null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
                         headers.put("orgId", getUserObjectFromPref().getOrgId());
                     }
-                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                    if (getUserObjectFromPref().getProjectIds() != null) {
                         headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                     }
-                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                    if (getUserObjectFromPref().getRoleIds() != null) {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
@@ -578,7 +585,69 @@ private void uploadMachineLog(OperatorRequestResponseModel data) {
         rQueue.add(volleyMultipartRequest);
     }
 
+    private void syncStructureBoundary() {
+        List<StructureBoundaryData> structureBoundaryDataList = new ArrayList<>();
+        structureBoundaryDataList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getStructureBoundaryDao().getAllStructure());
 
+        for (final StructureBoundaryData data : structureBoundaryDataList) {
+            submitBoundary(data);
+        }
+    }
 
+    private void submitBoundary(StructureBoundaryData data) {
+        Gson gson = new GsonBuilder().create();
+        String paramJson = gson.toJson(data);
+
+        final String url = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_BOUNDARY;
+
+        Log.d(TAG, " url : " + url);
+        Log.d(TAG, " request Jeson : " + paramJson);
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            try {
+                if (response != null) {
+                    Log.d(TAG, " Resp: " + response);
+                    String jsonString = response.toString();
+                    CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
+                    if (res.getStatus() == 200) {
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                                .delete(data.getStructureId());
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> {
+
+        };
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(paramJson));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+
+    }
+
+    private JSONObject createBodyParams(String json) {
+        try {
+            return new JSONObject(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
