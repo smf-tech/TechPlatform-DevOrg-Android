@@ -56,6 +56,12 @@ public class MachineData  implements Serializable {
     @SerializedName("provider_contact_number")
     @Expose
     private String providerContactNumber;
+    @SerializedName("tc_name")
+    @Expose
+    private String tcName;
+    @SerializedName("tc_contact_number")
+    @Expose
+    private String tcContactNumber;
     @SerializedName("machine_location")
     @Expose
     private String machineLocation;
@@ -83,6 +89,9 @@ public class MachineData  implements Serializable {
     @SerializedName("mouURL")
     @Expose
     private String mouURL;
+    @SerializedName("isMouUploaded")
+    @Expose
+    private Boolean isMouUploaded;
 
     public Boolean getMouUploaded() {
         return isMouUploaded;
@@ -92,9 +101,17 @@ public class MachineData  implements Serializable {
         isMouUploaded = mouUploaded;
     }
 
-    @SerializedName("isMouUploaded")
+    public Boolean getMachineSignOff() {
+        return isMachineSignOff;
+    }
+
+    public void setMachineSignOff(Boolean machineSignOff) {
+        isMachineSignOff = machineSignOff;
+    }
+
+    @SerializedName("isMachineSignOff")
     @Expose
-    private Boolean isMouUploaded;
+    private Boolean isMachineSignOff;
 
     public String getMachineLocation() {
         return machineLocation;
@@ -362,5 +379,21 @@ public class MachineData  implements Serializable {
 
     public void setMouURL(String mouURL) {
         this.mouURL = mouURL;
+    }
+
+    public String getTcName() {
+        return tcName;
+    }
+
+    public void setTcName(String tcName) {
+        this.tcName = tcName;
+    }
+
+    public String getTcContactNumber() {
+        return tcContactNumber;
+    }
+
+    public void setTcContactNumber(String tcContactNumber) {
+        this.tcContactNumber = tcContactNumber;
     }
 }

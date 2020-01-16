@@ -62,10 +62,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         MachineData machineData = ssDataList.get(position);
         holder.tvStatus.setText(machineData.getStatus());
         holder.tvMachineCode.setText(machineData.getMachineCode());
-//        holder.tvCapacity.setText(machineData.getDiselTankCapacity());
-        holder.tvProvider.setText(machineData.getProviderName());
+        holder.tvTcName.setText(machineData.getTcName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
-        holder.tvContact.setText(machineData.getProviderContactNumber());
+        holder.tvContact.setText(machineData.getTcContactNumber());
         holder.tvLocation.setText(machineData.getMachineLocation());
         holder.tvOwnerValue.setText(machineData.getOwnedBy());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
@@ -135,15 +134,19 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         } else {
             holder.btAction.setVisibility(View.INVISIBLE);
         }
-
+        if(!ssDataList.get(position).getMachineSignOff()) {
+            holder.ivSignoff.setVisibility(View.INVISIBLE);
+        } else {
+            holder.ivSignoff.setVisibility(View.VISIBLE);
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvMachineCode, tvProvider, tvMachineModel, tvContact, tvStructureCode,
+        TextView tvStatus, tvMachineCode, tvTcName, tvMachineModel, tvContact, tvStructureCode,
                 tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
                 tvLocation, tvOwnerValue,tvReason;
         Button btAction;
-        ImageView btnPopupMenu;
+        ImageView btnPopupMenu, ivSignoff;
         LinearLayout rlMachine;
         RelativeLayout lyAction,lyReason;
         PopupMenu popup;
@@ -152,8 +155,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             super(itemView);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvMachineCode = itemView.findViewById(R.id.tv_machine_code);
-//            tvCapacity = itemView.findViewById(R.id.tv_capacity);
-            tvProvider = itemView.findViewById(R.id.tv_provider);
+            tvTcName = itemView.findViewById(R.id.tv_tc_name);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
             tvLocation = itemView.findViewById(R.id.tv_location);
             tvOwnerValue = itemView.findViewById(R.id.tv_owner_value);
@@ -162,6 +164,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             lyReason = itemView.findViewById(R.id.ly_reason);
             tvReason = itemView.findViewById(R.id.tv_reason);
             lyAction = itemView.findViewById(R.id.ly_action);
+            ivSignoff = itemView.findViewById(R.id.iv_signoff);
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -184,23 +187,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             });
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
-
-//            if (fragment.isSiltTransportForm) {
-//                isSettingsRequired = true;
-//            } else if (fragment.isDieselRecordForm) {
-//                isSettingsRequired = true;
-//            } else if (fragment.isMachineVisitValidationForm) {
-//                isSettingsRequired = true;
-//            } else if (fragment.isMachineShiftForm) {
-//                isSettingsRequired = true;
-//            } else if (fragment.isMachineRelease) {
-//                isSettingsRequired = true;
-//            }
-//            if (isSettingsRequired) {
-//                btnPopupMenu.setVisibility(View.VISIBLE);
-//            } else {
-//                btnPopupMenu.setVisibility(View.INVISIBLE);
-//            }
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -286,6 +272,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             if (fragment.isMouImagesUpload) {
                                 popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
                             }
+                            if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
+                                popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
+                            }
                         }
                     }
                     popup.show();
@@ -328,16 +317,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                                 (getAdapterPosition()).getDeployedStrutureId());
                                         activity.startActivity(dieselRecordIntent);
                                         break;
-//                                    case R.id.action_machine_non_utilization:
-//                                        Intent machineNonUtilizationIntent = new Intent(activity, SSActionsActivity.class);
-//                                        machineNonUtilizationIntent.putExtra("SwitchToFragment", "MachineNonUtilizationFragment");
-//                                        machineNonUtilizationIntent.putExtra("title", "Machine Non-utilization Record");
-//                                        machineNonUtilizationIntent.putExtra("type", "machineNonUtilization");
-//                                        machineNonUtilizationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-//                                        machineNonUtilizationIntent.putExtra("currentStructureId", ssDataList.get
-//                                                (getAdapterPosition()).getDeployedStrutureId());
-//                                        activity.startActivity(machineNonUtilizationIntent);
-//                                        break;
                                     case R.id.action_silt_transportation_record:
                                         Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
                                         siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
@@ -374,6 +353,13 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         activity.startActivity(mouUploadIntent);
                                         activity.finish();
                                         break;
+                                    case R.id.action_machine_signoff:
+                                        if (Util.isConnected(activity)) {
+                                            fragment.sendMachineSignOff(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                        }
+                                        break;
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);
@@ -383,13 +369,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     });
                 }
             });
-//            rlMachine = itemView.findViewById(R.id.rl_machine);
-//            rlMachine.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
             btAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

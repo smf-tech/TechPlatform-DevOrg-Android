@@ -92,7 +92,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
-            isMachineRelease, isMouImagesUpload, isStateFilter, isDistrictFilter, isTalukaFilter,
+            isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
@@ -187,8 +187,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
                     isMachineRelease = true;
                     continue;
-                }  else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
                     isMouImagesUpload = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SIGN_OFF)) {
+                    isMachineSignoff = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
                     isStateFilter = true;
@@ -275,20 +278,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             });
             if (viewType != 1) {
                 if (Util.isConnected(getActivity())) {
-//                    if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-//                        structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-//                                getUserLocation().getStateId().get(0).getId());
-//                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-//                        structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-//                                        getUserLocation().getStateId().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-//                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-//                        structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-//                                        getUserLocation().getStateId().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-//                    }
-
                     structureMachineListFragmentPresenter.getTalukaMachinesList(
                             (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
                                     Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
@@ -398,6 +387,41 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
                     filteredMachineListData.get(position).getMachineCode(),
                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("Cancel");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void sendMachineSignOff(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText("Sujalam Suphalam");
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.machine_signoff_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Sign-off");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            structureMachineListFragmentPresenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
             dialog.dismiss();
         });
 
@@ -525,27 +549,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         super.onResume();
         if (viewType == 1) {
             if (Util.isConnected(getActivity())) {
-//                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_MIS) {
-//                    //State vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-//                    //State vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-//                    //District vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                            "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-//                    //Taluka vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-//                }
                 structureMachineListFragmentPresenter.getStrucuresList(
                         (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
                                 Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
@@ -752,23 +755,23 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
-    public void showResponse(String responseStatus, int status) {
+    public void showResponse(String requestId, String responseStatus, int status) {
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if (status == 200) {
-            if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-                        getUserLocation().getStateId().get(0).getId());
-            } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-                structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-                                getUserLocation().getStateId().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-            } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-                                getUserLocation().getStateId().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
+        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
+                ||requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
+            if (status == 200) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
+                                "");
             }
         }
     }

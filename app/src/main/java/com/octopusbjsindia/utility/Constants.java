@@ -388,6 +388,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_DELETE_FEED = 126;
         public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
         public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
+        public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
@@ -405,11 +406,11 @@ public class Constants {
         public static final Integer ACCESS_CODE_VILLAGE = 123;
 
         //public static final Integer ROLE_CODE_SS_HO = 110;
-        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
-        public static final Integer ROLE_CODE_SS_DM = 110;
-        public static final Integer ROLE_CODE_SS_TC = 111;
+//        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
+//        public static final Integer ROLE_CODE_SS_DM = 110;
+//        public static final Integer ROLE_CODE_SS_TC = 111;
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
-        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
+//        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
 
         public static final String DISTRICT_LEVEL = "District Manager";
         public static final String TALUKA_LEVEL = "Taluka Coordinator";
@@ -423,5 +424,4 @@ public class Constants {
         public static final String MACHINE_START_IMAGE = "machinestartimage";
         public static final String MACHINE_END_IMAGE = "machineendimage";
     }
-
 }

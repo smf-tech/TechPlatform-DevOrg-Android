@@ -49,6 +49,7 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     private static final String KEY_DEPLOY_TALUKA = "deploy_taluka";
     private static final String KEY_TERMINATE_REASON = "reason";
     public static final String TERMINATE_DEPLOY = "terminateDeployMachine";
+    public static final String MACHINE_SIGN_OFF = "machineSignOff";
     public static final String RELEASE_MACHINE_STATUS = "releaseMachine";
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
@@ -189,6 +190,19 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         requestCall.getDataApiCall(RELEASE_MACHINE_STATUS, releaseMachineStatusUrl);
     }
 
+    public void sendMachineSignOff(String machineId) {
+        Gson gson = new GsonBuilder().create();
+        fragmentWeakReference.get().showProgressBar();
+        String paramjson = gson.toJson(submitMachineSignOffDataJson(machineId));
+        final String sendMachineSignOffUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.SEND_MACHINE_SIGN_OFF);
+        Log.d(TAG, "sendMachineSignOffUrl: url" + sendMachineSignOffUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(MACHINE_SIGN_OFF, paramjson, sendMachineSignOffUrl);
+    }
+
     public JsonObject getSSDataJson(String stateId, String districtId, String talukaId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_STATE_ID, stateId);
@@ -231,6 +245,19 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         } else if(status == Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE) {
             map.put(KEY_TERMINATE_REASON, deployTaluka_terminateReason);
         }
+        JsonObject requestObject = new JsonObject();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            requestObject.addProperty(key, value);
+        }
+        return requestObject;
+    }
+
+    public JsonObject submitMachineSignOffDataJson(String machineId){
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_MACHINE_ID, machineId);
         JsonObject requestObject = new JsonObject();
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -316,7 +343,14 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                         ||requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)){
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
+                        fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.MACHINE_SIGN_OFF)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }

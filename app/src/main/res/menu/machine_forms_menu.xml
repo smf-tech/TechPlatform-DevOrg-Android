@@ -41,4 +41,9 @@
         android:title="Upload Machine MOU"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_machine_signoff"
+        android:title="Sign-off machine"
+        android:visible="false"/>
+
 </menu>
