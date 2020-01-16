@@ -306,14 +306,16 @@ private void uploadMachineLog(OperatorRequestResponseModel data) {
 
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("error:", e.getMessage());
+                     //   Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             },
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("error:", error.getMessage());
+                    //Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }) {
 
