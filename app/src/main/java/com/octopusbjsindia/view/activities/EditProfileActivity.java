@@ -2,7 +2,6 @@ package com.octopusbjsindia.view.activities;
 
 import android.Manifest;
 import android.app.Activity;
-
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,22 +13,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +35,6 @@ import androidx.core.content.FileProvider;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
@@ -66,14 +59,12 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
-import com.octopusbjsindia.widgets.MultiSelectSpinner;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -127,15 +118,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ArrayList<JurisdictionType> selectedClusters = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedVillages = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedSchools = new ArrayList<>();
-
     private Uri outputUri;
     private Uri finalUri;
     private ProfileActivityPresenter profilePresenter;
-
-    private JurisdictionType selectedProject;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
-
     private boolean mImageUploaded;
     private String mUploadedImageUrl;
     private ProgressBar progressBar;
@@ -168,7 +155,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
         etUserEmailId = findViewById(R.id.et_user_email_id);
-
         radioGroup = findViewById(R.id.user_gender_group);
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
             switch (checkedId) {
@@ -183,7 +169,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     break;
             }
         });
-
         etUserOrganization = findViewById(R.id.etUserOrganization);
         etUserProject = findViewById(R.id.etUserProject);
         etUserRole = findViewById(R.id.etUserRole);
@@ -195,7 +180,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserCluster = findViewById(R.id.etUserCluster);
         etUserVillage = findViewById(R.id.etUserVillage);
         etUserSchool = findViewById(R.id.etUserSchool);
-
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
 
@@ -218,75 +202,14 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
                     setEditModeUserData();
-
-                    //setActionbar(getString(R.string.update_profile));
-
-                    //UserInfo userInfo = Util.getUserObjectFromPref();
-//                    String userName = userInfo.getUserName().trim();
-//                    if (userName.split(" ").length == 3) {
-//                        etUserFirstName.setText(userName.split(" ")[0]);
-//                        etUserMiddleName.setText(userName.split(" ")[1]);
-//                        etUserLastName.setText(userName.split(" ")[2]);
-//                    } else if (userName.split(" ").length == 2) {
-//                        etUserFirstName.setText(userName.split(" ")[0]);
-//                        etUserLastName.setText(userName.split(" ")[1]);
-//                    } else if (userName.split(" ").length == 1) {
-//                        etUserFirstName.setText(userName);
-//                    }
-//
-//                    etUserBirthDate.setText(Util.getLongDateInString(
-//                            userInfo.getUserBirthDate(), Constants.FORM_DATE));
-//                    etUserMobileNumber.setText(userInfo.getUserMobileNumber());
-//                    etUserEmailId.setText(userInfo.getUserEmailId());
-//
-//                    if (!TextUtils.isEmpty(userInfo.getUserGender())) {
-//                        if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.MALE)) {
-//                            radioGroup.check(R.id.gender_male);
-//                            userGender = Constants.Login.MALE;
-//                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.FEMALE)) {
-//                            radioGroup.check(R.id.gender_female);
-//                            userGender = Constants.Login.FEMALE;
-//                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.OTHER)) {
-//                            radioGroup.check(R.id.gender_other);
-//                            userGender = Constants.Login.OTHER;
-//                        }
-//                    }
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getOrganizations();
-                        }
-//                        else {
-//                            selectionOrgList.clear();
-//                            CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-//                            customSpinnerObject.set_id(userInfo.getOrgId());
-//                            customSpinnerObject.setName(userInfo.getOrgName());
-//                            selectionOrgList.add(customSpinnerObject);
-//
-//                            List<Organization> orgList = new ArrayList<>();
-//                            Organization orgObj = new Organization();
-//                            orgObj.setId(userInfo.getOrgId());
-//                            orgObj.setOrgName(userInfo.getOrgName());
-//                            orgList.add(orgObj);
-//                            this.organizations = orgList;
-//                        }
-//                    if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
-//
-//                        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
-//                        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-//
-//                        Glide.with(this)
-//                                .applyDefaultRequestOptions(requestOptions)
-//                                .load(userInfo.getProfilePic())
-//                                .into(imgUserProfilePic);
-//
-//                        ((TextView) findViewById(R.id.user_profile_pic_label))
-//                                .setText(getString(R.string.update_profile_pic));
-//                    }
+                    if (Util.isConnected(this)) {
+                        profilePresenter.getOrganizations();
+                    }
                 }
             }
         } else {
             etUserMobileNumber.setText(Util.getUserMobileFromPref());
         }
-
         etUserMobileNumber.setEnabled(false);
         etUserMobileNumber.setFocusable(false);
         etUserMobileNumber.setClickable(false);
@@ -312,10 +235,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     private void setEditModeUserData() {
         setActionbar(getString(R.string.update_profile));
-
         UserInfo userInfo = Util.getUserObjectFromPref();
-
         String userName = userInfo.getUserName().trim();
+
         if (userName.split(" ").length == 3) {
             etUserFirstName.setText(userName.split(" ")[0]);
             etUserMiddleName.setText(userName.split(" ")[1]);
@@ -326,7 +248,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } else if (userName.split(" ").length == 1) {
             etUserFirstName.setText(userName);
         }
-
         etUserBirthDate.setText(Util.getLongDateInString(
                 userInfo.getUserBirthDate(), Constants.FORM_DATE));
         etUserMobileNumber.setText(userInfo.getUserMobileNumber());
@@ -364,7 +285,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         Project roleProject = new Project();
         roleProject.setJurisdictionTypeId(userInfo.getJurisdictionTypeId());
         role.setProject(roleProject);
-        //role.getProject().setJurisdictionTypeId(userInfo.getJurisdictionTypeId());
         selectedRole = role;
         selectedRoles.add(selectedRole.getId());
         etUserRole.setText(selectedRole.getDisplayName());
@@ -373,9 +293,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getCountryId() != null && userLocation.getCountryId().size() > 0) {
             etUserCountry.setVisibility(View.VISIBLE);
             selectedCountries.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getCountryId()!=null
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCountryId() != null
                     && userInfo.getUserLocation().
-                    getCountryId().size()>0) {
+                    getCountryId().size() > 0) {
                 etUserCountry.setText(userInfo.getUserLocation().getCountryId().get(0).getName());
                 JurisdictionType selectedCountry = new JurisdictionType();
                 selectedCountry.setId(userInfo.getUserLocation().getCountryId().get(0).getId());
@@ -387,8 +307,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
             etUserState.setVisibility(View.VISIBLE);
             selectedStates.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getStateId()!=null
-                    && userInfo.getUserLocation().getStateId().size()>0) {
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getStateId() != null
+                    && userInfo.getUserLocation().getStateId().size() > 0) {
                 etUserState.setText(userInfo.getUserLocation().getStateId().get(0).getName());
                 JurisdictionType selectedState = new JurisdictionType();
                 selectedState.setId(userInfo.getUserLocation().getStateId().get(0).getId());
@@ -400,8 +320,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
             etUserDistrict.setVisibility(View.VISIBLE);
             selectedDistricts.clear();
-            if (userInfo.getUserLocation()!= null && userInfo.getUserLocation().
-                    getDistrictIds() != null && userInfo.getUserLocation().getDistrictIds().size()>0) {
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().
+                    getDistrictIds() != null && userInfo.getUserLocation().getDistrictIds().size() > 0) {
                 etUserDistrict.setText(userInfo.getUserLocation().getDistrictIds().get(0).getName());
                 JurisdictionType selectedDistrict = new JurisdictionType();
                 selectedDistrict.setId(userInfo.getUserLocation().getDistrictIds().get(0).getId());
@@ -413,9 +333,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getCityIds() != null && userLocation.getCityIds().size() > 0) {
             etUserCity.setVisibility(View.VISIBLE);
             selectedCities.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getCityIds()!=null
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCityIds() != null
                     && userInfo.getUserLocation().
-                    getCityIds().size()>0) {
+                    getCityIds().size() > 0) {
                 etUserCity.setText(userInfo.getUserLocation().getCityIds().get(0).getName());
                 JurisdictionType selectedCity = new JurisdictionType();
                 selectedCity.setId(userInfo.getUserLocation().getCityIds().get(0).getId());
@@ -427,9 +347,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
             etUserTaluka.setVisibility(View.VISIBLE);
             selectedTalukas.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getTalukaIds()!= null
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getTalukaIds() != null
                     && userInfo.getUserLocation().
-                    getTalukaIds().size()>0) {
+                    getTalukaIds().size() > 0) {
                 etUserTaluka.setText(userInfo.getUserLocation().getTalukaIds().get(0).getName());
                 JurisdictionType selectedTaluka = new JurisdictionType();
                 selectedTaluka.setId(userInfo.getUserLocation().getTalukaIds().get(0).getId());
@@ -441,8 +361,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
             etUserVillage.setVisibility(View.VISIBLE);
             selectedVillages.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getVillageIds()!= null
-                    && userInfo.getUserLocation().getVillageIds().size()>0) {
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getVillageIds() != null
+                    && userInfo.getUserLocation().getVillageIds().size() > 0) {
                 etUserVillage.setText(userInfo.getUserLocation().getVillageIds().get(0).getName());
                 JurisdictionType selectedVillage = new JurisdictionType();
                 selectedVillage.setId(userInfo.getUserLocation().getVillageIds().get(0).getId());
@@ -454,8 +374,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
             etUserCluster.setVisibility(View.VISIBLE);
             selectedClusters.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getClusterIds()!=null
-                    && userInfo.getUserLocation().getClusterIds().size()>0) {
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getClusterIds() != null
+                    && userInfo.getUserLocation().getClusterIds().size() > 0) {
                 etUserCluster.setText(userInfo.getUserLocation().getClusterIds().get(0).getName());
                 JurisdictionType selectedCluster = new JurisdictionType();
                 selectedCluster.setId(userInfo.getUserLocation().getClusterIds().get(0).getId());
@@ -467,8 +387,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         if (userLocation.getSchoolIds() != null && userLocation.getSchoolIds().size() > 0) {
             etUserSchool.setVisibility(View.VISIBLE);
             selectedSchools.clear();
-            if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getSchoolIds()!=null
-                    && userInfo.getUserLocation().getSchoolIds().size()>0) {
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getSchoolIds() != null
+                    && userInfo.getUserLocation().getSchoolIds().size() > 0) {
                 etUserSchool.setText(userInfo.getUserLocation().getSchoolIds().get(0).getName());
                 JurisdictionType selectedSchool = new JurisdictionType();
                 selectedSchool.setId(userInfo.getUserLocation().getSchoolIds().get(0).getId());
@@ -478,7 +398,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
-
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
 
@@ -490,8 +409,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             ((TextView) findViewById(R.id.user_profile_pic_label))
                     .setText(getString(R.string.update_profile_pic));
         }
-
-
     }
 
     @Override
@@ -514,7 +431,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserOrganization:
-                //spOrganization.performClick();
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(this, this, "Select Organization",
                         selectionOrgList, false);
                 cdd.show();
@@ -522,7 +438,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etUserProject:
-                //spOrganization.performClick();
                 if (selectionProjectList.size() > 0) {
                     CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Project",
                             selectionProjectList, false);
@@ -545,7 +460,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     cddProject.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedProjects != null && selectedProjects.size()>0 &&
+                    if (selectedProjects != null && selectedProjects.size() > 0 &&
                             !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
                         profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
                                 selectedProjects.get(0).getId());
@@ -555,7 +470,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserCountry:
-                if(customSpinnerCountries.size()>0) {
+                if (customSpinnerCountries.size() > 0) {
                     CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
                             "Select Country", customSpinnerCountries,
                             false);
@@ -563,7 +478,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedProjects != null && selectedProjects.size()>0 &&
+                    if (selectedProjects != null && selectedProjects.size() > 0 &&
                             !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
                         profilePresenter.getProfileLocationData("",
                                 selectedRole.getProject().getJurisdictionTypeId(),
@@ -575,7 +490,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserState:
-                if(customSpinnerStates.size()>0) {
+                if (customSpinnerStates.size() > 0) {
                     CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                             "Select State", customSpinnerStates,
                             false);
@@ -583,26 +498,26 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                        if (selectedCountries.size() > 0 && selectedCountries.size()>0 &&
-                                selectedCountries.get(0).getId().length() > 0) {
-                            profilePresenter.getProfileLocationData(selectedCountries.get(0).getId(),
+                    if (selectedCountries.size() > 0 && selectedCountries.size() > 0 &&
+                            selectedCountries.get(0).getId().length() > 0) {
+                        profilePresenter.getProfileLocationData(selectedCountries.get(0).getId(),
+                                selectedRole.getProject().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        if (etUserCountry.getVisibility() == View.VISIBLE) {
+                            Toast.makeText(this, getString(R.string.msg_select_country), Toast.LENGTH_LONG).show();
+                        } else {
+                            profilePresenter.getProfileLocationData("",
                                     selectedRole.getProject().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
-                        } else {
-                            if (etUserCountry.getVisibility() == View.VISIBLE) {
-                                Toast.makeText(this, getString(R.string.msg_select_country), Toast.LENGTH_LONG).show();
-                            } else {
-                                profilePresenter.getProfileLocationData("",
-                                        selectedRole.getProject().getJurisdictionTypeId(),
-                                        Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
-                                        selectedProjects.get(0).getId(), selectedRole.getId());
-                            }
                         }
+                    }
                 }
                 break;
             case R.id.etUserCity:
-                if(customSpinnerCities.size()>0) {
+                if (customSpinnerCities.size() > 0) {
                     CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                             "Select City", customSpinnerCities,
                             false);
@@ -622,7 +537,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserDistrict:
-                if(customSpinnerDistricts.size()>0) {
+                if (customSpinnerDistricts.size() > 0) {
                     CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                             "Select District", customSpinnerDistricts,
                             false);
@@ -642,7 +557,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserTaluka:
-                if(customSpinnerTalukas.size()>0) {
+                if (customSpinnerTalukas.size() > 0) {
                     CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                             "Select Taluka", customSpinnerTalukas,
                             false);
@@ -650,8 +565,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if(etUserCity.getVisibility() == View.VISIBLE) {
-                        if (selectedCities != null && selectedCities.size()>0 &&
+                    if (etUserCity.getVisibility() == View.VISIBLE) {
+                        if (selectedCities != null && selectedCities.size() > 0 &&
                                 !TextUtils.isEmpty(selectedCities.get(0).getId())) {
                             profilePresenter.getProfileLocationData(selectedCities.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
@@ -660,7 +575,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         } else {
                             Toast.makeText(this, getString(R.string.msg_select_city), Toast.LENGTH_LONG).show();
                         }
-                    } else if(etUserDistrict.getVisibility() == View.VISIBLE) {
+                    } else if (etUserDistrict.getVisibility() == View.VISIBLE) {
                         if (selectedDistricts != null && selectedDistricts.size() > 0 &&
                                 !TextUtils.isEmpty(selectedDistricts.get(0).getId())) {
                             profilePresenter.getProfileLocationData(selectedDistricts.get(0).getId(),
@@ -674,7 +589,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserVillage:
-                if(customSpinnerVillages.size()>0) {
+                if (customSpinnerVillages.size() > 0) {
                     CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
                             "Select Village", customSpinnerVillages,
                             false);
@@ -682,8 +597,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if(etUserCluster.getVisibility()==View.VISIBLE) {
-                        if (selectedClusters != null && selectedClusters.size()>0 &&
+                    if (etUserCluster.getVisibility() == View.VISIBLE) {
+                        if (selectedClusters != null && selectedClusters.size() > 0 &&
                                 !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
                             profilePresenter.getProfileLocationData(selectedClusters.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
@@ -693,7 +608,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             Toast.makeText(this, getString(R.string.msg_select_cluster), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        if (selectedTalukas != null && selectedTalukas.size()>0 &&
+                        if (selectedTalukas != null && selectedTalukas.size() > 0 &&
                                 !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                             profilePresenter.getProfileLocationData(selectedTalukas.get(0).getId(),
                                     selectedRole.getProject().getJurisdictionTypeId(),
@@ -703,11 +618,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
                         }
                     }
-
                 }
                 break;
             case R.id.etUserCluster:
-                if(customSpinnerClusters.size()>0) {
+                if (customSpinnerClusters.size() > 0) {
                     CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                             "Select Cluster", customSpinnerClusters,
                             false);
@@ -715,7 +629,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedTalukas != null && selectedTalukas.size()>0 &&
+                    if (selectedTalukas != null && selectedTalukas.size() > 0 &&
                             !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                         profilePresenter.getProfileLocationData(selectedTalukas.get(0).getId(),
                                 selectedRole.getProject().getJurisdictionTypeId(),
@@ -727,7 +641,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
                 break;
             case R.id.etUserSchool:
-                if(customSpinnerSchools.size()>0) {
+                if (customSpinnerSchools.size() > 0) {
                     CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                             "Select School", customSpinnerSchools,
                             false);
@@ -735,7 +649,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedVillages != null && selectedVillages.size()>0 &&
+                    if (selectedVillages != null && selectedVillages.size() > 0 &&
                             !TextUtils.isEmpty(selectedVillages.get(0).getId())) {
                         profilePresenter.getProfileLocationData(selectedVillages.get(0).getId(),
                                 selectedRole.getProject().getJurisdictionTypeId(),
@@ -889,23 +803,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
-            //if (addDeviceId()) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.READ_PHONE_STATE},
-                            Constants.READ_PHONE_STORAGE);
+            if (getIntent().getStringExtra(Constants.Login.ACTION) == null
+                    || !getIntent().getStringExtra(Constants.Login.ACTION)
+                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_PHONE_STATE},
+                                Constants.READ_PHONE_STORAGE);
+                    }
+                }
+                if (getDeviceId().length() > 0) {
+                    userInfo.setDevice_id(getDeviceId());
+                } else {
+                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
+                            Snackbar.LENGTH_LONG);
                 }
             }
-            if (getDeviceId().length() > 0) {
-                userInfo.setDevice_id(getDeviceId());
-                profilePresenter.submitProfile(userInfo);
-            } else {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
-                        Snackbar.LENGTH_LONG);
-            }
+            profilePresenter.submitProfile(userInfo);
         }
     }
 
@@ -916,9 +834,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         Constants.READ_PHONE_STORAGE);
             } else {
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.
-                        TELEPHONY_SERVICE);
-                //String deviceId = telephonyManager.getDeviceId();
                 String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 return deviceId;
             }
@@ -1013,24 +928,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void takePhotoFromCamera() {
-     try {
-        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = getImageFile(); // 1
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-            uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-        else
-            uri = Uri.fromFile(file); // 3
-        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-        startActivityForResult(pictureIntent,Constants.CHOOSE_IMAGE_FROM_CAMERA);
-    } catch (ActivityNotFoundException e) {
-        //display an error message
-        Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
-                Toast.LENGTH_SHORT).show();
-    } catch (SecurityException e) {
-        Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
-                Toast.LENGTH_SHORT).show();
-    }
+        try {
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private File getImageFile() {
@@ -1062,7 +977,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                 finalUri=Uri.fromFile(new File(currentPhotoPath));
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -1072,7 +987,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 try {
                     getImageFile();
                     outputUri = data.getData();
-                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -1242,22 +1157,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             customSpinnerObject.setName(organizations.get(i).getOrgName());
             selectionOrgList.add(customSpinnerObject);
         }
-//        if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-//                && getIntent().getStringExtra(Constants.Login.ACTION)
-//                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-//
-//            UserInfo userInfo = Util.getUserObjectFromPref();
-//            if (organizations != null && !organizations.isEmpty()) {
-//                for (Organization organization : organizations) {
-//                    if (organization.getId().equals(userInfo.getOrgId())) {
-//                        this.selectedOrg = organization;
-//                        etUserOrganization.setText(selectedOrg.getOrgName());
-//                        profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-//                        break;
-//                    }
-//                }
-//            }
-//        }
     }
 
     @Override
@@ -1273,27 +1172,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 customSpinnerObject.setName(organizationProjects.get(i).getOrgProjectName());
                 selectionProjectList.add(customSpinnerObject);
             }
-//            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-//                    && getIntent().getStringExtra(Constants.Login.ACTION)
-//                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-//
-//                UserInfo userInfo = Util.getUserObjectFromPref();
-//                selectedProjects.clear();
-//                if (organizationProjects != null && !organizationProjects.isEmpty()) {
-//                    for (OrganizationProject organizationProject : organizationProjects) {
-//                        if (organizationProject.getId().equals(userInfo.getProjectIds().get(0).getId())) {
-//                            JurisdictionType project = new JurisdictionType();
-//                            project.setId(organizationProject.getId());
-//                            project.setName(organizationProject.getOrgProjectName());
-//                            selectedProjects.add(project);
-//                            etUserProject.setText(organizationProject.getOrgProjectName());
-//                            profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
-//                                    project.getId());
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
@@ -1310,30 +1188,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 customSpinnerObject.setName(organizationRoles.get(i).getDisplayName());
                 selectionRolesList.add(customSpinnerObject);
             }
-
-//            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-//                    && getIntent().getStringExtra(Constants.Login.ACTION)
-//                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-//
-//                UserInfo userInfo = Util.getUserObjectFromPref();
-//                for(OrganizationRole organizationRole: organizationRoles) {
-//                    if(organizationRole.getId().equals(userInfo.getRoleIds())) {
-//                        selectedRole = organizationRole;
-//                        selectedRoles.add(selectedRole.getId());
-//                        etUserRole.setText(selectedRole.getDisplayName());
-//                        break;
-//                    }
-//                }
-//                if (selectedRole != null && selectedRole.getProject() != null) {
-//                    List<Jurisdiction> jurisdictions = selectedRole.getProject().getJurisdictions();
-//                    if (jurisdictions != null && jurisdictions.size() > 0) {
-//                        hideJurisdictionLevel();
-//                        for (Jurisdiction j : jurisdictions) {
-//                            setJurisdictionLevel(j.getLevelName());
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
@@ -1343,121 +1197,41 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 etUserCountry.setVisibility(View.VISIBLE);
                 selectedCountries.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getCountryId()!=null
-//                        && userInfo.getUserLocation().
-//                        getCountryId().size()>0) {
-//                    etUserCountry.setText(userInfo.getUserLocation().getCountryId().get(0).getName());
-//                    JurisdictionType selectedCountry = new JurisdictionType();
-//                    selectedCountry.setId(userInfo.getUserLocation().getCountryId().get(0).getId());
-//                    selectedCountry.setName(userInfo.getUserLocation().getCountryId().get(0).getName());
-//                    selectedCountries.add(selectedCountry);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 etUserState.setVisibility(View.VISIBLE);
                 selectedStates.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getStateId()!=null
-//                        && userInfo.getUserLocation().getStateId().size()>0) {
-//                    etUserState.setText(userInfo.getUserLocation().getStateId().get(0).getName());
-//                    JurisdictionType selectedState = new JurisdictionType();
-//                    selectedState.setId(userInfo.getUserLocation().getStateId().get(0).getId());
-//                    selectedState.setName(userInfo.getUserLocation().getStateId().get(0).getName());
-//                    selectedStates.add(selectedState);
-//                }
-//                if (Util.isConnected(this)) {
-//                    if (selectedCountries.size() > 0 && selectedCountries.get(0).getId().length() > 0) {
-//                        profilePresenter.getProfileLocationData(selectedCountries.get(0).getId(),
-//                                selectedRole.getProject().getJurisdictionTypeId(), level, selectedOrg.getId(),
-//                                selectedProjects.get(0).getId(), selectedRole.getId());
-//                    } else {
-//                        profilePresenter.getProfileLocationData("",
-//                                selectedRole.getProject().getJurisdictionTypeId(), level, selectedOrg.getId(),
-//                                selectedProjects.get(0).getId(), selectedRole.getId());
-//                    }
-//                } else {
-//                    Util.showToast(getResources().getString(R.string.no_data_available), this);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 etUserDistrict.setVisibility(View.VISIBLE);
                 selectedDistricts.clear();
-//                if (userInfo.getUserLocation()!= null && userInfo.getUserLocation().
-//                        getDistrictIds() != null && userInfo.getUserLocation().getDistrictIds().size()>0) {
-//                    etUserDistrict.setText(userInfo.getUserLocation().getDistrictIds().get(0).getName());
-//                    JurisdictionType selectedDistrict = new JurisdictionType();
-//                    selectedDistrict.setId(userInfo.getUserLocation().getDistrictIds().get(0).getId());
-//                    selectedDistrict.setName(userInfo.getUserLocation().getDistrictIds().get(0).getName());
-//                    selectedDistricts.add(selectedDistrict);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
                 etUserCity.setVisibility(View.VISIBLE);
                 selectedCities.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getCityIds()!=null
-//                        && userInfo.getUserLocation().
-//                        getCityIds().size()>0) {
-//                    etUserCity.setText(userInfo.getUserLocation().getCityIds().get(0).getName());
-//                    JurisdictionType selectedCity = new JurisdictionType();
-//                    selectedCity.setId(userInfo.getUserLocation().getCityIds().get(0).getId());
-//                    selectedCity.setName(userInfo.getUserLocation().getCityIds().get(0).getName());
-//                    selectedCities.add(selectedCity);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 etUserTaluka.setVisibility(View.VISIBLE);
                 selectedTalukas.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getTalukaIds()!= null
-//                        && userInfo.getUserLocation().
-//                        getTalukaIds().size()>0) {
-//                    etUserTaluka.setText(userInfo.getUserLocation().getTalukaIds().get(0).getName());
-//                    JurisdictionType selectedTaluka = new JurisdictionType();
-//                    selectedTaluka.setId(userInfo.getUserLocation().getTalukaIds().get(0).getId());
-//                    selectedTaluka.setName(userInfo.getUserLocation().getTalukaIds().get(0).getName());
-//                    selectedTalukas.add(selectedTaluka);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 etUserVillage.setVisibility(View.VISIBLE);
                 selectedVillages.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getVillageIds()!= null
-//                        && userInfo.getUserLocation().getVillageIds().size()>0) {
-//                    etUserVillage.setText(userInfo.getUserLocation().getVillageIds().get(0).getName());
-//                    JurisdictionType selectedVillage = new JurisdictionType();
-//                    selectedVillage.setId(userInfo.getUserLocation().getVillageIds().get(0).getId());
-//                    selectedVillage.setName(userInfo.getUserLocation().getVillageIds().get(0).getName());
-//                    selectedVillages.add(selectedVillage);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
                 etUserCluster.setVisibility(View.VISIBLE);
                 selectedClusters.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getClusterIds()!=null
-//                        && userInfo.getUserLocation().getClusterIds().size()>0) {
-//                    etUserCluster.setText(userInfo.getUserLocation().getClusterIds().get(0).getName());
-//                    JurisdictionType selectedCluster = new JurisdictionType();
-//                    selectedCluster.setId(userInfo.getUserLocation().getClusterIds().get(0).getId());
-//                    selectedCluster.setName(userInfo.getUserLocation().getClusterIds().get(0).getName());
-//                    selectedClusters.add(selectedCluster);
-//                }
                 break;
 
             case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
                 etUserSchool.setVisibility(View.VISIBLE);
                 selectedSchools.clear();
-//                if(userInfo.getUserLocation()!= null && userInfo.getUserLocation().getSchoolIds()!=null
-//                        && userInfo.getUserLocation().getSchoolIds().size()>0) {
-//                    etUserSchool.setText(userInfo.getUserLocation().getSchoolIds().get(0).getName());
-//                    JurisdictionType selectedSchool = new JurisdictionType();
-//                    selectedSchool.setId(userInfo.getUserLocation().getSchoolIds().get(0).getId());
-//                    selectedSchool.setName(userInfo.getUserLocation().getSchoolIds().get(0).getName());
-//                    selectedSchools.add(selectedSchool);
-//                }
                 break;
         }
     }
@@ -1604,11 +1378,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     public void onCustomSpinnerSelection(String type) {
         if (type.equals("Select Organization")) {
             int selectedPosition = -1;
-            String selectedOrgName = "";//, selectedOrgId;
+            String selectedOrgName = "";
             for (CustomSpinnerObject customSpinnerObject : selectionOrgList) {
                 if (customSpinnerObject.isSelected()) {
                     selectedOrgName = customSpinnerObject.getName();
-                    //selectedOrgId = customSpinnerObject.get_id();
                     selectedPosition = selectionOrgList.indexOf(customSpinnerObject);
                     break;
                 }
@@ -1767,41 +1540,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                 }
             }
-//            else {
-//                UserInfo userInfo = Util.getUserObjectFromPref();
-//                UserLocation userLocation = userInfo.getUserLocation();
-//                if (userLocation.getCountryId() != null && userLocation.getCountryId().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.COUNTRY_LEVEL);
-//                }
-//
-//                if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
-//                }
-//
-//                if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-//                }
-//
-//                if (userLocation.getCityIds() != null && userLocation.getCityIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.CITY_LEVEL);
-//                }
-//
-//                if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.TALUKA_LEVEL);
-//                }
-//
-//                if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-//                }
-//
-//                if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.CLUSTER_LEVEL);
-//                }
-//
-//                if (userLocation.getSchoolIds() != null && userLocation.getSchoolIds().size() > 0) {
-//                    setJurisdictionLevel(Constants.JurisdictionLevelName.SCHOOL_LEVEL);
-//                }
-//            }
         } else if (type.equals("Select Country")) {
             selectedCountries.clear();
             JurisdictionType selectedCountry = new JurisdictionType();
