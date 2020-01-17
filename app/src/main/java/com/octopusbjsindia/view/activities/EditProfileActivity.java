@@ -1,6 +1,5 @@
 package com.octopusbjsindia.view.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -29,13 +27,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -803,42 +799,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
-
-            if (getIntent().getStringExtra(Constants.Login.ACTION) == null
-                    || !getIntent().getStringExtra(Constants.Login.ACTION)
-                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.READ_PHONE_STATE},
-                                Constants.READ_PHONE_STORAGE);
-                    }
-                }
-                if (getDeviceId().length() > 0) {
-                    userInfo.setDevice_id(getDeviceId());
-                } else {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
-                            Snackbar.LENGTH_LONG);
-                }
-            }
             profilePresenter.submitProfile(userInfo);
         }
-    }
-
-    private String getDeviceId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        Constants.READ_PHONE_STORAGE);
-            } else {
-                String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-                return deviceId;
-            }
-        }
-        return "";
     }
 
     private boolean isAllInputsValid() {
@@ -1041,17 +1003,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showPictureDialog();
             }
-            if (requestCode == Constants.READ_PHONE_STORAGE) {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getDeviceId();
-                } else {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
-                            Snackbar.LENGTH_LONG);
-                }
-                return;
-            }
         }
     }
 
@@ -1192,7 +1143,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void setJurisdictionLevel(String level) {
-        UserInfo userInfo = Util.getUserObjectFromPref();
         switch (level) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 etUserCountry.setVisibility(View.VISIBLE);
