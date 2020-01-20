@@ -32,11 +32,12 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
-import com.octopusbjsindia.models.SujalamSuphalam.Structure;
+import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
-import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
+import com.octopusbjsindia.models.attendance.AttendaceData;
+import com.octopusbjsindia.models.attendance.AttendanceResponse;
 import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.forms.FormData;
@@ -45,9 +46,10 @@ import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GsonRequestFactory;
+import com.octopusbjsindia.utility.PlatformGson;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
-import com.octopusbjsindia.utility.Urls;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,6 +105,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncStructureVisitMonitoring();
         syncStructurePripretion();
         syncStructureBoundary();
+        syncAttendance();
     }
 
 
@@ -637,6 +640,77 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         gsonRequest.setBodyParams(createBodyParams(paramJson));
         gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+
+    }
+
+    private void syncAttendance() {
+        String CHECK_IN = "checkin";
+        String CHECK_OUT = "checkout";
+        ArrayList<AttendaceData> unsyncAttendanceList = new ArrayList<>();
+        unsyncAttendanceList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getAttendaceSchema().getUnsyncAttendance(false));
+        if (unsyncAttendanceList.size() > 0) {
+            for (AttendaceData attendaceData : unsyncAttendanceList) {
+                if (attendaceData.getAttendanceType().equals(CHECK_OUT)) {
+
+                    AttendaceData attendaceCheckinData = DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getAttendaceSchema().getUserAttendace(attendaceData.getAttendaceDate(), CHECK_IN);
+                    if (attendaceCheckinData.getAttendanceId() != null
+                            && !TextUtils.isEmpty(attendaceCheckinData.getAttendanceId())) {
+                        attendaceData.setAttendanceId(attendaceCheckinData.getAttendanceId());
+                        submitAttendance(attendaceData);
+                    }
+                } else {
+                    submitAttendance(attendaceData);
+                }
+            }
+            Util.removeSimpleProgressDialog();
+        }
+    }
+
+    private void submitAttendance(AttendaceData data) {
+
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "submitAttendance - Resp: " + res);
+
+                    AttendanceResponse rspData = PlatformGson.getPlatformGsonInstance().fromJson(res, AttendanceResponse.class);
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema()
+                            .updateUserAttendace(rspData.getData().getAttendanceId(),
+                                    true,
+                                    rspData.getData().getData().getAttendaceDate(),
+                                    rspData.getData().getData().getAttendanceType());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                Log.d(TAG, "submitAttendance - Exception");
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> Log.d(TAG, "submitAttendance - error" + error);
+
+        final String url = BuildConfig.BASE_URL + Urls.Attendance.SUBMIT_ATTENDANCE;
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(data);
+        Log.d(TAG, "submitAttendance - url: " + url);
+        Log.d(TAG, "submitAttendance - req: " + json);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        gsonRequest.setBodyParams(createBodyParams(json));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
 
     }

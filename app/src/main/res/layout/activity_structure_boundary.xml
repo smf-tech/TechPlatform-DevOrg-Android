@@ -40,7 +40,7 @@
         android:textSize="@dimen/text_size_16"
         android:fontFamily="@font/opensans_regular"
         android:layout_marginTop="@dimen/dimen_40dp"
-        android:text="Waiting for location Accuracy" />
+        android:text="@string/msg_structure_boundary" />
 
     <TextView
         android:id="@+id/tv_start_recording"

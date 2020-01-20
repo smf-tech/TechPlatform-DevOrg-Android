@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -77,13 +76,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     private final String TAG = NewOtpFragment.class.getSimpleName();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param loginInfo : login info object
-     * @return A new instance of fragment NewOtpFragment.
-     */
+    private String deviceId = "";
+
     public static NewOtpFragment newInstance(final LoginInfo loginInfo) {
         sLoginInfo = loginInfo;
         return new NewOtpFragment();
@@ -284,15 +278,16 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             tvOtpMessage.setText(getString(R.string.please_type_the_verification_code_n_sent_to, mMobileNumber));
             enableSmsReceiver();
         }
+        getDeviceId();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                if(Util.isConnected(getActivity())) {
+                if (Util.isConnected(getActivity())) {
                     verifyUser();
-                }else{
+                } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
 
@@ -322,40 +317,32 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 //        tvOtpTimer.setVisibility(View.GONE);
 
         String otp = getOtp();
-        if (getDeviceId().length() > 0) {
-            sLoginInfo.setDeviceId(getDeviceId());
+        if (deviceId.length() > 0) {
+            sLoginInfo.setDeviceId(deviceId);
+            Util.setStringInPref(Constants.App.deviceId, deviceId);
             otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
                     Snackbar.LENGTH_LONG);
+            getDeviceId();
         }
 
     }
 
     //get device id for token api
-    private String getDeviceId() {
+    private void getDeviceId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         Constants.READ_PHONE_STORAGE);
             } else {
-                TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
-                        TELEPHONY_SERVICE);
-               // String deviceId = telephonyManager.getDeviceId();
-                String deviceId =Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-
-                return deviceId;
+                deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             }
         } else {
-            TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.
-                    TELEPHONY_SERVICE);
-           // String deviceId = telephonyManager.getDeviceId();
-            String deviceId =Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            return deviceId;
+            deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         }
-        return "";
     }
 
     private void setOtp(final String msg) {
@@ -532,9 +519,9 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA,sLoginInfo);
+            intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
 
             OtpActivity activity = (OtpActivity) getActivity();
             if (activity != null) {

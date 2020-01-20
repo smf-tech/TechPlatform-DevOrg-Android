@@ -101,8 +101,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static com.octopusbjsindia.utility.Constants.DATE_FORMAT;
-import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.DATE_TIME_FORMAT;
+import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -214,6 +214,7 @@ public class Util {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
                 headers.put("versionName",getAppVersion());
+                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 

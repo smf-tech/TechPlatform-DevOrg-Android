@@ -7,16 +7,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +32,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -75,7 +70,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
 
-        if(roleAccessList != null) {
+        if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                 if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SAVE_OFFLINE_STRUCTURE)) {
@@ -147,11 +142,21 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 holder.btSave.setVisibility(View.VISIBLE);
             }
         }
-        if(ssDataList.get(position).isStructureBoundary()){
+        if (ssDataList.get(position).isStructureBoundary()) {
             holder.tvBoundary.setVisibility(View.VISIBLE);
         } else {
             holder.tvBoundary.setVisibility(View.GONE);
         }
+        if (ssDataList.get(position).getWorkStartDate() != null && !TextUtils.isEmpty(ssDataList.get(position).getWorkStartDate())) {
+            holder.lyStartData.setVisibility(View.VISIBLE);
+            holder.tvStartDate.setText(ssDataList.get(position).getWorkStartDate());
+            if (ssDataList.get(position).getWorkCompletedDate() != null) {
+                holder.tvStartDate.setText(ssDataList.get(position).getWorkCompletedDate());
+            }
+        } else {
+            holder.lyStartData.setVisibility(View.GONE);
+        }
+
 
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -166,14 +171,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
-                tvBoundary;
+                tvBoundary, tvStartDate, tvEndDate;
         ImageView btnPopupMenu;
-        LinearLayout lyStructure;
+        LinearLayout lyStartData;
         PopupMenu popup;
         Button btSave;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            lyStartData = itemView.findViewById(R.id.ly_start_data);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvReason = itemView.findViewById(R.id.tv_reason);
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
@@ -186,6 +192,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvMachinCount = itemView.findViewById(R.id.tv_machin_count);
             tvTaluka = itemView.findViewById(R.id.tv_taluka);
             tvVillage = itemView.findViewById(R.id.tv_village);
+            tvStartDate = itemView.findViewById(R.id.tv_start_date);
+            tvEndDate = itemView.findViewById(R.id.tv_end_date);
             btSave = itemView.findViewById(R.id.bt_save);
             tvBoundary = itemView.findViewById(R.id.tv_boundary);
             if (isSave) {
@@ -318,16 +326,25 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                                             Manifest.permission.ACCESS_FINE_LOCATION},
                                                     Constants.GPS_REQUEST);
                                         } else {
-                                            LocationManager lm = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
+                                            LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
                                             boolean gps_enabled = false;
 
                                             try {
                                                 gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                                            } catch(Exception ex) {}
-                                            if(gps_enabled){
-                                                intent = new Intent(activity, StructureBoundaryActivity.class);
-                                                intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-                                                activity.startActivity(intent);
+                                            } catch (Exception ex) {
+                                            }
+                                            if (gps_enabled) {
+                                                if (ssDataList.get(getAdapterPosition()).isStructureBoundary()) {
+                                                    showDialog(activity, "Alert",
+                                                            "Structure boundary already recorded, do you want record?",
+                                                            "Yes",
+                                                            "No",
+                                                            getAdapterPosition(), 3);
+                                                } else {
+                                                    intent = new Intent(activity, StructureBoundaryActivity.class);
+                                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
+                                                    activity.startActivity(intent);
+                                                }
                                             } else {
                                                 new AlertDialog.Builder(activity)
                                                         .setTitle("Alert")
@@ -431,6 +448,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     Intent intent = new Intent(activity, StructureCompletionActivity.class);
                     intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     intent.putExtra(STRUCTURE_STATUS, ssDataList.get(adapterPosition).getStructureStatusCode());
+                    activity.startActivity(intent);
+                } else if (flag == 3) {
+                    Intent intent = new Intent(activity, StructureBoundaryActivity.class);
+                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(adapterPosition));
                     activity.startActivity(intent);
                 }
                 //Close dialog
