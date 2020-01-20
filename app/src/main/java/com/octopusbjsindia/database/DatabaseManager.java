@@ -42,6 +42,7 @@ public class DatabaseManager {
                     AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
                     .addMigrations(MIGRATION_OLD_TO_NEW)
+                    .addMigrations(MIGRATION_2_TO_3)
                     .build();
         }
 
@@ -60,6 +61,16 @@ public class DatabaseManager {
 
             database.execSQL("CREATE TABLE IF NOT EXISTS `StructureBoundaryData`" +
                     " (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structureId` TEXT, `structureBoundary` TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_2_TO_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN workStartDate TEXT");
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN workCompletedDate TEXT");
+
         }
     };
 

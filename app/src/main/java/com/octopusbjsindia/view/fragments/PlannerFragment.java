@@ -37,7 +37,6 @@ import com.octopusbjsindia.models.planner.SubmoduleData;
 import com.octopusbjsindia.models.planner.attendanceData;
 import com.octopusbjsindia.presenter.PlannerFragmentPresenter;
 
-import com.octopusbjsindia.presenter.SubmitAttendanceFragmentPresenter;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
@@ -51,8 +50,6 @@ import com.octopusbjsindia.view.activities.LoginActivity;
 import com.octopusbjsindia.view.activities.PlannerDetailActivity;
 import com.octopusbjsindia.view.adapters.EventTaskListAdapter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,7 +73,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     private RelativeLayout lyAttendance;
     private RelativeLayout lyLeaves;
 
-    private PlannerFragmentPresenter plannerFragmentPresenter;
+    private PlannerFragmentPresenter presenter;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private GPSTracker gpsTracker;
@@ -163,28 +160,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
         attendaceCheckinData = new AttendaceData();
         attendaceCheckoutData = new AttendaceData();
-        if (Util.isConnected(getContext())) {
-            ArrayList<AttendaceData> unsyncAttendanceList = (ArrayList<AttendaceData>) userAttendanceDao.
-                    getUnsyncAttendance(false);
-            if (unsyncAttendanceList.size() > 0) {
-                Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
-                for (AttendaceData attendaceData : unsyncAttendanceList) {
-                    if (attendaceData.getAttendanceType().equals(CHECK_OUT)) {
 
-                        AttendaceData attendaceCheckinData = userAttendanceDao.getUserAttendace(attendaceData.getAttendaceDate(), CHECK_IN);
-                        attendaceData.setAttendanceId(attendaceCheckinData.getAttendanceId());
-
-                        SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                        submitAttendanceFragmentPresenter.markAttendace(attendaceData);
-
-                    } else {
-                        SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                        submitAttendanceFragmentPresenter.markAttendace(attendaceData);
-                    }
-                }
-                Util.removeSimpleProgressDialog();
-            }
-        }
         initCardView();
     }
 
@@ -196,7 +172,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         progressBarLayout = plannerView.findViewById(R.id.profile_act_progress_bar);
         progressBar = plannerView.findViewById(R.id.pb_profile_act);
 
-        plannerFragmentPresenter = new PlannerFragmentPresenter(this);
+        presenter = new PlannerFragmentPresenter(this);
 
         lyEvents = plannerView.findViewById(R.id.ly_events);
         lyTasks = plannerView.findViewById(R.id.ly_task);
@@ -239,8 +215,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         super.onResume();
 
         if (Util.isConnected(getContext())) {
-            plannerFragmentPresenter = new PlannerFragmentPresenter(this);
-            plannerFragmentPresenter.getPlannerData();
+            presenter.getPlannerData();
         } else {
             Util.showToast(getString(R.string.msg_no_network), this);
             setOfflineAttendance();
@@ -643,30 +618,25 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             Location location = gpsTracker.getLocation();
             if (location != null) {
                 enableButton(false, true);
-                attendaceCheckinData.setLatitude(location.getLatitude());
-                attendaceCheckinData.setLongitude(location.getLongitude());
-                attendaceCheckinData.setDate(timeStamp);
-                attendaceCheckinData.setAttendanceType(CHECK_IN);
 
                 String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
                 long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
 
+                attendaceCheckinData.setLatitude(location.getLatitude());
+                attendaceCheckinData.setLongitude(location.getLongitude());
+                attendaceCheckinData.setDate(timeStamp);
+                attendaceCheckinData.setAttendanceType(CHECK_IN);
                 attendaceCheckinData.setAttendaceDate(attnDate);
 
                 btCheckIn.setText("Check in at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
                 updateTime(timeStamp, 0);
+                attendaceCheckinData.setSync(false);
+                userAttendanceDao.insert(attendaceCheckinData);
                 if (!Util.isConnected(mContext)) {
                     Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
-                    attendaceCheckinData.setSync(false);
-                    userAttendanceDao.insert(attendaceCheckinData);
                 } else {
-                    attendaceCheckinData.setSync(true);
-                    userAttendanceDao.insert(attendaceCheckinData);
-                    SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                    Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
-                    submitAttendanceFragmentPresenter.markAttendace(attendaceCheckinData);
+                    presenter.submitAttendance(attendaceCheckinData);
                 }
-//                Util.showToast(getResources().getString(R.string.check_in_msg), mContext);
             } else {
                 Util.showToast("Unable to get location", mContext);
             }
@@ -689,6 +659,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                 enableButton(false, false);
                 String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
                 long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
+                List<AttendaceData> getAttendance = userAttendanceDao.getAttendance();
                 AttendaceData attendaceCheckinData = userAttendanceDao.getUserAttendace(attnDate, CHECK_IN);
 
                 //attendaceCheckoutData = new AttendaceData();
@@ -701,18 +672,15 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
                 btCheckout.setText("Check out at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
                 updateTime(attendaceCheckinData.getDate(), timeStamp);
+
+                attendaceCheckoutData.setSync(false);
+                userAttendanceDao.insert(attendaceCheckoutData);
+
                 if (!Util.isConnected(mContext)) {
                     Toast.makeText(mContext, "Checked out offline.", Toast.LENGTH_LONG).show();
-                    attendaceCheckoutData.setSync(false);
-                    userAttendanceDao.insert(attendaceCheckoutData);
                 } else {
-                    attendaceCheckoutData.setSync(true);
-                    userAttendanceDao.insert(attendaceCheckoutData);
-                    SubmitAttendanceFragmentPresenter submitAttendanceFragmentPresenter = new SubmitAttendanceFragmentPresenter(this);
-                    Util.showSimpleProgressDialog(mContext, "Attendance", "Loading...", false);
-                    submitAttendanceFragmentPresenter.markAttendace(attendaceCheckoutData);
+                    presenter.submitAttendance(attendaceCheckoutData);
                 }
-//                Util.showToast(getResources().getString(R.string.check_out_msg), mContext);
             } else {
                 Util.showToast("Unable to get location", mContext);
             }
@@ -723,60 +691,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         if (!isCheckOut) {
             getDiffBetweenTwoHours();
         }
-    }
-
-    public void checkInResponse(String response, AttendaceData attendaceData) {
-        String attendanceId;
-        int status;
-        Util.removeSimpleProgressDialog();
-        getUserType = userAttendanceDao.getUserAttendanceType(CHECK_IN, Util.getTodaysDate(), Util.getUserMobileFromPref());
-        if (getUserType != null && getUserType.size() > 0 && !getUserType.isEmpty()) {
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-        } else {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                status = jsonObject.getInt("status");
-                String msg = jsonObject.getString("message");
-                if (status == 200) {
-                    JSONObject jsonData = jsonObject.getJSONObject("data");
-                    attendanceId = jsonData.getString("attendanceId");
-
-                    String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
-                    long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
-
-                    userAttendanceDao.updateUserAttendace(attendanceId, true, attnDate, CHECK_IN);
-
-                    Util.showToast(mContext.getResources().getString(R.string.check_in_msg), mContext);
-                } else {
-                    Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void checkOutResponse(String response, AttendaceData attendaceData) {
-        Util.showToast(mContext.getResources().getString(R.string.check_out_msg), mContext);
-
-        int status = 0;
-        String attendanceId = "";
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            status = jsonObject.getInt("status");
-            JSONObject jsonData = jsonObject.getJSONObject("data");
-            attendanceId = jsonData.getString("_id");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
-        long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
-
-        userAttendanceDao.updateUserAttendace(attendanceId, true, attnDate, CHECK_OUT);
-
-        Util.removeSimpleProgressDialog();
-
     }
 
     public void updateTime(long checkIntime, long checkOutTime) {
@@ -847,17 +761,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         return hours + ":" + min + ":" + ss;
     }
 
-    public void checkInError(String response) {
-        Toast.makeText(context, response, Toast.LENGTH_LONG).show();
-        Log.i("ErrorData", "111" + response);
-        Util.removeSimpleProgressDialog();
-    }
-
-    public void checkOutError(String response) {
-        Toast.makeText(context, response, Toast.LENGTH_LONG).show();
-        Util.removeSimpleProgressDialog();
-    }
-
     public String getTotalHours() throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -891,7 +794,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         return totalHrs + " :" + totalMin;
     }
 
-    public String getDiffBetweenTwoHours() {
+    private void getDiffBetweenTwoHours() {
         if (preferenceHelper.showTotalHours(KEY_TOTALHOURS)) {
             try {
                 totalHours = getTotalHours();
@@ -901,7 +804,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                 e.printStackTrace();
             }
         }
-        return totalHours;
     }
 
     @Override

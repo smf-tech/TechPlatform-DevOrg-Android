@@ -214,6 +214,7 @@ public class Util {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
                 headers.put("versionName",getAppVersion());
+                headers.put("deviceId",getStringFromPref(Constants.App.deviceId));
             }
         }
 

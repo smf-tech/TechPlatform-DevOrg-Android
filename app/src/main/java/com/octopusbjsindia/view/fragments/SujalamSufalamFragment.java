@@ -77,8 +77,7 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             }
         }
         AppEvents.trackAppEvent(getString(R.string.ss_screen_visit));
-        // Start data sync
-        SyncAdapterUtils.manualRefresh();
+
     }
 
     @Override

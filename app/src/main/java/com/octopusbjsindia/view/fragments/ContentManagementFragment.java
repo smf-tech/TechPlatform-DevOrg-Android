@@ -58,7 +58,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import static android.content.Context.DOWNLOAD_SERVICE;
+
 public class ContentManagementFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,11 +97,11 @@ public class ContentManagementFragment extends Fragment {
 
     private ImageView imgDwn, imgShare;
     private RelativeLayout progressBarLayout;
-    private ProgressBar progressBar,mProgressBar;
+    private ProgressBar progressBar, mProgressBar;
     private ShowTimerService showTimerService;
     boolean mBound = false;
     private Handler handler = new Handler();
-    private List<Long> downloadIdList=new ArrayList<>();
+    private List<Long> downloadIdList = new ArrayList<>();
     DownloadInfo downloadInfo;
     DownloadManager downloadmanager;
 
@@ -145,7 +147,7 @@ public class ContentManagementFragment extends Fragment {
         createDirectory();
         clearPreviousData();
 
-        if(Util.isConnected(getContext())){
+        if (Util.isConnected(getContext())) {
             showProgressBar();
             getContentData();
         }
@@ -189,10 +191,6 @@ public class ContentManagementFragment extends Fragment {
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {
-                //expandableListAdapter.notifyDataSetChanged();
-               /* Toast.makeText(getContext(),
-                        listDataHeader.get(i) + " Expanded",
-                        Toast.LENGTH_SHORT).show();*/
 
             }
         });
@@ -201,11 +199,6 @@ public class ContentManagementFragment extends Fragment {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                //expandableListAdapter.notifyDataSetChanged();
-                /*Toast.makeText(getContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();*/
-
             }
         });
 
@@ -213,25 +206,10 @@ public class ContentManagementFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-
-                //expandableListAdapter.notifyDataSetChanged();
                 DownloadContent dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
-              /*  Toast.makeText(
-                        getContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-*/
-
                 return false;
             }
         });
-
-
     }
 
 
@@ -287,7 +265,7 @@ public class ContentManagementFragment extends Fragment {
                         downloadContent.setHi(hi);
                         downloadContent.setDef(def);
 
-                        downloadInfo=new DownloadInfo(name,1000);
+                        downloadInfo = new DownloadInfo(name, 1000);
                         downloadContent.setInfo(downloadInfo);
 
                         listDownloadContent.add(downloadContent);
@@ -324,49 +302,6 @@ public class ContentManagementFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // check external storage permission
-
-                /*if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
-
-                    Intent callDownloadActivity = new Intent(getActivity(), ContentDownloadedActivity.class);
-                    startActivity(callDownloadActivity);
-                }*/
-
-                //String url="http://18.216.227.14/images/SMF%20BOOK%20-CHANGES.pdf";
-                //beginDownload(url);
-
-                /*if(Permissions.`isCameraPermissionGranted(getActivity(),getActivity())){
-
-                    //String url="https://drive.google.com/open?id=1D7biC_cf_dupT1l4Ij1hXCGc4lY-v2y2";
-
-                    String fileName = url.substring(url.lastIndexOf('/')+1,url.length());
-
-                    Intent intent=new Intent(getActivity(),DownloadService.class);
-                    intent.putExtra("URL",url);
-                    intent.putExtra("FILENAME",fileName);
-                    intent.putExtra("FILETYPE",".pdf");
-                    intent.putExtra("fragment_flag","content fragment");
-                    getActivity().startService(intent);
-
-                }else {
-                    Toast.makeText(getActivity(), "check permission", Toast.LENGTH_SHORT).show();
-                }
-
-*/
-
-
-
-
-
-
-                /*url = intent.getStringExtra("URL");
-                fileName = intent.getStringExtra("FILENAME");
-                filetype = intent.getStringExtra("FILETYPE");
-                fragment_flag = intent.getStringExtra("fragment_flag");*/
-
-
-                //Intent intent=new Intent(getActivity(),ContentDownloadedActivity.class);
-                //startActivity(intent);
             }
         });
 
@@ -386,7 +321,7 @@ public class ContentManagementFragment extends Fragment {
     }
 
     public boolean beginDownload(String url) {
-        boolean isRunning=false;
+        boolean isRunning = false;
         downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -399,7 +334,7 @@ public class ContentManagementFragment extends Fragment {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         if (Permissions.isCameraPermissionGranted(getActivity(), getActivity())) {
-            request.setDestinationInExternalPublicDir("/MV",filename);
+            request.setDestinationInExternalPublicDir("/MV", filename);
         }
 
         //downloadFilePath = path + filename;
@@ -414,24 +349,17 @@ public class ContentManagementFragment extends Fragment {
 
             if (status == DownloadManager.STATUS_FAILED) {
                 // do something when failed
-            }
-            else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
+            } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
                 // do something pending or paused
-            }
-            else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+            } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                 // do something when successful
-            }
-            else if (status == DownloadManager.STATUS_RUNNING) {
+            } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
-                isRunning=true;
+                isRunning = true;
             }
         }
         return isRunning;
     }
-
-
-
-
 
 
     private void prepareListData() {
@@ -485,52 +413,10 @@ public class ContentManagementFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Intent data = intent;
-            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            //mProgressBar=(getActivity()).findViewById(R.id.progress_bar);
-            //mProgressBar.setVisibility(View.VISIBLE);
-            //mProgressBar.setProgress(0);
 
-          /*  boolean downloading = true;
-            while (downloading) {
-
-                DownloadManager.Query q = new DownloadManager.Query();
-                q.setFilterById(id);
-                DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-                Cursor cursor = downloadmanager.query(q);
-                cursor.moveToFirst();
-
-                int bytes_downloaded = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-
-                if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
-                    downloading = false;
-                    //mProgressBar.setVisibility(View.GONE);
-                    //expandableListAdapter.notifyDataSetChanged();
-                }
-
-                final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            Thread.sleep(1000);
-                            Toast.makeText(getActivity(),"%"+dl_progress,Toast.LENGTH_LONG).show();
-                            //mProgressBar.setProgress(dl_progress);
-                            //mProgressBar.setMax(100);
-                            //expandableListAdapter.notifyDataSetChanged();
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-            }*/
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                Toast.makeText(getContext(),"DownloadComplete",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "DownloadComplete", Toast.LENGTH_LONG).show();
                 //mProgressBar.setVisibility(View.GONE);
                 expandableListAdapter.notifyDataSetChanged();
             }
@@ -572,8 +458,6 @@ public class ContentManagementFragment extends Fragment {
             expandableListAdapter.notifyDataSetChanged();
         }
     }
-
-
 
 
 }

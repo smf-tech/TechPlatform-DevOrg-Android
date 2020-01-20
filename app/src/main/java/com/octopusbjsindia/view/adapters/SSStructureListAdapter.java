@@ -152,6 +152,16 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         } else {
             holder.tvBoundary.setVisibility(View.GONE);
         }
+        if(ssDataList.get(position).getWorkStartDate() != null && !TextUtils.isEmpty(ssDataList.get(position).getWorkStartDate())){
+            holder.lyStartData.setVisibility(View.VISIBLE);
+            holder.tvStartDate.setText(ssDataList.get(position).getWorkStartDate());
+            if(ssDataList.get(position).getWorkCompletedDate() != null){
+                holder.tvStartDate.setText(ssDataList.get(position).getWorkCompletedDate());
+            }
+        } else {
+            holder.lyStartData.setVisibility(View.GONE);
+        }
+
 
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
@@ -166,14 +176,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
-                tvBoundary;
+                tvBoundary, tvStartDate, tvEndDate;
         ImageView btnPopupMenu;
-        LinearLayout lyStructure;
+        LinearLayout lyStartData;
         PopupMenu popup;
         Button btSave;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            lyStartData = itemView.findViewById(R.id.ly_start_data);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvReason = itemView.findViewById(R.id.tv_reason);
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
@@ -186,6 +197,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvMachinCount = itemView.findViewById(R.id.tv_machin_count);
             tvTaluka = itemView.findViewById(R.id.tv_taluka);
             tvVillage = itemView.findViewById(R.id.tv_village);
+            tvStartDate = itemView.findViewById(R.id.tv_start_date);
+            tvEndDate = itemView.findViewById(R.id.tv_end_date);
             btSave = itemView.findViewById(R.id.bt_save);
             tvBoundary = itemView.findViewById(R.id.tv_boundary);
             if (isSave) {

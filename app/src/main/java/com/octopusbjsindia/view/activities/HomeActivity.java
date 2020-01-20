@@ -54,6 +54,7 @@ import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
@@ -396,6 +397,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
+
+        // Start data sync
+        SyncAdapterUtils.manualRefresh();
     }
 
     @Override

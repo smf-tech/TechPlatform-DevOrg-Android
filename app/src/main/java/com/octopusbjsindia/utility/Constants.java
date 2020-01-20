@@ -86,6 +86,7 @@ public class Constants {
 
         public static final String FirebaseTopicProjectWise = "ProjectWise";
         public static final String FirebaseTopicProjectRoleWise = "ProjectRoleWise";
+        public static final String deviceId = "Device_Id";
 
     }
 

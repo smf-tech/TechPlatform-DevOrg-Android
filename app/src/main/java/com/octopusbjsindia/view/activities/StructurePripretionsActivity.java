@@ -212,7 +212,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     } else {
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                                 .insert(requestData);
-                        SyncAdapterUtils.manualRefresh();
+//                        SyncAdapterUtils.manualRefresh();
                         Util.showToast("Structure will be prepared soon.", this);
                         finish();
                     }
@@ -320,7 +320,6 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                         Toast.makeText(StructurePripretionsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                                 .insert(requestData);
-                        SyncAdapterUtils.manualRefresh();
                         Util.showToast("Structure will be prepared soon.", this);
                         finish();
                     }
