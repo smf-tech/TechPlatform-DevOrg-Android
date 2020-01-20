@@ -156,7 +156,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             holder.lyStartData.setVisibility(View.VISIBLE);
             holder.tvStartDate.setText(ssDataList.get(position).getWorkStartDate());
             if(ssDataList.get(position).getWorkCompletedDate() != null){
-                holder.tvStartDate.setText(ssDataList.get(position).getWorkCompletedDate());
+                holder.tvEndDate.setText(ssDataList.get(position).getWorkCompletedDate());
             }
         } else {
             holder.lyStartData.setVisibility(View.GONE);
