@@ -27,6 +27,7 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
     public static final String GET_MACHINE_DEPLOY_STRUCTURE_LIST ="getMachineDeployStructuresList";
+    private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_DISTRICT_ID = "district_id";
     private static final String KEY_TALUKA_ID = "taluka_id";
     private static final String KEY_VILLAGE_ID = "village_id";
@@ -73,8 +74,9 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
                 getMachineDeployableStructuresUrl);
     }
 
-    public void getTalukaDeployableStructuresList(String districtId, String talukaId, String type, String currentStructureId){
+    public void getTalukaDeployableStructuresList(String stateId, String districtId, String talukaId, String type, String currentStructureId){
         HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_STATE_ID, stateId);
         map.put(KEY_DISTRICT_ID, districtId);
         map.put(KEY_TALUKA_ID, talukaId);
         map.put(KEY_TYPE, type);

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             ((HomeActivity) context).setSyncClickListener(this);
         }
 
-        String str = getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
+        //String str = getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
         dialogNotApproved = new AlertDialog.Builder(context).create();
         AppEvents.trackAppEvent(getString(R.string.event_home_screen_visit));
     }
@@ -135,85 +135,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
         if(!Util.isConnected(context)) {
             initiateViewPager();
         }
-//        List<Modules> modulesFromDatabase = getModulesFromDatabase();
-//        if (modulesFromDatabase != null && !modulesFromDatabase.isEmpty()) {
-//
-//            List<Modules> defaultModules = DatabaseManager.getDBInstance(context.getApplicationContext())
-//                    .getModulesOfStatus(Constants.RequestStatus.DEFAULT_MODULE);
-//
-//            List<Modules> approveModules = DatabaseManager.getDBInstance(context.getApplicationContext())
-//                    .getModulesOfStatus(Constants.RequestStatus.APPROVED_MODULE);
-//
-//            HomeData homeData = new HomeData();
-//            homeData.setDefaultModules(defaultModules);
-//            homeData.setOnApproveModules(approveModules);
-//
-//            this.homeData = new Home();
-//            this.homeData.setHomeData(homeData);
-//
-//            UserInfo userInfo = Util.getUserObjectFromPref();
-//            this.homeData.setUserApproveStatus(
-//                    (userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-//                            userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
-//                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
-//
-//            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-//                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
-////                if (!dialogNotApproved.isShowing()) {
-////                    //showApprovedDialog();
-////                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
-////                            "OK", "");
-////                }
-//            }
-//
-//            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
-//            viewPager.setOffscreenPageLimit(3);
-//            setupViewPager(viewPager);
-//
-//            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
-//            tabLayout.setupWithViewPager(viewPager);
-//
-//            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-//            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-//            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-//
-//            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//                @Override
-//                public void onTabSelected(TabLayout.Tab tab) {
-//                    switch (tab.getPosition()) {
-//                        case 0:
-//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.HOME);
-//                            break;
-//
-//                        case 1:
-//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.STORIES);
-//                            break;
-//
-//                        case 2:
-//                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONNECT);
-//                            break;
-//
-//                    }
-//                }
-//
-//                @Override
-//                public void onTabUnselected(TabLayout.Tab tab) {
-//                }
-//
-//                @Override
-//                public void onTabReselected(TabLayout.Tab tab) {
-//                }
-//            });
-//            ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
-//            //return;
-//        }
-
-//        if (presenter != null && Util.isConnected(context)) {
-//            isSyncRequired = true;
-//            UserInfo user = Util.getUserObjectFromPref();
-//            presenter.getModules(user);
-//            presenter.getRoleAccess();
-//        }
     }
 
     private List<Modules> getModulesFromDatabase() {
@@ -276,7 +197,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                     this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
 //                if (!dialogNotApproved.isShowing()) {
-//                    //showApprovedDialog();
+                    //showApprovedDialog();
 //                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
 //                            "OK", "");
 //                }
@@ -343,36 +264,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                 module.setModule(APPROVED_MODULE);
                 DatabaseManager.getDBInstance(context.getApplicationContext()).insertModule(module);
             }
-
-//            HomeData homeData = new HomeData();
-//            homeData.setDefaultModules(defaultModules);
-//            homeData.setOnApproveModules(approveModules);
-//
-//            this.homeData.setHomeData(homeData);
-//            this.homeData.setUserApproveStatus(
-//                    (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-//                            this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
-//                            Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
-//
-//            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-//                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
-//
-//                if (!dialogNotApproved.isShowing()) {
-//                    //showApprovedDialog();
-//                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
-//                            "OK", "");
-//                }
-//            }
-//
-//            ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
-//            viewPager.setOffscreenPageLimit(3);
-//            setupViewPager(viewPager);
-//
-//            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
-//            tabLayout.setupWithViewPager(viewPager);
-//            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-//            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-//            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         }
         presenter.getRoleAccess();
     }
