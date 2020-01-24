@@ -97,7 +97,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
 
-        Log.i(TAG, "onPerformSync: \n");
+        Log.i("onPerformSync", "onPerformSync: \n");
         syncSavedForms();
         syncMachineOperatorData();
         syncStructureVisitMonitoring();
