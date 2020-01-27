@@ -87,7 +87,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private String selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
-    ;
     public boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
@@ -438,9 +437,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
                         getActivity().startActivity(intent);
                     } else if (shiftAction == 2) {
-                        structureMachineListFragmentPresenter.updateMachineStatusToAvailable(filteredMachineListData.get(position).getId(),
-                                filteredMachineListData.get(position).getMachineCode(),
-                                Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                        structureMachineListFragmentPresenter.updateMachineStatusToAvailable
+                                (filteredMachineListData.get(position).getId(),
+                                        filteredMachineListData.get(position).getDeployedStrutureId(),
+                                        Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE);
                     }
                     dialog.dismiss();
                 } else {

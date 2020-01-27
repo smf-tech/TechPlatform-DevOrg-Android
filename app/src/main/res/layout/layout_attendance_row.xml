@@ -8,14 +8,15 @@
     android:background="@drawable/bg_grey_box"
     android:elevation="@dimen/dimen_02dp"
     android:padding="@dimen/dimen_05dp"
-    tools:ignore="RtlSymmetry">
+    tools:ignore="RtlSymmetry"
+    android:id="@+id/ly_main">
 
     <ImageView
         android:id="@+id/iv_user_profile_pic"
-        android:layout_width="@dimen/dimen_40dp"
-        android:layout_height="@dimen/dimen_40dp"
-        android:layout_centerVertical="true"
+        android:layout_width="@dimen/dimen_50dp"
+        android:layout_height="@dimen/dimen_50dp"
         android:layout_margin="@dimen/dimen_10dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_user_avatar" />
 
     <TextView
@@ -34,15 +35,12 @@
         android:layout_below="@+id/tv_name"
         android:layout_toEndOf="@+id/iv_user_profile_pic"
         />
-
     <RelativeLayout
-        android:id="@+id/ly_chackin_checkout"
+        android:id="@+id/ly_checkin_checkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_role"
-        android:layout_toEndOf="@+id/iv_user_profile_pic"
-        android:orientation="horizontal">
-
+        android:layout_toEndOf="@+id/iv_user_profile_pic">
         <TextView
             android:id="@+id/tv_check_in_time"
             android:layout_width="wrap_content"
@@ -52,7 +50,6 @@
             android:id="@+id/tv_dash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
             android:layout_toEndOf="@+id/tv_check_in_time"
             android:text=" - "/>
         <TextView
@@ -61,17 +58,31 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/tv_dash"
             />
-
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/iv_status"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/dimen_10dp"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/content_description" />
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_marginBottom="@dimen/dimen_05dp"
+            android:contentDescription="@string/content_description" />
+
+        <TextView
+            android:id="@+id/tv_total_hours"
+            android:layout_below="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/opensans_semibold"
+            android:textColor="@color/approvals_tabs_sel"
+            android:textSize="@dimen/text_size_16" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
