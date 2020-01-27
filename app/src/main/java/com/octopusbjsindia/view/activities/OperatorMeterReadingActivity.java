@@ -92,6 +92,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private Vibrator mVibrator;
     private int hour_of_day;
     private int minute_of_hour;
+    private int minute_of_pause;
 
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
@@ -281,7 +282,7 @@ private ImageView toolbar_edit_action;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                         Calendar.getInstance().getTimeInMillis() +
-                                3*60*1000, sender);
+                                preferences.getInt("minute_of_pause",0)*60*1000, sender);
                 Log.e("alarm SET-M","alarm SET");
 
                 alarmRequest.alarmid =1001;
@@ -294,7 +295,7 @@ private ImageView toolbar_edit_action;
             }else {
                 alarmMgr.set(AlarmManager.RTC_WAKEUP,
                         SystemClock.elapsedRealtime() +
-                                3*60*1000, sender);
+                                preferences.getInt("minute_of_pause",0)*60*1000, sender);
                 Log.e("alarm SET","alarm SET");
 
                 alarmRequest.alarmid =1001;
@@ -1398,6 +1399,8 @@ public String showReadingDialog(final Activity context, int pos){
 
         hour_of_day = operatorMachineData.getHour_of_day();
         minute_of_hour = operatorMachineData.getMinute_of_hour();
+        minute_of_pause  = operatorMachineData.getMinute_of_pause();
+
 
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
@@ -1405,6 +1408,7 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putString("machine_code",operatorMachineData.getMachine_code());
         editor.putInt("hour_of_day",hour_of_day);
         editor.putInt("minute_of_hour",minute_of_hour);
+        editor.putInt("minute_of_pause",minute_of_pause);
 
         editor.apply();
 
@@ -1621,6 +1625,7 @@ private void initConnectivityReceiver() {
         Log.e("alarm SET 2","alarm SET");
         Log.e("alarm hour_of_day","cureent"+preferences.getInt("hour_of_day",0));
         Log.e("alarm minute_of_hour","cureent"+preferences.getInt("minute_of_hour",0));
+        Log.e("alarm minute_of_pause","cureent"+preferences.getInt("minute_of_pause",0));
 
         alarmRequest = new AlarmRequest();
         alarmRequest.alarmid =1001;

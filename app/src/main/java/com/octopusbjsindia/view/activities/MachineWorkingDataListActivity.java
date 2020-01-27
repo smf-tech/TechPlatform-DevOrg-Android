@@ -417,30 +417,45 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
 
     public void onReceiveEditedReading(String updatedValue, int pos, int flagStartEndReading) {
         if (flagStartEndReading==1) {
-            pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
+            if (Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading())-Integer.parseInt(updatedValue)<=12
+            &&Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading())-Integer.parseInt(updatedValue)>0)
+            {
+                pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
 
-            if (Util.isConnected(this)) {
-                String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getStart_id(),updatedValue,flagStartEndReading));
-                machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+                if (Util.isConnected(this)) {
+                    String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getStart_id(), updatedValue, flagStartEndReading));
+                    machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+                } else {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "No internet connection.",
+                            Snackbar.LENGTH_LONG);
+                }
             }else {
                 Util.snackBarToShowMsg(getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "No internet connection.",
+                                .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
                         Snackbar.LENGTH_LONG);
             }
 
 
         }else if (flagStartEndReading==2){
-            pendingRequestsResponse.getMachineWorklogList().get(pos).setEndReading(updatedValue);
+            if (Integer.parseInt(updatedValue)-Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading())<=12
+            &&Integer.parseInt(updatedValue)-Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading())>0)
+            {
+                pendingRequestsResponse.getMachineWorklogList().get(pos).setEndReading(updatedValue);
 
-            if (Util.isConnected(this)) {
-                String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getEnd_id(),updatedValue,flagStartEndReading));
-                machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+                if (Util.isConnected(this)) {
+                    String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getEnd_id(), updatedValue, flagStartEndReading));
+                    machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+                } else {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "No internet connection.",
+                            Snackbar.LENGTH_LONG);
+                }
             }else {
                 Util.snackBarToShowMsg(getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "No internet connection.",
+                                .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
                         Snackbar.LENGTH_LONG);
             }
-
 
         }
         machineWorklogRecyclerAdapter.notifyDataSetChanged();

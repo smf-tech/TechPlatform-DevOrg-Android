@@ -15,6 +15,11 @@ public class OperatorMachineCodeDataModel {
     @Expose
     private int minute_of_hour;
 
+    @SerializedName("minute_of_pause")
+    @Expose
+    private int minute_of_pause;
+
+
 
     @SerializedName("machine_id")
     @Expose
@@ -65,6 +70,14 @@ public class OperatorMachineCodeDataModel {
 
     public void setMinute_of_hour(int minute_of_hour) {
         this.minute_of_hour = minute_of_hour;
+    }
+
+    public int getMinute_of_pause() {
+        return minute_of_pause;
+    }
+
+    public void setMinute_of_pause(int minute_of_pause) {
+        this.minute_of_pause = minute_of_pause;
     }
 }
 
