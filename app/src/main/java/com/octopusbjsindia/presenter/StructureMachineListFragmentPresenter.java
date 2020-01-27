@@ -51,6 +51,7 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     public static final String TERMINATE_DEPLOY = "terminateDeployMachine";
     public static final String MACHINE_SIGN_OFF = "machineSignOff";
     public static final String RELEASE_MACHINE_STATUS = "releaseMachine";
+    public static final String UPDATE_MACHINE_STATUS = "updateMachineStatus";
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -203,6 +204,17 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         requestCall.postDataApiCall(MACHINE_SIGN_OFF, paramjson, sendMachineSignOffUrl);
     }
 
+    public void updateMachineStatusToAvailable(String machineId, String machineCode, int statusCode, String type) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        final String updateStructureMachineStatusUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.UPDATE_STRUCTURE_MACHINE_STATUS, machineId, machineCode, statusCode, type);
+        Log.d(TAG, "updateStatus: url " + updateStructureMachineStatusUrl);
+        fragmentWeakReference.get().showProgressBar();
+        requestCall.getDataApiCall(UPDATE_MACHINE_STATUS, updateStructureMachineStatusUrl);
+    }
+
     public JsonObject getSSDataJson(String stateId, String districtId, String talukaId){
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_STATE_ID, stateId);
@@ -348,6 +360,13 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                         Log.e("TAG", "Exception");
                     }
                 } else if(requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.MACHINE_SIGN_OFF)){
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.UPDATE_MACHINE_STATUS)) {
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());

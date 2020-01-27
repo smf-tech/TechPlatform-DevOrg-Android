@@ -1,24 +1,10 @@
 package com.octopusbjsindia.view.fragments;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,19 +13,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
@@ -50,32 +37,15 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
-import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
-import com.soundcloud.android.crop.Crop;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 public class MachineMouFirstFragment extends Fragment implements APIDataListener, CustomSpinnerListener,
         View.OnClickListener {
@@ -570,7 +540,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         }
     }
     public boolean isAllDataValid() {
-        if (selectedOwnerId != null && selectedOwnerId.length() == 0) {
+        if (selectedOwnerId == null || selectedOwnerId.length() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
             return false;

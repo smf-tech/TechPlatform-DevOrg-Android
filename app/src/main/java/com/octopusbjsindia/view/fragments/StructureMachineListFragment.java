@@ -8,14 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +21,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,7 +60,6 @@ import com.octopusbjsindia.view.adapters.SSStructureListAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,7 +86,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
     private String selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
-    private int mouAction = 0, selectedStatus = 0;
+    private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
+    ;
     public boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
@@ -403,6 +402,60 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.show();
     }
 
+    public void shiftMachine(int position) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_shift_machine_action_layout);
+        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_mou_action);
+        RadioButton rbShiftToStructure, rbShiftToIdeal;
+        rbShiftToStructure = dialog.findViewById(R.id.rb_shift_to_structure);
+        rbShiftToIdeal = dialog.findViewById(R.id.rb_shift_to_ideal);
+        Button btnSubmit = dialog.findViewById(R.id.btn_submit);
+        rgShiftAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_shift_to_structure:
+                        shiftAction = 1;
+                        break;
+                    case R.id.rb_shift_to_ideal:
+                        shiftAction = 2;
+                        break;
+                }
+            }
+        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (shiftAction != 0) {
+                    if (shiftAction == 1) {
+                        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                        intent.putExtra("title", "Select Structure");
+                        intent.putExtra("type", "shiftMachine");
+                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+                        getActivity().startActivity(intent);
+                    } else if (shiftAction == 2) {
+                        structureMachineListFragmentPresenter.updateMachineStatusToAvailable(filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineCode(),
+                                Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
+                    }
+                    dialog.dismiss();
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select action.",
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
     public void sendMachineSignOff(int position) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -497,7 +550,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         tvSubmit.setVisibility(View.VISIBLE);
         tvSubmit.setOnClickListener(v -> {
             if (mouAction != 0) {
-                // Close dialog
                 if (mouAction == 1) {
                     for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
                         if (mDeployTaluka.isSelected()) {
@@ -759,9 +811,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
-                ||requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
-            if (status == 200) {
+//        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
+//                || requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
+//            if (status == 200) {
                 structureMachineListFragmentPresenter.getTalukaMachinesList(
                         (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
                                 Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
@@ -772,8 +824,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
                                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
                                 "");
-            }
-        }
+//            }
+//        }
     }
 
     @Override
