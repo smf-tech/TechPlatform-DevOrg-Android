@@ -26,7 +26,11 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Operator.MachineWorklogDetailModel;
 import com.octopusbjsindia.models.Operator.MachineWorklogResponseModel;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.presenter.MachineWorkingDataListPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MachineWorkDetaillogAdapter;
 import com.octopusbjsindia.view.adapters.MachineWorklogRecyclerAdapter;
@@ -35,6 +39,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 
@@ -43,6 +48,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     private final String GET_WORKLOG_DETAILS = "getworklogdetails";
 
     public EditText tv_startdate, tv_enddate;
+    public static boolean isReadingEditAccess =false;
     public Button btn_apply;
     MachineWorkingDataListPresenter machineWorkingDataListPresenter;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -113,6 +119,19 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         String paramjson = gson.toJson(getCheckProfileJson(machineId, startDate, endDate));
         machineWorkingDataListPresenter = new MachineWorkingDataListPresenter(MachineWorkingDataListActivity.this);
         machineWorkingDataListPresenter.getMachineWorkData(paramjson);
+
+        //rOLE aCCESS
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_EDIT_READING)) {
+                    isReadingEditAccess = true;
+                    continue;
+                }
+            }
+        }
     }
 
     public JsonObject getCheckProfileJson(String machineId, long startDate, long endDate) {
@@ -133,12 +152,34 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
         return requestObject;
     }
 
+    public JsonObject getEditReqJson(String start_id,String editedReading,int flagStartEndReading){
+        JsonObject requestObject = new JsonObject();
+        if (flagStartEndReading==1) {
+
+            requestObject.addProperty("start_id", start_id);
+            requestObject.addProperty("start_meter_reading", editedReading);
+
+        }
+        if (flagStartEndReading==2) {
+
+            requestObject.addProperty("end_id", start_id);
+            requestObject.addProperty("end_meter_reading", editedReading);
+
+        }
+
+        return requestObject;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
 
     public void finishwithResult() {
+
+    }
+
+    public void ShowEditedMeterReading(String requestID, String response, int status) {
 
     }
 
@@ -189,7 +230,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                             && !pendingRequestsResponse.getMachineWorklogList().isEmpty()
                             && pendingRequestsResponse.getMachineWorklogList().size() > 0) {
                         //fragmentWeakReference.get().showFetchedUserProfileForApproval(pendingRequestsResponse.getData().getApplication());
-                        machineWorklogRecyclerAdapter = new MachineWorklogRecyclerAdapter(this, pendingRequestsResponse.getMachineWorklogList(),
+                        machineWorklogRecyclerAdapter = new MachineWorklogRecyclerAdapter(this,this, pendingRequestsResponse.getMachineWorklogList(),
                                 this);
                         rv_machinedataworklog.setAdapter(machineWorklogRecyclerAdapter);
                         tv_complete_total_hours.setText("Total hours = " + pendingRequestsResponse.getTotalWorkHrs());
@@ -372,5 +413,37 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void onReceiveEditedReading(String updatedValue, int pos, int flagStartEndReading) {
+        if (flagStartEndReading==1) {
+            pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
+
+            if (Util.isConnected(this)) {
+                String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getStart_id(),updatedValue,flagStartEndReading));
+                machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+            }else {
+                Util.snackBarToShowMsg(getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "No internet connection.",
+                        Snackbar.LENGTH_LONG);
+            }
+
+
+        }else if (flagStartEndReading==2){
+            pendingRequestsResponse.getMachineWorklogList().get(pos).setEndReading(updatedValue);
+
+            if (Util.isConnected(this)) {
+                String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getEnd_id(),updatedValue,flagStartEndReading));
+                machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+            }else {
+                Util.snackBarToShowMsg(getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "No internet connection.",
+                        Snackbar.LENGTH_LONG);
+            }
+
+
+        }
+        machineWorklogRecyclerAdapter.notifyDataSetChanged();
+
     }
 }

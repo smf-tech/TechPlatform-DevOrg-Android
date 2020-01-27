@@ -388,6 +388,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_DELETE_FEED = 126;
         public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
         public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
+        public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;

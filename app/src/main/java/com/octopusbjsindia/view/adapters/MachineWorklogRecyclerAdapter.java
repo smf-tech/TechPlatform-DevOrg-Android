@@ -1,37 +1,57 @@
 package com.octopusbjsindia.view.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Operator.MachineWorklogList;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.MachineWorkingDataListActivity;
+import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
+import com.octopusbjsindia.view.activities.OperatorMeterReadingActivity;
+import com.octopusbjsindia.view.fragments.TMUserAttendanceApprovalFragment;
+import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
+import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
+import com.octopusbjsindia.view.fragments.TMUserProfileApprovalFragment;
 
 import java.util.List;
+
+import static com.octopusbjsindia.view.activities.MachineWorkingDataListActivity.isReadingEditAccess;
 
 public class MachineWorklogRecyclerAdapter extends RecyclerView.Adapter<MachineWorklogRecyclerAdapter.EmployeeViewHolder> {
 
     Context mContext;
+    Activity activity;
     private List<MachineWorklogList> dataList;
     private OnRequestItemClicked clickListener;
 private RequestOptions requestOptions;
     private PreferenceHelper preferenceHelper;
 
-    public MachineWorklogRecyclerAdapter(Context context, List<MachineWorklogList> dataList, final OnRequestItemClicked clickListener) {
+    public MachineWorklogRecyclerAdapter(Activity activity,Context context, List<MachineWorklogList> dataList, final OnRequestItemClicked clickListener) {
         mContext = context;
+        this.activity = activity;
         this.dataList = dataList;
         this.clickListener = clickListener;
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
@@ -96,7 +116,7 @@ private RequestOptions requestOptions;
     }
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
-
+        TextView tv_view_activity;
         TextView tv_work_date,tv_total_hours,tv_total_hours_value;
         TextView tv_title_start,tv_value_start;
         TextView tv_title_end,tv_value_end;
@@ -105,6 +125,7 @@ private RequestOptions requestOptions;
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
+            tv_view_activity = itemView.findViewById(R.id.tv_view_activity);
             tv_work_date = itemView.findViewById(R.id.tv_work_date);
             tv_total_hours = itemView.findViewById(R.id.tv_total_hours);
             tv_total_hours_value = itemView.findViewById(R.id.tv_total_hours_value);
@@ -117,7 +138,12 @@ private RequestOptions requestOptions;
             tv_value_end = itemView.findViewById(R.id.tv_value_end);
             img_end_meter = itemView.findViewById(R.id.img_end_meter);
             img_start_meter = itemView.findViewById(R.id.img_start_meter);
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            tv_view_activity= itemView.findViewById(R.id.tv_view_activity);
+
+
+        //    itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+
+            tv_view_activity.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
             img_end_meter.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,6 +159,47 @@ private RequestOptions requestOptions;
                     enlargePhoto(dataList.get(getAdapterPosition()).getStartMeterReadingImage());
                 }
             });
+
+            tv_value_start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Util.isConnected(mContext)) {
+                        if (isReadingEditAccess) {
+                            if (dataList.get(getAdapterPosition()).getEndReading() != null) {
+
+                                showReadingDialog(activity, getAdapterPosition(), 1);
+                            } else {
+                                Util.showToast("Can not edit empty reading.", mContext);
+                            }
+                        } else {
+                            Util.showToast("Please contact MIS department in HO.", mContext);
+                        }
+                    }else {
+                        Util.showToast("No internet connection.", mContext);
+                    }
+
+                }
+            });
+            tv_value_end.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Util.isConnected(mContext)) {
+                        if (isReadingEditAccess) {
+                            if (dataList.get(getAdapterPosition()).getEndReading() != null) {
+                                showReadingDialog(activity, getAdapterPosition(), 2);
+                            } else {
+                                Util.showToast("Can not edit empty reading.", mContext);
+                            }
+
+                        } else {
+                            Util.showToast("Please contact MIS department in HO.", mContext);
+                        }
+                    }else {
+                        Util.showToast("No internet connection.", mContext);
+                }
+                }
+            });
+
         }
     }
 
@@ -167,10 +234,10 @@ private RequestOptions requestOptions;
                         .into(photoView);
             } catch (Exception e) {
                 e.printStackTrace();
-                photoView.setImageResource(R.drawable.ic_user_avatar);
+                photoView.setImageResource(R.drawable.ic_img);
             }
         } else {
-            photoView.setImageResource(R.drawable.ic_user_avatar);
+            photoView.setImageResource(R.drawable.ic_img);
         }
 
         closeImageView.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +249,78 @@ private RequestOptions requestOptions;
         dialog.setContentView(enlargePhotoView);
         dialog.show();
 
+    }
+
+
+    // input reading dialog
+    public String showReadingDialog(final Activity context, int pos,int flagStartEndReading){
+        Dialog dialog;
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_meter_reading_input_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                   /*Intent loginIntent = new Intent(context, LoginActivity.class);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                   context.startActivity(loginIntent);*/
+                String strReason  = edt_reason.getText().toString();
+
+
+                if (strReason.trim().length() < 1 ) {
+                    String msg = "Please enter the valid meter reading";//getResources().getString(R.string.msg_enter_name);
+                    //et_primary_mobile.requestFocus();
+                    Util.showToast(msg, activity);
+                }else {
+
+                    //-----------------------
+                    if (TextUtils.isEmpty(strReason)) {
+                        Util.logger("Empty Reading", "Reading Can not be blank");
+                        Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Reading Can not be blank",
+                                Snackbar.LENGTH_LONG);
+                    } else {
+                    /*if (fragment instanceof TMUserLeavesApprovalFragment) {
+                        ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserAttendanceApprovalFragment) {
+                        ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserProfileApprovalFragment) {
+                        ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }
+                    if (fragment instanceof TMUserFormsApprovalFragment) {
+                        ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
+                    }*/
+                        ((MachineWorkingDataListActivity)mContext).onReceiveEditedReading(strReason, pos,flagStartEndReading);
+                        dialog.dismiss();
+                    }
+                }
+            }
+        });
+        dialog.show();
+
+
+        return "";
     }
 
 }

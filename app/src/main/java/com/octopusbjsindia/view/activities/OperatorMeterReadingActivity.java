@@ -90,6 +90,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private final long[] mVibratePattern = {0, 500, 500};
     private Ringtone mRingtone;
     private Vibrator mVibrator;
+    private int hour_of_day;
+    private int minute_of_hour;
 
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
@@ -271,7 +273,7 @@ private ImageView toolbar_edit_action;
         Intent intent;
         intent = new Intent(this, AlarmReceiver.class);
 
-        if (getDifferencebetweenAlarms()>31){
+        if (getDifferencebetweenAlarms()>31 ||getDifferencebetweenAlarms()<0){
             alarmRequests.clear();
             //alarm.toIntent(intent);
             sender = PendingIntent.getBroadcast(this, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -279,7 +281,7 @@ private ImageView toolbar_edit_action;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                         Calendar.getInstance().getTimeInMillis() +
-                                30*60*1000, sender);
+                                3*60*1000, sender);
                 Log.e("alarm SET-M","alarm SET");
 
                 alarmRequest.alarmid =1001;
@@ -340,9 +342,10 @@ private ImageView toolbar_edit_action;
     private int getDifferencebetweenAlarms() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, preferences.getInt("hour_of_day",0));
+        calendar.set(Calendar.MINUTE, preferences.getInt("minute_of_hour",0));
         long diffInMs = (calendar.getTimeInMillis() - (new Date(System.currentTimeMillis()).getTime()));
+
 
         Log.e("alarm curentmili","cureent"+calendar.getTimeInMillis());
         Log.e("alarm aftermili","after"+(new Date(System.currentTimeMillis()).getTime()));
@@ -742,7 +745,7 @@ private ImageView toolbar_edit_action;
             e.printStackTrace();
         }
 
-
+        setDailyAlarm();
     }
 
     private void callStartButtonClick() {
@@ -857,6 +860,7 @@ private ImageView toolbar_edit_action;
             /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
             mp.start();*/
+            showAlarmDialog(this,1);
         }
 
         if (preferences.getInt("State", 0) == state_start) {
@@ -1391,10 +1395,16 @@ public String showReadingDialog(final Activity context, int pos){
     }
 
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
+
+        hour_of_day = operatorMachineData.getHour_of_day();
+        minute_of_hour = operatorMachineData.getMinute_of_hour();
+
         machine_id = operatorMachineData.getMachine_id();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
         editor.putString("machine_code",operatorMachineData.getMachine_code());
+        editor.putInt("hour_of_day",hour_of_day);
+        editor.putInt("minute_of_hour",minute_of_hour);
 
         editor.apply();
 
@@ -1415,6 +1425,8 @@ public String showReadingDialog(final Activity context, int pos){
         Gson gson = new Gson();
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
+
+        setDailyAlarm();
     }
 
 
@@ -1595,8 +1607,8 @@ private void initConnectivityReceiver() {
         // Set the alarm to start at approximately 2:00 p.m.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, preferences.getInt("hour_of_day",0));
+        calendar.set(Calendar.MINUTE, preferences.getInt("minute_of_hour",0));
 
         if (Calendar.getInstance().after(calendar)) {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -1607,6 +1619,8 @@ private void initConnectivityReceiver() {
                 AlarmManager.INTERVAL_DAY, sender);
 
         Log.e("alarm SET 2","alarm SET");
+        Log.e("alarm hour_of_day","cureent"+preferences.getInt("hour_of_day",0));
+        Log.e("alarm minute_of_hour","cureent"+preferences.getInt("minute_of_hour",0));
 
         alarmRequest = new AlarmRequest();
         alarmRequest.alarmid =1001;
@@ -1617,4 +1631,36 @@ private void initConnectivityReceiver() {
         editor.putString("alarmRequestsArray",stringValue);
         editor.commit();
     }
+
+//Alarm dismiss dialog
+    public String showAlarmDialog(final Activity context, int pos){
+        Dialog dialog;
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_alarm_dismiss_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
+
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                        cancelAlarm();
+                        dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+
+
+        return "";
+    }
+
 }

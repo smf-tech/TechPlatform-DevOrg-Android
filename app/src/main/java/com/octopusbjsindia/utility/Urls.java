@@ -151,6 +151,8 @@ public class Urls {
         public static final String MACHINE_DATA = "api/getMachineData";
         public static final String MACHINE_DATA_WORKLOG = "api/getMachineWorkLogData";
         public static final String MACHINE_WORKLOG__DETAILS = "api/logDetails";
+        public static final String MACHINE_WORKLOG_EDIT = "api/editWorkLog";
+
     }
 
     public class Configuration{
