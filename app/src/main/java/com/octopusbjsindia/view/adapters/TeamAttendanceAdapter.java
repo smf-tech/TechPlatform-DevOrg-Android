@@ -16,6 +16,9 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.attendance.TeamAttendanceData;
 import com.octopusbjsindia.utility.Util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("CanBeFinal")
@@ -35,7 +38,7 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
     class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivUserImage, ivStatus;
-        TextView tvName, tvRole, tvCheckInTime, tvCheckOutTime;
+        TextView tvName, tvRole, tvCheckInTime, tvCheckOutTime, tvTotalHours;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -45,6 +48,7 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
             ivStatus = itemView.findViewById(R.id.iv_status);
             tvCheckInTime = itemView.findViewById(R.id.tv_check_in_time);
             tvCheckOutTime = itemView.findViewById(R.id.tv_check_out_time);
+            tvTotalHours = itemView.findViewById(R.id.tv_total_hours);
         }
     }
 
@@ -70,9 +74,43 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         viewHolder.tvRole.setText(leavesList.get(i).getRoleName());
 
         if (leavesList.get(i).getCheckIn() != null)
-            viewHolder.tvCheckInTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa"));
+            viewHolder.tvCheckInTime.setText(
+                    Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa")
+            );
         if (leavesList.get(i).getCheckOut() != null)
-            viewHolder.tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa"));
+            viewHolder.tvCheckOutTime.setText(
+                    Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa")
+            );
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
+
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            if (leavesList.get(i).getCheckIn() != null) {
+                date1 = simpleDateFormat.parse(
+                        Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa")
+                );
+            }
+            if (leavesList.get(i).getCheckOut() != null) {
+                date2 = simpleDateFormat.parse(
+                        Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa")
+                );
+            }
+
+            if (date1 != null && date2 != null) {
+                long difference = date2.getTime() - date1.getTime();
+                int days = (int) (difference / (1000 * 60 * 60 * 24));
+                int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+                hours = (hours < 0 ? -hours : hours);
+                viewHolder.tvTotalHours.setText( hours + ":" + min);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         if (leavesList.get(i).getStatus().equalsIgnoreCase("absent")) {
             viewHolder.ivStatus.setImageResource(R.drawable.ic_absent);

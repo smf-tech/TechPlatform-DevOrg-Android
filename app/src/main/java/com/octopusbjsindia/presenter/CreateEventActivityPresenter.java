@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class CreateEventActivityPresenter implements CreateEventListener, ImageRequestCallListener {
 
     private final WeakReference<CreateEventTaskActivity> activity;
-    private final String TAG = ProfileActivityPresenter.class.getName();
+    private final String TAG = EditProfileActivityPresenter.class.getName();
     public CreateEventActivityPresenter(CreateEventTaskActivity activity) {
         this.activity = new WeakReference<>(activity);
     }

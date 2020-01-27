@@ -49,7 +49,7 @@ import com.octopusbjsindia.models.profile.OrganizationRole;
 import com.octopusbjsindia.models.profile.Project;
 import com.octopusbjsindia.models.profile.UserLocation;
 import com.octopusbjsindia.models.user.UserInfo;
-import com.octopusbjsindia.presenter.ProfileActivityPresenter;
+import com.octopusbjsindia.presenter.EditProfileActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
@@ -116,7 +116,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ArrayList<JurisdictionType> selectedSchools = new ArrayList<>();
     private Uri outputUri;
     private Uri finalUri;
-    private ProfileActivityPresenter profilePresenter;
+    private EditProfileActivityPresenter profilePresenter;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
     private boolean mImageUploaded;
@@ -131,7 +131,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        profilePresenter = new ProfileActivityPresenter(this);
+        profilePresenter = new EditProfileActivityPresenter(this);
         if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
                 !getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {

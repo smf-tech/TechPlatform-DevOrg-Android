@@ -9,18 +9,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.profile.JurisdictionType;
+import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.models.profile.UserLocation;
 import com.octopusbjsindia.models.user.UserInfo;
+import com.octopusbjsindia.presenter.ProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.adapters.MultyProjectAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileActivity extends BaseActivity implements View.OnClickListener {
+public class ProfileActivity extends BaseActivity implements View.OnClickListener, APIDataListener {
+
+    ProfileActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +44,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     private void initViews() {
         ((TextView) findViewById(R.id.toolbar_title)).setText(getString(R.string.profile));
+
+        presenter = new ProfileActivityPresenter(this);
+        if(Util.isConnected(this)){
+            presenter.getMultProfile();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network),this);
+        }
 
         ImageView backButton = findViewById(R.id.toolbar_back_action);
         backButton.setOnClickListener(this);
@@ -51,12 +70,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     .applyDefaultRequestOptions(requestOptions)
                     .load(userInfo.getProfilePic())
                     .into(profilePic);
-
-            findViewById(R.id.add_photo_label).setVisibility(View.GONE);
-        } else {
-            findViewById(R.id.add_photo_label).setVisibility(View.VISIBLE);
         }
-
         ((TextView) findViewById(R.id.user_profile_name)).setText(userInfo.getUserName());
         ((TextView) findViewById(R.id.user_profile_mobile)).setText(userInfo.getUserMobileNumber());
 
@@ -144,5 +158,44 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         } else if (view.getId() == R.id.toolbar_back_action) {
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
+    }
+
+    public void displayProjects(ArrayList<MultyProjectData> data) {
+        RecyclerView rvMembers = findViewById(R.id.rv_projects);
+        MultyProjectAdapter multyProjectAdapter = new MultyProjectAdapter(data,this, presenter);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rvMembers.setLayoutManager(new GridLayoutManager(this, 2));
+        rvMembers.setAdapter(multyProjectAdapter);
     }
 }
