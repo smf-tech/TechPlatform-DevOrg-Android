@@ -1,18 +1,29 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -21,12 +32,28 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.dao.UserAttendanceDao;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -54,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -61,10 +89,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         ConnectivityReceiver.ConnectivityReceiverListener {
 
     private View plannerView;
-    TextView tvAttendanceDetails;
-    Button btCheckIn;
-    Button btCheckout;
-    AttendaceData attendaceCheckinData, attendaceCheckoutData;
+    private TextView tvAttendanceDetails;
+    private Button btCheckIn;
+    private Button btCheckout;
+    private AttendaceData attendaceCheckinData, attendaceCheckoutData;
 
     private RelativeLayout lyEvents;
     private RelativeLayout lyTasks;
@@ -80,7 +108,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     private String CHECK_IN = "checkin";
     private String CHECK_OUT = "checkout";
 
-    String availableOnServer, totalHours, totalHrs = "", totalMin = "";
+    private String totalHours, totalHrs = "", totalMin = "";
     private Context context;
     List<AttendaceData> getUserType;
     private PreferenceHelper preferenceHelper;
@@ -91,20 +119,30 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     private static String KEY_TOTALHOURS = "totalHours";
     private static String KEY_CHECKINTIME = "checkInTime";
 
-     private String checkInText;
+    private String checkInText;
     private String checkOutText;
     private String prefCheckInTime;
     Timer timer;
     private final String TAG = this.getClass().getSimpleName();
 
-    Activity mContext;
+    //Location
+    private static final int REQUEST_CHECK_SETTINGS = 100;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+    private Dialog dialog;
+
+    private Activity mContext;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mContext = (Activity)context;
+        mContext = (Activity) context;
     }
-    
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +197,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         attendaceCheckinData = new AttendaceData();
         attendaceCheckoutData = new AttendaceData();
 
+        dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_location_accuracy);
+
         initCardView();
     }
 
@@ -206,6 +248,39 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                     break;
             }
         }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
+        mSettingsClient = LocationServices.getSettingsClient(mContext);
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                // location is received
+                mCurrentLocation = locationResult.getLastLocation();
+                TextView dlgTitle = dialog.findViewById(R.id.tv_dialog_title);
+                dlgTitle.setText("Location Accuracy = " + mCurrentLocation.getAccuracy());
+                if (mCurrentLocation.getAccuracy() < 25) {
+                    stopLocationUpdates();
+                    dialog.dismiss();
+                    if (isCheckOut) {
+                        markOut();
+                    } else {
+                        markCheckIn();
+                    }
+
+                }
+            }
+        };
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+
     }
 
     @Override
@@ -453,26 +528,65 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             @Override
             public void onClick(View v) {
                 //disable check-in and enable check-out
-                markCheckIn();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    //noinspection MissingPermission
+                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        //
+                    } else {
+                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                        boolean gps_enabled = false;
+
+                        try {
+                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                        } catch (Exception ex) {
+                        }
+                        if (gps_enabled) {
+                            showLocationDialog();
+                        }
+                    }
+                }
+                startLocationUpdate();
+//                markCheckIn();
             }
         });
         btCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //disable check-in and disable check-out
-                markOut();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    //noinspection MissingPermission
+                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        //
+                    } else {
+                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                        boolean gps_enabled = false;
+
+                        try {
+                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                        } catch (Exception ex) {
+                        }
+                        if (gps_enabled) {
+                            showLocationDialog();
+                            isCheckOut = true;
+                        }
+                    }
+                }
+                startLocationUpdate();
+//                markOut();
             }
         });
 
         tvAttendanceDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Util.isConnected(getContext())) {
+                if (Util.isConnected(getContext())) {
                     Intent intent = new Intent(mContext, GeneralActionsActivity.class);
                     intent.putExtra("title", mContext.getString(R.string.attendance));
                     intent.putExtra("switch_fragments", "AttendancePlannerFragment");
                     mContext.startActivity(intent);
-                }else{
+                } else {
                     Util.showToast(mContext.getResources().getString(R.string.msg_no_network), mContext);
                 }
 
@@ -608,87 +722,104 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
         }
     }
 
+    public void showLocationDialog() {
+
+        Button dlgButton = dialog.findViewById(R.id.btn_cancel);
+        dlgButton.setOnClickListener(v -> {
+
+            stopLocationUpdates();
+            //Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+
     public void markCheckIn() {
-        gpsTracker = new GPSTracker(mContext);
-        if (gpsTracker.isGPSEnabled(mContext, this)) {
-            Date currentDate = new Date();
-            timeStamp = currentDate.getTime();
-            Location location = gpsTracker.getLocation();
-            if (location != null) {
-                enableButton(false, true);
+//        gpsTracker = new GPSTracker(mContext);
+//        if (gpsTracker.isGPSEnabled(mContext, this)) {
+        Date currentDate = new Date();
+        timeStamp = currentDate.getTime();
+//            Location location = gpsTracker.getLocation();
+//            if (location != null) {
+        enableButton(false, true);
 
-                String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
-                long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
+        String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
+        long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
 
-                attendaceCheckinData.setLatitude(location.getLatitude());
-                attendaceCheckinData.setLongitude(location.getLongitude());
-                attendaceCheckinData.setDate(timeStamp);
-                attendaceCheckinData.setAttendanceType(CHECK_IN);
-                attendaceCheckinData.setAttendaceDate(attnDate);
+        attendaceCheckinData.setLatitude(mCurrentLocation.getLatitude());
+        attendaceCheckinData.setLongitude(mCurrentLocation.getLongitude());
+        attendaceCheckinData.setDate(timeStamp);
+        attendaceCheckinData.setAttendanceType(CHECK_IN);
+        attendaceCheckinData.setAttendaceDate(attnDate);
 
-                btCheckIn.setText("Check in at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
-                updateTime(timeStamp, 0);
-                attendaceCheckinData.setSync(false);
-                userAttendanceDao.insert(attendaceCheckinData);
-                if (!Util.isConnected(mContext)) {
-                    Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
-                } else {
-                    presenter.submitAttendance(attendaceCheckinData);
-                }
-            } else {
-                Util.showToast("Unable to get location", mContext);
-            }
+        btCheckIn.setText("Check in at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
+        updateTime(timeStamp, 0);
+        attendaceCheckinData.setSync(false);
+        userAttendanceDao.insert(attendaceCheckinData);
 
+        if (!Util.isConnected(mContext)) {
+            Toast.makeText(mContext, "Checked in offline.", Toast.LENGTH_LONG).show();
         } else {
-            gpsTracker.showSettingsAlert();
+            presenter.submitAttendance(attendaceCheckinData);
         }
-        if (!isCheckOut) {
-            getDiffBetweenTwoHours();
-        }
+//            } else {
+//                Util.showToast("Unable to get location", mContext);
+//            }
+
+//        } else {
+//            gpsTracker.showSettingsAlert();
+//        }
+//        if (!isCheckOut) {
+        getDiffBetweenTwoHours();
+//        }
     }
 
     private void markOut() {
-        gpsTracker = new GPSTracker(mContext);
-        if (gpsTracker.isGPSEnabled(mContext, this)) {
-            Date currentDate = new Date();
-            timeStamp = currentDate.getTime();
-            Location location = gpsTracker.getLocation();
-            if (location != null) {
-                enableButton(false, false);
-                String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
-                long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
-                List<AttendaceData> getAttendance = userAttendanceDao.getAttendance();
-                AttendaceData attendaceCheckinData = userAttendanceDao.getUserAttendace(attnDate, CHECK_IN);
+//        gpsTracker = new GPSTracker(mContext);
+//        if (gpsTracker.isGPSEnabled(mContext, this)) {
+        Date currentDate = new Date();
+        timeStamp = currentDate.getTime();
+//            Location location = gpsTracker.getLocation();
+//            if (location != null) {
+        enableButton(false, false);
+        String attendanceDate = Util.getDateFromTimestamp(new Date().getTime(), "yyyy-MM-dd");
+        long attnDate = Util.dateTimeToTimeStamp(attendanceDate, "00:00");
+        List<AttendaceData> getAttendance = userAttendanceDao.getAttendance();
+        AttendaceData attendaceCheckinData = userAttendanceDao.getUserAttendace(attnDate, CHECK_IN);
 
-                //attendaceCheckoutData = new AttendaceData();
-                attendaceCheckoutData.setAttendanceId(attendaceCheckinData.getAttendanceId());
-                attendaceCheckoutData.setLatitude(location.getLatitude());
-                attendaceCheckoutData.setLongitude(location.getLongitude());
-                attendaceCheckoutData.setDate(timeStamp);
-                attendaceCheckoutData.setAttendanceType(CHECK_OUT);
-                attendaceCheckoutData.setAttendaceDate(attnDate);
+        attendaceCheckoutData.setAttendanceId(attendaceCheckinData.getAttendanceId());
+        attendaceCheckoutData.setLatitude(mCurrentLocation.getLatitude());
+        attendaceCheckoutData.setLongitude(mCurrentLocation.getLongitude());
+        attendaceCheckoutData.setDate(timeStamp);
+        attendaceCheckoutData.setAttendanceType(CHECK_OUT);
+        attendaceCheckoutData.setAttendaceDate(attnDate);
 
-                btCheckout.setText("Check out at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
-                updateTime(attendaceCheckinData.getDate(), timeStamp);
+        btCheckout.setText("Check out at " + Util.getDateFromTimestamp(timeStamp, "hh:mm aa"));
+        updateTime(attendaceCheckinData.getDate(), timeStamp);
 
-                attendaceCheckoutData.setSync(false);
-                userAttendanceDao.insert(attendaceCheckoutData);
+        attendaceCheckoutData.setSync(false);
+        userAttendanceDao.insert(attendaceCheckoutData);
 
-                if (!Util.isConnected(mContext)) {
-                    Toast.makeText(mContext, "Checked out offline.", Toast.LENGTH_LONG).show();
-                } else {
-                    presenter.submitAttendance(attendaceCheckoutData);
-                }
-            } else {
-                Util.showToast("Unable to get location", mContext);
-            }
-
+        if (!Util.isConnected(mContext)) {
+            Toast.makeText(mContext, "Checked out offline.", Toast.LENGTH_LONG).show();
         } else {
-            gpsTracker.showSettingsAlert();
+            presenter.submitAttendance(attendaceCheckoutData);
         }
-        if (!isCheckOut) {
-            getDiffBetweenTwoHours();
-        }
+//            } else {
+//                Util.showToast("Unable to get location", mContext);
+//            }
+
+//        } else {
+//            gpsTracker.showSettingsAlert();
+//        }
+//        if (!isCheckOut) {
+        getDiffBetweenTwoHours();
+//        }
     }
 
     public void updateTime(long checkIntime, long checkOutTime) {
@@ -806,12 +937,83 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected) {
+        if (isConnected) {
             Util.showToast("Yes", this);
         } else {
             Util.showToast("No", this);
         }
 
     }
+
+    public void startLocationUpdate() {
+
+        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(mContext, new OnSuccessListener<LocationSettingsResponse>() {
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i(TAG, "All location settings are satisfied.");
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            //noinspection MissingPermission
+                            if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                    && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                                ActivityCompat.requestPermissions(mContext,
+                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                                Manifest.permission.ACCESS_FINE_LOCATION},
+                                        Constants.GPS_REQUEST);
+
+                                Toast.makeText(mContext, "No permission location updates!", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else {
+                                Toast.makeText(mContext, "Started location updates!", Toast.LENGTH_SHORT).show();
+                                mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                                        mLocationCallback, Looper.myLooper());
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(mContext, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
+                                        "location settings ");
+                                try {
+                                    // Show the dialog by calling startResolutionForResult(), and check the
+                                    // result in onActivityResult().
+                                    ResolvableApiException rae = (ResolvableApiException) e;
+                                    rae.startResolutionForResult(mContext, REQUEST_CHECK_SETTINGS);
+                                } catch (IntentSender.SendIntentException sie) {
+                                    Log.i(TAG, "PendingIntent unable to execute request.");
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                                Log.e(TAG, errorMessage);
+
+                                Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+    }
+
+    public void stopLocationUpdates() {
+        // Removing location updates
+        mFusedLocationClient
+                .removeLocationUpdates(mLocationCallback)
+                .addOnCompleteListener(mContext, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(mContext, "Location updates stopped!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 }
 

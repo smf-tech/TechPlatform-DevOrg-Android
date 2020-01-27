@@ -134,7 +134,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         } else {
             holder.btAction.setVisibility(View.INVISIBLE);
         }
-        if (!ssDataList.get(position).getMachineSignOff()) {
+        if (ssDataList.get(position).getMachineSignOff() != null && !ssDataList.get(position).getMachineSignOff()) {
             holder.ivSignoff.setVisibility(View.INVISIBLE);
         } else {
             holder.ivSignoff.setVisibility(View.VISIBLE);

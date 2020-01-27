@@ -259,9 +259,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if(dy > 0){
+                    if (dy > 0) {
                         fbCreate.hide();
-                    } else{
+                    } else {
                         if (viewType == 1) {
                             if (isStructureAdd) {
                                 fbCreate.show();
@@ -275,21 +275,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     super.onScrolled(recyclerView, dx, dy);
                 }
             });
-            if (viewType != 1) {
-                if (Util.isConnected(getActivity())) {
-                    structureMachineListFragmentPresenter.getTalukaMachinesList(
-                            (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
-                                    "",
-                            (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
-                                    "",
-                            (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
-                                    "");
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-                }
+        }
+        if (viewType != 1) {
+            if (Util.isConnected(getActivity())) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
+                                "");
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         }
 
@@ -558,7 +558,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                             break;
                         }
                     }
-                    if (selectedDeployTalukaId != null && selectedDeployTalukaId!= "") {
+                    if (selectedDeployTalukaId != null && selectedDeployTalukaId != "") {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
                                 filteredMachineListData.get(position).getId(),
                                 filteredMachineListData.get(position).getMachineCode(),
@@ -602,14 +602,14 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (viewType == 1) {
             if (Util.isConnected(getActivity())) {
                 structureMachineListFragmentPresenter.getStrucuresList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
                                 "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
                                 "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
                                 "");
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -862,18 +862,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
-        } else if(view.getId() == R.id.btn_filter_clear) {
+        } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
                 filteredStructureListData.clear();
                 filteredStructureListData.addAll(ssStructureListData);
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity) context).setActivityTitle("Structure List(" + filteredStructureListData.size() + ")");
             } else {
                 filteredMachineListData.clear();
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity) context).setActivityTitle("Machine List(" + filteredMachineListData.size() + ")");
             }
             tvStateFilter.setText("");
             if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
@@ -987,6 +987,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         }
     }
+
     private void setStructureStatusFilterList() {
         // Machine Status list
         statusList.clear();

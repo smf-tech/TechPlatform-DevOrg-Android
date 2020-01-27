@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "f11764f053015ca0caad56baa60170d9",
+    "identityHash": "bd850c1fc6e131f35930e0c6065c0aef",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -736,7 +736,7 @@
       },
       {
         "tableName": "StructureData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `village` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, `isStructureComplete` INTEGER NOT NULL, `structureBoundary` INTEGER NOT NULL, PRIMARY KEY(`structureId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`structureId` TEXT NOT NULL, `structureName` TEXT, `structureCode` TEXT, `state` TEXT, `stateId` TEXT, `district` TEXT, `districtId` TEXT, `taluka` TEXT, `talukaId` TEXT, `village` TEXT, `structureWorkType` TEXT, `structureStatus` TEXT, `structureStatusCode` INTEGER NOT NULL, `lat` REAL NOT NULL, `long` REAL NOT NULL, `structureDepartmentName` TEXT, `structureSubDepartmentName` TEXT, `structureType` TEXT, `structureMachineList` TEXT, `updatedDate` TEXT, `isStructureComplete` INTEGER NOT NULL, `structureBoundary` INTEGER NOT NULL, `workStartDate` TEXT, `workCompletedDate` TEXT, PRIMARY KEY(`structureId`))",
         "fields": [
           {
             "fieldPath": "structureId",
@@ -869,6 +869,18 @@
             "columnName": "structureBoundary",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "workStartDate",
+            "columnName": "workStartDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "workCompletedDate",
+            "columnName": "workCompletedDate",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1064,7 +1076,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f11764f053015ca0caad56baa60170d9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd850c1fc6e131f35930e0c6065c0aef')"
     ]
   }
 }
