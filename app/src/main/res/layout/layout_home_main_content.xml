@@ -39,7 +39,6 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_07dp"
-                android:visibility="gone"
                 android:src="@drawable/ic_sync" />
 
             <ImageView

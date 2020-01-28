@@ -8,14 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +21,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,7 +60,6 @@ import com.octopusbjsindia.view.adapters.SSStructureListAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,11 +86,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
     private String selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
-    private int mouAction = 0, selectedStatus = 0;
+    private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
     public boolean isMachineTerminate, isMachineAvailable;
     public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
-            isMachineRelease, isMouImagesUpload, isStateFilter, isDistrictFilter, isTalukaFilter,
+            isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
@@ -187,8 +185,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
                     isMachineRelease = true;
                     continue;
-                }  else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
                     isMouImagesUpload = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SIGN_OFF)) {
+                    isMachineSignoff = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
                     isStateFilter = true;
@@ -257,9 +258,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if(dy > 0){
+                    if (dy > 0) {
                         fbCreate.hide();
-                    } else{
+                    } else {
                         if (viewType == 1) {
                             if (isStructureAdd) {
                                 fbCreate.show();
@@ -273,35 +274,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     super.onScrolled(recyclerView, dx, dy);
                 }
             });
-            if (viewType != 1) {
-                if (Util.isConnected(getActivity())) {
-//                    if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-//                        structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-//                                getUserLocation().getStateId().get(0).getId());
-//                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-//                        structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-//                                        getUserLocation().getStateId().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-//                    } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-//                        structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-//                                        getUserLocation().getStateId().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-//                    }
-
-                    structureMachineListFragmentPresenter.getTalukaMachinesList(
-                            (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
-                                    "",
-                            (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
-                                    "",
-                            (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
-                                    "");
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-                }
+        }
+        if (viewType != 1) {
+            if (Util.isConnected(getActivity())) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
+                                "");
+            } else {
+                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         }
 
@@ -414,6 +401,96 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.show();
     }
 
+    public void shiftMachine(int position) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_shift_machine_action_layout);
+        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_mou_action);
+        RadioButton rbShiftToStructure, rbShiftToIdeal;
+        rbShiftToStructure = dialog.findViewById(R.id.rb_shift_to_structure);
+        rbShiftToIdeal = dialog.findViewById(R.id.rb_shift_to_ideal);
+        Button btnSubmit = dialog.findViewById(R.id.btn_submit);
+        rgShiftAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_shift_to_structure:
+                        shiftAction = 1;
+                        break;
+                    case R.id.rb_shift_to_ideal:
+                        shiftAction = 2;
+                        break;
+                }
+            }
+        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (shiftAction != 0) {
+                    if (shiftAction == 1) {
+                        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
+                        intent.putExtra("title", "Select Structure");
+                        intent.putExtra("type", "shiftMachine");
+                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+                        getActivity().startActivity(intent);
+                    } else if (shiftAction == 2) {
+                        structureMachineListFragmentPresenter.updateMachineStatusToAvailable
+                                (filteredMachineListData.get(position).getId(),
+                                        filteredMachineListData.get(position).getDeployedStrutureId(),
+                                        Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE);
+                    }
+                    dialog.dismiss();
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select action.",
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    public void sendMachineSignOff(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText("Sujalam Suphalam");
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.machine_signoff_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Sign-off");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            structureMachineListFragmentPresenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("Cancel");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
     public void showMouActionPopup(int position) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -473,7 +550,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         tvSubmit.setVisibility(View.VISIBLE);
         tvSubmit.setOnClickListener(v -> {
             if (mouAction != 0) {
-                // Close dialog
                 if (mouAction == 1) {
                     for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
                         if (mDeployTaluka.isSelected()) {
@@ -482,7 +558,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                             break;
                         }
                     }
-                    if (selectedDeployTalukaId != null && selectedDeployTalukaId!= "") {
+                    if (selectedDeployTalukaId != null && selectedDeployTalukaId != "") {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
                                 filteredMachineListData.get(position).getId(),
                                 filteredMachineListData.get(position).getMachineCode(),
@@ -525,36 +601,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         super.onResume();
         if (viewType == 1) {
             if (Util.isConnected(getActivity())) {
-//                if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_MIS) {
-//                    //State vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-//                    //State vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(), "", "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-//                    //District vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                            "");
-//                } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-//                    //Taluka vise
-//                    structureMachineListFragmentPresenter.getStrucuresList(
-//                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-//                }
                 structureMachineListFragmentPresenter.getStrucuresList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
                                 "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
                                 "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
                                 "");
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -752,25 +807,25 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
-    public void showResponse(String responseStatus, int status) {
+    public void showResponse(String requestId, String responseStatus, int status) {
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if (status == 200) {
-            if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_HO_OPS) {
-                structureMachineListFragmentPresenter.getStateMachinesList(Util.getUserObjectFromPref().
-                        getUserLocation().getStateId().get(0).getId());
-            } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_DM) {
-                structureMachineListFragmentPresenter.getDistrictMachinesList(Util.getUserObjectFromPref().
-                                getUserLocation().getStateId().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
-            } else if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_TC) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(Util.getUserObjectFromPref().
-                                getUserLocation().getStateId().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
-            }
-        }
+//        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
+//                || requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
+//            if (status == 200) {
+                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
+                                "",
+                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
+                                "");
+//            }
+//        }
     }
 
     @Override
@@ -807,18 +862,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
-        } else if(view.getId() == R.id.btn_filter_clear) {
+        } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
                 filteredStructureListData.clear();
                 filteredStructureListData.addAll(ssStructureListData);
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity) context).setActivityTitle("Structure List(" + filteredStructureListData.size() + ")");
             } else {
                 filteredMachineListData.clear();
                 filteredMachineListData.addAll(ssMachineListData);
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Machine List("+filteredMachineListData.size()+")");
+                ((SSActionsActivity) context).setActivityTitle("Machine List(" + filteredMachineListData.size() + ")");
             }
             tvStateFilter.setText("");
             if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
@@ -932,6 +987,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         }
     }
+
     private void setStructureStatusFilterList() {
         // Machine Status list
         statusList.clear();

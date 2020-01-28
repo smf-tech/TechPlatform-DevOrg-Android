@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <RelativeLayout
+            android:id="@+id/ly_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/ly_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50dp"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:id="@+id/tv_dialog_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="Select action"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16" />
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:background="@drawable/ic_back_white"
+                    android:backgroundTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:background="@drawable/ic_check_mark"
+                    android:backgroundTint="@color/white" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_rg_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_toolbar"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:text="What would you like to do?" />
+
+            <RadioGroup
+                android:id="@+id/rg_shift_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_rg_title"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_shift_to_structure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="Terminate MOU"
+                    android:textColor="@color/dark_grey" />
+
+                <RadioButton
+                    android:id="@+id/rb_shift_to_ideal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="Allocate machine in taluka"
+                    android:textColor="@color/dark_grey" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textColor="@android:color/white"
+                android:layout_below="@+id/rg_shift_action"
+                android:text="Submit" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

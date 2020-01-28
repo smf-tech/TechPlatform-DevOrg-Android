@@ -207,18 +207,18 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_provider_label"
+                        android:id="@+id/tv_tc_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Provider Name"
+                        android:text="TC Name"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
-                        android:id="@+id/tv_provider"
+                        android:id="@+id/tv_tc_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_provider_label"
+                        android:layout_below="@+id/tv_tc_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_13" />
@@ -235,7 +235,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Provider Contact Number"
+                        android:text="TC Contact Number"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
@@ -402,9 +402,19 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_status_lebal"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_13"/>
+
+                    <ImageView
+                        android:id="@+id/iv_signoff"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="@dimen/dimen_20dp"
+                        android:layout_toRightOf="@+id/tv_status_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_signoff"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 

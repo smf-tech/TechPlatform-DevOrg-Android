@@ -550,5 +550,6 @@
     <string name="msg_structure_boundary_no_net">Due to no internet connectivity, structure boundry data will be saved offline and it will be synced when internet connectivity is available.</string>
     <string name="msg_structure_boundary_discard">Are you sure you want to discard</string>
     <string name="msg_structure_boundary">Waiting for location Accuracy</string>
+    <string name="machine_signoff_alert_message">Are you sure, you want to send sign-off for this machine?</string>
 
 </resources>

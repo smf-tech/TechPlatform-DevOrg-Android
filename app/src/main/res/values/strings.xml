@@ -674,5 +674,7 @@
     <string name="msg_structure_boundary_discard">Are you sure you want to discard</string>
     <string name="msg_structure_boundary">Waiting for location Accuracy</string>
     <string name="meter_resume_alarm">Please resume the machine working.</string>
+    <string name="machine_signoff_alert_message">Are you sure, you want to send sign-off for this machine?</string>
+
 
 </resources>

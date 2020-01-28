@@ -43,7 +43,7 @@ public class APIRequestCall {
     public void postDataApiCall(String requestID, String paramJson, String url) {
 
         Log.d(TAG, requestID + " url : " + url);
-        Log.d(TAG, requestID + " request Jeson : " + paramJson);
+        Log.d(TAG, requestID + " request Json : " + paramJson);
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
             if (apiPresenterListener == null) {
@@ -82,7 +82,7 @@ public class APIRequestCall {
                                                String projectId, String roleId) {
 
         Log.d(TAG, requestID + " url : " + url);
-        Log.d(TAG, requestID + " request Jeson : " + paramJson);
+        Log.d(TAG, requestID + " request Json : " + paramJson);
 
         Response.Listener<JSONObject> getModulesResponseListener = response -> {
             if (apiPresenterListener == null) {

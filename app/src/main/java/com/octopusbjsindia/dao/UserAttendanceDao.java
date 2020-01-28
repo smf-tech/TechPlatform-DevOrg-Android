@@ -25,6 +25,9 @@ public interface UserAttendanceDao {
     @Delete
     public void delete(AttendaceData... attendaceData);
 
+    @Query("SELECT * FROM userattendance")
+    public List<AttendaceData> getAttendance();
+
     @Query("SELECT * FROM userattendance WHERE isSync=:isonline")
     public List<AttendaceData> getUnsyncAttendance(Boolean isonline);
 

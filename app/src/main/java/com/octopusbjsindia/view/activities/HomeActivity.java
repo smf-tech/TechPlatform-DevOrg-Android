@@ -50,10 +50,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
@@ -228,7 +228,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } else {
                     onBackPressed();
                     toggle.setDrawerIndicatorEnabled(true);
-                    setSyncButtonVisibility(true);
+                    //setSyncButtonVisibility(true);
                 }
             });
         }
@@ -396,6 +396,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
+
+        // Start data sync
+        SyncAdapterUtils.manualRefresh();
     }
 
     @Override
@@ -450,51 +453,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
                 break;
 
-            case R.id.action_menu_community:
-                break;
-
-            case R.id.action_menu_forms:
-//                loadFormsPage();
-//                AppEvents.trackAppEvent(getString(R.string.event_menu_forms_click));
-                break;
-
-//            case R.id.action_menu_teams:
-////                loadTeamsPage();
-////                AppEvents.trackAppEvent(getString(R.string.event_menu_teams_click));
-//                break;
-
-            case R.id.action_menu_calendar:
-//                loadMeetingsPage();
-//                AppEvents.trackAppEvent(getString(R.string.event_menu_meeting_click));
-                break;
-
-            case R.id.action_menu_assets:
-                break;
-
-//            case R.id.action_menu_reports:
-////                loadReportsPage();
-////                AppEvents.trackAppEvent(getString(R.string.event_menu_reports_click));
-//                break;
-
-            case R.id.action_menu_connect:
-                break;
-
-            case R.id.action_menu_ho_support:
-                break;
-
-            case R.id.action_menu_notice_board:
-                break;
-
-            case R.id.action_menu_account:
-                break;
-
-            case R.id.action_menu_leaves_attendance:
-                break;
-
             case R.id.action_menu_change_language:
                 showLanguageChangeDialog();
                 AppEvents.trackAppEvent(getString(R.string.event_menu_change_lang_click));
                 break;
+
             case R.id.action_menu_share_app:
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -702,7 +665,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
                 if (!toggle.isDrawerIndicatorEnabled()) {
                     toggle.setDrawerIndicatorEnabled(true);
-                    setSyncButtonVisibility(true);
+                    //setSyncButtonVisibility(true);
                 }
 
             } catch (Exception e) {

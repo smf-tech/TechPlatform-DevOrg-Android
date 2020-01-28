@@ -36,7 +36,7 @@ import com.octopusbjsindia.models.reports.ReportData;
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
         ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
         StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class},
-        version = 2)
+        version = 3)
 
 public abstract class AppDatabase extends RoomDatabase {
 
