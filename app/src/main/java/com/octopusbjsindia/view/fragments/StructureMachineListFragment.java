@@ -405,7 +405,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_shift_machine_action_layout);
-        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_mou_action);
+        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_shift_action);
         RadioButton rbShiftToStructure, rbShiftToIdeal;
         rbShiftToStructure = dialog.findViewById(R.id.rb_shift_to_structure);
         rbShiftToIdeal = dialog.findViewById(R.id.rb_shift_to_ideal);
