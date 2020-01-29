@@ -364,6 +364,7 @@ public class Constants {
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
         public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
         public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
+        public static final Integer MACHINE_PAUSE_STATUS_CODE = 113;
 
         public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
         public static final Integer ACCESS_CODE_ADD_MACHINE = 108;

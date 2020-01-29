@@ -73,10 +73,16 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         viewHolder.tvName.setText(leavesList.get(i).getName());
         viewHolder.tvRole.setText(leavesList.get(i).getRoleName());
 
-        if (leavesList.get(i).getCheckIn() != null)
+        if (leavesList.get(i).getCheckIn() != null) {
             viewHolder.tvCheckInTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa"));
-        if (leavesList.get(i).getCheckOut() != null)
+        }else {
+            viewHolder.tvCheckInTime.setText("");
+        }
+        if (leavesList.get(i).getCheckOut() != null) {
             viewHolder.tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa"));
+        }else {
+            viewHolder.tvCheckOutTime.setText("");
+        }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
 
@@ -101,6 +107,8 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
                 int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
                 hours = (hours < 0 ? -hours : hours);
                 viewHolder.tvTotalHours.setText(hours + ":" + min);
+            }else {
+                viewHolder.tvTotalHours.setText("");
             }
 
         } catch (ParseException e) {

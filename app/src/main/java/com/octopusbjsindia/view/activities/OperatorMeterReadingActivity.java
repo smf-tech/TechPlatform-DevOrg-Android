@@ -87,6 +87,7 @@ import static com.octopusbjsindia.receivers.ConnectivityReceiver.connectivityRec
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
     //Alarm
+    Dialog alarmDialog;
     private final long[] mVibratePattern = {0, 500, 500};
     private Ringtone mRingtone;
     private Vibrator mVibrator;
@@ -855,13 +856,24 @@ private ImageView toolbar_edit_action;
         String toOpen = getIntent().getStringExtra("fromAlarm");
         if(toOpen != null){
             Log.i("toOpen", "toOpen called");
-            mRingtone = RingtoneManager.getRingtone(getApplicationContext(),RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-            mRingtone.setLooping(true);
-            mRingtone.play();
+
+                if(mRingtone!=null && mRingtone.isPlaying()){
+
+                }else {
+                    mRingtone = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                    mRingtone.setLooping(true);
+                    mRingtone.play();
+                    Log.e("mRingtone--", "---OnPlaying");
+            }
             /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
             mp.start();*/
-            showAlarmDialog(this,1);
+
+                if( alarmDialog != null && alarmDialog.isShowing()){
+
+                }else {
+                    showAlarmDialog(this, 1);
+                }
         }
 
         if (preferences.getInt("State", 0) == state_start) {
@@ -890,7 +902,7 @@ private ImageView toolbar_edit_action;
         super.onStop();
         Log.e("method--", "---OnStop");
         if(mRingtone!=null && mRingtone.isPlaying()){
-            cancelAlarm();
+          //  cancelAlarm();
         }
     }
 
@@ -1639,18 +1651,18 @@ private void initConnectivityReceiver() {
 
 //Alarm dismiss dialog
     public String showAlarmDialog(final Activity context, int pos){
-        Dialog dialog;
+
         Button btnSubmit,btn_cancel;
         EditText edt_reason;
         Activity activity =context;
 
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_alarm_dismiss_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alarmDialog = new Dialog(context);
+        alarmDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alarmDialog.setContentView(R.layout.dialog_alarm_dismiss_layout);
+        alarmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        btnSubmit = dialog.findViewById(R.id.btn_submit);
+        btnSubmit = alarmDialog.findViewById(R.id.btn_submit);
 
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -1658,11 +1670,11 @@ private void initConnectivityReceiver() {
             public void onClick(View v) {
 
                         cancelAlarm();
-                        dialog.dismiss();
+                alarmDialog.dismiss();
 
             }
         });
-        dialog.show();
+        alarmDialog.show();
 
 
         return "";

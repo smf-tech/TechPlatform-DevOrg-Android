@@ -165,7 +165,7 @@ private RequestOptions requestOptions;
                 public void onClick(View v) {
                     if (Util.isConnected(mContext)) {
                         if (isReadingEditAccess) {
-                            if (dataList.get(getAdapterPosition()).getEndReading() != null) {
+                            if (dataList.get(getAdapterPosition()).getStartReading() != null) {
 
                                 showReadingDialog(activity, getAdapterPosition(), 1);
                             } else {

@@ -135,7 +135,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             holder.btAction.setVisibility(View.INVISIBLE);
         }
         if (ssDataList.get(position).getMachineSignOff() != null && !ssDataList.get(position).getMachineSignOff()) {
-            holder.ivSignoff.setVisibility(View.INVISIBLE);
+            holder.ivSignoff.setVisibility(View.GONE);
         } else {
             holder.ivSignoff.setVisibility(View.VISIBLE);
         }
@@ -264,7 +264,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (fragment.isMouImagesUpload) {
                                 popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
                             }
