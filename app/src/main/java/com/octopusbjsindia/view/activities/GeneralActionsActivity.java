@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.fragments.AttendancePlannerFragment;
+import com.octopusbjsindia.view.fragments.AttendanceSummeryFragment;
 import com.octopusbjsindia.view.fragments.HolidayListFragment;
 import com.octopusbjsindia.view.fragments.LeaveApplyFragment;
 import com.octopusbjsindia.view.fragments.LeaveDetailsFragment;
@@ -72,6 +73,12 @@ public class GeneralActionsActivity extends BaseActivity implements View.OnClick
                     case "AttendancePlannerFragment":
                         fragment = new AttendancePlannerFragment();
                         data.putBoolean(Constants.Planner.KEY_IS_DASHBOARD, false);
+                        toolBarMenu.setVisibility(View.GONE);
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "AttendanceSummeryFragment":
+                        fragment = new AttendanceSummeryFragment();
                         toolBarMenu.setVisibility(View.GONE);
                         fragment.setArguments(data);
                         openFragment();

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@color/lighter_grey"
     android:orientation="vertical">
 
     <include
@@ -154,14 +155,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_bottom_shadow"
+                android:contentDescription="@string/content_description" />
+
             <TextView
                 android:id="@+id/user_multy_profile_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your profiles"
                 android:layout_marginStart="@dimen/dimen_25dp"
-                android:textColor="@color/profile_label"
-                android:textSize="@dimen/text_size_11" />
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp"
+                android:textSize="@dimen/text_size_14" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_projects"

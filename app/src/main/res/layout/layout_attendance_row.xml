@@ -8,7 +8,8 @@
     android:background="@drawable/bg_grey_box"
     android:elevation="@dimen/dimen_02dp"
     android:padding="@dimen/dimen_05dp"
-    tools:ignore="RtlSymmetry">
+    tools:ignore="RtlSymmetry"
+    android:id="@+id/ly_main">
 
     <ImageView
         android:id="@+id/iv_user_profile_pic"
@@ -83,9 +84,5 @@
             android:textSize="@dimen/text_size_16"/>
 
     </RelativeLayout>
-
-
-
-
 
 </RelativeLayout>

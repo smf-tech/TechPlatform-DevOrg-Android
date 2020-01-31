@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.models.profile.UserLocation;
+import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -33,16 +35,13 @@ import java.util.List;
 public class ProfileActivity extends BaseActivity implements View.OnClickListener, APIDataListener {
 
     ProfileActivityPresenter presenter;
+    LinearLayout parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        initViews();
-    }
-
-    private void initViews() {
         ((TextView) findViewById(R.id.toolbar_title)).setText(getString(R.string.profile));
 
         presenter = new ProfileActivityPresenter(this);
@@ -59,6 +58,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         editButton.setVisibility(View.VISIBLE);
         editButton.setOnClickListener(this);
 
+        parent = findViewById(R.id.user_profile_details);
+        initViews();
+
+    }
+
+    private void initViews() {
         UserInfo userInfo = Util.getUserObjectFromPref();
 
         ImageView profilePic = findViewById(R.id.user_profile_pic);
@@ -85,7 +90,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         String projects = getStringValue(userInfo.getProjectIds());
         ((TextView) findViewById(R.id.user_profile_project)).setText(projects);
 
-        LinearLayout parent = findViewById(R.id.user_profile_details);
+        if(parent.getChildCount() > 0)
+            parent.removeAllViews();
+
         LinearLayout roleView = (LinearLayout) LayoutInflater.from(this)
                 .inflate(R.layout.layout_profile_item, parent, false);
         ((TextView) roleView.findViewById(R.id.user_profile_label)).setText(getString(R.string.role));
@@ -194,8 +201,16 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         RecyclerView rvMembers = findViewById(R.id.rv_projects);
         MultyProjectAdapter multyProjectAdapter = new MultyProjectAdapter(data,this, presenter);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvMembers.setLayoutManager(new GridLayoutManager(this, 2));
         rvMembers.setAdapter(multyProjectAdapter);
+    }
+
+    public void updateUI(String response) {
+        User user = new Gson().fromJson(response, User.class);
+        if (response != null && user.getUserInfo() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+        }
+        initViews();
     }
 }

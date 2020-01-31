@@ -61,7 +61,7 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    presenter.getUserDetels(projectList.get(getAdapterPosition()));
                 }
             });
         }

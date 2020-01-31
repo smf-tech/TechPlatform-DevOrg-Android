@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.utils.Utils;
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.CreateStructureActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
@@ -135,14 +137,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
             etDistrict.setOnClickListener(this);
         }
-        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
-                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
-        } else {
+//        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+//                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+//            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+//            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
+//            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
+//        } else {
             etTaluka.setOnClickListener(this);
-        }
+//        }
 
         etHostVillage.setOnClickListener(this);
         etAdministrativeApprovalDate.setOnClickListener(this);
@@ -185,6 +187,19 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_taluka:
+                talukaList.clear();
+
+                List<JurisdictionType> taluka = new ArrayList<>();
+                taluka.addAll(Util.getUserObjectFromPref().getUserLocation().getTalukaIds());
+
+                for(JurisdictionType obj : taluka){
+                    CustomSpinnerObject spinnerObject = new CustomSpinnerObject();
+                    spinnerObject.set_id(obj.getId());
+                    spinnerObject.setName(obj.getName());
+                    spinnerObject.setSelected(false);
+                    talukaList.add(spinnerObject);
+                }
+
                 CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(this, this,
                         "Select Taluka", talukaList, false);
                 csdTaluka.show();
