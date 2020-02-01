@@ -48,10 +48,10 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         if(Util.getUserObjectFromPref().getUserLocation().getCountryId()!=null) {
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++) {
                 JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
-                if (i == Util.getUserObjectFromPref().getUserLocation().getCountryId().size() - 1) {
+                if (i == 0) {
                     countries = j.getId();
                 } else {
-                    countries = j.getId() + ",";
+                    countries = countries + "," + j.getId();
                 }
             }
         }
@@ -59,10 +59,10 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         if(Util.getUserObjectFromPref().getUserLocation().getStateId()!=null) {
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
                 JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
-                if (i == Util.getUserObjectFromPref().getUserLocation().getStateId().size() - 1) {
+                if (i == 0) {
                     states = j.getId();
                 } else {
-                    states = j.getId() + ",";
+                    states = states + "," + j.getId();
                 }
             }
         }

@@ -58,7 +58,6 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PMFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
@@ -68,8 +67,7 @@ import java.io.File;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
-        ContentManagementFragment.OnFragmentInteractionListener, ConnectivityReceiver.ConnectivityReceiverListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -712,11 +710,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     public void setSyncClickListener(OnSyncClicked listener) {
         clickListener = listener;
-    }
-
-    @Override
-    public void onFragmentInteraction(String uri) {
-
     }
 
     @Override

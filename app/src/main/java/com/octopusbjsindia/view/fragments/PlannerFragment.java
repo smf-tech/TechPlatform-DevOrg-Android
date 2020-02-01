@@ -165,7 +165,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                              @Nullable Bundle savedInstanceState) {
 
         plannerView = inflater.inflate(R.layout.fragment_dashboard_planner, container, false);
-
         return plannerView;
     }
 

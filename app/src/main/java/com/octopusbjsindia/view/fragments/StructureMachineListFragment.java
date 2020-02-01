@@ -47,6 +47,7 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.StructureMachineListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -277,16 +278,46 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         if (viewType != 1) {
             if (Util.isConnected(getActivity())) {
+                String states = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                        if (i == 0) {
+                            states = j.getId();
+                        } else {
+                            states = states + "," + j.getId();
+                        }
+                    }
+                }
+
+                String districts = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                        if (i == 0) {
+                            districts = j.getId();
+                        } else {
+                            districts = districts + "," + j.getId();
+                        }
+                    }
+                }
+
+                String talukas = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                        if (i == 0) {
+                            talukas = j.getId();
+                        } else {
+                            talukas = talukas + "," + j.getId();
+                        }
+                    }
+                }
+
                 structureMachineListFragmentPresenter.getTalukaMachinesList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
+                        (states != "") ? states : "",
+                        (districts != "") ? districts : "",
+                        (talukas != "") ? talukas : "");
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
@@ -405,7 +436,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_shift_machine_action_layout);
-        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_mou_action);
+        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_shift_action);
         RadioButton rbShiftToStructure, rbShiftToIdeal;
         rbShiftToStructure = dialog.findViewById(R.id.rb_shift_to_structure);
         rbShiftToIdeal = dialog.findViewById(R.id.rb_shift_to_ideal);
