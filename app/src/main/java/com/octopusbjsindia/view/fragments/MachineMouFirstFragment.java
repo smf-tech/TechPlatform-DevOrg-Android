@@ -237,18 +237,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etMachineMakeModel.setLongClickable(false);
         etMeterWorking.setFocusable(false);
         etMeterWorking.setLongClickable(false);
-//        etRtoNumber.setFocusable(true);
-//        etRtoNumber.setLongClickable(true);
-//        etChasisNumber.setFocusable(true);
-//        etChasisNumber.setLongClickable(true);
-//        etExcavationCapacity.setFocusable(true);
-//        etExcavationCapacity.setLongClickable(true);
-//        etDieselCapacity.setFocusable(true);
-//        etDieselCapacity.setLongClickable(true);
-//        etProviderName.setFocusable(true);
-//        etProviderName.setLongClickable(true);
-//        etProviderContact.setFocusable(true);
-//        etProviderContact.setLongClickable(true);
 
         editOwnerType.setOnClickListener(this);
         //etMachineTaluka.setOnClickListener(this);

@@ -277,50 +277,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             });
         }
         if (viewType != 1) {
-            if (Util.isConnected(getActivity())) {
-                String states = "";
-                if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
-                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
-                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
-                        if (i == 0) {
-                            states = j.getId();
-                        } else {
-                            states = states + "," + j.getId();
-                        }
-                    }
-                }
 
-                String districts = "";
-                if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
-                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
-                        if (i == 0) {
-                            districts = j.getId();
-                        } else {
-                            districts = districts + "," + j.getId();
-                        }
-                    }
-                }
-
-                String talukas = "";
-                if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
-                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
-                        if (i == 0) {
-                            talukas = j.getId();
-                        } else {
-                            talukas = talukas + "," + j.getId();
-                        }
-                    }
-                }
-
-                structureMachineListFragmentPresenter.getTalukaMachinesList(
-                        (states != "") ? states : "",
-                        (districts != "") ? districts : "",
-                        (talukas != "") ? talukas : "");
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
         }
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
@@ -375,8 +332,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
             intent.putExtra("type", "deployMachine");
             intent.putExtra("title", "Select Structure");
-            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+//            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+//            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+            intent.putExtra("machine", filteredMachineListData.get(position));
             getActivity().startActivity(intent);
 
             dialog.dismiss();
@@ -463,9 +421,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
                         intent.putExtra("title", "Select Structure");
                         intent.putExtra("type", "shiftMachine");
-                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
-                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+//                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+//                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+//                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+                        intent.putExtra("machine", filteredMachineListData.get(position));
                         getActivity().startActivity(intent);
                     } else if (shiftAction == 2) {
                         structureMachineListFragmentPresenter.updateMachineStatusToAvailable
@@ -630,22 +589,56 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     @Override
     public void onResume() {
         super.onResume();
-        if (viewType == 1) {
             if (Util.isConnected(getActivity())) {
-                structureMachineListFragmentPresenter.getStrucuresList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
+                String states = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                        if (i == 0) {
+                            states = j.getId();
+                        } else {
+                            states = states + "," + j.getId();
+                        }
+                    }
+                }
+
+                String districts = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                        if (i == 0) {
+                            districts = j.getId();
+                        } else {
+                            districts = districts + "," + j.getId();
+                        }
+                    }
+                }
+
+                String talukas = "";
+                if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
+                    for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                        JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                        if (i == 0) {
+                            talukas = j.getId();
+                        } else {
+                            talukas = talukas + "," + j.getId();
+                        }
+                    }
+                }
+                if (viewType == 1) {
+                    structureMachineListFragmentPresenter.getStrucuresList(
+                            (states != "") ? states : "",
+                            (districts != "") ? districts : "",
+                            (talukas != "") ? talukas : "");
+                } else {
+                    structureMachineListFragmentPresenter.getTalukaMachinesList(
+                            (states != "") ? states : "",
+                            (districts != "") ? districts : "",
+                            (talukas != "") ? talukas : "");
+                }
             } else {
                 Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
-        }
     }
 
     @Override
@@ -845,16 +838,46 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
 //                || requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
 //            if (status == 200) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
+        String states = "";
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == 0) {
+                    states = j.getId();
+                } else {
+                    states = states + "," + j.getId();
+                }
+            }
+        }
+
+        String districts = "";
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                if (i == 0) {
+                    districts = j.getId();
+                } else {
+                    districts = districts + "," + j.getId();
+                }
+            }
+        }
+
+        String talukas = "";
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                if (i == 0) {
+                    talukas = j.getId();
+                } else {
+                    talukas = talukas + "," + j.getId();
+                }
+            }
+        }
+
+        structureMachineListFragmentPresenter.getTalukaMachinesList(
+                (states != "") ? states : "",
+                (districts != "") ? districts : "",
+                (talukas != "") ? talukas : "");
 //            }
 //        }
     }
