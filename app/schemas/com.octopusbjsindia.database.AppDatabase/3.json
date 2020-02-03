@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "bd850c1fc6e131f35930e0c6065c0aef",
+    "identityHash": "8d6bebe3e25411abd4c1d5badb5720e6",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "FormData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `components` TEXT, `is_active` TEXT, `is_editable` TEXT, `multiple_entry` TEXT, `category` TEXT, `microservice` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `components` TEXT, `is_active` TEXT, `is_editable` TEXT, `multiple_entry` TEXT, `category` TEXT, `api_url` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -107,8 +107,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "microService",
-            "columnName": "microservice",
+            "fieldPath": "api_url",
+            "columnName": "api_url",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -334,7 +334,7 @@
       },
       {
         "tableName": "ProcessData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `form_title` TEXT, `active` TEXT, `editable` TEXT, `multiple_entry` TEXT, `microservice` TEXT, `submit_count` TEXT, `category` TEXT, `form_approvalStatus` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `form_title` TEXT, `active` TEXT, `editable` TEXT, `multiple_entry` TEXT, `microservice` TEXT, `api_url` TEXT, `submit_count` TEXT, `category` TEXT, `form_approvalStatus` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -375,6 +375,12 @@
           {
             "fieldPath": "microservice",
             "columnName": "microservice",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "api_url",
+            "columnName": "api_url",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1076,7 +1082,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd850c1fc6e131f35930e0c6065c0aef')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8d6bebe3e25411abd4c1d5badb5720e6')"
     ]
   }
 }
