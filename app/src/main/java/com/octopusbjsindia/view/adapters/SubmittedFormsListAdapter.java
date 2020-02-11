@@ -128,10 +128,10 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_title))
                     .setText(data.getName().getLocaleValue());
 
-            if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
-                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
-                        .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
-            }
+//            if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
+//                ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
+//                        .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
+//            }
         }
 
         final ProcessData finalFormResult = data;

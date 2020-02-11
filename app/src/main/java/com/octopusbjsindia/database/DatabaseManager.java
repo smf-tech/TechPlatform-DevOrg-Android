@@ -43,6 +43,7 @@ public class DatabaseManager {
                     .allowMainThreadQueries()
                     .addMigrations(MIGRATION_OLD_TO_NEW)
                     .addMigrations(MIGRATION_2_TO_3)
+                    .addMigrations(MIGRATION_3_TO_4)
                     .build();
         }
 
@@ -70,6 +71,16 @@ public class DatabaseManager {
 
             database.execSQL("ALTER TABLE StructureData ADD COLUMN workStartDate TEXT");
             database.execSQL("ALTER TABLE StructureData ADD COLUMN workCompletedDate TEXT");
+
+        }
+    };
+
+    private static final Migration MIGRATION_3_TO_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN api_url TEXT");
+            database.execSQL("ALTER TABLE ProcessData ADD COLUMN api_url TEXT");
 
         }
     };

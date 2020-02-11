@@ -158,7 +158,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         if (Util.isConnected(getContext()) && !mIsPartiallySaved && !TextUtils.isEmpty(processId)) {
                             String url;
                             if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
-                                url = formModel.getData().getApi_url();
+                                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
 
                                 formPresenter.getFormResults(url);
                             }
@@ -472,7 +472,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     String url;
                     if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
 
-                        url = formModel.getData().getApi_url();
+                        url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
 
                         formPresenter.getFormResults(url);
                     }
@@ -702,7 +702,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 //                                    formModel.getData().getMicroService().getRoute());
 //                        }
                         if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
-                            url = formModel.getData().getApi_url();
+                            url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
                         }
 
                         if (mIsInEditMode && !mIsPartiallySaved) {

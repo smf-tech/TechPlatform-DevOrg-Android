@@ -186,7 +186,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 //            }
 //        }
         if (formSchema != null && formSchema.getApi_url() != null) {
-            url = formSchema.getApi_url();
+            url = formSchema.getApi_url() + "/" + formId;
         }
         return url;
     }

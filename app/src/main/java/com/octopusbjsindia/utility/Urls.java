@@ -90,6 +90,7 @@ public class Urls {
     }
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";
+
     }
 
     public class Matrimony {

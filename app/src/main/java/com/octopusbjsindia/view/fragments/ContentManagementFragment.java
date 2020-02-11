@@ -26,19 +26,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.ExpandableListAdapter;
+import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.ContentDatum;
 import com.octopusbjsindia.models.content.Datum;
 import com.octopusbjsindia.models.content.Datum_;
 import com.octopusbjsindia.models.content.DownloadContent;
 import com.octopusbjsindia.models.content.DownloadInfo;
+import com.octopusbjsindia.presenter.ContentFragmentPresenter;
 import com.octopusbjsindia.services.ShowTimerService;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
+import com.octopusbjsindia.view.activities.LoginActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +54,7 @@ import java.util.List;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
-public class ContentManagementFragment extends Fragment {
+public class ContentManagementFragment extends Fragment implements APIDataListener {
 
     private View contentFragmentview;
     private ImageView backButton;
@@ -58,7 +65,7 @@ public class ContentManagementFragment extends Fragment {
     private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
     private TextView txt_noData;
     private File f;
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private List<Datum> contentList;
@@ -80,6 +87,7 @@ public class ContentManagementFragment extends Fragment {
     DownloadManager downloadmanager;
     private Activity activity;
     private PreferenceHelper preferenceHelper;
+    private ContentFragmentPresenter contentFragmentPresenter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -143,6 +151,12 @@ public class ContentManagementFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (Util.isConnected(getContext())) {
+            contentFragmentPresenter = new ContentFragmentPresenter(this);
+            contentFragmentPresenter.getContentData();
+        } else {
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
         if (expandableListAdapter != null) {
             expandableListAdapter.notifyDataSetChanged();
         }
@@ -273,6 +287,53 @@ public class ContentManagementFragment extends Fragment {
     }
 
 
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        showResponse(getResources().getString(R.string.msg_something_went_wrong));
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        showResponse(getResources().getString(R.string.msg_something_went_wrong));
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    public void saveContentData(List<ContentData> contentDataList) {
+
+
+//        listDataHeader.clear();
+//        for (ContentData contentData: contentDataList) {
+//            listDataHeader.add(contentData.getCategory());
+//        }
+    }
+
+    public void logOutUser() {
+        // remove user related shared pref data
+        Util.saveLoginObjectInPref("");
+        try {
+            Intent startMain = new Intent(activity, LoginActivity.class);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(startMain);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public void showResponse(String responseStatus) {
+        Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+//        if(matrimonyMeetList.size()==0) {
+//            rl_meetLayout.setVisibility(View.GONE);
+//            rlNoMeet.setVisibility(View.VISIBLE);
+//        }
+    }
+
     public void showProgressBar() {
         getActivity().runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
@@ -289,5 +350,10 @@ public class ContentManagementFragment extends Fragment {
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
     }
 }
