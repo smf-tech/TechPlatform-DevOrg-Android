@@ -8,11 +8,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -26,20 +21,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.octopusbjsindia.R;
-
-/*
-import com.platform.adapter.ExpandableListAdapter;
-import com.platform.listeners.ContentDataListener;
-import com.platform.models.content.ContentDatum;
-import com.platform.models.content.ContentModel;
-import com.platform.models.content.Datum;
-import com.platform.models.content.Datum_;
-import com.platform.models.content.DownloadContent;
-import com.platform.request.ContentDataRequestCall;
-*/
 import com.octopusbjsindia.adapter.ExpandableListAdapter;
 import com.octopusbjsindia.listeners.ContentDataListener;
 import com.octopusbjsindia.models.content.ContentDatum;
@@ -60,6 +48,17 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+
+/*
+import com.platform.adapter.ExpandableListAdapter;
+import com.platform.listeners.ContentDataListener;
+import com.platform.models.content.ContentDatum;
+import com.platform.models.content.ContentModel;
+import com.platform.models.content.Datum;
+import com.platform.models.content.Datum_;
+import com.platform.models.content.DownloadContent;
+import com.platform.request.ContentDataRequestCall;
+*/
 
 public class ContentManagementFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

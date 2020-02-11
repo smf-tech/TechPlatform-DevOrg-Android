@@ -49,11 +49,11 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
             lyMain = itemView.findViewById(R.id.ly_main);
             ivUserImage = itemView.findViewById(R.id.iv_user_profile_pic);
             tvName = itemView.findViewById(R.id.tv_name);
+            tvTotalHours = itemView.findViewById(R.id.tv_total_hours);
             tvRole = itemView.findViewById(R.id.tv_role);
             ivStatus = itemView.findViewById(R.id.iv_status);
             tvCheckInTime = itemView.findViewById(R.id.tv_check_in_time);
             tvCheckOutTime = itemView.findViewById(R.id.tv_check_out_time);
-            tvTotalHours = itemView.findViewById(R.id.tv_total_hours);
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

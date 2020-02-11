@@ -1,7 +1,6 @@
 package com.octopusbjsindia.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.octopusbjsindia.Platform;
@@ -61,7 +60,7 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
         plannerFragment.hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             AttendanceResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, AttendanceResponse.class);
-            if(data.getStatus() == 1000){
+            if (data.getStatus() == 1000) {
                 plannerFragment.logOutUser();
             } else {
                 DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema()
@@ -69,7 +68,7 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
                                 true,
                                 data.getData().getData().getAttendaceDate(),
                                 data.getData().getData().getAttendanceType());
-                Util.showToast(data.getMessage(),plannerFragment);
+                Util.showToast(data.getMessage(), plannerFragment);
             }
         }
     }

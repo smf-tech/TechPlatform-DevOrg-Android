@@ -63,6 +63,7 @@ public class SyncAdapterUtils {
             manualRefresh();
             PreferenceManager.getDefaultSharedPreferences(context).edit()
                     .putBoolean(PREF_SETUP_COMPLETE, true).apply();
+            Log.d("manualSyncRequest","SyncAdapterUtils");
         }
 
     }
@@ -87,10 +88,11 @@ public class SyncAdapterUtils {
                 GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE), // Sync account
                 AUTHORITY,
                 b);                                             // Extras
-
+        Log.d("manualSyncRequest","called");
     }
 
     public static void periodicSyncRequest() {
+
         Bundle b = new Bundle();
         ContentResolver.addPeriodicSync (GenericAccountService.GetAccount(ACCOUNT, ACCOUNT_TYPE),
                 AUTHORITY,

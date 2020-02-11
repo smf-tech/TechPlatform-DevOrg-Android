@@ -128,6 +128,7 @@ public class Urls {
         public static final String CREATE_MACHINE = "api/createMachine";
         public static final String UPDATE_STRUCTURE_MACHINE_STATUS = "api/statusChange/%1$s/%2$s/%3$s/%4$s";
         public static final String SEND_MACHINE_SIGN_OFF = "api/machineSignOff";
+        public static final String UPDATE_MACHINE_STATUS_TO_AVAILABLE = "api/machineAvailable";
         public static final String SUBMIT_MOU = "api/machineMou";
         public static final String GET_MACHINE_DETAILS = "api/machineDetails/%1$s/%2$s";
         public static final String GET_MACHINE_WORKING_HOURS_RECORD = "api/workLog";
@@ -154,6 +155,8 @@ public class Urls {
         public static final String MACHINE_DATA = "api/getMachineData";
         public static final String MACHINE_DATA_WORKLOG = "api/getMachineWorkLogData";
         public static final String MACHINE_WORKLOG__DETAILS = "api/logDetails";
+        public static final String MACHINE_WORKLOG_EDIT = "api/editWorkLog";
+
     }
 
     public class Configuration{

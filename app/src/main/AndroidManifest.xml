@@ -26,7 +26,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
+    <uses-permission
+        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <application
         android:name=".Platform"
         android:allowBackup="true"
@@ -223,12 +224,20 @@
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".receivers.ConnectivityReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.AlarmReceiver"
+            android:exported="true"
+            android:enabled="true"
+            >
         </receiver>
 
         <service

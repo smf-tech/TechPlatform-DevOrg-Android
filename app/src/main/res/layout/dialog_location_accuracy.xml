@@ -43,8 +43,7 @@
                 android:layout_margin="@dimen/dimen_05dp"
                 android:text="@string/cancel"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                 />
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

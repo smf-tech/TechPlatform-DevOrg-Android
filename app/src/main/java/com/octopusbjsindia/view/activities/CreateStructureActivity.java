@@ -180,6 +180,18 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 finish();
                 break;
             case R.id.et_district:
+                districtList.clear();
+
+                List<JurisdictionType> dist = new ArrayList<>();
+                dist.addAll(Util.getUserObjectFromPref().getUserLocation().getDistrictIds());
+
+                for(JurisdictionType obj : dist){
+                    CustomSpinnerObject spinnerObject = new CustomSpinnerObject();
+                    spinnerObject.set_id(obj.getId());
+                    spinnerObject.setName(obj.getName());
+                    spinnerObject.setSelected(false);
+                    districtList.add(spinnerObject);
+                }
                 CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(this, this,
                         "Select District", districtList, false);
                 csdDisttrict.show();

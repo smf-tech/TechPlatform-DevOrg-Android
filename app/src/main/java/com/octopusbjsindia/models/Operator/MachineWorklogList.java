@@ -18,12 +18,21 @@ public class MachineWorklogList {
     @SerializedName("startDate")
     @Expose
     private String startDate;
+
+    @SerializedName("start_id")
+    @Expose
+    private String start_id;
     @SerializedName("startReading")
     @Expose
     private String startReading;
     @SerializedName("startMeterReadingImage")
     @Expose
     private String startMeterReadingImage;
+
+    @SerializedName("end_id")
+    @Expose
+    private String end_id;
+
     @SerializedName("endReading")
     @Expose
     private String endReading;
@@ -96,5 +105,21 @@ public class MachineWorklogList {
 
     public void setWorkDate(String workDate) {
         this.workDate = workDate;
+    }
+
+    public String getStart_id() {
+        return start_id;
+    }
+
+    public void setStart_id(String start_id) {
+        this.start_id = start_id;
+    }
+
+    public String getEnd_id() {
+        return end_id;
+    }
+
+    public void setEnd_id(String end_id) {
+        this.end_id = end_id;
     }
 }

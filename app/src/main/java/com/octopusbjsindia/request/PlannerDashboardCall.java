@@ -79,11 +79,11 @@ public class PlannerDashboardCall {
 
         Response.ErrorListener orgErrorListener = error -> plannerFragmetListener.onErrorListener(error);
 
-        final String url = BuildConfig.BASE_URL+ Urls.Attendance.SUBMIT_ATTENDANCE;
+        final String url = BuildConfig.BASE_URL + Urls.Attendance.SUBMIT_ATTENDANCE;
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(data);
-        Log.d(TAG, "submitAttendance - url: " +url);
-        Log.d(TAG, "submitAttendance - req: " +json);
+        Log.d(TAG, "submitAttendance - url: " + url);
+        Log.d(TAG, "submitAttendance - req: " + json);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
@@ -100,11 +100,12 @@ public class PlannerDashboardCall {
         gsonRequest.setBodyParams(createBodyParams(json));
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
+
     private JSONObject createBodyParams(String json) {
 
         Log.d(TAG, "Request json: " + json);
         try {
-            return  new JSONObject(json);
+            return new JSONObject(json);
         } catch (Exception e) {
             e.printStackTrace();
         }

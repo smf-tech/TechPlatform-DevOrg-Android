@@ -1,9 +1,5 @@
 package com.octopusbjsindia.view.activities;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -49,7 +49,6 @@ import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.StructurePripretionsActivityPresenter;
-import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;

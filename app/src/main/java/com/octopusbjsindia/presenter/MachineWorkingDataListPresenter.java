@@ -16,7 +16,7 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
 
     private final String GET_APP_CONFIG = "getappconfig";
     private final String GET_WORKLOG_DETAILS = "getworklogdetails";
-
+    private final String REQUEST_EDIT_WORKLOG = "REQUESTEDITWORKLOG";
     private MachineWorkingDataListActivity mContext;
 
     public MachineWorkingDataListPresenter(MachineWorkingDataListActivity mContext) {
@@ -81,6 +81,13 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
         requestCall.postDataApiCall(GET_WORKLOG_DETAILS,requestJson ,url);
     }
 
+    public void editMachineWorklog(String requestJson){
+        final String url = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_WORKLOG_EDIT);
+        MachineWorkingDataListRequestCall requestCall = new MachineWorkingDataListRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(REQUEST_EDIT_WORKLOG,requestJson ,url);
+    }
+
 
     @Override
     public void onFailureListener(String requestID, String message) {
@@ -95,12 +102,20 @@ public class MachineWorkingDataListPresenter implements APIDataListener {
     @Override
     public void onSuccessListener(String requestID, String response) {
         hideProgressBar();
-        Log.d("machineWorklog", requestID + " response Json : " + response);
+        if (requestID==REQUEST_EDIT_WORKLOG){
+            Log.d("machineWorklog", requestID + " response Json : " + response);
+            Gson gson = new Gson();
+            CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
+            mContext.ShowEditedMeterReading(requestID, response, commonResponse.getStatus());
+
+        }else {
+            Log.d("machineWorklog", requestID + " response Json : " + response);
         /*AppConfigResponseModel appConfigResponseModel
                 = new Gson().fromJson(response, AppConfigResponseModel.class);*/
-        Gson gson = new Gson();
-        CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
-        mContext.ShowReceivedWorkList(requestID,response, commonResponse.getStatus());
+            Gson gson = new Gson();
+            CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
+            mContext.ShowReceivedWorkList(requestID, response, commonResponse.getStatus());
+        }
     }
 
     @Override

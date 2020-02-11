@@ -79,7 +79,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         }
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
 
-        if (machineData.getStatusCode() == Constants.SSModule.MACHINE_HALTED_STATUS_CODE){
+        if (machineData.getStatusCode() == Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
             holder.lyReason.setVisibility(View.VISIBLE);
             holder.tvReason.setText(machineData.getHaltReason());
             holder.lyAction.setVisibility(View.GONE);
@@ -134,8 +134,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         } else {
             holder.btAction.setVisibility(View.INVISIBLE);
         }
-        if(ssDataList.get(position).getMachineSignOff() !=null && !ssDataList.get(position).getMachineSignOff()) {
-            holder.ivSignoff.setVisibility(View.INVISIBLE);
+        if (ssDataList.get(position).getMachineSignOff() != null && !ssDataList.get(position).getMachineSignOff()) {
+            holder.ivSignoff.setVisibility(View.GONE);
         } else {
             holder.ivSignoff.setVisibility(View.VISIBLE);
         }
@@ -144,11 +144,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvMachineCode, tvTcName, tvMachineModel, tvContact, tvStructureCode,
                 tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
-                tvLocation, tvOwnerValue,tvReason;
+                tvLocation, tvOwnerValue, tvReason;
         Button btAction;
         ImageView btnPopupMenu, ivSignoff;
         LinearLayout rlMachine;
-        RelativeLayout lyAction,lyReason;
+        RelativeLayout lyAction, lyReason;
         PopupMenu popup;
 
         ViewHolder(View itemView) {
@@ -169,7 +169,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 @Override
                 public void onClick(View v) {
                     showPublishApiDialog("Confirmation",
-                            "Are you sure you want to call this number?", "YES", "No",tvContact.getText().toString());
+                            "Are you sure you want to call this number?", "YES", "No", tvContact.getText().toString());
                 }
             });
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
@@ -182,7 +182,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 public void onClick(View v) {
 
                     showPublishApiDialog("Confirmation",
-                            "Are you sure you want to call this number?", "YES", "No",tvOperatorContact.getText().toString());
+                            "Are you sure you want to call this number?", "YES", "No", tvOperatorContact.getText().toString());
                 }
             });
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
@@ -254,11 +254,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     }
                     if (!ssDataList.get(getAdapterPosition()).getMouUploaded()) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -268,7 +264,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (fragment.isMouImagesUpload) {
                                 popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
                             }
@@ -285,15 +283,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             if (Util.isConnected(activity)) {
                                 switch (item.getItemId()) {
                                     case R.id.action_machine_shifting:
-                                        Intent intent = new Intent(activity, SSActionsActivity.class);
-                                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                                        intent.putExtra("title", "Select Structure");
-                                        intent.putExtra("type", "shiftMachine");
-                                        intent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        intent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                        intent.putExtra("currentStructureId", ssDataList.get
-                                                (getAdapterPosition()).getDeployedStrutureId());
-                                        activity.startActivity(intent);
+                                        if (Util.isConnected(activity)) {
+                                            fragment.shiftMachine(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                        }
                                         break;
                                     case R.id.action_machine_visit:
                                         Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
@@ -337,8 +331,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     case R.id.action_machine_worklog:
                                         if (Util.isConnected(activity)) {
                                             Intent startMain1 = new Intent(activity, MachineWorkingDataListActivity.class);
-                                            startMain1.putExtra("machineId",ssDataList.get(getAdapterPosition()).getId());
-                                            startMain1.putExtra("machineName",ssDataList.get(getAdapterPosition()).getMachineCode());
+                                            startMain1.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                            startMain1.putExtra("machineName", ssDataList.get(getAdapterPosition()).getMachineCode());
                                             activity.startActivity(startMain1);
                                         } else {
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
@@ -436,7 +430,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         }
 
         private void showPublishApiDialog(String dialogTitle, String message, String btn1String, String
-                btn2String ,String phoneNumber) {
+                btn2String, String phoneNumber) {
             final Dialog dialog = new Dialog(Objects.requireNonNull(activity));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.dialogs_leave_layout);

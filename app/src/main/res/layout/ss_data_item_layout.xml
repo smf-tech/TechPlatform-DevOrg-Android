@@ -385,7 +385,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1">
 
                     <TextView
@@ -402,19 +402,19 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_status_lebal"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_size_13"/>
 
                     <ImageView
                         android:id="@+id/iv_signoff"
-                        android:layout_width="@dimen/dimen_15dp"
-                        android:layout_height="@dimen/dimen_15dp"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="@dimen/dimen_20dp"
                         android:layout_toRightOf="@+id/tv_status_lebal"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:src="@drawable/ic_signoff"
-                        android:visibility="visible"/>
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 

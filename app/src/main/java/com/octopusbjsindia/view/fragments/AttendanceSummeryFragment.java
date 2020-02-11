@@ -45,7 +45,7 @@ public class AttendanceSummeryFragment extends Fragment implements APIDataListen
 
     private RelativeLayout progressBarLayout;
     private MaterialCalendarView calendarView;
-    private TextView tvCheckInTime, tvCheckOutTime, tvStatus, tvHours, tvAddress;
+    private TextView tvCheckInTime, tvCheckOutTime, tvStatus, tvHours, tvChechInAddress, tvChechOutAddress;
     private Date selectedDate;
     private CalendarDay selectedCalendarDay;
     private String userId;
@@ -86,7 +86,8 @@ public class AttendanceSummeryFragment extends Fragment implements APIDataListen
         tvCheckInTime = view.findViewById(R.id.tv_check_in_time);
         tvCheckOutTime = view.findViewById(R.id.tv_check_out_time);
         tvHours = view.findViewById(R.id.tv_hours);
-        tvAddress = view.findViewById(R.id.tv_address);
+        tvChechInAddress = view.findViewById(R.id.tv_checkin_address);
+        tvChechOutAddress = view.findViewById(R.id.tv_checkout_address);
         tvStatus = view.findViewById(R.id.tv_status);
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
@@ -292,7 +293,8 @@ public class AttendanceSummeryFragment extends Fragment implements APIDataListen
                             date1 = simpleDateFormat.parse(timeCheckIn);
 
 
-                            tvAddress.setText(attendance.getCheckIn().getAddress());
+                            tvChechInAddress.setText(attendance.getCheckIn().getAddress());
+                            tvChechOutAddress.setText(attendance.getCheckOut().getAddress());
 
                         } else {
                             tvCheckInTime.setText("");
@@ -320,16 +322,14 @@ public class AttendanceSummeryFragment extends Fragment implements APIDataListen
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-
-
                     break;
                 }
             } else {
                 tvCheckInTime.setText("");
                 tvCheckOutTime.setText("");
                 tvHours.setText("");
-                tvAddress.setText("");
+                tvChechInAddress.setText("");
+                tvChechOutAddress.setText("");
 
                 tvStatus.setVisibility(View.GONE);
             }

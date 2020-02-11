@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -320,7 +319,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         String otp = getOtp();
         if (deviceId.length() > 0) {
             sLoginInfo.setDeviceId(deviceId);
-            Util.setStringInPref(Constants.App.deviceId,deviceId);
+            Util.setStringInPref(Constants.App.deviceId, deviceId);
             otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()

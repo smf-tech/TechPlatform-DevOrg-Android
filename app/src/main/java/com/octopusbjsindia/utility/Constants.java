@@ -365,6 +365,7 @@ public class Constants {
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
         public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
         public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
+        public static final Integer MACHINE_PAUSE_STATUS_CODE = 113;
 
         public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
         public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
@@ -390,6 +391,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_DELETE_FEED = 126;
         public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
         public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
+        public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
         public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
 
         public static final Integer STRUCTURE_APPROVED = 115;

@@ -128,21 +128,27 @@
                         android:layout_below="@+id/tv_title_start"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_16"
+                        android:textSize="@dimen/text_size_14"
                         android:gravity="center_horizontal"
                         android:textColor="@color/dark_grey"
                         android:layout_centerHorizontal="true"
                         android:fontFamily="@font/opensans_semibold"
+                        android:drawableEnd="@drawable/ic_edit"
+                        android:drawablePadding="@dimen/dimen_02dp"
+                        android:drawableTint="@color/black"
+                        android:background="@drawable/leaves_count_border"
+                        android:padding="@dimen/dimen_05dp"
                         android:layout_height="wrap_content" />
                     <ImageView
-                        android:layout_width="@dimen/dimen_50dp"
+                        android:layout_width="@dimen/dimen_45dp"
                         android:src="@drawable/ic_img"
                         android:layout_centerHorizontal="true"
                         android:id="@+id/img_start_meter"
                         android:layout_below="@+id/tv_value_start"
                         android:background="@color/dark_grey"
                         android:padding="1dp"
-                        android:layout_height="@dimen/dimen_50dp" />
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_height="@dimen/dimen_45dp" />
 
                 </RelativeLayout>
 
@@ -173,21 +179,26 @@
                         android:layout_below="@+id/tv_title_end"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:textSize="@dimen/text_size_16"
-
+                        android:textSize="@dimen/text_size_14"
+                        android:drawableEnd="@drawable/ic_edit"
+                        android:drawablePadding="@dimen/dimen_02dp"
+                        android:drawableTint="@color/black"
                         android:textColor="@color/dark_grey"
                         android:fontFamily="@font/opensans_semibold"
                         android:gravity="center_horizontal"
+                        android:background="@drawable/leaves_count_border"
+                        android:padding="@dimen/dimen_05dp"
                         android:layout_height="wrap_content" />
                     <ImageView
-                        android:layout_width="@dimen/dimen_50dp"
+                        android:layout_width="@dimen/dimen_45dp"
                         android:src="@drawable/ic_img"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/tv_value_end"
                         android:id="@+id/img_end_meter"
                         android:background="@color/dark_grey"
                         android:padding="1dp"
-                        android:layout_height="@dimen/dimen_50dp" />
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_height="@dimen/dimen_45dp" />
 
                 </RelativeLayout>
 

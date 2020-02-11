@@ -7,16 +7,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +32,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -152,10 +147,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         } else {
             holder.tvBoundary.setVisibility(View.GONE);
         }
-        if(ssDataList.get(position).getWorkStartDate() != null && !TextUtils.isEmpty(ssDataList.get(position).getWorkStartDate())){
+        if (ssDataList.get(position).getWorkStartDate() != null && !TextUtils.isEmpty(ssDataList.get(position).getWorkStartDate())) {
             holder.lyStartData.setVisibility(View.VISIBLE);
             holder.tvStartDate.setText(ssDataList.get(position).getWorkStartDate());
-            if(ssDataList.get(position).getWorkCompletedDate() != null){
+            if (ssDataList.get(position).getWorkCompletedDate() != null) {
                 holder.tvEndDate.setText(ssDataList.get(position).getWorkCompletedDate());
             }
         } else {

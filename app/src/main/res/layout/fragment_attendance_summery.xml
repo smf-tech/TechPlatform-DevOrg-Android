@@ -154,10 +154,29 @@
                     android:text="Check in at:"/>
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_checkin_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_address_lbl"
+                    android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:fontFamily="@font/opensans"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tv_add_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_checkin_address"
+                    android:layout_toEndOf="@+id/iv_user_profile_pic"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textSize="@dimen/text_size_12"
+                    android:text="Check out at:"/>
+
+                <TextView
+                    android:id="@+id/tv_checkout_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_add_lbl"
                     android:layout_toEndOf="@+id/iv_user_profile_pic"
                     android:fontFamily="@font/opensans"
                     android:textSize="@dimen/text_size_12" />
