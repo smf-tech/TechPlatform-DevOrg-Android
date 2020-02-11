@@ -206,6 +206,6 @@
             android:clickable="true"
             android:focusable="true"
             android:indeterminateOnly="true"
-            android:visibility="gone" />
+            />
     </RelativeLayout>
 </RelativeLayout>

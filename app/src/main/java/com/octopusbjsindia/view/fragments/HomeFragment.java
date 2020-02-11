@@ -93,9 +93,20 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getUserData();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        getUserData();
+        if(Constants.GET_MODELS){
+            getUserData();
+            Constants.GET_MODELS = false;
+        }
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -34,6 +35,7 @@ import java.util.List;
 
 public class ProfileActivity extends BaseActivity implements View.OnClickListener, APIDataListener {
 
+    private RelativeLayout progressBar;
     ProfileActivityPresenter presenter;
     LinearLayout parent;
 
@@ -43,6 +45,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_profile);
 
         ((TextView) findViewById(R.id.toolbar_title)).setText(getString(R.string.profile));
+        progressBar = findViewById(R.id.ly_progress_bar);
 
         presenter = new ProfileActivityPresenter(this);
         if(Util.isConnected(this)){
@@ -184,12 +187,20 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void showProgressBar() {
-
+        runOnUiThread(() -> {
+            if ( progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        runOnUiThread(() -> {
+            if (progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -209,6 +220,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void updateUI(String response) {
         User user = new Gson().fromJson(response, User.class);
         if (response != null && user.getUserInfo() != null) {
+            Constants.GET_MODELS = true;
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
         initViews();

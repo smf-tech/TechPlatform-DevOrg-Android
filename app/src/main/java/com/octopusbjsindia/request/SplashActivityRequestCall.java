@@ -43,6 +43,7 @@ public class SplashActivityRequestCall {
                         listener.onSuccessListener(requestID, res);
                     }
                 } catch (Exception e) {
+                    Log.d(TAG, requestID + " Excep: " + e.getMessage());
                     listener.onFailureListener(requestID, e.getMessage());
                 }
             }
@@ -51,6 +52,7 @@ public class SplashActivityRequestCall {
         Response.ErrorListener getModulesErrorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, requestID + " Error: " + error.getMessage());
                 listener.onErrorListener(requestID, error);
             }
         };

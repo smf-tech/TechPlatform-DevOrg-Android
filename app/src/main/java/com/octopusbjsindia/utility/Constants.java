@@ -3,6 +3,7 @@ package com.octopusbjsindia.utility;
 public class Constants {
 
 
+    public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
     public static final String MARK_INTERVIEW = "Interview";
 
