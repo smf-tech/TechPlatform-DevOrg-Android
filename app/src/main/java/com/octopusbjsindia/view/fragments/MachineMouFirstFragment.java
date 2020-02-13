@@ -35,7 +35,7 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
-import com.octopusbjsindia.models.user.UserInfo;
+import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
@@ -66,13 +66,19 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     private ArrayList<CustomSpinnerObject> isMeterWorkingList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> manufactureYearsList = new ArrayList<>();
-    private String selectedOwner = "", selectedOwnerId, selectedStateId, selectedDistrictId, selectedTaluka,
-            selectedTalukaId, selectedMachine = "",
+    private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
+    private String selectedOwner = "", selectedOwnerId, selectedState, selectedStateId, selectedDistrict, selectedDistrictId,
+            selectedTaluka, selectedTalukaId, selectedMachine = "",
             selectedMachineId, selectedMakeModel = "", selectedMakeModelId,
             selectedIsMeterWorking = "", selectedYear, selectedYearId;
-    private boolean isMachineEligible, isMachineMou;
+    private boolean isMachineEligible, isMachineMou, isStateFilter, isDistrictFilter, isTalukaFilter;
     private GPSTracker gpsTracker;
     private Location location;
+    String userStateIds = "";
+    String userDistrictIds = "";
+    String userTalukaIds = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +104,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
         editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
-//        etUniqueIdNumber = machineMouFragmentView.findViewById(R.id.et_uniqueId_number);
         etMachineState = machineMouFragmentView.findViewById(R.id.et_machine_state);
         etMachineDistrict = machineMouFragmentView.findViewById(R.id.et_machine_district);
         etMachineTaluka = machineMouFragmentView.findViewById(R.id.et_machine_taluka);
@@ -125,9 +130,52 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
                     isMachineMou = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
+                    isStateFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
+                    isDistrictFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
+                    isTalukaFilter = true;
+                    continue;
                 }
             }
         }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == 0) {
+                    userStateIds = j.getId();
+                } else {
+                    userStateIds = userStateIds + "," + j.getId();
+                }
+            }
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                if (i == 0) {
+                    userDistrictIds = j.getId();
+                } else {
+                    userDistrictIds = userDistrictIds + "," + j.getId();
+                }
+            }
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                if (i == 0) {
+                    userTalukaIds = j.getId();
+                } else {
+                    userTalukaIds = userTalukaIds + "," + j.getId();
+                }
+            }
+        }
+
         if (statusCode == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
             if (isMachineEligible) {
                 llEligible.setVisibility(View.VISIBLE);
@@ -166,14 +214,11 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             setMachineFirstData();
         }
         gpsTracker = new GPSTracker(getActivity());
-
     }
 
     private void setMachineFirstData() {
         editOwnerType.setFocusable(false);
         editOwnerType.setLongClickable(false);
-//        etUniqueIdNumber.setFocusable(false);
-//        etUniqueIdNumber.setLongClickable(false);
         etMachineState.setFocusable(false);
         etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
@@ -221,8 +266,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     private void setUIForMachineCreate() {
         editOwnerType.setFocusable(false);
         editOwnerType.setLongClickable(false);
-//        etUniqueIdNumber.setFocusable(true);
-//        etUniqueIdNumber.setLongClickable(true);
         etMachineState.setFocusable(false);
         etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
@@ -239,7 +282,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etMeterWorking.setLongClickable(false);
 
         editOwnerType.setOnClickListener(this);
-        //etMachineTaluka.setOnClickListener(this);
         etMachineType.setOnClickListener(this);
         etYear.setOnClickListener(this);
         etMachineMakeModel.setOnClickListener(this);
@@ -260,17 +302,52 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             etMachineTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
-        if (Util.isConnected(getActivity())) {
-            if (Util.getUserObjectFromPref().getRoleNames().equals(Constants.SSModule.DISTRICT_LEVEL)) {
-                etMachineTaluka.setOnClickListener(this);
-                if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    machineMouFragmentPresenter.getLocationData(selectedDistrictId,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
+
+        if (isStateFilter) {
+            etMachineState.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+                etMachineState.setOnClickListener(this);
+                machineStateList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                    CustomSpinnerObject customState = new CustomSpinnerObject();
+                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                    machineStateList.add(customState);
                 }
             }
+        }
+        if (isDistrictFilter) {
+            etMachineDistrict.setOnClickListener(this);
+            machineMouFragmentPresenter.getLocationData(userStateIds,
+                    Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.DISTRICT_LEVEL);
         } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+                etMachineDistrict.setOnClickListener(this);
+                machineDistrictList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
+                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                    machineDistrictList.add(customDistrict);
+                }
+            }
+        }
+        if (isTalukaFilter) {
+            etMachineTaluka.setOnClickListener(this);
+            machineMouFragmentPresenter.getLocationData(userDistrictIds,
+                    Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+                etMachineTaluka.setOnClickListener(this);
+                machineTalukaList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
+                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                    machineTalukaList.add(customTaluka);
+                }
+            }
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -343,8 +420,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedBy
                 (selectedOwnerId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOwnedByValue(selectedOwner);
-//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineCode
-//                (etUniqueIdNumber.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setState(selectedStateId);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDistrict
                 (selectedDistrictId);
@@ -484,6 +559,24 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+            case R.id.et_machine_state:
+                CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select State",
+                        machineStateList,
+                        false);
+                cdd6.show();
+                cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_machine_district:
+                CustomSpinnerDialogClass cdd7 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District",
+                        machineDistrictList,
+                        false);
+                cdd7.show();
+                cdd7.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case R.id.et_machine_taluka:
                 CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select Taluka", machineTalukaList, false);
@@ -602,6 +695,25 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 }
                 editOwnerType.setText(selectedOwner);
                 break;
+            case "Select State":
+                for (CustomSpinnerObject state : machineStateList) {
+                    if (state.isSelected()) {
+                        selectedState = state.getName();
+                        selectedStateId = state.get_id();
+                        break;
+                    }
+                }
+                etMachineState.setText(selectedState);
+            case "Select District":
+                for (CustomSpinnerObject district : machineDistrictList) {
+                    if (district.isSelected()) {
+                        selectedDistrict = district.getName();
+                        selectedDistrictId = district.get_id();
+                        break;
+                    }
+                }
+                etMachineDistrict.setText(selectedDistrict);
+                break;
             case "Select Taluka":
                 for (CustomSpinnerObject taluka : machineTalukaList) {
                     if (taluka.isSelected()) {
@@ -666,11 +778,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 intent.putExtra("viewType", 2);
                 intent.putExtra("title", "Machine List");
                 getActivity().startActivity(intent);
-            }
-        }
-        if (requestId.equals(MachineMouFragmentPresenter.UPDATE_STRUCTURE_STATUS)) {
-            if (status == 200) {
-
             }
         }
     }

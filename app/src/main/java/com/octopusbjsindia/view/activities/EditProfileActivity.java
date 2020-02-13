@@ -519,12 +519,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCountry:
                 if (customSpinnerCountries.size() > 0) {
-                    CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
-                            "Select Country", customSpinnerCountries,
-                            true);
-                    csdCountry.show();
-                    csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                            get(selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                                "Select Country", customSpinnerCountries,
+                                true);
+                        csdCountry.show();
+                        csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                                "Select Country", customSpinnerCountries,
+                                false);
+                        csdCountry.show();
+                        csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedProjects != null && selectedProjects.size() > 0 &&
                             !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
@@ -539,12 +551,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserState:
                 if (customSpinnerStates.size() > 0) {
-                    CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
-                            "Select State", customSpinnerStates,
-                            true);
-                    csdState.show();
-                    csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                            get(selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select State", customSpinnerStates,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select State", customSpinnerStates,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedCountries.size() > 0 && selectedCountries.size() > 0 &&
                             selectedCountries.get(0).getId().length() > 0) {
@@ -575,12 +599,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCity:
                 if (customSpinnerCities.size() > 0) {
-                    CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
-                            "Select City", customSpinnerCities,
-                            true);
-                    csdState.show();
-                    csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
+                            (selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.CITY_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select City", customSpinnerCities,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select City", customSpinnerCities,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedStates != null && selectedStates.size() > 0 &&
                             !TextUtils.isEmpty(selectedStates.get(0).getId())) {
@@ -604,12 +640,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserDistrict:
                 if (customSpinnerDistricts.size() > 0) {
-                    CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
-                            "Select District", customSpinnerDistricts,
-                            true);
-                    csdState.show();
-                    csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                            get(selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select District", customSpinnerDistricts,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select District", customSpinnerDistricts,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedStates != null && selectedStates.size() > 0 &&
                             !TextUtils.isEmpty(selectedStates.get(0).getId())) {
@@ -633,12 +681,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserTaluka:
                 if (customSpinnerTalukas.size() > 0) {
-                    CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
-                            "Select Taluka", customSpinnerTalukas,
-                            true);
-                    csdState.show();
-                    csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
+                            (selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select Taluka", customSpinnerTalukas,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select Taluka", customSpinnerTalukas,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (etUserCity.getVisibility() == View.VISIBLE) {
                         if (selectedCities != null && selectedCities.size() > 0 &&
@@ -683,12 +743,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserVillage:
                 if (customSpinnerVillages.size() > 0) {
-                    CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
-                            "Select Village", customSpinnerVillages,
-                            true);
-                    csdVillage.show();
-                    csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
+                            (selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                                "Select Village", customSpinnerVillages,
+                                true);
+                        csdVillage.show();
+                        csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                                "Select Village", customSpinnerVillages,
+                                false);
+                        csdVillage.show();
+                        csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (etUserCluster.getVisibility() == View.VISIBLE) {
                         if (selectedClusters != null && selectedClusters.size() > 0 &&
@@ -733,12 +805,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCluster:
                 if (customSpinnerClusters.size() > 0) {
-                    CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
-                            "Select Cluster", customSpinnerClusters,
-                            true);
-                    csdCluster.show();
-                    csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
+                            (selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Cluster", customSpinnerClusters,
+                                true);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Cluster", customSpinnerClusters,
+                                false);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedTalukas != null && selectedTalukas.size() > 0 &&
                             !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
@@ -762,12 +846,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserSchool:
                 if (customSpinnerSchools.size() > 0) {
-                    CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
-                            "Select School", customSpinnerSchools,
-                            true);
-                    csdSchool.show();
-                    csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
+                            (selectedRole.getProject().getJurisdictions().size() - 1);
+
+                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select School", customSpinnerSchools,
+                                true);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select School", customSpinnerSchools,
+                                false);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
                 } else {
                     if (selectedVillages != null && selectedVillages.size() > 0 &&
                             !TextUtils.isEmpty(selectedVillages.get(0).getId())) {
@@ -1794,12 +1890,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (Util.isConnected(this)) {
                 if (etUserTaluka.getVisibility() == View.VISIBLE) {
-                        profilePresenter.getProfileLocationData(selectedCityIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
-                                selectedProjects.get(0).getId(), selectedRole.getId());
-                    }
+                    profilePresenter.getProfileLocationData(selectedCityIds,
+                            selectedRole.getProject().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                            selectedProjects.get(0).getId(), selectedRole.getId());
                 }
+            }
         } else if (type.equals("Select District")) {
             selectedDistricts.clear();
             for (CustomSpinnerObject district : customSpinnerDistricts) {
@@ -1842,12 +1938,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (Util.isConnected(this)) {
                 if (etUserTaluka.getVisibility() == View.VISIBLE) {
-                        profilePresenter.getProfileLocationData(selectedDistrictIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
-                                selectedProjects.get(0).getId(), selectedRole.getId());
-                    }
+                    profilePresenter.getProfileLocationData(selectedDistrictIds,
+                            selectedRole.getProject().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                            selectedProjects.get(0).getId(), selectedRole.getId());
                 }
+            }
         } else if (type.equals("Select Taluka")) {
             selectedTalukas.clear();
             for (CustomSpinnerObject taluka : customSpinnerTalukas) {

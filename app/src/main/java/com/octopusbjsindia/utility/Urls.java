@@ -147,6 +147,7 @@ public class Urls {
         public static final String MACHINE_MOU_FORM = "api/machineMou";
         public static final String MACHINE_MOU_UPLOAD = "api/machineMouUpload";
         public static final String STRUCTURE_BOUNDARY = "api/structureBoundary";
+        public static final String CREATE_OPERATOR = "api/createOperator";
     }
 
     public class OperatorApi {

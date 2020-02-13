@@ -76,7 +76,6 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
             map.put("taluka_id", taluka_id);
         }
 
-
         String paramjson = gson.toJson(map);
         final String getStructuresListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
@@ -325,8 +324,6 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-
-
                 if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_STRUCTURE_LIST)) {
                     CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
                     if (commentResponse.getStatus() == 1000) {

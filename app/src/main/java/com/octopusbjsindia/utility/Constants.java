@@ -391,6 +391,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
         public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
         public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
+        public static final Integer ACCESS_CODE_ADD_OPERATOR = 131;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
@@ -414,10 +415,10 @@ public class Constants {
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
 //        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
 
-        public static final String DISTRICT_LEVEL = "District Manager";
-        public static final String TALUKA_LEVEL = "Taluka Coordinator";
-        public static final String FIELD_LEVEL = "Field Associate";
-        public static final String OPERATOR = "Operator";
+//        public static final String DISTRICT_LEVEL = "District Manager";
+//        public static final String TALUKA_LEVEL = "Taluka Coordinator";
+//        public static final String FIELD_LEVEL = "Field Associate";
+//        public static final String OPERATOR = "Operator";
     }
 
     public static class OperatorModule {
