@@ -64,11 +64,11 @@
         <ImageView
             android:id="@+id/btn_filter_clear"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_30dp"
             android:layout_marginStart="@dimen/dimen_05dp"
             android:layout_weight="0.4"
             android:padding="@dimen/dimen_03dp"
-            android:src="@drawable/ic_cancel"
+            android:src="@drawable/ic_cancel_filter"
             android:visibility="gone" />
 
     </LinearLayout>
@@ -110,7 +110,7 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        android:src="@drawable/ic_add_structure_machine"
+        android:src="@drawable/ic_create_machine"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

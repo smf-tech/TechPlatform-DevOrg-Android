@@ -348,29 +348,33 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 }
                 break;
             case R.id.btn_filter:
-                if (!isFilterApplied) {
-                    isFilterApplied = true;
-                    btnFilter.setImageResource(R.drawable.ic_add);
-                    btnFilter.setRotation(45);
+                if ((!selectedStateId.equals("")) || (!selectedDistrictId.equals("")) || (!selectedTalukaId.equals(""))) {
+                    if (!isFilterApplied) {
+                        isFilterApplied = true;
+                        btnFilter.setImageResource(R.drawable.ic_cancel_filter);
 
-                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
-                            selectedStateId, selectedDistrictId, selectedTalukaId);
+                        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
+                                selectedStateId, selectedDistrictId, selectedTalukaId);
 
-                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
-                            selectedStateId, selectedDistrictId, selectedTalukaId);
+                        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
+                                selectedStateId, selectedDistrictId, selectedTalukaId);
+                    } else {
+                        isFilterApplied = false;
+                        btnFilter.setImageResource(R.drawable.ic_filter);
+                        selectedStateId = "";
+                        selectedDistrictId = "";
+                        selectedTalukaId = "";
+                        setUserLocation();
+                        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
+                                "", "", "");
+
+                        sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
+                                "", "", "");
+                    }
                 } else {
-                    isFilterApplied = false;
-                    btnFilter.setImageResource(R.drawable.ic_arrow_right);
-                    btnFilter.setRotation(0);
-                    selectedStateId = "";
-                    selectedDistrictId = "";
-                    selectedTalukaId = "";
-                    setUserLocation();
-                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
-                            "", "", "");
-
-                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
-                            "", "", "");
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select filter.",
+                            Snackbar.LENGTH_LONG);
                 }
                 break;
         }
