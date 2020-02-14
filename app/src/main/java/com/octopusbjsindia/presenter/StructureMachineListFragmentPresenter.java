@@ -77,7 +77,6 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
             map.put("taluka_id", taluka_id);
         }
 
-
         String paramjson = gson.toJson(map);
         final String getStructuresListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);

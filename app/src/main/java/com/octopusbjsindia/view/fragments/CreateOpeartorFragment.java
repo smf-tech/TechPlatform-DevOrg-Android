@@ -1,6 +1,5 @@
 package com.octopusbjsindia.view.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,12 +56,10 @@ import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.MachineMouFourthFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
-import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
@@ -86,34 +82,32 @@ import static android.app.Activity.RESULT_OK;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
+public class CreateOpeartorFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
         , CustomSpinnerListener {
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private Button btnFourthPartMou, btnPreviousMou;
+    private Button btnFourthPartMou;
     private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
             etAppInstalled;
     private ImageView imgLicense;
     private ArrayList<CustomSpinnerObject> isTrainingDoneList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> isAppInstalledList = new ArrayList<>();
     private String selectedtrainingOption, selectedAppInstalledOption;
-    private GPSTracker gpsTracker;
-    private Location location;
     private Uri outputUri;
     private Uri finalUri;
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
-    private int statusCode;
-    private int imgCount =0;
+    private int imgCount = 0;
     private String currentPhotoPath = "";
-    private Activity activity;
-    private String pdfURL="";
+    private String pdfURL = "";
+    OperatorDetails operatorDetails;
+    HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private Uri operatorLicenseImageUri;
 
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
         super.onAttachFragment(childFragment);
-        activity = getActivity();
     }
 
     @Override
@@ -125,7 +119,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        machineMouFourthFragmentView = inflater.inflate(R.layout.fragment_machine_mou_fourth, container, false);
+        machineMouFourthFragmentView = inflater.inflate(R.layout.fragment_create_operator, container, false);
         return machineMouFourthFragmentView;
     }
 
@@ -135,14 +129,21 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         init();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     private void init() {
-        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
         progressBarLayout = machineMouFourthFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
         btnFourthPartMou.setOnClickListener(this);
-        btnPreviousMou = machineMouFourthFragmentView.findViewById(R.id.btn_previous_mou);
-        btnPreviousMou.setOnClickListener(this);
         etOperatorName = machineMouFourthFragmentView.findViewById(R.id.et_operator_name);
         etOperatorLastName = machineMouFourthFragmentView.findViewById(R.id.et_operator_last_name);
         etOperatorContact = machineMouFourthFragmentView.findViewById(R.id.et_operator_contact);
@@ -165,95 +166,19 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         optionNo.setSelected(false);
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
-        gpsTracker = new GPSTracker(getActivity());
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails()!=null) {
-            setUIvalues();
-        }
-    }
-
-    private void setUIvalues() {
-        etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getFirstName());
-        etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getLastName());
-        etOperatorContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getContactNumnber());
-        etLicenseNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getLicenceNumber());
-        selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getIsTrainingDone();
-        etOperatorTraining.setText(selectedtrainingOption);
-        if(((MachineMouActivity) getActivity()).operatorLicenseImageUri!= null) {
-            imgLicense.setImageURI(((MachineMouActivity) getActivity()).operatorLicenseImageUri);
-        }
-        selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails().getIsAppInstalled();
-        etAppInstalled.setText(selectedAppInstalledOption);
-    }
-
-    private void setMachineFourthData(boolean isDataUpload) {
-        OperatorDetails operatorDetails = new OperatorDetails();
-        ((MachineMouActivity) getActivity()).getMachineDetailData().setOperatorDetails(operatorDetails);
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setFirstName
-                (etOperatorName.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLastName
-                (etOperatorLastName.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setContactNumnber
-                (etOperatorContact.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLicenceNumber
-                (etLicenseNumber.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
-                setIsTrainingDone(selectedtrainingOption);
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
-                setIsAppInstalled(selectedAppInstalledOption);
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-            location = gpsTracker.getLocation();
-            if (location != null) {
-                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
-                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
-            }
-        }
-
-        //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        if(isDataUpload) {
-            if (Util.isConnected(getActivity())) {
-                uploadData();
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        if (machineMouFourthFragmentPresenter != null) {
-//            machineMouFourthFragmentPresenter.clearData();
-//            machineMouFourthFragmentPresenter = null;
-//        }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_fourth_part_mou:
-                if(Util.isConnected(getActivity())) {
+                if (Util.isConnected(getActivity())) {
                     if (isAllDataValid()) {
-                        setMachineFourthData(true);
+                        setMachineFourthData();
                     }
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
-                break;
-            case R.id.btn_previous_mou:
-                setMachineFourthData(false);
-                getActivity().onBackPressed();
                 break;
             case R.id.et_operator_training:
                 CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -274,54 +199,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             case R.id.img_license:
                 onAddImageClick();
                 break;
-//            case R.id.btn_pdf:
-//                Intent intent = new Intent();
-//                intent.setType("application/pdf");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(intent, "Select PDF"), Constants.CHOOSE_PDF_FROM_STORAGE);
-//                break;
         }
-    }
-
-    public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_name), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
-            return false;
-        } else if(((MachineMouActivity) getActivity()).operatorLicenseImageUri == null) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
-            return false;
-        }
-        if (etOperatorContact.getText().toString().trim().length() != 10){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
-            return false;
-        }
-//        if(pdfURL != null && !TextUtils.isEmpty(pdfURL)) {
-//            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMouURL(pdfURL);
-//        } else {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-//                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
-//            return false;
-//        }
-        return true;
     }
 
     private void onAddImageClick() {
@@ -386,7 +264,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -396,7 +274,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 try {
                     getImageFile();
                     outputUri = data.getData();
-                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -407,37 +285,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                 imgLicense.setImageURI(finalUri);
-                ((MachineMouActivity) getActivity()).operatorLicenseImageUri = finalUri;
+                operatorLicenseImageUri = finalUri;
                 if (Util.isValidImageSize(imageFile)) {
                     imgCount++;
-                    ((MachineMouActivity) getActivity()).getImageHashmap().put("licenseImage", bitmap);
+                    imageHashmap.put("licenseImage", bitmap);
                 } else {
                     Util.showToast(getString(R.string.msg_big_image), this);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        } else if (requestCode == Constants.CHOOSE_PDF_FROM_STORAGE && resultCode == RESULT_OK) {
-//            try {
-//                Uri path = data.getData();
-//                if (Util.isConnected(getActivity())) {
-//                    ImageRequestCall requestCall = new ImageRequestCall();
-//                    requestCall.setListener(this);
-//
-//                    new AsyncTask<Void, Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground(final Void... voids) {
-//                            showProgressBar();
-//                            requestCall.uploadImageUsingHttpURLEncoded(null, Constants.Image.PDF, "MOU", path, getActivity());
-//                            return null;
-//                        }
-//                    }.execute();
-//                } else {
-//                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
-//                }
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
         }
     }
 
@@ -464,18 +321,58 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private void backToMachineList(){
-        getActivity().finish();
-        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
-        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-        intent.putExtra("viewType", 2);
-        intent.putExtra("title", "Machine List");
-        getActivity().startActivity(intent);
+    public boolean isAllDataValid() {
+        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_operator_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (operatorLicenseImageUri == null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (etOperatorContact.getText().toString().trim().length() != 10) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        }
+        return true;
     }
 
-    private void uploadData(){
+    private void setMachineFourthData() {
+        operatorDetails = new OperatorDetails();
+        operatorDetails.setFirstName(etOperatorName.getText().toString().trim());
+        operatorDetails.setLastName(etOperatorLastName.getText().toString().trim());
+        operatorDetails.setContactNumnber(etOperatorContact.getText().toString().trim());
+        operatorDetails.setLicenceNumber(etLicenseNumber.getText().toString().trim());
+        operatorDetails.setIsTrainingDone(selectedtrainingOption);
+        operatorDetails.setIsAppInstalled(selectedAppInstalledOption);
+        if (Util.isConnected(getActivity())) {
+            uploadData();
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
+    }
+
+    private void uploadData() {
         showProgressBar();
-        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.CREATE_OPERATOR;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -485,19 +382,19 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
-                            if(responseOBJ.getStatus() == 200){
+                            if (responseOBJ.getStatus() == 200) {
                                 backToMachineList();
                                 Util.showToast(responseOBJ.getMessage(), getActivity());
-                            } else if(responseOBJ.getStatus() == 300){
+                            } else if (responseOBJ.getStatus() == 300) {
                                 Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else {
                                 Util.showToast(getResources().getString(R.string.msg_something_went_wrong), getActivity());
                             }
-                            Log.d("response -",jsonString);
+                            Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             hideProgressBar();
                             e.printStackTrace();
-                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -513,12 +410,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("formData", new Gson().toJson(((MachineMouActivity) getActivity()).getMachineDetailData()));
-                if(location != null) {
-                    params.put("lat", String.valueOf(location.getLatitude()));
-                    params.put("long ", String.valueOf(location.getLongitude()));
-                }
-                params.put("imageArraySize", String.valueOf(((MachineMouActivity) getActivity()).getImageHashmap().size()));//add string parameters
+                params.put("formData", new Gson().toJson(operatorDetails));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }
 
@@ -533,13 +426,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                         loginObj.getLoginData().getAccessToken() != null) {
                     headers.put(Constants.Login.AUTHORIZATION,
                             "Bearer " + loginObj.getLoginData().getAccessToken());
-                    if (getUserObjectFromPref().getOrgId()!=null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
                         headers.put("orgId", getUserObjectFromPref().getOrgId());
                     }
-                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                    if (getUserObjectFromPref().getProjectIds() != null) {
                         headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                     }
-                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                    if (getUserObjectFromPref().getRoleIds() != null) {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
@@ -550,10 +443,10 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
-                Iterator myVeryOwnIterator = ((MachineMouActivity) getActivity()).getImageHashmap().keySet().iterator();
-                for (int i = 0;i<((MachineMouActivity) getActivity()).getImageHashmap().size(); i++) {
-                    String key=(String)myVeryOwnIterator.next();
-                    drawable = new BitmapDrawable(getResources(), ((MachineMouActivity) getActivity()).getImageHashmap().get(key));
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0; i < imageHashmap.size(); i++) {
+                    String key = (String) myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
@@ -567,6 +460,15 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         rQueue = Volley.newRequestQueue(getActivity());
         rQueue.add(volleyMultipartRequest);
+    }
+
+    private void backToMachineList() {
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        getActivity().startActivity(intent);
     }
 
     private void showResponseDialog(String dialogTitle, String message, String btn1String, String
@@ -622,8 +524,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if(requestId.equals(MachineMouFourthFragmentPresenter.SUBMIT_MOU)){
-            if(status == 200){
+        if (requestId.equals(MachineMouFourthFragmentPresenter.SUBMIT_MOU)) {
+            if (status == 200) {
                 getActivity().finish();
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
@@ -729,8 +631,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onFailureListener(String error) {
         hideProgressBar();
-        Util.showToast(error,getActivity());
+        Util.showToast(error, getActivity());
     }
-
-
 }

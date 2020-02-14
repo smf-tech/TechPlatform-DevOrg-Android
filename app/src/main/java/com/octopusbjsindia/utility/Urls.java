@@ -151,6 +151,7 @@ public class Urls {
         public static final String OPERATORS_LIST = "api/getOperatorList";
         public static final String ASSIGN_OPERATORS = "api/assignOperator";
         public static final String RELEASE_OPERATORS = "api/releaseOperator";
+        public static final String CREATE_OPERATOR = "api/createOperator";
     }
 
     public class OperatorApi {

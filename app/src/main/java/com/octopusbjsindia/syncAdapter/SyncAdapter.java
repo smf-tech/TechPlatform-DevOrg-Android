@@ -30,7 +30,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
-import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
@@ -38,7 +37,6 @@ import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.octopusbjsindia.models.attendance.AttendaceData;
 import com.octopusbjsindia.models.attendance.AttendanceResponse;
-import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
@@ -175,17 +173,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String url = null;
 
         FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
-        if (formSchema != null && formSchema.getMicroService() != null) {
-            Microservice microService = formSchema.getMicroService();
-
-            String baseUrl = microService.getBaseUrl();
-            String route = microService.getRoute();
-            if (route.contains(Constants.FormDynamicKeys.FORM_ID))
-                route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
-            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
-                url = getContext().getResources().getString(R.string.form_field_mandatory,
-                        baseUrl, route);
-            }
+//        if (formSchema != null && formSchema.getMicroService() != null) {
+//            Microservice microService = formSchema.getMicroService();
+//
+//            String baseUrl = microService.getBaseUrl();
+//            String route = microService.getRoute();
+//            if (route.contains(Constants.FormDynamicKeys.FORM_ID))
+//                route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
+//            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
+//                url = getContext().getResources().getString(R.string.form_field_mandatory,
+//                        baseUrl, route);
+//            }
+//        }
+        if (formSchema != null && formSchema.getApi_url() != null) {
+            url = formSchema.getApi_url() + "/" + formId;
         }
         return url;
     }

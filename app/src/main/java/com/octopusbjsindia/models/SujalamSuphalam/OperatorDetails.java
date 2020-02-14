@@ -19,9 +19,9 @@ public class OperatorDetails {
     @SerializedName("licence_number")
     @Expose
     private String licenceNumber;
-    @SerializedName("contact_numnber")
+    @SerializedName("mobile_number")
     @Expose
-    private String contactNumnber;
+    private String contactNumber;
     @SerializedName("is_training_done")
     @Expose
     private String isTrainingDone;
@@ -65,11 +65,11 @@ public class OperatorDetails {
     }
 
     public String getContactNumnber() {
-        return contactNumnber;
+        return contactNumber;
     }
 
     public void setContactNumnber(String contactNumnber) {
-        this.contactNumnber = contactNumnber;
+        this.contactNumber = contactNumnber;
     }
 
     public List<String> getOperatorImages() {

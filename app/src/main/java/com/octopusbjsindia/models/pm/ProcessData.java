@@ -58,6 +58,11 @@ public class ProcessData {
     @Expose
     private Microservice microservice;
 
+    @ColumnInfo(name = "api_url")
+    @SerializedName("api_url")
+    @Expose
+    private String api_url;
+
     @Ignore
     @SerializedName("project")
     @Expose
@@ -138,6 +143,14 @@ public class ProcessData {
 
     public void setMicroservice(Microservice microservice) {
         this.microservice = microservice;
+    }
+
+    public String getApi_url() {
+        return api_url;
+    }
+
+    public void setApi_url(String api_url) {
+        this.api_url = api_url;
     }
 
     public Project getProject() {

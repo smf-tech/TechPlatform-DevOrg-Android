@@ -7,13 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -27,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -405,7 +404,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
                                 (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
 
-                        ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                        //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                        ((MachineMouActivity) getActivity()).uploadData();
                     } else {
                         ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
                     }

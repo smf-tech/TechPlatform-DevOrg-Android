@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,20 +21,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsData;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.SujalamSuphalamFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
@@ -40,13 +47,15 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.adapters.SSAnalyticsAdapter;
+import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SujalamSufalamFragment extends Fragment implements  View.OnClickListener, View.OnLongClickListener, APIDataListener {
+public class SujalamSufalamFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener, APIDataListener,
+        CustomSpinnerListener {
 
     private View sujalamSufalamFragmentView;
     private ProgressBar progressBar;
@@ -60,7 +69,16 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
-    private boolean isStructureView, isMachineView;
+    private boolean isStructureView, isMachineView, isStateFilter, isDistrictFilter, isTalukaFilter;
+    private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
+    private ImageView btnFilter;
+    private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
+            userTalukas = "", userTalukaIds = "";
+    private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
+    private boolean isFilterApplied;
+    private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +94,6 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
             }
         }
         AppEvents.trackAppEvent(getString(R.string.ss_screen_visit));
-
     }
 
     @Override
@@ -109,14 +126,18 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
         btnSsView.setOnLongClickListener(this);
+        tvStateFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_state_filter);
+        tvDistrictFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_district_filter);
+        tvTalukaFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_taluka_filter);
+        btnFilter = sujalamSufalamFragmentView.findViewById(R.id.btn_filter);
+        btnFilter.setOnClickListener(this);
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),structureAnalyticsDataList,1, "Structure List");
         machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),machineAnalyticsDataList,2,"Machine List");
-//        List<SSMasterDatabase> ssMasterDatabaseList = DatabaseManager.getDBInstance(Platform.getInstance()).
-//                getSSMasterDatabaseDao().getSSMasterData();
 
+        setUserLocation();
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -128,10 +149,125 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
                     isMachineView = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
+                    isStateFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
+                    isDistrictFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
+                    isTalukaFilter = true;
+                    continue;
+                }
+            }
+        }
+
+        if (isStateFilter) {
+            tvStateFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId() !=null &&
+                    Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
+                tvStateFilter.setOnClickListener(this);
+                machineStateList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                    CustomSpinnerObject customState = new CustomSpinnerObject();
+                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                    machineStateList.add(customState);
+                }
+            }
+        }
+        if (isDistrictFilter) {
+            tvDistrictFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() !=null &&
+                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
+                tvDistrictFilter.setOnClickListener(this);
+                machineDistrictList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
+                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                    machineDistrictList.add(customDistrict);
+                }
+            }
+        }
+        if (isTalukaFilter) {
+            tvTalukaFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() !=null &&
+                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
+                tvTalukaFilter.setOnClickListener(this);
+                machineTalukaList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
+                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                    machineTalukaList.add(customTaluka);
                 }
             }
         }
         setStructureView();
+    }
+
+    private void setUserLocation() {
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            userStates = "";
+            userStateIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == 0) {
+                    userStates = j.getName();
+                    userStateIds = j.getId();
+                } else {
+                    userStates = userStates + "," + j.getName();
+                    userStateIds = userStateIds + "," + j.getId();
+                }
+            }
+            tvStateFilter.setText(userStates);
+
+        } else {
+            tvStateFilter.setText("");
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            userDistricts = "";
+            userDistrictIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                if (i == 0) {
+                    userDistricts = j.getName();
+                    userDistrictIds = j.getId();
+                } else {
+                    userDistricts = userDistricts + "," + j.getName();
+                    userDistrictIds = userDistrictIds + "," + j.getId();
+                }
+            }
+            tvDistrictFilter.setText(userDistricts);
+        } else {
+            tvDistrictFilter.setText("");
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            userTalukas = "";
+            userTalukaIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                if (i == 0) {
+                    userTalukas = j.getName();
+                    userTalukaIds = j.getId();
+                } else {
+                    userTalukas = userTalukas + "," + j.getName();
+                    userTalukaIds = userTalukaIds + "," + j.getId();
+                }
+            }
+            tvTalukaFilter.setText(userTalukas);
+        } else {
+            tvTalukaFilter.setText("");
+        }
     }
 
     @Override
@@ -140,8 +276,10 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         btnSsView.setEnabled(true);
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         if(Util.isConnected(getActivity())) {
-            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS);
-            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS);
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
+                    "", "", "");
+            sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
+                    "", "", "");
             sujalamSuphalamFragmentPresenter.getSSMasterData();
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -170,6 +308,73 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
                     intent.putExtra("title", "Machine List");
                 }
                 getActivity().startActivity(intent);
+                break;
+            case R.id.tv_state_filter:
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select State",
+                        machineStateList,
+                        false);
+                cdd.show();
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.tv_district_filter:
+                if (Util.isConnected(getActivity())) {
+                    if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
+                        sujalamSuphalamFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                        ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                        "Please update your profile.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+                break;
+            case R.id.tv_taluka_filter:
+                if (Util.isConnected(getActivity())) {
+                    if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                        sujalamSuphalamFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                        ? selectedDistrictId : userDistrictIds,
+                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select District first.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+                break;
+            case R.id.btn_filter:
+                if (!isFilterApplied) {
+                    isFilterApplied = true;
+                    btnFilter.setImageResource(R.drawable.ic_add);
+                    btnFilter.setRotation(45);
+
+                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
+                            selectedStateId, selectedDistrictId, selectedTalukaId);
+
+                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
+                            selectedStateId, selectedDistrictId, selectedTalukaId);
+                } else {
+                    isFilterApplied = false;
+                    btnFilter.setImageResource(R.drawable.ic_arrow_right);
+                    btnFilter.setRotation(0);
+                    selectedStateId = "";
+                    selectedDistrictId = "";
+                    selectedTalukaId = "";
+                    setUserLocation();
+                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
+                            "", "", "");
+
+                    sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS,
+                            "", "", "");
+                }
                 break;
         }
     }
@@ -266,6 +471,57 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
         }
     }
 
+    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+        switch (levelName) {
+            case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    machineTalukaList.clear();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject talukaList = new CustomSpinnerObject();
+                        talukaList.set_id(location.getId());
+                        talukaList.setName(location.getName());
+                        talukaList.setSelected(false);
+                        machineTalukaList.add(talukaList);
+                    }
+                }
+                //if (!isTalukaApiFirstCall) {
+                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
+                        this, "Select Taluka", machineTalukaList,
+                        true);
+                cddTaluka.show();
+                cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                //}
+                break;
+            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    machineDistrictList.clear();
+//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
+//                            compareTo(j2.getDistrict().getName()));
+
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject districtList = new CustomSpinnerObject();
+                        districtList.set_id(location.getId());
+                        districtList.setName(location.getName());
+                        districtList.setSelected(false);
+                        machineDistrictList.add(districtList);
+                    }
+                }
+                CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District", machineDistrictList,
+                        true);
+                cddDistrict.show();
+                cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void onFailureListener(String requestID, String message) {
 
@@ -326,5 +582,65 @@ public class SujalamSufalamFragment extends Fragment implements  View.OnClickLis
     public boolean onLongClick(View view) {
         Util.showToast("long click",this);
         return false;
+    }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        if (type.equals("Select State")) {
+            String selectedState = "";
+            for (CustomSpinnerObject state : machineStateList) {
+                if (state.isSelected()) {
+                    if (selectedState.length() > 0) {
+                        selectedState = selectedState + "," + state.getName();
+                    } else {
+                        selectedState = state.getName();
+                    }
+                    if (selectedStateId.length() > 0) {
+                        selectedStateId = selectedStateId + "," + state.get_id();
+                    } else {
+                        selectedStateId = state.get_id();
+                    }
+                }
+            }
+            tvStateFilter.setText(selectedState);
+
+        } else if (type.equals("Select District")) {
+            String selectedDistrict = "";
+            selectedDistrictId = "";
+            for (CustomSpinnerObject mDistrict : machineDistrictList) {
+                if (mDistrict.isSelected()) {
+                    if (selectedDistrict.length() > 0) {
+                        selectedDistrict = selectedDistrict + "," + mDistrict.getName();
+                    } else {
+                        selectedDistrict = mDistrict.getName();
+                    }
+                    if (selectedDistrictId.length() > 0) {
+                        selectedDistrictId = selectedDistrictId + "," + mDistrict.get_id();
+                    } else {
+                        selectedDistrictId = mDistrict.get_id();
+                    }
+                }
+            }
+            tvDistrictFilter.setText(selectedDistrict);
+
+        } else if (type.equals("Select Taluka")) {
+            String selectedTaluka = "";
+            selectedTalukaId = "";
+            for (CustomSpinnerObject mTaluka : machineTalukaList) {
+                if (mTaluka.isSelected()) {
+                    if (selectedTaluka.length() > 0) {
+                        selectedTaluka = selectedTaluka + "," + mTaluka.getName();
+                    } else {
+                        selectedTaluka = mTaluka.getName();
+                    }
+                    if (selectedTalukaId.length() > 0) {
+                        selectedTalukaId = selectedTalukaId + "," + mTaluka.get_id();
+                    } else {
+                        selectedTalukaId = mTaluka.get_id();
+                    }
+                }
+            }
+            tvTalukaFilter.setText(selectedTaluka);
+        }
     }
 }
