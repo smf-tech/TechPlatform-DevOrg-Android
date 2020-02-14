@@ -318,6 +318,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private void setUserLocation() {
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            userStates = "";
+            userStateIds = "";
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
                 JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
                 if (i == 0) {
@@ -336,6 +338,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            userDistricts = "";
+            userDistrictIds = "";
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
                 JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
                 if (i == 0) {
@@ -353,6 +357,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            userTalukas = "";
+            userTalukaIds = "";
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
                 JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
                 if (i == 0) {

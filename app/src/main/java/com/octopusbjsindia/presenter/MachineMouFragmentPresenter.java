@@ -30,6 +30,7 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
     public static final String UPDATE_MACHINE_STATUS = "updateMachineStatus";
     public static final String UPDATE_STRUCTURE_STATUS = "updateStructureStatus";
     public static final String GET_TALUKAS = "getTalukas";
+    public static final String GET_DISTRICTS = "getDistricts";
 
     public MachineMouFragmentPresenter(MachineMouFirstFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -96,6 +97,8 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
             requestCall.postDataApiCall(GET_TALUKAS, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(GET_DISTRICTS, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
@@ -133,14 +136,20 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
                             MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS, responseOBJ.getStatus());
-                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS)) {
+                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
+                        requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                         = new Gson().fromJson(response, JurisdictionLevelResponse.class);
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
                         && !jurisdictionLevelResponse.getData().isEmpty()
                         && jurisdictionLevelResponse.getData().size() > 0) {
-                    fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
                 }
             }
         }

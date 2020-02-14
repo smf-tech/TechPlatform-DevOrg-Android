@@ -120,6 +120,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
 
+        machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
+
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if (roleAccessList != null) {
@@ -200,7 +202,6 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 btnFirstPartMou.setVisibility(View.GONE);
             }
         }
-        machineMouFragmentPresenter = new MachineMouFragmentPresenter(this);
         if (statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
             btnFirstPartMou.setOnClickListener(this);
             btnFirstPartMou.setVisibility(View.VISIBLE);
@@ -306,7 +307,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         if (isStateFilter) {
             etMachineState.setOnClickListener(this);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
                 etMachineState.setOnClickListener(this);
                 machineStateList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
@@ -317,12 +318,11 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 }
             }
         }
+
         if (isDistrictFilter) {
             etMachineDistrict.setOnClickListener(this);
-            machineMouFragmentPresenter.getLocationData(userStateIds,
-                    Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.DISTRICT_LEVEL);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
                 etMachineDistrict.setOnClickListener(this);
                 machineDistrictList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
@@ -333,12 +333,11 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 }
             }
         }
+
         if (isTalukaFilter) {
             etMachineTaluka.setOnClickListener(this);
-            machineMouFragmentPresenter.getLocationData(userDistrictIds,
-                    Util.getUserObjectFromPref().getJurisdictionTypeId(), Constants.JurisdictionLevelName.TALUKA_LEVEL);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
                 etMachineTaluka.setOnClickListener(this);
                 machineTalukaList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
@@ -569,20 +568,36 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_machine_district:
-                CustomSpinnerDialogClass cdd7 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select District",
-                        machineDistrictList,
-                        false);
-                cdd7.show();
-                cdd7.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (Util.isConnected(getActivity())) {
+                    if (etMachineState.getText() != null && etMachineState.getText().toString().length() > 0) {
+                        machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                        ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                        "Please update your profile.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
             case R.id.et_machine_taluka:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Taluka", machineTalukaList, false);
-                cdd1.show();
-                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (Util.isConnected(getActivity())) {
+                    if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
+                        machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                        ? selectedDistrictId : userDistrictIds,
+                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select District first.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
                 break;
             case R.id.et_machine_type:
                 CustomSpinnerDialogClass cdd2 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -704,6 +719,12 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     }
                 }
                 etMachineState.setText(selectedState);
+                etMachineDistrict.setText("");
+                selectedDistrict = "";
+                selectedDistrictId = "";
+                etMachineTaluka.setText("");
+                selectedTaluka = "";
+                selectedTalukaId = "";
             case "Select District":
                 for (CustomSpinnerObject district : machineDistrictList) {
                     if (district.isSelected()) {
@@ -713,6 +734,9 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     }
                 }
                 etMachineDistrict.setText(selectedDistrict);
+                etMachineTaluka.setText("");
+                selectedTaluka = "";
+                selectedTalukaId = "";
                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject taluka : machineTalukaList) {
@@ -784,10 +808,29 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
 
     public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
         switch (levelName) {
+            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    machineDistrictList.clear();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject district = new CustomSpinnerObject();
+                        district.set_id(location.getId());
+                        district.setName(location.getName());
+                        district.setSelected(false);
+                        machineDistrictList.add(district);
+                    }
+                }
+                CustomSpinnerDialogClass cdd7 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District",
+                        machineDistrictList,
+                        false);
+                cdd7.show();
+                cdd7.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         CustomSpinnerObject talukaList = new CustomSpinnerObject();
@@ -797,6 +840,11 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                         machineTalukaList.add(talukaList);
                     }
                 }
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Taluka", machineTalukaList, false);
+                cdd1.show();
+                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             default:
                 break;

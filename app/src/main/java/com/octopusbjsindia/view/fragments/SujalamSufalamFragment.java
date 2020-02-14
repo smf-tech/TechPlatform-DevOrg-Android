@@ -72,7 +72,8 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     private boolean isStructureView, isMachineView, isStateFilter, isDistrictFilter, isTalukaFilter;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
     private ImageView btnFilter;
-    private String userStateIds = "", userDistrictIds = "", userTalukaIds = "";
+    private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
+            userTalukas = "", userTalukaIds = "";
     private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
@@ -203,58 +204,64 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 }
             }
         }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
-                if (i == 0) {
-                    userStateIds = j.getId();
-                } else {
-                    userStateIds = userStateIds + "," + j.getId();
-                }
-            }
-        }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
-                if (i == 0) {
-                    userDistrictIds = j.getId();
-                } else {
-                    userDistrictIds = userDistrictIds + "," + j.getId();
-                }
-            }
-        }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
-                if (i == 0) {
-                    userTalukaIds = j.getId();
-                } else {
-                    userTalukaIds = userTalukaIds + "," + j.getId();
-                }
-            }
-        }
         setStructureView();
     }
 
     private void setUserLocation() {
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
-            tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            userStates = "";
+            userStateIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == 0) {
+                    userStates = j.getName();
+                    userStateIds = j.getId();
+                } else {
+                    userStates = userStates + "," + j.getName();
+                    userStateIds = userStateIds + "," + j.getId();
+                }
+            }
+            tvStateFilter.setText(userStates);
+
         } else {
             tvStateFilter.setText("");
         }
+
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-            tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            userDistricts = "";
+            userDistrictIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                if (i == 0) {
+                    userDistricts = j.getName();
+                    userDistrictIds = j.getId();
+                } else {
+                    userDistricts = userDistricts + "," + j.getName();
+                    userDistrictIds = userDistrictIds + "," + j.getId();
+                }
+            }
+            tvDistrictFilter.setText(userDistricts);
         } else {
             tvDistrictFilter.setText("");
         }
+
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            userTalukas = "";
+            userTalukaIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                if (i == 0) {
+                    userTalukas = j.getName();
+                    userTalukaIds = j.getId();
+                } else {
+                    userTalukas = userTalukas + "," + j.getName();
+                    userTalukaIds = userTalukaIds + "," + j.getId();
+                }
+            }
+            tvTalukaFilter.setText(userTalukas);
         } else {
             tvTalukaFilter.setText("");
         }
