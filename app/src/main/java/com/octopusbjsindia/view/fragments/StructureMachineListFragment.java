@@ -91,7 +91,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd;
+            isVillageFilter, isStructureAdd, isRealiseOperator, isAssignOperator;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
@@ -202,6 +202,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
                     isVillageFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_REALISE_OPERATOR)) {
+                    isRealiseOperator = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
+                    isAssignOperator = true;
                 }
             }
         }
@@ -390,6 +396,41 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         Button button1 = dialog.findViewById(R.id.btn_dialog_1);
         button1.setText("Cancel");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void releaseOperator(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText(R.string.alert);
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.release_opretor_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText(R.string.ok);
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            structureMachineListFragmentPresenter.releaceOperator(filteredMachineListData.get(position).getOperatorId());
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText(R.string.cancel);
         button1.setVisibility(View.VISIBLE);
         button1.setOnClickListener(v -> {
             // Close dialog
@@ -1135,5 +1176,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
 
     }
+
 
 }

@@ -408,7 +408,8 @@ public class Constants {
         public static final Integer ACCESS_CODE_DISTRICT = 121;
         public static final Integer ACCESS_CODE_TALUKA = 122;
         public static final Integer ACCESS_CODE_VILLAGE = 123;
-
+        public static final Integer ACCESS_CODE_ASSIGN_OPERATOR = 132;
+        public static final Integer ACCESS_CODE_REALISE_OPERATOR = 133;
         //public static final Integer ROLE_CODE_SS_HO = 110;
 //        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
 //        public static final Integer ROLE_CODE_SS_DM = 110;

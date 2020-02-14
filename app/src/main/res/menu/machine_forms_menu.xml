@@ -46,4 +46,14 @@
         android:title="Sign-off machine"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_assign_operator"
+        android:title="Assign Operator"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_realise_operator"
+        android:title="Realise Operator"
+        android:visible="false"/>
+
 </menu>

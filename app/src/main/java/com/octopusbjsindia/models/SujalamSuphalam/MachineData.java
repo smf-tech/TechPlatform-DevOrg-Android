@@ -92,6 +92,35 @@ public class MachineData  implements Serializable {
     @SerializedName("isMouUploaded")
     @Expose
     private Boolean isMouUploaded;
+    @SerializedName("isMachineSignOff")
+    @Expose
+    private Boolean isMachineSignOff;
+    @SerializedName("machine_mobile_number")
+    @Expose
+    private String machineMobileNumber;
+    @SerializedName("updatedDate")
+    @Expose
+    private String lastUpdatedTime;
+    @SerializedName("is_meter_working")
+    @Expose
+    private String isMeterWorking;
+    @SerializedName("RTO_numner")
+    @Expose
+    private String rtoNumber;
+    @SerializedName("chassis_no")
+    @Expose
+    private String chasisNo;
+    @SerializedName("excavation_capacity")
+    @Expose
+    private String excavationCapacity;
+    @SerializedName("isOperatorassigned")
+    @Expose
+    private Boolean isOperatorassigned;
+    @SerializedName("operator_id")
+    @Expose
+    private String operatorId;
+
+
 
     public Boolean getMouUploaded() {
         return isMouUploaded;
@@ -109,9 +138,6 @@ public class MachineData  implements Serializable {
         isMachineSignOff = machineSignOff;
     }
 
-    @SerializedName("isMachineSignOff")
-    @Expose
-    private Boolean isMachineSignOff;
 
     public String getMachineLocation() {
         return machineLocation;
@@ -128,22 +154,6 @@ public class MachineData  implements Serializable {
     public void setMachineMobileNumber(String machineMobileNumber) {
         this.machineMobileNumber = machineMobileNumber;
     }
-
-    @SerializedName("machine_mobile_number")
-    @Expose
-    private String machineMobileNumber;
-    @SerializedName("updatedDate")
-    @Expose
-    private String lastUpdatedTime;
-    @SerializedName("is_meter_working")
-    @Expose
-    private String isMeterWorking;
-    @SerializedName("RTO_numner")
-    @Expose
-    private String rtoNumber;
-    @SerializedName("chassis_no")
-    @Expose
-    private String chasisNo;
 
     public String getIsMeterWorking() {
         return isMeterWorking;
@@ -176,10 +186,6 @@ public class MachineData  implements Serializable {
     public void setExcavationCapacity(String excavationCapacity) {
         this.excavationCapacity = excavationCapacity;
     }
-
-    @SerializedName("excavation_capacity")
-    @Expose
-    private String excavationCapacity;
 
     public String getId() {
         return id;
@@ -395,5 +401,21 @@ public class MachineData  implements Serializable {
 
     public void setTcContactNumber(String tcContactNumber) {
         this.tcContactNumber = tcContactNumber;
+    }
+
+    public Boolean getOperatorassigned() {
+        return isOperatorassigned;
+    }
+
+    public void setOperatorassigned(Boolean operatorassigned) {
+        isOperatorassigned = operatorassigned;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 }
