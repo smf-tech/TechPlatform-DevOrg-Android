@@ -165,7 +165,8 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         if (isStateFilter) {
             tvStateFilter.setOnClickListener(this);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
                 tvStateFilter.setOnClickListener(this);
                 machineStateList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
@@ -179,7 +180,8 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         if (isDistrictFilter) {
             tvDistrictFilter.setOnClickListener(this);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
                 tvDistrictFilter.setOnClickListener(this);
                 machineDistrictList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
@@ -193,7 +195,8 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         if (isTalukaFilter) {
             tvTalukaFilter.setOnClickListener(this);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
                 tvTalukaFilter.setOnClickListener(this);
                 machineTalukaList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {

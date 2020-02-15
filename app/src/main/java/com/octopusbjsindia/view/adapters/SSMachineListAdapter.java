@@ -135,7 +135,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             holder.btAction.setVisibility(View.INVISIBLE);
         }
         if (ssDataList.get(position).getMachineSignOff() != null && !ssDataList.get(position).getMachineSignOff()) {
-            holder.ivSignoff.setVisibility(View.INVISIBLE);
+            holder.ivSignoff.setVisibility(View.GONE);
         } else {
             holder.ivSignoff.setVisibility(View.VISIBLE);
         }
@@ -211,6 +211,26 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
                         }
                     }
+                    if (fragment.isRealiseOperator) {
+                        if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
+                            popup.getMenu().findItem(R.id.action_realise_operator).setVisible(true);
+                        }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_realise_operator).setVisible(false);
+                    }
+///remove
+//                    popup.getMenu().findItem(R.id.action_realise_operator).setVisible(true);
+
+                    if (fragment.isAssignOperator) {
+                        if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
+                            popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                        }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                    }
+///remove
+//                    popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -264,7 +284,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (fragment.isMouImagesUpload) {
                                 popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
                             }
@@ -348,6 +370,22 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     case R.id.action_machine_signoff:
                                         if (Util.isConnected(activity)) {
                                             fragment.sendMachineSignOff(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                                        }
+                                        break;
+                                    case R.id.action_assign_operator:
+                                        Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
+                                        operatorIntent.putExtra("SwitchToFragment", "OperatorList");
+                                        operatorIntent.putExtra("title", "Operator List");
+                                        operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+                                        activity.startActivity(operatorIntent);
+                                        activity.finish();
+                                        break;
+                                    case R.id.action_realise_operator:
+                                        if (Util.isConnected(activity)) {
+                                            fragment.releaseOperator(getAdapterPosition());
                                         } else {
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                                         }

@@ -3,6 +3,7 @@ package com.octopusbjsindia.utility;
 public class Constants {
 
 
+    public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
     public static final String MARK_INTERVIEW = "Interview";
 
@@ -364,6 +365,7 @@ public class Constants {
         public static final Integer MACHINE_HALTED_STATUS_CODE = 111;
         public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
         public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
+        public static final Integer MACHINE_PAUSE_STATUS_CODE = 113;
 
         public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
         public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
@@ -407,7 +409,8 @@ public class Constants {
         public static final Integer ACCESS_CODE_DISTRICT = 121;
         public static final Integer ACCESS_CODE_TALUKA = 122;
         public static final Integer ACCESS_CODE_VILLAGE = 123;
-
+        public static final Integer ACCESS_CODE_ASSIGN_OPERATOR = 132;
+        public static final Integer ACCESS_CODE_REALISE_OPERATOR = 133;
         //public static final Integer ROLE_CODE_SS_HO = 110;
 //        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
 //        public static final Integer ROLE_CODE_SS_DM = 110;

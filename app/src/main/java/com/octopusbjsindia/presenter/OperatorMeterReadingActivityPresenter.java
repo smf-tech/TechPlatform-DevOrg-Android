@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
 import com.octopusbjsindia.models.Operator.OperatorMachineData;
-import com.octopusbjsindia.models.Operator.OperatorMachineDataResponseModel;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.SubFilterset;
 import com.octopusbjsindia.request.OperatorMeterReadingRequestCall;
@@ -52,10 +51,11 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            OperatorMachineData pendingRequestsResponse
-                    = new Gson().fromJson(response, OperatorMachineData.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null )
-            {
+            OperatorMachineData pendingRequestsResponse = new Gson().fromJson(response, OperatorMachineData.class);
+            if (pendingRequestsResponse.getStatus() == 1000) {
+                Util.logOutUser(fragmentWeakReference.get());
+                return;
+            } else if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null) {
                 fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
             }
         }

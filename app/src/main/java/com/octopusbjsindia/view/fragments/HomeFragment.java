@@ -88,8 +88,25 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
         homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         presenter = new HomeActivityPresenter(this);
-        getUserData();
+
         return homeFragmentView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getUserData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Constants.GET_MODELS) {
+            getUserData();
+            Constants.GET_MODELS = false;
+        }
+
     }
 
     @Override

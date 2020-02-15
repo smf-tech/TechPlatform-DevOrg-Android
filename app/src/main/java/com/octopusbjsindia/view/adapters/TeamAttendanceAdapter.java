@@ -1,10 +1,12 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.attendance.TeamAttendanceData;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.GeneralActionsActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,9 +42,11 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
 
         ImageView ivUserImage, ivStatus;
         TextView tvName, tvRole, tvCheckInTime, tvCheckOutTime, tvTotalHours;
+        RelativeLayout lyMain;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            lyMain = itemView.findViewById(R.id.ly_main);
             ivUserImage = itemView.findViewById(R.id.iv_user_profile_pic);
             tvName = itemView.findViewById(R.id.tv_name);
             tvTotalHours = itemView.findViewById(R.id.tv_total_hours);
@@ -49,6 +54,22 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
             ivStatus = itemView.findViewById(R.id.iv_status);
             tvCheckInTime = itemView.findViewById(R.id.tv_check_in_time);
             tvCheckOutTime = itemView.findViewById(R.id.tv_check_out_time);
+            lyMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, GeneralActionsActivity.class);
+                    intent.putExtra("title", "Team User Attendance");
+                    intent.putExtra("switch_fragments", "AttendanceSummeryFragment");
+                    intent.putExtra("user_id", leavesList.get(getAdapterPosition()).getUser_id());
+                    intent.putExtra("user_role", leavesList.get(getAdapterPosition()).getRoleName());
+                    intent.putExtra("user_name", leavesList.get(getAdapterPosition()).getName());
+                    if (leavesList.get(getAdapterPosition()).getImageUrl() != null && !leavesList.get(getAdapterPosition()).getImageUrl().equals("")) {
+                        intent.putExtra("profile_pic", leavesList.get(getAdapterPosition()).getImageUrl());
+                    }
+                    mContext.startActivity(intent);
+                }
+            });
+
         }
     }
 
@@ -74,9 +95,13 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         viewHolder.tvRole.setText(leavesList.get(i).getRoleName());
 
         if (leavesList.get(i).getCheckIn() != null)
-            viewHolder.tvCheckInTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa"));
+            viewHolder.tvCheckInTime.setText(
+                    Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckIn().getTime()), "hh:mm aa")
+            );
         if (leavesList.get(i).getCheckOut() != null)
-            viewHolder.tvCheckOutTime.setText(Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa"));
+            viewHolder.tvCheckOutTime.setText(
+                    Util.getDateFromTimestamp(Long.valueOf(leavesList.get(i).getCheckOut().getTime()), "hh:mm aa")
+            );
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa");
 
@@ -106,6 +131,7 @@ public class TeamAttendanceAdapter extends RecyclerView.Adapter<TeamAttendanceAd
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
 
         if (leavesList.get(i).getStatus().equalsIgnoreCase("absent")) {
             viewHolder.ivStatus.setImageResource(R.drawable.ic_absent);

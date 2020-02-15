@@ -237,6 +237,8 @@ public class Util {
                 headers.put("orgId", orgId);
                 headers.put("projectId", projectId);
                 headers.put("roleId", roleId);
+                headers.put("versionName", getAppVersion());
+                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 

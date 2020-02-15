@@ -417,9 +417,31 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
 
     public void onReceiveEditedReading(String updatedValue, int pos, int flagStartEndReading) {
         if (flagStartEndReading==1) {
-            if (Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading())-Integer.parseInt(updatedValue)<=12
-            &&Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading())-Integer.parseInt(updatedValue)>0)
-            {
+            if (pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading() != null && !pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading().equalsIgnoreCase("")) {
+                if (Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) <= 12
+                        && Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) >= 0) {
+                    pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
+
+                    if (Util.isConnected(this)) {
+                        String paramjson = new Gson().toJson(getEditReqJson(pendingRequestsResponse.getMachineWorklogList().get(pos).getStart_id(), updatedValue, flagStartEndReading));
+                        machineWorkingDataListPresenter.editMachineWorklog(paramjson);
+                    } else {
+                        Util.snackBarToShowMsg(getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "No internet connection.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else {
+                    if (Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) < Float.parseFloat(updatedValue)) {
+                        Util.snackBarToShowMsg(getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "End meter reading should be greater than start meter reading",
+                                Snackbar.LENGTH_LONG);
+                    } else {
+                        Util.snackBarToShowMsg(getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                }
+            } else {
                 pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
 
                 if (Util.isConnected(this)) {
@@ -430,16 +452,12 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                                     .findViewById(android.R.id.content), "No internet connection.",
                             Snackbar.LENGTH_LONG);
                 }
-            }else {
-                Util.snackBarToShowMsg(getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
-                        Snackbar.LENGTH_LONG);
             }
 
 
-        }else if (flagStartEndReading==2){
-            if (Integer.parseInt(updatedValue)-Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading())<=12
-            &&Integer.parseInt(updatedValue)-Integer.parseInt(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading())>0)
+        } else if (flagStartEndReading == 2) {
+            if (Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) <= 12
+                    && Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) >= 0)
             {
                 pendingRequestsResponse.getMachineWorklogList().get(pos).setEndReading(updatedValue);
 
@@ -452,9 +470,15 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                             Snackbar.LENGTH_LONG);
                 }
             }else {
-                Util.snackBarToShowMsg(getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
-                        Snackbar.LENGTH_LONG);
+                if (Float.parseFloat(updatedValue) < Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading())) {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Start meter reading should be less than end meter reading.",
+                            Snackbar.LENGTH_LONG);
+                } else {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
+                            Snackbar.LENGTH_LONG);
+                }
             }
 
         }

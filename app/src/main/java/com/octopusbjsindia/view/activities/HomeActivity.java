@@ -77,6 +77,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private BroadcastReceiver mMessageReceiver;
     private BroadcastReceiver connectionReceiver;
     private String toOpen;
+    View headerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +261,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         NavigationView navigationView = findViewById(R.id.home_menu_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View headerLayout = navigationView.getHeaderView(0);
+        headerLayout = navigationView.getHeaderView(0);
         LinearLayout profileView = headerLayout.findViewById(R.id.menu_user_profile_layout);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
@@ -276,10 +277,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
 //        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
 //        versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
-        TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
-        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
-        TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
-        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
         TextView tvAppVersion = headerLayout.findViewById(R.id.menu_app_version);
         String appVersion;
         try {
@@ -394,6 +391,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
+        TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
+        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
+        TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
+        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
 
         // Start data sync
         SyncAdapterUtils.manualRefresh();

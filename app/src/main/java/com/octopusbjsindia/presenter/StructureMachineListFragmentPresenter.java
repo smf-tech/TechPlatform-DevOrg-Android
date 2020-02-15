@@ -54,6 +54,7 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
     public static final String MACHINE_SIGN_OFF = "machineSignOff";
     public static final String RELEASE_MACHINE_STATUS = "releaseMachine";
     public static final String UPDATE_MACHINE_STATUS = "updateMachineStatus";
+    private static final String RELEASE_OPERATOR = "releaseOperator";
 
     public StructureMachineListFragmentPresenter(StructureMachineListFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -298,6 +299,23 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         return requestObject;
     }
 
+    public void releaceOperator(String operatorId) {
+        Gson gson = new GsonBuilder().create();
+        fragmentWeakReference.get().showProgressBar();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("operator_id", operatorId);
+
+        String paramjson = gson.toJson(map);
+        final String updateMachineStatusUrl = BuildConfig.BASE_URL
+                + Urls.SSModule.RELEASE_OPERATORS;
+
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(RELEASE_OPERATOR, paramjson, updateMachineStatusUrl);
+    }
+
     @Override
     public void onFailureListener(String requestID, String message) {
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
@@ -324,12 +342,14 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
+
+                CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
+                if (commentResponse.getStatus() == 1000) {
+                    Util.logOutUser(fragmentWeakReference.get().getActivity());
+                    return;
+                }
                 if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_STRUCTURE_LIST)) {
-                    CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
-                    if (commentResponse.getStatus() == 1000) {
-                        Util.logOutUser(fragmentWeakReference.get().getActivity());
-                        return;
-                    }
+
                     StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
                     if (structureListData.getCode() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
@@ -338,11 +358,6 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                     }
 
                 } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
-                    CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
-                    if (commentResponse.getStatus() == 1000) {
-                        Util.logOutUser(fragmentWeakReference.get().getActivity());
-                        return;
-                    }
                     //fragmentWeakReference.get().populateAnalyticsData(requestID, machineListData);
                     MachineListAPIResponse machineListData = PlatformGson.getPlatformGsonInstance().fromJson(response, MachineListAPIResponse.class);
                     if (machineListData.getCode() == 200) {
@@ -384,6 +399,13 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
                         Log.e("TAG", "Exception");
                     }
                 } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.UPDATE_MACHINE_STATUS)) {
+                    try {
+                        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                        fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());
+                    } catch (Exception e) {
+                        Log.e("TAG", "Exception");
+                    }
+                } else if (requestID.equalsIgnoreCase(RELEASE_OPERATOR)) {
                     try {
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                         fragmentWeakReference.get().showResponse(requestID, responseOBJ.getMessage(), responseOBJ.getStatus());

@@ -189,10 +189,11 @@ public class AttendancePlannerFragment extends Fragment implements View.OnClickL
                     if (!attendanceDateList.getStatus().isEmpty()) {
                         tvStatus.setText(attendanceDateList.getStatus());
                     }
+                    break;
                 } else {
                     tvCheckInTime.setText("");
                     tvCheckOutTime.setText("");
-                    tvStatus.setText("Check-In pending");
+                    tvStatus.setVisibility(View.GONE);
                 }
             }
         }

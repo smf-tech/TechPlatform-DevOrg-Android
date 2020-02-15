@@ -49,6 +49,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/dimen_10dp"
+                    android:visibility="gone"
                     android:background="@drawable/ic_check_mark"
                     android:backgroundTint="@color/white" />
 
@@ -80,7 +81,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
-                    android:text="Terminate MOU"
+                    android:text="Shift Machine to structure"
                     android:textColor="@color/dark_grey" />
 
                 <RadioButton
@@ -90,7 +91,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
-                    android:text="Allocate machine in taluka"
+                    android:text="Make machine available"
                     android:textColor="@color/dark_grey" />
 
             </RadioGroup>

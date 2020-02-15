@@ -17,6 +17,7 @@ public class Urls {
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String GET_LOCATION_DATA = "api/locationV2/level";
         public static final String UPLOAD_IMAGE = "api/upload-image";
+        public static final String GET_MULTIPAL_PROFILE = "api/getUserProfileDetails";
     }
 
     public class Home {
@@ -87,10 +88,10 @@ public class Urls {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
         public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
         public static final String GET_TEAM_ATTENDANCE="api/getTeamAttendance";
+        public static final String GET_TEAM_USER_ATTENDANCE = "api/getTeamUserAttendance";
     }
     public class ContentManagement{
         public static final String GET_CONTENT_DATA="api/contentDashboard";
-
     }
 
     public class Matrimony {
@@ -147,6 +148,9 @@ public class Urls {
         public static final String MACHINE_MOU_FORM = "api/machineMou";
         public static final String MACHINE_MOU_UPLOAD = "api/machineMouUpload";
         public static final String STRUCTURE_BOUNDARY = "api/structureBoundary";
+        public static final String OPERATORS_LIST = "api/getOperatorList";
+        public static final String ASSIGN_OPERATORS = "api/assignOperator";
+        public static final String RELEASE_OPERATORS = "api/releaseOperator";
         public static final String CREATE_OPERATOR = "api/createOperator";
     }
 
