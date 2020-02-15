@@ -104,6 +104,7 @@ public class Constants {
         static final String USER_ROLE = "userRoleObj";
         static final String USER_PROJECT = "userProjectsObj";
         static final String USER_ROLE_ACCESS_OBJ = "userRoleAccessObj";
+        static final String USER_DEVICE_MATCH = "userDeviceMatch";
 
         public static final String AUTHORIZATION = "Authorization";
 

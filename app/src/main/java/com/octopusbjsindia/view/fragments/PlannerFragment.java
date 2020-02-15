@@ -54,6 +54,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.dao.UserAttendanceDao;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -86,7 +87,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlannerFragment extends Fragment implements PlatformTaskListener,
-        ConnectivityReceiver.ConnectivityReceiverListener {
+        ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener {
 
     private View plannerView;
     private TextView tvAttendanceDetails;
@@ -134,7 +135,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
     private Dialog dialog;
-
     private Activity mContext;
 
     @Override
@@ -523,59 +523,61 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
     public void setAttendaceView() {
-        btCheckIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //disable check-in and enable check-out
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    //noinspection MissingPermission
-                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        //
-                    } else {
-                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                        boolean gps_enabled = false;
-
-                        try {
-                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                        } catch (Exception ex) {
-                        }
-                        if (gps_enabled) {
-                            showLocationDialog();
-                        }
-                    }
-                }
-                startLocationUpdate();
-//                markCheckIn();
-            }
-        });
-        btCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //disable check-in and disable check-out
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    //noinspection MissingPermission
-                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        //
-                    } else {
-                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                        boolean gps_enabled = false;
-
-                        try {
-                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                        } catch (Exception ex) {
-                        }
-                        if (gps_enabled) {
-                            showLocationDialog();
-                            isCheckOut = true;
-                        }
-                    }
-                }
-                startLocationUpdate();
-//                markOut();
-            }
-        });
+        btCheckIn.setOnClickListener(this);
+        btCheckout.setOnClickListener(this);
+//        btCheckIn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //disable check-in and enable check-out
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    //noinspection MissingPermission
+//                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        //
+//                    } else {
+//                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+//                        boolean gps_enabled = false;
+//
+//                        try {
+//                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//                        } catch (Exception ex) {
+//                        }
+//                        if (gps_enabled) {
+//                            showLocationDialog();
+//                        }
+//                    }
+//                }
+//                startLocationUpdate();
+////                markCheckIn();
+//            }
+//        });
+//        btCheckout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //disable check-in and disable check-out
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    //noinspection MissingPermission
+//                    if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        //
+//                    } else {
+//                        LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+//                        boolean gps_enabled = false;
+//
+//                        try {
+//                            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//                        } catch (Exception ex) {
+//                        }
+//                        if (gps_enabled) {
+//                            showLocationDialog();
+//                            isCheckOut = true;
+//                        }
+//                    }
+//                }
+//                startLocationUpdate();
+////                markOut();
+//            }
+//        });
 
         tvAttendanceDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -821,6 +823,10 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 //        }
     }
 
+    private void deleteOfflineAttendance() {
+
+    }
+
     public void updateTime(long checkIntime, long checkOutTime) {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -1014,5 +1020,69 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_check_in:
+                if (Util.getIsDeviceMatchFromPref().equals("Matched")) {
+                    //disable check-in and enable check-out
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //noinspection MissingPermission
+                        if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            //
+                        } else {
+                            LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                            boolean gps_enabled = false;
+
+                            try {
+                                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                            } catch (Exception ex) {
+                            }
+                            if (gps_enabled) {
+                                showLocationDialog();
+                            }
+                        }
+                    }
+                    startLocationUpdate();
+//                markCheckIn();
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.device_mismatch_msg),
+                            Snackbar.LENGTH_LONG);
+                }
+                break;
+            case R.id.bt_checkout:
+                if (Util.getIsDeviceMatchFromPref().equals("Matched")) {
+                    //disable check-in and disable check-out
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //noinspection MissingPermission
+                        if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            //
+                        } else {
+                            LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                            boolean gps_enabled = false;
+
+                            try {
+                                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                            } catch (Exception ex) {
+                            }
+                            if (gps_enabled) {
+                                showLocationDialog();
+                                isCheckOut = true;
+                            }
+                        }
+                    }
+                    startLocationUpdate();
+//                markOut();
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.device_mismatch_msg),
+                            Snackbar.LENGTH_LONG);
+                }
+                break;
+        }
+    }
 }
 

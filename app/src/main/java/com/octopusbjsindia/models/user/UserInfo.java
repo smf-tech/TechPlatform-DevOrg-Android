@@ -94,6 +94,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("multiple_location_level")
     @Expose
     private JurisdictionType multipleLocationLevel;
+    @SerializedName("is_device_matched")
+    @Expose
+    private int isDeviceMatched;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -307,6 +310,14 @@ public class UserInfo implements Parcelable {
         this.multipleLocationLevel = multipleLocationLevel;
     }
 
+    public int getIsDeviceMatched() {
+        return isDeviceMatched;
+    }
+
+    public void setIsDeviceMatched(int isDeviceMatched) {
+        this.isDeviceMatched = isDeviceMatched;
+    }
+
     private UserInfo(Parcel in) {
         id = in.readString();
         userFirstName = in.readString();
@@ -320,6 +331,7 @@ public class UserInfo implements Parcelable {
         approveStatus = in.readString();
         profilePic = in.readString();
         jurisdictionTypeId = in.readString();
+        isDeviceMatched = in.readInt();
     }
 
     @Override
@@ -342,5 +354,6 @@ public class UserInfo implements Parcelable {
         parcel.writeString(profilePic);
         parcel.writeString(device_id);
         parcel.writeString(jurisdictionTypeId);
+        parcel.writeInt(isDeviceMatched);
     }
 }

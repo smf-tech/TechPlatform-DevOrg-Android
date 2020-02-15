@@ -284,6 +284,21 @@ public class Util {
         editor.apply();
     }
 
+    public static String getIsDeviceMatchFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        return preferences.getString(Constants.Login.USER_DEVICE_MATCH, "");
+    }
+
+    public static void saveIsDeviceMatchInPref(String isDeviceMatch) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_DEVICE_MATCH, isDeviceMatch);
+        editor.apply();
+    }
+
     public static Login getLoginObjectFromPref() {
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);

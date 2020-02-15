@@ -62,6 +62,8 @@ public class PlannerFragmentPresenter implements PlannerFragmetListener {
             AttendanceResponse data = PlatformGson.getPlatformGsonInstance().fromJson(response, AttendanceResponse.class);
             if (data.getStatus() == 1000) {
                 plannerFragment.logOutUser();
+            } else if (data.getStatus() == 400) {
+                Util.showToast(data.getMessage(), plannerFragment);
             } else {
                 DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema()
                         .updateUserAttendace(data.getData().getAttendanceId(),
