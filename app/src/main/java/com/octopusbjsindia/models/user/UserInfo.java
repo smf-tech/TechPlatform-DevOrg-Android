@@ -91,6 +91,9 @@ public class UserInfo implements Parcelable {
     @SerializedName("jurisdiction_type_id")
     @Expose
     private String jurisdictionTypeId;
+    @SerializedName("multiple_location_level")
+    @Expose
+    private JurisdictionType multipleLocationLevel;
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
@@ -294,6 +297,14 @@ public class UserInfo implements Parcelable {
 
     public void setJurisdictionTypeId(String jurisdictionTypeId) {
         this.jurisdictionTypeId = jurisdictionTypeId;
+    }
+
+    public JurisdictionType getMultipleLocationLevel() {
+        return multipleLocationLevel;
+    }
+
+    public void setMultipleLocationLevel(JurisdictionType multipleLocationLevel) {
+        this.multipleLocationLevel = multipleLocationLevel;
     }
 
     private UserInfo(Parcel in) {

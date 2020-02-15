@@ -182,6 +182,40 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void getUserProfile() {
+        Response.Listener<JSONObject> userProfileSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "getUserProfile - Resp: " + res);
+                    listener.onProfileFetched(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
+            }
+        };
+
+        Response.ErrorListener userProfileErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getProfileUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                userProfileSuccessListener,
+                userProfileErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void submitUserProfile(UserInfo userInfo) {
         Response.Listener<JSONObject> profileSuccessListener = response -> {
             try {

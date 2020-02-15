@@ -89,6 +89,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_mobile"
                     android:inputType="number"
+                    android:visibility="gone"
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 

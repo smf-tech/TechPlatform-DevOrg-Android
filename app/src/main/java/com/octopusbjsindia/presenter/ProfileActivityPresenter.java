@@ -39,19 +39,18 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
     private final String TAG = ProfileActivityPresenter.class.getName();
     private WeakReference<EditProfileActivity> profileActivity;
-//    public static final String GET_COUNTRY = "getCountry";
-//    public static final String GET_STATE = "getState";
-//    public static final String GET_DISTRICT = "getDistrict";
-//    public static final String GET_CITY = "getCity";
-//    public static final String GET_TALUKAS = "getTalukas";
-//    public static final String GET_VILLAGE = "getVillage";
-//    public static final String GET_CLUSTER = "getCluster";
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
 
     public ProfileActivityPresenter(EditProfileActivity activity) {
         profileActivity = new WeakReference<>(activity);
+    }
+
+    public void getUserProfile() {
+        ProfileRequestCall requestCall = new ProfileRequestCall();
+        requestCall.setListener(this);
+        requestCall.getUserProfile();
     }
 
     public void submitProfile(final UserInfo userInfo) {
@@ -85,14 +84,6 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
         profileActivity.get().showProgressBar();
         requestCall.getOrganizationRoles(orgId, projectId);
     }
-
-//    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-//        ProfileRequestCall requestCall = new ProfileRequestCall();
-//        requestCall.setListener(this);
-//
-//        profileActivity.get().showProgressBar();
-//        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
-//    }
 
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         HashMap<String,String> map=new HashMap<>();
@@ -189,6 +180,14 @@ public class ProfileActivityPresenter implements ProfileRequestCallListener,
 
         profileActivity.get().hideProgressBar();
         profileActivity.get().showNextScreen(user);
+    }
+
+    @Override
+    public void onProfileFetched(String response) {
+        User user = new Gson().fromJson(response, User.class);
+        if (response != null && user.getUserInfo() != null) {
+            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+        }
     }
 
     @Override

@@ -6,6 +6,8 @@ public interface ProfileRequestCallListener {
 
     void onProfileUpdated(String response);
 
+    void onProfileFetched(String response);
+
     void onOrganizationsFetched(String response);
 
     void onJurisdictionFetched(String response, String level);

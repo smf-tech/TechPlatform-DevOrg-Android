@@ -125,6 +125,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private RelativeLayout progressBarLayout;
     private final String TAG = EditProfileActivity.class.getName();
     private String currentPhotoPath = "";
+    private String multiLocationLevel = "";
+    private boolean isRoleSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         setContentView(R.layout.activity_edit_profile);
 
         profilePresenter = new ProfileActivityPresenter(this);
+
         if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
                 !getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
@@ -181,6 +184,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         hideJurisdictionLevel();
         setListeners();
+
+        profilePresenter.getUserProfile();
 
         if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
             findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
@@ -275,6 +280,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedProjects.add(project);
         etUserProject.setText(userInfo.getProjectIds().get(0).getName());
 
+        multiLocationLevel = userInfo.getMultipleLocationLevel().getName();
         OrganizationRole role = new OrganizationRole();
         role.setId(userInfo.getRoleIds());
         role.setDisplayName(userInfo.getRoleNames());
@@ -519,10 +525,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCountry:
                 if (customSpinnerCountries.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
-                            get(selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+                    //String level = "";
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
                         CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
                                 "Select Country", customSpinnerCountries,
                                 true);
@@ -551,10 +560,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserState:
                 if (customSpinnerStates.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
-                            get(selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.STATE_LEVEL)) {
                         CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select State", customSpinnerStates,
                                 true);
@@ -599,10 +610,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCity:
                 if (customSpinnerCities.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
-                            (selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.CITY_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CITY_LEVEL)) {
                         CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select City", customSpinnerCities,
                                 true);
@@ -640,10 +653,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserDistrict:
                 if (customSpinnerDistricts.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
-                            get(selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
                         CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select District", customSpinnerDistricts,
                                 true);
@@ -681,10 +696,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserTaluka:
                 if (customSpinnerTalukas.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
-                            (selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
                         CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select Taluka", customSpinnerTalukas,
                                 true);
@@ -743,10 +760,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserVillage:
                 if (customSpinnerVillages.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
-                            (selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
                         CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
                                 "Select Village", customSpinnerVillages,
                                 true);
@@ -805,10 +824,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserCluster:
                 if (customSpinnerClusters.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
-                            (selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
                         CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                                 "Select Cluster", customSpinnerClusters,
                                 true);
@@ -846,10 +867,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 break;
             case R.id.etUserSchool:
                 if (customSpinnerSchools.size() > 0) {
-                    Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().get
-                            (selectedRole.getProject().getJurisdictions().size() - 1);
-
-                    if (jurisdiction.getLevelName().equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
                         CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                                 "Select School", customSpinnerSchools,
                                 true);
@@ -1711,6 +1734,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         && !TextUtils.isEmpty(roles.get(selectedPosition).getId())) {
                     selectedRole = roles.get(selectedPosition);
                     selectedRoles.add(selectedRole.getId());
+                    isRoleSelected = true;
                 }
             }
             if (selectedRole.getProject() != null) {
