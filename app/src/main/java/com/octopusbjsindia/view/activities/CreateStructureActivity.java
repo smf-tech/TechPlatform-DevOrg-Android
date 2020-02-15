@@ -245,17 +245,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
-            etState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            selectedState = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName();
+            etState.setText(selectedState);
             selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
         }
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-            etDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            selectedDistrict = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName();
+            etDistrict.setText(selectedDistrict);
             selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
         }
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
+            etTaluka.setText(selectedDistrict);
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
 
@@ -505,15 +508,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private boolean isAllDataValid() {
         if (TextUtils.isEmpty(selectedDistrict)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, selected District.", Snackbar.LENGTH_LONG);
+                    "Please, select District.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedTaluka)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, selected Taluka.", Snackbar.LENGTH_LONG);
+                    "Please, select Taluka.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedHostVillage)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, selected Host Village.", Snackbar.LENGTH_LONG);
+                    "Please, select Host Village.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etHostVillagePopulation.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -558,6 +561,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         } else if (TextUtils.isEmpty(selectedStructureTypeId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Structure Type.", Snackbar.LENGTH_LONG);
+            return false;
+        }  else if (TextUtils.isEmpty(selectedStructureWorkType)) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, select Structure Work Type.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),

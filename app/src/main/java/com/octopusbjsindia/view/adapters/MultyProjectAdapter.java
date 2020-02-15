@@ -2,8 +2,6 @@ package com.octopusbjsindia.view.adapters;
 
 import android.app.ActionBar;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -21,10 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.ProfileActivity;
-import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
-import com.octopusbjsindia.view.activities.StructureCompletionActivity;
-import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -75,18 +71,37 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
                 @Override
                 public void onClick(View view) {
 
-                    showDialog(mContext.getResources().getString(R.string.alert),
-                            "Are you sure, want to switch the project?",
-                            mContext.getResources().getString(R.string.yes),
-                            mContext.getResources().getString(R.string.no),
-                            getAdapterPosition());
+                    if(projectList.size()>1){
+
+                        if(Util.getUserObjectFromPref().getProjectIds().get(0).getId()
+                                .equals(projectList.get(getAdapterPosition()).getProjectId())){
+                            showDialog("Switch Profile",
+                                    "You are in the same project?",
+                                    "",
+                                    mContext.getResources().getString(R.string.ok),
+                                    getAdapterPosition(),2);
+                        } else {
+                            showDialog("Switch Profile",
+                                    "Are you sure you want to switch your project ?",
+                                    mContext.getResources().getString(R.string.yes),
+                                    mContext.getResources().getString(R.string.no),
+                                    getAdapterPosition(),1);
+                        }
+
+                    } else {
+                        showDialog("Switch Profile",
+                                "You are in the same project?",
+                                "",
+                                mContext.getResources().getString(R.string.ok),
+                                getAdapterPosition(),2);
+                    }
                 }
             });
         }
     }
 
     public void showDialog( String dialogTitle, String message, String btn1String, String
-            btn2String, int adapterPosition) {
+            btn2String, int adapterPosition, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(mContext));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -108,7 +123,10 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
-                presenter.getUserDetels(projectList.get(adapterPosition));
+                if(flag == 1){
+                    presenter.getUserDetels(projectList.get(adapterPosition));
+                }
+
                 //Close dialog
                 dialog.dismiss();
             });

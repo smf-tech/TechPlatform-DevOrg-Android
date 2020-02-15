@@ -52,10 +52,11 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            OperatorMachineData pendingRequestsResponse
-                    = new Gson().fromJson(response, OperatorMachineData.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null )
-            {
+            OperatorMachineData pendingRequestsResponse = new Gson().fromJson(response, OperatorMachineData.class);
+            if(pendingRequestsResponse.getStatus() == 1000){
+                Util.logOutUser(fragmentWeakReference.get());
+                return;
+            } else if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null ) {
                 fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
             }
         }
