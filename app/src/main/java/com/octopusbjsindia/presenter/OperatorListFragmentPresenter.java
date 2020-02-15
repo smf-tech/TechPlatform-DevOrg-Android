@@ -63,7 +63,7 @@ public class OperatorListFragmentPresenter implements APIPresenterListener {
                 Util.logOutUser(mContext.getActivity());
                 return;
             } else {
-                mContext.onFailureListener(requestID, responseData.getMessage());
+                mContext.assignOperatorsSuccess( responseData.getMessage());
             }
         }
 
