@@ -160,6 +160,7 @@ public class Urls {
         public static final String MACHINE_DATA_WORKLOG = "api/getMachineWorkLogData";
         public static final String MACHINE_WORKLOG__DETAILS = "api/logDetails";
         public static final String MACHINE_WORKLOG_EDIT = "api/editWorkLog";
+        public static final String MACHINE_DATA_SYNC = "api/dataSynch";
 
     }
 
@@ -174,4 +175,8 @@ public class Urls {
         public static final String COMMENT_LIST = "api/commentList";
     }
 
+    public class SmartGirl{
+        public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
+        public static final String CREATE_BATCH_API = "api/createBatch";
+    }
 }
