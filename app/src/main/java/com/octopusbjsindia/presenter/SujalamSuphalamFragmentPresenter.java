@@ -132,6 +132,8 @@ public class SujalamSuphalamFragmentPresenter implements APIPresenterListener {
                     SSAnalyticsAPIResponse ssAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
                     if (ssAnalyticsData.getCode() == 200) {
                         fragmentWeakReference.get().populateAnalyticsData(requestID, ssAnalyticsData);
+                    } else if (ssAnalyticsData.getCode() == 400) {
+                        fragmentWeakReference.get().emptyResponse(requestID);
                     }
                 } else if (requestID.equals(SujalamSuphalamFragmentPresenter.GET_SS_MASTER_DATA)) {
                     MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);

@@ -196,6 +196,7 @@ public class Util {
         Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "application/json;charset=UTF-8");
+        headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
 //        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
 
         if (isTokenPresent) {
@@ -214,7 +215,6 @@ public class Util {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
                 headers.put("versionName",getAppVersion());
-                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 
@@ -353,6 +353,7 @@ public class Util {
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
+        Util.saveUserObjectInPref("");
         try {
             Intent startMain = new Intent(activity, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);

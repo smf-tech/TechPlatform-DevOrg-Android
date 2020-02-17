@@ -326,8 +326,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                             .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
                     Snackbar.LENGTH_LONG);
             getDeviceId();
+            if (deviceId.length() > 0) {
+                sLoginInfo.setDeviceId(deviceId);
+                Util.setStringInPref(Constants.App.deviceId, deviceId);
+                otpPresenter.getLoginToken(sLoginInfo, Util.encrypt(otp));
+            }
         }
-
     }
 
     //get device id for token api

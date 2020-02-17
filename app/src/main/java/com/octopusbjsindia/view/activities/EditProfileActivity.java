@@ -185,8 +185,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         hideJurisdictionLevel();
         setListeners();
 
-        profilePresenter.getUserProfile();
-
         if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
             findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
             findViewById(R.id.input_user_address).setVisibility(View.GONE);
@@ -204,6 +202,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
                     setEditModeUserData();
                     if (Util.isConnected(this)) {
+                        profilePresenter.getUserProfile();
                         profilePresenter.getOrganizations();
                     }
                 }

@@ -40,7 +40,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
     private ArrayList<MachineData> ssDataList;
     private Activity activity;
     private StructureMachineListFragment fragment;
-    //private boolean isSettingsRequired;
 
     public SSMachineListAdapter(Activity activity, StructureMachineListFragment fragment,
                                 ArrayList<MachineData> ssDataList) {
@@ -122,14 +121,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 holder.btAction.setVisibility(View.INVISIBLE);
             }
         } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
-            if (fragment.isMachineDepoly) {
+            if (fragment.isMachineDepoly && ssDataList.get(position).getOperatorassigned()) {
                 holder.btAction.setVisibility(View.VISIBLE);
                 holder.btAction.setText("Deploy Machine");
             } else {
                 holder.btAction.setVisibility(View.INVISIBLE);
-//                Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
-//                                .findViewById(android.R.id.content), "You can not take any action on this machine.",
-//                        Snackbar.LENGTH_LONG);
             }
         } else {
             holder.btAction.setVisibility(View.INVISIBLE);
@@ -218,8 +214,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     } else {
                         popup.getMenu().findItem(R.id.action_realise_operator).setVisible(false);
                     }
-///remove
-//                    popup.getMenu().findItem(R.id.action_realise_operator).setVisible(true);
 
                     if (fragment.isAssignOperator) {
                         if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
@@ -228,8 +222,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     } else {
                         popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
                     }
-///remove
-//                    popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
 
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||

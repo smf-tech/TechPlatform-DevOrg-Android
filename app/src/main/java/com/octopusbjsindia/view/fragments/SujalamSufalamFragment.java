@@ -398,11 +398,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }
-        if(machineAnalyticsDataList.size()>0){
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
-        } else {
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
-        }
+        manageUI();
     }
 
     private void setStructureView(){
@@ -420,10 +416,36 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
         }
-        if(structureAnalyticsDataList.size()>0){
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        manageUI();
+    }
+
+    private void manageUI() {
+        if (viewType == 1) {
+            if (structureAnalyticsDataList.size() > 0) {
+                sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+            rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         } else {
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+
+            if (machineAnalyticsDataList.size() > 0) {
+                sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            }
+            rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
+        }
+        structureAnalyticsAdapter.notifyDataSetChanged();
+    }
+
+    public void emptyResponse(String requestCode) {
+        if (requestCode.equals(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS)) {
+            structureAnalyticsDataList.clear();
+            manageUI();
+        } else if (requestCode.equals(sujalamSuphalamFragmentPresenter.GET_MACHINE_ANALYTICS)) {
+            machineAnalyticsDataList.clear();
+            manageUI();
         }
     }
 
@@ -445,17 +467,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                     }
                 }
             }
-            if(viewType==1){
-                rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
-            } else {
-                rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
-            }
-            structureAnalyticsAdapter.notifyDataSetChanged();
-        }
-        if(structureAnalyticsDataList.size()>0){
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
-        } else {
-            sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+            manageUI();
         }
     }
 
@@ -607,6 +619,14 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 }
             }
             tvStateFilter.setText(selectedState);
+            tvDistrictFilter.setText("");
+            selectedDistrictId = "";
+            tvTalukaFilter.setText("");
+            selectedTalukaId = "";
+            if (isFilterApplied) {
+                isFilterApplied = false;
+                btnFilter.setImageResource(R.drawable.ic_filter);
+            }
 
         } else if (type.equals("Select District")) {
             String selectedDistrict = "";
@@ -626,6 +646,12 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 }
             }
             tvDistrictFilter.setText(selectedDistrict);
+            tvTalukaFilter.setText("");
+            selectedTalukaId = "";
+            if (isFilterApplied) {
+                isFilterApplied = false;
+                btnFilter.setImageResource(R.drawable.ic_filter);
+            }
 
         } else if (type.equals("Select Taluka")) {
             String selectedTaluka = "";
@@ -645,6 +671,10 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 }
             }
             tvTalukaFilter.setText(selectedTaluka);
+            if (isFilterApplied) {
+                isFilterApplied = false;
+                btnFilter.setImageResource(R.drawable.ic_filter);
+            }
         }
     }
 }
