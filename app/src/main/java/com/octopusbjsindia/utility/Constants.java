@@ -3,6 +3,7 @@ package com.octopusbjsindia.utility;
 public class Constants {
 
 
+    public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
     public static final String MARK_INTERVIEW = "Interview";
 
@@ -103,6 +104,7 @@ public class Constants {
         static final String USER_ROLE = "userRoleObj";
         static final String USER_PROJECT = "userProjectsObj";
         static final String USER_ROLE_ACCESS_OBJ = "userRoleAccessObj";
+        static final String USER_DEVICE_MATCH = "userDeviceMatch";
 
         public static final String AUTHORIZATION = "Authorization";
 
@@ -392,6 +394,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
         public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
         public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
+        public static final Integer ACCESS_CODE_ADD_OPERATOR = 131;
 
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
@@ -407,7 +410,8 @@ public class Constants {
         public static final Integer ACCESS_CODE_DISTRICT = 121;
         public static final Integer ACCESS_CODE_TALUKA = 122;
         public static final Integer ACCESS_CODE_VILLAGE = 123;
-
+        public static final Integer ACCESS_CODE_ASSIGN_OPERATOR = 132;
+        public static final Integer ACCESS_CODE_REALISE_OPERATOR = 133;
         //public static final Integer ROLE_CODE_SS_HO = 110;
 //        public static final Integer ROLE_CODE_SS_HO_OPS = 112;
 //        public static final Integer ROLE_CODE_SS_DM = 110;
@@ -415,10 +419,10 @@ public class Constants {
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
 //        public static final Integer ROLE_CODE_SS_HO_MIS = 115;
 
-        public static final String DISTRICT_LEVEL = "District Manager";
-        public static final String TALUKA_LEVEL = "Taluka Coordinator";
-        public static final String FIELD_LEVEL = "Field Associate";
-        public static final String OPERATOR = "Operator";
+//        public static final String DISTRICT_LEVEL = "District Manager";
+//        public static final String TALUKA_LEVEL = "Taluka Coordinator";
+//        public static final String FIELD_LEVEL = "Field Associate";
+//        public static final String OPERATOR = "Operator";
     }
 
     public static class OperatorModule {

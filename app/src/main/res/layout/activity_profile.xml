@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@color/lighter_grey"
     android:orientation="vertical">
 
     <include
@@ -28,16 +29,6 @@
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_user_avatar" />
 
-            <TextView
-                android:id="@+id/add_photo_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:text="@string/add_photo"
-                android:fontFamily="@font/opensans"
-                android:textColor="@color/profile_pic_bg"
-                android:textSize="@dimen/text_size_11" />
         </RelativeLayout>
 
         <TextView
@@ -106,8 +97,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/dimen_12dp"
-                    android:paddingBottom="@dimen/dimen_12dp">
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:paddingBottom="@dimen/dimen_05dp">
 
                     <TextView
                         android:id="@+id/user_profile_org_label"
@@ -132,8 +123,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/dimen_12dp"
-                    android:paddingBottom="@dimen/dimen_12dp">
+                    android:paddingTop="@dimen/dimen_05dp"
+                    android:paddingBottom="@dimen/dimen_05dp">
 
                     <TextView
                         android:id="@+id/user_profile_project_label"
@@ -155,7 +146,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_01dp"
-                android:layout_marginTop="@dimen/dimen_07dp"
+                android:layout_marginTop="@dimen/dimen_03dp"
                 android:background="@color/profile_divider" />
 
             <LinearLayout
@@ -163,6 +154,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_bottom_shadow"
+                android:contentDescription="@string/content_description" />
+
+            <TextView
+                android:id="@+id/user_multy_profile_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your profiles"
+                android:layout_marginStart="@dimen/dimen_25dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp"
+                android:textSize="@dimen/text_size_14" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_projects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/ly_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
 </LinearLayout>

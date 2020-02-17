@@ -17,7 +17,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -67,14 +66,12 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
-import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.receivers.AlarmReceiver;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.services.ForegroundService;
-import com.octopusbjsindia.syncAdapter.SyncAdapter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
@@ -885,23 +882,23 @@ private ImageView toolbar_edit_action;
         if(toOpen != null){
             Log.i("toOpen", "toOpen called");
 
-                if(mRingtone!=null && mRingtone.isPlaying()){
+            if (mRingtone != null && mRingtone.isPlaying()) {
 
-                }else {
-                    mRingtone = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-                    mRingtone.setLooping(true);
-                    mRingtone.play();
-                    Log.e("mRingtone--", "---OnPlaying");
+            } else {
+                mRingtone = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+                mRingtone.setLooping(true);
+                mRingtone.play();
+                Log.e("mRingtone--", "---OnPlaying");
             }
             /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
             mp.start();*/
 
-                if( alarmDialog != null && alarmDialog.isShowing()){
+            if (alarmDialog != null && alarmDialog.isShowing()) {
 
-                }else {
-                    showAlarmDialog(this, 1);
-                }
+            } else {
+                showAlarmDialog(this, 1);
+            }
         }
 
         if (preferences.getInt("State", 0) == state_start) {
@@ -930,7 +927,7 @@ private ImageView toolbar_edit_action;
         super.onStop();
         Log.e("method--", "---OnStop");
         if(mRingtone!=null && mRingtone.isPlaying()){
-          //  cancelAlarm();
+            //  cancelAlarm();
         }
     }
 

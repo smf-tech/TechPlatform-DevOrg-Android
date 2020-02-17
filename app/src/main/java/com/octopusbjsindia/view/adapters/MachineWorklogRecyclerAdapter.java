@@ -16,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,12 +28,6 @@ import com.octopusbjsindia.models.Operator.MachineWorklogList;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineWorkingDataListActivity;
-import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
-import com.octopusbjsindia.view.activities.OperatorMeterReadingActivity;
-import com.octopusbjsindia.view.fragments.TMUserAttendanceApprovalFragment;
-import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
-import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
-import com.octopusbjsindia.view.fragments.TMUserProfileApprovalFragment;
 
 import java.util.List;
 

@@ -554,6 +554,10 @@
     <string name="msg_structure_boundary">Waiting for location Accuracy</string>
     <string name="machine_signoff_alert_message">Are you sure, you want to send sign-off for this machine?</string>
     <string name="machine_removed">हे डिव्हाइस कोणत्याही मशीनला नियुक्त केलेले नाही \nकृपया आपल्या सुपरवाइजरशी संपर्क साधा.</string>
+    <string name="release_opretor_alert_message">Are you sure want to release the operator from this machine?</string>
+    <string name="assign_opretor_alert_message">Are you sure want to assign the operator from this machine?</string>
+    <string name="event_content_screen_visit">Content Module Screen visited</string>
+    <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
 
 
 </resources>

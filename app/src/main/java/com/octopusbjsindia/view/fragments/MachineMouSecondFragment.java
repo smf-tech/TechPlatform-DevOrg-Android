@@ -7,13 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -27,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -64,7 +63,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnSecondPartMou, btnPreviousMou;
-    private EditText etProviderFirstName, etProviderLastName, etProviderContact, etMachineMobile,
+    private EditText etProviderFirstName, etProviderLastName, etProviderContact, //etMachineMobile,
             etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
             etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
     private ImageView imgAccount;
@@ -112,7 +111,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderFirstName = machineMouSecondFragmentView.findViewById(R.id.et_provider_first_name);
         etProviderLastName = machineMouSecondFragmentView.findViewById(R.id.et_provider_last_name);
         etProviderContact = machineMouSecondFragmentView.findViewById(R.id.et_provider_contact);
-        etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
+        //etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
         etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
         etTradeName = machineMouSecondFragmentView.findViewById(R.id.et_trade_name);
         etTurnover = machineMouSecondFragmentView.findViewById(R.id.et_turnover);
@@ -216,8 +215,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderLastName.setLongClickable(false);
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getProviderContactNumber());
-        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMachine().getMachineMobileNumber());
+//        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMachine().getMachineMobileNumber());
         if(((MachineMouActivity) getActivity()).chequeImageUri!= null) {
             imgAccount.setImageURI(((MachineMouActivity) getActivity()).chequeImageUri);
         }
@@ -281,11 +280,12 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_contact), Snackbar.LENGTH_LONG);
             return false;
-        } else if ( TextUtils.isEmpty(etMachineMobile.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_machine_mobile), Snackbar.LENGTH_LONG);
-            return false;
         }
+//        else if ( TextUtils.isEmpty(etMachineMobile.getText().toString().trim())){
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_machine_mobile), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
         if(!isBJSMachine) {
             if (selectedOwnershipId == null){
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
@@ -356,11 +356,11 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         getString(R.string.enter_proper_provider_contact), Snackbar.LENGTH_LONG);
                 return false;
             }
-            if (etMachineMobile.getText().toString().trim().length() != 10){
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
-                return false;
-            }
+//            if (etMachineMobile.getText().toString().trim().length() != 10){
+//                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                        getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
+//                return false;
+//            }
             if (etGstRegNo.getText().toString().trim().length() != 15){
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.enter_proper_gst_no), Snackbar.LENGTH_LONG);
@@ -405,7 +405,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
                                 (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
 
-                        ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                        //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                        ((MachineMouActivity) getActivity()).uploadData();
                     } else {
                         ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
                     }
@@ -453,8 +454,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setAddress("Pune");
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber
                 (etProviderContact.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
-                (etMachineMobile.getText().toString().trim());
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
+//                (etMachineMobile.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setOwnership
                 ((selectedOwnershipId));
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineMeterWorking("Yes");

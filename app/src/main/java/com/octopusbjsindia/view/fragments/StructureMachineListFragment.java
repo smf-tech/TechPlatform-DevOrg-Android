@@ -47,7 +47,7 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
-import com.octopusbjsindia.models.user.UserInfo;
+import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.StructureMachineListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -81,20 +81,26 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private RelativeLayout progressBarLayout;
     private StructureMachineListFragmentPresenter structureMachineListFragmentPresenter;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
+    private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
-    private String selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId, selectedDeployTaluka, selectedDeployTalukaId;
+    //    private String selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId,
+//            selectedDeployTaluka, selectedDeployTalukaId;
+    private String selectedDeployTalukaId;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
     public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
+    public boolean isMachineAdd, isOperatorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd;
-    private FloatingActionButton fbCreate;
+            isVillageFilter, isStructureAdd, isRealiseOperator, isAssignOperator;
+    private FloatingActionButton fbSelect, fbCreate, fbCreateOperator;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
+    private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
+            userTalukas = "", userTalukaIds = "";
+    private boolean isFABOpen = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,34 +123,24 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         Bundle bundle = this.getArguments();
         viewType = bundle.getInt("viewType");
         selectedStatus = bundle.getInt("selectedStatus");
-//        ((SSActionsActivity) context).hideToolbar();
         init();
     }
 
     private void init() {
         progressBarLayout = structureMachineListFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
+        fbSelect = structureMachineListFragmentView.findViewById(R.id.fb_select);
+        fbSelect.setOnClickListener(this);
         fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
+        fbCreate.setOnClickListener(this);
+        fbCreateOperator = structureMachineListFragmentView.findViewById(R.id.fb_create_operator);
+        fbCreateOperator.setOnClickListener(this);
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
         btnFilterClear = structureMachineListFragmentView.findViewById(R.id.btn_filter_clear);
         btnFilterClear.setOnClickListener(this);
-        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
-                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
-            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
-            tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
-        }
-        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
-                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-            selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
-            tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
-        }
-        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
-                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-            tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-        }
+        setUserLocation();
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if (roleAccessList != null) {
@@ -155,6 +151,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
                     isStructureAdd = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_OPERATOR)) {
+                    isOperatorAdd = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
                     isMachineTerminate = true;
@@ -202,6 +201,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
                     isVillageFilter = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_REALISE_OPERATOR)) {
+                    isRealiseOperator = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
+                    isAssignOperator = true;
                 }
             }
         }
@@ -215,52 +220,73 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (isStateFilter) {
             tvStateFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
+                tvStateFilter.setOnClickListener(this);
+                machineStateList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                    CustomSpinnerObject customState = new CustomSpinnerObject();
+                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                    machineStateList.add(customState);
+                }
+            }
         }
         if (isDistrictFilter) {
             tvDistrictFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
+                tvDistrictFilter.setOnClickListener(this);
+                machineDistrictList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
+                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                    machineDistrictList.add(customDistrict);
+                }
+            }
         }
         if (isTalukaFilter) {
             tvTalukaFilter.setOnClickListener(this);
+        } else {
+            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
+                tvTalukaFilter.setOnClickListener(this);
+                machineTalukaList.clear();
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
+                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                    machineTalukaList.add(customTaluka);
+                }
+            }
         }
         if (viewType == 1) {
-            if (isStructureAdd) {
-                fbCreate.setVisibility(View.VISIBLE);
+            if (isStructureAdd || isOperatorAdd) {
+                fbSelect.setVisibility(View.VISIBLE);
             } else {
-                fbCreate.setVisibility(View.GONE);
+                fbSelect.setVisibility(View.GONE);
             }
         } else {
-            if (isMachineAdd) {
-                fbCreate.setVisibility(View.VISIBLE);
+            if (isMachineAdd || isOperatorAdd) {
+                fbSelect.setVisibility(View.VISIBLE);
             } else {
-                fbCreate.setVisibility(View.INVISIBLE);
+                fbSelect.setVisibility(View.INVISIBLE);
             }
         }
 
-        fbCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (viewType == 1) {
-                    if (Util.isConnected(getActivity())) {
-                        Intent intent = new Intent(getActivity(), CreateStructureActivity.class);
-                        getActivity().startActivity(intent);
-                    } else {
-                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-                    }
-                } else {
-                    Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
-                    mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                    mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
-                    getActivity().startActivity(mouIntent);
-                }
-            }
-        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     if (dy > 0) {
+                        fbSelect.hide();
                         fbCreate.hide();
+                        fbCreateOperator.hide();
                     } else {
+                        fbSelect.show();
+                        if (isOperatorAdd) {
+                            fbCreateOperator.show();
+                        }
                         if (viewType == 1) {
                             if (isStructureAdd) {
                                 fbCreate.show();
@@ -275,22 +301,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             });
         }
-        if (viewType != 1) {
-            if (Util.isConnected(getActivity())) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
-        }
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -303,12 +313,71 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (Util.isConnected(getActivity())) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                UserInfo userInfo = Util.getUserObjectFromPref();
                 isTalukaApiFirstCall = true;
-                structureMachineListFragmentPresenter.getLocationData(selectedDistrictId,
+                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
+        }
+    }
+
+    private void setUserLocation() {
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            userStates = "";
+            userStateIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                if (i == 0) {
+                    userStates = j.getName();
+                    userStateIds = j.getId();
+                } else {
+                    userStates = userStates + "," + j.getName();
+                    userStateIds = userStateIds + "," + j.getId();
+                }
+            }
+            tvStateFilter.setText(userStates);
+
+        } else {
+            tvStateFilter.setText("");
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            userDistricts = "";
+            userDistrictIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                if (i == 0) {
+                    userDistricts = j.getName();
+                    userDistrictIds = j.getId();
+                } else {
+                    userDistricts = userDistricts + "," + j.getName();
+                    userDistrictIds = userDistrictIds + "," + j.getId();
+                }
+            }
+            tvDistrictFilter.setText(userDistricts);
+        } else {
+            tvDistrictFilter.setText("");
+        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            userTalukas = "";
+            userTalukaIds = "";
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                if (i == 0) {
+                    userTalukas = j.getName();
+                    userTalukaIds = j.getId();
+                } else {
+                    userTalukas = userTalukas + "," + j.getName();
+                    userTalukaIds = userTalukaIds + "," + j.getId();
+                }
+            }
+            tvTalukaFilter.setText(userTalukas);
+        } else {
+            tvTalukaFilter.setText("");
         }
     }
 
@@ -344,8 +413,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
             intent.putExtra("type", "deployMachine");
             intent.putExtra("title", "Select Structure");
-            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+//            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+//            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+            intent.putExtra("machine", filteredMachineListData.get(position));
             getActivity().startActivity(intent);
 
             dialog.dismiss();
@@ -401,6 +471,41 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.show();
     }
 
+    public void releaseOperator(int position) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText(R.string.alert);
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText(R.string.release_opretor_alert_message);
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText(R.string.ok);
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            structureMachineListFragmentPresenter.releaceOperator(filteredMachineListData.get(position).getOperatorId());
+            dialog.dismiss();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText(R.string.cancel);
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
     public void shiftMachine(int position) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -432,9 +537,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
                         intent.putExtra("title", "Select Structure");
                         intent.putExtra("type", "shiftMachine");
-                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
-                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+//                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
+//                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
+//                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
+                        intent.putExtra("machine", filteredMachineListData.get(position));
                         getActivity().startActivity(intent);
                     } else if (shiftAction == 2) {
                         structureMachineListFragmentPresenter.updateMachineStatusToAvailable
@@ -553,7 +659,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 if (mouAction == 1) {
                     for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
                         if (mDeployTaluka.isSelected()) {
-                            selectedDeployTaluka = mDeployTaluka.getName();
+                            //selectedDeployTaluka = mDeployTaluka.getName();
                             selectedDeployTalukaId = mDeployTaluka.get_id();
                             break;
                         }
@@ -599,21 +705,20 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     @Override
     public void onResume() {
         super.onResume();
-        if (viewType == 1) {
-            if (Util.isConnected(getActivity())) {
+        if (Util.isConnected(getActivity())) {
+            if (viewType == 1) {
                 structureMachineListFragmentPresenter.getStrucuresList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
+                        (userStateIds != "") ? userStateIds : "",
+                        (userDistrictIds != "") ? userDistrictIds : "",
+                        (userTalukaIds != "") ? userTalukaIds : "");
             } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                        (userStateIds != "") ? userStateIds : "",
+                        (userDistrictIds != "") ? userDistrictIds : "",
+                        (userTalukaIds != "") ? userTalukaIds : "");
             }
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
     }
 
@@ -701,7 +806,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
 
         if (structureListData != null) {
-//            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
             ssStructureListData.clear();
             ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
             offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
@@ -758,8 +862,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
-//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().
-//                            compareTo(j2.getTaluka().getName()));
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
                         CustomSpinnerObject talukaList = new CustomSpinnerObject();
@@ -772,7 +874,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 if (!isTalukaApiFirstCall) {
                     CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
                             this, "Select Taluka", machineTalukaList,
-                            false);
+                            true);
                     cddTaluka.show();
                     cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -782,8 +884,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineDistrictList.clear();
-//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
-//                            compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
@@ -796,7 +896,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select District", machineDistrictList,
-                        false);
+                        true);
                 cddDistrict.show();
                 cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -811,31 +911,56 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-//        if(requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.TERMINATE_DEPLOY)
-//                || requestId.equalsIgnoreCase(StructureMachineListFragmentPresenter.RELEASE_MACHINE_STATUS)) {
-//            if (status == 200) {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(
-                        (Util.getUserObjectFromPref().getUserLocation().getStateId() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId() :
-                                "",
-                        (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) ?
-                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId() :
-                                "");
-//            }
-//        }
+
+        structureMachineListFragmentPresenter.getTalukaMachinesList(
+                (userStateIds != "") ? userStateIds : "",
+                (userDistrictIds != "") ? userDistrictIds : "",
+                (userTalukaIds != "") ? userTalukaIds : "");
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_taluka_filter) {
+        if (view.getId() == R.id.fb_select) {
+            if (!isFABOpen) {
+                showFABMenu();
+            } else {
+                closeFABMenu();
+            }
+        } else if (view.getId() == R.id.fb_create) {
+            if (viewType == 1) {
+                if (Util.isConnected(getActivity())) {
+                    Intent intent = new Intent(getActivity(), CreateStructureActivity.class);
+                    getActivity().startActivity(intent);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+            } else {
+                Intent mouIntent = new Intent(getActivity(), MachineMouActivity.class);
+                mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
+                getActivity().startActivity(mouIntent);
+            }
+        } else if (view.getId() == R.id.fb_create_operator) {
+            Intent machineVisitIntent = new Intent(getActivity(), SSActionsActivity.class);
+            machineVisitIntent.putExtra("SwitchToFragment", "CreateOperatorFragment");
+            machineVisitIntent.putExtra("title", "Create Operator");
+            getActivity().startActivity(machineVisitIntent);
+
+        } else if (view.getId() == R.id.tv_state_filter) {
+            CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
+                    "Select State",
+                    machineStateList,
+                    true);
+            cdd.show();
+            cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+
+        }
+        else if (view.getId() == R.id.tv_taluka_filter) {
             if (Util.isConnected(getActivity())) {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                    UserInfo userInfo = Util.getUserObjectFromPref();
                     isTalukaApiFirstCall = false;
-                    structureMachineListFragmentPresenter.getLocationData(selectedDistrictId,
+                    structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 } else {
@@ -849,9 +974,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (view.getId() == R.id.tv_district_filter) {
             if (Util.isConnected(getActivity())) {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    structureMachineListFragmentPresenter.getLocationData(selectedStateId,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),//5c4ab05cd503a372d0391467
+                    structureMachineListFragmentPresenter.getLocationData(userStateIds,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -895,28 +1019,79 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
-    @Override
-    public void onCustomSpinnerSelection(String type) {
-        if (type.equals("Select Taluka")) {
-            for (CustomSpinnerObject mTaluka : machineTalukaList) {
-                if (mTaluka.isSelected()) {
-                    selectedTaluka = mTaluka.getName();
-                    selectedTalukaId = mTaluka.get_id();
-                    break;
+    private void showFABMenu() {
+        isFABOpen = true;
+        if (viewType == 1) {
+            if (isStructureAdd) {
+                fbCreate.setImageResource(R.drawable.ic_create_structure);
+                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                if (isOperatorAdd) {
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+                }
+            } else {
+                if (isOperatorAdd) {
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
                 }
             }
-            if (!TextUtils.isEmpty(selectedTalukaId)) {
-                tvTalukaFilter.setText(selectedTaluka);
+        } else {
+            if (isMachineAdd) {
+                fbCreate.setImageResource(R.drawable.ic_create_machine);
+                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                if (isOperatorAdd) {
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+                }
+            } else {
+                if (isOperatorAdd) {
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                }
+            }
+        }
+        fbSelect.setRotation(45);
+    }
+
+    private void closeFABMenu() {
+        isFABOpen = false;
+        fbCreate.animate().translationY(0);
+        fbCreateOperator.animate().translationY(0);
+        fbSelect.setRotation(0);
+    }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        if (type.equals("Select State")) {
+            ArrayList<String> filterStateIds = new ArrayList<>();
+            String selectedState = "";
+            String selectedStateId = "";
+            for (CustomSpinnerObject mState : machineStateList) {
+                if (mState.isSelected()) {
+                    if (selectedState.equals("")) {
+                        selectedState = mState.getName();
+                    } else {
+                        selectedState = selectedState + "," + mState.getName();
+                    }
+                    if (!selectedStateId.equals("")) {
+                        selectedStateId = mState.get_id();
+                    } else {
+                        selectedStateId = selectedStateId + "," + mState.get_id();
+                    }
+                    filterStateIds.add(mState.get_id());
+                }
+            }
+            if (!TextUtils.isEmpty(selectedStateId)) {
+                tvStateFilter.setText(selectedState);
                 if (viewType == 1) {
                     filteredStructureListData.clear();
                     for (StructureData data : ssStructureListData) {
-                        if (data.getTalukaId().equalsIgnoreCase(selectedTalukaId)) {
-                            if (selectedStatus != 0) {
-                                if (data.getStructureStatusCode() == selectedStatus) {
+                        for (String stateId : filterStateIds) {
+                            if (data.getStateId().equalsIgnoreCase(stateId)) {
+                                if (selectedStatus != 0) {
+                                    if (data.getStructureStatusCode() == selectedStatus) {
+                                        filteredStructureListData.add(data);
+                                    }
+                                } else {
                                     filteredStructureListData.add(data);
                                 }
-                            } else {
-                                filteredStructureListData.add(data);
+                                break;
                             }
                         }
                     }
@@ -925,13 +1100,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else {
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {
-                        if (machineData.getTalukaId().equalsIgnoreCase(selectedTalukaId)) {
-                            if (selectedStatus != 0) {
-                                if (machineData.getStatusCode() == selectedStatus) {
+                        for (String stateId : filterStateIds) {
+                            if (machineData.getStateId().equalsIgnoreCase(stateId)) {
+                                if (selectedStatus != 0) {
+                                    if (machineData.getStatusCode() == selectedStatus) {
+                                        filteredMachineListData.add(machineData);
+                                    }
+                                } else {
                                     filteredMachineListData.add(machineData);
                                 }
-                            } else {
-                                filteredMachineListData.add(machineData);
+                                break;
                             }
                         }
                     }
@@ -942,11 +1120,22 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 btnFilterClear.setVisibility(View.VISIBLE);
             }
         } else if (type.equals("Select District")) {
+            ArrayList<String> filterDistrictIds = new ArrayList<>();
+            String selectedDistrict = "";
+            String selectedDistrictId = "";
             for (CustomSpinnerObject mDistrict : machineDistrictList) {
                 if (mDistrict.isSelected()) {
-                    selectedDistrict = mDistrict.getName();
-                    selectedDistrictId = mDistrict.get_id();
-                    break;
+                    if (selectedDistrict.equals("")) {
+                        selectedDistrict = mDistrict.getName();
+                    } else {
+                        selectedDistrict = selectedDistrict + "," + mDistrict.getName();
+                    }
+                    if (selectedDistrictId.equals("")) {
+                        selectedDistrictId = mDistrict.get_id();
+                    } else {
+                        selectedDistrictId = selectedDistrictId + "," + mDistrict.get_id();
+                    }
+                    filterDistrictIds.add(mDistrict.get_id());
                 }
             }
             if (!TextUtils.isEmpty(selectedDistrictId)) {
@@ -954,13 +1143,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 if (viewType == 1) {
                     filteredStructureListData.clear();
                     for (StructureData data : ssStructureListData) {
-                        if (data.getDistrictId().equalsIgnoreCase(selectedDistrictId)) {
-                            if (selectedStatus != 0) {
-                                if (data.getStructureStatusCode() == selectedStatus) {
+                        for (String districtId : filterDistrictIds) {
+                            if (data.getDistrictId().equalsIgnoreCase(districtId)) {
+                                if (selectedStatus != 0) {
+                                    if (data.getStructureStatusCode() == selectedStatus) {
+                                        filteredStructureListData.add(data);
+                                    }
+                                } else {
                                     filteredStructureListData.add(data);
                                 }
-                            } else {
-                                filteredStructureListData.add(data);
+                                break;
                             }
                         }
                     }
@@ -969,13 +1161,77 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else {
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {
-                        if (machineData.getDistrictId().equalsIgnoreCase(selectedDistrictId)) {
-                            if (selectedStatus != 0) {
-                                if (machineData.getStatusCode() == selectedStatus) {
+                        for (String districtId : filterDistrictIds) {
+                            if (machineData.getDistrictId().equalsIgnoreCase(districtId)) {
+                                if (selectedStatus != 0) {
+                                    if (machineData.getStatusCode() == selectedStatus) {
+                                        filteredMachineListData.add(machineData);
+                                    }
+                                } else {
                                     filteredMachineListData.add(machineData);
                                 }
-                            } else {
-                                filteredMachineListData.add(machineData);
+                                break;
+                            }
+                        }
+                    }
+                    rvDataList.setAdapter(ssMachineListAdapter);
+                    ssMachineListAdapter.notifyDataSetChanged();
+                    ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
+                }
+                btnFilterClear.setVisibility(View.VISIBLE);
+            }
+        } else if (type.equals("Select Taluka")) {
+            ArrayList<String> filterTalukaIds = new ArrayList<>();
+            String selectedTaluka = "";
+            String selectedTalukaId = "";
+            for (CustomSpinnerObject mTaluka : machineTalukaList) {
+                if (mTaluka.isSelected()) {
+                    if (selectedTaluka.equals("")) {
+                        selectedTaluka = mTaluka.getName();
+                    } else {
+                        selectedTaluka = selectedTaluka + "," + mTaluka.getName();
+                    }
+                    if (selectedTalukaId.equals("")) {
+                        selectedTalukaId = mTaluka.get_id();
+                    } else {
+                        selectedTalukaId = selectedTalukaId + "," + mTaluka.get_id();
+                    }
+                    filterTalukaIds.add(mTaluka.get_id());
+                }
+            }
+            if (!TextUtils.isEmpty(selectedTalukaId)) {
+                tvTalukaFilter.setText(selectedTaluka);
+                if (viewType == 1) {
+                    filteredStructureListData.clear();
+                    for (StructureData data : ssStructureListData) {
+                        for (String talukaId : filterTalukaIds) {
+                            if (data.getTalukaId().equalsIgnoreCase(talukaId)) {
+                                if (selectedStatus != 0) {
+                                    if (data.getStructureStatusCode() == selectedStatus) {
+                                        filteredStructureListData.add(data);
+                                    }
+                                } else {
+                                    filteredStructureListData.add(data);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    ssStructureListAdapter.notifyDataSetChanged();
+                    ((SSActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
+                } else {
+                    filteredMachineListData.clear();
+                    for (MachineData machineData : ssMachineListData) {
+                        for (String talukaId : filterTalukaIds) {
+                            if (machineData.getTalukaId().equalsIgnoreCase(talukaId)) {
+                                if (selectedStatus != 0) {
+                                    if (machineData.getStatusCode() == selectedStatus) {
+                                        filteredMachineListData.add(machineData);
+                                    }
+                                } else {
+                                    filteredMachineListData.add(machineData);
+                                }
+                                break;
                             }
                         }
                     }
@@ -988,152 +1244,150 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
-    private void setStructureStatusFilterList() {
-        // Machine Status list
-        statusList.clear();
-        CustomSpinnerObject status = new CustomSpinnerObject();
-        status.set_id("" + 000);
-        status.setName("Show All");
-        status.setSelected(false);
-        statusList.add(status);
-        CustomSpinnerObject status15 = new CustomSpinnerObject();
-        status15.set_id("" + 115);
-        status15.setName("Approved");
-        status15.setSelected(false);
-        statusList.add(status15);
-        CustomSpinnerObject status16 = new CustomSpinnerObject();
-        status16.set_id("" + 116);
-        status16.setName("Prepared");
-        status16.setSelected(false);
-        statusList.add(status16);
-        CustomSpinnerObject status17 = new CustomSpinnerObject();
-        status17.set_id("" + 117);
-        status17.setName("In progress");
-        status17.setSelected(false);
-        statusList.add(status17);
-        CustomSpinnerObject status18 = new CustomSpinnerObject();
-        status18.set_id("" + 118);
-        status18.setName("Halted");
-        status18.setSelected(false);
-        statusList.add(status18);
-        CustomSpinnerObject status19 = new CustomSpinnerObject();
-        status19.set_id("" + 119);
-        status19.setName("Partially Completed");
-        status19.setSelected(false);
-        statusList.add(status19);
-        CustomSpinnerObject status20 = new CustomSpinnerObject();
-        status20.set_id("" + 120);
-        status20.setName("Completed");
-        status20.setSelected(false);
-        statusList.add(status20);
-        CustomSpinnerObject status21 = new CustomSpinnerObject();
-        status21.set_id("" + 121);
-        status21.setName("Closed");
-        status21.setSelected(false);
-        statusList.add(status21);
-        CustomSpinnerObject status22 = new CustomSpinnerObject();
-        status22.set_id("" + 122);
-        status22.setName("Non Compliant");
-        status22.setSelected(false);
-        statusList.add(status22);
-        CustomSpinnerObject status23 = new CustomSpinnerObject();
-        status23.set_id("" + 119);
-        status23.setName("Partially Closed");
-        status23.setSelected(false);
-        statusList.add(status23);
+//    private void setStructureStatusFilterList() {
+//        // Machine Status list
+//        statusList.clear();
+//        CustomSpinnerObject status = new CustomSpinnerObject();
+//        status.set_id("" + 000);
+//        status.setName("Show All");
+//        status.setSelected(false);
+//        statusList.add(status);
+//        CustomSpinnerObject status15 = new CustomSpinnerObject();
+//        status15.set_id("" + 115);
+//        status15.setName("Approved");
+//        status15.setSelected(false);
+//        statusList.add(status15);
+//        CustomSpinnerObject status16 = new CustomSpinnerObject();
+//        status16.set_id("" + 116);
+//        status16.setName("Prepared");
+//        status16.setSelected(false);
+//        statusList.add(status16);
+//        CustomSpinnerObject status17 = new CustomSpinnerObject();
+//        status17.set_id("" + 117);
+//        status17.setName("In progress");
+//        status17.setSelected(false);
+//        statusList.add(status17);
+//        CustomSpinnerObject status18 = new CustomSpinnerObject();
+//        status18.set_id("" + 118);
+//        status18.setName("Halted");
+//        status18.setSelected(false);
+//        statusList.add(status18);
+//        CustomSpinnerObject status19 = new CustomSpinnerObject();
+//        status19.set_id("" + 119);
+//        status19.setName("Partially Completed");
+//        status19.setSelected(false);
+//        statusList.add(status19);
+//        CustomSpinnerObject status20 = new CustomSpinnerObject();
+//        status20.set_id("" + 120);
+//        status20.setName("Completed");
+//        status20.setSelected(false);
+//        statusList.add(status20);
+//        CustomSpinnerObject status21 = new CustomSpinnerObject();
+//        status21.set_id("" + 121);
+//        status21.setName("Closed");
+//        status21.setSelected(false);
+//        statusList.add(status21);
+//        CustomSpinnerObject status22 = new CustomSpinnerObject();
+//        status22.set_id("" + 122);
+//        status22.setName("Non Compliant");
+//        status22.setSelected(false);
+//        statusList.add(status22);
+//        CustomSpinnerObject status23 = new CustomSpinnerObject();
+//        status23.set_id("" + 119);
+//        status23.setName("Partially Closed");
+//        status23.setSelected(false);
+//        statusList.add(status23);
+//
+//    }
 
-    }
-
-    private void setMachineStatusFilterList() {
-        // Machine Status list
-        statusList.clear();
-        CustomSpinnerObject status = new CustomSpinnerObject();
-        status.set_id("" + 000);
-        status.setName("Show All");
-        status.setSelected(false);
-        statusList.add(status);
-        CustomSpinnerObject status0 = new CustomSpinnerObject();
-        status0.set_id("" + 100);
-        status0.setName("Created");
-        status0.setSelected(false);
-        statusList.add(status0);
-        CustomSpinnerObject status1 = new CustomSpinnerObject();
-        status1.set_id("" + 101);
-        status1.setName("New");
-        status1.setSelected(false);
-        statusList.add(status1);
-        CustomSpinnerObject status2 = new CustomSpinnerObject();
-        status2.set_id("" + 102);
-        status2.setName("Eligible");
-        status2.setSelected(false);
-        statusList.add(status2);
-        CustomSpinnerObject status3 = new CustomSpinnerObject();
-        status3.set_id("" + 103);
-        status3.setName("Non Eligible ");
-        status3.setSelected(false);
-        statusList.add(status3);
-        CustomSpinnerObject status4 = new CustomSpinnerObject();
-        status4.set_id("" + 104);
-        status4.setName("MOU Done");
-        status4.setSelected(false);
-        statusList.add(status4);
-        CustomSpinnerObject status5 = new CustomSpinnerObject();
-        status5.set_id("" + 105);
-        status5.setName("MOU Terminated");
-        status5.setSelected(false);
-        statusList.add(status5);
-        CustomSpinnerObject status6 = new CustomSpinnerObject();
-        status6.set_id("" + 106);
-        status6.setName("Available");
-        status6.setSelected(false);
-        statusList.add(status6);
-        CustomSpinnerObject status7 = new CustomSpinnerObject();
-        status7.set_id("" + 107);
-        status7.setName("Deployed");
-        status7.setSelected(false);
-        statusList.add(status7);
-        CustomSpinnerObject status8 = new CustomSpinnerObject();
-        status8.set_id("" + 108);
-        status8.setName("Working");
-        status8.setSelected(false);
-        statusList.add(status8);
-        CustomSpinnerObject status9 = new CustomSpinnerObject();
-        status9.set_id("" + 109);
-        status9.setName("Break");
-        status9.setSelected(false);
-        statusList.add(status9);
-        CustomSpinnerObject status10 = new CustomSpinnerObject();
-        status10.set_id("" + 110);
-        status10.setName("Stopped");
-        status10.setSelected(false);
-        statusList.add(status10);
-        CustomSpinnerObject status11 = new CustomSpinnerObject();
-        status11.set_id("" + 111);
-        status11.setName("Halted");
-        status11.setSelected(false);
-        statusList.add(status11);
-        CustomSpinnerObject status12 = new CustomSpinnerObject();
-        status12.set_id("" + 112);
-        status12.setName("Start");
-        status12.setSelected(false);
-        statusList.add(status12);
-        CustomSpinnerObject status13 = new CustomSpinnerObject();
-        status13.set_id("" + 113);
-        status13.setName("Pause");
-        status13.setSelected(false);
-        statusList.add(status13);
-        CustomSpinnerObject status14 = new CustomSpinnerObject();
-        status14.set_id("" + 114);
-        status14.setName("MOU  Expired");
-        status14.setSelected(false);
-        statusList.add(status14);
-        CustomSpinnerObject status15 = new CustomSpinnerObject();
-        status15.set_id("" + 115);
-        status15.setName("Free From Taluka");
-        status15.setSelected(false);
-        statusList.add(status15);
-
-
-    }
+//    private void setMachineStatusFilterList() {
+//        // Machine Status list
+//        statusList.clear();
+//        CustomSpinnerObject status = new CustomSpinnerObject();
+//        status.set_id("" + 000);
+//        status.setName("Show All");
+//        status.setSelected(false);
+//        statusList.add(status);
+//        CustomSpinnerObject status0 = new CustomSpinnerObject();
+//        status0.set_id("" + 100);
+//        status0.setName("Created");
+//        status0.setSelected(false);
+//        statusList.add(status0);
+//        CustomSpinnerObject status1 = new CustomSpinnerObject();
+//        status1.set_id("" + 101);
+//        status1.setName("New");
+//        status1.setSelected(false);
+//        statusList.add(status1);
+//        CustomSpinnerObject status2 = new CustomSpinnerObject();
+//        status2.set_id("" + 102);
+//        status2.setName("Eligible");
+//        status2.setSelected(false);
+//        statusList.add(status2);
+//        CustomSpinnerObject status3 = new CustomSpinnerObject();
+//        status3.set_id("" + 103);
+//        status3.setName("Non Eligible ");
+//        status3.setSelected(false);
+//        statusList.add(status3);
+//        CustomSpinnerObject status4 = new CustomSpinnerObject();
+//        status4.set_id("" + 104);
+//        status4.setName("MOU Done");
+//        status4.setSelected(false);
+//        statusList.add(status4);
+//        CustomSpinnerObject status5 = new CustomSpinnerObject();
+//        status5.set_id("" + 105);
+//        status5.setName("MOU Terminated");
+//        status5.setSelected(false);
+//        statusList.add(status5);
+//        CustomSpinnerObject status6 = new CustomSpinnerObject();
+//        status6.set_id("" + 106);
+//        status6.setName("Available");
+//        status6.setSelected(false);
+//        statusList.add(status6);
+//        CustomSpinnerObject status7 = new CustomSpinnerObject();
+//        status7.set_id("" + 107);
+//        status7.setName("Deployed");
+//        status7.setSelected(false);
+//        statusList.add(status7);
+//        CustomSpinnerObject status8 = new CustomSpinnerObject();
+//        status8.set_id("" + 108);
+//        status8.setName("Working");
+//        status8.setSelected(false);
+//        statusList.add(status8);
+//        CustomSpinnerObject status9 = new CustomSpinnerObject();
+//        status9.set_id("" + 109);
+//        status9.setName("Break");
+//        status9.setSelected(false);
+//        statusList.add(status9);
+//        CustomSpinnerObject status10 = new CustomSpinnerObject();
+//        status10.set_id("" + 110);
+//        status10.setName("Stopped");
+//        status10.setSelected(false);
+//        statusList.add(status10);
+//        CustomSpinnerObject status11 = new CustomSpinnerObject();
+//        status11.set_id("" + 111);
+//        status11.setName("Halted");
+//        status11.setSelected(false);
+//        statusList.add(status11);
+//        CustomSpinnerObject status12 = new CustomSpinnerObject();
+//        status12.set_id("" + 112);
+//        status12.setName("Start");
+//        status12.setSelected(false);
+//        statusList.add(status12);
+//        CustomSpinnerObject status13 = new CustomSpinnerObject();
+//        status13.set_id("" + 113);
+//        status13.setName("Pause");
+//        status13.setSelected(false);
+//        statusList.add(status13);
+//        CustomSpinnerObject status14 = new CustomSpinnerObject();
+//        status14.set_id("" + 114);
+//        status14.setName("MOU  Expired");
+//        status14.setSelected(false);
+//        statusList.add(status14);
+//        CustomSpinnerObject status15 = new CustomSpinnerObject();
+//        status15.set_id("" + 115);
+//        status15.setName("Free From Taluka");
+//        status15.setSelected(false);
+//        statusList.add(status15);
+//    }
 
 }

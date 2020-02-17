@@ -17,7 +17,6 @@ import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.AddMemeberFilterRequestCall;
 import com.octopusbjsindia.request.EventRequestCall;
-import com.octopusbjsindia.request.ProfileRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.AddMembersFilterActivity;
@@ -96,6 +95,11 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 
     @Override
     public void onProfileUpdated(String response) {
+
+    }
+
+    @Override
+    public void onProfileFetched(String response) {
 
     }
 

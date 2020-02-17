@@ -58,7 +58,6 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PMFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
@@ -68,8 +67,7 @@ import java.io.File;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnUpdateNeededListener,
-        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
-        ContentManagementFragment.OnFragmentInteractionListener, ConnectivityReceiver.ConnectivityReceiverListener {
+        NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     private Toolbar toolbar;
     private OnSyncClicked clickListener;
@@ -79,6 +77,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private BroadcastReceiver mMessageReceiver;
     private BroadcastReceiver connectionReceiver;
     private String toOpen;
+    View headerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,7 +261,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         NavigationView navigationView = findViewById(R.id.home_menu_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View headerLayout = navigationView.getHeaderView(0);
+        headerLayout = navigationView.getHeaderView(0);
         LinearLayout profileView = headerLayout.findViewById(R.id.menu_user_profile_layout);
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
@@ -278,10 +277,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
 //        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
 //        versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
-        TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
-        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
-        TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
-        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
         TextView tvAppVersion = headerLayout.findViewById(R.id.menu_app_version);
         String appVersion;
         try {
@@ -396,6 +391,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
+        TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
+        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
+        TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
+        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
 
         // Start data sync
         SyncAdapterUtils.manualRefresh();
@@ -606,6 +605,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
+        Util.saveUserObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
         Util.removeDatabaseRecords(false);
         try {
@@ -714,11 +714,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     public void setSyncClickListener(OnSyncClicked listener) {
         clickListener = listener;
-    }
-
-    @Override
-    public void onFragmentInteraction(String uri) {
-
     }
 
     @Override

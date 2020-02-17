@@ -16,6 +16,10 @@ public class Login implements Serializable {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("code")
+    @Expose
+    private int code;
+
 
     public String getStatus() {
         return status;
@@ -39,5 +43,13 @@ public class Login implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

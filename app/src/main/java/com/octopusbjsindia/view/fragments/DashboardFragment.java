@@ -151,8 +151,8 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.CONTENT:
-                    ContentManagementFragment cmf = ContentManagementFragment.newInstance("con", "con");
-                    adapter.addFragment(cmf);
+                    //ContentManagementFragment cmf = ContentManagementFragment.newInstance("con", "con");
+                    adapter.addFragment(new ContentManagementFragment());
                     break;
 
                 case Constants.Home.MATRIMONY:

@@ -132,6 +132,7 @@ public class APIRequestCall {
                     apiPresenterListener.onSuccessListener(requestID, res);
                 }
             } catch (Exception e) {
+                Log.d(TAG, requestID + " Exp: " + e.getMessage());
                 apiPresenterListener.onFailureListener(requestID, e.getMessage());
             }
         };

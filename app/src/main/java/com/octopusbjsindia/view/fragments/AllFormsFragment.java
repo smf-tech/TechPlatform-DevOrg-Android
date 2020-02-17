@@ -220,24 +220,22 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             if (Util.isConnected(getContext()) && ((submitCount != null &&
                     !submitCount.equals("0")) && localFormResults.isEmpty())) {
 
-                if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
 
                     setSubmittedFormsCount();
-                    url = getResources().getString(R.string.form_field_mandatory,
-                            data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
+//                    url = getResources().getString(R.string.form_field_mandatory,
+//                            data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
+                    url = data.getApi_url() + "/" + data.getId();
                     presenter.getSubmittedForms(data.getId(), url);
                 }
             } else if ((submitCount == null || submitCount.equals("0")) ||
                     (localFormResults == null || localFormResults.isEmpty())) {
 
                 if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
-                    if (data.getMicroservice() != null && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                            && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
 
                         setSubmittedFormsCount();
-                        url = getResources().getString(R.string.form_field_mandatory,
-                                data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
+                        url = data.getApi_url() + "/" + data.getId();
                         presenter.getSubmittedForms(data.getId(), url);
                     }
                 }

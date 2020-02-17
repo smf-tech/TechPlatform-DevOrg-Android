@@ -205,7 +205,6 @@
             android:layout_centerInParent="true"
             android:clickable="true"
             android:focusable="true"
-            android:indeterminateOnly="true"
-            android:visibility="gone" />
+            android:indeterminateOnly="true" />
     </RelativeLayout>
 </RelativeLayout>

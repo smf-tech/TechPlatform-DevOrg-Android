@@ -7,14 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,18 +17,26 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureListAPIResponse;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.MachineDeployStructureListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -46,7 +46,6 @@ import com.octopusbjsindia.view.adapters.StructureListAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,11 +63,12 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     private ArrayList<StructureData> filteredStructureListData = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTalukaList = new ArrayList<>();
-    private String machineId, machineCode;
-    private String type, currentStructureId ,selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId;
+    //private String machineId, machineCode;
+    private String type, selectedDistrict, selectedDistrictId, selectedTaluka, selectedTalukaId;
     private Button btnDeploy;
     private int selectedPosition;
     public boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
+    private MachineData machineData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,13 +88,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Bundle bundle = this.getArguments();
-        machineId = getActivity().getIntent().getStringExtra("machineId");
-        machineCode = getActivity().getIntent().getStringExtra("machineCode");
-        currentStructureId = getActivity().getIntent().getStringExtra("currentStructureId");
+        machineData = (MachineData) getActivity().getIntent().getSerializableExtra("machine");
         type = getActivity().getIntent().getStringExtra("type");
-        //viewType = bundle.getInt("viewType");
         init();
     }
 
@@ -169,61 +164,28 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 
     private void getDeployableStructures() {
         if (type.equalsIgnoreCase("deployMachine")) {
-//            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        "machineDeployableStructures", "");
-//            } else
-//                if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        "machineDeployableStructures", "");
-//            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-//                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-//                        "machineDeployableStructures", "");
-//            }
             machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                    (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
+                    (machineData.getStateId() != null) ?
+                            machineData.getStateId() :
                             "",
-                    (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
+                    (machineData.getDistrictId() != null) ?
+                            machineData.getDistrictId() :
                             "",
-                    (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
+                    (machineData.getTalukaId() != null) ?
+                            machineData.getTalukaId() :
                             "","machineDeployableStructures", "");
 
         } else if (type.equalsIgnoreCase("shiftMachine")) {
-//            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_HO_OPS)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        "machineShiftStructures", currentStructureId);
-//            } else
-//            if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_DM)) {
-//                machineDeployStructureListFragmentPresenter.getDistrictDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        "machineShiftStructures", currentStructureId);
-//            } else if (Util.getUserObjectFromPref().getRoleCode() == (Constants.SSModule.ROLE_CODE_SS_TC)) {
-//                machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-//                        Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-//                        "machineShiftStructures", currentStructureId);
-//            }
-
             machineDeployStructureListFragmentPresenter.getTalukaDeployableStructuresList(
-                    (Util.getUserObjectFromPref().getUserLocation().getStateId()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId():
+                    (machineData.getStateId() != null) ?
+                            machineData.getStateId() :
                             "",
-                    (Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId():
+                    (machineData.getDistrictId() != null) ?
+                            machineData.getDistrictId() :
                             "",
-                    (Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!=null)?
-                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId():
-                            "","machineShiftStructures", currentStructureId);
+                    (machineData.getTalukaId() != null) ?
+                            machineData.getTalukaId() :
+                            "", "machineShiftStructures", machineData.getDeployedStrutureId());
         }
     }
 
@@ -238,8 +200,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "MachineShiftingFormFragment");
         intent.putExtra("title", "Machine Shifting");
-        intent.putExtra("machineId", machineId);
-        intent.putExtra("currentStructureId", currentStructureId);
+        intent.putExtra("machineId", machineData.getId());
+        intent.putExtra("currentStructureId", machineData.getDeployedStrutureId());
         intent.putExtra("newStructureId", filteredStructureListData.get(position).getStructureId());
         intent.putExtra("newStructureCode", filteredStructureListData.get(position).getStructureCode());
         startActivity(intent);
@@ -465,7 +427,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         } else if(view.getId() == R.id.btn_deploy) {
             if (Util.isConnected(getActivity())) {
                 showDeployDialog(getContext(), "CONFIRM", "Are you sure you want to deploy " +
-                        "machine( " + machineCode + " ) on structure( " + structureListData.get(selectedPosition)
+                        "machine( " + machineData.getMachineCode() + " ) on structure( " + structureListData.get(selectedPosition)
                         .getStructureCode() + ") ?", "Yes", "No");
             }
         } else {
@@ -498,7 +460,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             button.setOnClickListener(v -> {
                 if(Util.isConnected(getActivity())) {
                     machineDeployStructureListFragmentPresenter.deployMachine(filteredStructureListData.get
-                            (selectedPosition).getStructureId(), machineId);
+                            (selectedPosition).getStructureId(), machineData.getId());
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }

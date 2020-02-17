@@ -262,13 +262,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
                             if (Util.isConnected(getContext())) {
                                 String url;
-                                if (data.getMicroservice() != null
-                                        && !TextUtils.isEmpty(data.getMicroservice().getBaseUrl())
-                                        && !TextUtils.isEmpty(data.getMicroservice().getRoute())) {
+                                if (data.getApi_url() != null
+                                        && !TextUtils.isEmpty(data.getApi_url())) {
 
-                                    url = getResources().getString(R.string.form_field_mandatory,
-                                            data.getMicroservice().getBaseUrl(),
-                                            data.getMicroservice().getRoute());
+//                                    url = getResources().getString(R.string.form_field_mandatory,
+//                                            data.getMicroservice().getBaseUrl(),
+//                                            data.getMicroservice().getRoute());
+                                    url = data.getApi_url() + "/" + data.getId();
 
                                     new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
                                 }

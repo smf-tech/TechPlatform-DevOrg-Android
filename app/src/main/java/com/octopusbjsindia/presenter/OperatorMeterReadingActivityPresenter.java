@@ -54,20 +54,23 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
 
-        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-
-        if(responseOBJ.getStatus() == 200){
+        OperatorMachineData pendingRequestsResponse = new Gson().fromJson(response, OperatorMachineData.class);
 
 
-        if (!TextUtils.isEmpty(response)) {
-            OperatorMachineData pendingRequestsResponse
-                    = new Gson().fromJson(response, OperatorMachineData.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null) {
-                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
+        if(pendingRequestsResponse.getStatus() == 200){
+
+
+            if (!TextUtils.isEmpty(response)) {
+
+                if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null) {
+                    fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
+                }
             }
-        }
-        } else  if(responseOBJ.getStatus() == 400){
+        } else  if(pendingRequestsResponse.getStatus() == 400){
             fragmentWeakReference.get().removeMachineid();
+        } else if (pendingRequestsResponse.getStatus() == 1000) {
+            Util.logOutUser(fragmentWeakReference.get());
+            return;
         }
     }
 

@@ -9,19 +9,22 @@ public class TeamAttendanceResponse {
 
     @SerializedName("status")
     @Expose
-    private String status;
+    private int status;
     @SerializedName("message")
     @Expose
     private String message;
     @SerializedName("data")
     @Expose
     private List<TeamAttendanceData> data = null;
+    @SerializedName("totalWorkingHours")
+    @Expose
+    private String totalWorkingHours;
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -41,4 +44,11 @@ public class TeamAttendanceResponse {
         this.data = data;
     }
 
+    public String getTotalWorkingHours() {
+        return totalWorkingHours;
+    }
+
+    public void setTotalWorkingHours(String totalWorkingHours) {
+        this.totalWorkingHours = totalWorkingHours;
+    }
 }

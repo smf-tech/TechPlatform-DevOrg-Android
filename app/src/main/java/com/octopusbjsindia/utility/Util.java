@@ -196,6 +196,7 @@ public class Util {
         Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "application/json;charset=UTF-8");
+        headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
 //        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
 
         if (isTokenPresent) {
@@ -214,7 +215,6 @@ public class Util {
                     headers.put("roleId", getUserObjectFromPref().getRoleIds());
                 }
                 headers.put("versionName",getAppVersion());
-                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 
@@ -237,6 +237,8 @@ public class Util {
                 headers.put("orgId", orgId);
                 headers.put("projectId", projectId);
                 headers.put("roleId", roleId);
+                headers.put("versionName", getAppVersion());
+                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 
@@ -279,6 +281,21 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_MOBILE_NO, phone);
+        editor.apply();
+    }
+
+    public static String getIsDeviceMatchFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        return preferences.getString(Constants.Login.USER_DEVICE_MATCH, "");
+    }
+
+    public static void saveIsDeviceMatchInPref(String isDeviceMatch) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_DEVICE_MATCH, isDeviceMatch);
         editor.apply();
     }
 
@@ -336,6 +353,7 @@ public class Util {
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
+        Util.saveUserObjectInPref("");
         try {
             Intent startMain = new Intent(activity, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);

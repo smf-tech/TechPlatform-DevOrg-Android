@@ -11,8 +11,8 @@ import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.events.AddForm;
 import com.octopusbjsindia.models.events.AddFormsResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
-import com.octopusbjsindia.models.events.EventTask;
 import com.octopusbjsindia.models.events.EventMemberLestResponse;
+import com.octopusbjsindia.models.events.EventTask;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.request.EventRequestCall;
 import com.octopusbjsindia.request.ImageRequestCall;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class CreateEventActivityPresenter implements CreateEventListener, ImageRequestCallListener {
 
     private final WeakReference<CreateEventTaskActivity> activity;
-    private final String TAG = ProfileActivityPresenter.class.getName();
+    private final String TAG = EditProfileActivityPresenter.class.getName();
     public CreateEventActivityPresenter(CreateEventTaskActivity activity) {
         this.activity = new WeakReference<>(activity);
     }
