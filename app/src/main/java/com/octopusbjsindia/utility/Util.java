@@ -1640,29 +1640,24 @@ public class Util {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
+                    PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+                    preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,false);
                     String res = response.toString();
-                    Log.d(TAG, "update firebase id Requests - Resp: " + res);
-              /*  User user = new Gson().fromJson(res, User.class);
-              //  listener.TMUserProfileApprovalRequestsFetched(res);
-                if (res != null && user.getUserInfo() != null) {
-                    Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
-                }*/
-
+                    Log.d(TAG, "updateFBTokan - Resp: " + res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                //listener.onFailureListener(e.getMessage());
             }
         };
 
-        Response.ErrorListener pendingRequestsErrorListener = error ->
-        {
-            //   listener.onErrorListener(error);
-            Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
+        Response.ErrorListener pendingRequestsErrorListener = error -> {
+            Log.d(TAG, "updateFBTokan - Resp error: " + error.getMessage());
         };
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
+
+        Log.d(TAG, "updateFBTokan - url: " + getPendingRequestsUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
