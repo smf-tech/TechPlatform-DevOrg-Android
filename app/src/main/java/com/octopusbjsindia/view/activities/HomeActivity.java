@@ -605,6 +605,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void logOutUser() {
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
+        Util.saveUserObjectInPref("");
         Util.setSubmittedFormsLoaded(false);
         Util.removeDatabaseRecords(false);
         try {
