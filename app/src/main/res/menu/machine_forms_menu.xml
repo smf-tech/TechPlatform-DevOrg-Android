@@ -52,8 +52,8 @@
         android:visible="false" />
 
     <item
-        android:id="@+id/action_realise_operator"
-        android:title="Realise Operator"
+        android:id="@+id/action_release_operator"
+        android:title="Release Operator"
         android:visible="false" />
 
 </menu>
