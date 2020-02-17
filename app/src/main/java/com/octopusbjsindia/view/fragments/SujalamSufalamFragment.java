@@ -428,7 +428,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             }
             rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         } else {
-
             if (machineAnalyticsDataList.size() > 0) {
                 sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
             } else {
