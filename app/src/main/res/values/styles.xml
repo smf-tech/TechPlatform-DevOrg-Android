@@ -30,8 +30,8 @@
 
 
     <style name="textinputstyleoperator" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-    <item name="android:textSize">@dimen/text_size_10</item>
-    <item name="boxStrokeColor">@color/colorstatelistoperator</item>
+        <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="boxStrokeColor">@color/colorstatelistoperator</item>
     </style>
 
     <style name="TextInputLayoutHintoperator" parent="TextAppearance.Design.Hint">
@@ -44,10 +44,12 @@
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="boxStrokeColor">@color/colorPrimary</item>
     </style>
+
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/text_size_10</item>
         <item name="android:fontFamily">@font/opensans</item>
     </style>
+
     <style name="RegistrationEditTextLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -65,6 +67,7 @@
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
+
     <style name="AppStyleButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_12</item>
@@ -74,6 +77,7 @@
         <item name="android:layout_height">@dimen/dimen_50dp</item>
         <item name="android:background">@drawable/bg_button</item>
     </style>
+
     <style name="AppStyleBorderButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">@dimen/text_size_12</item>
@@ -83,6 +87,7 @@
         <item name="strokeColor">@color/colorPrimary</item>
         <!--<item name="android:background">@drawable/approval_button_border</item>-->
     </style>
+
     <style name="StyleLabel">
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>
@@ -95,6 +100,7 @@
         <item name="android:paddingRight">@dimen/dimen_15dp</item>
         <item name="android:layout_marginTop">@dimen/dimen_05dp</item>
     </style>
+
     <style name="GenderTypes">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -166,7 +172,7 @@
         <item name="android:textSize">@dimen/text_size_22</item>
     </style>
 
-    <style name="NavigationView" >
+    <style name="NavigationView">
         <item name="android:listDivider">@color/lighter_grey</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:fontFamily">@font/opensans_regular</item>
@@ -201,6 +207,7 @@
         <item name="android:layout_marginEnd">@dimen/dimen_15dp</item>
         <item name="android:layout_marginBottom">@dimen/dimen_05dp</item>
     </style>
+
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:gravity">center_vertical</item>
@@ -237,7 +244,6 @@
     </style>
 
 
-
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
 
         <item name="tabIndicatorColor">@color/colorPrimary</item>
@@ -267,11 +273,20 @@
     </style>
 
     <style name="StyleTextViewValue">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:fontFamily">@font/opensans_semibold</item>
-    <item name="android:textSize">@dimen/text_size_12</item>
-    <item name="android:layout_marginTop">@dimen/dimen_02dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/opensans_semibold</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:layout_marginTop">@dimen/dimen_02dp</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -568,35 +568,44 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_machine_district:
-                if (Util.isConnected(getActivity())) {
-                    if (etMachineState.getText() != null && etMachineState.getText().toString().length() > 0) {
-                        machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
-                                        ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                        "Please update your profile.",
-                                Snackbar.LENGTH_LONG);
-                    }
+                if (machineDistrictList.size() > 0) {
+                    CustomSpinnerDialogClass cdd7 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select District",
+                            machineDistrictList,
+                            false);
+                    cdd7.show();
+                    cdd7.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    if (Util.isConnected(getActivity())) {
+                        if (etMachineState.getText() != null && etMachineState.getText().toString().length() > 0) {
+                            machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                            ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
                 }
                 break;
             case R.id.et_machine_taluka:
-                if (Util.isConnected(getActivity())) {
-                    if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
-                        machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                        ? selectedDistrictId : userDistrictIds,
-                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Please select District first.",
-                                Snackbar.LENGTH_LONG);
-                    }
+                if (machineTalukaList.size() > 0) {
+                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Taluka", machineTalukaList, false);
+                    cdd1.show();
+                    cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    if (Util.isConnected(getActivity())) {
+                        if (etMachineDistrict.getText() != null && etMachineDistrict.getText().toString().length() > 0) {
+                            machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                            ? selectedDistrictId : userDistrictIds,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
                 }
                 break;
             case R.id.et_machine_type:

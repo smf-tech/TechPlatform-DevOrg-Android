@@ -340,7 +340,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 finish();
                 break;
             case R.id.et_state:
-                finish();
                 CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(this, this,
                         "Select State",
                         stateList,
@@ -350,38 +349,39 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_district:
-
-                if (Util.isConnected(this)) {
-                    if (etState.getText() != null && etState.getText().toString().length() > 0) {
+                if (districtList.size() > 0) {
+                    CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(this, this,
+                            "Select District", districtList, false);
+                    csdDisttrict.show();
+                    csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(this)) {
                         presenter.getLocationData((!TextUtils.isEmpty(selectedStateId)) ? selectedStateId : userStateIds,
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                     } else {
-                        Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                        "Please update your profile.",
-                                Snackbar.LENGTH_LONG);
+                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
                     }
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
                 break;
             case R.id.et_taluka:
-                if (Util.isConnected(this)) {
-                    if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
+                if (talukaList.size() > 0) {
+                    CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(this, this,
+                            "Select Taluka", talukaList, false);
+                    csdTaluka.show();
+                    csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(this)) {
                         presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId)) ? selectedDistrictId : userDistrictIds,
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                    } else {
-                        Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Your Taluka4 is not available in your profile." +
-                                        "Please update your profile.",
-                                Snackbar.LENGTH_LONG);
-                    }
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
-                }
 
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    }
+                }
                 break;
             case R.id.et_host_village:
                 CustomSpinnerDialogClass csdHostVillage = new CustomSpinnerDialogClass(this, this,
@@ -655,12 +655,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
-                //get Taluka
-//                if (!TextUtils.isEmpty(selectedDistrictId)) {
-//                    presenter.getLocationData(selectedDistrictId,
-//                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
-//                }
                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject obj : talukaList) {
@@ -865,7 +859,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     csdDisttrict.show();
                     csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
-
                 }
                 break;
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
