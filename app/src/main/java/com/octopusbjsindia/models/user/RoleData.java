@@ -1,17 +1,18 @@
-package com.octopusbjsindia.models.profile;
+package com.octopusbjsindia.models.user;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
-public class JurisdictionType {
-
+public class RoleData {
     @SerializedName("_id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("role_code")
+    @Expose
+    private int roleCode;
 
     public String getId() {
         return id;
@@ -29,4 +30,11 @@ public class JurisdictionType {
         this.name = name;
     }
 
+    public int getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(int roleCode) {
+        this.roleCode = roleCode;
+    }
 }

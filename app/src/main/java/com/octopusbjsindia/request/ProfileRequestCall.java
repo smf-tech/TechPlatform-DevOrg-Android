@@ -236,6 +236,8 @@ public class ProfileRequestCall {
         final String submitProfileUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
+        Log.d(TAG, "submitUserProfile - url: " + submitProfileUrl);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
                 submitProfileUrl,
@@ -248,6 +250,10 @@ public class ProfileRequestCall {
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         gsonRequest.setBodyParams(createBodyParams(userInfo));
+
+        String req = createBodyParams(userInfo).toString();
+        Log.d(TAG, "submitUserProfile - req: " + req);
+
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 

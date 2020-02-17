@@ -256,7 +256,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
-            etTaluka.setText(selectedDistrict);
+            etTaluka.setText(selectedTaluka);
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
         }
 
@@ -374,7 +374,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                                 Constants.JurisdictionLevelName.TALUKA_LEVEL);
                     } else {
                         Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                        .findViewById(android.R.id.content), "Your Taluka4 is not available in your profile." +
                                         "Please update your profile.",
                                 Snackbar.LENGTH_LONG);
                     }

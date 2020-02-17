@@ -66,7 +66,7 @@ public class UserInfo implements Parcelable {
     private String type;
     @SerializedName("role_id")
     @Expose
-    private JurisdictionType roleIds;
+    private RoleData roleIds;
     @SerializedName("location")
     @Expose
     private UserLocation userLocation;
@@ -142,7 +142,6 @@ public class UserInfo implements Parcelable {
         if (roleIds != null) {
             return roleIds.getId();
         }
-
         return "";
     }
 
@@ -150,7 +149,7 @@ public class UserInfo implements Parcelable {
         return roleIds.getName();
     }
 
-    public void setRoleIds(JurisdictionType roleIds) {
+    public void setRoleIds(RoleData roleIds) {
         this.roleIds = roleIds;
     }
 

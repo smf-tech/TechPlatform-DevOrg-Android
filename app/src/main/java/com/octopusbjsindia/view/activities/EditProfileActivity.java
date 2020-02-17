@@ -48,6 +48,7 @@ import com.octopusbjsindia.models.profile.OrganizationProject;
 import com.octopusbjsindia.models.profile.OrganizationRole;
 import com.octopusbjsindia.models.profile.Project;
 import com.octopusbjsindia.models.profile.UserLocation;
+import com.octopusbjsindia.models.user.RoleData;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.EditProfileActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
@@ -971,7 +972,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             userInfo.setType(selectedOrg.getType());
             userInfo.setProjectIds(selectedProjects);
 
-            JurisdictionType role = new JurisdictionType();
+            RoleData role = new RoleData();
             role.setId(selectedRole.getId());
             userInfo.setRoleIds(role);
 
