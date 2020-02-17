@@ -39,18 +39,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
@@ -60,6 +69,7 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
 import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
+import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.receivers.AlarmReceiver;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
@@ -68,25 +78,37 @@ import com.octopusbjsindia.syncAdapter.SyncAdapter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.GsonRequestFactory;
 import com.octopusbjsindia.utility.Permissions;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 import com.yalantis.ucrop.UCrop;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.octopusbjsindia.receivers.ConnectivityReceiver.connectivityReceiverListener;
+import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+import static com.octopusbjsindia.utility.Util.snackBarToShowMsg;
 
 public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
     //Alarm
+    Gson gson = new Gson();
     Dialog alarmDialog;
     private final long[] mVibratePattern = {0, 500, 500};
     private Ringtone mRingtone;
@@ -641,13 +663,15 @@ private ImageView toolbar_edit_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
-                    Log.e("clickTime retuned", "" + "Return");
+                    if (!preferences.getBoolean("isMachineRemoved",false)){
+
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
+                        Log.e("clickTime retuned", "" + "Return");
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        return;
+                    }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                GetLocationofOperator();
+                    GetLocationofOperator();
            /*     if (Permissions.isCameraPermissionGranted(OperatorMeterReadingActivity.this, this)) {
 
                     if (TextUtils.isEmpty(et_smeter_read.getText())) {
@@ -667,7 +691,10 @@ private ImageView toolbar_edit_action;
                         callStartButtonClick();
                     }
                 }*/
-           callStartButtonClick();
+                    callStartButtonClick();
+                }else {
+                    showDialogMachineRemoved(OperatorMeterReadingActivity.this,1);
+                }
             }
         });
 
@@ -709,6 +736,7 @@ private ImageView toolbar_edit_action;
                 }else {
                     Util.showToast("Please Start the machine.", OperatorMeterReadingActivity.this);
                 }
+
             }
 
         });
@@ -1407,6 +1435,13 @@ public String showReadingDialog(final Activity context, int pos){
         }
     }
 
+
+    public void removeMachineid() {
+        editor.putBoolean("isMachineRemoved",true);
+        editor.apply();
+
+    }
+
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
 
         hour_of_day = operatorMachineData.getHour_of_day();
@@ -1415,6 +1450,8 @@ public String showReadingDialog(final Activity context, int pos){
 
 
         machine_id = operatorMachineData.getMachine_id();
+        editor.putBoolean("isMachineRemoved",false);
+        editor.apply();
         tv_machine_code.setText(operatorMachineData.getMachine_code());
         editor.putString("machine_id",machine_id);
         editor.putString("machine_code",operatorMachineData.getMachine_code());
@@ -1540,6 +1577,7 @@ private void initConnectivityReceiver() {
         if (isConnected){
             //SyncAdapterUtils.periodicSyncRequest();
             SyncAdapterUtils.manualRefresh();
+
         }else {
 
         }
@@ -1585,6 +1623,8 @@ private void initConnectivityReceiver() {
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }
+
+
 
     private class AlarmRequest {
         public int getAlarmid() {
@@ -1680,4 +1720,36 @@ private void initConnectivityReceiver() {
         return "";
     }
 
+
+    //-----
+//Alarm dismiss dialog
+    public String showDialogMachineRemoved(final Activity context, int pos){
+
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
+
+        alarmDialog = new Dialog(context);
+        alarmDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alarmDialog.setContentView(R.layout.dialog_machine_removed_layout);
+        alarmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        btnSubmit = alarmDialog.findViewById(R.id.btn_submit);
+
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alarmDialog.dismiss();
+                tv_machine_code.setText("");
+
+            }
+        });
+        alarmDialog.show();
+
+
+        return "";
+    }
 }

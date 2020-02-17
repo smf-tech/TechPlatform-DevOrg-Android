@@ -5,6 +5,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
@@ -67,6 +69,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +82,8 @@ import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+    Gson gson = new Gson();
+
     private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
 
@@ -100,6 +105,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               SyncResult syncResult) {
 
         Log.i("onPerformSync", "onPerformSync: \n");
+
+
         syncSavedForms();
         syncMachineOperatorData();
         syncStructureVisitMonitoring();

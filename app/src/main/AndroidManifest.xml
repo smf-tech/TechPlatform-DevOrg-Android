@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.octopusbjsindia">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -26,8 +25,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission
-        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
     <application
         android:name=".Platform"
         android:allowBackup="true"
@@ -40,7 +39,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-
+        <activity
+            android:name=".view.activities.CreateTrainerWorkshop"
+            android:label="@string/title_activity_create_trainer_workshop"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -224,7 +226,6 @@
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receivers.ConnectivityReceiver"
             android:enabled="true">
@@ -232,13 +233,10 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receivers.AlarmReceiver"
-            android:exported="true"
             android:enabled="true"
-            >
-        </receiver>
+            android:exported="true"></receiver>
 
         <service
             android:name=".services.MyFirebaseMessagingService"

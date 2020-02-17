@@ -6,9 +6,11 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
 import com.octopusbjsindia.models.Operator.OperatorMachineData;
 import com.octopusbjsindia.models.Operator.OperatorMachineDataResponseModel;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.SubFilterset;
 import com.octopusbjsindia.request.OperatorMeterReadingRequestCall;
@@ -51,13 +53,21 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
     @Override
     public void onFilterListRequestsFetched(String response) {
         //fragmentWeakReference.get().hideProgressBar();
+
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+
+        if(responseOBJ.getStatus() == 200){
+
+
         if (!TextUtils.isEmpty(response)) {
             OperatorMachineData pendingRequestsResponse
                     = new Gson().fromJson(response, OperatorMachineData.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null )
-            {
+            if (pendingRequestsResponse != null && pendingRequestsResponse.getOperatorMachineCodeDataModel() != null) {
                 fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getOperatorMachineCodeDataModel());
             }
+        }
+        } else  if(responseOBJ.getStatus() == 400){
+            fragmentWeakReference.get().removeMachineid();
         }
     }
 
