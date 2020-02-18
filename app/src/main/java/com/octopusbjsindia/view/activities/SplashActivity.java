@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.OpenableColumns;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.RemoteMessage;
@@ -89,14 +92,28 @@ public class SplashActivity extends AppCompatActivity {
         tv_powered = findViewById(R.id.powered);
         tv_app_version  = findViewById(R.id.tv_app_version);
         img_logo  =findViewById(R.id.img_logo);
-        img_logo.setImageResource(R.drawable.ic_splash);
+        //img_logo.setImageResource(R.drawable.ic_splash);
         String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+
         if (path.equalsIgnoreCase("")){
             img_logo.setImageResource(R.drawable.ic_splash);
         }else {
-            //img_logo.setImageURI(null);
-            img_logo.setImageURI(Uri.parse(path));
+
+
+            Log.d("####", "onCreate:size "+getSize(this,Uri.parse(path)));
+            if (Integer.parseInt(getSize(this,Uri.parse(path)))>0) {
+                img_logo.setImageURI(null);
+                img_logo.invalidate();
+                img_logo.setImageURI(Uri.parse(path));
+            }else {
+                img_logo.setImageResource(R.drawable.ic_splash);
+            }
+            /*Glide.with(this)
+                    .load(Uri.parse(path))
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(img_logo);*/
         }
+
 
         toOpen = getIntent().getStringExtra("toOpen");
         if(toOpen != null){
@@ -135,6 +152,25 @@ public class SplashActivity extends AppCompatActivity {
         }
 //        splashActivityPresenter.getAppConfig("");
 
+    }
+
+    public String getSize(Context context, Uri uri) {
+        String fileSize = null;
+        Cursor cursor = context.getContentResolver()
+                .query(uri, null, null, null, null, null);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+
+                // get file size
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                if (!cursor.isNull(sizeIndex)) {
+                    fileSize = cursor.getString(sizeIndex);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return fileSize;
     }
 
     public void checkForceUpdate(String requestID, String message, int code) {
