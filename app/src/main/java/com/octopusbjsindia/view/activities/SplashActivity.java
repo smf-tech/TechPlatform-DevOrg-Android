@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.RemoteMessage;
@@ -89,13 +90,19 @@ public class SplashActivity extends AppCompatActivity {
         tv_powered = findViewById(R.id.powered);
         tv_app_version  = findViewById(R.id.tv_app_version);
         img_logo  =findViewById(R.id.img_logo);
-        img_logo.setImageResource(R.drawable.ic_splash);
+        //img_logo.setImageResource(R.drawable.ic_splash);
         String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
         if (path.equalsIgnoreCase("")){
             img_logo.setImageResource(R.drawable.ic_splash);
         }else {
-            //img_logo.setImageURI(null);
+
+            img_logo.setImageURI(null);
+            img_logo.invalidate();
             img_logo.setImageURI(Uri.parse(path));
+            /*Glide.with(this)
+                    .load(Uri.parse(path))
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(img_logo);*/
         }
 
         toOpen = getIntent().getStringExtra("toOpen");
