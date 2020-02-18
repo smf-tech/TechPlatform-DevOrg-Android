@@ -279,9 +279,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         Constants.SSModule.MACHINE_REALEASED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
-                            if (fragment.isMouImagesUpload) {
-                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
-                            }
+//                            if (fragment.isMouImagesUpload) {
+//                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
+//                            }
                             if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
                                 popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
                             }

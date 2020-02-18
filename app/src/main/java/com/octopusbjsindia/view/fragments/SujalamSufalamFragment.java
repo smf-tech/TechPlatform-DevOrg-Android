@@ -515,8 +515,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineDistrictList.clear();
-//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
-//                            compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);
