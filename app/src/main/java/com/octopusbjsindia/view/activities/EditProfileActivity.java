@@ -987,77 +987,93 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             UserLocation userLocation = new UserLocation();
             ArrayList<JurisdictionType> s = new ArrayList<>();
-            for (JurisdictionType country : selectedCountries) {
-                JurisdictionType countryObj = new JurisdictionType();
-                countryObj.setId(country.getId());
-                countryObj.setName(country.getName());
-                s.add(countryObj);
-                //userLocation.setCountryId(s);
+            if (selectedCountries.size() > 0) {
+                for (JurisdictionType country : selectedCountries) {
+                    JurisdictionType countryObj = new JurisdictionType();
+                    countryObj.setId(country.getId());
+                    countryObj.setName(country.getName());
+                    s.add(countryObj);
+                    //userLocation.setCountryId(s);
+                }
+                userLocation.setCountryId(s);
             }
-            userLocation.setCountryId(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType state : selectedStates) {
-                JurisdictionType stateObj = new JurisdictionType();
-                stateObj.setId(state.getId());
-                stateObj.setName(state.getName());
-                s.add(stateObj);
+            if (selectedStates.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType state : selectedStates) {
+                    JurisdictionType stateObj = new JurisdictionType();
+                    stateObj.setId(state.getId());
+                    stateObj.setName(state.getName());
+                    s.add(stateObj);
+                }
+                userLocation.setStateId(s);
             }
-            userLocation.setStateId(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType district : selectedDistricts) {
-                JurisdictionType districtObj = new JurisdictionType();
-                districtObj.setId(district.getId());
-                districtObj.setName(district.getName());
-                s.add(districtObj);
+            if (selectedDistricts.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType district : selectedDistricts) {
+                    JurisdictionType districtObj = new JurisdictionType();
+                    districtObj.setId(district.getId());
+                    districtObj.setName(district.getName());
+                    s.add(districtObj);
+                }
+                userLocation.setDistrictIds(s);
             }
-            userLocation.setDistrictIds(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType city : selectedCities) {
-                JurisdictionType cityObj = new JurisdictionType();
-                cityObj.setId(city.getId());
-                cityObj.setName(city.getName());
-                s.add(cityObj);
+            if (selectedCities.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType city : selectedCities) {
+                    JurisdictionType cityObj = new JurisdictionType();
+                    cityObj.setId(city.getId());
+                    cityObj.setName(city.getName());
+                    s.add(cityObj);
+                }
+                userLocation.setCityIds(s);
             }
-            userLocation.setCityIds(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType taluka : selectedTalukas) {
-                JurisdictionType talukaObj = new JurisdictionType();
-                talukaObj.setId(taluka.getId());
-                talukaObj.setName(taluka.getName());
-                s.add(talukaObj);
+            if (selectedTalukas.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType taluka : selectedTalukas) {
+                    JurisdictionType talukaObj = new JurisdictionType();
+                    talukaObj.setId(taluka.getId());
+                    talukaObj.setName(taluka.getName());
+                    s.add(talukaObj);
+                }
+                userLocation.setTalukaIds(s);
             }
-            userLocation.setTalukaIds(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType cluster : selectedClusters) {
-                JurisdictionType clusterObj = new JurisdictionType();
-                clusterObj.setId(cluster.getId());
-                clusterObj.setName(cluster.getName());
-                s.add(clusterObj);
+            if (selectedClusters.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType cluster : selectedClusters) {
+                    JurisdictionType clusterObj = new JurisdictionType();
+                    clusterObj.setId(cluster.getId());
+                    clusterObj.setName(cluster.getName());
+                    s.add(clusterObj);
+                }
+                userLocation.setClusterIds(s);
             }
-            userLocation.setClusterIds(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType village : selectedVillages) {
-                JurisdictionType villageObj = new JurisdictionType();
-                villageObj.setId(village.getId());
-                villageObj.setName(village.getName());
-                s.add(villageObj);
+            if (selectedVillages.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType village : selectedVillages) {
+                    JurisdictionType villageObj = new JurisdictionType();
+                    villageObj.setId(village.getId());
+                    villageObj.setName(village.getName());
+                    s.add(villageObj);
+                }
+                userLocation.setVillageIds(s);
             }
-            userLocation.setVillageIds(s);
 
-            s = new ArrayList<>();
-            for (JurisdictionType school : selectedSchools) {
-                JurisdictionType schoolObj = new JurisdictionType();
-                schoolObj.setId(school.getId());
-                schoolObj.setName(school.getName());
-                s.add(schoolObj);
+            if (selectedSchools.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType school : selectedSchools) {
+                    JurisdictionType schoolObj = new JurisdictionType();
+                    schoolObj.setId(school.getId());
+                    schoolObj.setName(school.getName());
+                    s.add(schoolObj);
+                }
+                userLocation.setSchoolIds(s);
             }
-            userLocation.setSchoolIds(s);
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);

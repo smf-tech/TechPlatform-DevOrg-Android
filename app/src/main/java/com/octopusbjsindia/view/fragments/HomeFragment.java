@@ -86,9 +86,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                              @Nullable Bundle savedInstanceState) {
 
         homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
-
         presenter = new HomeActivityPresenter(this);
-
         return homeFragmentView;
     }
 
@@ -106,7 +104,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             getUserData();
             Constants.GET_MODELS = false;
         }
-
     }
 
     @Override
@@ -210,15 +207,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                     (userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                             userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) ?
                             Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
-
-            if (this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
-                    this.homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
-//                if (!dialogNotApproved.isShowing()) {
-                    //showApprovedDialog();
-//                    Util.showDialog(getContext(), "Octopus", getResources().getString(R.string.approve_profile),
-//                            "OK", "");
-//                }
-            }
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
             viewPager.setOffscreenPageLimit(3);

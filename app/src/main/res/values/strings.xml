@@ -771,6 +771,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="machine_removed">Machine is not assigned for this  Operator number Please contact your TC.</string>
+    <string name="type_of_beneficiary">Type of beneficiary</string>
 
 
 </resources>

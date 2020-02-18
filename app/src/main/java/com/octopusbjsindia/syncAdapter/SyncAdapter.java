@@ -539,7 +539,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("STR_PREPARATION exp:", error.getMessage());
+                        Log.d("STR_PREPARATION exp:", " "+error.getMessage());
                     }
                 }) {
 

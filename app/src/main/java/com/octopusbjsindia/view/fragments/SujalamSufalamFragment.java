@@ -273,7 +273,10 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        setUserLocation();
         btnSsView.setEnabled(true);
+        isFilterApplied = false;
+        btnFilter.setImageResource(R.drawable.ic_filter);
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         if(Util.isConnected(getActivity())) {
             sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
@@ -428,7 +431,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             }
             rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         } else {
-
             if (machineAnalyticsDataList.size() > 0) {
                 sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
             } else {

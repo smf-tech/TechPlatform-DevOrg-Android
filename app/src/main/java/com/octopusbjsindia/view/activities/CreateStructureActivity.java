@@ -536,11 +536,11 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Water Shed No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etArea.getText().toString())) {
+        } /*else if (TextUtils.isEmpty(etArea.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel Area.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
+        } */else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, feel proper information.", Snackbar.LENGTH_LONG);
             return false;
@@ -810,8 +810,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
-        };
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
