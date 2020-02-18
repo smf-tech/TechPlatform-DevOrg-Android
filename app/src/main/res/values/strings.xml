@@ -374,7 +374,7 @@
     <string name="enter_proper_date_range">Please enter proper date range.</string>
     <string name="reason">Reason</string>
     <string name="rejected_reason">Rejected Reason</string>
-    <string name="holiday_list_title">Holiday List for 2019</string>
+    <string name="holiday_list_title">Holiday List</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="same_day">Same date for each month</string>
