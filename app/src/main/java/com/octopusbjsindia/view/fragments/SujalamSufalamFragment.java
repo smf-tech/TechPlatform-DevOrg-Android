@@ -273,7 +273,10 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        setUserLocation();
         btnSsView.setEnabled(true);
+        isFilterApplied = false;
+        btnFilter.setImageResource(R.drawable.ic_filter);
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         if(Util.isConnected(getActivity())) {
             sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
