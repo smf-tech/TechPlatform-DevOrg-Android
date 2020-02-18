@@ -773,8 +773,4 @@
     <string name="machine_removed">Machine is not assigned for this  Operator number Please contact your TC.</string>
     <string name="type_of_beneficiary">Type of beneficiary</string>
 
-    <string name="machine_removed">This device is not assigned to any machine.Please contact your supervisor.</string>
-
-
-
 </resources>
