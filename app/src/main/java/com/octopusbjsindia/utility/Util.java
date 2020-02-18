@@ -1703,7 +1703,7 @@ public class Util {
 
            UserInfo info = Util.getUserObjectFromPref();
 
-           if (info.getCurrent_project_logo()!=null) {
+           if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
                Glide.with(context)
                        .asBitmap()
                        .load(info.getCurrent_project_logo())
@@ -1713,6 +1713,9 @@ public class Util {
                                String logoPath = saveImage(resource, editor, preferences, context);
                            }
                        });
+           }else {
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,"");
+               editor.apply();
            }
        }
    }
