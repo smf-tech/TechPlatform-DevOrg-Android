@@ -1764,7 +1764,7 @@ public class Util {
                 Locale.getDefault()).format(new Date());
         File file;
         file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+                + "IMG_" + "logo" + ".jpg");
 
         return file;
     }
