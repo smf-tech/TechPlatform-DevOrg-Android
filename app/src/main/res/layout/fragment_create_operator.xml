@@ -65,7 +65,7 @@
                             android:id="@+id/et_operator_contact"
                             style="@style/RegistrationEditTextLayout"
                             android:hint="@string/operator_contact"
-                            android:inputType="phone"
+                            android:inputType="number"
                             android:maxLength="10" />
                     </com.google.android.material.textfield.TextInputLayout>
 

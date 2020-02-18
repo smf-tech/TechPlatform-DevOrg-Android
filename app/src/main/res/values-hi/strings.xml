@@ -315,7 +315,7 @@
     <string name="rejected_reason">अस्वीकृत कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
-    <string name="holiday_list_title">2019 के लिए अवकाश सूची</string>
+    <string name="holiday_list_title">Holiday List</string>
     <string name="sure_to_delete">क्या आप इसे मिटाना चाहते हैं ?</string>
     <string name="delete">हटाना</string>
     <string name="leave_apply_msg1">एक बार जब आप अपने प्रबंधक से स्वीकृति प्राप्त कर लेंगे, तो आप अवकाश शेष देख पाएंगे|</string>

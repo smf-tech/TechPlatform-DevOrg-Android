@@ -300,7 +300,7 @@
     <string name="rejected_reason">नाकारलेले कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
-    <string name="holiday_list_title">सुट्टीची यादी 2019</string>
+    <string name="holiday_list_title">Holiday List</string>
     <string name="edit_event">कार्यक्रम संपादित करा</string>
     <string name="edit_task">कार्य संपादित करा</string>
     <string name="monday">सोमवार</string>
