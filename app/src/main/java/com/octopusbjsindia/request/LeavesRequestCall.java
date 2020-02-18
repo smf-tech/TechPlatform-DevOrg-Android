@@ -198,13 +198,11 @@ public class LeavesRequestCall {
             if (leavePresenterListener == null) {
                 return;
             }
-
             try {
                 if (response != null) {
                     String res = response.toString();
                     Log.d(TAG, "deleteUserLeave - Resp: " + res);
                     leavePresenterListener.onSuccessListener(requestID,res);
-
                 }
             } catch (Exception e) {
                 leavePresenterListener.onFailureListener(requestID,e.getMessage());
