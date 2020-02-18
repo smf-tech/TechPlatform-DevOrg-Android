@@ -39,13 +39,18 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,6 +59,7 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
+import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.login.Login;
@@ -84,6 +90,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -1678,5 +1685,87 @@ public class Util {
         gsonRequest.setShouldCache(false);
         gsonRequest.setBodyParams(requestObject);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+   //download and save project specific logo
+   public static  void downloadAndLoadIcon(Context context){
+       SharedPreferences preferences;
+       SharedPreferences.Editor editor;
+       preferences = Platform.getInstance().getSharedPreferences(
+               "AppData", Context.MODE_PRIVATE);
+       editor = Platform.getInstance().getSharedPreferences(
+               "AppData", Context.MODE_PRIVATE).edit();
+
+       String message = preferences.getString(Constants.OperatorModule.APP_CONFIG_RESPONSE,"");
+       if (!TextUtils.isEmpty(message)) {
+           AppConfigResponseModel appConfigResponseModel
+                   = new Gson().fromJson(message, AppConfigResponseModel.class);
+
+           UserInfo info = Util.getUserObjectFromPref();
+
+           if (info.getCurrent_project_logo()!=null) {
+               Glide.with(context)
+                       .asBitmap()
+                       .load(info.getCurrent_project_logo())
+                       .into(new SimpleTarget<Bitmap>() {
+                           @Override
+                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition transition) {
+                               String logoPath = saveImage(resource, editor, preferences, context);
+                           }
+                       });
+           }
+       }
+   }
+    private static String saveImage(Bitmap image, SharedPreferences.Editor editor, SharedPreferences preferences, Context context) {
+        String currentPhotoPath = null;
+        File storageDir = getImageFile(); // 1
+        currentPhotoPath = storageDir.getPath();
+        boolean success = true;
+
+        if (success) {
+            try {
+                OutputStream fOut = new FileOutputStream(storageDir);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Add the image to the system gallery
+            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID.concat(".file_provider"), storageDir);
+            editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
+            editor.apply();
+
+            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+            /*if (path.equalsIgnoreCase("")){
+
+            }else {
+                img_logo.setImageURI(null);
+                img_logo.setImageURI(Uri.parse(path));
+            }*/
+
+        }
+        return currentPhotoPath;
+    }
+    //-------
+    private static File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+
+        return file;
     }
 }

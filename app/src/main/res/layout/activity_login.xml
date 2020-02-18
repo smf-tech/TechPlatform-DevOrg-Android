@@ -53,6 +53,7 @@
                 android:layout_height="@dimen/dimen_175dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_50dp"
+                android:id="@+id/img_logo"
                 android:contentDescription="@string/content_description"
                 android:src="@drawable/ic_splash" />
 

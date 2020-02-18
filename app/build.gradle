@@ -24,10 +24,10 @@ android {
             storePassword 'ss@123'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         minSdkVersion 22
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 7
         versionName "1.07"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

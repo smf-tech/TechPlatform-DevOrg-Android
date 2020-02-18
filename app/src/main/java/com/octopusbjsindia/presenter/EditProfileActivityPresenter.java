@@ -188,6 +188,7 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
+        profileActivity.get().getdynamicLogo();
     }
 
     @Override

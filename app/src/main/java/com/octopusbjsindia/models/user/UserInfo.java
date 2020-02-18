@@ -64,6 +64,18 @@ public class UserInfo implements Parcelable {
     @SerializedName("type")
     @Expose
     private String type;
+
+    public String getCurrent_project_logo() {
+        return current_project_logo;
+    }
+
+    public void setCurrent_project_logo(String current_project_logo) {
+        this.current_project_logo = current_project_logo;
+    }
+
+    @SerializedName("current_project_logo")
+    @Expose
+    private String current_project_logo;
     @SerializedName("role_id")
     @Expose
     private RoleData roleIds;

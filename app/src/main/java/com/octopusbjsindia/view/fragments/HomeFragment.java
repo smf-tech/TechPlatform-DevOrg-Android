@@ -33,7 +33,9 @@ import com.octopusbjsindia.syncAdapter.GenericAccountService;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.EditProfileActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 
@@ -323,6 +325,12 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             Util.removeDatabaseRecords(true);
             Util.setSubmittedFormsLoaded(false);
             presenter.getUserProfile();
+        }
+    }
+
+    public void getdynamicLogo() {
+        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+            Util.downloadAndLoadIcon(getActivity());
         }
     }
 }
