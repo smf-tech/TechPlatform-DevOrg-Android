@@ -312,14 +312,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         });
 
-//        if (Util.isConnected(getActivity())) {
-//            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-//                isTalukaApiFirstCall = true;
-//                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
-//                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-//            }
-//        }
+        //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
+        // option in takeMOUAction function, this api call is needed.
+        if (Util.isConnected(getActivity())) {
+            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                isTalukaApiFirstCall = true;
+                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
+                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            }
+        }
     }
 
     private void setUserLocation() {
