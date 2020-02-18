@@ -2,58 +2,101 @@ package com.octopusbjsindia.view.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
+import com.octopusbjsindia.models.content.Url;
 import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity {
+
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     private final static int SPLASH_TIME_OUT = 2000;
     private final String TAG = SplashActivity.class.getName();
     PreferenceHelper preferenceHelper;
     private SplashActivityPresenter splashActivityPresenter;
-    private TextView tv_versionname;
+    private TextView tv_powered,tv_app_version;
     private String appVersion = "";
     String toOpen;
+    ImageView img_logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        tv_versionname = findViewById(R.id.powered);
+
+        preferences = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE);
+        editor = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE).edit();
+
+        tv_powered = findViewById(R.id.powered);
+        tv_app_version  = findViewById(R.id.tv_app_version);
+        img_logo  =findViewById(R.id.img_logo);
+        img_logo.setImageResource(R.drawable.ic_splash);
+        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+        if (path.equalsIgnoreCase("")){
+            img_logo.setImageResource(R.drawable.ic_splash);
+        }else {
+            //img_logo.setImageURI(null);
+            img_logo.setImageURI(Uri.parse(path));
+        }
 
         toOpen = getIntent().getStringExtra("toOpen");
         if(toOpen != null){
@@ -70,7 +113,11 @@ public class SplashActivity extends AppCompatActivity {
 
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            tv_versionname.setText("Version"+" "+appVersion);
+            tv_powered.setText("Powered By");
+            tv_app_version.setText("Version -"+appVersion);
+
+
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -100,6 +147,10 @@ public class SplashActivity extends AppCompatActivity {
                     {
                         AppConfigResponseModel appConfigResponseModel
                                 = new Gson().fromJson(message, AppConfigResponseModel.class);
+
+                        editor.putString(Constants.OperatorModule.APP_CONFIG_RESPONSE,message);
+                        editor.apply();
+
                         Gson gson = new Gson();
                         //Utils.setStringPref(Constants.Pref.PROFILE_CATEGORY, gson.toJson(appConfigResponseModel));
 
@@ -229,6 +280,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
     }
-
 
 }

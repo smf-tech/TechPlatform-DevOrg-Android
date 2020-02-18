@@ -51,7 +51,7 @@ public class LoginActivityPresenter implements UserRequestCallListener {
 
     @Override
     public void onUserProfileSuccessListener(String response) {
-
+        loginActivity.get().getdynamicLogo();
     }
 
     @Override

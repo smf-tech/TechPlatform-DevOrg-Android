@@ -40,6 +40,7 @@ import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.presenter.OtpFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.EditProfileActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -564,5 +565,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (mIntentReceiver != null)
             Platform.getInstance().unregisterReceiver(mIntentReceiver);
         super.onDestroy();
+    }
+
+    public void getdynamicLogo() {
+        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+            Util.downloadAndLoadIcon(getActivity());
+        }
     }
 }
