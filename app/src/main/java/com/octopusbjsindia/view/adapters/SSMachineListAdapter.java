@@ -209,10 +209,10 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     }
                     if (fragment.isRealiseOperator) {
                         if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                            popup.getMenu().findItem(R.id.action_realise_operator).setVisible(true);
+                            popup.getMenu().findItem(R.id.action_release_operator).setVisible(true);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_realise_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
@@ -375,7 +375,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         activity.startActivity(operatorIntent);
                                         activity.finish();
                                         break;
-                                    case R.id.action_realise_operator:
+                                    case R.id.action_release_operator:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseOperator(getAdapterPosition());
                                         } else {
