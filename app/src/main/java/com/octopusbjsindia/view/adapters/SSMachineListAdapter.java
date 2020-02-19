@@ -207,17 +207,53 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
                         }
                     }
+
+
                     if (fragment.isRealiseOperator) {
-                        if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                            popup.getMenu().findItem(R.id.action_realise_operator).setVisible(true);
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
+                            if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
+                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                            }
+                        } else {
+                            popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_realise_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
-                        if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                            popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
+                            if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
+                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                            }
+                        } else {
+                            popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
@@ -279,9 +315,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         Constants.SSModule.MACHINE_REALEASED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
-                            if (fragment.isMouImagesUpload) {
-                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
-                            }
+//                            if (fragment.isMouImagesUpload) {
+//                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
+//                            }
                             if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
                                 popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
                             }
@@ -375,7 +411,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         activity.startActivity(operatorIntent);
                                         activity.finish();
                                         break;
-                                    case R.id.action_realise_operator:
+                                    case R.id.action_release_operator:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseOperator(getAdapterPosition());
                                         } else {

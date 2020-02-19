@@ -46,11 +46,6 @@ import com.octopusbjsindia.view.activities.EditProfileActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.OtpActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewOtpFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NewOtpFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
     private static LoginInfo sLoginInfo;
@@ -310,13 +305,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     private void verifyUser() {
-//        if (timer != null) {
-//            timer.cancel();
-//        }
-
-//        tvOtpTimer.setText("");
-//        tvOtpTimer.setVisibility(View.GONE);
-
         String otp = getOtp();
         if (deviceId.length() > 0) {
             sLoginInfo.setDeviceId(deviceId);

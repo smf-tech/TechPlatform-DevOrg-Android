@@ -273,7 +273,10 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        setUserLocation();
         btnSsView.setEnabled(true);
+        isFilterApplied = false;
+        btnFilter.setImageResource(R.drawable.ic_filter);
         sujalamSuphalamFragmentPresenter = new SujalamSuphalamFragmentPresenter(this);
         if(Util.isConnected(getActivity())) {
             sujalamSuphalamFragmentPresenter.getAnalyticsData(sujalamSuphalamFragmentPresenter.GET_STRUCTURE_ANALYTICS,
@@ -428,7 +431,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             }
             rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         } else {
-
             if (machineAnalyticsDataList.size() > 0) {
                 sujalamSufalamFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
             } else {
@@ -513,8 +515,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineDistrictList.clear();
-//                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().
-//                            compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocation location = jurisdictionLevels.get(i);

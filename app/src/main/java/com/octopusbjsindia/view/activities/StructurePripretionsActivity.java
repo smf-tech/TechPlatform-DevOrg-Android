@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,13 +40,19 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
+import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.StructurePripretionsActivityPresenter;
@@ -55,6 +62,7 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
+import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
@@ -64,6 +72,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -71,14 +80,15 @@ import java.util.Objects;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class StructurePripretionsActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
+public class StructurePripretionsActivity extends AppCompatActivity implements View.OnClickListener,
+        APIDataListener , CustomSpinnerListener {
 
     private final String TAG = StructurePripretionsActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
 
 
     ImageView selectedIV;
-    EditText etFFName, etFFMobile, etReson;
+    EditText etFFName, etFFMobile, etReson,etTypeOfBeneficiary;
 
     private RelativeLayout progressBar;
     private Uri outputUri;
@@ -97,8 +107,11 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     StructurePripretionData requestData = new StructurePripretionData();
     StructureData structureData;
 
+    private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> typeOfBeneficiaryList = new ArrayList<>();
+
     StructurePripretionsActivityPresenter presenter;
-    String currentPhotoPath;
+    String currentPhotoPath, selectedTypeOfBeneficiaryId, selectedTypeOfBeneficiary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +122,8 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         presenter = new StructurePripretionsActivityPresenter(this);
 
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
+
+        setMasterData();
 
         initView();
         setTitle("Structure Preparation");
@@ -129,14 +144,17 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         RadioGroup rgStructureFit = findViewById(R.id.rg_structure_fit);
         TextInputLayout lyReson = findViewById(R.id.ly_reason);
         etReson = findViewById(R.id.et_reason);
+        etTypeOfBeneficiary = findViewById(R.id.et_type_of_beneficiary);
         Button btSubmit = findViewById(R.id.bt_submit);
 
         tvStructureCode.setText(structureData.getStructureCode());
         tv_machin_code.setText(structureData.getStructureMachineList());
 
+
         ivStructureImg1.setOnClickListener(this);
         ivStructureImg2.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
+        etTypeOfBeneficiary.setOnClickListener(this);
 
         rgFFIdentified.check(R.id.rb_ff_identified_no);
         rgFFIdentified.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -195,6 +213,24 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData();
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
+            if (obj.getForm().equalsIgnoreCase("structure_preparation")) {
+                masterDataLists.add(obj);
+            }
+        }
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -231,6 +267,24 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             case R.id.toolbar_back_action:
                 finish();
                 break;
+            case R.id.et_type_of_beneficiary:
+                typeOfBeneficiaryList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureBeneficiary"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            typeOfBeneficiaryList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdStructureDept = new CustomSpinnerDialogClass(this, this,
+                        "Select type of beneficiary", typeOfBeneficiaryList, false);
+                csdStructureDept.show();
+                csdStructureDept.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
         }
     }
 
@@ -256,10 +310,14 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                             "Please, enter FF Mobile Number.", Snackbar.LENGTH_LONG);
                     return false;
-                } else {
+                }  else {
                     requestData.setFfName(etFFName.getText().toString());
                     requestData.setFfMobileNumber(etFFMobile.getText().toString());
                 }
+            } else if (TextUtils.isEmpty(selectedTypeOfBeneficiaryId)) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please, select type of beneficiary.", Snackbar.LENGTH_LONG);
+                return false;
             }
             requestData.setStructureId(structureData.getStructureId());
             requestData.setLat(location.getLatitude());
@@ -268,6 +326,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
             requestData.setFfTraningDone(ffTranningComplited);
             requestData.setIsStructureFit(structureFit);
             requestData.setReason(etReson.getText().toString());
+            requestData.setBeneficiary_id(selectedTypeOfBeneficiaryId);
         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
@@ -647,5 +706,20 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     @Override
     public void closeCurrentActivity() {
 
+    }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        switch (type){
+            case "Select type of beneficiary":
+            for (CustomSpinnerObject obj : typeOfBeneficiaryList) {
+                if (obj.isSelected()) {
+                    selectedTypeOfBeneficiary = obj.getName();
+                    selectedTypeOfBeneficiaryId = obj.get_id();
+                }
+            }
+            etTypeOfBeneficiary.setText("");
+            break;
+        }
     }
 }

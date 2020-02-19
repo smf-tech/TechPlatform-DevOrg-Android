@@ -12,6 +12,7 @@ import com.octopusbjsindia.database.DataConverter;
 import com.octopusbjsindia.models.LocaleData;
 import com.octopusbjsindia.models.common.Category;
 import com.octopusbjsindia.models.common.Entity;
+import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.common.Project;
 
 import java.util.List;
@@ -64,11 +65,11 @@ public class FormData {
     @Expose
     private List<String> assignedRoles = null;
 
-//    @TypeConverters(DataConverter.class)
-//    @ColumnInfo(name = "microservice")
-//    @SerializedName("microservice")
-//    @Expose
-//    private Microservice microService;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "microservice")
+    @SerializedName("microservice")
+    @Expose
+    private Microservice microService;
 
     @ColumnInfo(name = "api_url")
     @SerializedName("api_url")
@@ -163,13 +164,13 @@ public class FormData {
         this.project = project;
     }
 
-//    public Microservice getMicroService() {
-//        return microService;
-//    }
+    public Microservice getMicroService() {
+        return microService;
+    }
 
-//    public void setMicroService(Microservice microService) {
-//        this.microService = microService;
-//    }
+    public void setMicroService(Microservice microService) {
+        this.microService = microService;
+    }
 
     public String getApi_url() {
         return api_url;

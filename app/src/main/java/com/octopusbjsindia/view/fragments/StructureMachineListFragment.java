@@ -100,6 +100,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ImageView btnFilterClear;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
             userTalukas = "", userTalukaIds = "";
+    private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
     private boolean isFABOpen = false;
 
     @Override
@@ -311,14 +312,14 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         });
 
-        if (Util.isConnected(getActivity())) {
-            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                isTalukaApiFirstCall = true;
-                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
-                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-            }
-        }
+//        if (Util.isConnected(getActivity())) {
+//            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+//                isTalukaApiFirstCall = true;
+//                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
+//                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+//            }
+//        }
     }
 
     private void setUserLocation() {
@@ -960,9 +961,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             if (Util.isConnected(getActivity())) {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     isTalukaApiFirstCall = false;
-                    structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
+                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                    ? selectedDistrictId : userDistrictIds,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
+
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Please select District first.",
@@ -974,8 +977,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (view.getId() == R.id.tv_district_filter) {
             if (Util.isConnected(getActivity())) {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
-                    structureMachineListFragmentPresenter.getLocationData(userStateIds,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                    ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -1023,7 +1026,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         isFABOpen = true;
         if (viewType == 1) {
             if (isStructureAdd) {
-                fbCreate.setImageResource(R.drawable.ic_create_structure);
+                fbCreate.setImageResource(R.drawable.ic_create_machine);
                 fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
                 if (isOperatorAdd) {
                     fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
@@ -1061,7 +1064,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (type.equals("Select State")) {
             ArrayList<String> filterStateIds = new ArrayList<>();
             String selectedState = "";
-            String selectedStateId = "";
             for (CustomSpinnerObject mState : machineStateList) {
                 if (mState.isSelected()) {
                     if (selectedState.equals("")) {
@@ -1122,7 +1124,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (type.equals("Select District")) {
             ArrayList<String> filterDistrictIds = new ArrayList<>();
             String selectedDistrict = "";
-            String selectedDistrictId = "";
             for (CustomSpinnerObject mDistrict : machineDistrictList) {
                 if (mDistrict.isSelected()) {
                     if (selectedDistrict.equals("")) {
@@ -1183,7 +1184,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (type.equals("Select Taluka")) {
             ArrayList<String> filterTalukaIds = new ArrayList<>();
             String selectedTaluka = "";
-            String selectedTalukaId = "";
             for (CustomSpinnerObject mTaluka : machineTalukaList) {
                 if (mTaluka.isSelected()) {
                     if (selectedTaluka.equals("")) {

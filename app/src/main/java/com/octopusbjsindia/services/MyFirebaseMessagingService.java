@@ -215,15 +215,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PreferenceHelper preferenceHelper = new PreferenceHelper(getApplicationContext());
         preferenceHelper.insertString(PreferenceHelper.TOKEN, s);
+        preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,true);
         //Util.updateFirebaseIdRequests(jsonObject);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("firebase_id", s);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (jsonObject != null) {
-            Util.updateFirebaseIdRequests(jsonObject);
-        }
     }
 }

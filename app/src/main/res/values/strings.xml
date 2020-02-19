@@ -374,7 +374,7 @@
     <string name="enter_proper_date_range">Please enter proper date range.</string>
     <string name="reason">Reason</string>
     <string name="rejected_reason">Rejected Reason</string>
-    <string name="holiday_list_title">Holiday List for 2019</string>
+    <string name="holiday_list_title">Holiday List</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="same_day">Same date for each month</string>
@@ -770,9 +770,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-
-    <string name="machine_removed">This device is not assigned to any machine.Please contact your supervisor.</string>
-
-
+    <string name="machine_removed">Machine is not assigned for this  Operator number Please contact your TC.</string>
+    <string name="type_of_beneficiary">Type of beneficiary</string>
 
 </resources>

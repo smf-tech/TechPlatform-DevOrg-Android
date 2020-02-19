@@ -300,7 +300,7 @@
     <string name="rejected_reason">नाकारलेले कारण</string>
     <string name="check_in">चेक इन</string>
     <string name="check_out">चेक आउट</string>
-    <string name="holiday_list_title">सुट्टीची यादी 2019</string>
+    <string name="holiday_list_title">Holiday List</string>
     <string name="edit_event">कार्यक्रम संपादित करा</string>
     <string name="edit_task">कार्य संपादित करा</string>
     <string name="monday">सोमवार</string>
@@ -558,6 +558,7 @@
     <string name="assign_opretor_alert_message">Are you sure want to assign the operator from this machine?</string>
     <string name="event_content_screen_visit">Content Module Screen visited</string>
     <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
+    <string name="type_of_beneficiary">Type of beneficiary</string>
 
 
 </resources>

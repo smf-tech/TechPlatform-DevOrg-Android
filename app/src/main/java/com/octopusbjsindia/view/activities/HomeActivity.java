@@ -57,11 +57,15 @@ import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
+import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PMFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
 import com.octopusbjsindia.view.fragments.ReportsFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.List;
@@ -205,6 +209,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             FirebaseMessaging.getInstance().unsubscribeFromTopic(Util.getStringFromPref(Constants.App.FirebaseTopicProjectRoleWise));
             FirebaseMessaging.getInstance().subscribeToTopic(userProject + "_" + userRoll);
             Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise, userProject + "_" + userRoll);
+        }
+        PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+        if(preferenceHelper.getCheckOutStatus(PreferenceHelper.TOKEN_KEY)){
+            String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("firebase_id", token);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (jsonObject != null) {
+                Util.updateFirebaseIdRequests(jsonObject);
+            }
         }
     }
 
