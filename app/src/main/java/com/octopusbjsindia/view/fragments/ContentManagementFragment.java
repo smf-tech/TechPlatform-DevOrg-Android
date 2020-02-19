@@ -273,7 +273,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             Intent data = intent;
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                Toast.makeText(getContext(), "DownloadComplete", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Download completed.", Toast.LENGTH_LONG).show();
                 //mProgressBar.setVisibility(View.GONE);
                 expandableListAdapter.notifyDataSetChanged();
             }
