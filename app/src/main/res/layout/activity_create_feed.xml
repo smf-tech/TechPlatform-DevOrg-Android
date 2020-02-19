@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:hint="Description *"
-                    android:inputType="text|textCapWords|textMultiLine"
+                    android:inputType="text|textMultiLine"
                     android:minHeight="@dimen/dimen_150dp" />
             </com.google.android.material.textfield.TextInputLayout>
 

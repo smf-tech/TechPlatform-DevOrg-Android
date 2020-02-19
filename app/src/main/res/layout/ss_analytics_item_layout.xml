@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="@dimen/dimen_05dp"
@@ -42,15 +42,14 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:textStyle="bold"
-                    android:text="555"
                     android:fontFamily="@font/opensans_regular" />
 
                 <com.budiyev.android.circularprogressbar.CircularProgressBar
                     android:id="@+id/pb_ss_analytics"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
                     app:animateProgress="true"
                     app:backgroundStrokeColor="@color/lighter_grey"
                     app:backgroundStrokeWidth="3dp"
@@ -75,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold"
-                android:text="1 Lac"
                 android:textSize="@dimen/dimen_20dp"
                 android:layout_below="@id/rl_circular_pb"
                 android:layout_marginStart="@dimen/dimen_10dp"
@@ -87,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/opensans_regular"
                 android:textStyle="bold"
-                android:text="(Cubic Mtr)"
                 android:layout_below="@id/tv_value"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:visibility="gone"/>

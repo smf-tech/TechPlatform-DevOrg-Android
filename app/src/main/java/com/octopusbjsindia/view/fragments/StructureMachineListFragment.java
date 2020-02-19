@@ -1028,7 +1028,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         isFABOpen = true;
         if (viewType == 1) {
             if (isStructureAdd) {
-                fbCreate.setImageResource(R.drawable.ic_create_machine);
+                fbCreate.setImageResource(R.drawable.ic_create_structure);
                 fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
                 if (isOperatorAdd) {
                     fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));

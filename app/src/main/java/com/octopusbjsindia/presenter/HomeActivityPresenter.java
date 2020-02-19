@@ -153,6 +153,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
                         Util.saveRoleAccessObjectInPref(response);
                         homeFragment.get().initiateViewPager();
                     } else {
+                        Util.saveRoleAccessObjectInPref(response);
                         homeFragment.get().initiateViewPager();
                     }
                 }
