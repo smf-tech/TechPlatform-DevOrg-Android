@@ -104,6 +104,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         isOtpVerifyCall = false;
         otpFragment.get().hideProgressBar();
         otpFragment.get().showNextScreen(user);
+        otpFragment.get().getdynamicLogo();
     }
 
     @Override

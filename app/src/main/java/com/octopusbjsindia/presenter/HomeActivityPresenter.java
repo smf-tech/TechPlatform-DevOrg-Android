@@ -79,6 +79,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
+        homeFragment.get().getdynamicLogo();
         getModules(user.getUserInfo());
     }
 

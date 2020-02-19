@@ -5,6 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class AppUpdate {
 
+    @SerializedName("logo_path")
+    @Expose
+    private String logo_path;
+
+    @SerializedName("support")
+    @Expose
+    private String support;
+
     @SerializedName("octopusAppVersion")
     @Expose
     private String octopusAppVersion;
@@ -50,4 +58,19 @@ public class AppUpdate {
         this.octopusForceUpdateRequirediOS = octopusForceUpdateRequirediOS;
     }
 
+    public String getLogo_path() {
+        return logo_path;
+    }
+
+    public void setLogo_path(String logo_path) {
+        this.logo_path = logo_path;
+    }
+
+    public String getSupport() {
+        return support;
+    }
+
+    public void setSupport(String support) {
+        this.support = support;
+    }
 }

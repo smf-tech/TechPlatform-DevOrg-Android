@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "5677a1b7a66a5e4b6a143af62e5cb925",
+    "identityHash": "9ea7afe482485fcae7c442ad5649fc62",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -968,7 +968,7 @@
       },
       {
         "tableName": "StructurePripretionData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structure_id` TEXT, `lat` REAL NOT NULL, `long` REAL NOT NULL, `ff_identified` INTEGER, `ff_name` TEXT, `ff_mobile_number` TEXT, `ff_traning_done` INTEGER, `is_structure_fit` INTEGER, `reason` TEXT, `structureImg1` TEXT, `structureImg2` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structure_id` TEXT, `lat` REAL NOT NULL, `long` REAL NOT NULL, `ff_identified` INTEGER, `ff_name` TEXT, `ff_mobile_number` TEXT, `ff_traning_done` INTEGER, `is_structure_fit` INTEGER, `reason` TEXT, `structureImg1` TEXT, `structureImg2` TEXT, `beneficiary_id` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -1041,6 +1041,12 @@
             "columnName": "structureImg2",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "beneficiary_id",
+            "columnName": "beneficiary_id",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1088,7 +1094,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5677a1b7a66a5e4b6a143af62e5cb925')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9ea7afe482485fcae7c442ad5649fc62')"
     ]
   }
 }

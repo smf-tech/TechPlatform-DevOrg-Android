@@ -208,33 +208,55 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         }
                     }
 
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
-                        if (fragment.isRealiseOperator) {
+
+                    if (fragment.isRealiseOperator) {
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
                                 popup.getMenu().findItem(R.id.action_release_operator).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
                             }
                         } else {
                             popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
                         }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                    }
 
-                        if (fragment.isAssignOperator) {
+                    if (fragment.isAssignOperator) {
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
                                 popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                            } else {
+                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
                             }
                         } else {
                             popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
                         }
+                    } else {
+                        popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
                     }
 
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==

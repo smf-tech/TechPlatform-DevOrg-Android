@@ -218,7 +218,7 @@ private ImageView toolbar_edit_action;
             editor.putLong("startTime", 0);
             editor.apply();
             //setHalfHourReminder();
-            setAlarm();
+            //setAlarm();
         } else if (currentState == state_stop) {
             //editor.putInt("State", 0);
             buttonPauseService.setVisibility(View.GONE);
@@ -327,7 +327,7 @@ private ImageView toolbar_edit_action;
                 editor.commit();
             }
         }else {
-            setDailyAlarm();
+           // setDailyAlarm();
 
             }
 
@@ -396,7 +396,7 @@ private ImageView toolbar_edit_action;
             editor.commit();
             Log.e("alarm Canceled","alarm Canceled");
             Log.e("alarm Canceled","alarm Requestcode was"+Requestcode);
-            setDailyAlarm();
+          //  setDailyAlarm();
         }
 
     }
@@ -772,7 +772,7 @@ private ImageView toolbar_edit_action;
             e.printStackTrace();
         }
 
-        setDailyAlarm();
+      //  setDailyAlarm();
     }
 
     private void callStartButtonClick() {
@@ -878,7 +878,7 @@ private ImageView toolbar_edit_action;
     protected void onResume() {
         super.onResume();
 
-        String toOpen = getIntent().getStringExtra("fromAlarm");
+        /*String toOpen = getIntent().getStringExtra("fromAlarm");
         if(toOpen != null){
             Log.i("toOpen", "toOpen called");
 
@@ -890,16 +890,16 @@ private ImageView toolbar_edit_action;
                 mRingtone.play();
                 Log.e("mRingtone--", "---OnPlaying");
             }
-            /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            *//*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
-            mp.start();*/
+            mp.start();*//*
 
             if (alarmDialog != null && alarmDialog.isShowing()) {
 
             } else {
                 showAlarmDialog(this, 1);
             }
-        }
+        }*/
 
         if (preferences.getInt("State", 0) == state_start) {
         }
@@ -1476,7 +1476,7 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
 
-        setDailyAlarm();
+      //  setDailyAlarm();
     }
 
 

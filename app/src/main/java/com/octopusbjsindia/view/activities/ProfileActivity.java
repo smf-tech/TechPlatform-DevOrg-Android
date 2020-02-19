@@ -32,6 +32,7 @@ import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MultyProjectAdapter;
 
@@ -234,6 +235,9 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 getResources().getString(R.string.ok),
                 "");
         initViews();
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            Util.downloadAndLoadIcon(this);
+        }
 
     }
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -28,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.login.Login;
@@ -35,18 +38,20 @@ import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.presenter.LoginActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
 
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
-
+    SharedPreferences preferences;
     private final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
     private PlatformEditTextView etUserMobileNumber;
 //    private EditText etUserMobileNumber;
     TextView txtTermService;
+    private ImageView img_logo;
     private LoginInfo loginInfo;
     private boolean doubleBackToExitPressedOnce = false;
     private LoginActivityPresenter loginPresenter;
@@ -55,6 +60,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        preferences = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE);
         initViews();
         loginInfo = new LoginInfo();
         loginPresenter = new LoginActivityPresenter(this);
@@ -67,6 +74,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         etUserMobileNumber = findViewById(R.id.edt_mobile_number);
         etUserMobileNumber.setOnEditorActionListener(this);
         txtTermService = findViewById(R.id.txtTermService);
+        img_logo  =findViewById(R.id.img_logo);
         findViewById(R.id.txtTermService).setOnClickListener(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             txtTermService.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
@@ -83,6 +91,14 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         resendOTP.setOnClickListener(this);
         if (Util.isFirstTimeLaunch(true)) {
             showLanguageSelectionDialog();
+        }
+
+        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+        if (path.equalsIgnoreCase("")){
+
+        }else {
+            img_logo.setImageURI(null);
+            img_logo.setImageURI(Uri.parse(path));
         }
     }
 
@@ -305,5 +321,11 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
             return true;
         }
         return false;
+    }
+
+    public void getdynamicLogo() {
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            Util.downloadAndLoadIcon(this);
+        }
     }
 }

@@ -214,6 +214,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserMobileNumber.setEnabled(false);
         etUserMobileNumber.setFocusable(false);
         etUserMobileNumber.setClickable(false);
+
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+
+        }
     }
 
     private void setListeners() {
@@ -1364,6 +1368,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         Util.removeDatabaseRecords(false);
         Util.setSubmittedFormsLoaded(false);
 
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            Util.downloadAndLoadIcon(EditProfileActivity.this);
+        }
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
@@ -2140,6 +2147,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
             }
             etUserSchool.setText(selectedSchoolNames);
+        }
+    }
+
+    public void getdynamicLogo() {
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            Util.downloadAndLoadIcon(this);
         }
     }
 }

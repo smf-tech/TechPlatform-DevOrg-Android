@@ -518,7 +518,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             return false;
         } else if (TextUtils.isEmpty(etHostVillagePopulation.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Host Village Population.", Snackbar.LENGTH_LONG);
+                    "Please, fill Host Village Population.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -526,27 +526,27 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             return false;
         } else if (TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Catchment Village Population.", Snackbar.LENGTH_LONG);
+                    "Please, fill Catchment Village Population.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etGatNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Gat No.", Snackbar.LENGTH_LONG);
+                    "Please, fill Gat No.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etWaterShedNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Water Shed No.", Snackbar.LENGTH_LONG);
+                    "Please, fill Water Shed No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etArea.getText().toString())) {
+        } /*else if (TextUtils.isEmpty(etArea.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Area.", Snackbar.LENGTH_LONG);
+                    "Please, fill Area.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
+        } */else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel proper information.", Snackbar.LENGTH_LONG);
+                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedStructureOwnerDepartmentId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Structure Name.", Snackbar.LENGTH_LONG);
+                    "Please, fill Structure Name.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -554,7 +554,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             return false;
         } else if (TextUtils.isEmpty(etNotaDetail.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Nota Detail.", Snackbar.LENGTH_LONG);
+                    "Please, fill Nota Detail.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedStructureTypeId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -566,35 +566,35 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             return false;
         } else if (TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Administrative Approval No.", Snackbar.LENGTH_LONG);
+                    "Please, fill Administrative Approval No.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etAdministrativeApprovalDate.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Administrative Approval Date.", Snackbar.LENGTH_LONG);
+                    "Please, fill Administrative Approval Date.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etTechnicalSanctionNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Technical Sanction No.", Snackbar.LENGTH_LONG);
+                    "Please, fill Technical Sanction No.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etAdministrativeEstimateAmount.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Administrative Estimate Amount.", Snackbar.LENGTH_LONG);
+                    "Please, fill Administrative Estimate Amount.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Approximate Working Hours.", Snackbar.LENGTH_LONG);
+                    "Please, fill Approximate Working Hours.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
+                    "Please, fill Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel proper information.", Snackbar.LENGTH_LONG);
+                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, feel Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
+                    "Please, fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
@@ -810,8 +810,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
-        };
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
