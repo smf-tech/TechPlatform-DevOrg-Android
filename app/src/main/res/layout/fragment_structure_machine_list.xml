@@ -110,7 +110,6 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        android:src="@drawable/ic_create_machine"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

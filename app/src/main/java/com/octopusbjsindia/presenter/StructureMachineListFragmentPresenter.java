@@ -343,11 +343,11 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         try {
             if (response != null) {
 
-                CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
-                if (commentResponse.getStatus() == 1000) {
-                    Util.logOutUser(fragmentWeakReference.get().getActivity());
-                    return;
-                }
+//                CommentResponse commentResponse = PlatformGson.getPlatformGsonInstance().fromJson(response, CommentResponse.class);
+//                if (commentResponse.getStatus() == 1000) {
+//                    Util.logOutUser(fragmentWeakReference.get().getActivity());
+//                    return;
+//                }
                 if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_STRUCTURE_LIST)) {
 
                     StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);

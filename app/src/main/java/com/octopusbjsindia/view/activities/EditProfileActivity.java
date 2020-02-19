@@ -215,10 +215,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserMobileNumber.setEnabled(false);
         etUserMobileNumber.setFocusable(false);
         etUserMobileNumber.setClickable(false);
-
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-
-        }
     }
 
     private void setListeners() {
@@ -1285,7 +1281,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showPictureDialog();
+//                showPictureDialog();
             }
         }
     }
@@ -1370,9 +1366,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         Util.removeDatabaseRecords(false);
         Util.setSubmittedFormsLoaded(false);
 
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(EditProfileActivity.this);
-        }
+//        if (Permissions.isCameraPermissionGranted(this, this)) {
+//            Util.downloadAndLoadIcon(EditProfileActivity.this);
+//        }
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
