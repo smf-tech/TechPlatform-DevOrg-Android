@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_selection"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_10dp"
+    android:layout_marginEnd="@dimen/dimen_10dp"
+    android:background="@drawable/bg_light_blue_box">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diwali Holidays"
+        android:padding="@dimen/dimen_10dp"
+        android:fontFamily="@font/opensans"
+        android:textColor="@color/attendance_list_item"
+        android:textSize="@dimen/text_size_16" />
+
+    <ImageView
+        android:id="@+id/iv_dotted_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_03dp"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:contentDescription="@string/content_description"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
+
+</RelativeLayout>
