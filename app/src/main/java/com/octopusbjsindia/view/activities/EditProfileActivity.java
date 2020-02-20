@@ -202,11 +202,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         && getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
-                    setEditModeUserData();
+
                     if (Util.isConnected(this)) {
                         profilePresenter.getUserProfile();
                         profilePresenter.getOrganizations();
                     }
+                    setEditModeUserData();
                 }
             }
         } else {
