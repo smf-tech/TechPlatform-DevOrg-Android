@@ -77,7 +77,7 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
                         if (Util.getUserObjectFromPref().getProjectIds().get(0).getId()
                                 .equals(projectList.get(getAdapterPosition()).getProjectId())) {
                             showDialog("Switch Profile",
-                                    "You are in the same project?",
+                                    "You are in the same project",
                                     "",
                                     mContext.getResources().getString(R.string.ok),
                                     getAdapterPosition(), 2);
@@ -89,12 +89,6 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
                                     getAdapterPosition(), 1);
                         }
 
-                    } else {
-                        showDialog("Switch Profile",
-                                "You are in the same project?",
-                                "",
-                                mContext.getResources().getString(R.string.ok),
-                                getAdapterPosition(), 2);
                     }
                 }
             });

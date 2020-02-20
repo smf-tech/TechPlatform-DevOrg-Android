@@ -204,7 +204,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
 
                     if (Util.isConnected(this)) {
-                        profilePresenter.getUserProfile();
                         profilePresenter.getOrganizations();
                     }
                     setEditModeUserData();

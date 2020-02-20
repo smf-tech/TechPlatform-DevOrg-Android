@@ -14,10 +14,13 @@ import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.models.profile.MultyProjectResponse;
+import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.request.APIRequestCall;
+import com.octopusbjsindia.request.ProfileRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GsonRequestFactory;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.ProfileActivity;
 
 import org.json.JSONObject;
@@ -52,22 +55,40 @@ public class ProfileActivityPresenter implements APIPresenterListener {
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        MultyProjectResponse multyProjectResponse = new Gson().fromJson(response, MultyProjectResponse.class);
-        activity.displayProjects(multyProjectResponse.getData());
+        activity.hideProgressBar();
+        if(requestID.equals("multi_profile")){
+            MultyProjectResponse multyProjectResponse = new Gson().fromJson(response, MultyProjectResponse.class);
+            activity.displayProjects(multyProjectResponse.getData());
+        } else if(requestID.equals("UserProfile")){
+            User user = new Gson().fromJson(response, User.class);
+            if (response != null && user.getUserInfo() != null) {
+                Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+            }
+            activity.onSuccessListener(requestID,"");
+        }
 
     }
 
     public void getMultProfile() {
         activity.showProgressBar();
         final String checkProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_MULTIPAL_PROFILE;
-        activity.showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall("multi_profile", checkProfileUrl);
     }
 
+    public void getUserProfile() {
+        activity.showProgressBar();
+        final String url = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall("UserProfile", url);
+    }
+
     public void getUserDetels(MultyProjectData multyProjectData) {
+        activity.showProgressBar();
         Response.Listener<JSONObject> userProfileSuccessListener = response -> {
+            activity.hideProgressBar();
             try {
                 if (response != null) {
                     String res = response.toString();

@@ -168,7 +168,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.toolbar_edit_action) {
             if (Util.isConnected(this)) {
-                showEditProfileScreen();
+                if (Util.isConnected(this)) {
+                    presenter.getUserProfile();
+                }else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+
             } else {
                 Util.showToast(getString(R.string.msg_no_network), this);
             }
@@ -179,17 +184,17 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message,this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(),this);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-
+        showEditProfileScreen();
     }
 
     @Override

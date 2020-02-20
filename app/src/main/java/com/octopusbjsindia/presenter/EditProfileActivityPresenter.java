@@ -47,11 +47,6 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         profileActivity = new WeakReference<>(activity);
     }
 
-    public void getUserProfile() {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-        requestCall.getUserProfile();
-    }
 
     public void submitProfile(final UserInfo userInfo) {
         ProfileRequestCall requestCall = new ProfileRequestCall();
