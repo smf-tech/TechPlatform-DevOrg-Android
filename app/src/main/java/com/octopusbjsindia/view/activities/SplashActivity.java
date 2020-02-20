@@ -35,6 +35,7 @@ import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.RemoteMessage;
@@ -68,7 +69,7 @@ import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity {
 
-
+    private RequestOptions requestOptions;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private final static int SPLASH_TIME_OUT = 2000;
@@ -100,18 +101,21 @@ public class SplashActivity extends AppCompatActivity {
         }else {
 
 
-            Log.d("####", "onCreate:size "+getSize(this,Uri.parse(path)));
+            /*Log.d("####", "onCreate:size "+getSize(this,Uri.parse(path)));
             if (Integer.parseInt(getSize(this,Uri.parse(path)))>0) {
                 img_logo.setImageURI(null);
                 img_logo.invalidate();
                 img_logo.setImageURI(Uri.parse(path));
             }else {
                 img_logo.setImageResource(R.drawable.ic_splash);
-            }
-            /*Glide.with(this)
-                    .load(Uri.parse(path))
+            }*/
+            requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+            requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(path)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img_logo);*/
+                    .into(img_logo);
         }
 
 

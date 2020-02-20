@@ -330,6 +330,18 @@ public class Util {
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_OBJ, "{}");
 
+        SharedPreferences.Editor editor;
+
+        editor = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE).edit();
+        UserInfo info = new Gson().fromJson(obj, UserInfo.class);
+
+        if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
+            editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, info.getCurrent_project_logo());
+
+            editor.apply();
+        }
+
         return new Gson().fromJson(obj, UserInfo.class);
     }
 
@@ -1686,7 +1698,7 @@ public class Util {
 
    //download and save project specific logo
    public static  void downloadAndLoadIcon(Context context){
-       SharedPreferences preferences;
+       /*SharedPreferences preferences;
        SharedPreferences.Editor editor;
        preferences = Platform.getInstance().getSharedPreferences(
                "AppData", Context.MODE_PRIVATE);
@@ -1701,7 +1713,9 @@ public class Util {
            UserInfo info = Util.getUserObjectFromPref();
 
            if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
-               Glide.with(context)
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,info.getCurrent_project_logo());
+               editor.apply();
+               *//*Glide.with(context)
                        .asBitmap()
                        .load(info.getCurrent_project_logo())
                        .into(new SimpleTarget<Bitmap>() {
@@ -1709,12 +1723,12 @@ public class Util {
                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition transition) {
                                String logoPath = saveImage(resource, editor, preferences, context);
                            }
-                       });
+                       });*//*
            }else {
                editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,"");
                editor.apply();
            }
-       }
+       }*/
    }
     private static String saveImage(Bitmap image, SharedPreferences.Editor editor, SharedPreferences preferences, Context context) {
         String currentPhotoPath = null;
@@ -1732,10 +1746,10 @@ public class Util {
             }
             // Add the image to the system gallery
             Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID.concat(".file_provider"), storageDir);
-            editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
+            /*editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
             editor.apply();
 
-            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");*/
             /*if (path.equalsIgnoreCase("")){
 
             }else {
@@ -1764,7 +1778,7 @@ public class Util {
                 Locale.getDefault()).format(new Date());
         File file;
         file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + "logo" + ".jpg");
+                + "IMG_" + "logo" + ".png");
 
         return file;
     }

@@ -29,6 +29,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -45,6 +48,7 @@ import com.octopusbjsindia.widgets.PlatformEditTextView;
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
     SharedPreferences preferences;
+    private RequestOptions requestOptions;
     private final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
@@ -94,11 +98,17 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         }
 
         String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
-        if (path.equalsIgnoreCase("")){
 
+        if (path.equalsIgnoreCase("")){
+            img_logo.setImageResource(R.drawable.ic_splash);
         }else {
-            img_logo.setImageURI(null);
-            img_logo.setImageURI(Uri.parse(path));
+            requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+            requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(path)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(img_logo);
         }
     }
 
