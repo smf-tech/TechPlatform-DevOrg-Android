@@ -122,6 +122,8 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
         if (!TextUtils.isEmpty(btn1String)) {
             Button button = dialog.findViewById(R.id.btn_dialog);
             button.setText(btn1String);
+            button.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+            button.setTextColor(mContext.getResources().getColor(R.color.white));
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 if (flag == 1) {

@@ -231,7 +231,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
         showDialog(getResources().getString(R.string.alert),
-                "Project switched successfully...",
+                "Project switched successfully.",
                 getResources().getString(R.string.ok),
                 "");
         initViews();
@@ -264,6 +264,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
+                finish();
                 dialog.dismiss();
             });
         }
@@ -274,6 +275,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 //Close dialog
+                finish();
                 dialog.dismiss();
             });
         }

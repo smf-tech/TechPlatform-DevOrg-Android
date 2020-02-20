@@ -13,18 +13,6 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class UserInfo implements Parcelable {
 
-    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
-        @Override
-        public UserInfo createFromParcel(Parcel in) {
-            return new UserInfo(in);
-        }
-
-        @Override
-        public UserInfo[] newArray(int size) {
-            return new UserInfo[size];
-        }
-    };
-
     @SerializedName("_id")
     @Expose
     private String id;
@@ -64,15 +52,6 @@ public class UserInfo implements Parcelable {
     @SerializedName("type")
     @Expose
     private String type;
-
-    public String getCurrent_project_logo() {
-        return current_project_logo;
-    }
-
-    public void setCurrent_project_logo(String current_project_logo) {
-        this.current_project_logo = current_project_logo;
-    }
-
     @SerializedName("current_project_logo")
     @Expose
     private String current_project_logo;
@@ -109,6 +88,26 @@ public class UserInfo implements Parcelable {
     @SerializedName("is_device_matched")
     @Expose
     private int isDeviceMatched;
+
+    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
+        @Override
+        public UserInfo createFromParcel(Parcel in) {
+            return new UserInfo(in);
+        }
+
+        @Override
+        public UserInfo[] newArray(int size) {
+            return new UserInfo[size];
+        }
+    };
+
+    public String getCurrent_project_logo() {
+        return current_project_logo;
+    }
+
+    public void setCurrent_project_logo(String current_project_logo) {
+        this.current_project_logo = current_project_logo;
+    }
 
     @SuppressWarnings("SameReturnValue")
     public static Creator<UserInfo> getCREATOR() {
