@@ -330,18 +330,6 @@ public class Util {
                 (Constants.App.APP_DATA, Context.MODE_PRIVATE);
         String obj = preferences.getString(Constants.Login.USER_OBJ, "{}");
 
-        SharedPreferences.Editor editor;
-
-        editor = Platform.getInstance().getSharedPreferences(
-                "AppData", Context.MODE_PRIVATE).edit();
-        UserInfo info = new Gson().fromJson(obj, UserInfo.class);
-
-        if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
-            editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, info.getCurrent_project_logo());
-
-            editor.apply();
-        }
-
         return new Gson().fromJson(obj, UserInfo.class);
     }
 

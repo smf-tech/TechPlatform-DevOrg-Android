@@ -67,6 +67,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
 public class SplashActivity extends AppCompatActivity {
 
     private RequestOptions requestOptions;
@@ -94,29 +96,22 @@ public class SplashActivity extends AppCompatActivity {
         tv_app_version  = findViewById(R.id.tv_app_version);
         img_logo  =findViewById(R.id.img_logo);
         //img_logo.setImageResource(R.drawable.ic_splash);
-        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
 
-        if (path.equalsIgnoreCase("")){
-            img_logo.setImageResource(R.drawable.ic_splash);
-        }else {
+        if (getUserObjectFromPref() != null) {
 
-
-            /*Log.d("####", "onCreate:size "+getSize(this,Uri.parse(path)));
-            if (Integer.parseInt(getSize(this,Uri.parse(path)))>0) {
-                img_logo.setImageURI(null);
-                img_logo.invalidate();
-                img_logo.setImageURI(Uri.parse(path));
+            if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
+                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+                Glide.with(this)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(getUserObjectFromPref().getCurrent_project_logo())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(img_logo);
             }else {
                 img_logo.setImageResource(R.drawable.ic_splash);
-            }*/
-            requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
-            requestOptions = requestOptions.apply(RequestOptions.noTransformation());
-            Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
-                    .load(path)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img_logo);
-//            Log.d("path",path);
+            }
+        }else {
+            img_logo.setImageResource(R.drawable.ic_splash);
         }
 
 
