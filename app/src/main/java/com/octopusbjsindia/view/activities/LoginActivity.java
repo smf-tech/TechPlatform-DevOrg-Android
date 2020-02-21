@@ -334,8 +334,5 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     public void getdynamicLogo() {
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(this);
-        }
     }
 }

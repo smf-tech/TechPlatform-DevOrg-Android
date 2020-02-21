@@ -88,7 +88,10 @@
                             android:id="@+id/et_machine_code"
                             style="@style/RegistrationEditTextLayout"
                             android:hint="Machine Code"
-                            android:text="jnfvijabbviuwbwviuwv" />
+                            android:text="jnfvijabbviuwbwviuwv"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:longClickable="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout

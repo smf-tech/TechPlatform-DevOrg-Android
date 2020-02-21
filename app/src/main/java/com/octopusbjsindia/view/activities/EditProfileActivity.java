@@ -2151,8 +2151,5 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     public void getdynamicLogo() {
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(this);
-        }
     }
 }

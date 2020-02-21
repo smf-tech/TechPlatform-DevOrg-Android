@@ -72,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
     private RequestOptions requestOptions;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    private final static int SPLASH_TIME_OUT = 2000;
+    private final static int SPLASH_TIME_OUT = 3000;
     private final String TAG = SplashActivity.class.getName();
     PreferenceHelper preferenceHelper;
     private SplashActivityPresenter splashActivityPresenter;
@@ -116,6 +116,7 @@ public class SplashActivity extends AppCompatActivity {
                     .load(path)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(img_logo);
+//            Log.d("path",path);
         }
 
 
