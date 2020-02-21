@@ -33,17 +33,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.login.LoginInfo;
+import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.LoginActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
+
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
@@ -97,19 +101,26 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
             showLanguageSelectionDialog();
         }
 
-        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
 
-        if (path.equalsIgnoreCase("")){
-            img_logo.setImageResource(R.drawable.ic_splash);
+
+
+        if (getUserObjectFromPref() != null) {
+
+            if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
+                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+                Glide.with(this)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(getUserObjectFromPref().getCurrent_project_logo())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(img_logo);
+            }else {
+                img_logo.setImageResource(R.drawable.ic_splash);
+            }
         }else {
-            requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
-            requestOptions = requestOptions.apply(RequestOptions.noTransformation());
-            Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
-                    .load(path)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img_logo);
+            img_logo.setImageResource(R.drawable.ic_splash);
         }
+
     }
 
     @Override
