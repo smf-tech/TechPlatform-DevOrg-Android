@@ -47,9 +47,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
@@ -496,9 +498,19 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_call_us:
                 try {
+                    AppConfigResponseModel obj = new Gson().fromJson(
+                            Util.getStringFromPref(Constants.OperatorModule.APP_CONFIG_RESPONSE),
+                            AppConfigResponseModel.class);
+
                     Intent dial = new Intent();
                     dial.setAction("android.intent.action.DIAL");
-                    dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
+
+                    if(obj!=null && obj.getAppConfigResponse().getAppUpdate().getSupport()!=null){
+                        dial.setData(Uri.parse("tel:" + obj.getAppConfigResponse().getAppUpdate().getSupport()));
+                    } else {
+                        dial.setData(Uri.parse("tel:" + Constants.callUsNumber));
+                    }
+
                     startActivity(dial);
                 } catch (Exception e) {
                     Log.e("Calling Phone", "" + e.getMessage());

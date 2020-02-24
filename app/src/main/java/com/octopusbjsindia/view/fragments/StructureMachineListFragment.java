@@ -314,7 +314,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
         // option in takeMOUAction function, this api call is needed.
-        if (Util.isConnected(getActivity())) {
+        if(isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
                 structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
@@ -322,6 +322,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
         }
+
     }
 
     private void setUserLocation() {
@@ -960,24 +961,34 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
         } else if (view.getId() == R.id.tv_taluka_filter) {
-            if (Util.isConnected(getActivity())) {
-                if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                    isTalukaApiFirstCall = false;
-                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : userDistrictIds,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
-
+                if (machineTalukaList.size() > 0) {
+                    CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Taluka", machineTalukaList, false);
+                    csdTaluka.show();
+                    csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please select District first.",
-                            Snackbar.LENGTH_LONG);
+                    if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                        isTalukaApiFirstCall = false;
+                        structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                        ? selectedDistrictId : userDistrictIds,
+                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select District first.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-            }
         } else if (view.getId() == R.id.tv_district_filter) {
-            if (Util.isConnected(getActivity())) {
+            if(machineDistrictList.size()>0) {
+                CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District", machineDistrictList, false);
+                csdDisttrict.show();
+                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            } else {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
                                     ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
@@ -988,8 +999,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                     "Please update your profile.",
                             Snackbar.LENGTH_LONG);
                 }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {

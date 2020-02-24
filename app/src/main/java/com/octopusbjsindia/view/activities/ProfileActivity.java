@@ -235,12 +235,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             Constants.GET_MODELS = true;
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
-        showDialog(getResources().getString(R.string.alert),
-                "Project switched successfully.",
-                getResources().getString(R.string.ok),
-                "");
-        initViews();
-
+        Util.showToast("Project switched successfully.",this);
+        finish();
+//        showDialog(getResources().getString(R.string.alert),
+//                "Project switched successfully.",
+//                getResources().getString(R.string.ok),
+//                "");
+//        initViews();
 
     }
 

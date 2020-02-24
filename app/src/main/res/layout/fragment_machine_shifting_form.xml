@@ -85,7 +85,7 @@
                             android:id="@+id/et_start_meter_reading"
                             style="@style/RegistrationEditTextLayout"
                             android:hint="@string/start_meter_reading"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:maxLength="7" />
                     </com.google.android.material.textfield.TextInputLayout>
 
