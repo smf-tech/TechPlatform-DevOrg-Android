@@ -29,6 +29,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -38,13 +41,15 @@ import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.presenter.LoginActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
+
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
     SharedPreferences preferences;
+    private RequestOptions requestOptions;
     private final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
@@ -93,13 +98,24 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
             showLanguageSelectionDialog();
         }
 
-        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
-        if (path.equalsIgnoreCase("")){
 
-        }else {
-            img_logo.setImageURI(null);
-            img_logo.setImageURI(Uri.parse(path));
+        if (getUserObjectFromPref() != null) {
+
+            if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
+                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+                Glide.with(this)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(getUserObjectFromPref().getCurrent_project_logo())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(img_logo);
+            } else {
+                img_logo.setImageResource(R.drawable.ic_splash);
+            }
+        } else {
+            img_logo.setImageResource(R.drawable.ic_splash);
         }
+
     }
 
     @Override
@@ -324,8 +340,5 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     public void getdynamicLogo() {
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(this);
-        }
     }
 }

@@ -39,7 +39,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.FileProvider;
@@ -48,9 +47,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,7 +55,6 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
-import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.login.Login;
@@ -361,8 +356,14 @@ public class Util {
 
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
-        Util.saveLoginObjectInPref("");
-        Util.saveUserObjectInPref("");
+//        Util.saveLoginObjectInPref("");
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(Constants.Login.USER_OBJ);
+        editor.remove(Constants.Login.LOGIN_OBJ);
+        editor.apply();
         try {
             Intent startMain = new Intent(activity, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);
@@ -1686,7 +1687,7 @@ public class Util {
 
    //download and save project specific logo
    public static  void downloadAndLoadIcon(Context context){
-       SharedPreferences preferences;
+       /*SharedPreferences preferences;
        SharedPreferences.Editor editor;
        preferences = Platform.getInstance().getSharedPreferences(
                "AppData", Context.MODE_PRIVATE);
@@ -1700,8 +1701,10 @@ public class Util {
 
            UserInfo info = Util.getUserObjectFromPref();
 
-           if (info.getCurrent_project_logo()!=null) {
-               Glide.with(context)
+           if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,info.getCurrent_project_logo());
+               editor.apply();
+               *//*Glide.with(context)
                        .asBitmap()
                        .load(info.getCurrent_project_logo())
                        .into(new SimpleTarget<Bitmap>() {
@@ -1709,9 +1712,12 @@ public class Util {
                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition transition) {
                                String logoPath = saveImage(resource, editor, preferences, context);
                            }
-                       });
+                       });*//*
+           }else {
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,"");
+               editor.apply();
            }
-       }
+       }*/
    }
     private static String saveImage(Bitmap image, SharedPreferences.Editor editor, SharedPreferences preferences, Context context) {
         String currentPhotoPath = null;
@@ -1729,10 +1735,10 @@ public class Util {
             }
             // Add the image to the system gallery
             Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID.concat(".file_provider"), storageDir);
-            editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
+            /*editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
             editor.apply();
 
-            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
+            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");*/
             /*if (path.equalsIgnoreCase("")){
 
             }else {
@@ -1761,7 +1767,7 @@ public class Util {
                 Locale.getDefault()).format(new Date());
         File file;
         file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+                + "IMG_" + "logo" + ".png");
 
         return file;
     }

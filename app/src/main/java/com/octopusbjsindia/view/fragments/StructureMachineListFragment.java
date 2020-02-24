@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -261,47 +260,47 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             }
         }
-        if (viewType == 1) {
-            if (isStructureAdd || isOperatorAdd) {
-                fbSelect.setVisibility(View.VISIBLE);
-            } else {
-                fbSelect.setVisibility(View.GONE);
-            }
-        } else {
-            if (isMachineAdd || isOperatorAdd) {
-                fbSelect.setVisibility(View.VISIBLE);
-            } else {
-                fbSelect.setVisibility(View.INVISIBLE);
-            }
-        }
+//        if (viewType == 1) {
+//            if (isStructureAdd || isOperatorAdd) {
+//                fbSelect.setVisibility(View.VISIBLE);
+//            } else {
+//                fbSelect.setVisibility(View.GONE);
+//            }
+//        } else {
+//            if (isMachineAdd || isOperatorAdd) {
+//                fbSelect.setVisibility(View.VISIBLE);
+//            } else {
+//                fbSelect.setVisibility(View.INVISIBLE);
+//            }
+//        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (dy > 0) {
-                        fbSelect.hide();
-                        fbCreate.hide();
-                        fbCreateOperator.hide();
-                    } else {
-                        fbSelect.show();
-                        if (isOperatorAdd) {
-                            fbCreateOperator.show();
-                        }
-                        if (viewType == 1) {
-                            if (isStructureAdd) {
-                                fbCreate.show();
-                            }
-                        } else {
-                            if (isMachineAdd) {
-                                fbCreate.show();
-                            }
-                        }
-                    }
-                    super.onScrolled(recyclerView, dx, dy);
-                }
-            });
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                @Override
+//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                    if (dy > 0) {
+//                        fbSelect.hide();
+//                        fbCreate.hide();
+//                        fbCreateOperator.hide();
+//                    } else {
+//                        fbSelect.show();
+//                        if (isOperatorAdd) {
+//                            fbCreateOperator.show();
+//                        }
+//                        if (viewType == 1) {
+//                            if (isStructureAdd) {
+//                                fbCreate.show();
+//                            }
+//                        } else {
+//                            if (isMachineAdd) {
+//                                fbCreate.show();
+//                            }
+//                        }
+//                    }
+//                    super.onScrolled(recyclerView, dx, dy);
+//                }
+//            });
+//        }
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -314,7 +313,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
         // option in takeMOUAction function, this api call is needed.
-        if (Util.isConnected(getActivity())) {
+        if (isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
                 structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
@@ -322,6 +321,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
         }
+
     }
 
     private void setUserLocation() {
@@ -708,6 +708,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     @Override
     public void onResume() {
         super.onResume();
+        closeFABMenu();
         if (Util.isConnected(getActivity())) {
             if (viewType == 1) {
                 structureMachineListFragmentPresenter.getStrucuresList(
@@ -958,9 +959,14 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
-        }
-        else if (view.getId() == R.id.tv_taluka_filter) {
-            if (Util.isConnected(getActivity())) {
+        } else if (view.getId() == R.id.tv_taluka_filter) {
+            if (machineTalukaList.size() > 0) {
+                CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Taluka", machineTalukaList, false);
+                csdTaluka.show();
+                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            } else {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     isTalukaApiFirstCall = false;
                     structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
@@ -973,11 +979,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                     .findViewById(android.R.id.content), "Please select District first.",
                             Snackbar.LENGTH_LONG);
                 }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else if (view.getId() == R.id.tv_district_filter) {
-            if (Util.isConnected(getActivity())) {
+            if (machineDistrictList.size() > 0) {
+                CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select District", machineDistrictList, false);
+                csdDisttrict.show();
+                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            } else {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
                                     ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
@@ -988,8 +998,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                     "Please update your profile.",
                             Snackbar.LENGTH_LONG);
                 }
-            } else {
-                Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
             }
         } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
@@ -1036,6 +1044,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 if (isOperatorAdd) {
                     fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                } else {
+                    fbCreateOperator.setVisibility(View.GONE);
+                    fbCreate.setVisibility(View.GONE);
+                    fbSelect.setVisibility(View.GONE);
                 }
             }
         } else {
@@ -1048,6 +1060,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 if (isOperatorAdd) {
                     fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                } else {
+                    fbCreateOperator.setVisibility(View.GONE);
+                    fbCreate.setVisibility(View.GONE);
+                    fbSelect.setVisibility(View.GONE);
                 }
             }
         }
@@ -1059,6 +1075,21 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         fbCreate.animate().translationY(0);
         fbCreateOperator.animate().translationY(0);
         fbSelect.setRotation(0);
+        if (viewType == 1) {
+            if (!isStructureAdd && !isOperatorAdd) {
+
+                fbCreateOperator.setVisibility(View.GONE);
+                fbCreate.setVisibility(View.GONE);
+                fbSelect.setVisibility(View.GONE);
+            }
+        } else {
+            if (!isMachineAdd && !isOperatorAdd) {
+                fbCreateOperator.setVisibility(View.GONE);
+                fbCreate.setVisibility(View.GONE);
+                fbSelect.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override

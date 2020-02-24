@@ -38,6 +38,7 @@
                 android:paddingEnd="@dimen/dimen_10dp"
                 android:text="BJS"
                 android:textColor="@color/black"
+                android:fontFamily="@font/opensans_semibold"
                 android:textSize="@dimen/text_size_12" />
 
             <TextView
@@ -58,6 +59,7 @@
                 android:paddingStart="@dimen/dimen_25dp"
                 android:paddingEnd="@dimen/dimen_10dp"
                 android:text="Sujlam Suflam"
+                android:fontFamily="@font/opensans_semibold"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_12" />
 
@@ -79,6 +81,7 @@
                 android:paddingStart="@dimen/dimen_25dp"
                 android:paddingEnd="@dimen/dimen_10dp"
                 android:text="TC"
+                android:fontFamily="@font/opensans_semibold"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_12" />
 

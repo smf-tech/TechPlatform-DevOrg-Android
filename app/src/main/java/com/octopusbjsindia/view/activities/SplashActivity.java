@@ -2,21 +2,17 @@ package com.octopusbjsindia.view.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.text.Html;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,51 +20,36 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.google.firebase.messaging.RemoteMessage;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
-import com.octopusbjsindia.models.content.Url;
 import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class SplashActivity extends AppCompatActivity {
 
-
+    private RequestOptions requestOptions;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    private final static int SPLASH_TIME_OUT = 2000;
+    private final static int SPLASH_TIME_OUT = 3000;
     private final String TAG = SplashActivity.class.getName();
     PreferenceHelper preferenceHelper;
     private SplashActivityPresenter splashActivityPresenter;
@@ -89,14 +70,25 @@ public class SplashActivity extends AppCompatActivity {
         tv_powered = findViewById(R.id.powered);
         tv_app_version  = findViewById(R.id.tv_app_version);
         img_logo  =findViewById(R.id.img_logo);
-        img_logo.setImageResource(R.drawable.ic_splash);
-        String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");
-        if (path.equalsIgnoreCase("")){
-            img_logo.setImageResource(R.drawable.ic_splash);
+        //img_logo.setImageResource(R.drawable.ic_splash);
+
+        if (getUserObjectFromPref() != null) {
+
+            if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
+                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+                Glide.with(this)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(getUserObjectFromPref().getCurrent_project_logo())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(img_logo);
+            } else {
+                img_logo.setImageResource(R.drawable.ic_splash);
+            }
         }else {
-            //img_logo.setImageURI(null);
-            img_logo.setImageURI(Uri.parse(path));
+            img_logo.setImageResource(R.drawable.ic_splash);
         }
+
 
         toOpen = getIntent().getStringExtra("toOpen");
         if(toOpen != null){
@@ -135,6 +127,25 @@ public class SplashActivity extends AppCompatActivity {
         }
 //        splashActivityPresenter.getAppConfig("");
 
+    }
+
+    public String getSize(Context context, Uri uri) {
+        String fileSize = null;
+        Cursor cursor = context.getContentResolver()
+                .query(uri, null, null, null, null, null);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+
+                // get file size
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                if (!cursor.isNull(sizeIndex)) {
+                    fileSize = cursor.getString(sizeIndex);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return fileSize;
     }
 
     public void checkForceUpdate(String requestID, String message, int code) {
@@ -254,9 +265,11 @@ public class SplashActivity extends AppCompatActivity {
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref() == null ||
                         Util.getLoginObjectFromPref().getLoginData() == null ||
+                        Util.getUserObjectFromPref() == null ||
                         TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())||TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
+                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId()) ||
+                        TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {

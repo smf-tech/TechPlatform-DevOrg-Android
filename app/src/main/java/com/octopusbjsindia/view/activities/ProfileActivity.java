@@ -32,7 +32,6 @@ import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MultyProjectAdapter;
 
@@ -168,7 +167,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.toolbar_edit_action) {
             if (Util.isConnected(this)) {
-                showEditProfileScreen();
+                if (Util.isConnected(this)) {
+                    presenter.getUserProfile();
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+
             } else {
                 Util.showToast(getString(R.string.msg_no_network), this);
             }
@@ -179,17 +183,17 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-
+        showEditProfileScreen();
     }
 
     @Override
@@ -230,14 +234,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             Constants.GET_MODELS = true;
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
-        showDialog(getResources().getString(R.string.alert),
-                "Project switched successfully...",
-                getResources().getString(R.string.ok),
-                "");
-        initViews();
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(this);
-        }
+        Util.showToast("Project switched successfully.", this);
+        finish();
+//        showDialog(getResources().getString(R.string.alert),
+//                "Project switched successfully.",
+//                getResources().getString(R.string.ok),
+//                "");
+//        initViews();
 
     }
 
@@ -264,6 +267,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             button.setText(btn1String);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
+                finish();
                 dialog.dismiss();
             });
         }
@@ -274,6 +278,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 //Close dialog
+                finish();
                 dialog.dismiss();
             });
         }

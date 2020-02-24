@@ -133,6 +133,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private final String TAG = EditProfileActivity.class.getName();
     private String currentPhotoPath = "";
     private String multiLocationLevel = "";
+    private String jurisdictionId = "";
     private boolean isRoleSelected;
 
     private RecyclerView rvOrg;
@@ -280,11 +281,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         && getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
-                    setEditModeUserData();
+
                     if (Util.isConnected(this)) {
-                        profilePresenter.getUserProfile();
                         profilePresenter.getOrganizations();
                     }
+                    setEditModeUserData();
                 }
             }
         } else {
@@ -368,6 +369,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserProject.setText(selectedProjectName);
 
         multiLocationLevel = userInfo.getMultipleLocationLevel().getName();
+        jurisdictionId = userInfo.getJurisdictionTypeId();
         OrganizationRole role = new OrganizationRole();
         role.setId(userInfo.getRoleIds());
         role.setDisplayName(userInfo.getRoleNames());
@@ -618,7 +620,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     if (selectedProjects != null && selectedProjects.size() > 0 &&
                             !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
                         profilePresenter.getProfileLocationData("",
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.COUNTRY_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -661,7 +663,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                         profilePresenter.getProfileLocationData(selectedCountryIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -669,7 +671,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             Toast.makeText(this, getString(R.string.msg_select_country), Toast.LENGTH_LONG).show();
                         } else {
                             profilePresenter.getProfileLocationData("",
-                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    jurisdictionId,
                                     Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
                         }
@@ -711,7 +713,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                         profilePresenter.getProfileLocationData(selectedStateIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -754,7 +756,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                         profilePresenter.getProfileLocationData(selectedStateIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -798,7 +800,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 }
                             }
                             profilePresenter.getProfileLocationData(selectedCityIds,
-                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    jurisdictionId,
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
                         } else {
@@ -817,7 +819,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 }
                             }
                             profilePresenter.getProfileLocationData(selectedDistrictIds,
-                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    jurisdictionId,
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
                         } else {
@@ -862,7 +864,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 }
                             }
                             profilePresenter.getProfileLocationData(selectedClusterIds,
-                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    jurisdictionId,
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
                         } else {
@@ -881,7 +883,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 }
                             }
                             profilePresenter.getProfileLocationData(selectedTalukaIds,
-                                    selectedRole.getProject().getJurisdictionTypeId(),
+                                    jurisdictionId,
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
                                     selectedProjects.get(0).getId(), selectedRole.getId());
                         } else {
@@ -925,7 +927,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                         profilePresenter.getProfileLocationData(selectedTalukaIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -968,7 +970,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             }
                         }
                         profilePresenter.getProfileLocationData(selectedVillageIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
@@ -1347,7 +1349,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showPictureDialog();
+//                showPictureDialog();
             }
         }
     }
@@ -1432,9 +1434,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         Util.removeDatabaseRecords(false);
         Util.setSubmittedFormsLoaded(false);
 
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(EditProfileActivity.this);
-        }
+//        if (Permissions.isCameraPermissionGranted(this, this)) {
+//            Util.downloadAndLoadIcon(EditProfileActivity.this);
+//        }
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
@@ -1822,6 +1824,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     selectedRole = roles.get(selectedPosition);
                     selectedRoles.add(selectedRole.getId());
                     isRoleSelected = true;
+                    jurisdictionId = selectedRole.getProject().getJurisdictionTypeId();
                 }
             }
             if (selectedRole.getProject() != null) {
@@ -1891,7 +1894,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (Util.isConnected(this)) {
                     if (etUserState.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedCountryIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -1945,7 +1948,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (etUserCity.getVisibility() == View.VISIBLE) {
                     if (Util.isConnected(this)) {
                         profilePresenter.getProfileLocationData(selectedStateIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -1953,7 +1956,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (etUserDistrict.getVisibility() == View.VISIBLE) {
                     if (Util.isConnected(this)) {
                         profilePresenter.getProfileLocationData(selectedStateIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -2002,7 +2005,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             if (Util.isConnected(this)) {
                 if (etUserTaluka.getVisibility() == View.VISIBLE) {
                     profilePresenter.getProfileLocationData(selectedCityIds,
-                            selectedRole.getProject().getJurisdictionTypeId(),
+                            jurisdictionId,
                             Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
                             selectedProjects.get(0).getId(), selectedRole.getId());
                 }
@@ -2050,7 +2053,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             if (Util.isConnected(this)) {
                 if (etUserTaluka.getVisibility() == View.VISIBLE) {
                     profilePresenter.getProfileLocationData(selectedDistrictIds,
-                            selectedRole.getProject().getJurisdictionTypeId(),
+                            jurisdictionId,
                             Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
                             selectedProjects.get(0).getId(), selectedRole.getId());
                 }
@@ -2094,12 +2097,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (Util.isConnected(this)) {
                     if (etUserCluster.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedTalukaIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else if (etUserVillage.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedTalukaIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -2141,7 +2144,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (Util.isConnected(this)) {
                     if (etUserVillage.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedClusterIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -2180,7 +2183,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (Util.isConnected(this)) {
                     if (etUserSchool.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedVillageIds,
-                                selectedRole.getProject().getJurisdictionTypeId(),
+                                jurisdictionId,
                                 Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
@@ -2215,9 +2218,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     public void getdynamicLogo() {
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-            Util.downloadAndLoadIcon(this);
-        }
     }
 
 

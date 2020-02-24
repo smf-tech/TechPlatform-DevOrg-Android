@@ -222,7 +222,7 @@ public class Constants {
         public static final String MATRIX_DYNAMIC = "matrixdynamic";
     }
 
-    public static final String callUsNumber = "+9120-660-50122";
+    public static final String callUsNumber = "+9120-660-50154";
     // public static final String hangoutLink = "https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2";
     public static final String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 

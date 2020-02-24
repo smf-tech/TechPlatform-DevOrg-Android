@@ -258,7 +258,7 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
                 mCurrentLocation = locationResult.getLastLocation();
                 TextView dlgTitle = dialog.findViewById(R.id.tv_dialog_title);
                 dlgTitle.setText("Location Accuracy = " + mCurrentLocation.getAccuracy());
-                if (mCurrentLocation.getAccuracy() < 25) {
+                if (mCurrentLocation.getAccuracy() < 40) {
                     stopLocationUpdates();
                     dialog.dismiss();
                     if (isCheckOut) {
