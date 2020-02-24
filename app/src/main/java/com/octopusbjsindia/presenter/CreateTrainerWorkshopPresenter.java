@@ -9,7 +9,6 @@ import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
 import com.octopusbjsindia.request.APIRequestCall;
-import com.octopusbjsindia.request.MachineWorkingDataListRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.CreateTrainerWorkshop;
@@ -21,20 +20,19 @@ import java.util.HashMap;
 
 public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
 
-    final String STRUCTURE_MASTER = "structureMasterData";
-    final String CREATE_STRUCTURE = "createStructure";
-    final String GET_DISTRICT = "getDistrict";
-    final String GET_TALUKA = "getTaluka";
-    final String GET_STATE = "getState";
-    final String GET_CATEGORY = "getCategory";
-    final String CREATE_BATCH = "createBatch";
-
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
+    final String STRUCTURE_MASTER = "structureMasterData";
+    final String CREATE_STRUCTURE = "createStructure";
+    private final String GET_DISTRICT = "getDistrict";
+    private final String GET_TALUKA = "getTaluka";
+    private final String GET_STATE = "getState";
+    private final String GET_CATEGORY = "getCategory";
+    private final String CREATE_BATCH = "createBatch";
     private final String TAG = CreateStructureActivityPresenter.class.getName();
 
-    private WeakReference<CreateTrainerWorkshop> mContext;
+    private final WeakReference<CreateTrainerWorkshop> mContext;
 
     public CreateTrainerWorkshopPresenter(CreateTrainerWorkshop mContext) {
         this.mContext = new WeakReference<>(mContext);
@@ -61,7 +59,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(GET_DISTRICT) ||
                         requestID.equalsIgnoreCase(GET_TALUKA) ||
-                        requestID.equalsIgnoreCase(GET_STATE)){
+                        requestID.equalsIgnoreCase(GET_STATE)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
 
@@ -79,38 +77,38 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
                                     Constants.JurisdictionLevelName.STATE_LEVEL);
                         }
                     }
-                }else  if (requestID.equalsIgnoreCase(GET_CATEGORY)) {
+                } else if (requestID.equalsIgnoreCase(GET_CATEGORY)) {
                     SmartGirlCategoryResponseModel jurisdictionLevelResponse
                             = new Gson().fromJson(response, SmartGirlCategoryResponseModel.class);
                     mContext.get().showReceivedCategories(jurisdictionLevelResponse);
                 }
             }
 
-        }catch (Exception e){
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
     //get Locations
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
-        HashMap<String,String> map=new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put(KEY_SELECTED_ID, selectedLocationId);
         map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
         map.put(KEY_LEVEL, levelName);
 
-       // mContext.get().showProgressBar();
+        // mContext.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_LOCATION_DATA);
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         //mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
             requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
-        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
             requestCall.postDataApiCall(GET_TALUKA, new JSONObject(map).toString(), getLocationUrl);
-        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
             requestCall.postDataApiCall(GET_STATE, new JSONObject(map).toString(), getLocationUrl);
         }
     }
@@ -125,6 +123,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_CATEGORY, getRoleAccessUrl);
     }
+
     public void createBatch(String requestJson) {
         final String createBatchUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SmartGirl.CREATE_BATCH_API);
@@ -132,7 +131,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
         //homeFragment.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(CREATE_BATCH,requestJson ,createBatchUrl);
+        requestCall.postDataApiCall(CREATE_BATCH, requestJson, createBatchUrl);
     }
 
 
