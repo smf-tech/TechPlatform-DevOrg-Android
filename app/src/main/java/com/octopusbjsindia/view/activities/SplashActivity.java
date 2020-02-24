@@ -290,9 +290,11 @@ public class SplashActivity extends AppCompatActivity {
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref() == null ||
                         Util.getLoginObjectFromPref().getLoginData() == null ||
+                        Util.getUserObjectFromPref() == null ||
                         TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())||TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
+                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())||
+                        TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {

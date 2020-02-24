@@ -361,8 +361,14 @@ public class Util {
 
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
-        Util.saveLoginObjectInPref("");
-        Util.saveUserObjectInPref("");
+//        Util.saveLoginObjectInPref("");
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(Constants.Login.USER_OBJ);
+        editor.remove(Constants.Login.LOGIN_OBJ);
+        editor.apply();
         try {
             Intent startMain = new Intent(activity, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);
