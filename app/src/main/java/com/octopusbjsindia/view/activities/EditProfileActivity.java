@@ -230,12 +230,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                if (cs.toString().length() > 0) {
-                    if ((!selectedProjectName.equals(cs.toString()))) {
-                        filterProject(cs.toString());
+                if (selectedOrg != null && selectedOrgName.length() > 0) {
+                    if (cs.toString().length() > 0) {
+                        if ((!selectedProjectName.equals(cs.toString()))) {
+                            filterProject(cs.toString());
+                        }
+                    } else {
+                        rvProject.setVisibility(View.GONE);
                     }
                 } else {
-                    rvProject.setVisibility(View.GONE);
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select organization.",
+                            Snackbar.LENGTH_LONG);
                 }
             }
 
@@ -562,31 +568,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
                 break;
-            case R.id.etUserOrganization:
-//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(this, this, "Select Organization",
-//                        selectionOrgList, false);
-//                cdd.show();
-//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT);
-
-                break;
-            case R.id.etUserProject:
-//                if (selectionProjectList.size() > 0) {
-////                    CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Project",
-////                            selectionProjectList, false);
-////                    cddProject.show();
-////                    cddProject.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-////                            ViewGroup.LayoutParams.MATCH_PARENT);
-//                } else {
-//                    if (selectedOrg != null && !TextUtils.isEmpty(selectedOrg.getId())) {
-//                        profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-//                    } else {
-//                        Toast.makeText(this, getString(R.string.msg_select_org), Toast.LENGTH_LONG).show();
-//                    }
-//                }
-                break;
             case R.id.etUserRole:
-                if (etUserProject.getText().toString().length() > 0) {
+                if (selectedOrg != null && selectedProjects.size() > 0 && etUserProject.getText().toString().length() > 0) {
                     if (selectionRolesList.size() > 0) {
                         CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Role",
                                 selectionRolesList, false);
@@ -602,12 +585,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                             Toast.makeText(this, getString(R.string.msg_select_project), Toast.LENGTH_LONG).show();
                         }
                     }
-                    break;
                 } else {
                     Util.snackBarToShowMsg(getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Please select project.",
                             Snackbar.LENGTH_LONG);
                 }
+                break;
             case R.id.etUserCountry:
                 if (customSpinnerCountries.size() > 0) {
                     //String level = "";
@@ -1693,19 +1676,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     public void onOrgSelection(int selectedPosition) {
         rvOrg.setVisibility(View.GONE);
         selectedOrgName = "";
-//        for (CustomSpinnerObject customSpinnerObject : selectionOrgList) {
-//            selectedOrgName = customSpinnerObject.getName();
-//            selectedPosition = selectionOrgList.indexOf(customSpinnerObject);
-//            break;
-//        }
         selectedOrgName = filterOrgList.get(selectedPosition).getName();
         etUserOrganization.setText(selectedOrgName);
         // clear other dependent fields
         hideJurisdictionLevel();
         selectedProjects.clear();
+        selectedProjectName = "";
+        etUserProject.setText("");
         selectionProjectList.clear();
         etUserProject.setText("");
         selectedRoles.clear();
+        selectedRole = null;
+        isRoleSelected = false;
         selectionRolesList.clear();
         etUserRole.setText("");
         selectedCountries.clear();
@@ -1747,17 +1729,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     public void onProjectSelection(int selectedPosition) {
         rvProject.setVisibility(View.GONE);
         selectedProjectName = "";
-//        for (CustomSpinnerObject customSpinnerObject : selectionProjectList) {
-//                selectedProjectName = customSpinnerObject.getName();
-//                selectedPosition = selectionProjectList.indexOf(customSpinnerObject);
-//                break;
-//        }
         selectedProjectName = filterProjectList.get(selectedPosition).getName();
-
         etUserProject.setText(selectedProjectName);
         // clear other dependent fields
         hideJurisdictionLevel();
         selectedRoles.clear();
+        selectedRole = null;
+        isRoleSelected = false;
         selectionRolesList.clear();
         etUserRole.setText("");
         selectedCountries.clear();
@@ -1801,115 +1779,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-//        if (type.equals("Select Organization")) {
-//            int selectedPosition = -1;
-//            String selectedOrgName = "";
-//            for (CustomSpinnerObject customSpinnerObject : selectionOrgList) {
-//                if (customSpinnerObject.isSelected()) {
-//                    selectedOrgName = customSpinnerObject.getName();
-//                    selectedPosition = selectionOrgList.indexOf(customSpinnerObject);
-//                    break;
-//                }
-//            }
-//            etUserOrganization.setText(selectedOrgName);
-//            // clear other dependent fields
-//            hideJurisdictionLevel();
-//            selectedProjects.clear();
-//            selectionProjectList.clear();
-//            etUserProject.setText("");
-//            selectedRoles.clear();
-//            selectionRolesList.clear();
-//            etUserRole.setText("");
-//            selectedCountries.clear();
-//            customSpinnerCountries.clear();
-//            etUserCountry.setText("");
-//            selectedStates.clear();
-//            customSpinnerStates.clear();
-//            etUserState.setText("");
-//            selectedDistricts.clear();
-//            customSpinnerDistricts.clear();
-//            etUserDistrict.setText("");
-//            selectedCities.clear();
-//            customSpinnerCities.clear();
-//            etUserCity.setText("");
-//            selectedClusters.clear();
-//            customSpinnerClusters.clear();
-//            etUserCluster.setText("");
-//            selectedTalukas.clear();
-//            customSpinnerTalukas.clear();
-//            etUserTaluka.setText("");
-//            selectedVillages.clear();
-//            customSpinnerVillages.clear();
-//            etUserVillage.setText("");
-//            selectedSchools.clear();
-//            customSpinnerSchools.clear();
-//            etUserSchool.setText("");
-//
-//            if (Util.isConnected(this)) {
-//                if (organizations != null && !organizations.isEmpty() && organizations.get(selectedPosition) != null
-//                        && !TextUtils.isEmpty(organizations.get(selectedPosition).getId())) {
-//                    this.selectedOrg = organizations.get(selectedPosition);
-//                    profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-//                }
-//            }
-//        } else
-//            if (type.equals("Select Project")) {
-//            int selectedPosition = -1;
-//            String selectedProjectName = "";//, selectedOrgId;
-//            for (CustomSpinnerObject customSpinnerObject : selectionProjectList) {
-//                if (customSpinnerObject.isSelected()) {
-//                    selectedProjectName = customSpinnerObject.getName();
-//                    selectedPosition = selectionProjectList.indexOf(customSpinnerObject);
-//                    break;
-//                }
-//            }
-//            etUserProject.setText(selectedProjectName);
-//            // clear other dependent fields
-//            hideJurisdictionLevel();
-//            selectedRoles.clear();
-//            selectionRolesList.clear();
-//            etUserRole.setText("");
-//            selectedCountries.clear();
-//            customSpinnerCountries.clear();
-//            etUserCountry.setText("");
-//            selectedStates.clear();
-//            customSpinnerStates.clear();
-//            etUserState.setText("");
-//            selectedDistricts.clear();
-//            customSpinnerDistricts.clear();
-//            etUserDistrict.setText("");
-//            selectedCities.clear();
-//            customSpinnerCities.clear();
-//            etUserCity.setText("");
-//            selectedClusters.clear();
-//            customSpinnerClusters.clear();
-//            etUserCluster.setText("");
-//            selectedTalukas.clear();
-//            customSpinnerTalukas.clear();
-//            etUserTaluka.setText("");
-//            selectedVillages.clear();
-//            customSpinnerVillages.clear();
-//            etUserVillage.setText("");
-//            selectedSchools.clear();
-//            customSpinnerSchools.clear();
-//            etUserSchool.setText("");
-//            // clear other dependent fields
-//            if (Util.isConnected(this)) {
-//                selectedProjects.clear();
-//                if (projects != null && !projects.isEmpty() && projects.get(selectedPosition) != null
-//                        && !TextUtils.isEmpty(projects.get(selectedPosition).getId())) {
-//                    JurisdictionType project = new JurisdictionType();
-//                    project.setId(projects.get(selectedPosition).getId());
-//                    project.setName(projects.get(selectedPosition).getOrgProjectName());
-//                    selectedProjects.add(project);
-//                    profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
-//                            projects.get(selectedPosition).getId());
-//                }
-//            }
-//        } else
         if (type.equals("Select Role")) {
             int selectedPosition = -1;
-            String selectedRoleName = "";//, selectedOrgId;
+            String selectedRoleName = "";
             for (CustomSpinnerObject customSpinnerObject : selectionRolesList) {
                 if (customSpinnerObject.isSelected()) {
                     selectedRoleName = customSpinnerObject.getName();
@@ -2352,22 +2224,22 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private void filterOrg(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
 
-        if (filterOrgList != null) {
             filterOrgList.clear();
             for (CustomSpinnerObject org : selectionOrgList) {
                 if (org.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
                     filterOrgList.add(org);
                 }
             }
-            if (selectionOrgList.size() != 0 && filterOrgList.size() == 0) {
+        if (selectionOrgList.size() > 0 && filterOrgList.size() == 0) {
                 Util.snackBarToShowMsg(getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "No organization found with given text.",
                         Snackbar.LENGTH_LONG);
-                etUserOrganization.setText(selectedOrgName);
+            selectedOrg = null;
+            selectedOrgName = "";
+            selectionProjectList.clear();
             }
             rvOrg.setVisibility(View.VISIBLE);
             orgDropDownAdapter.notifyDataSetChanged();
-        }
     }
 
     private void filterProject(String searchText) {
@@ -2381,11 +2253,14 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         filterProjectList.add(project);
                     }
                 }
-                if (selectionProjectList.size() != 0 && filterProjectList.size() == 0) {
+                if (selectionProjectList.size() > 0 && filterProjectList.size() == 0) {
                     Util.snackBarToShowMsg(getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "No project found with given text.",
                             Snackbar.LENGTH_LONG);
                     etUserProject.setText("");
+                    selectedRoles.clear();
+                    selectedRole = null;
+                    isRoleSelected = false;
                 }
                 rvProject.setVisibility(View.VISIBLE);
                 projectDropDownAdapter.notifyDataSetChanged();
