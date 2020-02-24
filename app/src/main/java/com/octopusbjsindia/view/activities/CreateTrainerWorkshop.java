@@ -3,7 +3,6 @@ package com.octopusbjsindia.view.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -17,17 +16,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
 import com.octopusbjsindia.presenter.CreateTrainerWorkshopPresenter;
-import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
@@ -45,7 +40,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     final String GET_CATEGORY = "getCategory";
     //------
     public EditText tv_startdate, tv_enddate;
-    public EditText et_select_program,et_workshop_category,et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional,et_total_beneficiaries;
+    public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries;
     public CreateTrainerWorkshopPresenter presenter;
     //----declaration
     private RelativeLayout progressBar;
@@ -54,6 +49,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> categoryList = new ArrayList<>();
     private String selectedDistrictId, selectedDistrict, selectedStateId, selectedState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +68,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         tv_startdate.setText(Util.getCurrentDate());
         tv_enddate.setText(Util.getCurrentDate());
         et_total_beneficiaries = findViewById(R.id.et_total_beneficiaries);
-        et_select_program  = findViewById(R.id.et_select_program);
+        et_select_program = findViewById(R.id.et_select_program);
 
         et_workshop_category = findViewById(R.id.et_workshop_category);
         et_select_state = findViewById(R.id.et_select_state);
@@ -268,14 +264,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 break;
 
 
-
         }
     }
 
-    public void showReceivedCategories(SmartGirlCategoryResponseModel jurisdictionLevelResponse)
-    {
+    public void showReceivedCategories(SmartGirlCategoryResponseModel jurisdictionLevelResponse) {
         for (int i = 0; i < jurisdictionLevelResponse.getData().size(); i++) {
-           // categoryList.add(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
+            // categoryList.add(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
             meetCountry.set_id(jurisdictionLevelResponse.getData().get(i).get_id());
             meetCountry.setName(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
@@ -362,7 +356,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         requestCall.getDataApiCall(GET_CATEGORY, getRoleAccessUrl);
     }*/
 
-    public void createBatch(){
+    public void createBatch() {
         String paramjson = new Gson().toJson(getCreateBatchReqJson());
         //presenter.createBatch(paramjson);
         presenter.createBatch(paramjson);
@@ -373,7 +367,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("machineId", "");
-        requestObject.addProperty("workDate","");
+        requestObject.addProperty("workDate", "");
 
         return requestObject;
     }
