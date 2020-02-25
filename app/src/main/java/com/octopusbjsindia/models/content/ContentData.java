@@ -1,24 +1,45 @@
 package com.octopusbjsindia.models.content;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class ContentData {
 
+    @PrimaryKey
+    @ColumnInfo(name = "contentId")
+    @NonNull
     @SerializedName("_id")
     @Expose
     private String id;
+    @ColumnInfo(name = "category_id")
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+    @ColumnInfo(name = "category_name")
+    @SerializedName("category_name")
+    @Expose
+    private String categoryName;
+    @ColumnInfo(name = "file_type")
     @SerializedName("file_type")
     @Expose
     private String fileType;
+    @ColumnInfo(name = "file_size")
     @SerializedName("file_size")
     @Expose
     private String fileSize;
+    @ColumnInfo(name = "languageDetailsString")
+    @Expose
+    private String languageDetailsString;
+    @Ignore
     @SerializedName("language_details")
     @Expose
     private List<LanguageDetail> languageDetails = null;
@@ -37,6 +58,14 @@ public class ContentData {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getFileType() {
@@ -61,6 +90,14 @@ public class ContentData {
 
     public void setLanguageDetails(List<LanguageDetail> languageDetails) {
         this.languageDetails = languageDetails;
+    }
+
+    public String getLanguageDetailsString() {
+        return languageDetailsString;
+    }
+
+    public void setLanguageDetailsString(String languageDetailsString) {
+        this.languageDetailsString = languageDetailsString;
     }
 
 }

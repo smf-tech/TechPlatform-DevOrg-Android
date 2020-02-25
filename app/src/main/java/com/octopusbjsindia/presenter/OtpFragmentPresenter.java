@@ -67,15 +67,8 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
                 Util.saveLoginObjectInPref(response);
                 if (login.getCode() == 200) {
                     Util.saveIsDeviceMatchInPref("Matched");
-//                    UserInfo userInfo = Util.getUserObjectFromPref();
-//                    userInfo.setIsDeviceMatched(1);
-//                    Util.saveUserObjectInPref(new Gson().toJson(userInfo));
                 } else {
                     Util.saveIsDeviceMatchInPref("MisMatched");
-//                    UserInfo userInfo = Util.getUserObjectFromPref();
-//                    userInfo.setIsDeviceMatched(0);
-//                    Util.saveUserObjectInPref(new Gson().toJson(userInfo));
-                    //Util.getUserObjectFromPref().setIsDeviceMatched(0);
                 }
             } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
                 otpFragment.get().deRegisterOtpSmsReceiver();

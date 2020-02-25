@@ -9,6 +9,7 @@ import com.octopusbjsindia.models.content.ContentAPIResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 
 import java.lang.ref.WeakReference;
@@ -29,7 +30,8 @@ public class ContentFragmentPresenter implements APIPresenterListener {
 
     public void getContentData() {
         final String getContentUrl = BuildConfig.BASE_URL
-                + String.format(Urls.ContentManagement.GET_CONTENT_DATA);
+                + String.format(Urls.ContentManagement.GET_CONTENT_DATA, Util.getLocaleLanguageCode());
+
         Log.d(TAG, "getContentUrl: url" + getContentUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();

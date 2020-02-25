@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.core.content.FileProvider;
 
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.DownloadContent;
 import com.octopusbjsindia.models.content.DownloadInfo;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
@@ -37,7 +38,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<DownloadContent>> _listDataChild;
+    private HashMap<String, List<ContentData>> _listDataChild;
     public ContentManagementFragment contentManagementFragment;
     Handler handler = new Handler();
     View convertView;
@@ -49,7 +50,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     boolean isDownloading;
 
     public ExpandableListAdapter(ContentManagementFragment context, List<String> listDataHeader,
-                                 HashMap<String, List<DownloadContent>> listChildData, Context _context) {
+                                 HashMap<String, List<ContentData>> listChildData, Context _context) {
         this.contentManagementFragment = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -76,8 +77,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         position = childPosition;
         urlListl = new ArrayList<>();
 
-        final DownloadContent downloadContent = (DownloadContent) getChild(groupPosition, childPosition);
-        final DownloadInfo info = downloadContent.getInfo();
+        final ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
+        //final DownloadInfo info = downloadContent.getInfo();
 
         ViewHolder holder;
 
@@ -103,38 +104,38 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtpercentage = convertView.findViewById(R.id.txtCount);
         progressBar = convertView.findViewById(R.id.progress_bar);
 
-        txttitle.setText(downloadContent.getName());
-        progressBar.setProgress(info.getProgress());
-        progressBar.setMax(100);
-        info.setProgressBar(progressBar);
+        txttitle.setText(contentData.getCategoryId());
+//        progressBar.setProgress(info.getProgress());
+//        progressBar.setMax(100);
+//        info.setProgressBar(progressBar);
 
-        if (isFileAvailable(downloadContent)) {
-            imgDownload.setVisibility(View.GONE);
-            imgShare.setVisibility(View.VISIBLE);
-        } else {
-            imgDownload.setVisibility(View.VISIBLE);
-            imgShare.setVisibility(View.GONE);
-        }
+//        if (isFileAvailable(downloadContent)) {
+//            imgDownload.setVisibility(View.GONE);
+//            imgShare.setVisibility(View.VISIBLE);
+//        } else {
+//            imgDownload.setVisibility(View.VISIBLE);
+//            imgShare.setVisibility(View.GONE);
+//        }
 
         imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                urlListl.add(downloadContent.getDef());
-                contentManagementFragment.beginDownload(downloadContent.getDef());
-                DownloadImageTask downloadImageTask = new DownloadImageTask(info);
-                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, downloadContent.getDef());
+//                urlListl.add(downloadContent.getDef());
+//                contentManagementFragment.beginDownload(downloadContent.getDef());
+//                DownloadImageTask downloadImageTask = new DownloadImageTask(info);
+//                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, downloadContent.getDef());
             }
         });
 
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
-                Uri uri = Uri.parse(downloadContent.getDef());
-                File file = new File(uri.getPath());
-                String fileName = file.getName();
-                File filePath = new File(storagePath + "/" + fileName);
-                openFile(contentManagementFragment, filePath);
+//                String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
+//                Uri uri = Uri.parse(downloadContent.getDef());
+//                File file = new File(uri.getPath());
+//                String fileName = file.getName();
+//                File filePath = new File(storagePath + "/" + fileName);
+//                openFile(contentManagementFragment, filePath);
             }
         });
         return convertView;

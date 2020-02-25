@@ -5,7 +5,6 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,18 +28,25 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.ExpandableListAdapter;
+import com.octopusbjsindia.dao.ContentDataDao;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.content.ContentData;
-import com.octopusbjsindia.models.content.ContentDatum;
 import com.octopusbjsindia.models.content.Datum;
 import com.octopusbjsindia.models.content.Datum_;
 import com.octopusbjsindia.models.content.DownloadContent;
 import com.octopusbjsindia.models.content.DownloadInfo;
+import com.octopusbjsindia.models.content.LanguageDetail;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
 import com.octopusbjsindia.services.ShowTimerService;
 import com.octopusbjsindia.utility.AppEvents;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
@@ -62,14 +68,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private List<DownloadContent> listDownloadContent;
-    private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
+    private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
     private TextView txt_noData;
     private File f;
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private List<Datum> contentList;
-    private List<ContentDatum> contentDataList;
+    //private List<ContentDatum> contentDataList;
     private List<Datum_> contentCategoryList;
     private DownloadContent downloadContent;
     private ExpandableListAdapter expandableListAdapter;
@@ -88,6 +94,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private Activity activity;
     private PreferenceHelper preferenceHelper;
     private ContentFragmentPresenter contentFragmentPresenter;
+    private ArrayList<ContentData> contentDataList = new ArrayList<>();
+    ContentDataDao contentDataDao;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -109,7 +117,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             }
         }
         AppEvents.trackAppEvent(getString(R.string.event_content_screen_visit));
-        getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        //getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
@@ -132,9 +140,44 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
         txt_noData = contentFragmentview.findViewById(R.id.textNoData);
+        contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         //btn_floating_download = contentFragmentview.findViewById(R.id.btn_floating_content);
         expListView = contentFragmentview.findViewById(R.id.lvExp);
-        prepareListData();
+        expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
+                listDataHeader, listDataChild, getContext());
+        expListView.setAdapter(expandableListAdapter);
+
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                //expandableListAdapter.notifyDataSetChanged();
+                return false;
+
+            }
+        });
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int i) {
+
+            }
+        });
+
+        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+            }
+        });
+
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                ContentData dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                return false;
+            }
+        });
 //        btn_floating_download.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -168,43 +211,13 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         } else {
             txt_noData.setVisibility(View.VISIBLE);
         }
-        Log.i(TAG, "Res" + listDataChild);
-
-        expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this, listDataHeader, listDataChild, getContext());
-        expListView.setAdapter(expandableListAdapter);
-
-
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                //expandableListAdapter.notifyDataSetChanged();
-                return false;
-
-            }
-        });
-
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int i) {
-
-            }
-        });
-
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
-        });
-
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                DownloadContent dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
-                return false;
-            }
-        });
+        List<String> categoryNames = contentDataDao.getDistinctCategories();
+        listDataHeader.addAll(categoryNames);
+        for (String categoryName : listDataHeader) {
+            listDataChild.put(categoryName, contentDataDao.getCategoryContent(
+                    categoryName));
+        }
+        expandableListAdapter.notifyDataSetChanged();
     }
 
     public boolean beginDownload(String url) {
@@ -248,14 +261,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         return isRunning;
     }
 
-    private void prepareListData() {
-        // fill header and child list
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void prepareListData() {
+//        // fill header and child list
+//        if (listDataHeader.size() > 0) {
+//            txt_noData.setVisibility(View.GONE);
+//        } else {
+//            txt_noData.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     @Override
     public void onDetach() {
@@ -283,7 +296,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(onDownloadComplete);
+        //getActivity().unregisterReceiver(onDownloadComplete);
     }
 
 
@@ -303,12 +316,34 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     public void saveContentData(List<ContentData> contentDataList) {
-
-
-//        listDataHeader.clear();
-//        for (ContentData contentData: contentDataList) {
-//            listDataHeader.add(contentData.getCategory());
-//        }
+        this.contentDataList.clear();
+        this.contentDataList.addAll(contentDataList);
+        contentDataDao.deleteContentData();
+        boolean isLocalAvailable;
+        for (ContentData contentData : contentDataList) {
+            Gson gson = new GsonBuilder().create();
+            JsonArray languageDetailsArray = gson.toJsonTree(contentData.getLanguageDetails()).getAsJsonArray();
+            contentData.setLanguageDetailsString(languageDetailsArray.toString());
+            contentDataDao.insert(contentData);
+            isLocalAvailable = false;
+            LanguageDetail defaultLanguageDetail = new LanguageDetail();
+            for (int i = 0; i < contentData.getLanguageDetails().size(); i++) {
+                if (contentData.getLanguageDetails().
+                        get(i).getLanguageId().equalsIgnoreCase(Constants.App.LANGUAGE_ENGLISH)) {
+                    defaultLanguageDetail = contentData.getLanguageDetails().get(i);
+                }
+                if (Util.getLocaleLanguageCode().equalsIgnoreCase(contentData.getLanguageDetails().
+                        get(i).getLanguageId())) {
+                    isLocalAvailable = true;
+                    listDataHeader.add(contentData.getLanguageDetails().get(i).getCategoryTitle());
+                    break;
+                }
+            }
+            if (!isLocalAvailable) {
+                listDataHeader.add(defaultLanguageDetail.getCategoryTitle());
+            }
+        }
+        updateListView();
     }
 
     public void logOutUser() {
@@ -328,10 +363,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-//        if(matrimonyMeetList.size()==0) {
-//            rl_meetLayout.setVisibility(View.GONE);
-//            rlNoMeet.setVisibility(View.VISIBLE);
-//        }
     }
 
     public void showProgressBar() {
