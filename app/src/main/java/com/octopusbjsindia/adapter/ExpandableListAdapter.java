@@ -17,16 +17,21 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.DownloadContent;
 import com.octopusbjsindia.models.content.DownloadInfo;
+import com.octopusbjsindia.models.content.LanguageDetail;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -80,7 +85,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
         //final DownloadInfo info = downloadContent.getInfo();
 
-        ViewHolder holder;
+        //ViewHolder holder;
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
@@ -98,13 +103,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //        }
 //        Log.i("Info","111"+info);
 
-        ImageView imgDownload = convertView.findViewById(R.id.imgDownload);
-        ImageView imgShare = convertView.findViewById(R.id.imgshare);
-        TextView txttitle = convertView.findViewById(R.id.txtName);
-        TextView txtpercentage = convertView.findViewById(R.id.txtCount);
+        ImageView imgDownload = convertView.findViewById(R.id.img_download);
+        ImageView imgShare = convertView.findViewById(R.id.img_share);
+        TextView txttitle = convertView.findViewById(R.id.txt_name);
+        TextView txtSize = convertView.findViewById(R.id.txt_size);
+        TextView txtType = convertView.findViewById(R.id.txt_type);
+        //TextView txtpercentage = convertView.findViewById(R.id.txt_count);
         progressBar = convertView.findViewById(R.id.progress_bar);
 
-        txttitle.setText(contentData.getCategoryId());
+        txttitle.setText(contentData.getContentTiltle());
+        txtSize.setText(contentData.getFileSize());
+        txtType.setText(contentData.getFileType());
 //        progressBar.setProgress(info.getProgress());
 //        progressBar.setMax(100);
 //        info.setProgressBar(progressBar);
@@ -120,10 +129,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                urlListl.add(downloadContent.getDef());
-//                contentManagementFragment.beginDownload(downloadContent.getDef());
-//                DownloadImageTask downloadImageTask = new DownloadImageTask(info);
-//                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, downloadContent.getDef());
+                //urlListl.add(downloadContent.getDef());
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<LanguageDetail>>() {
+                }.getType();
+                List<LanguageDetail> languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
+                for (LanguageDetail languageDetail : languageDetailsList) {
+                    if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
+                        contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
+                    }
+                }
+
+                //contentManagementFragment.beginDownload(contentData.get);
+                DownloadImageTask downloadImageTask = new DownloadImageTask();
+                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
 
@@ -183,6 +202,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         return convertView;
     }
+
+//    private static class ViewHolder {
+//        ImageView imgDownload, imgShare;
+//        TextView txttitle, txtpercentage;
+//        ProgressBar progressBar = null;
+//    }
 
     @Override
     public boolean hasStableIds() {
@@ -289,35 +314,39 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             this.info = info;
         }
 
+        public DownloadImageTask() {
+
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (info != null) {
-                info.getProgressBar().setVisibility(View.VISIBLE);
-                isDownloading = false;
-            }
+//            if (info != null) {
+//                info.getProgressBar().setVisibility(View.VISIBLE);
+//                isDownloading = false;
+//            }
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             isDownloading = true;
-            if (info != null) {
-                info.getProgressBar().setVisibility(View.GONE);
-                notifyDataSetChanged();
-            }
+//            if (info != null) {
+//                info.getProgressBar().setVisibility(View.GONE);
+//                notifyDataSetChanged();
+//            }
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
 
-            info.setProgress(values[0]);
-            ProgressBar bar = info.getProgressBar();
-            if (bar != null) {
-                bar.setProgress(info.getProgress());
-                bar.invalidate();
-            }
+//            info.setProgress(values[0]);
+//            ProgressBar bar = info.getProgressBar();
+//            if (bar != null) {
+//                bar.setProgress(info.getProgress());
+//                bar.invalidate();
+//            }
         }
 
         @Override
@@ -377,11 +406,5 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
             return null;
         }
-    }
-
-    private static class ViewHolder {
-        ImageView imgDownload, imgShare;
-        TextView txttitle, txtpercentage;
-        ProgressBar progressBar = null;
     }
 }

@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +43,9 @@ import com.octopusbjsindia.models.content.Datum;
 import com.octopusbjsindia.models.content.Datum_;
 import com.octopusbjsindia.models.content.DownloadContent;
 import com.octopusbjsindia.models.content.DownloadInfo;
-import com.octopusbjsindia.models.content.LanguageDetail;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
 import com.octopusbjsindia.services.ShowTimerService;
 import com.octopusbjsindia.utility.AppEvents;
-import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
@@ -117,7 +116,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             }
         }
         AppEvents.trackAppEvent(getString(R.string.event_content_screen_visit));
-        //getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
@@ -206,6 +205,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     private void updateListView() {
+        listDataHeader.clear();
+        listDataChild.clear();
         if (listDataHeader.size() > 0) {
             txt_noData.setVisibility(View.GONE);
         } else {
@@ -260,15 +261,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         }
         return isRunning;
     }
-
-//    private void prepareListData() {
-//        // fill header and child list
-//        if (listDataHeader.size() > 0) {
-//            txt_noData.setVisibility(View.GONE);
-//        } else {
-//            txt_noData.setVisibility(View.VISIBLE);
-//        }
-//    }
 
     @Override
     public void onDetach() {
@@ -325,23 +317,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             JsonArray languageDetailsArray = gson.toJsonTree(contentData.getLanguageDetails()).getAsJsonArray();
             contentData.setLanguageDetailsString(languageDetailsArray.toString());
             contentDataDao.insert(contentData);
-            isLocalAvailable = false;
-            LanguageDetail defaultLanguageDetail = new LanguageDetail();
-            for (int i = 0; i < contentData.getLanguageDetails().size(); i++) {
-                if (contentData.getLanguageDetails().
-                        get(i).getLanguageId().equalsIgnoreCase(Constants.App.LANGUAGE_ENGLISH)) {
-                    defaultLanguageDetail = contentData.getLanguageDetails().get(i);
-                }
-                if (Util.getLocaleLanguageCode().equalsIgnoreCase(contentData.getLanguageDetails().
-                        get(i).getLanguageId())) {
-                    isLocalAvailable = true;
-                    listDataHeader.add(contentData.getLanguageDetails().get(i).getCategoryTitle());
-                    break;
-                }
-            }
-            if (!isLocalAvailable) {
-                listDataHeader.add(defaultLanguageDetail.getCategoryTitle());
-            }
         }
         updateListView();
     }

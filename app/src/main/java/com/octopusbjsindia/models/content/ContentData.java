@@ -28,6 +28,10 @@ public class ContentData {
     @SerializedName("category_name")
     @Expose
     private String categoryName;
+    @ColumnInfo(name = "content_title")
+    @SerializedName("content_title")
+    @Expose
+    private String contentTiltle;
     @ColumnInfo(name = "file_type")
     @SerializedName("file_type")
     @Expose
@@ -66,6 +70,14 @@ public class ContentData {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getContentTiltle() {
+        return contentTiltle;
+    }
+
+    public void setContentTiltle(String contentTiltle) {
+        this.contentTiltle = contentTiltle;
     }
 
     public String getFileType() {
