@@ -280,6 +280,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 Toast.makeText(getContext(), "Download completed.", Toast.LENGTH_LONG).show();
                 //mProgressBar.setVisibility(View.GONE);
+
                 expandableListAdapter.notifyDataSetChanged();
             }
         }
@@ -311,7 +312,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         this.contentDataList.clear();
         this.contentDataList.addAll(contentDataList);
         contentDataDao.deleteContentData();
-        boolean isLocalAvailable;
         for (ContentData contentData : contentDataList) {
             Gson gson = new GsonBuilder().create();
             JsonArray languageDetailsArray = gson.toJsonTree(contentData.getLanguageDetails()).getAsJsonArray();
