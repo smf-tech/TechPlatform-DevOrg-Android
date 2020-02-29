@@ -3,8 +3,11 @@ package com.octopusbjsindia.view.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -20,6 +23,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.smartgirl.AdditionalTrainerListResponseModel;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
 import com.octopusbjsindia.presenter.CreateTrainerWorkshopPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -38,16 +42,24 @@ import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnClickListener, CustomSpinnerListener {
     //--Constant
     final String GET_CATEGORY = "getCategory";
+    boolean isforEdit = false;
+    //-------
+    SmartGirlCategoryResponseModel smartGirlCategoryResponseModel;
     //------
     public EditText tv_startdate, tv_enddate;
+    public EditText et_select_state_trainer,et_select_district_trainer;
     public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries;
+    public String et_select_program_str ="", et_workshop_category_str ="", et_select_state_str ="", et_select_district_str ="", et_select_city_str ="", et_select_venue_str ="", et_traner_name_str ="", et_traner_additional_str ="", et_total_beneficiaries__str ="";
+    public String et_select_state_str_trainer,et_select_district_str_trainer;
     public CreateTrainerWorkshopPresenter presenter;
+    private Button btn_create_batch,btn_cancel;
     //----declaration
     private RelativeLayout progressBar;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> categoryList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> TrainerList = new ArrayList<>();
     private String selectedDistrictId, selectedDistrict, selectedStateId, selectedState;
 
     @Override
@@ -56,11 +68,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_create_trainer_workshop);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         presenter = new CreateTrainerWorkshopPresenter(this);
-        //setMasterData();
-        //---
+
         progressBar = findViewById(R.id.ly_progress_bar);
-        //-------
+        btn_create_batch = findViewById(R.id.btn_create_batch);
+        btn_cancel = findViewById(R.id.btn_cancel);
         tv_startdate = findViewById(R.id.tv_startdate);
         tv_enddate = findViewById(R.id.tv_enddate);
         tv_startdate.setOnClickListener(this);
@@ -73,14 +86,25 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         et_workshop_category = findViewById(R.id.et_workshop_category);
         et_select_state = findViewById(R.id.et_select_state);
         et_select_district = findViewById(R.id.et_select_district);
+
+        et_select_state_trainer = findViewById(R.id.et_select_state_trainer);
+        et_select_district_trainer = findViewById(R.id.et_select_district_trainer);
+
         et_select_city = findViewById(R.id.et_select_city);
         et_select_venue = findViewById(R.id.et_select_venue);
         et_traner_name = findViewById(R.id.et_traner_name);
         et_traner_additional = findViewById(R.id.et_traner_additional);
 
+        et_traner_additional.setOnClickListener(this);
         et_select_state.setOnClickListener(this);
         et_select_district.setOnClickListener(this);
+
+        et_select_state_trainer.setOnClickListener(this);
+        et_select_district_trainer.setOnClickListener(this);
+
         et_workshop_category.setOnClickListener(this);
+        btn_create_batch.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
 
         // calling states first-
 
@@ -89,17 +113,52 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 Constants.JurisdictionLevelName.STATE_LEVEL);
         presenter.getBatchCategory();
 
+
+        if (getIntent().getStringExtra(Constants.Login.ACTION_EDIT) != null
+                && getIntent().getStringExtra(Constants.Login.ACTION_EDIT)
+                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+            Toast.makeText(CreateTrainerWorkshop.this, "request to edit batch.", Toast.LENGTH_LONG).show();
+            isforEdit = true;
+            setEditDataToFields();
+        }else {
+            isforEdit = false;
+        }
+    }
+
+    private void setEditDataToFields() {
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            case R.id.btn_create_batch:
+                if (isAllInputsValid()){
+                    if (isforEdit){
+                        editBatch();
+                    }else {
+                        createBatch();
+                    }
+                }
+                break;
+            case R.id.btn_cancel:
+                finish();
+                break;
+
             case R.id.tv_startdate:
                 selectStartDate(tv_startdate, 1);
                 break;
             case R.id.tv_enddate:
                 selectStartDate(tv_enddate, 2);
                 break;
+            case R.id.et_traner_additional:
+                CustomSpinnerDialogClass csdTrainer = new CustomSpinnerDialogClass(this, this,
+                        "Select Trainer", TrainerList, false);
+                csdTrainer.show();
+                csdTrainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+
 
             case R.id.et_select_state:
                 CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
@@ -116,6 +175,23 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+                //for trainer-
+            case R.id.et_select_state_trainer:
+                CustomSpinnerDialogClass csdState_trainer = new CustomSpinnerDialogClass(this, this,
+                        "Select State trainer", stateList, false);
+                csdState_trainer.show();
+                csdState_trainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_select_district_trainer:
+
+                CustomSpinnerDialogClass csdDisttrict_trainer = new CustomSpinnerDialogClass(this, this,
+                        "Select District trainer", districtList, false);
+                csdDisttrict_trainer.show();
+                csdDisttrict_trainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+
             case R.id.et_workshop_category:
 
                 CustomSpinnerDialogClass csdCategory = new CustomSpinnerDialogClass(this, this,
@@ -268,6 +344,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     }
 
     public void showReceivedCategories(SmartGirlCategoryResponseModel jurisdictionLevelResponse) {
+        smartGirlCategoryResponseModel = jurisdictionLevelResponse;
         for (int i = 0; i < jurisdictionLevelResponse.getData().size(); i++) {
             // categoryList.add(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
             CustomSpinnerObject meetCountry = new CustomSpinnerObject();
@@ -281,6 +358,49 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
+            case "Select District trainer":
+                for (CustomSpinnerObject obj : districtList) {
+                    if (obj.isSelected()) {
+                        selectedDistrict = obj.getName();
+                        selectedDistrictId = obj.get_id();
+                        break;
+                    }
+                }
+                et_select_district_trainer.setText(selectedDistrict);
+                et_select_district_str_trainer = selectedDistrictId;
+
+                //get Taluka
+                if (!TextUtils.isEmpty(selectedDistrictId)) {
+                    presenter.getLocationData(selectedDistrictId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                }
+                if (!TextUtils.isEmpty(selectedStateId)) {
+                    String paramjson = new Gson().toJson(getAdditionalTrainerReqJson());
+                    presenter.getAdditionalTrainer(paramjson);
+                }
+                break;
+            case "Select State trainer":
+                for (CustomSpinnerObject obj : stateList) {
+                    if (obj.isSelected()) {
+                        selectedState = obj.getName();
+                        selectedStateId = obj.get_id();
+                        break;
+                    }
+                }
+                et_select_state_trainer.setText(selectedState);
+                et_select_state_str_trainer = selectedStateId;
+                //get District
+                if (!TextUtils.isEmpty(selectedStateId)) {
+                    presenter.getLocationData(selectedStateId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                }
+
+
+                break;
+
+
             case "Select District":
                 for (CustomSpinnerObject obj : districtList) {
                     if (obj.isSelected()) {
@@ -290,13 +410,8 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                     }
                 }
                 et_select_district.setText(selectedDistrict);
-                /*etDistrict.setText(selectedDistrict);
-                etTaluka.setText("");
-                selectedTaluka = "";
-                selectedTalukaId = "";
-                etHostVillage.setText("");
-                selectedHostVillage = "";
-                selectedHostVillageId = "";*/
+                et_select_district_str = selectedDistrictId;
+
                 //get Taluka
                 if (!TextUtils.isEmpty(selectedDistrictId)) {
                     presenter.getLocationData(selectedDistrictId,
@@ -313,7 +428,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                     }
                 }
                 et_select_state.setText(selectedState);
-
+                et_select_state_str = selectedStateId;
                 //get District
                 if (!TextUtils.isEmpty(selectedStateId)) {
                     presenter.getLocationData(selectedStateId,
@@ -331,7 +446,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                     }
                 }
                 et_workshop_category.setText(selectedState);
-
+                et_workshop_category_str = selectedStateId;
                 //get District
                 /*if (!TextUtils.isEmpty(selectedStateId)) {
                     presenter.getLocationData(selectedStateId,
@@ -340,6 +455,25 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 }*/
 
                 break;
+            case "Select Trainer":
+                for (CustomSpinnerObject obj : TrainerList) {
+                    if (obj.isSelected()) {
+                        selectedState = obj.getName();
+                        selectedStateId = obj.get_id();
+                        break;
+                    }
+                }
+                et_traner_additional.setText(selectedState);
+                et_traner_additional_str = selectedStateId;
+                //get District
+                /*if (!TextUtils.isEmpty(selectedStateId)) {
+                    presenter.getLocationData(selectedStateId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                }*/
+
+                break;
+
 
 
         }
@@ -356,6 +490,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         requestCall.getDataApiCall(GET_CATEGORY, getRoleAccessUrl);
     }*/
 
+
+    public void editBatch() {
+        String paramjson = new Gson().toJson(getCreateBatchReqJson());
+        //presenter.createBatch(paramjson);
+        presenter.editBatch(paramjson);
+    }
     public void createBatch() {
         String paramjson = new Gson().toJson(getCreateBatchReqJson());
         //presenter.createBatch(paramjson);
@@ -364,11 +504,95 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
     public JsonObject getCreateBatchReqJson() {
 
-
         JsonObject requestObject = new JsonObject();
-        requestObject.addProperty("machineId", "");
-        requestObject.addProperty("workDate", "");
+        if (isforEdit){
+            requestObject.addProperty("batch_id", "");
+        }else {
+            requestObject.addProperty("batch_id", "");
+        }
+        requestObject.addProperty("batch_category_id", et_workshop_category_str);
+        requestObject.addProperty("state_id", et_select_state_str);
+        requestObject.addProperty("district_id", et_select_district_str);
+        requestObject.addProperty("city", et_select_city.getText().toString());
+        requestObject.addProperty("venue", et_select_venue.getText().toString());
+        requestObject.addProperty("startDate",Util.getDateInepoch(tv_startdate.getText().toString()));
+        requestObject.addProperty("endDate",Util.getDateInepoch(tv_enddate.getText().toString()));
+        requestObject.addProperty("total_praticipants", et_total_beneficiaries.getText().toString());
+        JsonObject trainerObject = new JsonObject();
+        trainerObject.addProperty("state_id","5e2eb9b6385c23393400741a");
+        trainerObject.addProperty("district_id","5e2eb9e6385c23393400741d");
+        trainerObject.addProperty("user_id","5e2ebdce42d73f03fe6ab142");
+
+        requestObject.add("additional_master_trainer", trainerObject);
+
 
         return requestObject;
+    }
+
+    public JsonObject getAdditionalTrainerReqJson(){
+
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("project_id", "5e2eb798385c233934007414");
+        requestObject.addProperty("state_id","5e58c53dfcba8f309f672b43");
+        requestObject.addProperty("district_id","");// et_select_district_str_trainer);
+
+        return requestObject;
+    }
+
+
+    //Validations
+    private boolean isAllInputsValid() {
+        String msg = "";
+
+        if (TextUtils.isEmpty(et_workshop_category_str)) {
+            msg = "Please select batch category";//getResources().getString(R.string.msg_enter_name);
+        } else
+        if (TextUtils.isEmpty(et_select_state_str)) {
+            msg = "Please select state";//getResources().getString(R.string.msg_enter_name);
+        } else
+        if (TextUtils.isEmpty(et_select_district_str)) {
+            msg = "Please select district.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_select_city.getText().toString().trim().length() == 0) {
+            msg = "Please select the city.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_select_venue.getText().toString().trim().length() == 0) {
+            msg = "Please select the venue.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (tv_startdate.getText().toString().trim().length() == 0) {
+            msg = "Please select the start date.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (tv_enddate.getText().toString().trim().length() == 0) {
+            msg = "Please select the end date.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_total_beneficiaries.getText().toString().trim().length() == 0) {
+            msg = "Please enter total beneficiaries.";//getResources().getString(R.string.msg_enter_proper_date);
+        }
+        /*else if (et_education.getText().toString().trim().length() == 0) {
+            msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);
+        }*/
+
+        if (TextUtils.isEmpty(msg)) {
+            return true;
+        }
+
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        return false;
+    }
+
+    public void showTrainerList(String response) {
+        Log.d("TAG","TrainerList response:- " + response);
+        AdditionalTrainerListResponseModel additionalTrainerListResponseModel
+                = new Gson().fromJson(response, AdditionalTrainerListResponseModel.class);
+        if (additionalTrainerListResponseModel != null && !additionalTrainerListResponseModel.getTrainerListResponseList().isEmpty()) {
+            TrainerList.clear();
+            //Collections.sort(data, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
+
+            for (int i = 0; i < additionalTrainerListResponseModel.getTrainerListResponseList().size(); i++) {
+                //if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
+                //JurisdictionLocation location = additionalTrainerListResponseModel.getTrainerListResponseList().get(i);
+                CustomSpinnerObject meetCountry = new CustomSpinnerObject();
+                meetCountry.set_id(additionalTrainerListResponseModel.getTrainerListResponseList().get(i).get_id());
+                meetCountry.setName(additionalTrainerListResponseModel.getTrainerListResponseList().get(i).getName());
+                meetCountry.setSelected(false);
+                TrainerList.add(meetCountry);
+                //}
+            }
+        }
     }
 }

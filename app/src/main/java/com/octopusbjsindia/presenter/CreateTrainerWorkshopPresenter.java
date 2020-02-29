@@ -30,6 +30,8 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
     private final String GET_STATE = "getState";
     private final String GET_CATEGORY = "getCategory";
     private final String CREATE_BATCH = "createBatch";
+    private final String EDIT_BATCH = "createBatch";
+    private final String GET_MASTER_TRAINERS = "GET_MASTER_TRAINERS";
     private final String TAG = CreateStructureActivityPresenter.class.getName();
 
     private final WeakReference<CreateTrainerWorkshop> mContext;
@@ -81,6 +83,8 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
                     SmartGirlCategoryResponseModel jurisdictionLevelResponse
                             = new Gson().fromJson(response, SmartGirlCategoryResponseModel.class);
                     mContext.get().showReceivedCategories(jurisdictionLevelResponse);
+                } else if (requestID.equalsIgnoreCase(GET_MASTER_TRAINERS)) {
+                    mContext.get().showTrainerList(response);
                 }
             }
 
@@ -133,7 +137,26 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CREATE_BATCH, requestJson, createBatchUrl);
     }
+    public void editBatch(String requestJson) {
+        final String createBatchUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.EDIT_BATCH_API);
+        Log.d("TAG", "getRoleAccessUrl: url" + createBatchUrl);
+        //homeFragment.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(EDIT_BATCH, requestJson, createBatchUrl);
+    }
 
+
+    public void getAdditionalTrainer(String requestJson) {
+        final String createBatchUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_MASTER_TRAINERS_SG);
+        Log.d("TAG", "getRoleAccessUrl: url" + createBatchUrl);
+        //homeFragment.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_MASTER_TRAINERS, requestJson, createBatchUrl);
+    }
 
     /*public void createBatch(String requestJson){
         final String url = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_DATA_WORKLOG);

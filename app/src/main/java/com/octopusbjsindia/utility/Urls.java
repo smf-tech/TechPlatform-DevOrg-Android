@@ -178,5 +178,10 @@ public class Urls {
     public class SmartGirl{
         public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
         public static final String CREATE_BATCH_API = "api/createBatch";
+        public static final String EDIT_BATCH_API = "api/editBatch";
+        public static final String GET_MASTER_TRAINERS_SG = "api/getAdditionalMasterTrainers";
+        public static final String GET_BATCH_LIST_API = "api/getBatchList";
+
     }
+
 }

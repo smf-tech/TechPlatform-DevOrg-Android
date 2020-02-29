@@ -44,6 +44,10 @@
             android:name=".view.activities.CreateTrainerWorkshop"
             android:label="@string/title_activity_create_trainer_workshop"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".view.activities.TrainerBatchListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
