@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -17,27 +18,34 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.content.DownloadContent;
+import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.DownloadInfo;
+import com.octopusbjsindia.models.content.LanguageDetail;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<DownloadContent>> _listDataChild;
+    private HashMap<String, List<ContentData>> _listDataChild;
     public ContentManagementFragment contentManagementFragment;
     Handler handler = new Handler();
     View convertView;
@@ -47,9 +55,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private int position;
     private TextView txt_percentage;
     boolean isDownloading;
+    private ArrayList<LanguageDetail> languageDetailsList = new ArrayList<>();
+    Gson gson = new Gson();
+    Type type = new TypeToken<List<LanguageDetail>>() {
+    }.getType();
 
     public ExpandableListAdapter(ContentManagementFragment context, List<String> listDataHeader,
-                                 HashMap<String, List<DownloadContent>> listChildData, Context _context) {
+                                 HashMap<String, List<ContentData>> listChildData, Context _context) {
         this.contentManagementFragment = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -76,10 +88,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         position = childPosition;
         urlListl = new ArrayList<>();
 
-        final DownloadContent downloadContent = (DownloadContent) getChild(groupPosition, childPosition);
-        final DownloadInfo info = downloadContent.getInfo();
+        final ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
+        //final DownloadInfo info = downloadContent.getInfo();
 
-        ViewHolder holder;
+        //ViewHolder holder;
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
@@ -96,19 +108,37 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //            holder.info.setProgressBar(holder.progressBar);
 //        }
 //        Log.i("Info","111"+info);
+        languageDetailsList.clear();
+        languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
 
-        ImageView imgDownload = convertView.findViewById(R.id.imgDownload);
-        ImageView imgShare = convertView.findViewById(R.id.imgshare);
-        TextView txttitle = convertView.findViewById(R.id.txtName);
-        TextView txtpercentage = convertView.findViewById(R.id.txtCount);
+        ImageView imgDownload = convertView.findViewById(R.id.img_download);
+        ImageView imgShare = convertView.findViewById(R.id.img_share);
+        TextView txttitle = convertView.findViewById(R.id.txt_name);
+        TextView txtSize = convertView.findViewById(R.id.txt_size);
+        TextView txtType = convertView.findViewById(R.id.txt_type);
+        //TextView txtpercentage = convertView.findViewById(R.id.txt_count);
         progressBar = convertView.findViewById(R.id.progress_bar);
 
-        txttitle.setText(downloadContent.getName());
-        progressBar.setProgress(info.getProgress());
-        progressBar.setMax(100);
-        info.setProgressBar(progressBar);
+        txttitle.setText(contentData.getContentTiltle());
+        txtSize.setText(contentData.getFileSize());
+        txtType.setText(contentData.getFileType());
+//        progressBar.setProgress(info.getProgress());
+//        progressBar.setMax(100);
+//        info.setProgressBar(progressBar);
 
-        if (isFileAvailable(downloadContent)) {
+        boolean isFileDownloaded = false;
+        for (LanguageDetail languageDetail : languageDetailsList) {
+            Uri uri = Uri.parse(languageDetail.getDownloadUrl());
+            File file = new File(uri.getPath());
+            String fileName = file.getName();
+            if (isFileAvailable(fileName)) {
+                isFileDownloaded = true;
+                contentData.setDownloadedFileName(fileName);
+                break;
+            }
+        }
+
+        if (isFileDownloaded) {
             imgDownload.setVisibility(View.GONE);
             imgShare.setVisibility(View.VISIBLE);
         } else {
@@ -119,10 +149,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                urlListl.add(downloadContent.getDef());
-                contentManagementFragment.beginDownload(downloadContent.getDef());
-                DownloadImageTask downloadImageTask = new DownloadImageTask(info);
-                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, downloadContent.getDef());
+                //urlListl.add(downloadContent.getDef());
+                for (LanguageDetail languageDetail : languageDetailsList) {
+                    if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
+                        contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
+                        break;
+                    }
+                }
+
+                //contentManagementFragment.beginDownload(contentData.get);
+//                DownloadImageTask downloadImageTask = new DownloadImageTask();
+//                downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
 
@@ -130,10 +167,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
-                Uri uri = Uri.parse(downloadContent.getDef());
-                File file = new File(uri.getPath());
-                String fileName = file.getName();
-                File filePath = new File(storagePath + "/" + fileName);
+//                Uri uri = Uri.parse(downloadContent.getDef());
+//                File file = new File(uri.getPath());
+//                String fileName = file.getName();
+                File filePath = new File(storagePath + "/" + contentData.getDownloadedFileName());
                 openFile(contentManagementFragment, filePath);
             }
         });
@@ -183,6 +220,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+//    private static class ViewHolder {
+//        ImageView imgDownload, imgShare;
+//        TextView txttitle, txtpercentage;
+//        ProgressBar progressBar = null;
+//    }
+
     @Override
     public boolean hasStableIds() {
         return false;
@@ -193,15 +236,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private boolean isFileAvailable(DownloadContent downloadContent) {
+    private boolean isFileAvailable(String fileName) {
         String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
-        Uri uri = Uri.parse(downloadContent.getDef());
-        File file = new File(uri.getPath());
-        String fileName = file.getName();
-
+//        Uri uri = Uri.parse(url);
+//        File file = new File(uri.getPath());
+//        String fileName = file.getName();
         File myFile = new File(storagePath + "/" + fileName);
-
-        Log.i("FilePath", "111" + myFile);
         if (myFile.exists()) {
             return true;
         } else {
@@ -214,58 +254,81 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             // Create URI
             Uri uri = FileProvider.getUriForFile(contentManagementFragment.getActivity(),
                     contentManagementFragment.getActivity().getPackageName() + ".file_provider", url);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            // Check what kind of file you are trying to open, by comparing the url with extensions.
-            // When the if condition is matched, plugin sets the correct intent (mime) type,
-            // so Android knew what application to use to open the file
-            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
-                // Word document
-                intent.setDataAndType(uri, "application/msword");
-            } else if (url.toString().contains(".pdf")) {
-                // PDF file
-                intent.setDataAndType(uri, "application/pdf");
-            } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
-                // Powerpoint file
-                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-            } else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
-                // Excel file
-                intent.setDataAndType(uri, "application/vnd.ms-excel");
-            } else if (url.toString().contains(".zip") || url.toString().contains(".rar")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "application/x-wav");
-            } else if (url.toString().contains(".rtf")) {
-                // RTF file
-                intent.setDataAndType(uri, "application/rtf");
-            } else if (url.toString().contains(".wav") || url.toString().contains(".mp3")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "audio/x-wav");
-            } else if (url.toString().contains(".gif")) {
-                // GIF file
-                intent.setDataAndType(uri, "image/gif");
-            } else if (url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
-                // JPG file
-                intent.setDataAndType(uri, "image/jpeg");
-            } else if (url.toString().contains(".txt")) {
-                // Text file
-                intent.setDataAndType(uri, "text/plain");
-            } else if (url.toString().contains(".3gp") || url.toString().contains(".mpg") || url.toString().contains(".mpeg") || url.toString().contains(".mpe") || url.toString().contains(".mp4") || url.toString().contains(".avi")) {
-                // Video files
-                intent.setDataAndType(uri, "video/*");
-            } else {
-                //if you want you can also define the intent type for any other file
+            contentManagementFragment.getActivity().grantUriPermission
+                    (contentManagementFragment.getActivity().getPackageName(), uri, FLAG_GRANT_READ_URI_PERMISSION);
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION|FLAG_GRANT_WRITE_URI_PERMISSION);
+//            intent.setData(uri);
+//            intent.setType(get_mime_type(uri.toString()));
+//             Check what kind of file you are trying to open, by comparing the url with extensions.
+//             When the if condition is matched, plugin sets the correct intent (mime) type,
+//             so Android knew what application to use to open the file
+//            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+//                // Word document
+//                intent.setDataAndType(uri, "application/msword");
+//            } else if (url.toString().contains(".pdf")) {
+//                // PDF file
+//                intent.setDataAndType(uri, get_mime_type(uri.toString()));
+//            } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
+//                // Powerpoint file
+//                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+//            } else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
+//                // Excel file
+//                intent.setDataAndType(uri, "application/vnd.ms-excel");
+//            } else if (url.toString().contains(".zip") || url.toString().contains(".rar")) {
+//                // WAV audio file
+//                intent.setDataAndType(uri, "application/x-wav");
+//            } else if (url.toString().contains(".rtf")) {
+//                // RTF file
+//                intent.setDataAndType(uri, "application/rtf");
+//            } else if (url.toString().contains(".wav") || url.toString().contains(".mp3")) {
+//                // WAV audio file
+//                intent.setDataAndType(uri, "audio/x-wav");
+//            } else if (url.toString().contains(".gif")) {
+//                // GIF file
+//                intent.setDataAndType(uri, "image/gif");
+//            } else if (url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
+//                // JPG file
+//                intent.setDataAndType(uri, "image/jpeg");
+//            } else if (url.toString().contains(".txt")) {
+//                // Text file
+//                intent.setDataAndType(uri, "text/plain");
+//            } else if (url.toString().contains(".3gp") || url.toString().contains(".mpg") ||
+//                    url.toString().contains(".mpeg") || url.toString().contains(".mpe") ||
+//                    url.toString().contains(".mp4") || url.toString().contains(".avi")) {
+//                // Video files
+//                intent.setDataAndType(uri, "video/*");
+//            } else {
+//                //if you want you can also define the intent type for any other file
+//                //additionally use else clause below, to manage other unknown extensions
+//                //in this case, Android will show all applications installed on the device
+//                //so you can choose which application to use
+//                intent.setDataAndType(uri, "*/*");
+//            }
+//            contentManagementFragment.getActivity().startActivity(intent);
 
-                //additionally use else clause below, to manage other unknown extensions
-                //in this case, Android will show all applications installed on the device
-                //so you can choose which application to use
-                intent.setDataAndType(uri, "*/*");
-            }
-            contentManagementFragment.getActivity().startActivity(intent);
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("application/*");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            contentManagementFragment.getActivity().startActivity(Intent.createChooser(intent, "Share Content"));
 
         } catch (Exception e) {
             Log.i("FileView", "222" + e.toString());
         }
+    }
+
+    public String get_mime_type(String url) {
+        String ext = MimeTypeMap.getFileExtensionFromUrl(url);
+        String mime = null;
+        if (ext != null) {
+            mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
+        }
+        return mime;
     }
 
     private static class DownloadTask {
@@ -288,35 +351,39 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             this.info = info;
         }
 
+        public DownloadImageTask() {
+
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (info != null) {
-                info.getProgressBar().setVisibility(View.VISIBLE);
-                isDownloading = false;
-            }
+//            if (info != null) {
+//                info.getProgressBar().setVisibility(View.VISIBLE);
+//                isDownloading = false;
+//            }
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             isDownloading = true;
-            if (info != null) {
-                info.getProgressBar().setVisibility(View.GONE);
-                notifyDataSetChanged();
-            }
+//            if (info != null) {
+//                info.getProgressBar().setVisibility(View.GONE);
+//                notifyDataSetChanged();
+//            }
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
 
-            info.setProgress(values[0]);
-            ProgressBar bar = info.getProgressBar();
-            if (bar != null) {
-                bar.setProgress(info.getProgress());
-                bar.invalidate();
-            }
+//            info.setProgress(values[0]);
+//            ProgressBar bar = info.getProgressBar();
+//            if (bar != null) {
+//                bar.setProgress(info.getProgress());
+//                bar.invalidate();
+//            }
         }
 
         @Override
@@ -376,11 +443,5 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
             return null;
         }
-    }
-
-    private static class ViewHolder {
-        ImageView imgDownload, imgShare;
-        TextView txttitle, txtpercentage;
-        ProgressBar progressBar = null;
     }
 }

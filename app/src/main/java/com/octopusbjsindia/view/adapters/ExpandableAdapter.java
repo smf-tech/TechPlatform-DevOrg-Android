@@ -145,6 +145,11 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
                 Intent intent = new Intent(mContext, FormActivity.class);
                 intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);
+
+//                Intent intent = new Intent(mContext, FormDisplayActivity.class);
+//                intent.putExtra(Constants.PM.FORM_ID, data.getId());
+//                mContext.startActivity(intent);
+
             });
         }
 

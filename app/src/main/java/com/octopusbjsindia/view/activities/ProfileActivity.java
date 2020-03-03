@@ -32,7 +32,6 @@ import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MultyProjectAdapter;
 
@@ -170,7 +169,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             if (Util.isConnected(this)) {
                 if (Util.isConnected(this)) {
                     presenter.getUserProfile();
-                }else {
+                } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
 
@@ -184,12 +183,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        Util.showToast(message,this);
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        Util.showToast(error.getMessage(),this);
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
@@ -235,7 +234,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             Constants.GET_MODELS = true;
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
-        Util.showToast("Project switched successfully.",this);
+        Util.showToast("Project switched successfully.", this);
         finish();
 //        showDialog(getResources().getString(R.string.alert),
 //                "Project switched successfully.",

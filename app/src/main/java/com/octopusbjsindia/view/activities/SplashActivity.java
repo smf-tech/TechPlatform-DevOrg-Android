@@ -2,23 +2,17 @@ package com.octopusbjsindia.view.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.OpenableColumns;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,46 +20,27 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
-import com.octopusbjsindia.models.content.Url;
 import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
@@ -107,7 +82,7 @@ public class SplashActivity extends AppCompatActivity {
                         .load(getUserObjectFromPref().getCurrent_project_logo())
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(img_logo);
-            }else {
+            } else {
                 img_logo.setImageResource(R.drawable.ic_splash);
             }
         }else {
@@ -293,7 +268,7 @@ public class SplashActivity extends AppCompatActivity {
                         Util.getUserObjectFromPref() == null ||
                         TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())||
+                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId()) ||
                         TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {

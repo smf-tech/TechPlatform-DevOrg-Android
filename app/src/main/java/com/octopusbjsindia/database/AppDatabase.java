@@ -3,6 +3,7 @@ package com.octopusbjsindia.database;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
 import com.octopusbjsindia.dao.FormResultDao;
 import com.octopusbjsindia.dao.ModuleDao;
@@ -26,6 +27,7 @@ import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
 import com.octopusbjsindia.models.attendance.AttendaceCheckOut;
 import com.octopusbjsindia.models.attendance.AttendaceData;
+import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.Modules;
@@ -35,7 +37,7 @@ import com.octopusbjsindia.models.reports.ReportData;
 
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
         ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
-        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class},
+        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class, ContentData.class},
         version = 4)
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -67,5 +69,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract StructurePripretionDataDao structurePripretionDataDao();
 
     public abstract StructureBoundaryDao structureBoundaryDao();
+
+    public abstract ContentDataDao contentDataDao();
 
 }

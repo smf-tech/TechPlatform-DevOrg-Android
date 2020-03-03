@@ -718,7 +718,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     selectedTypeOfBeneficiaryId = obj.get_id();
                 }
             }
-            etTypeOfBeneficiary.setText(selectedTypeOfBeneficiary);
+                etTypeOfBeneficiary.setText(selectedTypeOfBeneficiary);
             break;
         }
     }

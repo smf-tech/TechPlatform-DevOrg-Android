@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
 import com.octopusbjsindia.dao.FormResultDao;
 import com.octopusbjsindia.dao.ModuleDao;
@@ -268,6 +269,11 @@ public class DatabaseManager {
     public StructureBoundaryDao getStructureBoundaryDao() {
         StructureBoundaryDao structureBoundaryDao = appDatabase.structureBoundaryDao();
         return structureBoundaryDao;
+    }
+
+    public ContentDataDao getContentDataDao() {
+        ContentDataDao contentDataDao = appDatabase.contentDataDao();
+        return contentDataDao;
     }
 
 }

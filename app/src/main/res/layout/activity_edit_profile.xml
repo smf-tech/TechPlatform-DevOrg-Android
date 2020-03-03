@@ -263,6 +263,12 @@
                 </RadioGroup>
             </RelativeLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_org_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_organization"
                 style="@style/textinputstyle"
@@ -279,9 +285,14 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/mandatory_organization"
                     android:inputType="text|textCapWords"
-                    android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_project_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp" />
 
             <!--Project-->
             <com.google.android.material.textfield.TextInputLayout
@@ -299,7 +310,6 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/mandatory_project"
                     android:inputType="text|textCapWords"
-                    android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 

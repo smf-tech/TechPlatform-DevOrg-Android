@@ -121,7 +121,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 holder.btAction.setVisibility(View.INVISIBLE);
             }
         } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
-            if (fragment.isMachineDepoly ) {
+            if (fragment.isMachineDepoly) {
                 holder.btAction.setVisibility(View.VISIBLE);
                 holder.btAction.setText("Deploy Machine");
             } else {
