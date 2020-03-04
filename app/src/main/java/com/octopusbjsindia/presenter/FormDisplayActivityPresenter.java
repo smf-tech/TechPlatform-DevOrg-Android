@@ -11,7 +11,10 @@ import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
+import org.json.JSONException;
+
 import java.lang.ref.WeakReference;
+import java.util.jar.JarException;
 
 public class FormDisplayActivityPresenter implements APIPresenterListener {
     private WeakReference<FormDisplayActivity> fragmentWeakReference;
@@ -60,24 +63,20 @@ public class FormDisplayActivityPresenter implements APIPresenterListener {
             return;
         }
         fragmentWeakReference.get().hideProgressBar();
-        try {
-            if (response != null) {
-                if (requestID.equalsIgnoreCase(FormDisplayActivityPresenter.GET_FORM_SCHEMA)) {
+        if (response != null) {
+            if (requestID.equalsIgnoreCase(FormDisplayActivityPresenter.GET_FORM_SCHEMA)) {
+
+                try {
                     Gson gson = new Gson();
-                    try {
+                    Components components = gson.fromJson(response,
+                            Components.class);
+                    fragmentWeakReference.get().parseFormSchema(components);
 
-                        Components components = gson.fromJson(response,
-                                Components.class);
-                        fragmentWeakReference.get().parseFormSchema(components);
-                    }catch (JsonSyntaxException e){
-                        e.printStackTrace();
-                        Log.d("exception", e.getMessage());
-                    }
-
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                    fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
                 }
             }
-        } catch (Exception e) {
-            fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
         }
     }
 }
