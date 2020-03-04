@@ -3,6 +3,8 @@ package com.octopusbjsindia.presenter;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.forms.Components;
 import com.octopusbjsindia.request.APIRequestCall;
@@ -61,9 +63,17 @@ public class FormDisplayActivityPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(FormDisplayActivityPresenter.GET_FORM_SCHEMA)) {
-                    Components components = PlatformGson.getPlatformGsonInstance().fromJson(response,
-                            Components.class);
-                    fragmentWeakReference.get().parseFormSchema(components);
+                    Gson gson = new Gson();
+                    try {
+
+                        Components components = gson.fromJson(response,
+                                Components.class);
+                        fragmentWeakReference.get().parseFormSchema(components);
+                    }catch (JsonSyntaxException e){
+                        e.printStackTrace();
+                        Log.d("exception", e.getMessage());
+                    }
+
                 }
             }
         } catch (Exception e) {
