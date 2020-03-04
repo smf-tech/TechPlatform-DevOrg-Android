@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -314,7 +313,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
         // option in takeMOUAction function, this api call is needed.
-        if(isTalukaFilter) {
+        if (isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
                 structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
@@ -961,28 +960,28 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
         } else if (view.getId() == R.id.tv_taluka_filter) {
-                if (machineTalukaList.size() > 0) {
-                    CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
-                            "Select Taluka", machineTalukaList, false);
-                    csdTaluka.show();
-                    csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
-                } else {
-                    if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                        isTalukaApiFirstCall = false;
-                        structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                        ? selectedDistrictId : userDistrictIds,
-                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                                Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            if (machineTalukaList.size() > 0) {
+                CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Taluka", machineTalukaList, false);
+                csdTaluka.show();
+                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            } else {
+                if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                    isTalukaApiFirstCall = false;
+                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                    ? selectedDistrictId : userDistrictIds,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
 
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Please select District first.",
-                                Snackbar.LENGTH_LONG);
-                    }
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select District first.",
+                            Snackbar.LENGTH_LONG);
                 }
+            }
         } else if (view.getId() == R.id.tv_district_filter) {
-            if(machineDistrictList.size()>0) {
+            if (machineDistrictList.size() > 0) {
                 CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select District", machineDistrictList, false);
                 csdDisttrict.show();
@@ -1084,7 +1083,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 fbSelect.setVisibility(View.GONE);
             }
         } else {
-            if (!isMachineAdd  && !isOperatorAdd) {
+            if (!isMachineAdd && !isOperatorAdd) {
                 fbCreateOperator.setVisibility(View.GONE);
                 fbCreate.setVisibility(View.GONE);
                 fbSelect.setVisibility(View.GONE);

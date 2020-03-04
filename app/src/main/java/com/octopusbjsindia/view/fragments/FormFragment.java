@@ -129,6 +129,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (getArguments() != null) {
             processId = getArguments().getString(Constants.PM.PROCESS_ID);
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
+
             String formId = getArguments().getString(Constants.PM.FORM_ID);
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
 

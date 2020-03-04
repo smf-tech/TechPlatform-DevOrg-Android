@@ -15,6 +15,7 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormActivity;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,9 +143,14 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             addButton.setEnabled(Util.isUserApproved());
 
             addButton.setOnClickListener(v -> {
-                Intent intent = new Intent(mContext, FormActivity.class);
+                /*Intent intent = new Intent(mContext, FormActivity.class);
+                intent.putExtra(Constants.PM.FORM_ID, data.getId());
+                mContext.startActivity(intent);*/
+
+                Intent intent = new Intent(mContext, FormDisplayActivity.class);
                 intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);
+
             });
         }
 

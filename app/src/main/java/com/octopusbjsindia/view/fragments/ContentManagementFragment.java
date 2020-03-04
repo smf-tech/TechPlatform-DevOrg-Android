@@ -29,11 +29,16 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.ExpandableListAdapter;
+import com.octopusbjsindia.dao.ContentDataDao;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.content.ContentData;
-import com.octopusbjsindia.models.content.ContentDatum;
 import com.octopusbjsindia.models.content.Datum;
 import com.octopusbjsindia.models.content.Datum_;
 import com.octopusbjsindia.models.content.DownloadContent;
@@ -62,14 +67,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private List<DownloadContent> listDownloadContent;
-    private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
+    private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
     private TextView txt_noData;
     private File f;
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private List<Datum> contentList;
-    private List<ContentDatum> contentDataList;
+    //private List<ContentDatum> contentDataList;
     private List<Datum_> contentCategoryList;
     private DownloadContent downloadContent;
     private ExpandableListAdapter expandableListAdapter;
@@ -88,6 +93,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private Activity activity;
     private PreferenceHelper preferenceHelper;
     private ContentFragmentPresenter contentFragmentPresenter;
+    private ArrayList<ContentData> contentDataList = new ArrayList<>();
+    ContentDataDao contentDataDao;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -132,47 +139,12 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
         txt_noData = contentFragmentview.findViewById(R.id.textNoData);
+        contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         //btn_floating_download = contentFragmentview.findViewById(R.id.btn_floating_content);
         expListView = contentFragmentview.findViewById(R.id.lvExp);
-        prepareListData();
-//        btn_floating_download.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
-//                    Intent callDownloadActivity = new Intent(getActivity(), ContentDownloadedActivity.class);
-//                    startActivity(callDownloadActivity);
-//                }
-//
-//            }
-//        });
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Util.isConnected(getContext())) {
-            contentFragmentPresenter = new ContentFragmentPresenter(this);
-            contentFragmentPresenter.getContentData();
-        } else {
-            Util.showToast(getString(R.string.msg_no_network), this);
-        }
-        if (expandableListAdapter != null) {
-            expandableListAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void updateListView() {
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
-        Log.i(TAG, "Res" + listDataChild);
-
-        expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this, listDataHeader, listDataChild, getContext());
+        expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
+                listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
-
 
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -201,10 +173,52 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                DownloadContent dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                ContentData dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
                 return false;
             }
         });
+//        btn_floating_download.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (Permissions.isReadExternalStotagePermission(getActivity(), this)) {
+//                    Intent callDownloadActivity = new Intent(getActivity(), ContentDownloadedActivity.class);
+//                    startActivity(callDownloadActivity);
+//                }
+//
+//            }
+//        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.isConnected(getContext())) {
+            contentFragmentPresenter = new ContentFragmentPresenter(this);
+            contentFragmentPresenter.getContentData();
+        } else {
+            Util.showToast(getString(R.string.msg_no_network), this);
+        }
+        if (expandableListAdapter != null) {
+            expandableListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void updateListView() {
+        listDataHeader.clear();
+        listDataChild.clear();
+        if (listDataHeader.size() > 0) {
+            txt_noData.setVisibility(View.GONE);
+        } else {
+            txt_noData.setVisibility(View.VISIBLE);
+        }
+        List<String> categoryNames = contentDataDao.getDistinctCategories();
+        listDataHeader.addAll(categoryNames);
+        for (String categoryName : listDataHeader) {
+            listDataChild.put(categoryName, contentDataDao.getCategoryContent(
+                    categoryName));
+        }
+        expandableListAdapter.notifyDataSetChanged();
     }
 
     public boolean beginDownload(String url) {
@@ -248,15 +262,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         return isRunning;
     }
 
-    private void prepareListData() {
-        // fill header and child list
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -275,6 +280,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 Toast.makeText(getContext(), "Download completed.", Toast.LENGTH_LONG).show();
                 //mProgressBar.setVisibility(View.GONE);
+
                 expandableListAdapter.notifyDataSetChanged();
             }
         }
@@ -283,7 +289,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(onDownloadComplete);
+        //getActivity().unregisterReceiver(onDownloadComplete);
     }
 
 
@@ -303,12 +309,16 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     public void saveContentData(List<ContentData> contentDataList) {
-
-
-//        listDataHeader.clear();
-//        for (ContentData contentData: contentDataList) {
-//            listDataHeader.add(contentData.getCategory());
-//        }
+        this.contentDataList.clear();
+        this.contentDataList.addAll(contentDataList);
+        contentDataDao.deleteContentData();
+        for (ContentData contentData : contentDataList) {
+            Gson gson = new GsonBuilder().create();
+            JsonArray languageDetailsArray = gson.toJsonTree(contentData.getLanguageDetails()).getAsJsonArray();
+            contentData.setLanguageDetailsString(languageDetailsArray.toString());
+            contentDataDao.insert(contentData);
+        }
+        updateListView();
     }
 
     public void logOutUser() {
@@ -328,10 +338,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-//        if(matrimonyMeetList.size()==0) {
-//            rl_meetLayout.setVisibility(View.GONE);
-//            rlNoMeet.setVisibility(View.VISIBLE);
-//        }
     }
 
     public void showProgressBar() {

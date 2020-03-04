@@ -33,21 +33,22 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name_ss"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
-        tools:replace="android:label"
-        android:requestLegacyExternalStorage="true">
+        tools:replace="android:label">
+        <activity android:name=".view.activities.FormDisplayActivity"/>
         <activity
             android:name=".view.activities.CreateTrainerWorkshop"
             android:label="@string/title_activity_create_trainer_workshop"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -241,7 +242,7 @@
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".services.MyFirebaseMessagingService"

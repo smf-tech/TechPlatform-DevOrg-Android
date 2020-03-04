@@ -505,7 +505,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     Intent dial = new Intent();
                     dial.setAction("android.intent.action.DIAL");
 
-                    if(obj!=null && obj.getAppConfigResponse().getAppUpdate().getSupport()!=null){
+                    if (obj != null && obj.getAppConfigResponse().getAppUpdate().getSupport() != null) {
                         dial.setData(Uri.parse("tel:" + obj.getAppConfigResponse().getAppUpdate().getSupport()));
                     } else {
                         dial.setData(Uri.parse("tel:" + Constants.callUsNumber));

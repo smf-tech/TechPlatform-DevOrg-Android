@@ -33,17 +33,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.login.LoginInfo;
-import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.LoginActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
 
@@ -102,8 +99,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         }
 
 
-
-
         if (getUserObjectFromPref() != null) {
 
             if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
@@ -114,10 +109,10 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                         .load(getUserObjectFromPref().getCurrent_project_logo())
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(img_logo);
-            }else {
+            } else {
                 img_logo.setImageResource(R.drawable.ic_splash);
             }
-        }else {
+        } else {
             img_logo.setImageResource(R.drawable.ic_splash);
         }
 

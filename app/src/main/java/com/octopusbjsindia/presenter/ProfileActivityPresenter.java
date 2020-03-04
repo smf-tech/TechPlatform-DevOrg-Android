@@ -16,7 +16,6 @@ import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.models.profile.MultyProjectResponse;
 import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.request.APIRequestCall;
-import com.octopusbjsindia.request.ProfileRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GsonRequestFactory;
 import com.octopusbjsindia.utility.Urls;
@@ -56,15 +55,15 @@ public class ProfileActivityPresenter implements APIPresenterListener {
     @Override
     public void onSuccessListener(String requestID, String response) {
         activity.hideProgressBar();
-        if(requestID.equals("multi_profile")){
+        if (requestID.equals("multi_profile")) {
             MultyProjectResponse multyProjectResponse = new Gson().fromJson(response, MultyProjectResponse.class);
             activity.displayProjects(multyProjectResponse.getData());
-        } else if(requestID.equals("UserProfile")){
+        } else if (requestID.equals("UserProfile")) {
             User user = new Gson().fromJson(response, User.class);
             if (response != null && user.getUserInfo() != null) {
                 Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
             }
-            activity.onSuccessListener(requestID,"");
+            activity.onSuccessListener(requestID, "");
         }
 
     }

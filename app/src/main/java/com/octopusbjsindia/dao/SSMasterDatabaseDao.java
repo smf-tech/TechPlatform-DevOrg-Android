@@ -18,9 +18,6 @@ public interface SSMasterDatabaseDao {
     @Query("DELETE FROM SSMasterDatabase")
     void deleteSSMasterData();
 
-    @Query("DELETE FROM NotificationData WHERE id  = :id")
-    void deleteNotification(int id);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SSMasterDatabase ssMasterDatabase);
 
