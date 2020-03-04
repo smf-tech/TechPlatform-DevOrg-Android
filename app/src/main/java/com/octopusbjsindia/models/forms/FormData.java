@@ -15,11 +15,12 @@ import com.octopusbjsindia.models.common.Entity;
 import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.common.Project;
 
+import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("unused")
 @androidx.room.Entity
-public class FormData {
+public class FormData implements Serializable {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("_id")

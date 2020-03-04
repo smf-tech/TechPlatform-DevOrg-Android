@@ -3,17 +3,22 @@ package com.octopusbjsindia.view.activities;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.forms.Components;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.Form;
+import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.presenter.FormDisplayActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
+import com.octopusbjsindia.view.fragments.FormWebviewFragment;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 
@@ -33,15 +38,26 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_display);
-        //Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         if (getIntent().getExtras() != null) {
             String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
-
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
-            //FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
+            FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
             boolean isPartialForm = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
+
+            Fragment webViewFragment = new FormWebviewFragment();
+            bundle.putString("Weblink", "http://13.235.124.3:8060/");
+            bundle.putString("FormId", formId);
+            bundle.putSerializable("FormName", formData.getName());
+            webViewFragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fTransaction = fragmentManager.beginTransaction();
+            fTransaction.replace(R.id.viewpager, webViewFragment).addToBackStack(null)
+                    .commit();
+
 
 //            if (formData == null) {
 ////                if (Util.isConnected(getContext())) {
