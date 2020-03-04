@@ -79,7 +79,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         super.onResume();
     }
 
-    private void setupFormElements(final List<Elements> formDataArrayList, String formId) {
+    private void setupFormElements(final List<Elements> formDataArrayList) {
         for (Elements element : formDataArrayList) {
             if (element != null && !element.getType().equals("")) {
                 String formDataType = element.getType();
@@ -94,7 +94,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
-                        bundle.putSerializable("", element);
+                        bundle.putSerializable("Element", element);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
@@ -116,7 +116,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
         formDataArrayList = components.getPages().get(0).getElements();
         if (formDataArrayList != null) {
-            setupFormElements(formDataArrayList, formModel.getData().getId());
+            //setupFormElements(formDataArrayList, formModel.getData().getId());
+            setupFormElements(formDataArrayList);
         }
     }
 
