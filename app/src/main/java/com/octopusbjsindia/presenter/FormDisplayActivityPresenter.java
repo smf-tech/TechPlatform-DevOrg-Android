@@ -63,7 +63,7 @@ public class FormDisplayActivityPresenter implements APIPresenterListener {
                 if (requestID.equalsIgnoreCase(FormDisplayActivityPresenter.GET_FORM_SCHEMA)) {
                     Components components = PlatformGson.getPlatformGsonInstance().fromJson(response,
                             Components.class);
-                    fragmentWeakReference.get().parseFormSchema(components);
+                    //fragmentWeakReference.get().parseFormSchema(components);
                 }
             }
         } catch (Exception e) {

@@ -148,9 +148,9 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
                 Intent intent = new Intent(mContext, FormDisplayActivity.class);
                 if (childPosition == 0) {
-                    intent.putExtra("Weblink", "");
+                    intent.putExtra("Weblink", "http://13.235.124.3:8060/f1p1/dc3b0648-97bc-4107-89cc-3a74f1b4260f");
                 } else {
-                    intent.putExtra("Weblink", "");
+                    intent.putExtra("Weblink", "http://13.235.124.3:8060/f2p1/1ae0ed89-adec-43e7-a8bd-eef3912d2afc");
                 }
                 intent.putExtra(Constants.PM.FORM_ID, data.getId());
                 mContext.startActivity(intent);
