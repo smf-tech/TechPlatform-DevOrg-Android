@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.LocaleData;
+import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Util;
@@ -33,6 +34,7 @@ public class FormWebviewFragment extends Fragment {
 
     private String weblink, formId, formName;
     private WebView webview;
+    private FormData formData;
     private LocaleData localeData;
     private View webModuleFragmentView;
 
@@ -55,7 +57,7 @@ public class FormWebviewFragment extends Fragment {
         if (getArguments() != null) {
             weblink = getArguments().getString("Weblink");
             formId = getArguments().getString("FormId");
-            localeData = (LocaleData) getArguments().getSerializable("FormName");
+            formData = (FormData) getArguments().getSerializable("FormData");
         }
         webview = webModuleFragmentView.findViewById(R.id.webview);
         webview.loadUrl(weblink);
@@ -85,7 +87,8 @@ public class FormWebviewFragment extends Fragment {
                     data, Snackbar.LENGTH_LONG);
             FormResult result = new FormResult();
             result.setFormId(formId);
-            result.setFormNameLocale(localeData);
+            result.setFormNameLocale(formData.getName());
+            result.setFormCategoryLocale(formData.getCategory().getName());
             result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);

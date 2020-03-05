@@ -42,22 +42,22 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (getIntent().getExtras() != null) {
             String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
+            String webLink = getIntent().getExtras().getString("Weblink");
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
             boolean isPartialForm = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
             Fragment webViewFragment = new FormWebviewFragment();
-            bundle.putString("Weblink", "http://13.235.124.3:8060/");
+            bundle.putString("Weblink", webLink);
             bundle.putString("FormId", formId);
-            bundle.putSerializable("FormName", formData.getName());
+            bundle.putSerializable("FormData", formData);
             webViewFragment.setArguments(bundle);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fTransaction = fragmentManager.beginTransaction();
             fTransaction.replace(R.id.viewpager, webViewFragment).addToBackStack(null)
                     .commit();
-
 
 //            if (formData == null) {
 ////                if (Util.isConnected(getContext())) {
@@ -71,7 +71,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                formModel.setData(formData);
 //            }
         }
-        initView();
+        //initView();
     }
 
     private void initView() {
@@ -80,6 +80,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
         presenter.getFormSchema();
+
         //Components components = formModel.getData().getComponents();
 //        if (components == null) {
 //            return;
