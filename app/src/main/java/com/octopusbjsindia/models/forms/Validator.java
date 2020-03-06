@@ -33,6 +33,12 @@ public class Validator {
     @SerializedName("allowDigits")
     @Expose
     private Boolean isDigitAllowed;
+    @SerializedName("minCount")
+    @Expose
+    private Integer minCount;
+    @SerializedName("maxCount")
+    @Expose
+    private Integer maxCount;
 
     public String getType() {
         return type;
@@ -104,5 +110,21 @@ public class Validator {
 
     public void setRegex(String regex) {
         this.regex = regex;
+    }
+
+    public Integer getMinCount() {
+        return minCount;
+    }
+
+    public void setMinCount(Integer minCount) {
+        this.minCount = minCount;
+    }
+
+    public Integer getMaxCount() {
+        return maxCount;
+    }
+
+    public void setMaxCount(Integer maxCount) {
+        this.maxCount = maxCount;
     }
 }

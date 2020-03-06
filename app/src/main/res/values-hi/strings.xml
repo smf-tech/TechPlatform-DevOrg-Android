@@ -558,5 +558,7 @@
     <string name="event_content_screen_visit">Content Module Screen visited</string>
     <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
     <string name="type_of_beneficiary">Type of beneficiary</string>
+    <string name="none">None</string>
+    <string name="select_max">Can select max</string>
 
 </resources>
