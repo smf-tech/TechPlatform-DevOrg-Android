@@ -100,12 +100,20 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
 
-                    case Constants.FormsFactory.MATRIX_DYNAMIC:
+                    /*case Constants.FormsFactory.MATRIX_DYNAMIC:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("", element);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question 3");
+                        break;*/
+                    case "matrixdropdown":
+                        Fragment matrixQuestionFragment = new MatrixQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        matrixQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
+
+
 
                 }
 

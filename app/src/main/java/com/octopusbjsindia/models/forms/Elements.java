@@ -58,7 +58,20 @@ public class Elements implements Serializable {
     private List<Validator> validators = null;
     @SerializedName("rows")
     @Expose
-    private Integer rows;
+    private transient Integer rows;
+
+    public List<String> getRowsList() {
+        return rowsList;
+    }
+
+    public void setRowsList(List<String> rowsList) {
+        this.rowsList = rowsList;
+    }
+
+    @SerializedName("rows")
+    @Expose
+    private List<String> rowsList = null;
+
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
