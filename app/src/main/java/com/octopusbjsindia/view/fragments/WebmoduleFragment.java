@@ -50,16 +50,12 @@ public class WebmoduleFragment extends Fragment {
             webModule_name = getArguments().getString("Webmodule_name");
         }
         webview = webModuleFragmentView.findViewById(R.id.webview);
-        webview.loadUrl(weblink);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
-        settings.setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true);
-        if (!(Util.isConnected(getActivity())))
-            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webview.setWebContentsDebuggingEnabled(true);
         webview.setWebViewClient(new MyWebViewClient());
+        webview.loadUrl(weblink);
     }
 
     public class WebAppInterface {

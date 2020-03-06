@@ -14,7 +14,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.octopusbjsindia.view.activities.WebviewFormDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +146,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 //                intent.putExtra(Constants.PM.FORM_ID, data.getId());
 //                mContext.startActivity(intent);
 
-                Intent intent = new Intent(mContext, FormDisplayActivity.class);
+                Intent intent = new Intent(mContext, WebviewFormDisplayActivity.class);
                 if (childPosition == 0) {
                     intent.putExtra("Weblink", "http://13.235.124.3:8060/f1p1/dc3b0648-97bc-4107-89cc-3a74f1b4260f");
                 } else {
