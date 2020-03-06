@@ -1,6 +1,8 @@
 package com.octopusbjsindia.view.activities;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -62,6 +64,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private void initView() {
         presenter = new FormDisplayActivityPresenter(this);
         vpFormElements = findViewById(R.id.viewpager);
+//        vpFormElements.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return true;
+//            }
+//        });
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
         presenter.getFormSchema();
@@ -129,9 +137,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
         formDataArrayList = components.getPages().get(0).getElements();
         if (formDataArrayList != null) {
-            //setupFormElements(formDataArrayList, formModel.getData().getId());
             setupFormElements(formDataArrayList);
         }
+    }
+
+    public void goNext(HashMap<String, String> hashMap){
+        formAnswersMap.putAll(hashMap);
+        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
+    }
+
+    public void goPrevious(){
+        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()-1));
     }
 
     @Override

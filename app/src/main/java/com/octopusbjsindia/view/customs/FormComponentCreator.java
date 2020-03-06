@@ -347,14 +347,14 @@ public class FormComponentCreator implements DropDownValueSelectListener, Matrix
                 Util.setInputType(fragment.get().getContext(), formData.getInputType(), textInputField);
             }
 
-            if (formData.getRows() != null && formData.getRows() > 0) {
-                textInputField.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                textInputField.setMaxLines(formData.getRows());
-                textInputField.setHorizontallyScrolling(false);
-                textInputField.setVerticalScrollBarEnabled(true);
-            } else {
-                textInputField.setMaxLines(1);
-            }
+//            if (formData.getRows() != null && formData.getRows() > 0) {
+//                textInputField.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+//                textInputField.setMaxLines(formData.getRows());
+//                textInputField.setHorizontallyScrolling(false);
+//                textInputField.setVerticalScrollBarEnabled(true);
+//            } else {
+//                textInputField.setMaxLines(1);
+//            }
 
             textInputField.addTextChangedListener(new TextWatcher() {
 

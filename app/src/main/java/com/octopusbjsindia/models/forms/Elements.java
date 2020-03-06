@@ -56,17 +56,12 @@ public class Elements implements Serializable {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
+    //    @SerializedName("rows")
+//    @Expose
+//    private Integer rows;
     @SerializedName("rows")
     @Expose
     private transient Integer rows;
-
-    public List<String> getRowsList() {
-        return rowsList;
-    }
-
-    public void setRowsList(List<String> rowsList) {
-        this.rowsList = rowsList;
-    }
 
     @SerializedName("rows")
     @Expose
@@ -81,6 +76,12 @@ public class Elements implements Serializable {
     @SerializedName("keyDuplicationError")
     @Expose
     private LocaleData keyDuplicationError;
+    @SerializedName("hasOther")
+    @Expose
+    private Boolean hasOther;
+    @SerializedName("hasNone")
+    @Expose
+    private Boolean hasNone;
 
     public Boolean getReadOnly() {
         return readOnly;
@@ -218,12 +219,28 @@ public class Elements implements Serializable {
         this.mAnswer = answer;
     }
 
-    public Integer getRows() {
-        return rows;
+//    public Integer getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(Integer rows) {
+//        this.rows = rows;
+//    }
+
+//    public List<String> getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(List<String> rows) {
+//        this.rows = rows;
+//    }
+
+    public List<String> getRowsList() {
+        return rowsList;
     }
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
+    public void setRowsList(List<String> rowsList) {
+        this.rowsList = rowsList;
     }
 
     public String getKeyName() {
@@ -240,6 +257,22 @@ public class Elements implements Serializable {
 
     public void setKeyDuplicationError(LocaleData keyDuplicationError) {
         this.keyDuplicationError = keyDuplicationError;
+    }
+
+    public Boolean getHasOther() {
+        return hasOther;
+    }
+
+    public void setHasOther(Boolean hasOther) {
+        this.hasOther = hasOther;
+    }
+
+    public Boolean getHasNone() {
+        return hasNone;
+    }
+
+    public void setHasNone(Boolean hasNone) {
+        this.hasNone = hasNone;
     }
 }
 

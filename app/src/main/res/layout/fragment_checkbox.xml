@@ -1,14 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/dimen_05dp"
+    android:orientation="vertical"
     tools:context=".view.fragments.formComponents.CheckboxFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/ly_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Checkbox fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/ly_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/tv_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textSize="@dimen/text_size_16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_checkbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_question"
+                    android:layout_centerVertical="true" />
+
+                <CheckBox
+                    android:id="@+id/cb_none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rv_checkbox"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="@string/none"
+                    android:visibility="gone" />
+
+                <CheckBox
+                    android:id="@+id/cb_other"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cb_none"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="@string/other"
+                    android:visibility="gone" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_other"
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cb_other"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:visibility="gone"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/et_other"
+                        style="@style/RegistrationEditTextLayout"
+                        android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                        android:hint="@string/other"
+                        android:inputType="text|textCapWords"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/ly_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/bt_previous"
+                    style="@style/AppStyleBorderButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    android:text="@string/previous" />
+
+                <Button
+                    android:id="@+id/bt_next"
+                    style="@style/AppStyleBorderButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    android:text="@string/next" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
