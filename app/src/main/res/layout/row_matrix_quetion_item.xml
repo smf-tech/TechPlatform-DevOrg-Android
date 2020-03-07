@@ -11,31 +11,33 @@
         android:layout_gravity="center_vertical"
         android:padding="@dimen/dimen_10dp"
         app:cardBackgroundColor="@color/white">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/row_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:padding="@dimen/dimen_05dp"
-            android:text="Row" />
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_matrix_question"
+            <TextView
+                android:id="@+id/row_title"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:padding="@dimen/dimen_05dp"
+                android:text="Row" />
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimen_05dp" />
-        </RelativeLayout>
+                android:visibility="visible">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_matrix_question"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dimen_05dp" />
+            </RelativeLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

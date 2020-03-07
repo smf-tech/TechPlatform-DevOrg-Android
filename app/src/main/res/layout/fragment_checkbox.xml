@@ -8,12 +8,12 @@
     android:orientation="vertical"
     tools:context=".view.fragments.formComponents.CheckboxFragment">
 
-<!--    <ScrollView-->
-<!--        android:id="@+id/ly_main"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/ly_main"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
 
-        <RelativeLayout
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -21,8 +21,7 @@
             <RelativeLayout
                 android:id="@+id/ly_question"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tv_question"
@@ -107,9 +106,9 @@
                     android:layout_weight="1"
                     android:text="@string/next" />
             </LinearLayout>
-        </RelativeLayout>
+    </RelativeLayout>
 
-<!--    </ScrollView>-->
+    <!--    </ScrollView>-->
 
 
 </LinearLayout>

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -42,7 +41,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         this.clickListener = clickListener;
 
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
-        for (int i = 0; i <columnList.size() ; i++) {
+        for (int i = 0; i < columnList.size(); i++) {
             columnListAnswers.add(true);
         }
 
@@ -62,7 +61,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         holder.toggleGroup2.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-           //     Log.d("isChecked", "isChecked-->" + RowName + " " + isChecked + "  checkedId " + checkedId);
+                //     Log.d("isChecked", "isChecked-->" + RowName + " " + isChecked + "  checkedId " + checkedId);
             }
         });
         holder.btn_no.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +69,8 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
             public void onClick(View view) {
                 holder.toggleGroup2.check(R.id.btn_no);
                 Log.d("isChecked", "isChecked-->" + RowName + "-" + "checkedId " + "btn_no" + position);
-                columnListAnswers.set(position,false);
-                clickListener.onItemClicked(rowPosition,columnListAnswers);
+                columnListAnswers.set(position, false);
+                clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
         holder.btn_yes.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +78,8 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
             public void onClick(View view) {
                 holder.toggleGroup2.check(R.id.btn_yes);
                 Log.d("isChecked", "isChecked-->" + RowName + "-" + "btn_yes" + "checkedId" + "btn_yes" + position);
-                columnListAnswers.set(position,true);
-                clickListener.onItemClicked(rowPosition,columnListAnswers);
+                columnListAnswers.set(position, true);
+                clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
 
@@ -95,7 +94,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     public interface OnRequestItemClicked {
         void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
     }
-
 
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
@@ -118,7 +116,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
             btn_no = itemView.findViewById(R.id.btn_no);
 
             itemView.setOnClickListener(v -> {
-                clickListener.onItemClicked(getAdapterPosition() ,columnListAnswers);
+                clickListener.onItemClicked(getAdapterPosition(), columnListAnswers);
             });
 
         }

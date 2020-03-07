@@ -56,7 +56,7 @@ public class Elements implements Serializable {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
-//    @SerializedName("rows")
+    //    @SerializedName("rows")
 //    @Expose
 //    private Integer rows;
     @SerializedName("rows")

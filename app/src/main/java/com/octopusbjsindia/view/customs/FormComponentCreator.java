@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;

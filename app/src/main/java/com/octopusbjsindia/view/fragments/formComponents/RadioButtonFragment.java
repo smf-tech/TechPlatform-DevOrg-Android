@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.form_component.RadioButtonData;
 import com.octopusbjsindia.models.forms.Choice;
@@ -60,6 +58,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
         tvQuetion.setText(element.getTitle().getDe());
 
+        list.clear();
         for (Choice obj : element.getChoices()) {
             RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getDe(), false);
             list.add(temp);
@@ -92,7 +91,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 if (TextUtils.isEmpty(selected)) {
-                    Util.showToast("Please select some value",this);
+                    Util.showToast("Please select some value", this);
                     return;
                 } else {
                     hashMap.put(element.getName(), selected);

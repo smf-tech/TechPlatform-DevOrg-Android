@@ -40,11 +40,11 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.FormDisplayActivity"/>
+        <activity android:name=".view.activities.WebviewFormDisplayActivity"></activity>
         <activity
             android:name=".view.activities.CreateTrainerWorkshop"
             android:label="@string/title_activity_create_trainer_workshop"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
@@ -223,6 +223,10 @@
         <activity
             android:name=".view.activities.MachineWorkingDataListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.FormDisplayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

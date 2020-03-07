@@ -2,7 +2,6 @@ package com.octopusbjsindia.models.smartgirl;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.octopusbjsindia.models.events.Schedule;
 
 public class TrainerBachList {
 
@@ -150,7 +149,6 @@ public class TrainerBachList {
     public void setAdditional_master_trainer(Additional_master_trainer additional_master_trainer) {
         this.additional_master_trainer = additional_master_trainer;
     }
-
 
 
     public String getCreated_by() {

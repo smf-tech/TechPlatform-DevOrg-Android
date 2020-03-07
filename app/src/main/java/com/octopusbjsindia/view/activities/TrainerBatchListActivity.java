@@ -63,8 +63,6 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
 
-
-
 //progress loaders
 
     public void showProgressBar() {
@@ -123,8 +121,6 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                 break;
         }
     }
-
-
 
 
     public void showReceivedBatchList(TrainerBachListResponseModel trainerBachListResponseModel) {

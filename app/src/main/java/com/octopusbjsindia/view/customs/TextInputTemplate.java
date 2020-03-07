@@ -2,7 +2,6 @@ package com.octopusbjsindia.view.customs;
 
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;

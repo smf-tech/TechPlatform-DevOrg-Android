@@ -91,7 +91,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                Log.d("btn_loadnext", "Clicked-->"+new Gson().toJson(MatrixQuestionRequestJsonObject));
+                Log.d("btn_loadnext", "Clicked-->" + new Gson().toJson(MatrixQuestionRequestJsonObject));
                 ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:

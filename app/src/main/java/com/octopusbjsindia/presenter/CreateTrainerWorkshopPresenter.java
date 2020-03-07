@@ -137,6 +137,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CREATE_BATCH, requestJson, createBatchUrl);
     }
+
     public void editBatch(String requestJson) {
         final String createBatchUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SmartGirl.EDIT_BATCH_API);

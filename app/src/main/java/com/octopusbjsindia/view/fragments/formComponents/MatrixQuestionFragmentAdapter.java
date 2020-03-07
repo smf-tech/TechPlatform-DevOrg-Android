@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,23 +32,23 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
     private PreferenceHelper preferenceHelper;
     private MatrixQuestionFragment fragment;
 
-    public MatrixQuestionFragmentAdapter(MatrixQuestionFragment fragment,Context context, Elements elements, final OnRequestItemClicked clickListener) {
+    public MatrixQuestionFragmentAdapter(MatrixQuestionFragment fragment, Context context, Elements elements, final OnRequestItemClicked clickListener) {
         mContext = context;
         this.dataList = elements;
         this.clickListener = clickListener;
         this.fragment = fragment;
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
-        for (int i = 0; i <elements.getRowsList().size(); i++) {
+        for (int i = 0; i < elements.getRowsList().size(); i++) {
             JsonObject ColomJsonObject = new JsonObject();
-            for (int j = 0; j <elements.getColumns().size(); j++) {
-                ColomJsonObject.addProperty(elements.getColumns().get(j).getName(),true);
+            for (int j = 0; j < elements.getColumns().size(); j++) {
+                ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), true);
             }
-            requestJsonObject.add(elements.getRowsList().get(i).getValue(),ColomJsonObject);
+            requestJsonObject.add(elements.getRowsList().get(i).getValue(), ColomJsonObject);
         }
-        Log.d("JsonObject->",new Gson().toJson(requestJsonObject));
-        MatrixQuestionRequestJsonObject.add(this.dataList.getName(),requestJsonObject);
-        Log.d("finalJsonObj->",new Gson().toJson(MatrixQuestionRequestJsonObject));
+        Log.d("JsonObject->", new Gson().toJson(requestJsonObject));
+        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 
@@ -65,7 +64,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
         holder.row_title.setText(dataList.getRowsList().get(position).getValue());
 
         matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(mContext, dataList.getColumns(),
-                this, dataList.getRowsList().get(position).getValue(),position);
+                this, dataList.getRowsList().get(position).getValue(), position);
         holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
 
     }
@@ -79,16 +78,16 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
         Log.d("onItemClicked", "onItemClicked-->" + pos);
         JsonObject ColomJsonObject = new JsonObject();
-        for (int j = 0; j <dataList.getColumns().size(); j++) {
-            ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(),columnListAnswers.get(j));
+        for (int j = 0; j < dataList.getColumns().size(); j++) {
+            ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), columnListAnswers.get(j));
         }
-        Log.d("JsonObjectAdapter->",new Gson().toJson(columnListAnswers));
+        Log.d("JsonObjectAdapter->", new Gson().toJson(columnListAnswers));
         //clickListener.onItemClicked(pos);
 
-        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(),ColomJsonObject);
-        Log.d("JsonObjectfinal->",new Gson().toJson(requestJsonObject));
-        MatrixQuestionRequestJsonObject.add(this.dataList.getName(),requestJsonObject);
-        Log.d("finalJsonObj->",new Gson().toJson(MatrixQuestionRequestJsonObject));
+        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), ColomJsonObject);
+        Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
+        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 

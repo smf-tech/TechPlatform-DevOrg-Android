@@ -26,7 +26,6 @@ public class TrainerBachListResponseModel {
     }
 
 
-
     public String getMessage() {
         return message;
     }

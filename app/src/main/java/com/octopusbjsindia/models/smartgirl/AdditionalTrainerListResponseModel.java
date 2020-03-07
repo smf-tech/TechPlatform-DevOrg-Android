@@ -26,7 +26,6 @@ public class AdditionalTrainerListResponseModel {
     }
 
 
-
     public String getMessage() {
         return message;
     }

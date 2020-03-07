@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,12 +46,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     SmartGirlCategoryResponseModel smartGirlCategoryResponseModel;
     //------
     public EditText tv_startdate, tv_enddate;
-    public EditText et_select_state_trainer,et_select_district_trainer;
+    public EditText et_select_state_trainer, et_select_district_trainer;
     public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries;
-    public String et_select_program_str ="", et_workshop_category_str ="", et_select_state_str ="", et_select_district_str ="", et_select_city_str ="", et_select_venue_str ="", et_traner_name_str ="", et_traner_additional_str ="", et_total_beneficiaries__str ="";
-    public String et_select_state_str_trainer,et_select_district_str_trainer;
+    public String et_select_program_str = "", et_workshop_category_str = "", et_select_state_str = "", et_select_district_str = "", et_select_city_str = "", et_select_venue_str = "", et_traner_name_str = "", et_traner_additional_str = "", et_total_beneficiaries__str = "";
+    public String et_select_state_str_trainer, et_select_district_str_trainer;
     public CreateTrainerWorkshopPresenter presenter;
-    private Button btn_create_batch,btn_cancel;
+    private Button btn_create_batch, btn_cancel;
     //----declaration
     private RelativeLayout progressBar;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -120,7 +119,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
             Toast.makeText(CreateTrainerWorkshop.this, "request to edit batch.", Toast.LENGTH_LONG).show();
             isforEdit = true;
             setEditDataToFields();
-        }else {
+        } else {
             isforEdit = false;
         }
     }
@@ -133,10 +132,10 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         switch (v.getId()) {
 
             case R.id.btn_create_batch:
-                if (isAllInputsValid()){
-                    if (isforEdit){
+                if (isAllInputsValid()) {
+                    if (isforEdit) {
                         editBatch();
-                    }else {
+                    } else {
                         createBatch();
                     }
                 }
@@ -175,7 +174,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-                //for trainer-
+            //for trainer-
             case R.id.et_select_state_trainer:
                 CustomSpinnerDialogClass csdState_trainer = new CustomSpinnerDialogClass(this, this,
                         "Select State trainer", stateList, false);
@@ -496,6 +495,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         //presenter.createBatch(paramjson);
         presenter.editBatch(paramjson);
     }
+
     public void createBatch() {
         String paramjson = new Gson().toJson(getCreateBatchReqJson());
         //presenter.createBatch(paramjson);
@@ -505,9 +505,9 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     public JsonObject getCreateBatchReqJson() {
 
         JsonObject requestObject = new JsonObject();
-        if (isforEdit){
+        if (isforEdit) {
             requestObject.addProperty("batch_id", "");
-        }else {
+        } else {
             requestObject.addProperty("batch_id", "");
         }
         requestObject.addProperty("batch_category_id", et_workshop_category_str);
@@ -515,13 +515,13 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         requestObject.addProperty("district_id", et_select_district_str);
         requestObject.addProperty("city", et_select_city.getText().toString());
         requestObject.addProperty("venue", et_select_venue.getText().toString());
-        requestObject.addProperty("startDate",Util.getDateInepoch(tv_startdate.getText().toString()));
-        requestObject.addProperty("endDate",Util.getDateInepoch(tv_enddate.getText().toString()));
+        requestObject.addProperty("startDate", Util.getDateInepoch(tv_startdate.getText().toString()));
+        requestObject.addProperty("endDate", Util.getDateInepoch(tv_enddate.getText().toString()));
         requestObject.addProperty("total_praticipants", et_total_beneficiaries.getText().toString());
         JsonObject trainerObject = new JsonObject();
-        trainerObject.addProperty("state_id","5e2eb9b6385c23393400741a");
-        trainerObject.addProperty("district_id","5e2eb9e6385c23393400741d");
-        trainerObject.addProperty("user_id","5e2ebdce42d73f03fe6ab142");
+        trainerObject.addProperty("state_id", "5e2eb9b6385c23393400741a");
+        trainerObject.addProperty("district_id", "5e2eb9e6385c23393400741d");
+        trainerObject.addProperty("user_id", "5e2ebdce42d73f03fe6ab142");
 
         requestObject.add("additional_master_trainer", trainerObject);
 
@@ -529,12 +529,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         return requestObject;
     }
 
-    public JsonObject getAdditionalTrainerReqJson(){
+    public JsonObject getAdditionalTrainerReqJson() {
 
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("project_id", "5e2eb798385c233934007414");
-        requestObject.addProperty("state_id","5e58c53dfcba8f309f672b43");
-        requestObject.addProperty("district_id","");// et_select_district_str_trainer);
+        requestObject.addProperty("state_id", "5e58c53dfcba8f309f672b43");
+        requestObject.addProperty("district_id", "");// et_select_district_str_trainer);
 
         return requestObject;
     }
@@ -546,11 +546,9 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
         if (TextUtils.isEmpty(et_workshop_category_str)) {
             msg = "Please select batch category";//getResources().getString(R.string.msg_enter_name);
-        } else
-        if (TextUtils.isEmpty(et_select_state_str)) {
+        } else if (TextUtils.isEmpty(et_select_state_str)) {
             msg = "Please select state";//getResources().getString(R.string.msg_enter_name);
-        } else
-        if (TextUtils.isEmpty(et_select_district_str)) {
+        } else if (TextUtils.isEmpty(et_select_district_str)) {
             msg = "Please select district.";//getResources().getString(R.string.msg_enter_proper_date);
         } else if (et_select_city.getText().toString().trim().length() == 0) {
             msg = "Please select the city.";//getResources().getString(R.string.msg_enter_proper_date);
@@ -576,7 +574,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     }
 
     public void showTrainerList(String response) {
-        Log.d("TAG","TrainerList response:- " + response);
+        Log.d("TAG", "TrainerList response:- " + response);
         AdditionalTrainerListResponseModel additionalTrainerListResponseModel
                 = new Gson().fromJson(response, AdditionalTrainerListResponseModel.class);
         if (additionalTrainerListResponseModel != null && !additionalTrainerListResponseModel.getTrainerListResponseList().isEmpty()) {

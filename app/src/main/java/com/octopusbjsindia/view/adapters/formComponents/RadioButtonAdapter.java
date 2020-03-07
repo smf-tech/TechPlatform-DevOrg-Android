@@ -1,19 +1,15 @@
 package com.octopusbjsindia.view.adapters.formComponents;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.form_component.RadioButtonData;
-import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 
 import java.util.ArrayList;

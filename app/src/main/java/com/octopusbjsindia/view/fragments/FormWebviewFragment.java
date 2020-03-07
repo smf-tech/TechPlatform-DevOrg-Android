@@ -21,12 +21,21 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
+import com.octopusbjsindia.models.LocaleData;
+import com.octopusbjsindia.models.forms.FormData;
+import com.octopusbjsindia.models.forms.FormResult;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Util;
 
-public class WebmoduleFragment extends Fragment {
+import java.util.UUID;
 
-    private String weblink, webModule_name;
+public class FormWebviewFragment extends Fragment {
+
+    private String weblink, formId, formName;
     private WebView webview;
+    private FormData formData;
+    private LocaleData localeData;
     private View webModuleFragmentView;
 
     @Override
@@ -35,10 +44,10 @@ public class WebmoduleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        webModuleFragmentView = inflater.inflate(R.layout.fragment_webmodule, container, false);
+        webModuleFragmentView = inflater.inflate(R.layout.fragment_form_webview, container, false);
         return webModuleFragmentView;
     }
 
@@ -48,15 +57,20 @@ public class WebmoduleFragment extends Fragment {
 
         if (getArguments() != null) {
             weblink = getArguments().getString("Weblink");
-            webModule_name = getArguments().getString("Webmodule_name");
+            formId = getArguments().getString("FormId");
+            formData = (FormData) getArguments().getSerializable("FormData");
         }
         webview = webModuleFragmentView.findViewById(R.id.webview);
+        webview.loadUrl(weblink);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
-        webview.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
+        webview.addJavascriptInterface(new FormWebviewFragment.WebAppInterface(getActivity()), "Android");
+        settings.setDomStorageEnabled(true);
+        settings.setAppCacheEnabled(true);
+        if (!(Util.isConnected(getActivity())))
+            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webview.setWebContentsDebuggingEnabled(true);
-        webview.setWebViewClient(new MyWebViewClient());
-        webview.loadUrl(weblink);
+        webview.setWebViewClient(new FormWebviewFragment.MyWebViewClient());
     }
 
     public class WebAppInterface {
@@ -72,7 +86,17 @@ public class WebmoduleFragment extends Fragment {
             //Get the string value to process
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     data, Snackbar.LENGTH_LONG);
-            this.data = data;
+            FormResult result = new FormResult();
+            result.setFormId(formId);
+            result.setFormNameLocale(formData.getName());
+            result.setFormCategoryLocale(formData.getCategory().getName());
+            result.setCreatedAt(Util.getCurrentTimeStamp());
+            String locallySavedFormID = UUID.randomUUID().toString();
+            result.set_id(locallySavedFormID);
+            result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
+            result.setRequestObject(data);
+
+            DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
         }
     }
 

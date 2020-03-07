@@ -23,7 +23,7 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
 
     public ChechBoxAdapter(CheckboxFragment mContext, List<Choice> list) {
         this.mContext = mContext;
-        this.list = (ArrayList<Choice>)list;
+        this.list = (ArrayList<Choice>) list;
     }
 
     @NonNull
@@ -58,16 +58,16 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            mContext.isOther = false;
-                            mContext.isNone = false;
-                            mContext.cbNone.setChecked(false);
-                            mContext.cbOther.setChecked(false);
-                            mContext.tiOther.setVisibility(View.GONE);
-                            mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
-                        } else {
-                            mContext.selectedList.remove(list.get(getAdapterPosition()).getValue());
-                        }
+                    if (isChecked) {
+                        mContext.isOther = false;
+                        mContext.isNone = false;
+                        mContext.cbNone.setChecked(false);
+                        mContext.cbOther.setChecked(false);
+                        mContext.tiOther.setVisibility(View.GONE);
+                        mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
+                    } else {
+                        mContext.selectedList.remove(list.get(getAdapterPosition()).getValue());
+                    }
 
                 }
             });

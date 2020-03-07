@@ -130,7 +130,6 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-
                 if (element.getValidators() != null && element.getValidators().size() > 0) {
                     int min = 1, max = element.getChoices().size();
                     if (element.getValidators().get(0).getMinCount() != null) {
@@ -144,14 +143,13 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                         createResponse();
                     } else {
                         Util.showToast("Please select minimum " + min +
-                                        " option and maximum " + max,
+                                        "and maximum " + max + "options.",
                                 this);
                         return;
                     }
                 } else {
                     createResponse();
                 }
-
                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 break;
         }

@@ -3,12 +3,10 @@ package com.octopusbjsindia.view.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.smartgirl.TrainerBachList;
-import com.octopusbjsindia.models.tm.TMUserLeaveApplications;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
@@ -73,11 +70,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_state_value,tv_district_value, tv_program_value,tv_category_value,tv_city_value,
-                tv_attendence_value,tv_startdate_value,tv_enddate_value,tv_additional_trainer_title;
+        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,
+                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_title;
         ImageView btnPopupMenu;
         PopupMenu popup;
-
 
 
         EmployeeViewHolder(View itemView) {
@@ -125,7 +121,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         if (Util.isConnected(mContext)) {
                                             Intent intent = new Intent(mContext, CreateTrainerWorkshop.class);
                                             intent.putExtra(Constants.Login.ACTION_EDIT, Constants.Login.ACTION_EDIT);
-                                            ((Activity)mContext).startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+                                            ((Activity) mContext).startActivityForResult(intent, Constants.Home.NEVIGET_TO);
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
