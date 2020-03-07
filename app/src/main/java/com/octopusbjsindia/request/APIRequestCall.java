@@ -137,7 +137,9 @@ public class APIRequestCall {
             }
         };
 
-        Response.ErrorListener getModulesErrorListener = error -> apiPresenterListener.onErrorListener(requestID, error);
+        Response.ErrorListener getModulesErrorListener = error -> {
+            apiPresenterListener.onErrorListener(requestID, error);
+        };
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,

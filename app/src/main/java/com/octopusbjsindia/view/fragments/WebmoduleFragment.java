@@ -28,6 +28,7 @@ public class WebmoduleFragment extends Fragment {
     private String weblink, webModule_name;
     private WebView webview;
     private View webModuleFragmentView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:padding="@dimen/dimen_10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_leave_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Trainer Name"
+                        android:textSize="@dimen/text_size_title_14" />
+
+                    <ImageView
+                        android:id="@+id/btn_popmenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text=""
+
+                        android:textSize="@dimen/text_size_12"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_02dp"
+                        android:src="@drawable/ic_options_icon"
+                        android:drawableEnd="@drawable/ic_options_icon" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_leave_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_leave_category"
+
+                    android:layout_marginStart="@dimen/dimen_01dp"
+                    android:text="Kishore"
+                    android:textSize="@dimen/text_size_title_14"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_state_title"
+                        android:text="State"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_state_value"
+                        android:layout_below="@+id/tv_state_title"
+                        android:text="value"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_district_title"
+                        android:text="District"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_district_value"
+                        android:layout_below="@+id/tv_district_title"
+                        android:text="value"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_program_title"
+                        android:text="Program"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_program_value"
+                        android:layout_below="@+id/tv_program_title"
+                        android:text="Smart Girl"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_category_title"
+                        android:text="Category"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_category_value"
+                        android:layout_below="@+id/tv_category_title"
+                        android:text="Community"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_city_title"
+                        android:text="City"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_city_value"
+                        android:layout_below="@+id/tv_city_title"
+                        android:text="Pune"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_attendence_title"
+                        android:text="Attendence"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_attendence_value"
+                        android:layout_below="@+id/tv_attendence_title"
+                        android:text="45"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_startdate_title"
+                        android:text="Start Date"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_startdate_value"
+                        android:layout_below="@+id/tv_startdate_title"
+                        android:text="01/01/1970"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_enddate_title"
+                        android:text="End Date"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_enddate_value"
+                        android:layout_below="@+id/tv_enddate_title"
+                        android:text="01/01/1970"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:padding="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_rounded_rect_gray"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_title"
+                        android:text="Trainer Name"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_value"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_below="@+id/tv_additional_trainer_title"
+                        android:text="Trainer"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:padding="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_rounded_rect_gray"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_two_title"
+                        android:text="Trainer Name"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_tow_value"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_below="@+id/tv_additional_trainer_two_title"
+                        android:text="Trainer"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+

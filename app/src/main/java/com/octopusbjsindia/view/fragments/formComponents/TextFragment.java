@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,28 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.form_component.RadioButtonData;
-import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.octopusbjsindia.view.adapters.formComponents.RadioButtonAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RadioButtonFragment extends Fragment implements View.OnClickListener {
+public class TextFragment extends Fragment implements View.OnClickListener {
 
     View view;
     private Elements element;
-
-    private RadioButtonAdapter adapter;
-    RecyclerView rvRadiobutton;
-    ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
+    private TextView tvQuetion;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +34,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_radio_button, container, false);
+        view = inflater.inflate(R.layout.fragment_text, container, false);
         return view;
     }
 
@@ -51,25 +43,25 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
 
         element = (Elements) getArguments().getSerializable("Element");
-        TextView tvQuetion = view.findViewById(R.id.tv_question);
 
-        rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
-
+        tvQuetion = view.findViewById(R.id.tv_question);
 
         tvQuetion.setText(element.getTitle().getDe());
 
-        for (Choice obj : element.getChoices()) {
-            RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getDe(), false);
-            list.add(temp);
-        }
-
-        adapter = new RadioButtonAdapter(this, list);
-
-        rvRadiobutton.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvRadiobutton.setAdapter(adapter);
-
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
+
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -80,20 +72,13 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.bt_next:
 
-                String selected = null;
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).isSelected()) {
-                        selected = list.get(i).getValue();
-                    }
-
-                }
-
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                if (TextUtils.isEmpty(selected)) {
+                if (TextUtils.isEmpty(tvQuetion.getText().toString())) {
+
                     Util.showToast("Please select some value", this);
                     return;
                 } else {
-                    hashMap.put(element.getName(), selected);
+                    hashMap.put(element.getName(), tvQuetion.getText().toString());
                 }
 
                 ((FormDisplayActivity) getActivity()).goNext(hashMap);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userregistrationmatrimony"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_gray_bg"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/rv_trainerbactchlistview"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_05dp" />
+    </RelativeLayout>
+</LinearLayout>

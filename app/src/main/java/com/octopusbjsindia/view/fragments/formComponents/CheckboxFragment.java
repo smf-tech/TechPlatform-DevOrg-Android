@@ -30,12 +30,13 @@ import java.util.HashMap;
 public class CheckboxFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     View view;
+    private Elements element;
     public boolean isNone = false, isOther = false;
     public CheckBox cbNone, cbOther;
     public TextInputLayout tiOther;
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
-    private Elements element;
+
     public ArrayList<String> selectedList = new ArrayList<String>();
     HashMap<String, String> hashMap = new HashMap<String, String>();
 
@@ -82,11 +83,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
         tvQuetion.setText(element.getTitle().getDe());
 
-        if (element.getValidators() != null && element.getValidators().size() > 0) {
-            adapter = new ChechBoxAdapter(this, element.getChoices());
-        } else {
-            adapter = new ChechBoxAdapter(this, element.getChoices());
-        }
+        adapter = new ChechBoxAdapter(this, element.getChoices());
 
         rvCheckbox.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvCheckbox.setAdapter(adapter);
@@ -133,7 +130,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-//                element.getValidators().get(0).getMaxCount();
+
                 if (element.getValidators() != null && element.getValidators().size() > 0) {
                     int min = 1, max = element.getChoices().size();
                     if (element.getValidators().get(0).getMinCount() != null) {
@@ -143,35 +140,18 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                         max = element.getValidators().get(0).getMaxCount();
                     }
 
-//                    if(min && max){
                     if (selectedList.size() <= max && selectedList.size() >= min) {
                         createResponse();
                     } else {
                         Util.showToast("Please select minimum " + min +
-                                        "and maximum " + max + "options.",
+                                        " option and maximum " + max,
                                 this);
                         return;
                     }
-//                    } else  if(min){
-//                        if (selectedList.size() >= element.getValidators().get(0).getMinCount()) {
-//                            createResponse();
-//                        } else {
-//                            Util.showToast("Please select maximum "+element.getValidators().get(0).getMaxCount()+" options",
-//                                    this);
-//                            return;
-//                        }
-//                    }  else  if(max){
-//                        if (selectedList.size() <= element.getValidators().get(0).getMaxCount()) {
-//                            createResponse();
-//                        } else {
-//                            Util.showToast("Please select minimum "+element.getValidators().get(0).getMinCount(),
-//                                    this);
-//                            return;
-//                        }
-//                    }
                 } else {
                     createResponse();
                 }
+
                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 break;
         }

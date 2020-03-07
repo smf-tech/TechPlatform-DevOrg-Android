@@ -25,273 +25,318 @@
             android:layout_margin="5dp"
             app:cardCornerRadius="@dimen/dimen_10dp">
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbarThumbVertical="@null"
-                android:layout_margin="20dp">
+                android:orientation="vertical"
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:orientation="vertical">
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_select_program"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Smart Girl" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_workshop_category"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Workshop category"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_select_state"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Select State"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_select_district"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Select District"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_select_city"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="Enter City"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_select_venue"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="Enter Venue"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_traner_name"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Trainer Name"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_traner_additional"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:longClickable="false"
-                            android:hint="Additional Trainer"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:scrollbarThumbVertical="@null"
+                    android:layout_margin="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-                        <!--Start Date-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tly_start_date"
-                            style="@style/textinputstyle"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tly_title"
-                            android:layout_weight="1"
-                            app:hintTextAppearance="@style/TextInputLayoutHint">
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/tv_startdate"
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
                                 style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_program"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
-                                android:hint="@string/task_start_date"
-                                android:inputType="date"
-                                android:longClickable="false"/>
-                            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                                android:longClickable="false"
+                                android:hint="Smart Girl" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!--End Date-->
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tly_end_date"
-                            style="@style/textinputstyle"
-                            android:layout_marginStart="@dimen/dimen_10dp"
-
-                            android:layout_marginTop="@dimen/dimen_10dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tly_title"
-                            android:layout_weight="1"
-                            app:hintTextAppearance="@style/TextInputLayoutHint">
+                            android:layout_marginTop="10dp">
 
-                            <EditText
-                                android:id="@+id/tv_enddate"
+                            <com.google.android.material.textfield.TextInputEditText
                                 style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_workshop_category"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
-                                android:hint="@string/task_start_date"
-                                android:inputType="date"
-                                android:longClickable="false"/>
-                            <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                                android:longClickable="false"
+                                android:hint="Workshop category"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_state"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Select State"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_district"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Select District"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_city"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:hint="Enter City"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_venue"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:hint="Enter Venue"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_traner_name"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Trainer Name"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--Additional trainer-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_state_trainer"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Select State" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_select_district_trainer"
+                                android:inputType="text|textCapWords"
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Select District" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_traner_additional"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:longClickable="false"
+                                android:hint="Additional Trainer"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+                            <!--Start Date-->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tly_start_date"
+                                style="@style/textinputstyle"
+                                android:layout_marginEnd="@dimen/dimen_10dp"
+                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tly_title"
+                                android:layout_weight="1"
+                                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                                <EditText
+                                    android:id="@+id/tv_startdate"
+                                    style="@style/RegistrationEditTextLayout"
+                                    android:clickable="false"
+                                    android:drawableEnd="@drawable/ic_cal_event"
+                                    android:focusable="false"
+                                    android:hint="@string/task_start_date"
+                                    android:inputType="date"
+                                    android:longClickable="false"/>
+                                <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--End Date-->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tly_end_date"
+                                style="@style/textinputstyle"
+                                android:layout_marginStart="@dimen/dimen_10dp"
+
+                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tly_title"
+                                android:layout_weight="1"
+                                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                                <EditText
+                                    android:id="@+id/tv_enddate"
+                                    style="@style/RegistrationEditTextLayout"
+                                    android:clickable="false"
+                                    android:drawableEnd="@drawable/ic_cal_event"
+                                    android:focusable="false"
+                                    android:hint="@string/task_start_date"
+                                    android:inputType="date"
+                                    android:longClickable="false"/>
+                                <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/et_total_beneficiaries"
+                                android:maxLength="2"
+                                android:inputType="number"
+                                android:hint="Total Beneficiaries"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
+                </ScrollView>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/RegistrationEditTextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/et_total_beneficiaries"
-                            android:inputType="text|textCapWords"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                            android:hint="Total Beneficiaries"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_cancel"
+                        style="@style/AppStyleBorderButton"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Cancel"
+                        android:textColor="@color/medium_grey" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_create_batch"
+                        style="@style/AppStyleButton"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Save" />
                 </LinearLayout>
-            </ScrollView>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
 
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_loadprevious"
-            style="@style/AppStyleBorderButton"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:textColor="@color/medium_grey"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_loadnext"
-            style="@style/AppStyleButton"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_weight="1"
-            android:text="Save"
-            />
-    </LinearLayout>
     <RelativeLayout
         android:id="@+id/ly_progress_bar"
         android:layout_width="match_parent"
