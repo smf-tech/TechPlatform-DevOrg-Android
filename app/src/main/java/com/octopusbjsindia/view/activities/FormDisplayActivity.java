@@ -67,6 +67,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_display);
         //Bundle bundle = new Bundle();
+        presenter = new FormDisplayActivityPresenter(this);
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
 
@@ -81,15 +82,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
 
             if (formData == null) {
-//                if (Util.isConnected(getContext())) {
-//                    formPresenter.getProcessDetails(formId);
-//                } else {
+                if (Util.isConnected(this)) {
+                    presenter.getFormSchema(formId);
+                } else {
 //                    view.findViewById(R.id.no_offline_form).setVisibility(View.VISIBLE);
 //                    setActionbar("");
-//                }
+                }
             } else {
                 formModel = new Form();
                 formModel.setData(formData);
+                Components components = formModel.getData().getComponents();
+                parseFormSchema(components);
             }
         }
         initView();
@@ -98,7 +101,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
         progressBar = findViewById(R.id.pb_gen_form_fragment);
-        presenter = new FormDisplayActivityPresenter(this);
         vpFormElements = findViewById(R.id.viewpager);
         vpFormElements.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -108,8 +110,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         });
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
-        presenter.getFormSchema();
-        //Components components = formModel.getData().getComponents();
+        //presenter.getFormSchema();
+
+
+//        Components components = formModel.getData().getComponents();
 //        if (components == null) {
 //            return;
 //        }
@@ -117,6 +121,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //        if (formDataArrayList != null) {
 //            setupFormElements(formDataArrayList, formModel.getData().getId());
 //        }
+
+
         gpsTracker = new GPSTracker(this);
         if (gpsTracker.isGPSEnabled(this, this)) {
             if (!gpsTracker.canGetLocation()) {
@@ -164,6 +170,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question 3");
                         break;*/
+
                     case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);

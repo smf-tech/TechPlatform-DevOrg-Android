@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -30,6 +31,7 @@ import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
@@ -86,9 +88,10 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
         this.savedForm = savedForm;
     }
 
-    public void getFormSchema() {
+    public void getFormSchema(String formId) {
         fragmentWeakReference.get().showProgressBar();
-        final String getFormSchemaUrl = "http://api.dxsurvey.com/api/Survey/getSurvey?surveyId=d8b0f086-39b0-43ca-b3de-964af845eb31";         //d8b0f086-39b0-43ca-b3de-964af845eb31";
+        //final String getFormSchemaUrl = "http://api.dxsurvey.com/api/Survey/getSurvey?surveyId=d8b0f086-39b0-43ca-b3de-964af845eb31";
+        final String getFormSchemaUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, formId);
         Log.d(TAG, "getFormSchemaUrl: url" + getFormSchemaUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
