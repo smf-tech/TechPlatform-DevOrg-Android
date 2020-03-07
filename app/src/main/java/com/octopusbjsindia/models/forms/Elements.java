@@ -79,6 +79,17 @@ public class Elements implements Serializable {
     @SerializedName("hasOther")
     @Expose
     private Boolean hasOther;
+    @SerializedName("rateMax")
+    @Expose
+    private Integer rateMax;
+    @SerializedName("minRateDescription")
+    @Expose
+    private MinRateDescription minRateDescription;
+    @SerializedName("maxRateDescription")
+    @Expose
+    private MaxRateDescription maxRateDescription;
+
+
     @SerializedName("hasNone")
     @Expose
     private Boolean hasNone;
@@ -275,6 +286,33 @@ public class Elements implements Serializable {
     public void setHasNone(Boolean hasNone) {
         this.hasNone = hasNone;
     }
+
+
+
+    public Integer getRateMax() {
+        return rateMax;
+    }
+
+    public void setRateMax(Integer rateMax) {
+        this.rateMax = rateMax;
+    }
+
+    public MinRateDescription getMinRateDescription() {
+        return minRateDescription;
+    }
+
+    public void setMinRateDescription(MinRateDescription minRateDescription) {
+        this.minRateDescription = minRateDescription;
+    }
+
+    public MaxRateDescription getMaxRateDescription() {
+        return maxRateDescription;
+    }
+
+    public void setMaxRateDescription(MaxRateDescription maxRateDescription) {
+        this.maxRateDescription = maxRateDescription;
+    }
+
 }
 
 
