@@ -45,7 +45,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
             for (int j = 0; j <elements.getColumns().size(); j++) {
                 ColomJsonObject.addProperty(elements.getColumns().get(j).getName(),true);
             }
-            requestJsonObject.add(elements.getRowsList().get(i),ColomJsonObject);
+            requestJsonObject.add(elements.getRowsList().get(i).getValue(),ColomJsonObject);
         }
         Log.d("JsonObject->",new Gson().toJson(requestJsonObject));
         MatrixQuestionRequestJsonObject.add(this.dataList.getName(),requestJsonObject);
@@ -62,10 +62,10 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-        holder.row_title.setText(dataList.getRowsList().get(position));
+        holder.row_title.setText(dataList.getRowsList().get(position).getValue());
 
         matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(mContext, dataList.getColumns(),
-                this, dataList.getRowsList().get(position),position);
+                this, dataList.getRowsList().get(position).getValue(),position);
         holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
 
     }
@@ -85,7 +85,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
         Log.d("JsonObjectAdapter->",new Gson().toJson(columnListAnswers));
         //clickListener.onItemClicked(pos);
 
-        requestJsonObject.add(this.dataList.getRowsList().get(pos),ColomJsonObject);
+        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(),ColomJsonObject);
         Log.d("JsonObjectfinal->",new Gson().toJson(requestJsonObject));
         MatrixQuestionRequestJsonObject.add(this.dataList.getName(),requestJsonObject);
         Log.d("finalJsonObj->",new Gson().toJson(MatrixQuestionRequestJsonObject));

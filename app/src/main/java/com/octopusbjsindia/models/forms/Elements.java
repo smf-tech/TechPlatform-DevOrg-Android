@@ -65,7 +65,7 @@ public class Elements implements Serializable {
 
     @SerializedName("rows")
     @Expose
-    private List<String> rowsList = null;
+    private List<Row> rowsList = null;
 
     @SerializedName("columns")
     @Expose
@@ -235,11 +235,12 @@ public class Elements implements Serializable {
 //        this.rows = rows;
 //    }
 
-    public List<String> getRowsList() {
+
+    public List<Row> getRowsList() {
         return rowsList;
     }
 
-    public void setRowsList(List<String> rowsList) {
+    public void setRowsList(List<Row> rowsList) {
         this.rowsList = rowsList;
     }
 
