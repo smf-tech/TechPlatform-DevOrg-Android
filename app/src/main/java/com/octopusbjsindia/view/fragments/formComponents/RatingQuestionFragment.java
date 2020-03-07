@@ -56,8 +56,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         btn_loadnext.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
 
-        ratingJsonObject = new JsonObject();
-        ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
+
 
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -77,6 +76,8 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 ratingBar.setStepSize(1);
                 txt_min_text.setText(elements.getMinRateDescription().getDe());
                 txt_max_text.setText(elements.getMaxRateDescription().getDe());
+                ratingJsonObject = new JsonObject();
+                ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
             }
         }
         // set quetion at top
