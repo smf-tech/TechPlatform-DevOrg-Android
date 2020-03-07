@@ -21,6 +21,7 @@ import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
+import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
 import java.util.HashMap;
@@ -98,6 +99,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
                     case Constants.FormsFactory.RATING_TEMPLATE:
+                        Fragment ratingQuestionFragment = new RatingQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        ratingQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(ratingQuestionFragment, "Question Title");
+
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
