@@ -162,7 +162,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putSerializable("Element", element);
                         ratingQuestionFragment.setArguments(bundle);
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
-
+                        break;
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);

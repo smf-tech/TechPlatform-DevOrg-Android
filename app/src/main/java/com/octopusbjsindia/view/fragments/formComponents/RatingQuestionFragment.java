@@ -81,7 +81,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
             }
         }
         // set quetion at top
-        text_title.setText(elements.getTitle().getDe());
+        text_title.setText(elements.getTitle().getDefaultValue());
 
         return view;
     }
