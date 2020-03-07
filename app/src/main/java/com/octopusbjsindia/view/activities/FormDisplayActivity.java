@@ -114,7 +114,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question 3");
                         break;*/
-                    case "matrixdropdown":
+                    case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);

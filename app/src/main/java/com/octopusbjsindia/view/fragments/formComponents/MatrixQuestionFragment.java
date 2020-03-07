@@ -26,7 +26,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
     //views
     public RecyclerView rv_matrix_question;
     public MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
-    HashMap<String, String> hashMap = new HashMap<String, String>();
+    HashMap<String, String> hashMap = new HashMap<>();
     JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
     TextView text_title;
     View view;
@@ -91,6 +91,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+
                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:

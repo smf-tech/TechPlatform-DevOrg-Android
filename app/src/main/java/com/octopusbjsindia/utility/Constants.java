@@ -221,6 +221,8 @@ public class Constants {
         public static final String FILE_TEMPLATE = "file";
         public static final String PANEL = "panel";
         public static final String MATRIX_DYNAMIC = "matrixdynamic";
+        public static final String MATRIX_DROPDOWN = "matrixdropdown";
+
     }
 
     public static final String callUsNumber = "+9120-660-50154";
