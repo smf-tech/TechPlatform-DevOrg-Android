@@ -1,14 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.octopusbjsindia.view.adapters.formComponents.ChechBoxAdapter;
 
 import java.util.HashMap;
 
@@ -67,7 +63,7 @@ public class TextFragment extends Fragment implements View.OnClickListener {
             etAnswer = view.findViewById(R.id.et_answer);
         }
 
-        tvQuetion.setText(element.getTitle().getDe());
+        tvQuetion.setText(element.getTitle().getDefaultValue());
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);

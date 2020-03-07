@@ -64,7 +64,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             }
         }
         // set quetion at top
-        text_title.setText(elements.getName());
+        text_title.setText(elements.getTitle().getDefaultValue());
 
         return view;
     }

@@ -3,9 +3,9 @@ package com.octopusbjsindia.view.activities;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,9 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -49,7 +49,6 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -79,6 +78,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         setContentView(R.layout.activity_form_display);
 
         tvTitle = findViewById(R.id.toolbar_title);
+        vpFormElements = findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        vpFormElements.setAdapter(adapter);
 
         //Bundle bundle = new Bundle();
         presenter = new FormDisplayActivityPresenter(this);
@@ -103,6 +105,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                    setActionbar("");
                 }
             } else {
+                presenter.getFormSchema(formId);
                 formModel = new Form();
                 formModel.setData(formData);
                 Components components = formModel.getData().getComponents();
@@ -115,15 +118,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
         progressBar = findViewById(R.id.pb_gen_form_fragment);
-        vpFormElements = findViewById(R.id.viewpager);
         vpFormElements.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        vpFormElements.setAdapter(adapter);
         //presenter.getFormSchema();
 
 

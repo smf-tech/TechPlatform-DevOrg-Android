@@ -81,7 +81,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
             cbOther.setVisibility(View.GONE);
         }
 
-        tvQuetion.setText(element.getTitle().getDe());
+        tvQuetion.setText(element.getTitle().getDefaultValue());
 
         adapter = new ChechBoxAdapter(this, element.getChoices());
 

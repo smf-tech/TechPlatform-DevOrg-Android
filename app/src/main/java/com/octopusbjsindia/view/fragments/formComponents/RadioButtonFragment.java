@@ -56,11 +56,11 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
 
 
-        tvQuetion.setText(element.getTitle().getDe());
+        tvQuetion.setText(element.getTitle().getDefaultValue());
 
         list.clear();
         for (Choice obj : element.getChoices()) {
-            RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getDe(), false);
+            RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getDefaultValue(), false);
             list.add(temp);
         }
 
