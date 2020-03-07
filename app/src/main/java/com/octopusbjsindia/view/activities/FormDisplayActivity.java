@@ -234,7 +234,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 }
             }
         }
-
     }
 
     public void goPrevious() {
@@ -374,6 +373,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        this.finish();
     }
 
     public void enableSubmitButton(boolean isEnable) {
