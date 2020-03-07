@@ -21,17 +21,17 @@ import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
     //views
-    public RecyclerView rv_matrix_question;
-    public MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
-    HashMap<String, String> hashMap = new HashMap<>();
-    JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
-    TextView text_title;
-    View view;
+    private RecyclerView rv_matrix_question;
+    private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
+    private HashMap<String, String> hashMap = new HashMap<>();
+    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
+    private TextView text_title;
+    private View view;
     private Elements elements;
-    private Button btn_loadnext, btn_loadprevious;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_matrix_question, container, false);
         text_title = view.findViewById(R.id.text_title);
-        btn_loadnext = view.findViewById(R.id.btn_loadnext);
-        btn_loadprevious = view.findViewById(R.id.btn_loadprevious);
+        Button btn_loadnext = view.findViewById(R.id.btn_loadnext);
+        Button btn_loadprevious = view.findViewById(R.id.btn_loadprevious);
         rv_matrix_question = view.findViewById(R.id.rv_matrix_question);
 
         btn_loadnext.setOnClickListener(this);
@@ -91,12 +91,12 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-
-                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                Log.d("btn_loadnext", "Clicked-->"+new Gson().toJson(MatrixQuestionRequestJsonObject));
+                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
-                ((FormDisplayActivity) getActivity()).goPrevious();
+                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goPrevious();
                 break;
         }
     }

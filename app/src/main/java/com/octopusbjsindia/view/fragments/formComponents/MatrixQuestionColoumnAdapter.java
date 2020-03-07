@@ -57,7 +57,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-        holder.column_name.setText(columnList.get(position).getName());
+        holder.column_name.setText(columnList.get(position).getTitle().getDe());
 
         holder.toggleGroup2.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override

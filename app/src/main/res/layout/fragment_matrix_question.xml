@@ -48,19 +48,19 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_weight="1"
-                android:text="Previous"
+                android:text="@string/previous"
                 android:textColor="@color/medium_grey"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"
-                style="@style/AppStyleButton"
+                style="@style/AppStyleBorderButton"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_weight="1"
-                android:text="Next"
+                android:text="@string/next"
                 />
         </LinearLayout>
 
