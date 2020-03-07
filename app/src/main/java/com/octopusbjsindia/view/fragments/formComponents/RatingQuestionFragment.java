@@ -28,13 +28,13 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
+
     private TextView text_title;
     private View view;
     private Elements elements;
     private RatingBar ratingBar;
     private TextView txt_min_text,txt_max_text;
-    private JsonObject ratingJsonObject;
+    private JsonObject ratingJsonObject  = new JsonObject();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
