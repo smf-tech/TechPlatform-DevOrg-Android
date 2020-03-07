@@ -219,6 +219,10 @@
         <activity
             android:name=".view.activities.MachineWorkingDataListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.FormDisplayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

@@ -14,10 +14,10 @@ public class LocaleData implements Serializable {
     @SerializedName("default")
     @Expose
     private String en;
-    @SerializedName("nl")
+    @SerializedName("mr")
     @Expose
     private String mr;
-    @SerializedName("de")
+    @SerializedName("hi")
     @Expose
     private String hi;
     @SerializedName("de")
