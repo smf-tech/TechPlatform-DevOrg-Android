@@ -59,6 +59,14 @@ public class Elements implements Serializable {
 //    @SerializedName("rows")
 //    @Expose
 //    private Integer rows;
+    @SerializedName("rows")
+    @Expose
+    private transient Integer rows;
+
+    @SerializedName("rows")
+    @Expose
+    private List<Row> rowsList = null;
+
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
@@ -218,6 +226,23 @@ public class Elements implements Serializable {
 //    public void setRows(Integer rows) {
 //        this.rows = rows;
 //    }
+
+//    public List<String> getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(List<String> rows) {
+//        this.rows = rows;
+//    }
+
+
+    public List<Row> getRowsList() {
+        return rowsList;
+    }
+
+    public void setRowsList(List<Row> rowsList) {
+        this.rowsList = rowsList;
+    }
 
     public String getKeyName() {
         return keyName;

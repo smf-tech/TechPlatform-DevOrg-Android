@@ -19,14 +19,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.utility.Util;
 
 public class WebmoduleFragment extends Fragment {
 
     private String weblink, webModule_name;
     private WebView webview;
     private View webModuleFragmentView;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +50,6 @@ public class WebmoduleFragment extends Fragment {
         webview.loadUrl(weblink);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true);
-        if (!(Util.isConnected(getActivity())))
-            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webview.setWebContentsDebuggingEnabled(true);
         webview.setWebViewClient(new MyWebViewClient());
     }
 

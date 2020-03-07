@@ -19,6 +19,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
+import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
@@ -118,9 +119,21 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
 
-                    case Constants.FormsFactory.MATRIX_DYNAMIC:
-
+                    /*case Constants.FormsFactory.MATRIX_DYNAMIC:
+                        Fragment matrixQuestionFragment = new MatrixQuestionFragment();
+                        bundle.putSerializable("", element);
+                        matrixQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(matrixQuestionFragment, "Question 3");
+                        break;*/
+                    case Constants.FormsFactory.MATRIX_DROPDOWN:
+                        Fragment matrixQuestionFragment = new MatrixQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        matrixQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
+
+
+
                 }
 
 
