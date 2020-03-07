@@ -37,7 +37,7 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ChechBoxAdapter.ViewHolder holder, int position) {
         holder.checkBox.setText(list.get(position).getText().getDe());
-        if (mContext.selectedList.size() > 0 && mContext.selectedList.contains(list.get(position).getText().getDe())) {
+        if (mContext.selectedList.size() > 0 && mContext.selectedList.contains(list.get(position).getValue())) {
             holder.checkBox.setChecked(true);
         } else {
             holder.checkBox.setChecked(false);
@@ -64,9 +64,9 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
                             mContext.cbNone.setChecked(false);
                             mContext.cbOther.setChecked(false);
                             mContext.tiOther.setVisibility(View.GONE);
-                            mContext.selectedList.add(list.get(getAdapterPosition()).getText().getDe());
+                            mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
                         } else {
-                            mContext.selectedList.remove(list.get(getAdapterPosition()).getText().getDe());
+                            mContext.selectedList.remove(list.get(getAdapterPosition()).getValue());
                         }
 
                 }

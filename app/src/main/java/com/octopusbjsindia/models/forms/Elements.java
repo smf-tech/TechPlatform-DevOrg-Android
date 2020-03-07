@@ -56,12 +56,9 @@ public class Elements implements Serializable {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
-    //    @SerializedName("rows")
+//    @SerializedName("rows")
 //    @Expose
 //    private Integer rows;
-    @SerializedName("rows")
-    @Expose
-    private List<String> rows = null;
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
@@ -221,14 +218,6 @@ public class Elements implements Serializable {
 //    public void setRows(Integer rows) {
 //        this.rows = rows;
 //    }
-
-    public List<String> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<String> rows) {
-        this.rows = rows;
-    }
 
     public String getKeyName() {
         return keyName;

@@ -260,47 +260,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             }
         }
-//        if (viewType == 1) {
-//            if (isStructureAdd || isOperatorAdd) {
-//                fbSelect.setVisibility(View.VISIBLE);
-//            } else {
-//                fbSelect.setVisibility(View.GONE);
-//            }
-//        } else {
-//            if (isMachineAdd || isOperatorAdd) {
-//                fbSelect.setVisibility(View.VISIBLE);
-//            } else {
-//                fbSelect.setVisibility(View.INVISIBLE);
-//            }
-//        }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            rvDataList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                @Override
-//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                    if (dy > 0) {
-//                        fbSelect.hide();
-//                        fbCreate.hide();
-//                        fbCreateOperator.hide();
-//                    } else {
-//                        fbSelect.show();
-//                        if (isOperatorAdd) {
-//                            fbCreateOperator.show();
-//                        }
-//                        if (viewType == 1) {
-//                            if (isStructureAdd) {
-//                                fbCreate.show();
-//                            }
-//                        } else {
-//                            if (isMachineAdd) {
-//                                fbCreate.show();
-//                            }
-//                        }
-//                    }
-//                    super.onScrolled(recyclerView, dx, dy);
-//                }
-//            });
-//        }
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
