@@ -774,5 +774,6 @@
     <string name="type_of_beneficiary">Type of beneficiary</string>
     <string name="none">None</string>
     <string name="select_max">Can select max</string>
+    <string name="answer">Answer</string>
 
 </resources>

@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

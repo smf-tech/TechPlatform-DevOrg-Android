@@ -1,9 +1,17 @@
 package com.octopusbjsindia.view.activities;
 
+import android.app.ActionBar;
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -25,6 +33,7 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
@@ -35,10 +44,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private FormDisplayActivityPresenter presenter;
     HashMap<String, String> formAnswersMap = new HashMap<>();
 
+    TextView tvTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_display);
+
+        tvTitle = findViewById(R.id.toolbar_title);
+
         //Bundle bundle = new Bundle();
         if (getIntent().getExtras() != null) {
             String processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
@@ -49,17 +63,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             boolean isPartialForm = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
-//            if (formData == null) {
-////                if (Util.isConnected(getContext())) {
-////                    formPresenter.getProcessDetails(formId);
-////                } else {
-////                    view.findViewById(R.id.no_offline_form).setVisibility(View.VISIBLE);
-////                    setActionbar("");
-////                }
-//            } else {
-//                formModel = new Form();
-//                formModel.setData(formData);
-//            }
         }
         initView();
     }
@@ -104,21 +107,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         textFragment.setArguments(bundle);
                         adapter.addFragment(textFragment, "Question 1");
                         break;
-
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Fragment radioButtonFragment = new RadioButtonFragment();
                         bundle.putSerializable("Element", element);
                         radioButtonFragment.setArguments(bundle);
                         adapter.addFragment(radioButtonFragment, "Question 1");
                         break;
-
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
                         bundle.putSerializable("Element", element);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
-
                     /*case Constants.FormsFactory.MATRIX_DYNAMIC:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("", element);
@@ -148,22 +148,31 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
         formDataArrayList = components.getPages().get(0).getElements();
         if (formDataArrayList != null) {
+            tvTitle.setText(1+"/"+formDataArrayList.size());
             setupFormElements(formDataArrayList);
         }
+
     }
 
     public void goNext(HashMap<String, String> hashMap){
         formAnswersMap.putAll(hashMap);
-        if(TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf())){
-            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
+        if(formDataArrayList.size() == vpFormElements.getCurrentItem()+1){
+            showDialog(this,"Alert","Do you want to submit?","Save","Submit");
         } else {
-            String visible = formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf();
-            String quetion = visible.substring(visible.indexOf('{')+1,visible.indexOf('}'));
-            String selection = visible.substring(visible.indexOf("=")+3,visible.length()-1);
-            if(selection.equalsIgnoreCase(formAnswersMap.get(quetion))){
+            if(TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf())){
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
+                tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
             } else {
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
+                String visible = formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf();
+                String quetion = visible.substring(visible.indexOf('{')+1,visible.indexOf('}'));
+                String selection = visible.substring(visible.indexOf("=")+3,visible.length()-1);
+                if(selection.equalsIgnoreCase(formAnswersMap.get(quetion))){
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
+                    tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
+                } else {
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
+                    tvTitle.setText((vpFormElements.getCurrentItem()+2)+"/"+formDataArrayList.size());
+                }
             }
         }
 
@@ -201,6 +210,50 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     @Override
     public void closeCurrentActivity() {
 
+    }
+
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
 }
