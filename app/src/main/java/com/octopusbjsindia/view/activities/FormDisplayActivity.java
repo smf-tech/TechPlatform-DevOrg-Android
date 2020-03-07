@@ -190,19 +190,22 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     public void goNext(HashMap<String, String> hashMap) {
         formAnswersMap.putAll(hashMap);
-        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
-            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-        } else {
-            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
-            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
-            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
-            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+        if (formDataArrayList.size() > vpFormElements.getCurrentItem() + 1) {
+            if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
+                } else {
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                }
             }
-        }
+        } else {
 
+        }
     }
 
     public void goPrevious() {
