@@ -127,14 +127,12 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                 try {
                     Form form = PlatformGson.getPlatformGsonInstance().fromJson(response, Form.class);
                     if (form != null && form.getData() != null) {
-
                         FormDisplayActivity activity = fragmentWeakReference.get();
                         if (activity != null) {
                             DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
                             Log.d(TAG, "Form schema saved in database.");
                         }
                     }
-
                     fragmentWeakReference.get().parseFormSchema(form.getData().getComponents());
 //                    Gson gson = new Gson();
 //                    Components components = gson.fromJson(response,
