@@ -15,6 +15,9 @@ public class Choice implements Serializable {
     @SerializedName("value")
     @Expose
     private String value;
+    @SerializedName("imageLink")
+    @Expose
+    private String imageLink;
 
     public LocaleData getText() {
         return text;
@@ -46,5 +49,13 @@ public class Choice implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 }

@@ -42,6 +42,7 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
+import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
@@ -192,6 +193,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
+                        break;
+
+                    case Constants.FormsFactory.IMAGE_PICKER:
+                        Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        imagePickerQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(imagePickerQuestionFragment, "Question Title");
                         break;
 
 

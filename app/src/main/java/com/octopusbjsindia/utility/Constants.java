@@ -223,6 +223,7 @@ public class Constants {
         public static final String PANEL = "panel";
         public static final String MATRIX_DYNAMIC = "matrixdynamic";
         public static final String MATRIX_DROPDOWN = "matrixdropdown";
+        public static final String IMAGE_PICKER = "imagepicker";
 
     }
 
