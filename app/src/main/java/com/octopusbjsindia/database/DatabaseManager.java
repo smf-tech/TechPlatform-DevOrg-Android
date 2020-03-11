@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.octopusbjsindia.dao.AccessibleLocationDataDao;
 import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
 import com.octopusbjsindia.dao.FormResultDao;
@@ -274,6 +275,11 @@ public class DatabaseManager {
     public ContentDataDao getContentDataDao() {
         ContentDataDao contentDataDao = appDatabase.contentDataDao();
         return contentDataDao;
+    }
+
+    public AccessibleLocationDataDao getAccessibleLocationData() {
+        AccessibleLocationDataDao ssMasterDatabaseDao = appDatabase.accessibleLocationDataDao();
+        return ssMasterDatabaseDao;
     }
 
 }

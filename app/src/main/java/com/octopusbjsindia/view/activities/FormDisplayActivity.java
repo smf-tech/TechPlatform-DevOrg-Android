@@ -157,6 +157,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 String formDataType = element.getType();
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
+                    case Constants.FormsFactory.LOCATION_TEMPLATE:
+                        //check if location data of user's lower level is available or not
+
+
+                        break;
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
@@ -204,7 +209,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             tvTitle.setText(1+"/"+formDataArrayList.size());
             setupFormElements(formDataArrayList);
         }
-
     }
 
     public void goNext(HashMap<String, String> hashMap) {
