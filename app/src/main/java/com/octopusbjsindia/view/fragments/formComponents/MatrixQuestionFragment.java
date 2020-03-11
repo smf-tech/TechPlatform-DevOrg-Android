@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,11 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
             }
         }
+
+        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
+            String str = ((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName());
+        }
+
         // set quetion at top
         text_title.setText(elements.getTitle().getDefaultValue());
 

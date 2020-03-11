@@ -64,6 +64,14 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
             list.add(temp);
         }
 
+        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getText().equals(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
+                    list.get(i).setSelected(true);
+                }
+            }
+        }
+
         adapter = new RadioButtonAdapter(this, list);
 
         rvRadiobutton.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -86,7 +94,6 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
                     if (list.get(i).isSelected()) {
                         selected = list.get(i).getValue();
                     }
-
                 }
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
