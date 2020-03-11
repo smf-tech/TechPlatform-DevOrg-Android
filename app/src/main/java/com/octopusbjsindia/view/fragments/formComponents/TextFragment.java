@@ -65,6 +65,10 @@ public class TextFragment extends Fragment implements View.OnClickListener {
 
         tvQuetion.setText(element.getTitle().getDefaultValue());
 
+        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
+            etAnswer.setText(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()));
+        }
+
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 

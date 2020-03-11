@@ -62,7 +62,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ViewPagerAdapter adapter;
     private List<Elements> formDataArrayList;
     private FormDisplayActivityPresenter presenter;
-    HashMap<String, String> formAnswersMap = new HashMap<>();
+    public HashMap<String, String> formAnswersMap = new HashMap<>();
     //private FormActivityPresenter formPresenter;
     String processId;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
@@ -182,13 +182,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
-                    /*case Constants.FormsFactory.MATRIX_DYNAMIC:
-                        Fragment matrixQuestionFragment = new MatrixQuestionFragment();
-                        bundle.putSerializable("", element);
-                        matrixQuestionFragment.setArguments(bundle);
-                        adapter.addFragment(matrixQuestionFragment, "Question 3");
-                        break;*/
-                    case Constants.FormsFactory.MATRIX_DROPDOWN:
+                      case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);
@@ -245,6 +239,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goPrevious() {
+        tvTitle.setText((vpFormElements.getCurrentItem())+"/"+formDataArrayList.size());
         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
     }
 

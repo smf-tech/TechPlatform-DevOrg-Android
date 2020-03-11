@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,18 +57,6 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         btn_loadnext.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
 
-
-
-
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-
-                Log.d("ratingBar", "Clicked-->"+ ratingBar.getRating());
-                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
-            }
-        });
-
         //check for arguments
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
@@ -81,6 +70,22 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
             }
         }
+
+        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
+            ratingBar.setRating(Float.parseFloat(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName())));
+        }
+
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                Log.d("ratingBar", "Clicked-->"+ ratingBar.getRating());
+                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
+            }
+        });
+
+
         // set quetion at top
         text_title.setText(elements.getTitle().getDefaultValue());
 
