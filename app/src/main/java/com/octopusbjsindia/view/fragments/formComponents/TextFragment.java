@@ -218,7 +218,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        //Log.d("mvUserName_Phone", response);
+        Log.d("mvUserName_Phone", response);
         Gson gson = new Gson();
         MvUserNameResponseModel mvUserNameResponseModel = gson.fromJson(response, MvUserNameResponseModel.class);
         if (mvUserNameResponseModel!=null) {
