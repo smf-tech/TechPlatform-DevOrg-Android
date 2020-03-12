@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,6 +30,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TextFragment extends Fragment implements View.OnClickListener, APIDataListener {
 
@@ -61,6 +63,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         if (TextUtils.isEmpty(element.getInputType())) {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+            }
         } else if (element.getInputType().equals("date")) {
             view.findViewById(R.id.ti_answer).setVisibility(View.GONE);
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
@@ -92,20 +97,37 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
                     }
                 });
+
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"))) {
+                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"));
+                }
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"))) {
+                    et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"));
+                }
+
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
                 et_answer_name.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                }
             }
         } else {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+            }
         }
 
         tvQuetion.setText(element.getTitle().getDefaultValue());
 
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"))) {
+            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"));
+        }
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"))) {
+            et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"));
         }
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
@@ -124,6 +146,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         super.onDetach();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -143,14 +166,17 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 Util.showToast("Please enter some value", this);
                                 return;
                             } else {
-                                JsonObject ColomJsonObject = new JsonObject();
+                                /*JsonObject ColomJsonObject = new JsonObject();
                                 ColomJsonObject.addProperty("phone", etAnswer.getText().toString());
                                 ColomJsonObject.addProperty("name", et_answer_name.getText().toString());
                                 JsonObject finalJsonObjet = new JsonObject();
-                                finalJsonObjet.add(element.getName(),ColomJsonObject);
-                                hashMap.put(element.getName(), new Gson().toJson(finalJsonObjet));
+                                finalJsonObjet.add(element.getName(),ColomJsonObject);*/
+                                hashMap.put(element.getName()+"phone",etAnswer.getText().toString());
+                                hashMap.put(element.getName()+"name",et_answer_name.getText().toString());
                             }
-
+                            hashMap.entrySet().forEach((Map.Entry<String, String> entry) ->{
+                                System.out.println(entry.getKey() + " " + entry.getValue());
+                            });
                             ((FormDisplayActivity) getActivity()).goNext(hashMap);
 
                         }

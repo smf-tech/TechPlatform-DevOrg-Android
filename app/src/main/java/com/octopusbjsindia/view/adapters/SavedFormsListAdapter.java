@@ -18,6 +18,7 @@ import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormActivity;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.fragments.PendingFormsFragment;
 
 import java.util.ArrayList;
@@ -144,12 +145,20 @@ public class SavedFormsListAdapter extends BaseExpandableListAdapter {
                     final String formID = finalFormResult.getFormId();
                     final String processID = finalFormResult.get_id();
 
-                    Intent intent = new Intent(mContext, FormActivity.class);
+                    /*Intent intent = new Intent(mContext, FormActivity.class);
+                    intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                    intent.putExtra(Constants.PM.FORM_ID, formID);
+                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    intent.putExtra(Constants.PM.PARTIAL_FORM, true);
+                    mContext.startActivity(intent);*/
+
+                    Intent intent = new Intent(mContext, FormDisplayActivity.class);
                     intent.putExtra(Constants.PM.PROCESS_ID, processID);
                     intent.putExtra(Constants.PM.FORM_ID, formID);
                     intent.putExtra(Constants.PM.EDIT_MODE, true);
                     intent.putExtra(Constants.PM.PARTIAL_FORM, true);
                     mContext.startActivity(intent);
+
                 }
             } else {
                 Util.showToast(mContext.getString(R.string.approve_profile), mContext);
