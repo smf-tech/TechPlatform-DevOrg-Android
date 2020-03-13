@@ -322,7 +322,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
         if (isFirstpage){
-            view.findViewById(R.id.bt_previous).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
     }
 
@@ -524,7 +524,15 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                if(TextUtils.isEmpty(element.getName())){
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                } else {
+                    if (TextUtils.isEmpty(hashMap.get(element.getName()))) {
+                        Util.showToast("Please select above locations", getActivity());
+                    } else {
+                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                    }
+                }
                 break;
         }
     }

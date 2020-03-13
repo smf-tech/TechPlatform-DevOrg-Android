@@ -274,7 +274,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData.getLocationRequired()) {
             Elements locationElement = new Elements();
             locationElement.setType("location");
-            locationElement.setName("location");
+            locationElement.setName(formData.getLocationRequiredLevel());
             locationElement.setLocationRequiredLevel(formData.getLocationRequiredLevel());
 
             Gson gson = new Gson();
