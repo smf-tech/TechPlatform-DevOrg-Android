@@ -296,20 +296,20 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
-                tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
                 String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
                 String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
                 String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
                 if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-                    tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
-                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
                     }
                 }
@@ -318,14 +318,27 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goPrevious() {
-        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
+            tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+        } else {
+            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+                tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+            } else {
+                tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+            }
+        }
     }
 
 
     @Override
     public void onBackPressed() {
-        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard",true);
+        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard", true);
     }
 
     public void submitForm() {
@@ -568,10 +581,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             button1.setOnClickListener(v -> {
                 // Close dialog
 
-                if (discardFlag){
+                if (discardFlag) {
                     dialog.dismiss();
                     finish();
-                }else {
+                } else {
                     submitForm();
                     dialog.dismiss();
                 }

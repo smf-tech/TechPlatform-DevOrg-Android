@@ -420,6 +420,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case R.id.etCity:
+
                 if (cityList.size() > 0) {
                     CustomSpinnerDialogClass csdCity = new CustomSpinnerDialogClass(getActivity(), this,
                             "Select City", cityList, false);
