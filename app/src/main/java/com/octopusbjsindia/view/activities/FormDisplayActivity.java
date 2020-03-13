@@ -77,8 +77,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private List<Elements> formDataArrayList = new ArrayList<Elements>();
     private FormDisplayActivityPresenter presenter;
     public HashMap<String, String> formAnswersMap = new HashMap<>();
-    //private FormActivityPresenter formPresenter;
-    String processId;
+    private String processId;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
     private GPSTracker gpsTracker;
     private final String TAG = this.getClass().getSimpleName();
@@ -127,13 +126,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formModel = new Form();
                 formModel.setData(formData);
                 Components components = formModel.getData().getComponents();
-//                parseFormSchema(components);
                 parseFormSchema(formData);
 
-                //List<String> formResult = DatabaseManager.getDBInstance(this).getAllFormResults(formId);
                 FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
-                //a3ef3ff4-e1ec-4d97-bed4-de6bf142ca25
-                if (formResult!=null) {
+                if (formResult != null) {
                     Log.d("Result", new Gson().toJson(formResult));
                     try {
                         jsonToMap(new Gson().toJson(formResult));
@@ -155,15 +151,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         Iterator iterator = jObject.entrySet().iterator();
 
-        while (iterator.hasNext())  {
+        while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
             //processedJsonObject.add(entry.getKey(), entry.getValue());
-           // System.out.println("Key : "+entry.getKey());
-          //  System.out.println("map : "+entry.getValue());
+            // System.out.println("Key : "+entry.getKey());
+            //  System.out.println("map : "+entry.getValue());
             if (entry.getKey().equalsIgnoreCase("result")) {
                 JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), JsonObject.class);
                 Iterator entryIterator = jsonObject.entrySet().iterator();
-                while (entryIterator.hasNext())  {
+                while (entryIterator.hasNext()) {
                     Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
                     formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
                 }
@@ -270,7 +266,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
             Gson gson = new Gson();
             ArrayList<String> listFromGson = gson.fromJson(formData.getJurisdictions_(),
-                    new TypeToken<ArrayList<String>>() {}.getType());
+                    new TypeToken<ArrayList<String>>() {
+                    }.getType());
 
             jurisdictions.clear();
             jurisdictions.addAll(listFromGson);
@@ -303,8 +300,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
                     } else {
-                        tvTitle.setText((vpFormElements.getCurrentItem()+2)+"/"+formDataArrayList.size());
-                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
                     }
                 }
             }

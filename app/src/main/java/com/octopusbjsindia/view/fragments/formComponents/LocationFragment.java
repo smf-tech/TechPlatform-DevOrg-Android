@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -44,13 +45,14 @@ import java.util.List;
 public class LocationFragment extends Fragment implements View.OnClickListener, APIDataListener, CustomSpinnerListener {
 
     View view;
+    RelativeLayout progressBar;
     LocationFragmentPresenter presenter;
     Elements element;
     ArrayList<String> jurisdictions = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
 
 
-    String selectedCountry = "", selectedCountryId = "",selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
+    String selectedCountry = "", selectedCountryId = "", selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedCluster = "", selectedClusterId = "",
             selectedVillage = "", selectedVillageId = "", selectedSchool = "", selectedSchoolId = "";
     ArrayList<CustomSpinnerObject> countryList = new ArrayList<>();
@@ -76,6 +78,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_location, container, false);
         presenter = new LocationFragmentPresenter(this);
+        progressBar = view.findViewById(R.id.progress_bar);
         element = (Elements) getArguments().getSerializable("Element");
         jurisdictions.clear();
         jurisdictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
@@ -314,12 +317,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message,getActivity());
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        onFailureListener(requestID,error.getMessage());
     }
 
     @Override
@@ -334,12 +337,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showProgressBar() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
