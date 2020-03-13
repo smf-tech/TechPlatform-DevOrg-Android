@@ -302,18 +302,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goPrevious() {
-
-        if (vpFormElements.getCurrentItem() != 0) {
-            tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-        }else{
-            finish();
-        }
+        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
     }
 
     @Override
     public void onBackPressed() {
-        goPrevious();
+        super.onBackPressed();
     }
 
     public void submitForm() {
