@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -250,36 +251,68 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 }
             } else {
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
-                    view.findViewById(R.id.etCountry).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCountry).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCountry);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
-                    view.findViewById(R.id.etState).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etState).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etState);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
-                    view.findViewById(R.id.etDistrict).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etDistrict).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etDistrict);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
-                    view.findViewById(R.id.etCity).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCity).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCity);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-                    view.findViewById(R.id.etTaluka).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etTaluka).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etTaluka);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
-                    view.findViewById(R.id.etCluster).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCluster).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCluster);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-                    view.findViewById(R.id.etVillage).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etVillage).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etVillage);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
-                    view.findViewById(R.id.etSchool).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etSchool).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etSchool);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
+                    }
                     continue;
                 }
 
