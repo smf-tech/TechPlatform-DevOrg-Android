@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,6 +82,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     ArrayList<String> jurisdictions = new ArrayList<>();
 
     TextView tvTitle;
+    ImageView toolbar_back_action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +188,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 gpsTracker.showSettingsAlert();
             }
         }
+
+        findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -284,7 +293,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     public void goNext(HashMap<String, String> hashMap) {
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
@@ -298,7 +307,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -311,6 +320,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     public void goPrevious() {
         tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard",true);
     }
 
     public void submitForm() {
@@ -518,7 +533,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
-            btn2String) {
+            btn2String, boolean discardFlag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -552,8 +567,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
-                submitForm();
-                dialog.dismiss();
+
+                if (discardFlag){
+                    dialog.dismiss();
+                    finish();
+                }else {
+                    submitForm();
+                    dialog.dismiss();
+                }
             });
         }
 

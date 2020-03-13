@@ -214,7 +214,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         if (TextUtils.isEmpty(getUserMobileNumber())) {
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_empty));
             isInputValid = false;
-        } else if (getUserMobileNumber().trim().length() < 10 && getUserMobileNumber().trim().length() > 10){
+        } else if (getUserMobileNumber().trim().length() < 10 || getUserMobileNumber().trim().length() > 10){
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_invalid));
             isInputValid = false;
         } else if (et_answer_name.getText().toString().trim().length() == 0) {
