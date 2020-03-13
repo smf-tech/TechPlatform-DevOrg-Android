@@ -38,7 +38,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     private Elements element;
     private TextView tvQuetion;
     private EditText etAnswer, et_answer_name;
-
+    boolean isFirstpage =false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +57,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         super.onViewCreated(view, savedInstanceState);
 
         element = (Elements) getArguments().getSerializable("Element");
+        isFirstpage = getArguments().getBoolean("isFirstpage");
         textFragmentPresenter = new TextFragmentPresenter(this);
         tvQuetion = view.findViewById(R.id.tv_question);
 
@@ -145,6 +146,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
+        if (isFirstpage){
+            view.findViewById(R.id.bt_previous).setVisibility(View.INVISIBLE);
+        }
 
     }
 

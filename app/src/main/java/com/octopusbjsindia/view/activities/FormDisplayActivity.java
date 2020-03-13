@@ -66,7 +66,7 @@ import java.util.UUID;
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
     private Form formModel;
-    private ViewPager vpFormElements;
+    public ViewPager vpFormElements;
     private ViewPagerAdapter adapter;
     private List<Elements> formDataArrayList = new ArrayList<Elements>();
     private FormDisplayActivityPresenter presenter;
@@ -147,22 +147,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
-            //processedJsonObject.add(entry.getKey(), entry.getValue());
-            // System.out.println("Key : "+entry.getKey());
-            //  System.out.println("map : "+entry.getValue());
+
             if (entry.getKey().equalsIgnoreCase("result")) {
-                //JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), );
+
                 Gson gson = new Gson();
                 formAnswersMap.clear();
                 formAnswersMap.putAll(gson.fromJson(entry.getValue().getAsString(),
                         new TypeToken<HashMap<String, String>>() {
                         }.getType()));
-
-//                Iterator entryIterator = jsonObject.entrySet().iterator();
-//                while (entryIterator.hasNext())  {
-//                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
-//                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
-//                }
 
             }
         }
@@ -203,8 +195,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     private void setupFormElements(final List<Elements> formDataArrayList) {
+
         for (Elements element : formDataArrayList) {
+            boolean isFirstpage =false;
             if (element != null && !element.getType().equals("")) {
+                if (formDataArrayList.indexOf(element)==0){
+                    isFirstpage =true;
+                }
                 String formDataType = element.getType();
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
@@ -213,46 +210,53 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         Fragment locationFragment = new LocationFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putSerializable("jurisdictions", jurisdictions);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         locationFragment.setArguments(bundle);
                         adapter.addFragment(locationFragment, "");
                         break;
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         ratingQuestionFragment.setArguments(bundle);
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
                         break;
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         textFragment.setArguments(bundle);
                         adapter.addFragment(textFragment, "Question 1");
                         break;
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Fragment radioButtonFragment = new RadioButtonFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         radioButtonFragment.setArguments(bundle);
                         adapter.addFragment(radioButtonFragment, "Question 1");
                         break;
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
                     case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
 
-                    case Constants.FormsFactory.IMAGE_PICKER:
+                    /*case Constants.FormsFactory.IMAGE_PICKER:
                         Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
-                        break;
+                        break;*/
 
 
                 }
@@ -587,6 +591,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 } else {
                     submitForm();
                     dialog.dismiss();
+                    finish();
                 }
             });
         }

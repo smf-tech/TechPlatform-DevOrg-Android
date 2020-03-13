@@ -29,7 +29,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-
+    boolean isFirstpage =false;
     private TextView text_title;
     private View view;
     private Elements elements;
@@ -68,6 +68,11 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 txt_max_text.setText(elements.getMaxRateDescription().getDe());
                 ratingJsonObject = new JsonObject();
                 ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
+            }
+            isFirstpage = getArguments().getBoolean("isFirstpage");
+
+            if (isFirstpage){
+                view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
 

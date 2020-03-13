@@ -62,7 +62,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     ArrayList<CustomSpinnerObject> schoolList = new ArrayList<>();
 
     boolean isOffline = false;
-
+    boolean isFirstpage =false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +77,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         presenter = new LocationFragmentPresenter(this);
         progressBar = view.findViewById(R.id.progress_bar);
         element = (Elements) getArguments().getSerializable("Element");
+        isFirstpage = getArguments().getBoolean("isFirstpage");
         jurisdictions.clear();
         jurisdictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
 
@@ -320,6 +321,9 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
+        if (isFirstpage){
+            view.findViewById(R.id.bt_previous).setVisibility(View.INVISIBLE);
+        }
     }
 
     void getLocation(String selectedId, String JurisdictionLevel) {
