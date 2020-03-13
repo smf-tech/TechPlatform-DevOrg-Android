@@ -31,7 +31,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
-import com.octopusbjsindia.models.forms.Components;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.Form;
 import com.octopusbjsindia.models.forms.FormData;
@@ -77,9 +76,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-
     ArrayList<String> jurisdictions = new ArrayList<>();
-
     TextView tvTitle;
 
     @Override
@@ -91,8 +88,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         vpFormElements = findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
-
-        //Bundle bundle = new Bundle();
         presenter = new FormDisplayActivityPresenter(this);
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
@@ -101,7 +96,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
             mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
-            boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
+            //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
             if (mIsPartiallySaved) {
                 formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
@@ -110,15 +105,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             if (formData == null) {
                 if (Util.isConnected(this)) {
                     presenter.getFormSchema(formId);
-                } //else {
-//                    view.findViewById(R.id.no_offline_form).setVisibility(View.VISIBLE);
-//                    setActionbar("");
-//                }
+                }
             } else {
-//                presenter.getFormSchema(formId);
                 formModel = new Form();
                 formModel.setData(formData);
-                Components components = formModel.getData().getComponents();
                 parseFormSchema(formData);
 
                 FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
@@ -145,28 +135,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
-            //processedJsonObject.add(entry.getKey(), entry.getValue());
-            // System.out.println("Key : "+entry.getKey());
-            //  System.out.println("map : "+entry.getValue());
             if (entry.getKey().equalsIgnoreCase("result")) {
-                //JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), );
                 Gson gson = new Gson();
                 formAnswersMap.clear();
                 formAnswersMap.putAll(gson.fromJson(entry.getValue().getAsString(),
                         new TypeToken<HashMap<String, String>>() {
                         }.getType()));
 
-//                Iterator entryIterator = jsonObject.entrySet().iterator();
-//                while (entryIterator.hasNext())  {
-//                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
-//                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
-//                }
-
             }
         }
-
-        //System.out.println("json : "+jObject);
-        //System.out.println("map : "+map);
     }
 
 
@@ -200,37 +177,41 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
                     case Constants.FormsFactory.LOCATION_TEMPLATE:
-                        //check if location data of user's lower level is available or not
                         Fragment locationFragment = new LocationFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putSerializable("jurisdictions", jurisdictions);
                         locationFragment.setArguments(bundle);
                         adapter.addFragment(locationFragment, "");
                         break;
+
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
                         ratingQuestionFragment.setArguments(bundle);
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
                         break;
+
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
                         textFragment.setArguments(bundle);
                         adapter.addFragment(textFragment, "Question 1");
                         break;
+
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Fragment radioButtonFragment = new RadioButtonFragment();
                         bundle.putSerializable("Element", element);
                         radioButtonFragment.setArguments(bundle);
                         adapter.addFragment(radioButtonFragment, "Question 1");
                         break;
+
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
                         bundle.putSerializable("Element", element);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
+
                     case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
@@ -244,7 +225,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
                         break;
-
 
                 }
             }
@@ -282,7 +262,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     public void goNext(HashMap<String, String> hashMap) {
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+            showDialog(this, "Alert", "Do you want to submit this form?", "Save", "Submit");
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
@@ -296,7 +276,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+                        showDialog(this, "Alert", "Do you want to submit this form?", "Save", "Submit");
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -336,8 +316,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         } else {
             if (formModel.getData() != null) {
                 saveFormToLocalDatabase();
-//                presenter.onSubmitClick(Constants.OFFLINE_SUBMIT_FORM_TYPE,
-//                            null, formModel.getData().getId(), null, null);
 
                 Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
                 LocalBroadcastManager.getInstance(getApplicationContext())
