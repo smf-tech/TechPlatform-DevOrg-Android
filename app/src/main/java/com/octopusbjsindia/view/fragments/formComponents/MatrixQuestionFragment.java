@@ -68,7 +68,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.GONE);
             }
         }
-//        view.findViewById(R.id.btn_loadprevious).setVisibility(View.GONE);
+
         if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
             String str = ((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName());
         }
