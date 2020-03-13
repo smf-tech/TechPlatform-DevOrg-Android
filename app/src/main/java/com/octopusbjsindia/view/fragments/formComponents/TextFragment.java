@@ -62,7 +62,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         if (TextUtils.isEmpty(element.getInputType())) {
             etAnswer = view.findViewById(R.id.et_answer);
-            if (TextUtils.isEmpty(element.getPlaceHolder()))
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
                 etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
@@ -72,7 +72,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             etAnswer = view.findViewById(R.id.et_answer_date);
-            if (TextUtils.isEmpty(element.getPlaceHolder()))
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
                 etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
@@ -80,7 +80,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         } else if (element.getInputType().equals("number")) {
             if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                 etAnswer = view.findViewById(R.id.et_answer);
-                if (TextUtils.isEmpty(element.getPlaceHolder()))
+                if (!TextUtils.isEmpty(element.getPlaceHolder()))
                     etAnswer.setHint(element.getPlaceHolder());
                 etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
@@ -115,7 +115,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
-                if (TextUtils.isEmpty(element.getPlaceHolder()))
+                if (!TextUtils.isEmpty(element.getPlaceHolder()))
                     etAnswer.setHint(element.getPlaceHolder());
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
@@ -126,7 +126,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
         } else {
             etAnswer = view.findViewById(R.id.et_answer);
-            if (TextUtils.isEmpty(element.getPlaceHolder()))
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
                 etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
