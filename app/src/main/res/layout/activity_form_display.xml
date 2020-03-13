@@ -6,9 +6,19 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/app_toolbar"/>
+
+    <TextView
+        android:id="@+id/tv_form_title"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16"
+        android:fontFamily="@font/opensans_semibold"
+        android:padding="@dimen/dimen_10dp"
+        android:gravity="center" />
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/tv_form_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

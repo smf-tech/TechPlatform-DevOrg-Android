@@ -145,6 +145,9 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
             requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
                     new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
         }
     }
 

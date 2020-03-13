@@ -42,6 +42,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
 
     @Override
     public void onSuccessListener(String requestID, String response) {
+        mContext.hideProgressBar();
         JurisdictionLevelResponse jurisdictionLevelResponse
                 = new Gson().fromJson(response, JurisdictionLevelResponse.class);
         if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
