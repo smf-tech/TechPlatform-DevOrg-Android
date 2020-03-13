@@ -39,6 +39,25 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_answer_name"
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ti_answer"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_answer_name"
+                style="@style/RegistrationEditTextLayout"
+                android:hint="Please enter name"
+                android:visibility="gone"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_answer_date"
             style="@style/textinputstyle"
             android:layout_width="match_parent"

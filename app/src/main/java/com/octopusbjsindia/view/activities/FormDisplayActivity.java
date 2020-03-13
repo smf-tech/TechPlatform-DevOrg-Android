@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
@@ -46,6 +47,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
+import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
@@ -54,11 +56,17 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
@@ -110,10 +118,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             if (formData == null) {
                 if (Util.isConnected(this)) {
                     presenter.getFormSchema(formId);
-                } else {
+                } //else {
 //                    view.findViewById(R.id.no_offline_form).setVisibility(View.VISIBLE);
 //                    setActionbar("");
-                }
+//                }
             } else {
 //                presenter.getFormSchema(formId);
                 formModel = new Form();
@@ -121,10 +129,52 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 Components components = formModel.getData().getComponents();
 //                parseFormSchema(components);
                 parseFormSchema(formData);
+
+                //List<String> formResult = DatabaseManager.getDBInstance(this).getAllFormResults(formId);
+                FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
+                //a3ef3ff4-e1ec-4d97-bed4-de6bf142ca25
+                if (formResult!=null) {
+                    Log.d("Result", new Gson().toJson(formResult));
+                    try {
+                        jsonToMap(new Gson().toJson(formResult));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         initView();
     }
+
+    public void jsonToMap(String str) throws JSONException {
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        Gson g = new Gson();
+
+        JsonObject jObject = PlatformGson.getPlatformGsonInstance().fromJson(str, JsonObject.class);
+
+        Iterator iterator = jObject.entrySet().iterator();
+
+        while (iterator.hasNext())  {
+            Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
+            //processedJsonObject.add(entry.getKey(), entry.getValue());
+           // System.out.println("Key : "+entry.getKey());
+          //  System.out.println("map : "+entry.getValue());
+            if (entry.getKey().equalsIgnoreCase("result")) {
+                JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), JsonObject.class);
+                Iterator entryIterator = jsonObject.entrySet().iterator();
+                while (entryIterator.hasNext())  {
+                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
+                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
+                }
+
+            }
+        }
+
+        //System.out.println("json : "+jObject);
+        //System.out.println("map : "+map);
+    }
+
 
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
@@ -192,6 +242,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
+                        break;
+
+                    case Constants.FormsFactory.IMAGE_PICKER:
+                        Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        imagePickerQuestionFragment.setArguments(bundle);
+                        adapter.addFragment(imagePickerQuestionFragment, "Question Title");
                         break;
 
 

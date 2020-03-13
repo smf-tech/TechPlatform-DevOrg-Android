@@ -1,18 +1,17 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -20,22 +19,21 @@ import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.octopusbjsindia.view.adapters.formComponents.ImagePickerQuestionAdapter;
 
 import java.util.HashMap;
 import java.util.Objects;
 
-public class RatingQuestionFragment extends Fragment implements View.OnClickListener {
+public class ImagePickerQuestionFragment extends Fragment implements ImagePickerQuestionAdapter.OnRequestItemClicked, View.OnClickListener {
     //views
     private RecyclerView rv_matrix_question;
-    private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
+    private ImagePickerQuestionAdapter imagePickerQuestionAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-
+    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
     private TextView text_title;
     private View view;
     private Elements elements;
-    private RatingBar ratingBar;
-    private TextView txt_min_text,txt_max_text;
-    private JsonObject ratingJsonObject  = new JsonObject();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,47 +43,27 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_rating_question, container, false);
+        view = inflater.inflate(R.layout.fragment_matrix_question, container, false);
         text_title = view.findViewById(R.id.text_title);
-        txt_min_text = view.findViewById(R.id.txt_min_text);
-        txt_max_text = view.findViewById(R.id.txt_max_text);
         Button btn_loadnext = view.findViewById(R.id.btn_loadnext);
         Button btn_loadprevious = view.findViewById(R.id.btn_loadprevious);
         rv_matrix_question = view.findViewById(R.id.rv_matrix_question);
-        ratingBar   = view.findViewById(R.id.ratingBar);
 
         btn_loadnext.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rv_matrix_question.setLayoutManager(layoutManager);
 
         //check for arguments
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
                 elements = (Elements) getArguments().getSerializable("Element");
-                ratingBar.setNumStars(elements.getRateMax());
-                ratingBar.setStepSize(1);
-
-                txt_min_text.setText(elements.getMinRateDescription().getDe());
-                txt_max_text.setText(elements.getMaxRateDescription().getDe());
-                ratingJsonObject = new JsonObject();
-                ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
+                imagePickerQuestionAdapter = new ImagePickerQuestionAdapter(ImagePickerQuestionFragment.this, getActivity(), elements,
+                        this);
+                rv_matrix_question.setAdapter(imagePickerQuestionAdapter);
             }
         }
-
-        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
-            ratingBar.setRating(Float.parseFloat(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName())));
-        }
-
-
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-
-                Log.d("ratingBar", "Clicked-->"+ ratingBar.getRating());
-                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
-            }
-        });
-
-
         // set quetion at top
         text_title.setText(elements.getTitle().getDefaultValue());
 
@@ -97,13 +75,24 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
     }
 
+
+    @Override
+    public void onItemClicked(int pos) {
+        Log.d("onItemClickedfragment", "onItemClicked-->" + pos);
+    }
+
+    public void receiveAnswerJson(String receivedJsonObjectString) {
+        MatrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+        Log.d("ReceivedJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
-                hashMap.put(elements.getName(), new Gson().toJson(ratingJsonObject));
-                Log.d("btn_loadnext", "Clicked-->"+new Gson().toJson(ratingJsonObject));
+                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+                Log.d("btn_loadnext", "Clicked-->" + new Gson().toJson(MatrixQuestionRequestJsonObject));
                 ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:
