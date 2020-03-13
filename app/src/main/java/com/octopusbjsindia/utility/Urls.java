@@ -18,7 +18,7 @@ public class Urls {
         public static final String GET_LOCATION_DATA = "api/locationV2/level";
         public static final String UPLOAD_IMAGE = "api/upload-image";
         public static final String GET_MULTIPAL_PROFILE = "api/getUserProfileDetails";
-        public static final String GET_ALL_LOCATION_DATA = "api/getTalukaData/level";
+        public static final String GET_ALL_LOCATION_DATA = "api/selectedLocationData/level";
     }
 
     public class Home {

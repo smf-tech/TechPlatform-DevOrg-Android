@@ -41,7 +41,7 @@ import com.octopusbjsindia.models.reports.ReportData;
         ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
         StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class, ContentData.class,
         JurisdictionLocation.class},
-        version = 4)
+        version = 5)
 
 public abstract class AppDatabase extends RoomDatabase {
 

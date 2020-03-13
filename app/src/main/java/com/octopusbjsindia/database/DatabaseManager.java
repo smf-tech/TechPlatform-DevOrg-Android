@@ -46,6 +46,7 @@ public class DatabaseManager {
                     .addMigrations(MIGRATION_OLD_TO_NEW)
                     .addMigrations(MIGRATION_2_TO_3)
                     .addMigrations(MIGRATION_3_TO_4)
+                    .addMigrations(MIGRATION_4_TO_5)
                     .build();
         }
 
@@ -84,6 +85,15 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE StructurePripretionData ADD COLUMN beneficiary_id TEXT");
             database.execSQL("ALTER TABLE FormData ADD COLUMN api_url TEXT");
             database.execSQL("ALTER TABLE ProcessData ADD COLUMN api_url TEXT");
+
+        }
+    };
+
+    private static final Migration MIGRATION_4_TO_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN jurisdictions_ TEXT");
 
         }
     };
