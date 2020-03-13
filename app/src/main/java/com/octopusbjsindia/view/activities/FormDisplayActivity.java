@@ -258,6 +258,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData == null) {
             return;
         }
+        TextView tvFormTitle = findViewById(R.id.tv_form_title);
+        tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {
             Elements locationElement = new Elements();
             locationElement.setType("location");

@@ -332,8 +332,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     , JurisdictionLevel);
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                            "Please update your profile.",
+                            .findViewById(android.R.id.content), getResources().getString(R.string.msg_no_network),
                     Snackbar.LENGTH_LONG);
         }
     }
@@ -586,8 +585,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                         , Constants.JurisdictionLevelName.TALUKA_LEVEL);
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                "Please update your profile.",
+                                .findViewById(android.R.id.content), getResources().getString(R.string.msg_no_network),
                         Snackbar.LENGTH_LONG);
             }
         } else if (type.equals("Select Cluster")) {
