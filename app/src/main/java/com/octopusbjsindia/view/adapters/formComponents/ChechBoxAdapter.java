@@ -64,7 +64,8 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
                         mContext.cbNone.setChecked(false);
                         mContext.cbOther.setChecked(false);
                         mContext.tiOther.setVisibility(View.GONE);
-                        mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
+                        if(!mContext.selectedList.contains(list.get(getAdapterPosition()).getValue()))
+                            mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
                     } else {
                         mContext.selectedList.remove(list.get(getAdapterPosition()).getValue());
                     }

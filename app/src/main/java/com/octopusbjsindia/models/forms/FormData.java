@@ -16,6 +16,7 @@ import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.common.Project;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -76,6 +77,24 @@ public class FormData implements Serializable {
     @SerializedName("api_url")
     @Expose
     private String api_url;
+
+    @ColumnInfo(name = "location_required")
+    @SerializedName("location_required")
+    @Expose
+    private Boolean locationRequired;
+
+    @ColumnInfo(name = "location_required_level")
+    @SerializedName("location_required_level")
+    @Expose
+    private String locationRequiredLevel;
+
+    @ColumnInfo(name = "jurisdictions_")
+    private String jurisdictions_;
+
+    @Ignore
+    @SerializedName("jurisdictions")
+    @Expose
+    private ArrayList<String> jurisdictions;
 
     @Ignore
     @SerializedName("project")
@@ -196,4 +215,35 @@ public class FormData implements Serializable {
         this.formKeys = formKeys;
     }
 
+    public Boolean getLocationRequired() {
+        return locationRequired;
+    }
+
+    public void setLocationRequired(Boolean locationRequired) {
+        this.locationRequired = locationRequired;
+    }
+
+    public String getLocationRequiredLevel() {
+        return locationRequiredLevel;
+    }
+
+    public void setLocationRequiredLevel(String locationRequiredLevel) {
+        this.locationRequiredLevel = locationRequiredLevel;
+    }
+
+    public String getJurisdictions_() {
+        return jurisdictions_;
+    }
+
+    public void setJurisdictions_(String jurisdictions_) {
+        this.jurisdictions_ = jurisdictions_;
+    }
+
+    public ArrayList<String> getJurisdictions() {
+        return jurisdictions;
+    }
+
+    public void setJurisdictions(ArrayList<String> jurisdictions) {
+        this.jurisdictions = jurisdictions;
+    }
 }

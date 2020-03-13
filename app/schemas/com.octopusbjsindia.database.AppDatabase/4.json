@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "2552008b5ef113a16d75357a2a0e76cd",
+    "identityHash": "7d7bfafb616b98cab27e9db051078a91",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "FormData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `components` TEXT, `is_active` TEXT, `is_editable` TEXT, `multiple_entry` TEXT, `category` TEXT, `microservice` TEXT, `api_url` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `components` TEXT, `is_active` TEXT, `is_editable` TEXT, `multiple_entry` TEXT, `category` TEXT, `microservice` TEXT, `api_url` TEXT, `location_required` INTEGER, `location_required_level` TEXT, `jurisdictions_` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -115,6 +115,24 @@
           {
             "fieldPath": "api_url",
             "columnName": "api_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "locationRequired",
+            "columnName": "location_required",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "locationRequiredLevel",
+            "columnName": "location_required_level",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "jurisdictions_",
+            "columnName": "jurisdictions_",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -1151,12 +1169,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "JurisdictionLocation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `parent_id` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "parentLocationId",
+            "columnName": "parent_id",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2552008b5ef113a16d75357a2a0e76cd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7d7bfafb616b98cab27e9db051078a91')"
     ]
   }
 }

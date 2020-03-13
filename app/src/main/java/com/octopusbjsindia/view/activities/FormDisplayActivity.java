@@ -23,11 +23,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
+import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.forms.Components;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.Form;
@@ -42,10 +45,14 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
+import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +66,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private Form formModel;
     private ViewPager vpFormElements;
     private ViewPagerAdapter adapter;
-    private List<Elements> formDataArrayList;
+    private List<Elements> formDataArrayList = new ArrayList<Elements>();
     private FormDisplayActivityPresenter presenter;
     public HashMap<String, String> formAnswersMap = new HashMap<>();
     //private FormActivityPresenter formPresenter;
@@ -70,6 +77,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
+
+    ArrayList<String> jurisdictions = new ArrayList<>();
 
     TextView tvTitle;
 
@@ -106,11 +115,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                    setActionbar("");
                 }
             } else {
-                presenter.getFormSchema(formId);
+//                presenter.getFormSchema(formId);
                 formModel = new Form();
                 formModel.setData(formData);
                 Components components = formModel.getData().getComponents();
-                parseFormSchema(components);
+//                parseFormSchema(components);
+                parseFormSchema(formData);
             }
         }
         initView();
@@ -125,18 +135,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 return true;
             }
         });
-        //presenter.getFormSchema();
-
-
-//        Components components = formModel.getData().getComponents();
-//        if (components == null) {
-//            return;
-//        }
-//        formDataArrayList = components.getPages().get(0).getElements();
-//        if (formDataArrayList != null) {
-//            setupFormElements(formDataArrayList, formModel.getData().getId());
-//        }
-
 
         gpsTracker = new GPSTracker(this);
         if (gpsTracker.isGPSEnabled(this, this)) {
@@ -159,8 +157,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 switch (formDataType) {
                     case Constants.FormsFactory.LOCATION_TEMPLATE:
                         //check if location data of user's lower level is available or not
-
-
+                        Fragment locationFragment = new LocationFragment();
+                        bundle.putSerializable("Element", element);
+                        bundle.putSerializable("jurisdictions", jurisdictions);
+                        locationFragment.setArguments(bundle);
+                        adapter.addFragment(locationFragment, "");
                         break;
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
@@ -186,7 +187,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
-                      case Constants.FormsFactory.MATRIX_DROPDOWN:
+                    case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);
@@ -200,42 +201,61 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         adapter.notifyDataSetChanged();
     }
 
-    public void parseFormSchema(Components components) {
-        if (components == null) {
+    public void parseFormSchema(FormData formData) {
+        if (formData == null) {
             return;
         }
-        formDataArrayList = components.getPages().get(0).getElements();
+        if (formData.getLocationRequired()) {
+            Elements locationElement = new Elements();
+            locationElement.setType("location");
+            locationElement.setName("location");
+            locationElement.setLocationRequiredLevel(formData.getLocationRequiredLevel());
+
+            Gson gson = new Gson();
+            ArrayList<String> listFromGson = gson.fromJson(formData.getJurisdictions_(),
+                    new TypeToken<ArrayList<String>>() {}.getType());
+
+            jurisdictions.clear();
+            jurisdictions.addAll(listFromGson);
+
+            formDataArrayList.add(locationElement);
+        }
+        formDataArrayList.addAll(formData.getComponents().getPages().get(0).getElements());
         if (formDataArrayList != null) {
-            tvTitle.setText(1+"/"+formDataArrayList.size());
+            tvTitle.setText(1 + "/" + formDataArrayList.size());
             setupFormElements(formDataArrayList);
         }
     }
 
     public void goNext(HashMap<String, String> hashMap) {
         formAnswersMap.putAll(hashMap);
-        if(formDataArrayList.size() == vpFormElements.getCurrentItem()+1){
-            showDialog(this,"Alert","Do you want to submit?","Save","Submit");
+        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
         } else {
-            if(TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf())){
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
-                tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
+            if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
+                tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
-                String visible = formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf();
-                String quetion = visible.substring(visible.indexOf('{')+1,visible.indexOf('}'));
-                String selection = visible.substring(visible.indexOf("=")+3,visible.length()-1);
-                if(selection.equalsIgnoreCase(formAnswersMap.get(quetion))){
-                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
-                    tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
+                String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+                    tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
-                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
-                    tvTitle.setText((vpFormElements.getCurrentItem()+2)+"/"+formDataArrayList.size());
+                    if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+                    } else {
+                        tvTitle.setText((vpFormElements.getCurrentItem()+2)+"/"+formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
+                    }
                 }
             }
         }
     }
 
     public void goPrevious() {
-        tvTitle.setText((vpFormElements.getCurrentItem())+"/"+formDataArrayList.size());
+        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
     }
 

@@ -76,8 +76,8 @@
     <string name="cluster">Cluster</string>
     <string name="mandatory_village">Village *</string>
     <string name="village">Village</string>
-    <string name="mandatory_school">Structure Name *</string>
-    <string name="school">Structure Name</string>
+    <string name="mandatory_school">School Name *</string>
+    <string name="school">School Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
     <string name="update_profile_pic">Update profile picture</string>

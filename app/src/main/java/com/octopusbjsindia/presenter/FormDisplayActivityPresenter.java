@@ -89,7 +89,7 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 
     public void getFormSchema(String formId) {
         fragmentWeakReference.get().showProgressBar();
-        //final String getFormSchemaUrl = "http://api.dxsurvey.com/api/Survey/getSurvey?surveyId=d8b0f086-39b0-43ca-b3de-964af845eb31";
+//        final String getFormSchemaUrl = "http://api.dxsurvey.com/api/Survey/getSurvey?surveyId=d8b0f086-39b0-43ca-b3de-964af845eb31";
         final String getFormSchemaUrl = BuildConfig.BASE_URL + String.format(Urls.PM.GET_PROCESS_DETAILS, formId);
         Log.d(TAG, "getFormSchemaUrl: url" + getFormSchemaUrl);
         fragmentWeakReference.get().showProgressBar();
@@ -126,14 +126,16 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
             if (requestID.equalsIgnoreCase(FormDisplayActivityPresenter.GET_FORM_SCHEMA)) {
                 try {
                     Form form = PlatformGson.getPlatformGsonInstance().fromJson(response, Form.class);
+                    form.getData().setJurisdictions_(gson.toJson(form.getData().getJurisdictions()));
                     if (form != null && form.getData() != null) {
                         FormDisplayActivity activity = fragmentWeakReference.get();
                         if (activity != null) {
+
                             DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
                             Log.d(TAG, "Form schema saved in database.");
                         }
                     }
-                    fragmentWeakReference.get().parseFormSchema(form.getData().getComponents());
+                    fragmentWeakReference.get().parseFormSchema(form.getData());
 //                    Gson gson = new Gson();
 //                    Components components = gson.fromJson(response,
 //                            Components.class);

@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 
 import java.util.List;
@@ -20,5 +21,8 @@ public interface AccessibleLocationDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(JurisdictionLocation jurisdictionLocation);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(JurisdictionLocation... jurisdictionLocation);
 
 }

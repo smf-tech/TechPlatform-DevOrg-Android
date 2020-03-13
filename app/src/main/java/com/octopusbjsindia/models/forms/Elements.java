@@ -89,10 +89,11 @@ public class Elements implements Serializable {
     @Expose
     private MaxRateDescription maxRateDescription;
 
-
     @SerializedName("hasNone")
     @Expose
     private Boolean hasNone;
+    private String locationRequiredLevel;
+
 
     public Boolean getReadOnly() {
         return readOnly;
@@ -313,6 +314,13 @@ public class Elements implements Serializable {
         this.maxRateDescription = maxRateDescription;
     }
 
+    public String getLocationRequiredLevel() {
+        return locationRequiredLevel;
+    }
+
+    public void setLocationRequiredLevel(String locationRequiredLevel) {
+        this.locationRequiredLevel = locationRequiredLevel;
+    }
 }
 
 
