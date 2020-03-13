@@ -31,7 +31,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
-import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.forms.Components;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.Form;
@@ -46,27 +45,21 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
-import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
+import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
@@ -148,7 +141,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         Gson g = new Gson();
 
         JsonObject jObject = PlatformGson.getPlatformGsonInstance().fromJson(str, JsonObject.class);
-
         Iterator iterator = jObject.entrySet().iterator();
 
         while (iterator.hasNext()) {
@@ -157,12 +149,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             // System.out.println("Key : "+entry.getKey());
             //  System.out.println("map : "+entry.getValue());
             if (entry.getKey().equalsIgnoreCase("result")) {
-                JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), JsonObject.class);
-                Iterator entryIterator = jsonObject.entrySet().iterator();
-                while (entryIterator.hasNext()) {
-                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
-                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
-                }
+                //JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), );
+                Gson gson = new Gson();
+                formAnswersMap.clear();
+                formAnswersMap.putAll(gson.fromJson(entry.getValue().getAsString(),
+                        new TypeToken<HashMap<String, String>>() {
+                        }.getType()));
+
+//                Iterator entryIterator = jsonObject.entrySet().iterator();
+//                while (entryIterator.hasNext())  {
+//                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
+//                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
+//                }
 
             }
         }

@@ -214,6 +214,7 @@
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"

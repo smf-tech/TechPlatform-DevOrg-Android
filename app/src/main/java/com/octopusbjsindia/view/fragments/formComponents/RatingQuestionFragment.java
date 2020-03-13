@@ -76,14 +76,14 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         }
 
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-
-                Log.d("ratingBar", "Clicked-->"+ ratingBar.getRating());
-                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
-            }
-        });
+//        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+//
+////                Log.d("ratingBar", "Clicked-->"+ ratingBar.getRating());
+////                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
+//            }
+//        });
 
 
         // set quetion at top
@@ -102,7 +102,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
-                hashMap.put(elements.getName(), new Gson().toJson(ratingJsonObject));
+                hashMap.put(elements.getName(), String.valueOf(ratingBar.getRating()));
                 Log.d("btn_loadnext", "Clicked-->"+new Gson().toJson(ratingJsonObject));
                 ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
                 break;

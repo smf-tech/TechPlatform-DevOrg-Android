@@ -1,13 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +10,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.Platform;
@@ -23,8 +21,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
-import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
@@ -36,7 +32,6 @@ import com.octopusbjsindia.presenter.LocationFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -349,12 +344,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        Util.showToast(message,getActivity());
+        Util.showToast(message, getActivity());
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        onFailureListener(requestID,error.getMessage());
+        onFailureListener(requestID, error.getMessage());
     }
 
     @Override
