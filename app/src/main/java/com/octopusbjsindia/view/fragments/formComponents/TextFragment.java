@@ -153,7 +153,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.et_answer_date:
-                Util.showDateDialog(getContext(), etAnswer);
+                Util.showAllDateDialog(getContext(), etAnswer);
                 break;
             case R.id.bt_previous:
                 ((FormDisplayActivity) getActivity()).goPrevious();

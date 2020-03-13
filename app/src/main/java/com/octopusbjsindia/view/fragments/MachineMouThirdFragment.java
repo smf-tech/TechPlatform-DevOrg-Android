@@ -124,7 +124,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.edt_contract_date:
-                Util.showAllDateDialog(getActivity(), edtContractDate);
+                Util.showDateDialog(getActivity(), edtContractDate);
                 break;
             case R.id.edt_mou_expiry_date:
                 if(edtContractDate.getText().toString().length()>0) {

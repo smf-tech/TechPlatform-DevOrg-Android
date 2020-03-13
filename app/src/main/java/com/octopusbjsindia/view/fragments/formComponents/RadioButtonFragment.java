@@ -66,7 +66,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
         if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getText().equals(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
+                if (list.get(i).getValue().equals(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                     list.get(i).setSelected(true);
                 }
             }
