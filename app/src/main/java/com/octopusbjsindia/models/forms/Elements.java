@@ -88,7 +88,9 @@ public class Elements implements Serializable {
     @SerializedName("maxRateDescription")
     @Expose
     private MaxRateDescription maxRateDescription;
-
+    @SerializedName("placeHolder")
+    @Expose
+    private String placeHolder;
     @SerializedName("hasNone")
     @Expose
     private Boolean hasNone;
@@ -320,6 +322,14 @@ public class Elements implements Serializable {
 
     public void setLocationRequiredLevel(String locationRequiredLevel) {
         this.locationRequiredLevel = locationRequiredLevel;
+    }
+
+    public String getPlaceHolder() {
+        return placeHolder;
+    }
+
+    public void setPlaceHolder(String placeHolder) {
+        this.placeHolder = placeHolder;
     }
 }
 
