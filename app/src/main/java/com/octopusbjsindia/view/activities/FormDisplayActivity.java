@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -45,42 +46,40 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
+import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
-    private Form formModel;
-    private ViewPager vpFormElements;
-    private ViewPagerAdapter adapter;
-    private List<Elements> formDataArrayList;
-    private FormDisplayActivityPresenter presenter;
+    private final String TAG = this.getClass().getSimpleName();
     public HashMap<String, String> formAnswersMap = new HashMap<>();
     //private FormActivityPresenter formPresenter;
     String processId;
+    ArrayList<String> jurisdictions = new ArrayList<>();
+    TextView tvTitle;
+    private Form formModel;
+    private ViewPager vpFormElements;
+    private ViewPagerAdapter adapter;
+    private List<Elements> formDataArrayList = new ArrayList<Elements>();
+    private FormDisplayActivityPresenter presenter;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
     private GPSTracker gpsTracker;
-    private final String TAG = this.getClass().getSimpleName();
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-
-    TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,16 +114,16 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                    setActionbar("");
                 }
             } else {
-                presenter.getFormSchema(formId);
+//                presenter.getFormSchema(formId);
                 formModel = new Form();
                 formModel.setData(formData);
                 Components components = formModel.getData().getComponents();
-                parseFormSchema(components);
+                //parseFormSchema(components);
 
                 //List<String> formResult = DatabaseManager.getDBInstance(this).getAllFormResults(formId);
                 FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
                 //a3ef3ff4-e1ec-4d97-bed4-de6bf142ca25
-                if (formResult!=null) {
+                if (formResult != null) {
                     Log.d("Result", new Gson().toJson(formResult));
                     try {
                         jsonToMap(new Gson().toJson(formResult));
@@ -132,6 +131,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         e.printStackTrace();
                     }
                 }
+//                parseFormSchema(components);
+                parseFormSchema(formData);
             }
         }
         initView();
@@ -146,15 +147,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         Iterator iterator = jObject.entrySet().iterator();
 
-        while (iterator.hasNext())  {
+        while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
-            //processedJsonObject.add(entry.getKey(), entry.getValue());
-           // System.out.println("Key : "+entry.getKey());
-          //  System.out.println("map : "+entry.getValue());
             if (entry.getKey().equalsIgnoreCase("result")) {
                 JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), JsonObject.class);
                 Iterator entryIterator = jsonObject.entrySet().iterator();
-                while (entryIterator.hasNext())  {
+                while (entryIterator.hasNext()) {
                     Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
                     formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
                 }
@@ -176,18 +174,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 return true;
             }
         });
-        //presenter.getFormSchema();
-
-
-//        Components components = formModel.getData().getComponents();
-//        if (components == null) {
-//            return;
-//        }
-//        formDataArrayList = components.getPages().get(0).getElements();
-//        if (formDataArrayList != null) {
-//            setupFormElements(formDataArrayList, formModel.getData().getId());
-//        }
-
 
         gpsTracker = new GPSTracker(this);
         if (gpsTracker.isGPSEnabled(this, this)) {
@@ -208,6 +194,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 String formDataType = element.getType();
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
+                    case Constants.FormsFactory.LOCATION_TEMPLATE:
+                        //check if location data of user's lower level is available or not
+                        Fragment locationFragment = new LocationFragment();
+                        bundle.putSerializable("Element", element);
+                        bundle.putSerializable("jurisdictions", jurisdictions);
+                        locationFragment.setArguments(bundle);
+                        adapter.addFragment(locationFragment, "");
+                        break;
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
@@ -232,7 +226,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
-                      case Constants.FormsFactory.MATRIX_DROPDOWN:
+                    case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
                         matrixQuestionFragment.setArguments(bundle);
@@ -253,44 +247,73 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         adapter.notifyDataSetChanged();
     }
 
-    public void parseFormSchema(Components components) {
-        if (components == null) {
+    public void parseFormSchema(FormData formData) {
+        if (formData == null) {
             return;
         }
-        formDataArrayList = components.getPages().get(0).getElements();
+        if (formData.getLocationRequired()) {
+            Elements locationElement = new Elements();
+            locationElement.setType("location");
+            locationElement.setName("location");
+            locationElement.setLocationRequiredLevel(formData.getLocationRequiredLevel());
+
+            Gson gson = new Gson();
+            ArrayList<String> listFromGson = gson.fromJson(formData.getJurisdictions_(),
+                    new TypeToken<ArrayList<String>>() {
+                    }.getType());
+
+            jurisdictions.clear();
+            jurisdictions.addAll(listFromGson);
+
+            formDataArrayList.add(locationElement);
+        }
+        formDataArrayList.addAll(formData.getComponents().getPages().get(0).getElements());
         if (formDataArrayList != null) {
-            tvTitle.setText(1+"/"+formDataArrayList.size());
+            tvTitle.setText(1 + "/" + formDataArrayList.size());
             setupFormElements(formDataArrayList);
         }
-
     }
 
     public void goNext(HashMap<String, String> hashMap) {
         formAnswersMap.putAll(hashMap);
-        if(formDataArrayList.size() == vpFormElements.getCurrentItem()+1){
-            showDialog(this,"Alert","Do you want to submit?","Save","Submit");
+        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
         } else {
-            if(TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf())){
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
-                tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
+            if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
+                tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
-                String visible = formDataArrayList.get((vpFormElements.getCurrentItem()+1)).getVisibleIf();
-                String quetion = visible.substring(visible.indexOf('{')+1,visible.indexOf('}'));
-                String selection = visible.substring(visible.indexOf("=")+3,visible.length()-1);
-                if(selection.equalsIgnoreCase(formAnswersMap.get(quetion))){
-                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+1));
-                    tvTitle.setText((vpFormElements.getCurrentItem()+1)+"/"+formDataArrayList.size());
+                String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+                    tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
-                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem()+2));
-                    tvTitle.setText((vpFormElements.getCurrentItem()+2)+"/"+formDataArrayList.size());
+                    if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit");
+                    } else {
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                    }
                 }
             }
         }
     }
 
     public void goPrevious() {
-        tvTitle.setText((vpFormElements.getCurrentItem())+"/"+formDataArrayList.size());
-        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+
+        if (vpFormElements.getCurrentItem() != 0) {
+            tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+        }else{
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        goPrevious();
     }
 
     public void submitForm() {

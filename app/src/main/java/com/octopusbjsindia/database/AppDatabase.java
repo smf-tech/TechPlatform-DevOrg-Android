@@ -3,6 +3,7 @@ package com.octopusbjsindia.database;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import com.octopusbjsindia.dao.AccessibleLocationDataDao;
 import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
 import com.octopusbjsindia.dao.FormResultDao;
@@ -33,11 +34,13 @@ import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.models.pm.ProcessData;
+import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.reports.ReportData;
 
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
         ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
-        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class, ContentData.class},
+        StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class, ContentData.class,
+        JurisdictionLocation.class},
         version = 4)
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -71,5 +74,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract StructureBoundaryDao structureBoundaryDao();
 
     public abstract ContentDataDao contentDataDao();
+
+    public abstract AccessibleLocationDataDao accessibleLocationDataDao();
 
 }
