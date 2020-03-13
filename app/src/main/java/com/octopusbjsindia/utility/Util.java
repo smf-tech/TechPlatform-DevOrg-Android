@@ -972,7 +972,6 @@ public class Util {
         }, mYear, mMonth, mDay);
 
         dateDialog.setTitle(context.getString(R.string.select_date_title));
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
 
