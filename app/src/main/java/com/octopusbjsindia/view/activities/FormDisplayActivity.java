@@ -147,22 +147,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         while (iterator.hasNext()) {
             Map.Entry<String, JsonElement> entry = (Map.Entry<String, JsonElement>) iterator.next();
-            //processedJsonObject.add(entry.getKey(), entry.getValue());
-            // System.out.println("Key : "+entry.getKey());
-            //  System.out.println("map : "+entry.getValue());
+
             if (entry.getKey().equalsIgnoreCase("result")) {
-                //JsonObject jsonObject = PlatformGson.getPlatformGsonInstance().fromJson(entry.getValue().getAsString(), );
+
                 Gson gson = new Gson();
                 formAnswersMap.clear();
                 formAnswersMap.putAll(gson.fromJson(entry.getValue().getAsString(),
                         new TypeToken<HashMap<String, String>>() {
                         }.getType()));
-
-//                Iterator entryIterator = jsonObject.entrySet().iterator();
-//                while (entryIterator.hasNext())  {
-//                    Map.Entry<String, JsonElement> jsonElementEntry = (Map.Entry<String, JsonElement>) entryIterator.next();
-//                    formAnswersMap.put(jsonElementEntry.getKey(), jsonElementEntry.getValue().toString());
-//                }
 
             }
         }
