@@ -147,7 +147,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
         if (isFirstpage){
-            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+            view.findViewById(R.id.bt_previous).setVisibility(View.INVISIBLE);
         }
 
     }

@@ -250,13 +250,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
 
-                    case Constants.FormsFactory.IMAGE_PICKER:
+                    /*case Constants.FormsFactory.IMAGE_PICKER:
                         Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putBoolean("isFirstpage",isFirstpage);
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
-                        break;
+                        break;*/
 
 
                 }

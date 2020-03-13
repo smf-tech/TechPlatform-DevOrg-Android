@@ -72,7 +72,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
             isFirstpage = getArguments().getBoolean("isFirstpage");
 
             if (isFirstpage){
-                view.findViewById(R.id.btn_loadprevious).setVisibility(View.GONE);
+                view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
 

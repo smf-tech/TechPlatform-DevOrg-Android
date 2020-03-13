@@ -83,7 +83,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
         if (isFirstpage){
-            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+            view.findViewById(R.id.bt_previous).setVisibility(View.INVISIBLE);
         }
     }
 

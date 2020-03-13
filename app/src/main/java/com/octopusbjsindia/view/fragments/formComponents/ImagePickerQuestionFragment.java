@@ -66,7 +66,7 @@ public class ImagePickerQuestionFragment extends Fragment implements ImagePicker
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
             if (isFirstpage){
-                view.findViewById(R.id.btn_loadprevious).setVisibility(View.GONE);
+                view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
 
         }

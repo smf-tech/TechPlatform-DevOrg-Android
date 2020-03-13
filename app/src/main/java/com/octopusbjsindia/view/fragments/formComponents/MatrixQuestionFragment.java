@@ -65,7 +65,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
             if (isFirstpage){
-                view.findViewById(R.id.btn_loadprevious).setVisibility(View.GONE);
+                view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
 
