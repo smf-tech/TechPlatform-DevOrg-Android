@@ -595,7 +595,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             });
         }
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();

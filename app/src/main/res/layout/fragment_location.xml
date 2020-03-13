@@ -16,6 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:textSize="@dimen/text_size_16"
+                android:text="@string/select_locations"/>
+
             <!--Country-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ly_country"
@@ -46,6 +56,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -54,7 +65,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/state"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,6 +77,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -75,7 +86,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/district"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +107,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/city"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +119,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -118,7 +128,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/taluka"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,6 +140,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -139,7 +149,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/cluster"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,6 +161,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -160,7 +170,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/village"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,6 +182,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -181,7 +191,6 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/school"
                     android:inputType="text|textCapWords"
-                    android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
