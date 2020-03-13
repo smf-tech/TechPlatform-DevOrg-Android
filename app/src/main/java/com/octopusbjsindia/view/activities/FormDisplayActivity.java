@@ -591,6 +591,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 } else {
                     submitForm();
                     dialog.dismiss();
+                    finish();
                 }
             });
         }
