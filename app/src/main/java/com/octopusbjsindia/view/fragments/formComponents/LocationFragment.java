@@ -1,18 +1,18 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -21,8 +21,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
-import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
@@ -34,7 +32,6 @@ import com.octopusbjsindia.presenter.LocationFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -44,13 +41,14 @@ import java.util.List;
 public class LocationFragment extends Fragment implements View.OnClickListener, APIDataListener, CustomSpinnerListener {
 
     View view;
+    RelativeLayout progressBar;
     LocationFragmentPresenter presenter;
     Elements element;
     ArrayList<String> jurisdictions = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
 
 
-    String selectedCountry = "", selectedCountryId = "",selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
+    String selectedCountry = "", selectedCountryId = "", selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedCluster = "", selectedClusterId = "",
             selectedVillage = "", selectedVillageId = "", selectedSchool = "", selectedSchoolId = "";
     ArrayList<CustomSpinnerObject> countryList = new ArrayList<>();
@@ -76,6 +74,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_location, container, false);
         presenter = new LocationFragmentPresenter(this);
+        progressBar = view.findViewById(R.id.progress_bar);
         element = (Elements) getArguments().getSerializable("Element");
         jurisdictions.clear();
         jurisdictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
@@ -247,36 +246,68 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 }
             } else {
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
-                    view.findViewById(R.id.etCountry).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCountry).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCountry);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
-                    view.findViewById(R.id.etState).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etState).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etState);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
-                    view.findViewById(R.id.etDistrict).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etDistrict).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etDistrict);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
-                    view.findViewById(R.id.etCity).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCity).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCity);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-                    view.findViewById(R.id.etTaluka).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etTaluka).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etTaluka);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
-                    view.findViewById(R.id.etCluster).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etCluster).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etCluster);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-                    view.findViewById(R.id.etVillage).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etVillage).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etVillage);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
+                    }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
-                    view.findViewById(R.id.etSchool).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.etSchool).setOnClickListener(this);
+                    EditText editText = view.findViewById(R.id.etSchool);
+                    editText.setVisibility(View.VISIBLE);
+                    editText.setOnClickListener(this);
+                    if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL))) {
+                        editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
+                    }
                     continue;
                 }
 
@@ -314,12 +345,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, getActivity());
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        onFailureListener(requestID, error.getMessage());
     }
 
     @Override
@@ -334,12 +365,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showProgressBar() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
