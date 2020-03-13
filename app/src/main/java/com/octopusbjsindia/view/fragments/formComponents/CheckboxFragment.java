@@ -42,7 +42,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
     EditText etOther;
-
+    boolean isFirstpage =false;
     public ArrayList<String> selectedList = new ArrayList<String>();
     HashMap<String, String> hashMap = new HashMap<String, String>();
 
@@ -69,7 +69,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         super.onViewCreated(view, savedInstanceState);
 
         element = (Elements) getArguments().getSerializable("Element");
-
+        isFirstpage = getArguments().getBoolean("isFirstpage");
         TextView tvQuetion = view.findViewById(R.id.tv_question);
         cbNone = view.findViewById(R.id.cb_none);
         cbOther = view.findViewById(R.id.cb_other);
@@ -125,6 +125,10 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         cbNone.setOnCheckedChangeListener(this);
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
+
+        if (isFirstpage){
+            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+        }
     }
 
     @Override
