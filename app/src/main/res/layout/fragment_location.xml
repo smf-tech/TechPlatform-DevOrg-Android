@@ -1,188 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragments.formComponents.LocationFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.fragments.formComponents.LocationFragment">
 
-    <!--Country-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_country"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dimen_60dp">
 
-        <EditText
-            android:id="@+id/etCountry"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/country"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--Country-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_country"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--State-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_state"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etCountry"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/country"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etState"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/state"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            android:visibility="gone"
-            tools:ignore="Autofill" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--State-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_state"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--District-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_district"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etState"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/state"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etDistrict"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/district"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--District-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_district"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--City-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_city"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etDistrict"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/district"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etCity"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/city"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--City-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_city"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:visibility="gone"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--Taluka-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_taluka"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etCity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/city"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etTaluka"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/taluka"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--Taluka-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_taluka"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--Cluster-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_cluster"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etTaluka"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/taluka"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etCluster"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/cluster"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--Cluster-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_cluster"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--Village-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_village"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etCluster"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/cluster"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etVillage"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/village"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--Village-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_village"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-    <!--School-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ly_school"
-        style="@style/textinputstyle"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputLayoutHint">
+                <EditText
+                    android:id="@+id/etVillage"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/village"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etSchool"
-            style="@style/RegistrationEditTextLayout"
-            android:hint="@string/school"
-            android:inputType="text|textCapWords"
-            android:focusableInTouchMode="false"
-            tools:ignore="Autofill"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <!--School-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ly_school"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
+                <EditText
+                    android:id="@+id/etSchool"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/school"
+                    android:inputType="text|textCapWords"
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/dimen_05dp"
+        android:orientation="horizontal"
         android:weightSum="2">
 
         <Button
@@ -203,4 +214,4 @@
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
