@@ -85,18 +85,14 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
     private final String TAG = StructurePripretionsActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
-
-
     ImageView selectedIV;
     EditText etFFName, etFFMobile, etReson,etTypeOfBeneficiary;
-
     private RelativeLayout progressBar;
     private Uri outputUri;
     private Uri finalUri;
     boolean ffIdentified = false;
     boolean ffTranningComplited = false;
     boolean structureFit = false;
-
     //    private String upload_URL = "http://13.235.124.3/api/prepareStructure";
     final String upload_URL = BuildConfig.BASE_URL
             + Urls.SSModule.STRUCTURE_PREPARATION;
@@ -104,14 +100,12 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private ArrayList<Uri> imageUri = new ArrayList<>();
     private int imageCount = 0;
-    StructurePripretionData requestData = new StructurePripretionData();
-    StructureData structureData;
-
+    private StructurePripretionData requestData = new StructurePripretionData();
+    private StructureData structureData;
     private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> typeOfBeneficiaryList = new ArrayList<>();
-
-    StructurePripretionsActivityPresenter presenter;
-    String currentPhotoPath, selectedTypeOfBeneficiaryId, selectedTypeOfBeneficiary;
+    private StructurePripretionsActivityPresenter presenter;
+    private String currentPhotoPath, selectedTypeOfBeneficiaryId, selectedTypeOfBeneficiary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,8 +233,8 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
 
                     Uri uri1 = imageUri.get(0);
                     requestData.setStructureImg1(uri1.getPath());
-                    Uri uri2 = imageUri.get(0);
-                    requestData.setStructureImg1(uri2.getPath());
+                    Uri uri2 = imageUri.get(1);
+                    requestData.setStructureImg2(uri2.getPath());
 
                     if(Util.isConnected(this)){
                         uploadImage(requestData, 2);
@@ -424,7 +418,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                 Drawable drawable = new BitmapDrawable(getResources(), structurePripretionData.getStructureImg1());
                 params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
                         "image/jpeg"));
-                Drawable drawable1 = new BitmapDrawable(getResources(), structurePripretionData.getStructureImg1());
+                Drawable drawable1 = new BitmapDrawable(getResources(), structurePripretionData.getStructureImg2());
                 params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
                         "image/jpeg"));
 //                }

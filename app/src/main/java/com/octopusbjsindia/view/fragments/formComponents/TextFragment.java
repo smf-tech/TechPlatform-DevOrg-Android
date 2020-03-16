@@ -159,7 +159,6 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-
                 if (element.getInputType() != null && element.getInputType().equals("number")) {
                     if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                         if (isAllInputsValid()) {

@@ -1,7 +1,9 @@
 package com.octopusbjsindia.presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -26,6 +28,7 @@ import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.FormRequestCall;
+import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
@@ -37,6 +40,7 @@ import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -151,7 +155,25 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 
     @Override
     public void onImageUploadedListener(String response, String formName) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
 
+        fragmentWeakReference.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+                Map<String, String> mUploadedImageUrlList = new HashMap<>();
+                mUploadedImageUrlList.put(formName, url);
+
+                fragmentWeakReference.get().onImageUploaded(mUploadedImageUrlList);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -369,5 +391,20 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 //            fragmentWeakReference.get().hideProgressBar();
 //            fragmentWeakReference.get().getFormDataAndParse(response);
 //        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void uploadImage(File file, String type, final String formName) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, formName, null, null);
+                return null;
+            }
+        }.execute();
+
     }
 }

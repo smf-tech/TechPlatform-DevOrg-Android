@@ -44,6 +44,7 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
+import com.octopusbjsindia.view.fragments.formComponents.FileQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
@@ -53,6 +54,7 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,8 +78,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    ArrayList<String> jurisdictions = new ArrayList<>();
-    TextView tvTitle;
+    private ArrayList<String> jurisdictions = new ArrayList<>();
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,6 +226,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putSerializable("Element", element);
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
+                        break;
+
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        Fragment fileFragment = new FileQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        fileFragment.setArguments(bundle);
+                        adapter.addFragment(fileFragment, "Question Title");
                         break;
 
                 }
@@ -493,6 +502,19 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //        }
     }
 
+    public void uploadImage(File file, String type, final String formName) {
+        presenter.uploadImage(file,
+                Constants.Image.IMAGE_TYPE_FILE, formName);
+    }
+
+    public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
+        mUploadedImageUrlList.add(uploadedImageUrlList);
+    }
+
+    public List<Map<String, String>> getUploadedImages() {
+        return mUploadedImageUrlList;
+    }
+
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
             btn2String) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
@@ -538,5 +560,4 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
-
 }

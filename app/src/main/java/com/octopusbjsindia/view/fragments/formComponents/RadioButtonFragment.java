@@ -26,12 +26,12 @@ import java.util.HashMap;
 
 public class RadioButtonFragment extends Fragment implements View.OnClickListener {
 
-    View view;
+    private View view;
     private Elements element;
 
     private RadioButtonAdapter adapter;
-    RecyclerView rvRadiobutton;
-    ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
+    private RecyclerView rvRadiobutton;
+    private ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
         element = (Elements) getArguments().getSerializable("Element");
         TextView tvQuetion = view.findViewById(R.id.tv_question);
-
         rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
-
-
         tvQuetion.setText(element.getTitle().getDefaultValue());
 
         list.clear();
