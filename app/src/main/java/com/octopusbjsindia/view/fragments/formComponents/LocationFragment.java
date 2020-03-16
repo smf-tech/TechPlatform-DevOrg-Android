@@ -467,8 +467,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
+                    getLocation((!TextUtils.isEmpty(selectedCountryId))
+                                    ? selectedCountryId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
                             Constants.JurisdictionLevelName.CITY_LEVEL);
                 }
                 break;
@@ -508,8 +508,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.etVillage:
 
-                ArrayList<JurisdictionLocation> villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                        .getAccessibleLocationData(selectedClusterId);
+                ArrayList<JurisdictionLocation> villageData;
+                if(TextUtils.isEmpty(selectedClusterId)){
+                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
+                } else {
+                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+                }
 
                 if (villageData != null && !villageData.isEmpty()) {
                     villageList.clear();
