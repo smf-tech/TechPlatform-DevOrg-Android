@@ -208,7 +208,7 @@
         <Button
             android:id="@+id/bt_previous"
             style="@style/AppStyleBorderButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="1"
@@ -217,7 +217,7 @@
         <Button
             android:id="@+id/bt_next"
             style="@style/AppStyleBorderButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="1"

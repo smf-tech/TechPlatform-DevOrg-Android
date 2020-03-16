@@ -340,7 +340,7 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-            fragmentWeakReference.get().showNextScreen(response);
+            //fragmentWeakReference.get().showNextScreen(response);
         }
     }
 
@@ -360,22 +360,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                 formRequestCall.createFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(),
                         imageUrlList, url, formId, oid, submitType);
                 break;
-
-//            case Constants.ONLINE_UPDATE_FORM_TYPE:
-//                fragmentWeakReference.get().showProgressBar();
-//                formRequestCall.updateFormResponse(getRequestedObject(), getMatrixDynamicValuesMap(),
-//                        imageUrlList, url, formId, oid, submitType);
-//                break;
-//
-//            case Constants.OFFLINE_SUBMIT_FORM_TYPE:
-//                DatabaseManager.getDBInstance(fragmentWeakReference.get())
-//                        .insertFormResult(getSavedForm());
-//                break;
-//
-//            case Constants.OFFLINE_UPDATE_FORM_TYPE:
-//                DatabaseManager.getDBInstance(fragmentWeakReference.get())
-//                        .updateFormResult(getSavedForm());
-//                break;
         }
     }
 
