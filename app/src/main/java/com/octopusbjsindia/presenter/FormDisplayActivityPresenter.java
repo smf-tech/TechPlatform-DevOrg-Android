@@ -315,7 +315,7 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 //                        activity.closeScreen(true);
 //                    }
 
-                    Objects.requireNonNull(fragmentWeakReference.get()).onBackPressed();
+                    //Objects.requireNonNull(fragmentWeakReference.get()).onBackPressed();
                 }
             }
         } catch (JSONException e) {

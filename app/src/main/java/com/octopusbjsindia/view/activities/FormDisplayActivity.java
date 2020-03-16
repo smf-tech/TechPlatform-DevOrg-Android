@@ -309,11 +309,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goPrevious() {
-        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
+        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf())) {
             tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
             vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
         } else {
-            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
             String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
             String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
             if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {

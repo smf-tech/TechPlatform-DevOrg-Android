@@ -55,7 +55,7 @@
                 <EditText
                     android:id="@+id/et_answer_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/answer"
+                    android:hint=""
                     android:visibility="gone"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:clickable="false"
                     android:focusable="false"
-                    android:hint="@string/answer"
+                    android:hint=""
                     android:longClickable="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
