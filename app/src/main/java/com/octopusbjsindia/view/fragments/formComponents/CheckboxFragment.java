@@ -106,7 +106,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                     } else if (item.equals("other")) {
                         isOther = true;
                         cbOther.setChecked(true);
-                        etOther.setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.ti_other).setVisibility(View.VISIBLE);
                         etOther.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "-Comment"));
                     }
                 }

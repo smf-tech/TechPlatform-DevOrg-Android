@@ -282,6 +282,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goNext(HashMap<String, String> hashMap) {
+        Util.hideKeyboard(tvTitle);
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
