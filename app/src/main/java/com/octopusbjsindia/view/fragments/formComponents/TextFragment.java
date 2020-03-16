@@ -38,7 +38,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     private Elements element;
     private TextView tvQuetion;
     private EditText etAnswer, et_answer_name;
-
+    boolean isFirstpage = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +57,14 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         super.onViewCreated(view, savedInstanceState);
 
         element = (Elements) getArguments().getSerializable("Element");
+        isFirstpage = getArguments().getBoolean("isFirstpage");
         textFragmentPresenter = new TextFragmentPresenter(this);
         tvQuetion = view.findViewById(R.id.tv_question);
 
         if (TextUtils.isEmpty(element.getInputType())) {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
+                etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
@@ -70,12 +73,16 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             etAnswer = view.findViewById(R.id.et_answer_date);
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
+                etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
         } else if (element.getInputType().equals("number")) {
             if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                 etAnswer = view.findViewById(R.id.et_answer);
+                if (!TextUtils.isEmpty(element.getPlaceHolder()))
+                    etAnswer.setHint(element.getPlaceHolder());
                 etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
                 et_answer_name.setVisibility(View.VISIBLE);
@@ -88,7 +95,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                     @Override
                     public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
                         //Log.d("mvUserName_Phone", String.valueOf(charSequence));
-                        if (count>=9){
+                        if (count >= 9) {
 
                             textFragmentPresenter.GET_MV_USER_INFO(String.valueOf(charSequence));
                         }
@@ -100,15 +107,17 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                     }
                 });
 
-                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"))) {
-                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"));
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
+                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
                 }
-                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"))) {
-                    et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"));
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
+                    et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
                 }
 
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
+                if (!TextUtils.isEmpty(element.getPlaceHolder()))
+                    etAnswer.setHint(element.getPlaceHolder());
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
                 et_answer_name.setVisibility(View.GONE);
@@ -118,6 +127,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
         } else {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!TextUtils.isEmpty(element.getPlaceHolder()))
+                etAnswer.setHint(element.getPlaceHolder());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
@@ -125,16 +136,19 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         tvQuetion.setText(element.getTitle().getDefaultValue());
 
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"))) {
-            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"phone"));
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
+            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
         }
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"))) {
-            et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()+"name"));
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
+            et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
         }
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
+        if (isFirstpage) {
+            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+        }
 
     }
 
@@ -172,10 +186,10 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ColomJsonObject.addProperty("name", et_answer_name.getText().toString());
                                 JsonObject finalJsonObjet = new JsonObject();
                                 finalJsonObjet.add(element.getName(),ColomJsonObject);*/
-                                hashMap.put(element.getName()+"phone",etAnswer.getText().toString());
-                                hashMap.put(element.getName()+"name",et_answer_name.getText().toString());
+                                hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
                             }
-                            hashMap.entrySet().forEach((Map.Entry<String, String> entry) ->{
+                            hashMap.entrySet().forEach((Map.Entry<String, String> entry) -> {
                                 System.out.println(entry.getKey() + " " + entry.getValue());
                             });
                             ((FormDisplayActivity) getActivity()).goNext(hashMap);
@@ -213,7 +227,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         if (TextUtils.isEmpty(getUserMobileNumber())) {
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_empty));
             isInputValid = false;
-        } else if (getUserMobileNumber().trim().length() < 10 && getUserMobileNumber().trim().length() > 10){
+        } else if (getUserMobileNumber().trim().length() < 10 || getUserMobileNumber().trim().length() > 10) {
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_invalid));
             isInputValid = false;
         } else if (et_answer_name.getText().toString().trim().length() == 0) {
@@ -248,14 +262,14 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         Log.d("mvUserName_Phone", response);
         Gson gson = new Gson();
         MvUserNameResponseModel mvUserNameResponseModel = gson.fromJson(response, MvUserNameResponseModel.class);
-        if (mvUserNameResponseModel!=null) {
+        if (mvUserNameResponseModel != null) {
             if (!TextUtils.isEmpty(mvUserNameResponseModel.getMvUserNameResponses().get(0).getName())) {
                 et_answer_name.setText(mvUserNameResponseModel.getMvUserNameResponses().get(0).getName());
                 et_answer_name.setEnabled(false);
-            }else {
+            } else {
                 et_answer_name.setEnabled(true);
             }
-        }else {
+        } else {
             et_answer_name.setEnabled(true);
         }
     }

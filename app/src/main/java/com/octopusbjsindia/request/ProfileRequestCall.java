@@ -236,7 +236,7 @@ public class ProfileRequestCall {
         final String submitProfileUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
-        Log.d(TAG, "submitUserProfile - url: " + submitProfileUrl);
+        //Log.d(TAG, "submitUserProfile - url: " + submitProfileUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
@@ -339,6 +339,14 @@ public class ProfileRequestCall {
                         locationArray.add(clusters.getId());
                     }
                     locationObj.add(Constants.Location.CLUSTER, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getSchoolIds() != null) {
+                    for (JurisdictionType schools : userLocation.getSchoolIds()) {
+                        locationArray.add(schools.getId());
+                    }
+                    locationObj.add(Constants.Location.SCHOOL, locationArray);
                 }
 
                 body.add(Constants.Login.USER_LOCATION, locationObj);

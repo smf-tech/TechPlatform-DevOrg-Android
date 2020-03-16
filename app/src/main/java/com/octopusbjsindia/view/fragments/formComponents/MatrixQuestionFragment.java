@@ -33,7 +33,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
     private TextView text_title;
     private View view;
     private Elements elements;
-
+    boolean isFirstpage = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,10 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(MatrixQuestionFragment.this, getActivity(), elements,
                         this);
                 rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
+            }
+            isFirstpage = getArguments().getBoolean("isFirstpage");
+            if (isFirstpage) {
+                view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
 

@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +46,6 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.FileQuestionFragment;
-import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
@@ -80,6 +80,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ProgressBar progressBar;
     private ArrayList<String> jurisdictions = new ArrayList<>();
     private TextView tvTitle;
+    ImageView toolbar_back_action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +166,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 gpsTracker.showSettingsAlert();
             }
         }
+
+        findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -174,7 +182,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     private void setupFormElements(final List<Elements> formDataArrayList) {
         for (Elements element : formDataArrayList) {
+            boolean isFirstpage = false;
             if (element != null && !element.getType().equals("")) {
+                if (formDataArrayList.indexOf(element) == 0) {
+                    isFirstpage = true;
+                }
                 String formDataType = element.getType();
                 Bundle bundle = new Bundle();
                 switch (formDataType) {
@@ -182,6 +194,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         Fragment locationFragment = new LocationFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putSerializable("jurisdictions", jurisdictions);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         locationFragment.setArguments(bundle);
                         adapter.addFragment(locationFragment, "");
                         break;
@@ -189,6 +202,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         ratingQuestionFragment.setArguments(bundle);
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
                         break;
@@ -196,6 +210,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         textFragment.setArguments(bundle);
                         adapter.addFragment(textFragment, "Question 1");
                         break;
@@ -203,6 +218,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Fragment radioButtonFragment = new RadioButtonFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         radioButtonFragment.setArguments(bundle);
                         adapter.addFragment(radioButtonFragment, "Question 1");
                         break;
@@ -210,6 +226,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
@@ -217,16 +234,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
 
-                    case Constants.FormsFactory.IMAGE_PICKER:
+                    /*case Constants.FormsFactory.IMAGE_PICKER:
                         Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage",isFirstpage);
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
-                        break;
+                        break;*/
 
                     case Constants.FormsFactory.FILE_TEMPLATE:
                         Fragment fileFragment = new FileQuestionFragment();
@@ -245,10 +264,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData == null) {
             return;
         }
+        TextView tvFormTitle = findViewById(R.id.tv_form_title);
+        tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {
             Elements locationElement = new Elements();
             locationElement.setType("location");
-            locationElement.setName("location");
+            locationElement.setName(formData.getLocationRequiredLevel());
             locationElement.setLocationRequiredLevel(formData.getLocationRequiredLevel());
 
             Gson gson = new Gson();
@@ -269,25 +290,28 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goNext(HashMap<String, String> hashMap) {
+        Util.hideKeyboard(tvTitle);
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
-            showDialog(this, "Alert", "Do you want to submit this form?", "Save", "Submit");
+            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
-                tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
                 String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
                 String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
                 String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
                 if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-                    tvTitle.setText((vpFormElements.getCurrentItem() + 1) + "/" + formDataArrayList.size());
+                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-                        showDialog(this, "Alert", "Do you want to submit this form?", "Save", "Submit");
+                        formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
-                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
                     }
                 }
@@ -296,8 +320,27 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goPrevious() {
-        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf())) {
+            tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+        } else {
+            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
+            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+                tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+            } else {
+                tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+            }
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard", true);
     }
 
     public void submitForm() {
@@ -516,7 +559,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
-            btn2String) {
+            btn2String, boolean discardFlag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -550,12 +593,19 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
-                submitForm();
-                dialog.dismiss();
+
+                if (discardFlag) {
+                    dialog.dismiss();
+                    finish();
+                } else {
+                    submitForm();
+                    dialog.dismiss();
+                    finish();
+                }
             });
         }
 
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();

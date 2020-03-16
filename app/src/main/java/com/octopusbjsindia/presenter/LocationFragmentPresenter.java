@@ -8,7 +8,6 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.request.APIRequestCall;
-import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 
@@ -42,6 +41,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
 
     @Override
     public void onSuccessListener(String requestID, String response) {
+        mContext.hideProgressBar();
         JurisdictionLevelResponse jurisdictionLevelResponse
                 = new Gson().fromJson(response, JurisdictionLevelResponse.class);
         if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null

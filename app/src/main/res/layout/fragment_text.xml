@@ -7,79 +7,83 @@
     android:orientation="vertical"
     tools:context=".view.fragments.formComponents.TextFragment">
 
-
-    <RelativeLayout
-        android:id="@+id/ly_question"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dimen_60dp">
 
-        <TextView
-            android:id="@+id/tv_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:fontFamily="@font/opensans_semibold"
-            android:textSize="@dimen/text_size_16" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ti_answer"
-            style="@style/textinputstyle"
+        <RelativeLayout
+            android:id="@+id/ly_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_question"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
+            android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/et_answer"
-                style="@style/RegistrationEditTextLayout"
-                android:hint="@string/other"
-                tools:ignore="Autofill" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:textSize="@dimen/text_size_16" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ti_answer_name"
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ti_answer"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_answer"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_question"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-            <EditText
-                android:id="@+id/et_answer_name"
-                style="@style/RegistrationEditTextLayout"
-                android:hint="Please enter name"
+                <EditText
+                    android:id="@+id/et_answer"
+                    style="@style/RegistrationEditTextLayout"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_answer_name"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ti_answer"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/et_answer_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint=""
+                    android:visibility="gone"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_answer_date"
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_question"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:visibility="gone"
-                tools:ignore="Autofill" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ti_answer_date"
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_question"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:visibility="gone"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
-
-            <EditText
-                android:id="@+id/et_answer_date"
-                style="@style/RegistrationEditTextLayout"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="@string/answer"
-                android:longClickable="false"
-                tools:ignore="Autofill" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_answer_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint=""
+                    android:longClickable="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,7 +96,7 @@
         <Button
             android:id="@+id/bt_previous"
             style="@style/AppStyleBorderButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="1"
@@ -101,7 +105,7 @@
         <Button
             android:id="@+id/bt_next"
             style="@style/AppStyleBorderButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_05dp"
             android:layout_weight="1"

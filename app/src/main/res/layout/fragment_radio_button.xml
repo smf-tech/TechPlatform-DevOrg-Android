@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.formComponents.RadioButtonFragment">
 
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/dimen_60dp">
 
         <RelativeLayout
             android:id="@+id/ly_question"
@@ -31,35 +32,34 @@
                 android:layout_below="@+id/tv_question"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
+    </ScrollView>
 
-        <LinearLayout
+    <LinearLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/bt_previous"
+            style="@style/AppStyleBorderButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/dimen_05dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="@string/previous" />
 
-            <Button
-                android:id="@+id/bt_previous"
-                style="@style/AppStyleBorderButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:layout_weight="1"
-                android:text="@string/previous" />
-
-            <Button
-                android:id="@+id/bt_next"
-                style="@style/AppStyleBorderButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:layout_weight="1"
-                android:text="@string/next" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+        <Button
+            android:id="@+id/bt_next"
+            style="@style/AppStyleBorderButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="@string/next" />
+    </LinearLayout>
+</RelativeLayout>

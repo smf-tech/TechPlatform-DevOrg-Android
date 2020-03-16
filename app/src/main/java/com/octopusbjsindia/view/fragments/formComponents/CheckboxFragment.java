@@ -27,7 +27,6 @@ import com.octopusbjsindia.view.adapters.formComponents.ChechBoxAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +41,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
     EditText etOther;
-
+    boolean isFirstpage = false;
     public ArrayList<String> selectedList = new ArrayList<String>();
     HashMap<String, String> hashMap = new HashMap<String, String>();
 
@@ -69,7 +68,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         super.onViewCreated(view, savedInstanceState);
 
         element = (Elements) getArguments().getSerializable("Element");
-
+        isFirstpage = getArguments().getBoolean("isFirstpage");
         TextView tvQuetion = view.findViewById(R.id.tv_question);
         cbNone = view.findViewById(R.id.cb_none);
         cbOther = view.findViewById(R.id.cb_other);
@@ -92,21 +91,22 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
         // set data logic
         selectedList.clear();
-        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
-            JSONArray arr= null;
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+            JSONArray arr = null;
             try {
-                arr = new JSONArray(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()));
-                for(int i=0;i<arr.length();i++){
-                    String item=arr.get(i).toString();
+                arr = new JSONArray(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                for (int i = 0; i < arr.length(); i++) {
+                    String item = arr.get(i).toString();
                     selectedList.add(item);
-                    
+
                     if (item.equals("none")) {
                         isNone = true;
                         cbNone.setChecked(true);
                     } else if (item.equals("other")) {
                         isOther = true;
                         cbOther.setChecked(true);
-                        etOther.setText(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName() + "-Comment"));
+                        view.findViewById(R.id.ti_other).setVisibility(View.VISIBLE);
+                        etOther.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "-Comment"));
                     }
                 }
             } catch (JSONException e) {
@@ -124,6 +124,10 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         cbNone.setOnCheckedChangeListener(this);
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
+
+        if (isFirstpage) {
+            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -143,8 +147,6 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
             case R.id.cb_other:
                 if (isChecked) {
                     isOther = true;
-//                    selectedList.clear();
-//                    adapter.notifyDataSetChanged();
                     cbNone.setChecked(false);
                     view.findViewById(R.id.ti_other).setVisibility(View.VISIBLE);
                 } else {
@@ -189,11 +191,13 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
     public void createResponse() {
         if (isNone) {
-            selectedList.add("none");
+            if (!selectedList.contains("none"))
+                selectedList.add("none");
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
         } else if (isOther) {
 
-            selectedList.add("other");
+            if (!selectedList.contains("other"))
+                selectedList.add("other");
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
             hashMap.put(element.getName() + "-Comment", etOther.getText().toString());
         } else {

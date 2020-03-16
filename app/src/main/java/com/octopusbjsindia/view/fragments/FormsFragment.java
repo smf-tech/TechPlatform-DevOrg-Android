@@ -110,7 +110,7 @@ public class FormsFragment extends Fragment {
                     break;
 
                 case 2:
-                    fragment = new SubmittedFormsFragment();
+                    // fragment = new SubmittedFormsFragment();
                     break;
             }
 
@@ -119,7 +119,7 @@ public class FormsFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -136,7 +136,7 @@ public class FormsFragment extends Fragment {
                         break;
 
                     case 2:
-                        title = getResources().getString(R.string.submitted_forms);
+                        // title = getResources().getString(R.string.submitted_forms);
                         break;
                 }
             } catch (Resources.NotFoundException | IllegalStateException e) {
