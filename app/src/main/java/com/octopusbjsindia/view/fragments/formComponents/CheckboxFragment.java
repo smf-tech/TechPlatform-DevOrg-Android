@@ -42,7 +42,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
     EditText etOther;
-    boolean isFirstpage =false;
+    boolean isFirstpage = false;
     public ArrayList<String> selectedList = new ArrayList<String>();
     HashMap<String, String> hashMap = new HashMap<String, String>();
 
@@ -92,14 +92,14 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
         // set data logic
         selectedList.clear();
-        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()))){
-            JSONArray arr= null;
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+            JSONArray arr = null;
             try {
-                arr = new JSONArray(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName()));
-                for(int i=0;i<arr.length();i++){
-                    String item=arr.get(i).toString();
+                arr = new JSONArray(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                for (int i = 0; i < arr.length(); i++) {
+                    String item = arr.get(i).toString();
                     selectedList.add(item);
-                    
+
                     if (item.equals("none")) {
                         isNone = true;
                         cbNone.setChecked(true);
@@ -107,7 +107,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                         isOther = true;
                         cbOther.setChecked(true);
                         etOther.setVisibility(View.VISIBLE);
-                        etOther.setText(((FormDisplayActivity)getActivity()).formAnswersMap.get(element.getName() + "-Comment"));
+                        etOther.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "-Comment"));
                     }
                 }
             } catch (JSONException e) {
@@ -126,7 +126,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
-        if (isFirstpage){
+        if (isFirstpage) {
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
     }
@@ -148,8 +148,6 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
             case R.id.cb_other:
                 if (isChecked) {
                     isOther = true;
-//                    selectedList.clear();
-//                    adapter.notifyDataSetChanged();
                     cbNone.setChecked(false);
                     view.findViewById(R.id.ti_other).setVisibility(View.VISIBLE);
                 } else {
@@ -194,11 +192,13 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
     public void createResponse() {
         if (isNone) {
-            selectedList.add("none");
+            if (!selectedList.contains("none"))
+                selectedList.add("none");
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
         } else if (isOther) {
 
-            selectedList.add("other");
+            if (!selectedList.contains("other"))
+                selectedList.add("other");
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
             hashMap.put(element.getName() + "-Comment", etOther.getText().toString());
         } else {

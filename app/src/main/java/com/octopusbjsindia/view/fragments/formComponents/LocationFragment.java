@@ -255,6 +255,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
@@ -263,6 +267,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
@@ -271,6 +279,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
@@ -279,6 +291,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
@@ -287,6 +303,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
@@ -295,6 +315,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
@@ -303,6 +327,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
                     }
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
@@ -311,6 +339,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
+                        hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id",
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id"));
+                        hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
+                                ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
                     }
                     continue;
                 }
@@ -539,9 +571,6 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-
-
-
         if (type.equals("Select Country")) {
             for (CustomSpinnerObject mState : countryList) {
                 if (mState.isSelected()) {
