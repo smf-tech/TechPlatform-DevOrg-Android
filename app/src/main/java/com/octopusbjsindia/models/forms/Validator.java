@@ -4,8 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.models.LocaleData;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public class Validator {
+public class Validator implements Serializable {
     @SerializedName("type")
     @Expose
     private String type;

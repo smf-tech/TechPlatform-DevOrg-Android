@@ -72,7 +72,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private FormDisplayActivityPresenter presenter;
     public HashMap<String, String> formAnswersMap = new HashMap<>();
     private String processId;
-    private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    public List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    public HashMap<String, String> selectedImageUriList = new HashMap<>();
     private GPSTracker gpsTracker;
     private final String TAG = this.getClass().getSimpleName();
     private boolean mIsPartiallySaved;
@@ -80,7 +81,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ProgressBar progressBar;
     private ArrayList<String> jurisdictions = new ArrayList<>();
     private TextView tvTitle;
-    ImageView toolbar_back_action;
+    private ImageView toolbar_back_action;
+    private boolean isImageFileAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,8 +250,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         break;*/
 
                     case Constants.FormsFactory.FILE_TEMPLATE:
+                        isImageFileAvailable = true;
                         Fragment fileFragment = new FileQuestionFragment();
                         bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         fileFragment.setArguments(bundle);
                         adapter.addFragment(fileFragment, "Question Title");
                         break;
@@ -294,7 +298,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            if (isImageFileAvailable) {
+                showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
+            } else {
+                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            }
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
@@ -309,7 +317,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        if (isImageFileAvailable) {
+                            showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
+                        } else {
+                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        }
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -340,7 +352,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard", true);
+        if (isImageFileAvailable) {
+            showDialog(this, "Alert", "Do you want to discard the form?", "", "Discard", true);
+        } else {
+            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
+        }
+
     }
 
     public void submitForm() {

@@ -100,7 +100,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 if (TextUtils.isEmpty(selected)) {
-                    Util.showToast("Please select some value", this);
+                    Util.showToast("Please select some value.", this);
                     return;
                 } else {
                     hashMap.put(element.getName(), selected);

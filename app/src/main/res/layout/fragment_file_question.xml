@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,19 +16,40 @@
 
     <ImageView
         android:id="@+id/iv_img1"
-        android:layout_width="@dimen/dimen_160dp"
-        android:layout_height="@dimen/dimen_160dp"
-        android:layout_below="@+id/tv_structure_code"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dimen_250dp"
+        android:layout_height="@dimen/dimen_250dp"
+        android:layout_centerInParent="true"
         android:src="@drawable/ic_add_img" />
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:text="Select image" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/bt_previous"
+            style="@style/AppStyleBorderButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="@string/previous" />
+
+        <Button
+            android:id="@+id/bt_next"
+            style="@style/AppStyleBorderButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:text="@string/next" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/ly_progress_bar"
@@ -49,4 +70,4 @@
             android:indeterminateOnly="true" />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

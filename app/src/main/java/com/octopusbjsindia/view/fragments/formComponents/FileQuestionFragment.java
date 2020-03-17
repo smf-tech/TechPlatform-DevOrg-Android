@@ -4,10 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +22,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.soundcloud.android.crop.Crop;
@@ -41,9 +38,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.octopusbjsindia.utility.Util.getImageName;
 
 public class FileQuestionFragment extends Fragment implements View.OnClickListener {
 
+    private boolean isFirstpage = false;
     private View view;
     private ImageView imageView;
     private RelativeLayout progressBar;
@@ -52,10 +51,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     private Elements element;
     private String currentPhotoPath;
     private final String TAG = FileQuestionFragment.class.getName();
-
-    final String upload_URL = BuildConfig.BASE_URL
-            + Urls.SSModule.STRUCTURE_PREPARATION;
-    //private ArrayList<Uri> imageUri = new ArrayList<>();
+    private boolean isImageSelected = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +75,20 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         imageView = view.findViewById(R.id.iv_img1);
         imageView.setOnClickListener(this);
         tvQuetion.setText(element.getTitle().getDefaultValue());
+        isFirstpage = getArguments().getBoolean("isFirstpage");
+
+        view.findViewById(R.id.bt_previous).setOnClickListener(this);
+        view.findViewById(R.id.bt_next).setOnClickListener(this);
+
+        if (isFirstpage) {
+            view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).selectedImageUriList.get(element.getName()))) {
+            Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).selectedImageUriList.get(element.getName()));
+            imageView.setImageURI(imageUri);
+        }
+
     }
 
     @Override
@@ -102,8 +112,13 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.bt_next:
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put(element.getName() + "Uri", finalUri.toString());
-                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                if (isImageSelected) {
+                    hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
+                            get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                } else {
+                    Util.showToast("Please select image.", this);
+                }
                 break;
         }
     }
@@ -111,7 +126,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
             showPictureDialog();
-//            takePhotoFromCamera();
         }
     }
 
@@ -139,29 +153,28 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
-                    Toast.LENGTH_SHORT).show();
+            Util.showToast(getString(R.string.msg_error_in_photo_gallery), this);
         }
     }
 
     private void takePhotoFromCamera() {
         try {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = getImageFile(); // 1
-            Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-            else
-                uri = Uri.fromFile(file); // 3
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/Octopus/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
-            //display an error message
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
-                    Toast.LENGTH_SHORT).show();
+            Util.showToast(getString(R.string.msg_image_capture_not_support), this);
         } catch (SecurityException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
-                    Toast.LENGTH_SHORT).show();
+            Util.showToast(getString(R.string.msg_take_photo_error), this);
         }
     }
 
@@ -185,7 +198,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 + "IMG_" + timeStamp + ".jpg");
         currentPhotoPath = file.getPath();
         return file;
-
     }
 
     @Override
@@ -194,18 +206,27 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getActivity());
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) {
+                    return;
+                }
+
+                finalUri = Util.getUri(imageFilePath);
+                Crop.of(outputUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    getImageFile();
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) {
+                        return;
+                    }
+
                     outputUri = data.getData();
-                    finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getActivity());
+                    finalUri = Util.getUri(imageFilePath);
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -215,14 +236,21 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 imageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 final File compressedImageFile = Util.compressFile(imageFile);
+                isImageSelected = true;
                 if (Util.isConnected(getContext())) {
-                    if (Util.isValidImageSize(imageFile)) {
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        ((FormDisplayActivity) getActivity()).selectedImageUriList.put(element.getName(), finalUri.toString());
+                        //((FormDisplayActivity) getActivity()).selectedImageUriList.add(hashMap);
                         ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile,
-                                Constants.Image.IMAGE_TYPE_FILE, "");
+                                Constants.Image.IMAGE_TYPE_FILE, element.getName());
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
                 }
+
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
