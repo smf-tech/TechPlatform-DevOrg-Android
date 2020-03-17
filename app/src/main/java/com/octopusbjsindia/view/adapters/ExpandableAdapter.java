@@ -139,7 +139,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
             view.findViewById(R.id.submitted_count_label).setVisibility(View.GONE);
 
             ImageButton addButton = view.findViewById(R.id.add_form_button);
-            addButton.setEnabled(Util.isUserApproved());
+//            addButton.setEnabled(Util.isUserApproved());
 
             addButton.setOnClickListener(v -> {
 //                Intent intent = new Intent(mContext, FormActivity.class);
