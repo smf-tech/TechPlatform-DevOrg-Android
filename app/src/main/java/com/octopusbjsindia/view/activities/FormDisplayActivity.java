@@ -112,8 +112,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     presenter.getFormSchema(formId);
                 }
             } else {
-                formModel = new Form();
-                formModel.setData(formData);
                 parseFormSchema(formData);
 
                 FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
@@ -268,6 +266,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData == null) {
             return;
         }
+        formModel = new Form();
+        formModel.setData(formData);
         TextView tvFormTitle = findViewById(R.id.tv_form_title);
         tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {

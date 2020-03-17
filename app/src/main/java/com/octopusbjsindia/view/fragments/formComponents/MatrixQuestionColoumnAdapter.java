@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -31,9 +32,11 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     private PreferenceHelper preferenceHelper;
     private String RowName;
     private int rowPosition;
+    private Fragment mfragment;
 
-    public MatrixQuestionColoumnAdapter(Context context, List<Column> columnList, final OnRequestItemClicked clickListener,
+    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context, List<Column> columnList, final OnRequestItemClicked clickListener,
                                         String s, int position) {
+        mfragment = fragment;
         mContext = context;
         RowName = s;
         rowPosition = position;
@@ -41,9 +44,19 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         this.clickListener = clickListener;
 
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
-        for (int i = 0; i < columnList.size(); i++) {
-            columnListAnswers.add(true);
+
+        if (fragment.rowMap != null) {
+            for (int i = 0; i < columnList.size(); i++) {
+                String str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getTitle().getLocaleValue()));
+                Log.d("columnValue", str);//fragment.rowMap.get(RowName).get("Insta").values().toString());
+                columnListAnswers.add(Boolean.parseBoolean(str));
+            }
+        } else {
+            for (int i = 0; i < columnList.size(); i++) {
+                columnListAnswers.add(true);
+            }
         }
+
 
     }
 
@@ -57,6 +70,12 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
+
+        if (columnListAnswers.get(position).booleanValue()) {
+            holder.toggleGroup2.check(R.id.btn_yes);
+        } else {
+            holder.toggleGroup2.check(R.id.btn_no);
+        }
 
         holder.toggleGroup2.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
@@ -82,8 +101,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
-
-
     }
 
     @Override
@@ -98,8 +115,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-
-        RecyclerView rv_matrix_question;
         TextView column_name;
 
         MaterialButtonToggleGroup toggleGroup2;
