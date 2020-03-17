@@ -90,7 +90,10 @@ public class Elements implements Serializable {
     private MaxRateDescription maxRateDescription;
     @SerializedName("placeHolder")
     @Expose
-    private String placeHolder;
+    private LocaleData placeHolder;
+    @SerializedName("requiredErrorText")
+    @Expose
+    private LocaleData requiredErrorText;
     @SerializedName("hasNone")
     @Expose
     private Boolean hasNone;
@@ -324,12 +327,20 @@ public class Elements implements Serializable {
         this.locationRequiredLevel = locationRequiredLevel;
     }
 
-    public String getPlaceHolder() {
+    public LocaleData getPlaceHolder() {
         return placeHolder;
     }
 
-    public void setPlaceHolder(String placeHolder) {
+    public void setPlaceHolder(LocaleData placeHolder) {
         this.placeHolder = placeHolder;
+    }
+
+    public LocaleData getRequiredErrorText() {
+        return requiredErrorText;
+    }
+
+    public void setRequiredErrorText(LocaleData requiredErrorText) {
+        this.requiredErrorText = requiredErrorText;
     }
 }
 

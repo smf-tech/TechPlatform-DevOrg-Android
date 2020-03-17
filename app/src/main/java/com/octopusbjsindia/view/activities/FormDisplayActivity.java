@@ -293,6 +293,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
+                String elementKey = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getName();
                 String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
                 String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
                 String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
@@ -300,6 +301,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
+                    formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
                         showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);

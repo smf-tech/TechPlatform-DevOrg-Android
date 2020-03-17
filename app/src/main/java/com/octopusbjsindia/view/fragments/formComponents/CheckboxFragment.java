@@ -177,15 +177,21 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                     if (selectedList.size() <= max && selectedList.size() >= min) {
                         createResponse();
                     } else {
-                        Util.showToast("Please select minimum " + min +
-                                        "and maximum " + max + "options.",
-                                this);
+                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                         return;
                     }
                 } else {
                     createResponse();
                 }
-                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                if(element.isRequired()){
+                    if(hashMap.isEmpty()){
+                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                    } else {
+                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                    }
+                } else {
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                }
                 break;
         }
     }

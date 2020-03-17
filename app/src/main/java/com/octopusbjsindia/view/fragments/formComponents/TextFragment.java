@@ -63,8 +63,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         if (TextUtils.isEmpty(element.getInputType())) {
             etAnswer = view.findViewById(R.id.et_answer);
-            if (!TextUtils.isEmpty(element.getPlaceHolder()))
-                etAnswer.setHint(element.getPlaceHolder());
+            if (!TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
@@ -73,16 +73,16 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             etAnswer = view.findViewById(R.id.et_answer_date);
-            if (!TextUtils.isEmpty(element.getPlaceHolder()))
-                etAnswer.setHint(element.getPlaceHolder());
+            if (!TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
         } else if (element.getInputType().equals("number")) {
             if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                 etAnswer = view.findViewById(R.id.et_answer);
-                if (!TextUtils.isEmpty(element.getPlaceHolder()))
-                    etAnswer.setHint(element.getPlaceHolder());
+                if (!TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                    etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
                 etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
                 et_answer_name.setVisibility(View.VISIBLE);
@@ -116,8 +116,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
-                if (!TextUtils.isEmpty(element.getPlaceHolder()))
-                    etAnswer.setHint(element.getPlaceHolder());
+                if (!TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                    etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et_answer_name = view.findViewById(R.id.et_answer_name);
                 et_answer_name.setVisibility(View.GONE);
@@ -127,8 +127,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
         } else {
             etAnswer = view.findViewById(R.id.et_answer);
-            if (!TextUtils.isEmpty(element.getPlaceHolder()))
-                etAnswer.setHint(element.getPlaceHolder());
+            if (!TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
@@ -179,14 +179,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                         if (isAllInputsValid()) {
                             HashMap<String, String> hashMap = new HashMap<String, String>();
                             if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                                Util.showToast("Please enter some value", this);
+                                Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                                 return;
                             } else {
-                                /*JsonObject ColomJsonObject = new JsonObject();
-                                ColomJsonObject.addProperty("phone", etAnswer.getText().toString());
-                                ColomJsonObject.addProperty("name", et_answer_name.getText().toString());
-                                JsonObject finalJsonObjet = new JsonObject();
-                                finalJsonObjet.add(element.getName(),ColomJsonObject);*/
                                 hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
                                 hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
                             }
@@ -199,7 +194,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                     } else {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                            Util.showToast("Please enter some value", this);
+                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                             return;
                         } else {
                             hashMap.put(element.getName(), etAnswer.getText().toString());
@@ -210,7 +205,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 } else {
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                        Util.showToast("Please enter some value", this);
+                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                         return;
                     } else {
                         hashMap.put(element.getName(), etAnswer.getText().toString());

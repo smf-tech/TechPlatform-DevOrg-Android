@@ -584,10 +584,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     selectedCountryId = mState.get_id();
                 }
             }
-            TextView tv = view.findViewById(R.id.etState);
+            TextView tv = view.findViewById(R.id.etCountry);
             tv.setText(selectedCountry);
             hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL, selectedCountry);
             hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id",selectedCountryId);
+            tv = view.findViewById(R.id.etCity);
+            tv.setText("");
         }  else if (type.equals("Select State")) {
             for (CustomSpinnerObject mState : stateList) {
                 if (mState.isSelected()) {
@@ -600,6 +602,16 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL, selectedState);
             hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL + "Id",selectedStateId);
 
+            tv = view.findViewById(R.id.etDistrict);
+            tv.setText("");
+            tv = view.findViewById(R.id.etTaluka);
+            tv.setText("");
+            tv = view.findViewById(R.id.etCluster);
+            tv.setText("");
+            tv = view.findViewById(R.id.etVillage);
+            tv.setText("");
+            tv = view.findViewById(R.id.etSchool);
+            tv.setText("");
         }  else if (type.equals("Select City")) {
             for (CustomSpinnerObject mState : districtList) {
                 if (mState.isSelected()) {
@@ -624,7 +636,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText(selectedDistrict);
             hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedDistrict);
             hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id",selectedDistrictId);
-
+            tv = view.findViewById(R.id.etTaluka);
+            tv.setText("");
+            tv = view.findViewById(R.id.etCluster);
+            tv.setText("");
+            tv = view.findViewById(R.id.etVillage);
+            tv.setText("");
+            tv = view.findViewById(R.id.etSchool);
+            tv.setText("");
         } else if (type.equals("Select Taluka")) {
             for (CustomSpinnerObject mState : talukaList) {
                 if (mState.isSelected()) {
@@ -645,6 +664,12 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                                 .findViewById(android.R.id.content), getResources().getString(R.string.msg_no_network),
                         Snackbar.LENGTH_LONG);
             }
+            tv = view.findViewById(R.id.etCluster);
+            tv.setText("");
+            tv = view.findViewById(R.id.etVillage);
+            tv.setText("");
+            tv = view.findViewById(R.id.etSchool);
+            tv.setText("");
         } else if (type.equals("Select Cluster")) {
             for (CustomSpinnerObject mState : clusterList) {
                 if (mState.isSelected()) {
@@ -655,7 +680,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etCluster);
             tv.setText(selectedCluster);
             hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedCluster);
-
+            tv = view.findViewById(R.id.etVillage);
+            tv.setText("");
+            tv = view.findViewById(R.id.etSchool);
+            tv.setText("");
         } else if (type.equals("Select Village")) {
             for (CustomSpinnerObject mState : villageList) {
                 if (mState.isSelected()) {
@@ -666,7 +694,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etVillage);
             tv.setText(selectedVillage);
             hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedVillage);
-
+            tv = view.findViewById(R.id.etSchool);
+            tv.setText("");
         } else if (type.equals("Select School")) {
             for (CustomSpinnerObject mState : schoolList) {
                 if (mState.isSelected()) {
