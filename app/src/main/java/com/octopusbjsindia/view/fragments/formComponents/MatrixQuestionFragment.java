@@ -17,14 +17,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Objects;
 
 public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
+    public HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> tempHashMap = new HashMap<>();
+    public HashMap<String, HashMap<String, HashMap<String, String>>> rowMap;
+    boolean isFirstpage = false;
     //views
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
@@ -33,7 +39,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
     private TextView text_title;
     private View view;
     private Elements elements;
-    boolean isFirstpage =false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,19 +70,41 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
-            if (isFirstpage){
+            if (isFirstpage) {
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
 
-        if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
-            String str = ((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName());
-        }
-
-        // set quetion at top
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName()))) {
+            String str = ((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName());
+            //String str1 = ((FormDisplayActivity)getActivity()).formAnswersMap.get("question9");
+            try {
+                jsonToMap(str);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }        // set quetion at top
         text_title.setText(elements.getTitle().getDefaultValue());
 
         return view;
+    }
+
+    public void jsonToMap(String str) throws JSONException {
+
+        HashMap<String, String> map = new HashMap<String, String>();
+        Gson g = new Gson();
+
+        tempHashMap.clear();
+        tempHashMap.putAll(g.fromJson(str,
+                new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
+                }.getType()));
+
+        Log.d("tempHashmap", tempHashMap.toString());
+        rowMap = new HashMap<>();
+        rowMap.clear();
+        rowMap.putAll(tempHashMap.get(elements.getName()));
+        Log.d("rowMap", rowMap.toString());
+        Log.d("tempHashMap", "tempHashMap-->" + tempHashMap.toString());
     }
 
     @Override
