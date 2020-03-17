@@ -24,6 +24,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -298,11 +299,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            if (isImageFileAvailable) {
-                showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
-            } else {
-                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-            }
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
@@ -319,11 +316,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        if (isImageFileAvailable) {
-                            showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
-                        } else {
-                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-                        }
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -354,11 +347,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        if (isImageFileAvailable) {
-            showDialog(this, "Alert", "Do you want to discard the form?", "", "Discard", true);
-        } else {
-            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
-        }
+        showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
 
     }
 
@@ -617,6 +606,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     dialog.dismiss();
                     finish();
                 } else {
+                    if (isImageFileAvailable && (!Util.isConnected(this))) {
+                        Util.snackBarToShowMsg(getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "You can not submit this form offline as " +
+                                        "this form contains image field. Please submit this form while you are connected to internet.",
+                                Snackbar.LENGTH_LONG);
+                        return;
+                    }
                     submitForm();
                     dialog.dismiss();
                     finish();

@@ -776,5 +776,6 @@
     <string name="select_max">Can select max</string>
     <string name="answer">Answer</string>
     <string name="select_locations">Please select locations</string>
+    <string name="cant_submit_form_offline">This form can not be submitted offline as this form contains image. Please submit form online.</string>
 
 </resources>
