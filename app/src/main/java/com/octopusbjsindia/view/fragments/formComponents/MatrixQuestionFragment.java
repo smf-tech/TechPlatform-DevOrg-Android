@@ -65,9 +65,6 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
                 elements = (Elements) getArguments().getSerializable("Element");
-                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(MatrixQuestionFragment.this, getActivity(), elements,
-                        this);
-                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
             if (isFirstpage) {
@@ -85,7 +82,14 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             }
         }        // set quetion at top
         text_title.setText(elements.getTitle().getDefaultValue());
-
+        if (getActivity() != null && getArguments() != null) {
+            if (getArguments().containsKey("Element")) {
+                elements = (Elements) getArguments().getSerializable("Element");
+                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(MatrixQuestionFragment.this, getActivity(), elements,
+                        this);
+                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
+            }
+        }
         return view;
     }
 
@@ -134,6 +138,8 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
+                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+                ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
                 ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goPrevious();
                 break;
         }
