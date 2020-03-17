@@ -42,7 +42,12 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
         for (int i = 0; i < elements.getRowsList().size(); i++) {
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < elements.getColumns().size(); j++) {
-                ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), true);
+                if (fragment.rowMap != null) {
+                    String str = String.valueOf(fragment.rowMap.get(elements.getRowsList().get(i).getValue()).get(elements.getColumns().get(j).getName()));
+                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), Boolean.parseBoolean(str));
+                }else {
+                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), true);
+                }
             }
             requestJsonObject.add(elements.getRowsList().get(i).getValue(), ColomJsonObject);
         }

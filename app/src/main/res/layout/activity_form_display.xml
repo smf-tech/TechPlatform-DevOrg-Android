@@ -12,13 +12,21 @@
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_16"
+        android:textSize="@dimen/text_size_14"
         android:fontFamily="@font/opensans_semibold"
+        android:textColor="@color/black"
         android:padding="@dimen/dimen_10dp"
         android:gravity="center" />
+    <View
+        android:id="@+id/line"
+        android:layout_below="@+id/tv_form_title"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@color/lighter_grey"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
-        android:layout_below="@+id/tv_form_title"
+        android:layout_below="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

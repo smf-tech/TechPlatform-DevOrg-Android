@@ -495,8 +495,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     public void showProgressBar() {
         this.runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.VISIBLE);
                 progressBarLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -507,8 +507,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         this.runOnUiThread(() -> {
             if (progressBarLayout != null && progressBar != null && progressBar.isShown()) {
-                progressBar.setVisibility(View.GONE);
                 progressBarLayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

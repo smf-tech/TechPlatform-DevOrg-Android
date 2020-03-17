@@ -34,7 +34,7 @@ public class Elements implements Serializable {
     private String inputType;
     @SerializedName("isRequired")
     @Expose
-    private Boolean isRequired;
+    private Boolean isRequired = false;
     @SerializedName("readOnly")
     @Expose
     private Boolean readOnly;
@@ -88,6 +88,9 @@ public class Elements implements Serializable {
     @SerializedName("maxRateDescription")
     @Expose
     private MaxRateDescription maxRateDescription;
+
+
+
     @SerializedName("placeHolder")
     @Expose
     private LocaleData placeHolder;
