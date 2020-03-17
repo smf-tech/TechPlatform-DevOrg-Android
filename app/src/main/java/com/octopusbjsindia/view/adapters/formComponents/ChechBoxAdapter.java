@@ -59,11 +59,8 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        mContext.isOther = false;
                         mContext.isNone = false;
                         mContext.cbNone.setChecked(false);
-                        mContext.cbOther.setChecked(false);
-                        mContext.tiOther.setVisibility(View.GONE);
                         if(!mContext.selectedList.contains(list.get(getAdapterPosition()).getValue()))
                             mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
                     } else {

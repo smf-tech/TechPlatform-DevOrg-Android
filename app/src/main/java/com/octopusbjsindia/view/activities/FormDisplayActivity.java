@@ -109,8 +109,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     presenter.getFormSchema(formId);
                 }
             } else {
-                formModel = new Form();
-                formModel.setData(formData);
                 parseFormSchema(formData);
 
                 FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
@@ -206,6 +204,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
                         break;
 
+                    case Constants.FormsFactory.FILE_TEMPLATE:
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
@@ -256,6 +255,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData == null) {
             return;
         }
+        formModel = new Form();
+        formModel.setData(formData);
         TextView tvFormTitle = findViewById(R.id.tv_form_title);
         tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {
@@ -282,8 +283,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void goNext(HashMap<String, String> hashMap) {
+        Util.hideKeyboard(tvTitle);
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
+            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
             showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
@@ -298,6 +301,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                 } else {
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                        formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
                         showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
