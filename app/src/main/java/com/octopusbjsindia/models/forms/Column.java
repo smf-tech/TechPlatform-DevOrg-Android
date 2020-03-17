@@ -6,10 +6,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.models.LocaleData;
 
+import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Column {
+public class Column implements Serializable {
     @ColumnInfo(name = "choices_by_url_response_path")
     private String choicesByUrlResponsePath;
 

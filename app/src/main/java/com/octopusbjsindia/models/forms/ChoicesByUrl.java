@@ -3,8 +3,10 @@ package com.octopusbjsindia.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public class ChoicesByUrl {
+public class ChoicesByUrl implements Serializable {
     @SerializedName("url")
     @Expose
     private String url;

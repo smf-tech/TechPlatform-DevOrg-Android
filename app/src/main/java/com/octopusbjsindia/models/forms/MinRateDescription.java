@@ -4,7 +4,9 @@ package com.octopusbjsindia.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MinRateDescription {
+import java.io.Serializable;
+
+public class MinRateDescription implements Serializable {
 
     @SerializedName("default")
     @Expose

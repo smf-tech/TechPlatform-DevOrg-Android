@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RadioButtonFragment extends Fragment implements View.OnClickListener {
-    boolean isFirstpage =false;
-    View view;
+    private boolean isFirstpage = false;
+    private View view;
     private Elements element;
 
     private RadioButtonAdapter adapter;
-    RecyclerView rvRadiobutton;
-    ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
+    private RecyclerView rvRadiobutton;
+    private ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,12 +52,8 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
         element = (Elements) getArguments().getSerializable("Element");
         TextView tvQuetion = view.findViewById(R.id.tv_question);
-
         isFirstpage = getArguments().getBoolean("isFirstpage");
-
         rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
-
-
         tvQuetion.setText(element.getTitle().getDefaultValue());
 
         list.clear();
@@ -82,7 +78,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
-        if (isFirstpage){
+        if (isFirstpage) {
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
     }

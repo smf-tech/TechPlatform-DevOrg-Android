@@ -49,7 +49,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
 
     String selectedCountry = "", selectedCountryId = "", selectedState = "", selectedStateId = "",
-            selectedDistrict = "", selectedDistrictId = "",selectedCity = "", selectedCityId = "",
+            selectedDistrict = "", selectedDistrictId = "", selectedCity = "", selectedCityId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedCluster = "", selectedClusterId = "",
             selectedVillage = "", selectedVillageId = "", selectedSchool = "", selectedSchoolId = "";
     ArrayList<CustomSpinnerObject> countryList = new ArrayList<>();
@@ -62,7 +62,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     ArrayList<CustomSpinnerObject> schoolList = new ArrayList<>();
 
     boolean isOffline = false;
-    boolean isFirstpage =false;
+    boolean isFirstpage = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +182,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     }
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
                     schoolList.clear();
-                    if(Util.getUserObjectFromPref().getUserLocation().getSchoolIds()!= null) {
+                    if (Util.getUserObjectFromPref().getUserLocation().getSchoolIds() != null) {
                         for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getSchoolIds().size(); i++) {
                             JurisdictionType location = Util.getUserObjectFromPref().getUserLocation().getSchoolIds().get(i);
                             CustomSpinnerObject obj = new CustomSpinnerObject();
@@ -353,7 +353,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
-        if (isFirstpage){
+        if (isFirstpage) {
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
     }
@@ -509,7 +509,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case R.id.etVillage:
 
                 ArrayList<JurisdictionLocation> villageData;
-                if(TextUtils.isEmpty(selectedClusterId)){
+                if (TextUtils.isEmpty(selectedClusterId)) {
                     villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
                             .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
                 } else {
@@ -562,7 +562,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-                if(TextUtils.isEmpty(element.getName())){
+                if (TextUtils.isEmpty(element.getName())) {
                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 } else {
                     if (TextUtils.isEmpty(hashMap.get(element.getName()))) {
@@ -600,7 +600,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etState);
             tv.setText(selectedState);
             hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL, selectedState);
-            hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL + "Id",selectedStateId);
+            hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL + "Id", selectedStateId);
 
             tv = view.findViewById(R.id.etDistrict);
             tv.setText("");
@@ -622,7 +622,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etCity);
             tv.setText(selectedState);
             hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL, selectedCity);
-            hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id",selectedCityId);
+            hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id", selectedCityId);
 
         } else if (type.equals("Select District")) {
             for (CustomSpinnerObject mState : districtList) {
@@ -654,7 +654,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etTaluka);
             tv.setText(selectedTaluka);
             hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedTaluka);
-            hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id",selectedDistrictId);
+            hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id", selectedDistrictId);
             if (Util.isConnected(getActivity())) {
                 presenter.getAllLocationData(selectedTalukaId
                         , Util.getUserObjectFromPref().getJurisdictionTypeId()

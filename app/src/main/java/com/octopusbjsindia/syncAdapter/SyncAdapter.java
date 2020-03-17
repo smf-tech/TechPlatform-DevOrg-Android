@@ -5,7 +5,6 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,7 +27,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
@@ -67,7 +65,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -581,7 +578,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Drawable drawable = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
                 params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
                         "image/jpeg"));
-                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
+                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg2());
                 params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
                         "image/jpeg"));
                 return params;

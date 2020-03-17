@@ -33,7 +33,7 @@ public class ImagePickerQuestionFragment extends Fragment implements ImagePicker
     private TextView text_title;
     private View view;
     private Elements elements;
-    boolean isFirstpage =false;
+    boolean isFirstpage = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class ImagePickerQuestionFragment extends Fragment implements ImagePicker
                 rv_matrix_question.setAdapter(imagePickerQuestionAdapter);
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
-            if (isFirstpage){
+            if (isFirstpage) {
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
 

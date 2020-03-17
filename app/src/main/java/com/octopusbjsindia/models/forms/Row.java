@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.models.LocaleData;
 
-public class Row {
+import java.io.Serializable;
+
+public class Row implements Serializable {
 
     @SerializedName("value")
     @Expose

@@ -24,7 +24,7 @@
                 android:layout_margin="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"
                 android:textSize="@dimen/text_size_16"
-                android:text="@string/select_locations"/>
+                android:text="@string/select_locations" />
 
             <!--Country-->
             <com.google.android.material.textfield.TextInputLayout

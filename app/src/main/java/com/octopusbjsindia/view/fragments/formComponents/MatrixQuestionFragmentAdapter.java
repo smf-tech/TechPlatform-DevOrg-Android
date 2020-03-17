@@ -68,7 +68,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.row_title.setText(dataList.getRowsList().get(position).getText().getDefaultValue());
 
-        matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment,mContext, dataList.getColumns(),
+        matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
                 this, dataList.getRowsList().get(position).getValue(), position);
         holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
 

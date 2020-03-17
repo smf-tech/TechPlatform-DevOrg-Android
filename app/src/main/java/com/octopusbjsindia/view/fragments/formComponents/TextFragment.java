@@ -38,7 +38,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     private Elements element;
     private TextView tvQuetion;
     private EditText etAnswer, et_answer_name;
-    boolean isFirstpage =false;
+    boolean isFirstpage = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +146,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
-        if (isFirstpage){
+        if (isFirstpage) {
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
 
@@ -173,7 +173,6 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-
                 if (element.getInputType() != null && element.getInputType().equals("number")) {
                     if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                         if (isAllInputsValid()) {

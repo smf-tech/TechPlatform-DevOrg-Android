@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MaxRateDescription {
+import java.io.Serializable;
+
+public class MaxRateDescription implements Serializable {
 
     @SerializedName("default")
     @Expose

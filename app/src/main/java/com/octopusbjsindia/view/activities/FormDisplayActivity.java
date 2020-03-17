@@ -45,7 +45,7 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
-import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
+import com.octopusbjsindia.view.fragments.formComponents.FileQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
@@ -54,6 +54,7 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,15 +72,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private FormDisplayActivityPresenter presenter;
     public HashMap<String, String> formAnswersMap = new HashMap<>();
     private String processId;
-    private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    public List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
+    public HashMap<String, String> selectedImageUriList = new HashMap<>();
     private GPSTracker gpsTracker;
     private final String TAG = this.getClass().getSimpleName();
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    ArrayList<String> jurisdictions = new ArrayList<>();
-    TextView tvTitle;
-    ImageView toolbar_back_action;
+    private ArrayList<String> jurisdictions = new ArrayList<>();
+    private TextView tvTitle;
+    private ImageView toolbar_back_action;
+    private boolean isImageFileAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,10 +182,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     private void setupFormElements(final List<Elements> formDataArrayList) {
         for (Elements element : formDataArrayList) {
-            boolean isFirstpage =false;
+            boolean isFirstpage = false;
             if (element != null && !element.getType().equals("")) {
-                if (formDataArrayList.indexOf(element)==0){
-                    isFirstpage =true;
+                if (formDataArrayList.indexOf(element) == 0) {
+                    isFirstpage = true;
                 }
                 String formDataType = element.getType();
                 Bundle bundle = new Bundle();
@@ -191,7 +194,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         Fragment locationFragment = new LocationFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putSerializable("jurisdictions", jurisdictions);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         locationFragment.setArguments(bundle);
                         adapter.addFragment(locationFragment, "");
                         break;
@@ -199,16 +202,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.RATING_TEMPLATE:
                         Fragment ratingQuestionFragment = new RatingQuestionFragment();
                         bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         ratingQuestionFragment.setArguments(bundle);
                         adapter.addFragment(ratingQuestionFragment, "Question Rating");
                         break;
 
-                    case Constants.FormsFactory.FILE_TEMPLATE:
                     case Constants.FormsFactory.TEXT_TEMPLATE:
                         Fragment textFragment = new TextFragment();
                         bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         textFragment.setArguments(bundle);
                         adapter.addFragment(textFragment, "Question 1");
                         break;
@@ -216,7 +218,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.RADIO_GROUP_TEMPLATE:
                         Fragment radioButtonFragment = new RadioButtonFragment();
                         bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         radioButtonFragment.setArguments(bundle);
                         adapter.addFragment(radioButtonFragment, "Question 1");
                         break;
@@ -224,7 +226,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.CHECKBOX_TEMPLATE:
                         Fragment checkboxFragment = new CheckboxFragment();
                         bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         checkboxFragment.setArguments(bundle);
                         adapter.addFragment(checkboxFragment, "Question 2");
                         break;
@@ -232,7 +234,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     case Constants.FormsFactory.MATRIX_DROPDOWN:
                         Fragment matrixQuestionFragment = new MatrixQuestionFragment();
                         bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
                         matrixQuestionFragment.setArguments(bundle);
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
@@ -244,6 +246,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         imagePickerQuestionFragment.setArguments(bundle);
                         adapter.addFragment(imagePickerQuestionFragment, "Question Title");
                         break;*/
+
+                    case Constants.FormsFactory.FILE_TEMPLATE:
+                        isImageFileAvailable = true;
+                        Fragment fileFragment = new FileQuestionFragment();
+                        bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
+                        fileFragment.setArguments(bundle);
+                        adapter.addFragment(fileFragment, "Question Title");
+                        break;
 
                 }
             }
@@ -287,7 +298,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            if (isImageFileAvailable) {
+                showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
+            } else {
+                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            }
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
@@ -304,7 +319,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        if (isImageFileAvailable) {
+                            showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
+                        } else {
+                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        }
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -335,7 +354,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        showDialog(this, "Alert", "Do you want to save?", "Save", "Discard", true);
+        if (isImageFileAvailable) {
+            showDialog(this, "Alert", "Do you want to discard the form?", "", "Discard", true);
+        } else {
+            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
+        }
+
     }
 
     public void submitForm() {
@@ -540,6 +564,19 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //        }
     }
 
+    public void uploadImage(File file, String type, final String formName) {
+        presenter.uploadImage(file,
+                Constants.Image.IMAGE_TYPE_FILE, formName);
+    }
+
+    public void onImageUploaded(final Map<String, String> uploadedImageUrlList) {
+        mUploadedImageUrlList.add(uploadedImageUrlList);
+    }
+
+    public List<Map<String, String>> getUploadedImages() {
+        return mUploadedImageUrlList;
+    }
+
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
             btn2String, boolean discardFlag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
@@ -592,5 +629,4 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
-
 }

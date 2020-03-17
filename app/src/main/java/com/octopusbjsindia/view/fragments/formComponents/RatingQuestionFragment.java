@@ -29,7 +29,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-    boolean isFirstpage =false;
+    boolean isFirstpage = false;
     private TextView text_title;
     private View view;
     private Elements elements;
@@ -71,7 +71,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
             }
             isFirstpage = getArguments().getBoolean("isFirstpage");
 
-            if (isFirstpage){
+            if (isFirstpage) {
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
