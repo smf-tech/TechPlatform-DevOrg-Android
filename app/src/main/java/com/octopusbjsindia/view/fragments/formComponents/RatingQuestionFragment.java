@@ -61,7 +61,11 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
                 elements = (Elements) getArguments().getSerializable("Element");
-                ratingBar.setNumStars(elements.getRateMax());
+                if (elements.getRateMax()!=null) {
+                    ratingBar.setNumStars(elements.getRateMax());
+                }else {
+                    ratingBar.setNumStars(5);
+                }
                 ratingBar.setStepSize(1);
 
                 txt_min_text.setText(elements.getMinRateDescription().getDe());

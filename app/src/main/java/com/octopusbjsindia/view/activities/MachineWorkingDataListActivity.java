@@ -418,8 +418,10 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
     public void onReceiveEditedReading(String updatedValue, int pos, int flagStartEndReading) {
         if (flagStartEndReading==1) {
             if (pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading() != null && !pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading().equalsIgnoreCase("")) {
-                if (Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) <= 12
-                        && Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) >= 0) {
+                /*if (Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) <= 12
+                        && Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) >= 0)*/
+                if (Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getEndReading()) - Float.parseFloat(updatedValue) > 0)
+                {
                     pendingRequestsResponse.getMachineWorklogList().get(pos).setStartReading(updatedValue);
 
                     if (Util.isConnected(this)) {
@@ -437,7 +439,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                                 Snackbar.LENGTH_LONG);
                     } else {
                         Util.snackBarToShowMsg(getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
+                                        .findViewById(android.R.id.content), "Reading difference should be more than 0.",
                                 Snackbar.LENGTH_LONG);
                     }
                 }
@@ -456,8 +458,9 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
 
 
         } else if (flagStartEndReading == 2) {
-            if (Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) <= 12
-                    && Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) >= 0)
+            /*if (Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) <= 12
+                    && Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) >= 0)*/
+            if (Float.parseFloat(updatedValue) - Float.parseFloat(pendingRequestsResponse.getMachineWorklogList().get(pos).getStartReading()) > 0)
             {
                 pendingRequestsResponse.getMachineWorklogList().get(pos).setEndReading(updatedValue);
 
@@ -476,7 +479,7 @@ public class MachineWorkingDataListActivity extends BaseActivity implements Mach
                             Snackbar.LENGTH_LONG);
                 } else {
                     Util.snackBarToShowMsg(getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Reading difference should not be more than 12 hours.",
+                                    .findViewById(android.R.id.content), "Reading difference should be more than 0 hours.",
                             Snackbar.LENGTH_LONG);
                 }
             }

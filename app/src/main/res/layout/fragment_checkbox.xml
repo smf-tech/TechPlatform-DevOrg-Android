@@ -28,7 +28,7 @@
                     android:id="@+id/tv_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans_semibold"
                     android:textSize="@dimen/text_size_16" />
 
@@ -71,11 +71,12 @@
 
                     <EditText
                         android:id="@+id/et_other"
-                        style="@style/RegistrationEditTextLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                         android:hint="@string/other"
-                        android:inputType="text|textCapWords"
-                        tools:ignore="Autofill" />
+                        android:inputType="textMultiLine"
+                        android:maxLines="6"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
 

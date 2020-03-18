@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -42,6 +43,7 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.PlatformGson;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
@@ -81,7 +83,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ProgressBar progressBar;
     private ArrayList<String> jurisdictions = new ArrayList<>();
     private TextView tvTitle;
-    private ImageView toolbar_back_action;
+    private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
 
@@ -91,7 +93,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         setContentView(R.layout.activity_form_display);
 
         tvTitle = findViewById(R.id.toolbar_title);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action.setVisibility(View.VISIBLE);
+        toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
         vpFormElements = findViewById(R.id.viewpager);
+
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
         presenter = new FormDisplayActivityPresenter(this);
@@ -174,6 +180,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 onBackPressed();
             }
         });
+
+        findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
     }
 
     @Override
@@ -369,8 +383,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             presenter.setRequestedObject(formAnswersMap);
             String url = null;
             if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
-                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
+//                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
+                url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             }
+
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
                     formModel.getData().getId(), processId, mUploadedImageUrlList);
         } else {

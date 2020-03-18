@@ -236,6 +236,8 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                     Log.e("onErrorListener",
                             "Unexpected response code " + error.networkResponse.statusCode);
                 }
+            } else {
+                Util.showToast(fragmentWeakReference.get().getString(R.string.unexpected_error_occurred), fragmentWeakReference.get());
             }
 
             //fragmentWeakReference.get().enableSubmitButton(true);
