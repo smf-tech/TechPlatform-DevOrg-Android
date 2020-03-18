@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -42,6 +43,7 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.PlatformGson;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
@@ -83,6 +85,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private TextView tvTitle;
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
+    public boolean isImageUploadPending = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,11 +313,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            if (isImageFileAvailable) {
-                showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
-            } else {
-                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-            }
+            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
             if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
@@ -331,11 +330,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        if (isImageFileAvailable) {
-                            showDialog(this, "Alert", "Do you want to submit?", "", "Submit", false);
-                        } else {
-                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-                        }
+                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
                     } else {
                         tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
@@ -366,11 +361,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        if (isImageFileAvailable) {
-            showDialog(this, "Alert", "Do you want to discard the form?", "", "Discard", true);
-        } else {
-            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
-        }
+        showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
 
     }
 
@@ -392,8 +383,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             presenter.setRequestedObject(formAnswersMap);
             String url = null;
             if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
-                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
+//                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
+                url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             }
+
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
                     formModel.getData().getId(), processId, mUploadedImageUrlList);
         } else {
@@ -629,6 +622,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     dialog.dismiss();
                     finish();
                 } else {
+                    if (isImageUploadPending) {
+//                        Util.snackBarToShowMsg(getWindow().getDecorView()
+//                                        .findViewById(android.R.id.content), "You can not submit this form as " +
+//                                        "image selection is remaining. Now, you can save this form and again complete" +
+//                                        "image question while you are connected to network and then submit form.",
+//                                Snackbar.LENGTH_LONG);
+
+                        Util.showDialog(this, "Alert", "You can not submit this form as " +
+                                "image selection is remaining. Now, you can save this form and again complete" +
+                                "image question while you are connected to network and then submit form.", "OK", "");
+                        return;
+                    }
                     submitForm();
                     dialog.dismiss();
                     finish();

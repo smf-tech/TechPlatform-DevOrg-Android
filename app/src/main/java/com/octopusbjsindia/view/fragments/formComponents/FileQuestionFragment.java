@@ -84,11 +84,10 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
 
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).selectedImageUriList.get(element.getName()))) {
-            Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).selectedImageUriList.get(element.getName()));
+        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
+            Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"));
             imageView.setImageURI(imageUri);
         }
-
     }
 
     @Override
@@ -105,24 +104,61 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_img1:
-                onAddImageClick();
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                } else {
+                    ((FormDisplayActivity) getActivity()).isImageUploadPending = true;
+//                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                            "To upload image, you need internet connectivity. If you do not have internet, " +
+//                                    "you can skip this question and save the form.", Snackbar.LENGTH_LONG);
+
+                    Util.showDialog(getActivity(), "Alert", "To upload image, you " +
+                            "need internet connectivity. If you do not have internet,you can skip this" +
+                            " question and save the form.", "OK", "");
+                }
                 break;
             case R.id.bt_previous:
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                if(element.isRequired()){
+                if (((FormDisplayActivity) getActivity()).isImageUploadPending) {
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                } else {
                     if (isImageSelected) {
                         hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
                                 get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
 
-                        hashMap.put(element.getName()+"Uri", finalUri.toString());
+                        hashMap.put(element.getName() + "Uri", finalUri.toString());
+                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
                     } else {
-                        Util.showToast("Please select image.", this);
+                        if (element.isRequired()) {
+                            Util.showToast("Please select image.", this);
+                        } else {
+                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                        }
                     }
-                } else {
-                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+
+//                    if (element.isRequired()) {
+//                        if (isImageSelected) {
+//                            hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
+//                                    get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
+//
+//                            hashMap.put(element.getName() + "Uri", finalUri.toString());
+//                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                        } else {
+//                            Util.showToast("Please select image.", this);
+//                        }
+//                    } else {
+//                        if (isImageSelected) {
+//                            hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
+//                                    get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
+//
+//                            hashMap.put(element.getName() + "Uri", finalUri.toString());
+//                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                        }
+//                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                    }
                 }
                 break;
         }
@@ -244,8 +280,9 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 isImageSelected = true;
                 if (Util.isConnected(getContext())) {
                     if (Util.isValidImageSize(compressedImageFile)) {
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                        ((FormDisplayActivity) getActivity()).selectedImageUriList.put(element.getName(), finalUri.toString());
+//                        HashMap<String, String> hashMap = new HashMap<String, String>();
+//                        ((FormDisplayActivity) getActivity()).selectedImageUriList.put(element.getName(), finalUri.toString());
+
                         //((FormDisplayActivity) getActivity()).selectedImageUriList.add(hashMap);
                         ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile,
                                 Constants.Image.IMAGE_TYPE_FILE, element.getName());
