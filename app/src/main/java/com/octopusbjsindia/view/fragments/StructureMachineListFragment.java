@@ -919,13 +919,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     ViewGroup.LayoutParams.MATCH_PARENT);
 
         } else if (view.getId() == R.id.tv_taluka_filter) {
-            if (machineTalukaList.size() > 0) {
-                CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Taluka", machineTalukaList, false);
-                csdTaluka.show();
-                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-            } else {
+//            if (machineTalukaList.size() > 0) {
+//                CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(getActivity(), this,
+//                        "Select Taluka", machineTalukaList, false);
+//                csdTaluka.show();
+//                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//            } else {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     isTalukaApiFirstCall = false;
                     structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
@@ -938,15 +938,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                     .findViewById(android.R.id.content), "Please select District first.",
                             Snackbar.LENGTH_LONG);
                 }
-            }
+            //}
         } else if (view.getId() == R.id.tv_district_filter) {
-            if (machineDistrictList.size() > 0) {
-                CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select District", machineDistrictList, false);
-                csdDisttrict.show();
-                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-            } else {
+//            if (machineDistrictList.size() > 0) {
+//                CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(getActivity(), this,
+//                        "Select District", machineDistrictList, false);
+//                csdDisttrict.show();
+//                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//            } else {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
                     structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
                                     ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
@@ -957,7 +957,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                     "Please update your profile.",
                             Snackbar.LENGTH_LONG);
                 }
-            }
+            //}
         } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
                 filteredStructureListData.clear();
@@ -1056,6 +1056,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (type.equals("Select State")) {
             ArrayList<String> filterStateIds = new ArrayList<>();
             String selectedState = "";
+            selectedStateId = "";
             for (CustomSpinnerObject mState : machineStateList) {
                 if (mState.isSelected()) {
                     if (selectedState.equals("")) {
@@ -1063,14 +1064,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     } else {
                         selectedState = selectedState + "," + mState.getName();
                     }
-                    if (!selectedStateId.equals("")) {
-                        selectedStateId = mState.get_id();
-                    } else {
+                    if (selectedStateId.length() > 0) {
                         selectedStateId = selectedStateId + "," + mState.get_id();
+                    } else {
+                        selectedStateId = mState.get_id();
                     }
                     filterStateIds.add(mState.get_id());
                 }
             }
+            tvDistrictFilter.setText("");
+            selectedDistrictId = "";
+            tvTalukaFilter.setText("");
+            selectedTalukaId = "";
             if (!TextUtils.isEmpty(selectedStateId)) {
                 tvStateFilter.setText(selectedState);
                 if (viewType == 1) {
@@ -1116,6 +1121,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (type.equals("Select District")) {
             ArrayList<String> filterDistrictIds = new ArrayList<>();
             String selectedDistrict = "";
+            selectedDistrictId = "";
             for (CustomSpinnerObject mDistrict : machineDistrictList) {
                 if (mDistrict.isSelected()) {
                     if (selectedDistrict.equals("")) {
@@ -1123,14 +1129,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     } else {
                         selectedDistrict = selectedDistrict + "," + mDistrict.getName();
                     }
-                    if (selectedDistrictId.equals("")) {
-                        selectedDistrictId = mDistrict.get_id();
-                    } else {
+                    if (selectedDistrictId.length() > 0) {
                         selectedDistrictId = selectedDistrictId + "," + mDistrict.get_id();
+                    } else {
+                        selectedDistrictId = mDistrict.get_id();
                     }
                     filterDistrictIds.add(mDistrict.get_id());
                 }
             }
+            tvTalukaFilter.setText("");
+            selectedTalukaId = "";
             if (!TextUtils.isEmpty(selectedDistrictId)) {
                 tvDistrictFilter.setText(selectedDistrict);
                 if (viewType == 1) {
@@ -1183,10 +1191,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     } else {
                         selectedTaluka = selectedTaluka + "," + mTaluka.getName();
                     }
-                    if (selectedTalukaId.equals("")) {
-                        selectedTalukaId = mTaluka.get_id();
-                    } else {
+                    if (selectedTalukaId.length() > 0) {
                         selectedTalukaId = selectedTalukaId + "," + mTaluka.get_id();
+                    } else {
+                        selectedTalukaId = mTaluka.get_id();
                     }
                     filterTalukaIds.add(mTaluka.get_id());
                 }

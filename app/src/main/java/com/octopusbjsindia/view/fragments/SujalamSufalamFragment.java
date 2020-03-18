@@ -604,6 +604,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     public void onCustomSpinnerSelection(String type) {
         if (type.equals("Select State")) {
             String selectedState = "";
+            selectedStateId = "";
             for (CustomSpinnerObject state : machineStateList) {
                 if (state.isSelected()) {
                     if (selectedState.length() > 0) {
