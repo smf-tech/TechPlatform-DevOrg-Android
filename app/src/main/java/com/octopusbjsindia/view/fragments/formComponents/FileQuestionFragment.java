@@ -112,12 +112,17 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.bt_next:
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                if (isImageSelected) {
-                    hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
-                            get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
-                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                if(element.isRequired()){
+                    if (isImageSelected) {
+                        hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
+                                get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
+
+                        hashMap.put(element.getName()+"Uri", finalUri.toString());
+                    } else {
+                        Util.showToast("Please select image.", this);
+                    }
                 } else {
-                    Util.showToast("Please select image.", this);
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 }
                 break;
         }

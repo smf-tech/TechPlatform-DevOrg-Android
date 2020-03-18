@@ -63,6 +63,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
     boolean isOffline = false;
     boolean isFirstpage = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -562,14 +563,41 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-                if (TextUtils.isEmpty(element.getName())) {
-                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                if (view.findViewById(R.id.ly_country).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedCountry)) {
+                    Util.showToast("Please select country", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_state).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedState)) {
+                    Util.showToast("Please select state ", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_city).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedCity)) {
+                    Util.showToast("Please select city ", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_district).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedDistrict)) {
+                    Util.showToast("Please select district ", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedTaluka)) {
+                    Util.showToast("Please select taluka ", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedCluster)) {
+                    Util.showToast("Please select cluster ", getActivity());
+                    return;
+
+                } else if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedVillage)) {
+                    Util.showToast("Please select village ", getActivity());
+                    return;
+                } else if (view.findViewById(R.id.ly_school).getVisibility() == View.VISIBLE
+                        && TextUtils.isEmpty(selectedSchool)) {
+                    Util.showToast("Please select school ", getActivity());
+                    return;
                 } else {
-                    if (TextUtils.isEmpty(hashMap.get(element.getName()))) {
-                        Util.showToast("Please select above locations", getActivity());
-                    } else {
-                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
-                    }
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 }
                 break;
         }
@@ -587,10 +615,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etCountry);
             tv.setText(selectedCountry);
             hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL, selectedCountry);
-            hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id",selectedCountryId);
+            hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id", selectedCountryId);
             tv = view.findViewById(R.id.etCity);
             tv.setText("");
-        }  else if (type.equals("Select State")) {
+        } else if (type.equals("Select State")) {
             for (CustomSpinnerObject mState : stateList) {
                 if (mState.isSelected()) {
                     selectedState = mState.getName();
@@ -612,7 +640,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
-        }  else if (type.equals("Select City")) {
+        } else if (type.equals("Select City")) {
             for (CustomSpinnerObject mState : districtList) {
                 if (mState.isSelected()) {
                     selectedCity = mState.getName();
@@ -635,7 +663,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etDistrict);
             tv.setText(selectedDistrict);
             hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedDistrict);
-            hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id",selectedDistrictId);
+            hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id", selectedDistrictId);
             tv = view.findViewById(R.id.etTaluka);
             tv.setText("");
             tv = view.findViewById(R.id.etCluster);

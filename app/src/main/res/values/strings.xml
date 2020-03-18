@@ -776,5 +776,6 @@
     <string name="select_max">Can select max</string>
     <string name="answer">Answer</string>
     <string name="select_locations">Please select locations</string>
+    <string name="required_error">Please  submit valid data.</string>
 
 </resources>

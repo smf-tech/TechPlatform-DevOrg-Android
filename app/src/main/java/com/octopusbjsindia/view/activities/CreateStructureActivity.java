@@ -640,6 +640,25 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
+            case "Select State":
+                for (CustomSpinnerObject obj : districtList) {
+                    if (obj.isSelected()) {
+                        selectedState = obj.getName();
+                        selectedStateId = obj.get_id();
+                        break;
+                    }
+                }
+                etState.setText(selectedState);
+                etDistrict.setText("");
+                selectedDistrict = "";
+                selectedDistrictId = "";
+                etTaluka.setText("");
+                selectedTaluka = "";
+                selectedTalukaId = "";
+                etHostVillage.setText("");
+                selectedHostVillage = "";
+                selectedHostVillageId = "";
+                break;
             case "Select District":
                 for (CustomSpinnerObject obj : districtList) {
                     if (obj.isSelected()) {

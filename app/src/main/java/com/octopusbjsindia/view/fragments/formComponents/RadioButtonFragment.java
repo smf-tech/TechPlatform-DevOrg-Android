@@ -100,14 +100,22 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 if (TextUtils.isEmpty(selected)) {
-                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                    if(element.getRequiredErrorText()!=null){
+                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                    } else {
+                        Util.showToast(getResources().getString(R.string.required_error), this);
+                    }
                     return;
                 } else {
                     hashMap.put(element.getName(), selected);
                 }
                 if(element.isRequired()){
                     if(hashMap.isEmpty()){
-                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                        if(element.getRequiredErrorText()!=null){
+                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                        } else {
+                            Util.showToast(getResources().getString(R.string.required_error), this);
+                        }
                     } else {
                         ((FormDisplayActivity) getActivity()).goNext(hashMap);
                     }
