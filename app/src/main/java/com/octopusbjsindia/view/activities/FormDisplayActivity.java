@@ -81,7 +81,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ProgressBar progressBar;
     private ArrayList<String> jurisdictions = new ArrayList<>();
     private TextView tvTitle;
-    private ImageView toolbar_back_action;
+    private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
 
     @Override
@@ -90,6 +90,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         setContentView(R.layout.activity_form_display);
 
         tvTitle = findViewById(R.id.toolbar_title);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action.setVisibility(View.VISIBLE);
+        toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
         vpFormElements = findViewById(R.id.viewpager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -174,6 +177,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 onBackPressed();
             }
         });
+
+        findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
     }
 
     @Override
