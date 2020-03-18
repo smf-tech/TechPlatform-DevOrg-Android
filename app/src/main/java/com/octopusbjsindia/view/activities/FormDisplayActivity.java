@@ -24,7 +24,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -84,6 +83,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private TextView tvTitle;
     private ImageView toolbar_back_action;
     private boolean isImageFileAvailable = false;
+    public boolean isImageUploadPending = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -606,11 +606,16 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     dialog.dismiss();
                     finish();
                 } else {
-                    if (isImageFileAvailable && (!Util.isConnected(this))) {
-                        Util.snackBarToShowMsg(getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "You can not submit this form offline as " +
-                                        "this form contains image field. Please submit this form while you are connected to internet.",
-                                Snackbar.LENGTH_LONG);
+                    if (isImageUploadPending) {
+//                        Util.snackBarToShowMsg(getWindow().getDecorView()
+//                                        .findViewById(android.R.id.content), "You can not submit this form as " +
+//                                        "image selection is remaining. Now, you can save this form and again complete" +
+//                                        "image question while you are connected to network and then submit form.",
+//                                Snackbar.LENGTH_LONG);
+
+                        Util.showDialog(this, "Alert", "You can not submit this form as " +
+                                "image selection is remaining. Now, you can save this form and again complete" +
+                                "image question while you are connected to network and then submit form.", "OK", "");
                         return;
                     }
                     submitForm();
