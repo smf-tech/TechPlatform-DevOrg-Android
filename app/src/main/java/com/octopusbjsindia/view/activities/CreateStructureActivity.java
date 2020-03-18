@@ -641,7 +641,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
             case "Select State":
-                for (CustomSpinnerObject obj : districtList) {
+                for (CustomSpinnerObject obj : stateList) {
                     if (obj.isSelected()) {
                         selectedState = obj.getName();
                         selectedStateId = obj.get_id();

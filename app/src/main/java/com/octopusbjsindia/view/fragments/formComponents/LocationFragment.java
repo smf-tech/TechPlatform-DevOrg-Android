@@ -256,6 +256,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
+                        selectedCountryId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL,
@@ -268,6 +269,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
+                        selectedStateId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL,
@@ -280,6 +282,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
+                        selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL,
@@ -292,6 +295,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
+                        selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL,
@@ -304,6 +308,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
+                        selectedTalukaId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL,
@@ -316,6 +321,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
+                        selectedClusterId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
@@ -328,6 +334,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
+                        selectedVillageId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL,
@@ -340,6 +347,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     editText.setOnClickListener(this);
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
+                        selectedSchoolId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
@@ -564,36 +572,36 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.bt_next:
                 if (view.findViewById(R.id.ly_country).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedCountry)) {
+                        && TextUtils.isEmpty(selectedCountryId)) {
                     Util.showToast("Please select country", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_state).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedState)) {
+                        && TextUtils.isEmpty(selectedStateId)) {
                     Util.showToast("Please select state ", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_city).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedCity)) {
+                        && TextUtils.isEmpty(selectedCityId)) {
                     Util.showToast("Please select city ", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_district).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedDistrict)) {
+                        && TextUtils.isEmpty(selectedDistrictId)) {
                     Util.showToast("Please select district ", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedTaluka)) {
+                        && TextUtils.isEmpty(selectedTalukaId)) {
                     Util.showToast("Please select taluka ", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedCluster)) {
+                        && TextUtils.isEmpty(selectedClusterId)) {
                     Util.showToast("Please select cluster ", getActivity());
                     return;
 
                 } else if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedVillage)) {
+                        && TextUtils.isEmpty(selectedVillageId)) {
                     Util.showToast("Please select village ", getActivity());
                     return;
                 } else if (view.findViewById(R.id.ly_school).getVisibility() == View.VISIBLE
-                        && TextUtils.isEmpty(selectedSchool)) {
+                        && TextUtils.isEmpty(selectedSchoolId)) {
                     Util.showToast("Please select school ", getActivity());
                     return;
                 } else {
@@ -614,7 +622,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             }
             TextView tv = view.findViewById(R.id.etCountry);
             tv.setText(selectedCountry);
-            hashMap.put(Constants.JurisdictionLevelName.STATE_LEVEL, selectedCountry);
+            hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL, selectedCountry);
             hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id", selectedCountryId);
             tv = view.findViewById(R.id.etCity);
             tv.setText("");
@@ -682,7 +690,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etTaluka);
             tv.setText(selectedTaluka);
             hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedTaluka);
-            hashMap.put(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id", selectedDistrictId);
+            hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id", selectedTalukaId);
             if (Util.isConnected(getActivity())) {
                 presenter.getAllLocationData(selectedTalukaId
                         , Util.getUserObjectFromPref().getJurisdictionTypeId()
@@ -708,6 +716,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etCluster);
             tv.setText(selectedCluster);
             hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedCluster);
+            hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id", selectedClusterId);
             tv = view.findViewById(R.id.etVillage);
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
@@ -722,6 +731,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etVillage);
             tv.setText(selectedVillage);
             hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedVillage);
+            hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id", selectedVillageId);
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
         } else if (type.equals("Select School")) {
@@ -734,6 +744,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             TextView tv = view.findViewById(R.id.etSchool);
             tv.setText(selectedSchool);
             hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedSchool);
+            hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id", selectedSchoolId);
         }
     }
 
