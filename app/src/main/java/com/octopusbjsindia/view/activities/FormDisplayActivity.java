@@ -382,11 +382,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (Util.isConnected(this)) {
             presenter.setRequestedObject(formAnswersMap);
             String url = null;
-            if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
+            //if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
 //                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
-                url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
-            }
-
+            //url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
+            //}
+            url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
                     formModel.getData().getId(), processId, mUploadedImageUrlList);
         } else {
