@@ -81,7 +81,7 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 e.printStackTrace();
             }
         }        // set quetion at top
-        text_title.setText(elements.getTitle().getDefaultValue());
+        text_title.setText(elements.getTitle().getLocaleValue());
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
                 elements = (Elements) getArguments().getSerializable("Element");

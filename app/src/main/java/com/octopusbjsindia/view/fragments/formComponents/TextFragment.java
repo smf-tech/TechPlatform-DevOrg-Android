@@ -144,7 +144,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
         }
 
-        tvQuetion.setText(element.getTitle().getDefaultValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue());
 
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
             etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));

@@ -16,6 +16,7 @@ public class Constants {
     public static final int READ_EXTERNAL_STORAGE=4;
     public static final int CALL_PHONE=5;
     public static final int READ_PHONE_STORAGE = 1;
+    public static final int WRITE_EXTERNAL_STORAGE = 5;
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
