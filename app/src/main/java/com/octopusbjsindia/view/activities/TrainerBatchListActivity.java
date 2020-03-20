@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
@@ -41,7 +43,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> categoryList = new ArrayList<>();
     private String selectedDistrictId, selectedDistrict, selectedStateId, selectedState;
-
+    private TrainerBachListResponseModel trainerBachListResponseModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,9 +125,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
 
-    public void showReceivedBatchList(TrainerBachListResponseModel trainerBachListResponseModel) {
+    public void showReceivedBatchList(TrainerBachListResponseModel trainerBachListResponseModelReceived) {
         Util.logger("Leaves -", "---");
         //tmUserLeaveApplicationsList = data;
+        trainerBachListResponseModel = trainerBachListResponseModelReceived;
         trainerBatchListRecyclerAdapter = new TrainerBatchListRecyclerAdapter(this, trainerBachListResponseModel.getTrainerBachListdata(),
                 this, this);
         rv_trainerbactchlistview.setAdapter(trainerBatchListRecyclerAdapter);
@@ -139,10 +142,39 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     @Override
     public void onApproveClicked(int pos) {
 
+        String paramjson = new Gson().toJson(getAddTrainerReqJson(pos));
+        presenter.addTrainerToBatch(paramjson);
     }
 
     @Override
     public void onRejectClicked(int pos) {
 
+    }
+
+    public JsonObject getAddTrainerReqJson(int pos) {
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("batch_id", batchId);
+        requestObject.addProperty("phone", "9881499768");
+
+        return requestObject;
+    }
+
+    public void addTrainerTobatch(int adapterPosition){
+        String paramjson = new Gson().toJson(getAddTrainerReqJson(adapterPosition));
+        presenter.addSelfTrainerToBatch(paramjson);
+    }
+
+    public void addSelfTrainerToBatch(int adapterPosition){
+        String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
+        presenter.addSelfTrainerToBatch(paramjson);
+    }
+
+    public JsonObject getTrainerReqJson(int pos) {
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("batch_id", batchId);
+
+        return requestObject;
     }
 }

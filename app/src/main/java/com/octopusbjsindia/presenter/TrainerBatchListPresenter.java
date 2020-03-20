@@ -17,6 +17,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
 
 
     private final String GET_CATEGORY = "getbatchlist";
+    private final String ADD_TRAINERS_TO_BATCH = "addtrainertobatch";
 
     private final String TAG = TrainerBatchListPresenter.class.getName();
 
@@ -50,6 +51,8 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
                     TrainerBachListResponseModel trainerBachListResponseModel
                             = new Gson().fromJson(response, TrainerBachListResponseModel.class);
                     mContext.get().showReceivedBatchList(trainerBachListResponseModel);
+                }else if (requestID.equalsIgnoreCase(ADD_TRAINERS_TO_BATCH)) {
+
                 }
             }
 
@@ -83,11 +86,20 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
     }*/
 
 
-    /*public void createBatch(String requestJson){
-        final String url = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_DATA_WORKLOG);
-        MachineWorkingDataListRequestCall requestCall = new MachineWorkingDataListRequestCall();
+    public void addTrainerToBatch(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.ADD_TRAINER_TO_BATCH);
+        APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(CREATE_BATCH,requestJson ,url);
+        requestCall.postDataApiCall(ADD_TRAINERS_TO_BATCH,requestJson,url);
 
-    }*/
+    }
+    public void addSelfTrainerToBatch(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.REGISTER_AS_TRAINER_TO_BATCH);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(ADD_TRAINERS_TO_BATCH,requestJson,url);
+
+    }
 }

@@ -20,6 +20,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateTrainerWorkshop;
+import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 
 import java.util.List;
 
@@ -108,8 +109,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                 @Override
                 public void onClick(View v) {
                     popup = new PopupMenu((mContext), v);
-                    popup.inflate(R.menu.machine_forms_menu);
-                    popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
+                    popup.inflate(R.menu.sg_batchlist_menu);
+                    popup.getMenu().findItem(R.id.action_add_trainer).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_register_trainer).setVisible(true);
+
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -117,11 +120,16 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                         public boolean onMenuItemClick(MenuItem item) {
                             if (Util.isConnected(mContext)) {
                                 switch (item.getItemId()) {
-                                    case R.id.action_machine_worklog:
+                                    case R.id.action_add_trainer:
                                         if (Util.isConnected(mContext)) {
-                                            Intent intent = new Intent(mContext, CreateTrainerWorkshop.class);
-                                            intent.putExtra(Constants.Login.ACTION_EDIT, Constants.Login.ACTION_EDIT);
-                                            ((Activity) mContext).startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+                                            ((TrainerBatchListActivity)mContext).addTrainerTobatch(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_register_trainer:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).addSelfTrainerToBatch(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }

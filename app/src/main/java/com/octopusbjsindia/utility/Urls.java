@@ -184,7 +184,8 @@ public class Urls {
         public static final String EDIT_BATCH_API = "api/editBatch";
         public static final String GET_MASTER_TRAINERS_SG = "api/getAdditionalMasterTrainers";
         public static final String GET_BATCH_LIST_API = "api/getBatchList";
-
+        public static final String ADD_TRAINER_TO_BATCH = "api/addTrainerToBatch";
+        public static final String REGISTER_AS_TRAINER_TO_BATCH = "api/registerToBatch";
     }
 
 }
