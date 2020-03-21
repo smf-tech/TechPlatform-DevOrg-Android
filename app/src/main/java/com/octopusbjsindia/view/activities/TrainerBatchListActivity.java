@@ -162,7 +162,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
     public void addTrainerTobatch(int adapterPosition){
         String paramjson = new Gson().toJson(getAddTrainerReqJson(adapterPosition));
-        presenter.addSelfTrainerToBatch(paramjson);
+        presenter.addTrainerToBatch(paramjson);
     }
 
     public void addSelfTrainerToBatch(int adapterPosition){

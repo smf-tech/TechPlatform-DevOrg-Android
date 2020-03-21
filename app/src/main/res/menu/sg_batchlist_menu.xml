@@ -12,7 +12,7 @@
         android:visible="false"/>
     <item
         android:id="@+id/action_register_trainer"
-        android:title="Add trainer batch"
+        android:title="Register  as trainer"
         android:visible="false"/>
 
 
