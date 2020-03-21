@@ -71,7 +71,7 @@ public class ImagePickerQuestionFragment extends Fragment implements ImagePicker
 
         }
         // set quetion at top
-        text_title.setText(elements.getTitle().getDefaultValue());
+        text_title.setText(elements.getTitle().getLocaleValue());
 
         return view;
     }

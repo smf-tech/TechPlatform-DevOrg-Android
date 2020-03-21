@@ -24,6 +24,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.DownloadInfo;
 import com.octopusbjsindia.models.content.LanguageDetail;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 
@@ -150,10 +151,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 //urlListl.add(downloadContent.getDef());
-                for (LanguageDetail languageDetail : languageDetailsList) {
-                    if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
-                        contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
-                        break;
+                if (Permissions.isWriteExternalStoragePermission(contentManagementFragment.getActivity(), contentManagementFragment)) {
+                    for (LanguageDetail languageDetail : languageDetailsList) {
+                        if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
+                            contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
+                            break;
+                        }
                     }
                 }
 

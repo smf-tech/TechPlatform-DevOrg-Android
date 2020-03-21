@@ -64,7 +64,7 @@ public class Permissions {
         }
     }
 
-    public static <T> boolean isReadExternalStotagePermission(Activity context, T objectInstance) {
+    public static <T> boolean isReadExternalStoragePermission(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -79,6 +79,29 @@ public class Permissions {
                     ActivityCompat.requestPermissions(context,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             Constants.READ_EXTERNAL_STORAGE);
+                }
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public static <T> boolean isWriteExternalStoragePermission(Activity context, T objectInstance) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                if (objectInstance instanceof Fragment) {
+                    ((Fragment) objectInstance).requestPermissions(
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            Constants.WRITE_EXTERNAL_STORAGE);
+                } else {
+                    ActivityCompat.requestPermissions(context,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            Constants.WRITE_EXTERNAL_STORAGE);
                 }
                 return false;
             }

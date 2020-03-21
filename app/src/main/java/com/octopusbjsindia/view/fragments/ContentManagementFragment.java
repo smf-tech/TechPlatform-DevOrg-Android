@@ -46,7 +46,6 @@ import com.octopusbjsindia.models.content.DownloadInfo;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
 import com.octopusbjsindia.services.ShowTimerService;
 import com.octopusbjsindia.utility.AppEvents;
-import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -92,7 +91,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     DownloadManager downloadmanager;
     private Activity activity;
     private PreferenceHelper preferenceHelper;
-    private ContentFragmentPresenter contentFragmentPresenter;
+    private ContentFragmentPresenter presenter;
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
     ContentDataDao contentDataDao;
 
@@ -194,8 +193,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getContext())) {
-            contentFragmentPresenter = new ContentFragmentPresenter(this);
-            contentFragmentPresenter.getContentData();
+            presenter = new ContentFragmentPresenter(this);
+            presenter.getContentData();
         } else {
             Util.showToast(getString(R.string.msg_no_network), this);
         }
@@ -231,12 +230,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("Octopus");
         request.setDescription("Downloading");
-        //request.setDestinationInExternalPublicDir("/MV",filename);
+        request.setDestinationInExternalPublicDir("/Octopus", filename);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-        if (Permissions.isCameraPermissionGranted(getActivity(), getActivity())) {
-            request.setDestinationInExternalPublicDir("/Octopus", filename);
-        }
+//        if (Permissions.isCameraPermissionGranted(getActivity(), getActivity())) {
+//            request.setDestinationInExternalPublicDir("/Octopus", filename);
+//        } else {
+//
+//        }
 
         //downloadFilePath = path + filename;
         downloadID = downloadmanager.enqueue(request);

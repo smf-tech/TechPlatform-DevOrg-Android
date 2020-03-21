@@ -254,14 +254,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         adapter.addFragment(matrixQuestionFragment, "Question Title");
                         break;
 
-                    /*case Constants.FormsFactory.IMAGE_PICKER:
-                        Fragment imagePickerQuestionFragment = new ImagePickerQuestionFragment();
-                        bundle.putSerializable("Element", element);
-                        bundle.putBoolean("isFirstpage",isFirstpage);
-                        imagePickerQuestionFragment.setArguments(bundle);
-                        adapter.addFragment(imagePickerQuestionFragment, "Question Title");
-                        break;*/
-
                     case Constants.FormsFactory.FILE_TEMPLATE:
                         isImageFileAvailable = true;
                         Fragment fileFragment = new FileQuestionFragment();
@@ -362,7 +354,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     @Override
     public void onBackPressed() {
         showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
-
     }
 
     public void submitForm() {
@@ -382,11 +373,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (Util.isConnected(this)) {
             presenter.setRequestedObject(formAnswersMap);
             String url = null;
-            if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
+            //if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
 //                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
-                url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
-            }
-
+            //url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
+            //}
+            url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
                     formModel.getData().getId(), processId, mUploadedImageUrlList);
         } else {
@@ -623,12 +614,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     finish();
                 } else {
                     if (isImageUploadPending) {
-//                        Util.snackBarToShowMsg(getWindow().getDecorView()
-//                                        .findViewById(android.R.id.content), "You can not submit this form as " +
-//                                        "image selection is remaining. Now, you can save this form and again complete" +
-//                                        "image question while you are connected to network and then submit form.",
-//                                Snackbar.LENGTH_LONG);
-
                         Util.showDialog(this, "Alert", "You can not submit this form as " +
                                 "image selection is remaining. Now, you can save this form and again complete" +
                                 "image question while you are connected to network and then submit form.", "OK", "");

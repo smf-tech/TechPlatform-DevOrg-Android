@@ -74,7 +74,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         TextView tvQuetion = view.findViewById(R.id.tv_question);
         imageView = view.findViewById(R.id.iv_img1);
         imageView.setOnClickListener(this);
-        tvQuetion.setText(element.getTitle().getDefaultValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue());
         isFirstpage = getArguments().getBoolean("isFirstpage");
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);

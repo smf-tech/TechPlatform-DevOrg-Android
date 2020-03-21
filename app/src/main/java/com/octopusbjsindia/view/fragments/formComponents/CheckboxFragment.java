@@ -87,7 +87,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
             cbOther.setVisibility(View.GONE);
         }
 
-        tvQuetion.setText(element.getTitle().getDefaultValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue());
 
         // set data logic
         selectedList.clear();
