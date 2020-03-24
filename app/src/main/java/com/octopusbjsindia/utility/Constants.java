@@ -1,8 +1,6 @@
 package com.octopusbjsindia.utility;
 
 public class Constants {
-
-
     public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
     public static final String MARK_INTERVIEW = "Interview";
@@ -197,6 +195,9 @@ public class Constants {
         public  static final String SAVED_STATUS = "Saved";
         public  static final String UNSYNC_STATUS = "Unsync";
         public  static final String SYNC_STATUS = "Sync";
+        public static final String VISIBLE_IF_OR_CONDITION = "OR";
+        public static final String VISIBLE_IF_AND_CONDITION = "AND";
+        public static final String VISIBLE_IF_NO_CONDITION = "NO";
     }
 
     public static class TM {

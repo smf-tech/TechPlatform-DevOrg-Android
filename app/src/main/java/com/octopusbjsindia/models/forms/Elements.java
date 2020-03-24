@@ -46,7 +46,7 @@ public class Elements implements Serializable {
     private String enableIf;
     @SerializedName("visibleIf")
     @Expose
-    private String visibleIf;
+    private VisibleIf visibleIf;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
@@ -151,11 +151,11 @@ public class Elements implements Serializable {
         this.enableIf = enableIf;
     }
 
-    public String getVisibleIf() {
+    public VisibleIf getVisibleIf() {
         return visibleIf;
     }
 
-    public void setVisibleIf(String visibleIf) {
+    public void setVisibleIf(VisibleIf visibleIf) {
         this.visibleIf = visibleIf;
     }
 

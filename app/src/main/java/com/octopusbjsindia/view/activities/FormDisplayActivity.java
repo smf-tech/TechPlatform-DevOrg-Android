@@ -37,6 +37,8 @@ import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.Form;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
+import com.octopusbjsindia.models.forms.VisibleIf;
+import com.octopusbjsindia.models.forms.VisibleIfListObject;
 import com.octopusbjsindia.presenter.FormDisplayActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
@@ -307,47 +309,174 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
             showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
         } else {
-            if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf())) {
+            if (formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf() == null) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
                 String elementKey = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getName();
-                String visible = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
-                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
-                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
-                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-                } else {
-                    formAnswersMap.remove(elementKey);
-                    if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-                        formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                VisibleIf visibleIf = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
+                String conditionType = visibleIf.getConditionType();
+                List<VisibleIfListObject> conditionsList = visibleIf.getConditionsList();
+
+                if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_NO_CONDITION)) {
+                    for (VisibleIfListObject object : conditionsList) {
+                        String question = object.getQuestionKey();
+                        String answer = object.getAnswer();
+                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                            tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
+                            break;
+                        } else {
+                            formAnswersMap.remove(elementKey);
+                            if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                                formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+                                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                            } else {
+                                tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
+                                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                            }
+                        }
+                    }
+                } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_OR_CONDITION)) {
+                    boolean isConditionMatched = false;
+                    for (VisibleIfListObject object : conditionsList) {
+                        String question = object.getQuestionKey();
+                        String answer = object.getAnswer();
+                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                            isConditionMatched = true;
+                            break;
+                        }
+                    }
+                    if (isConditionMatched) {
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
                     } else {
-                        tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                        formAnswersMap.remove(elementKey);
+                        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        } else {
+                            tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
+                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                        }
+                    }
+                } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_AND_CONDITION)) {
+                    boolean isConditionMatched = false;
+                    for (VisibleIfListObject object : conditionsList) {
+                        String question = object.getQuestionKey();
+                        String answer = object.getAnswer();
+                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                            isConditionMatched = true;
+                        } else {
+                            isConditionMatched = false;
+                            break;
+                        }
+                    }
+                    if (isConditionMatched) {
+                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
+                    } else {
+                        formAnswersMap.remove(elementKey);
+                        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+                            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        } else {
+                            tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
+                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+                        }
                     }
                 }
+//                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+//                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+//                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+//                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
+//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
+//                } else {
+//                    formAnswersMap.remove(elementKey);
+//                    if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
+//                        formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
+//                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+//                    } else {
+//                        tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
+//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
+//                    }
+//                }
             }
         }
     }
 
     public void goPrevious() {
-        if (TextUtils.isEmpty(formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf())) {
+        if (formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf() == null) {
             tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
             vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
         } else {
-            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
-            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
-            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
-            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-                tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-            } else {
-                tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
-                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+            VisibleIf visibleIf = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
+            String conditionType = visibleIf.getConditionType();
+            List<VisibleIfListObject> conditionsList = visibleIf.getConditionsList();
+
+            if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_NO_CONDITION)) {
+                for (VisibleIfListObject object : conditionsList) {
+                    String question = object.getQuestionKey();
+                    String answer = object.getAnswer();
+                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+                        break;
+                    } else {
+                        tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+                    }
+                }
+            } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_OR_CONDITION)) {
+                boolean isConditionMatched = false;
+                for (VisibleIfListObject object : conditionsList) {
+                    String question = object.getQuestionKey();
+                    String answer = object.getAnswer();
+                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                        isConditionMatched = true;
+                        break;
+                    }
+                }
+                if (isConditionMatched) {
+                    tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+                } else {
+                    tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+                }
+            } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_AND_CONDITION)) {
+                boolean isConditionMatched = false;
+                for (VisibleIfListObject object : conditionsList) {
+                    String question = object.getQuestionKey();
+                    String answer = object.getAnswer();
+                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                        isConditionMatched = true;
+                    } else {
+                        isConditionMatched = false;
+                        break;
+                    }
+                }
+                if (isConditionMatched) {
+                    tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+                } else {
+                    tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+                }
             }
         }
+//        else {
+//            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
+//            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
+//            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
+//            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
+//                tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
+//                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
+//            } else {
+//                tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+//                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
+//            }
+//        }
     }
 
 
