@@ -15,6 +15,20 @@
         android:title="Register  as trainer"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_pretest_trainer"
+        android:title="Register  as trainer"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_post_feedback"
+        android:title="Post feedback"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_pre_feedback"
+        android:title="Register  as trainer"
+        android:visible="false"/>
+
 
 
 </menu>

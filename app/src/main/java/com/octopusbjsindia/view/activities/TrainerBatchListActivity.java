@@ -177,4 +177,60 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
         return requestObject;
     }
+
+    public void fillPreTestFormToBatch(int adapterPosition){
+        String paramjson = new Gson().toJson(getPreTestReqJson(adapterPosition));
+        presenter.submitPreTestFormToBatch(paramjson);
+    }
+
+    public JsonObject getPreTestReqJson(int pos) {
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("batch_id", batchId);
+        requestObject.addProperty("gender", "male");
+        requestObject.addProperty("age", "25");
+        requestObject.addProperty("education", "BA");
+        requestObject.addProperty("trainer_id", "5e4b73ec515e88607566f393");
+        requestObject.addProperty("trainer_name", "Kumood S Bongale");
+        requestObject.addProperty("trainer_phone", "9881499768");
+        requestObject.addProperty("occupation", "Teacher");
+        requestObject.addProperty("email", "abc@gmail.com");
+
+
+        return requestObject;
+    }
+
+    public void submitFeedbsckToBatch(int adapterPosition){
+        String paramjson = new Gson().toJson(getFeedbackReqJson(adapterPosition));
+        presenter.submitFeedbsckToBatch(paramjson);
+    }
+
+    public JsonObject getFeedbackReqJson(int pos) {
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("batch_id", batchId);
+        requestObject.addProperty("age", "25");
+        requestObject.addProperty("gender", "male");
+        requestObject.addProperty("education", "BA");
+        requestObject.addProperty("trainer_id", "5e4b73ec515e88607566f393");
+        requestObject.addProperty("feedback_type", "Post");
+        requestObject.addProperty("user_type", "ZP");
+        requestObject.addProperty("user_type", "ZP");
+        requestObject.addProperty("trainer_name", "Kumood S Bongale");
+        requestObject.addProperty("trainer_phone", "9881499768");
+        requestObject.addProperty("email", "kbongale@bjsindia.org");
+        requestObject.addProperty("name", "Kumood Bongale");
+        requestObject.addProperty("work_experience_in_year", "6");
+        requestObject.addProperty("training_location", "Pune");
+        requestObject.addProperty("training_date_from", "1582796403000");
+        requestObject.addProperty("training_date_to", "1582911603000");
+        requestObject.addProperty("are_your_teacher", "false");
+        requestObject.addProperty("name_of_school_or_college", "");
+        requestObject.addProperty("master_trainer_name", "Test master trainer");
+        requestObject.addProperty("is_this_program_helpfull_for_girls", "Yes");
+        requestObject.addProperty("is_this_program_helpfull_for_parents", "Yes");
+
+        return requestObject;
+    }
+
 }

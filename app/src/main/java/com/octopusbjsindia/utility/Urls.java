@@ -186,6 +186,10 @@ public class Urls {
         public static final String GET_BATCH_LIST_API = "api/getBatchList";
         public static final String ADD_TRAINER_TO_BATCH = "api/addTrainerToBatch";
         public static final String REGISTER_AS_TRAINER_TO_BATCH = "api/registerToBatch";
+        public static final String TRAINER_PRE_TEST = "api/trainerPreTest";
+        public static final String TRAINER_BATCH_FEEDBACK = "api/trainerBatchFeedback";
+
+
     }
 
 }

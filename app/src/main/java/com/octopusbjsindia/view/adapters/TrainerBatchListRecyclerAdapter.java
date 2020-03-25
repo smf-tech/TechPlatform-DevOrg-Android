@@ -112,6 +112,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                     popup.inflate(R.menu.sg_batchlist_menu);
                     popup.getMenu().findItem(R.id.action_add_trainer).setVisible(true);
                     popup.getMenu().findItem(R.id.action_register_trainer).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_pretest_trainer).setVisible(true);
+
+                    popup.getMenu().findItem(R.id.action_pre_feedback).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_post_feedback).setVisible(true);
 
                     popup.show();
 
@@ -130,10 +134,36 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     case R.id.action_register_trainer:
                                         if (Util.isConnected(mContext)) {
                                             ((TrainerBatchListActivity)mContext).addSelfTrainerToBatch(getAdapterPosition());
+
+                                            //((TrainerBatchListActivity)mContext).submitFeedbsckToBatch(getAdapterPosition());
+
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
+                                    case R.id.action_post_feedback:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).submitFeedbsckToBatch(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_pre_feedback:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).submitFeedbsckToBatch(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_pretest_trainer:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+
+
                                 }
                             } else {
                                 Util.showToast(mContext.getString(R.string.msg_no_network), mContext);

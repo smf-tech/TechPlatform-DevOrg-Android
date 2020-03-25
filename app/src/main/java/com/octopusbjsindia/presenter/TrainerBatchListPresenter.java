@@ -18,6 +18,8 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
 
     private final String GET_CATEGORY = "getbatchlist";
     private final String ADD_TRAINERS_TO_BATCH = "addtrainertobatch";
+    private final String ADD_PRETEST_BATCH = "PRETESTFORBACTH";
+    private final String ADD_POSTFEEDACK_TO_BATCH = "POSTFEEDBACK";
 
     private final String TAG = TrainerBatchListPresenter.class.getName();
 
@@ -102,4 +104,22 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(ADD_TRAINERS_TO_BATCH,requestJson,url);
 
     }
+
+    public void submitPreTestFormToBatch(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.TRAINER_PRE_TEST);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(ADD_PRETEST_BATCH,requestJson,url);
+
+    }
+    public void submitFeedbsckToBatch(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.TRAINER_BATCH_FEEDBACK);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(ADD_POSTFEEDACK_TO_BATCH,requestJson,url);
+
+    }
+
 }
