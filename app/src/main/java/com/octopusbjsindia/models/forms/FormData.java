@@ -37,7 +37,7 @@ public class FormData implements Serializable {
 
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "components")
-    @SerializedName("json")
+    @SerializedName("json_result")
     @Expose
     private Components components;
 

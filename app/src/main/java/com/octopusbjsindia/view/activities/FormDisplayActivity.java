@@ -423,7 +423,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
                         break;
                     } else {
-                        tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                        tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
                         vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
                     }
                 }
@@ -441,7 +441,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
                 } else {
-                    tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                    tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
                 }
             } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_AND_CONDITION)) {
@@ -460,7 +460,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
                 } else {
-                    tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
+                    tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
                 }
             }

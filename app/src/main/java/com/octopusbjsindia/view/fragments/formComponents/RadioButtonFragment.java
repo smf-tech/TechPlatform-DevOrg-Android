@@ -90,7 +90,6 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-
                 String selected = null;
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).isSelected()) {
