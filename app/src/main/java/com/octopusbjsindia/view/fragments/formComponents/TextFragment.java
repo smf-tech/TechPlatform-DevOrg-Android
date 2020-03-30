@@ -29,7 +29,10 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import static com.octopusbjsindia.utility.Constants.FORM_DATE;
+import static com.octopusbjsindia.utility.Util.showDateDialogEnableBeforeMax;
+import static com.octopusbjsindia.utility.Util.showDateDialogEnableBetweenMinToday;
 
 public class TextFragment extends Fragment implements View.OnClickListener, APIDataListener {
 
@@ -178,7 +181,26 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         switch (v.getId()) {
             case R.id.et_answer_date:
                 if(element.getInputType().equalsIgnoreCase("date")){
-                    Util.showAllDateDialog(getContext(), etAnswer);
+                    if (element.getMinDate() != null && element.getMaxDate() != null) {
+                        String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
+                        String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
+                        Util.showDateDialogEnableBetweenMinMax(getActivity(), etAnswer,
+                                minDate, maxDate);
+                    } else if (element.getMinDate() != null && element.getMaxDate() == null) {
+                        String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
+                        //    As per MV requirement, calling showDateDialogEnableBetweenMinToday() method.
+                        //    If max date in form schema is null, todays date will be max date.
+//                        Util.showDateDialogEnableAfterMin(getActivity(), etAnswer,
+//                                minDate);
+                        showDateDialogEnableBetweenMinToday(getActivity(), etAnswer,
+                                minDate);
+                    } else if (element.getMaxDate() != null && element.getMinDate() == null) {
+                        String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
+                        showDateDialogEnableBeforeMax(getActivity(), etAnswer,
+                                maxDate);
+                    } else {
+                        Util.showAllDateDialog(getContext(), etAnswer);
+                    }
                 } else {
                     Util.showTimeDialogTwelveHourFormat(getContext(), etAnswer);
                 }
@@ -190,36 +212,49 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             case R.id.bt_next:
                 if (element.getInputType() != null && element.getInputType().equals("number")) {
                     if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
-                        if (isAllInputsValid()) {
-                            HashMap<String, String> hashMap = new HashMap<String, String>();
-                            if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                            if (element.isRequired()) {
                                 if(element.getRequiredErrorText()!=null){
                                     Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                                 } else {
                                     Util.showToast(getResources().getString(R.string.required_error), this);
                                 }
                                 return;
-                            } else {
+                            }
+                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                        } else {
+                            if (isAllInputsValid()) {
                                 hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
                                 hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
-                            }
-                            hashMap.entrySet().forEach((Map.Entry<String, String> entry) -> {
-                                System.out.println(entry.getKey() + " " + entry.getValue());
-                            });
-                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
 
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            }
                         }
                     } else {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                            if(element.getRequiredErrorText()!=null){
-                                Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
-                            } else {
-                                Util.showToast(getResources().getString(R.string.required_error), this);
+                            if (element.isRequired()) {
+                                if (element.getRequiredErrorText() != null) {
+                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                                return;
                             }
-                            return;
                         } else {
-                            hashMap.put(element.getName(), etAnswer.getText().toString());
+                            if (element.getMaxLength() != null) {
+                                if (etAnswer.getText().toString().length() == element.getMaxLength()) {
+                                    hashMap.put(element.getName(), etAnswer.getText().toString());
+                                } else {
+                                    if (element.getRequiredErrorText() != null) {
+                                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                    } else {
+                                        Util.showToast(getResources().getString(R.string.required_error), this);
+                                    }
+                                    return;
+                                }
+                            }
                         }
 
                         ((FormDisplayActivity) getActivity()).goNext(hashMap);
@@ -227,20 +262,17 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 } else {
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                        if(element.getRequiredErrorText()!=null){
+                        if (element.isRequired()) {
                             if(element.getRequiredErrorText()!=null){
                                 Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                             } else {
                                 Util.showToast(getResources().getString(R.string.required_error), this);
                             }
-                        } else {
-                            Util.showToast(getResources().getString(R.string.required_error), this);
+                            return;
                         }
-                        return;
                     } else {
                         hashMap.put(element.getName(), etAnswer.getText().toString());
                     }
-
                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 }
                 break;
@@ -250,10 +282,12 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
-        if (TextUtils.isEmpty(getUserMobileNumber())) {
-            Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_empty));
-            isInputValid = false;
-        } else if (getUserMobileNumber().trim().length() < 10 || getUserMobileNumber().trim().length() > 10) {
+//        if (TextUtils.isEmpty(getUserMobileNumber())) {
+//            Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_empty));
+//            isInputValid = false;
+//        } else
+
+        if (getUserMobileNumber().trim().length() < 10 || getUserMobileNumber().trim().length() > 10) {
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_invalid));
             isInputValid = false;
         } else if (et_answer_name.getText().toString().trim().length() == 0) {

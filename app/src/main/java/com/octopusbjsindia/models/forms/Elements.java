@@ -102,6 +102,29 @@ public class Elements implements Serializable {
     private Boolean hasNone;
     private String locationRequiredLevel;
 
+    public Long getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(long minDate) {
+        this.minDate = minDate;
+    }
+
+    public Long getMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(long maxDate) {
+        this.maxDate = maxDate;
+    }
+
+    @SerializedName("minDate")
+    @Expose
+    private Long minDate;
+    @SerializedName("maxDate")
+    @Expose
+    private Long maxDate;
+
 
     public Boolean getReadOnly() {
         return readOnly;
