@@ -644,7 +644,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
     }
 
-
     @Override
     public void onBackPressed() {
         showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);

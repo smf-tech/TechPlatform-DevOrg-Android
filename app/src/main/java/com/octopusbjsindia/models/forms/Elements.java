@@ -89,18 +89,27 @@ public class Elements implements Serializable {
     @Expose
     private MaxRateDescription maxRateDescription;
 
-
-
     @SerializedName("placeHolder")
     @Expose
     private LocaleData placeHolder;
     @SerializedName("requiredErrorText")
     @Expose
     private LocaleData requiredErrorText;
+    @SerializedName("otherErrorText")
+    @Expose
+    private LocaleData otherErrorText;
     @SerializedName("hasNone")
     @Expose
     private Boolean hasNone;
     private String locationRequiredLevel;
+
+    public LocaleData getOtherErrorText() {
+        return otherErrorText;
+    }
+
+    public void setOtherErrorText(LocaleData otherErrorText) {
+        this.otherErrorText = otherErrorText;
+    }
 
     public Long getMinDate() {
         return minDate;

@@ -136,7 +136,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         if (activity != null) {
 
                             DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
-                            Log.d(TAG, "Form schema saved in database.");
                         }
                     }
                     fragmentWeakReference.get().parseFormSchema(form.getData());
