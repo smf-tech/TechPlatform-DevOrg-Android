@@ -3,9 +3,10 @@ package com.octopusbjsindia.models.forms;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class VisibleIf {
+public class VisibleIf implements Serializable {
 
     @SerializedName("conditionType")
     @Expose
