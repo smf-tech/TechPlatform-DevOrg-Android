@@ -101,15 +101,15 @@ public class FormsFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = new AllFormsFragment();
             switch (position) {
-                case 0:
-                    fragment = new AllFormsFragment();
-                    break;
+//                case 0:
+//                    fragment = new AllFormsFragment();
+//                    break;
 
-                case 1:
+                case 0:
                     fragment = new PendingFormsFragment();
                     break;
 
-                case 2:
+                case 1:
                     fragment = new SubmittedFormsFragment();
                     break;
             }
@@ -119,7 +119,7 @@ public class FormsFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -127,15 +127,15 @@ public class FormsFragment extends Fragment {
             String title = "";
             try {
                 switch (position) {
-                    case 0:
-                        title = getResources().getString(R.string.new_forms);
-                        break;
+//                    case 0:
+//                        title = getResources().getString(R.string.new_forms);
+//                        break;
 
-                    case 1:
+                    case 0:
                         title = getResources().getString(R.string.saved_forms);
                         break;
 
-                    case 2:
+                    case 1:
                         title = getResources().getString(R.string.submitted_forms);
                         break;
                 }

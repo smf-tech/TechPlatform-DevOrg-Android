@@ -31,9 +31,11 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.pm.Processes;
 import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
+import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ExpandableAdapter;
 
 import org.json.JSONArray;
@@ -66,6 +68,23 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     public AllFormsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
+        }
+
+        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
     }
 
     @Override

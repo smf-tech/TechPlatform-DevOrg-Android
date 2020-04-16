@@ -293,9 +293,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             userName.setText(String.format("%s", user.getUserName()));
         }
         profileView.setOnClickListener(this);
-
-//        TextView versionName = headerLayout.findViewById(R.id.menu_user_location);
-//        versionName.setText(String.format(getString(R.string.app_version) + " : %s", Util.getAppVersion()));
         TextView tvAppVersion = headerLayout.findViewById(R.id.menu_app_version);
         String appVersion;
         try {
