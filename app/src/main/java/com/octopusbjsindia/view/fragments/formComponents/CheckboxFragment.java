@@ -135,21 +135,33 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         switch (buttonView.getId()) {
             case R.id.cb_none:
                 if (isChecked) {
+                    selectedList.clear();
+                    if (!selectedList.contains("none")) {
+                        selectedList.add("none");
+                    }
                     isNone = true;
                     cbOther.setChecked(false);
                     tiOther.setVisibility(View.GONE);
-                    selectedList.clear();
                     adapter.notifyDataSetChanged();
                 } else {
+                    if (selectedList.contains("none")) {
+                        selectedList.remove("none");
+                    }
                     isNone = false;
                 }
                 break;
             case R.id.cb_other:
                 if (isChecked) {
+                    if (!selectedList.contains("other")) {
+                        selectedList.add("other");
+                    }
                     isOther = true;
                     cbNone.setChecked(false);
                     view.findViewById(R.id.ti_other).setVisibility(View.VISIBLE);
                 } else {
+                    if (selectedList.contains("other")) {
+                        selectedList.remove("other");
+                    }
                     isOther = false;
                     view.findViewById(R.id.ti_other).setVisibility(View.GONE);
                 }
@@ -176,46 +188,78 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
                     if (selectedList.size() <= max && selectedList.size() >= min) {
                         createResponse();
                     } else {
-                        if(element.getRequiredErrorText()!=null){
-                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                        if (selectedList.size() > 0) {
+                            if (element.getRequiredErrorText() != null) {
+                                Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.required_error), this);
+                            }
+                            return;
                         } else {
-                            Util.showToast(getResources().getString(R.string.required_error), this);
+                            if (element.isRequired()) {
+                                if (element.getRequiredErrorText() != null) {
+                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                                return;
+                            } else {
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            }
                         }
-                        return;
                     }
                 } else {
-                    createResponse();
-                }
-                if(element.isRequired()){
-                    if(hashMap.isEmpty()){
-                        if(element.getRequiredErrorText()!=null){
-                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                    if (selectedList.size() == 0) {
+                        if (element.isRequired()) {
+                            if (element.getRequiredErrorText() != null) {
+                                Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.required_error), this);
+                            }
+                            return;
                         } else {
-                            Util.showToast(getResources().getString(R.string.required_error), this);
+                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
                         }
                     } else {
-                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                        createResponse();
                     }
-                } else {
-                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 }
+//                if(element.isRequired()){
+//                    if(hashMap.isEmpty()){
+//                        if(element.getRequiredErrorText()!=null){
+//                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+//                        } else {
+//                            Util.showToast(getResources().getString(R.string.required_error), this);
+//                        }
+//                    } else {
+//                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                    }
+//                } else {
+//                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                }
                 break;
         }
     }
 
     public void createResponse() {
         if (isNone) {
-            if (!selectedList.contains("none"))
-                selectedList.add("none");
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
         } else if (isOther) {
+            if (etOther.getText().toString().length() > 0) {
+                hashMap.put(element.getName(), new Gson().toJson(selectedList));
+                hashMap.put(element.getName() + "-Comment", etOther.getText().toString());
+            } else {
 
-            if (!selectedList.contains("other"))
-                selectedList.add("other");
-            hashMap.put(element.getName(), new Gson().toJson(selectedList));
-            hashMap.put(element.getName() + "-Comment", etOther.getText().toString());
+                if (element.getOtherErrorText() != null) {
+                    Util.showToast(element.getOtherErrorText().getLocaleValue(), this);
+                } else {
+                    Util.showToast("Please enter other text.", this);
+                }
+                return;
+            }
         } else {
             hashMap.put(element.getName(), new Gson().toJson(selectedList));
         }
+        ((FormDisplayActivity) getActivity()).goNext(hashMap);
     }
 }

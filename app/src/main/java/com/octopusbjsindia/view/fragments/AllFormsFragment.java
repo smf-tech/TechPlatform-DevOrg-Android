@@ -31,9 +31,11 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.pm.Processes;
 import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
+import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ExpandableAdapter;
 
 import org.json.JSONArray;
@@ -66,6 +68,23 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     public AllFormsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);
+            ((HomeActivity) getActivity()).setSyncButtonVisibility(false);
+
+            if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
+                ((HomeActivity) getActivity()).showBackArrow();
+            }
+        }
+
+        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
     }
 
     @Override
@@ -212,34 +231,33 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 mCountList.put(data.getId(), submitCount);
             }
 
-            List<String> localFormResults
-                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
-
-            String url;
-
-            if (Util.isConnected(getContext()) && ((submitCount != null &&
-                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
-
-                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-
-                    setSubmittedFormsCount();
-//                    url = getResources().getString(R.string.form_field_mandatory,
-//                            data.getMicroservice().getBaseUrl(), data.getMicroservice().getRoute());
-                    url = data.getApi_url() + "/" + data.getId();
-                    presenter.getSubmittedForms(data.getId(), url);
-                }
-            } else if ((submitCount == null || submitCount.equals("0")) ||
-                    (localFormResults == null || localFormResults.isEmpty())) {
-
-                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
-                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-
-                        setSubmittedFormsCount();
-                        url = data.getApi_url() + "/" + data.getId();
-                        presenter.getSubmittedForms(data.getId(), url);
-                    }
-                }
-            }
+            // For now, we dont need submitted forms, so commenting below code.
+//            List<String> localFormResults
+//                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+//
+//            String url;
+//
+//            if (Util.isConnected(getContext()) && ((submitCount != null &&
+//                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
+//
+//                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
+//
+//                    setSubmittedFormsCount();
+//                    url = data.getApi_url() + "/" + data.getId();
+//                    presenter.getSubmittedForms(data.getId(), url);
+//                }
+//            } else if ((submitCount == null || submitCount.equals("0")) ||
+//                    (localFormResults == null || localFormResults.isEmpty())) {
+//
+//                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
+//                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
+//
+//                        setSubmittedFormsCount();
+//                        url = data.getApi_url() + "/" + data.getId();
+//                        presenter.getSubmittedForms(data.getId(), url);
+//                    }
+//                }
+//            }
         }
 
         if (!mChildList.isEmpty()) {

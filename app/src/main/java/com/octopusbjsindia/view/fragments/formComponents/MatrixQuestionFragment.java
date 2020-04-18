@@ -103,12 +103,9 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
                 new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
                 }.getType()));
 
-        Log.d("tempHashmap", tempHashMap.toString());
         rowMap = new HashMap<>();
         rowMap.clear();
         rowMap.putAll(tempHashMap.get(elements.getName()));
-        Log.d("rowMap", rowMap.toString());
-        Log.d("tempHashMap", "tempHashMap-->" + tempHashMap.toString());
     }
 
     @Override
@@ -124,7 +121,6 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
 
     public void receiveAnswerJson(String receivedJsonObjectString) {
         MatrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
-        Log.d("ReceivedJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 
     @Override
@@ -133,7 +129,6 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                Log.d("btn_loadnext", "Clicked-->" + new Gson().toJson(MatrixQuestionRequestJsonObject));
                 ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:

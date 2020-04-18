@@ -90,7 +90,6 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-
                 String selected = null;
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).isSelected()) {
@@ -100,28 +99,31 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 if (TextUtils.isEmpty(selected)) {
-                    if(element.getRequiredErrorText()!=null){
-                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
-                    } else {
-                        Util.showToast(getResources().getString(R.string.required_error), this);
-                    }
-                    return;
-                } else {
-                    hashMap.put(element.getName(), selected);
-                }
-                if(element.isRequired()){
-                    if(hashMap.isEmpty()){
-                        if(element.getRequiredErrorText()!=null){
+                    if (element.isRequired()) {
+                        if (element.getRequiredErrorText() != null) {
                             Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                         } else {
                             Util.showToast(getResources().getString(R.string.required_error), this);
                         }
-                    } else {
-                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                        return;
                     }
                 } else {
-                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                    hashMap.put(element.getName(), selected);
                 }
+                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                if(element.isRequired()){
+//                    if(hashMap.isEmpty()){
+//                        if(element.getRequiredErrorText()!=null){
+//                            Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+//                        } else {
+//                            Util.showToast(getResources().getString(R.string.required_error), this);
+//                        }
+//                    } else {
+//                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                    }
+//                } else {
+//                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+//                }
                 break;
         }
     }
