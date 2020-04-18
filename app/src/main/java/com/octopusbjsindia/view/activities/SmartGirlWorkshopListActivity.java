@@ -34,36 +34,34 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.smartgirl.TrainerBachList;
-import com.octopusbjsindia.models.smartgirl.TrainerBachListResponseModel;
-import com.octopusbjsindia.models.smartgirl.TrainerList;
-import com.octopusbjsindia.presenter.TrainerBatchListPresenter;
+import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
+import com.octopusbjsindia.models.smartgirl.WorkshopBachListResponseModel;
+import com.octopusbjsindia.presenter.SmartGirlWorkshopListPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.adapters.TrainerBatchListRecyclerAdapter;
-import com.octopusbjsindia.view.fragments.smartgirlfragment.AllTrainerListFragment;
+import com.octopusbjsindia.view.adapters.smartGirlAdapters.WorkshopBatchListRecyclerAdapter;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.MemberListFragment;
-import com.octopusbjsindia.view.fragments.smartgirlfragment.MockTestOfTrainerFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.PostFeedbackFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.PreFeedbackFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.PreTestTrainingFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.RegisterTrainerFragment;
+import com.octopusbjsindia.view.fragments.smartgirlfragment.WorkshopPostFeedbackFragment;
+import com.octopusbjsindia.view.fragments.smartgirlfragment.WorkshopPreFeedbackFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TrainerBatchListActivity extends AppCompatActivity implements TrainerBatchListRecyclerAdapter.OnRequestItemClicked, TrainerBatchListRecyclerAdapter.OnApproveRejectClicked {
+public class SmartGirlWorkshopListActivity extends AppCompatActivity implements WorkshopBatchListRecyclerAdapter.OnRequestItemClicked, WorkshopBatchListRecyclerAdapter.OnApproveRejectClicked {
     //--Constant
-    int viewType = 0;
-    int viewTypeTrainerList = 102,viewTypeMasterTrainerList=101,viewTypeBeneficiaryList=103;
+
     //------
     public EditText tv_startdate, tv_enddate;
-    public TrainerBatchListPresenter presenter;
+    public SmartGirlWorkshopListPresenter presenter;
     public RecyclerView rv_trainerbactchlistview;
-    public TrainerBatchListRecyclerAdapter trainerBatchListRecyclerAdapter;
-    private List<TrainerBachList> dataList = new ArrayList<>();
+    public WorkshopBatchListRecyclerAdapter trainerBatchListRecyclerAdapter;
+    private List<WorkshopBachList> dataList = new ArrayList<>();
     PopupMenu popup;
     private ImageView toolbar_back_action, toolbar_edit_action;
     private TextView tvTitle;
@@ -71,33 +69,27 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     private Fragment fragment;
     private FragmentManager fManager;
     private RelativeLayout progressBar;
-    private RelativeLayout ly_no_data;
+    public RelativeLayout ly_no_data;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> categoryList = new ArrayList<>();
     private String selectedDistrictId, selectedDistrict, selectedStateId, selectedState;
-    private TrainerBachListResponseModel trainerBachListResponseModel;
+    private WorkshopBachListResponseModel trainerBachListResponseModel;
     private Context mContext;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_batchlist);
-        mContext = TrainerBatchListActivity.this;
+        mContext = SmartGirlWorkshopListActivity.this;
         fManager = getSupportFragmentManager();
         tvTitle = findViewById(R.id.toolbar_title);
-        tvTitle.setText("Batch List");
+        tvTitle.setText("Workshop List");
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         toolbar_edit_action.setVisibility(View.VISIBLE);
         toolbar_edit_action.setImageResource(R.drawable.ic_add);
-        presenter = new TrainerBatchListPresenter(this);
+        presenter = new SmartGirlWorkshopListPresenter(this);
         //setMasterData();
         //---
         progressBar = findViewById(R.id.ly_progress_bar);
@@ -106,22 +98,13 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
         rv_trainerbactchlistview.setLayoutManager(layoutManager);
-        trainerBatchListRecyclerAdapter = new TrainerBatchListRecyclerAdapter(this, dataList,
+
+        trainerBatchListRecyclerAdapter = new WorkshopBatchListRecyclerAdapter(this, dataList,
                 this, this);
         rv_trainerbactchlistview.setAdapter(trainerBatchListRecyclerAdapter);
         //-------
-        viewType = getIntent().getIntExtra("viewType",0);
-        if (viewType==viewTypeTrainerList){
-            presenter.getAllTrainerList();
-        } else if (viewType==viewTypeMasterTrainerList){
-            presenter.getAllMasterTrainerList();
-        }else if (viewType==viewTypeBeneficiaryList){
-            presenter.getAllBeneficiaryList();
-        }else {
-            presenter.getBatchList();
-        }
-         //presenter.getBatchList();
-        //presenter.getAllTrainerList();
+
+        presenter.getBatchList();
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,8 +114,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popup = new PopupMenu((TrainerBatchListActivity.this), view);
+                popup = new PopupMenu((SmartGirlWorkshopListActivity.this), view);
                 popup.inflate(R.menu.sg_batchlist_menu);
+
 
                 RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
                 RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -142,35 +126,37 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                         switch(roleAccessObject.getActionCode()){
 
                             case Constants.SmartGirlModule.ACCESS_CODE_CREATE_BATCH:
-                                popup.getMenu().findItem(R.id.action_add_new_batch).setVisible(true);
+
                                 break;
                             case Constants.SmartGirlModule.ACCESS_CODE_CREATE_WORKSHOP:
-                                popup.getMenu().findItem(R.id.action_add_new_batch).setVisible(true);
+                                popup.getMenu().findItem(R.id.action_add_new_workshop).setVisible(true);
+
                                 break;
                         }
                     }
                 }
+
 
                 popup.show();
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (Util.isConnected(TrainerBatchListActivity.this)) {
+                        if (Util.isConnected(SmartGirlWorkshopListActivity.this)) {
                             switch (item.getItemId()) {
                                 case R.id.action_add_new_workshop:
                                     if (Util.isConnected(mContext)) {
-                                        Util.showToast(mContext.getString(R.string.coming_soon), mContext);
+                                        Intent intent = new Intent(mContext, CreateWorkshopSmartgirlActivity.class);
+                                        startActivityForResult(intent, Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT);
                                     } else {
                                         Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                     }
                                     break;
                                 case R.id.action_add_new_batch:
                                     if (Util.isConnected(mContext)) {
-                                        Intent intent = new Intent(mContext, CreateTrainerWorkshop.class);
-                                        startActivityForResult(intent, Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT);
-                                        /*Intent intent = new Intent(mContext, CreateWorkshopSmartgirlActivity.class);
+                                        /*Intent intent = new Intent(mContext, CreateTrainerWorkshop.class);
                                         startActivityForResult(intent, Constants.Home.NEVIGET_TO);*/
+
 
                                     } else {
                                         Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -206,24 +192,20 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         });
     }
 
-    public void showReceivedBatchList(TrainerBachListResponseModel trainerBachListResponseModelReceived) {
+    public void showReceivedBatchList(WorkshopBachListResponseModel trainerBachListResponseModelReceived) {
+        Util.logger("received workshop -", "---");
         ly_no_data.setVisibility(View.GONE);
-        Util.logger("Leaves -", "---");
         //tmUserLeaveApplicationsList = data;
         trainerBachListResponseModel = trainerBachListResponseModelReceived;
         dataList.clear();
-        dataList.addAll(trainerBachListResponseModel.getTrainerBachListdata());
+        dataList.addAll(trainerBachListResponseModel.getWorkshopBachLists());
         trainerBatchListRecyclerAdapter.notifyDataSetChanged();
         if (dataList!=null) {
-            tvTitle.setText("Batch List " + "("+dataList.size()+")");
+            tvTitle.setText("Workshop List" + "("+dataList.size()+")");
         }
-        /*trainerBatchListRecyclerAdapter = new TrainerBatchListRecyclerAdapter(this, trainerBachListResponseModel.getTrainerBachListdata(),
+        /*trainerBatchListRecyclerAdapter = new WorkshopBatchListRecyclerAdapter(this, trainerBachListResponseModel.getWorkshopBachLists(),
                 this, this);
         rv_trainerbactchlistview.setAdapter(trainerBatchListRecyclerAdapter);*/
-    }
-
-    public void showReceivedTrainerListResponse(String response) {
-        addAllTrainerListFragment(0,response);
     }
 
     @Override
@@ -232,34 +214,35 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
     @Override
-    public void onApproveClicked(int pos) { }
-    @Override
-    public void onRejectClicked(int pos) { }
-
-
-
-//------------
-    public void addTrainerTobatch(int adapterPosition, int type, String paramjson) {
-        rv_trainerbactchlistview.setVisibility(View.VISIBLE);
-        presenter.addTrainerToBatch(paramjson);
-        CloseFragment();
+    public void onApproveClicked(int pos) {
     }
 
-//---------
+    @Override
+    public void onRejectClicked(int pos) {
+    }
+
+
+    //------------
+    public void addBeneficiaryToWorkshop(int adapterPosition, int type, String paramjson) {
+        rv_trainerbactchlistview.setVisibility(View.VISIBLE);
+        presenter.addTrainerToBatch(paramjson);
+
+    }
+
+    //---------
     public void addSelfTrainerToBatch(int adapterPosition) {
         String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
         presenter.addSelfTrainerToBatch(paramjson);
     }
 
-    public void cancelBatchRequest(int adapterPosition) {
+    public void cancelWorkshopRequest(int adapterPosition) {
         String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
-        presenter.cancelBatchAPI(paramjson);
+        presenter.cancelWorkshopRequest(paramjson);
     }
-
-    public void EditBatchRequest(int adapterPosition) {
-        String paramjson = new Gson().toJson(trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition));
+    public void EditWorkshopRequest(int adapterPosition) {
+        String paramjson = new Gson().toJson(trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition));
         if (Util.isConnected(mContext)) {
-            Intent intent = new Intent(mContext, CreateTrainerWorkshop.class);
+            Intent intent = new Intent(mContext, CreateWorkshopSmartgirlActivity.class);
             intent.putExtra(Constants.Login.ACTION_EDIT,Constants.Login.ACTION_EDIT);
             intent.putExtra("jsonObjectString",paramjson);
             startActivityForResult(intent, Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT);
@@ -268,25 +251,18 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         }
     }
 
-
     public JsonObject getTrainerReqJson(int pos) {
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(pos).get_id();
         JsonObject requestObject = new JsonObject();
-        requestObject.addProperty("batch_id", batchId);
+        requestObject.addProperty("workshop_id", batchId);
         return requestObject;
     }
-//-------------- PRE TEST
+
+    //-------------- PRE TEST
     public void fillPreTestFormToBatch(int adapterPosition, int type, String paramjson) {
         rv_trainerbactchlistview.setVisibility(View.VISIBLE);
         presenter.submitPreTestFormToBatch(paramjson);
-        CloseFragment();
-    }
-//--- mock test
-    public void fillMockTestFormToBatch(int adapterPosition, int type, String paramjson) {
-        rv_trainerbactchlistview.setVisibility(View.VISIBLE);
-        presenter.submitMockTestFormToBatch(paramjson);
-        CloseFragment();
-        //onBackPressed();
+        onBackPressed();
     }
 
     /*public JsonObject getPreTestReqJson(int pos) {
@@ -305,23 +281,51 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }*/
 //-------------
 
-    public void submitFeedbsckToBatch(int adapterPosition, int type, String paramjson) {
+    public void submitFeedbsckToWorkshop(int adapterPosition, int type, String paramjson) {
         //type is feedback type
         if (type == 1) {
-            presenter.submitFeedbsckToBatch(paramjson);
-            onBackPressed();
+            presenter.submitFeedbsckToWorkshop(paramjson);
+            CloseFragment();
         } else {
-            presenter.submitFeedbsckToBatch(paramjson);
-            onBackPressed();
+            presenter.submitFeedbsckToWorkshop(paramjson);
+            CloseFragment();
+        }
+    }
+
+
+
+    public void addMemberListFragment(int adapterPosition) {
+        Bundle bundle = new Bundle();
+
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        bundle.putString("batch_id", batchId);
+        Gson gson = new Gson();
+        String jsonInString = gson.toJson(trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).getBeneficiariesList());
+        bundle.putString("memberList", jsonInString);
+        bundle.putString("listType", Constants.SmartGirlModule.BENEFICIARY_lIST);
+
+        fragment = new MemberListFragment();
+        fragment.setArguments(bundle);
+
+        try {
+            FragmentTransaction fragmentTransaction = fManager.beginTransaction();
+            fragmentTransaction.add(R.id.feedback_form_container, fragment, "formFragment");
+            fragmentTransaction.addToBackStack("memberlist");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+            rv_trainerbactchlistview.setVisibility(View.GONE);
+            tvTitle.setText("Beneficiary List");
+        } catch (Exception e) {
+            Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
     }
 
     //Add Pre Test form fragment
     public void addPreFeedbackFragment(int adapterPosition) {
         Bundle bundle = new Bundle();
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
-        fragment = new PreFeedbackFragment();
+        fragment = new WorkshopPreFeedbackFragment();
         fragment.setArguments(bundle);
         try {
             FragmentTransaction fragmentTransaction = fManager.beginTransaction();
@@ -339,9 +343,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     public void addPostFeedbackFragment(int adapterPosition) {
         Bundle bundle = new Bundle();
 
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
-        fragment = new PostFeedbackFragment();
+        fragment = new WorkshopPostFeedbackFragment();
         fragment.setArguments(bundle);
 
         try {
@@ -357,64 +361,11 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         }
     }
 
-    public void addMemberListFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
-
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
-        bundle.putString("batch_id", batchId);
-        Gson gson = new Gson();
-        String jsonInString = gson.toJson(trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).getTrainerList());
-        bundle.putString("memberList", jsonInString);
-        bundle.putString("listType", Constants.SmartGirlModule.TRAINER_lIST);
-
-        fragment = new MemberListFragment();
-        fragment.setArguments(bundle);
-
-        try {
-            FragmentTransaction fragmentTransaction = fManager.beginTransaction();
-            fragmentTransaction.add(R.id.feedback_form_container, fragment, "formFragment");
-            fragmentTransaction.addToBackStack("memberlist");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-            rv_trainerbactchlistview.setVisibility(View.GONE);
-            tvTitle.setText("Member List");
-        } catch (Exception e) {
-            Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
-    }
-
-
-
-    //Mock Test
-
-    public void addTrainingMockTestFragment(int adapterPosition, String userId, String batchId, String phone) {
-        Bundle bundle = new Bundle();
-
-        bundle.putString("batch_id", batchId);
-        bundle.putString("trainer_id", userId);
-        bundle.putString("phone", phone);
-        bundle.putInt("position", adapterPosition);
-
-        fragment = new MockTestOfTrainerFragment();
-        fragment.setArguments(bundle);
-
-        try {
-            FragmentTransaction fragmentTransaction = fManager.beginTransaction();
-            fragmentTransaction.add(R.id.feedback_form_container, fragment, "formFragment");
-            fragmentTransaction.addToBackStack("mocktest");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-            rv_trainerbactchlistview.setVisibility(View.GONE);
-            tvTitle.setText("Mock trainer test");
-        } catch (Exception e) {
-            Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
-    }
     //pre test
     public void addTrainingPreTestFragment(int adapterPosition) {
         Bundle bundle = new Bundle();
 
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
         fragment = new PreTestTrainingFragment();
         fragment.setArguments(bundle);
@@ -431,13 +382,14 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
     }
+
     //pre test
     public void addRegisterTrainerFragment(int adapterPosition) {
         Bundle bundle = new Bundle();
 
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
-        bundle.putInt("registrationtype", 1);
+        bundle.putInt("registrationtype", 2);
         fragment = new RegisterTrainerFragment();
         fragment.setArguments(bundle);
 
@@ -448,7 +400,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
             rv_trainerbactchlistview.setVisibility(View.GONE);
-            tvTitle.setText("Register Trainer");
+            tvTitle.setText("Register Beneficiary");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
@@ -458,45 +410,23 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     //close fragment if available else close activity on backpress
     @Override
     public void onBackPressed() {
+        tvTitle.setText("Workshop List");
         if (dataList!=null) {
-            tvTitle.setText("Batch List " + "("+dataList.size()+")");
+            tvTitle.setText("Workshop List" + "("+dataList.size()+")");
         }
         if (fManager.getBackStackEntryCount() == 0) {
             finish();
-        }else {
+        }
+        else {
             showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
         }
+
+
     }
 
-    public void showToastMessage(String message)
-    {
-        Util.showToast(message,mContext);
-        presenter.getBatchList();
+    public void showToastMessage(String message) {
+        Util.showToast(message, mContext);
     }
-
-    //add fragment show all trainer list
-
-    public void addAllTrainerListFragment(int adapterPosition,String response) {
-        Bundle bundle = new Bundle();
-        Gson gson = new Gson();
-        bundle.putString("memberList", response);
-        bundle.putString("listType", Constants.SmartGirlModule.TRAINER_lIST);
-
-        fragment = new AllTrainerListFragment();
-        fragment.setArguments(bundle);
-        try {
-            FragmentTransaction fragmentTransaction = fManager.beginTransaction();
-            fragmentTransaction.add(R.id.feedback_form_container, fragment, "formFragment");
-            fragmentTransaction.addToBackStack("memberlist");
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
-            rv_trainerbactchlistview.setVisibility(View.GONE);
-            tvTitle.setText("Member List");
-        } catch (Exception e) {
-            Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
-    }
-
 
     //back button confirmation
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
@@ -534,21 +464,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
-                if (viewType==viewTypeTrainerList){
-                    dialog.dismiss();
-                    finish();
-                } else if (viewType==viewTypeMasterTrainerList){
-                    dialog.dismiss();
-                    finish();
-                }else if (viewType==viewTypeBeneficiaryList){
-                    dialog.dismiss();
-                    finish();
-                }else
                 try {
                     fManager.popBackStackImmediate();
                     rv_trainerbactchlistview.setVisibility(View.VISIBLE);
                     dialog.dismiss();
-                    presenter.getBatchList();
                 } catch (IllegalStateException e) {
                     Log.e("TAG", e.getMessage());
                 }
@@ -565,17 +484,16 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         try {
             fManager.popBackStackImmediate();
             rv_trainerbactchlistview.setVisibility(View.VISIBLE);
-            presenter.getBatchList();
+
         } catch (IllegalStateException e) {
             Log.e("TAG", e.getMessage());
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT && data != null) {
-            presenter.getBatchList();
+presenter.getBatchList();
         }
     }
 

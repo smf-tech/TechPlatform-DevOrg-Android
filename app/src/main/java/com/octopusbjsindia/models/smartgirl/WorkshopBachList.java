@@ -2,35 +2,24 @@ package com.octopusbjsindia.models.smartgirl;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.octopusbjsindia.models.events.Schedule;
 
 import java.util.List;
 
-public class TrainerBachList {
+public class WorkshopBachList {
 
     @SerializedName("_id")
     @Expose
     private String _id;
-    @SerializedName("batch_id")
+    @SerializedName("workshop_category_id")
     @Expose
-    private String batch_id;
-    @SerializedName("batch_category_id")
-    @Expose
-    private String batch_category_id;
-    @SerializedName("batch_category_name")
-    @Expose
-    private String batch_category_name;
+    private String workshop_category_id;
     @SerializedName("state_id")
     @Expose
     private String state_id;
-    @SerializedName("state_name")
-    @Expose
-    private String state_name;
     @SerializedName("district_id")
     @Expose
     private String district_id;
-    @SerializedName("district_name")
-    @Expose
-    private String district_name;
     @SerializedName("city")
     @Expose
     private String city;
@@ -45,64 +34,44 @@ public class TrainerBachList {
     private Additional_master_trainer additional_master_trainer;
     @SerializedName("schedule")
     @Expose
-    private BatchSchedule batchschedule;
+    private WorkShopSchedule workShopSchedule;
 
     @SerializedName("created_by")
     @Expose
     private List<Created_by> created_by = null;
 
-
+    @SerializedName("beneficiariesList")
+    @Expose
+    private List<BeneficiariesList> beneficiariesList = null;
+    /*@SerializedName("created_by")
+    @Expose
+    private String created_by;*/
     @SerializedName("updated_at")
     @Expose
     private String updated_at;
     @SerializedName("created_at")
     @Expose
     private String created_at;
-
-    @SerializedName("trainerList")
+    @SerializedName("updated_by")
     @Expose
-    private List<TrainerList> trainerList = null;
+    private String updated_by;
     @SerializedName("state")
     @Expose
     private State state;
     @SerializedName("district")
     @Expose
     private District district;
+
     @SerializedName("category")
     @Expose
     private Category category;
 
-    public List<TrainerList> getTrainerList() {
-        return trainerList;
-    }
-
-    public void setTrainerList(List<TrainerList> trainerList) {
-        this.trainerList = trainerList;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public District getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    @SerializedName("batch_id")
+    @Expose
+    private String batch_id;
+    @SerializedName("batch_category_id")
+    @Expose
+    private String batch_category_id;
 
     public String get_id() {
         return _id;
@@ -112,28 +81,12 @@ public class TrainerBachList {
         this._id = _id;
     }
 
-    public String getBatch_id() {
-        return batch_id;
+    public String getWorkshop_category_id() {
+        return workshop_category_id;
     }
 
-    public void setBatch_id(String batch_id) {
-        this.batch_id = batch_id;
-    }
-
-    public String getBatch_category_id() {
-        return batch_category_id;
-    }
-
-    public void setBatch_category_id(String batch_category_id) {
-        this.batch_category_id = batch_category_id;
-    }
-
-    public String getBatch_category_name() {
-        return batch_category_name;
-    }
-
-    public void setBatch_category_name(String batch_category_name) {
-        this.batch_category_name = batch_category_name;
+    public void setWorkshop_category_id(String workshop_category_id) {
+        this.workshop_category_id = workshop_category_id;
     }
 
     public String getState_id() {
@@ -144,28 +97,12 @@ public class TrainerBachList {
         this.state_id = state_id;
     }
 
-    public String getState_name() {
-        return state_name;
-    }
-
-    public void setState_name(String state_name) {
-        this.state_name = state_name;
-    }
-
     public String getDistrict_id() {
         return district_id;
     }
 
     public void setDistrict_id(String district_id) {
         this.district_id = district_id;
-    }
-
-    public String getDistrict_name() {
-        return district_name;
-    }
-
-    public void setDistrict_name(String district_name) {
-        this.district_name = district_name;
     }
 
     public String getCity() {
@@ -201,6 +138,16 @@ public class TrainerBachList {
     }
 
 
+
+    public List<BeneficiariesList> getBeneficiariesList() {
+        return beneficiariesList;
+    }
+
+    public void setBeneficiariesList(List<BeneficiariesList> beneficiariesList) {
+        this.beneficiariesList = beneficiariesList;
+    }
+
+
     public List<Created_by> getCreated_by() {
         return created_by;
     }
@@ -208,7 +155,6 @@ public class TrainerBachList {
     public void setCreated_by(List<Created_by> created_by) {
         this.created_by = created_by;
     }
-
     public String getUpdated_at() {
         return updated_at;
     }
@@ -225,11 +171,59 @@ public class TrainerBachList {
         this.created_at = created_at;
     }
 
-    public BatchSchedule getBatchschedule() {
-        return batchschedule;
+    public String getUpdated_by() {
+        return updated_by;
     }
 
-    public void setBatchschedule(BatchSchedule batchschedule) {
-        this.batchschedule = batchschedule;
+    public void setUpdated_by(String updated_by) {
+        this.updated_by = updated_by;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    public String getBatch_id() {
+        return batch_id;
+    }
+
+    public void setBatch_id(String batch_id) {
+        this.batch_id = batch_id;
+    }
+
+    public String getBatch_category_id() {
+        return batch_category_id;
+    }
+
+    public void setBatch_category_id(String batch_category_id) {
+        this.batch_category_id = batch_category_id;
+    }
+
+    public WorkShopSchedule getWorkShopSchedule() {
+        return workShopSchedule;
+    }
+
+    public void setWorkShopSchedule(WorkShopSchedule workShopSchedule) {
+        this.workShopSchedule = workShopSchedule;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

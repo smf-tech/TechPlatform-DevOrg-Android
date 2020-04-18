@@ -55,6 +55,7 @@ public class Constants {
 
     public static final String WEEK_FORMAT = "EEEE";
     public static final String ATTENDANCE_DATE="yyyy/MM/dd HH:mm:ss";
+    public static final String BATCH_CREATED_DATE="yyyy-MM-dd HH:mm:ss";
     public static final String DECIMAL_FORMAT = "#0.00";
 
     public static class App {
@@ -178,6 +179,9 @@ public class Constants {
         public static final Integer NEVIGET_TO= 001;
         public static final String MATRIMONY="Matrimony";
         public static final String SUJALAM_SUPHALAM="SujalamSuphalam";
+        public static final String SMARTGIRL="Smart Girl";
+
+
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -435,5 +439,32 @@ public class Constants {
 
         public static final String PROJECT_RELEVENT_LOGO = "projectlogo";
         public static final String APP_CONFIG_RESPONSE = "appconfigresponse";
+    }
+    public static class SmartGirlModule {
+        public static final String TRAINER_lIST = "trainerlist";
+        public static final String BENEFICIARY_lIST = "beneficiarylist";
+        public static final Integer BATCH_WORKSHOP_RESULT= 111;
+
+
+        //Access code
+
+        public static final int ACCESS_CODE_CREATE_BATCH = 135;
+        public static final int ACCESS_CODE_EDIT_BATCH = 136;
+        public static final int ACCESS_CODE_CREATE_WORKSHOP = 137;
+        public static final int ACCESS_CODE_EDIT_WORKSHOP = 138;
+        public static final int ACCESS_CODE_ADD_TRAINER = 139;
+        public static  final int ACCESS_CODE_ADD_BENEFICIARY = 140;
+        public static final int ACCESS_CODE_REGISTER_BATCH = 141;
+        public static final int ACCESS_CODE_REGISTER_WORKSHOP = 142;
+
+        public static final int ACCESS_CODE_PRE_TEST = 143;
+        public static final int ACCESS_CODE_PRE_FEEDBACK = 144;
+        public static final int ACCESS_CODE_POST_FEEDBACK = 145;
+        public static final int ACCESS_CODE_PRE_FEEDBACK_WORKSHOP = 146;
+        public static final int ACCESS_CODE_POST_FEEDBACK_WORKSHOP = 147;
+
+
+
+
     }
 }

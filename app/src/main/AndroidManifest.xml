@@ -47,10 +47,23 @@
             android:name=".view.activities.CreateTrainerWorkshop"
             android:label="@string/title_activity_create_trainer_workshop"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activities.CreateWorkshopSmartgirlActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activities.SmartGirlWorkshopListActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.fragments.smartgirlfragment.WebActivityTest"
+            android:screenOrientation="portrait" />
+
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

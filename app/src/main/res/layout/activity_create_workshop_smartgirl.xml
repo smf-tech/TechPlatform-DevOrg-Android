@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/card_gray_bg"
     android:orientation="vertical"
+
     tools:context=".view.activities.UserRegistrationMatrimonyActivity">
     <include
         android:id="@+id/toolbar"
@@ -62,7 +63,6 @@
                                 android:longClickable="false"
                                 android:hint="Smart Girl" />
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
@@ -73,10 +73,10 @@
                                 style="@style/RegistrationEditTextLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/et_title_batch"
+                                android:id="@+id/et_title_workshop"
                                 android:inputType="text|textCapWords|textMultiLine"
 
-                                android:hint="Enter batch title"/>
+                                android:hint="Enter workshop title"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -95,7 +95,7 @@
                                 android:clickable="false"
                                 android:focusable="false"
                                 android:longClickable="false"
-                                android:hint="Batch category"/>
+                                android:hint="Workshop category"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -164,6 +164,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/et_select_venue"
                                 android:inputType="text|textCapWords|textMultiLine"
+
                                 android:hint="Enter Venue"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -346,7 +347,7 @@
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_weight="1"
-                        android:text="Submit" />
+                        android:text="Save" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

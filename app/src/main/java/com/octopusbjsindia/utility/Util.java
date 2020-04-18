@@ -105,6 +105,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static com.octopusbjsindia.utility.Constants.BATCH_CREATED_DATE;
 import static com.octopusbjsindia.utility.Constants.DATE_FORMAT;
 import static com.octopusbjsindia.utility.Constants.DATE_TIME_FORMAT;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
@@ -604,7 +605,7 @@ public class Util {
         return date;
     }
 
-    private static String getFormattedDate(String date, String dateFormat) {
+    public static String getFormattedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -622,7 +623,24 @@ public class Util {
         }
         return String.format(Locale.getDefault(), "%s", date);
     }
+    public static String getBatchCreatedDate(String date, String dateFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
 
+        try {
+            String strLocale = getLocaleLanguageCode();
+            Locale.setDefault(new Locale(strLocale));
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(BATCH_CREATED_DATE, Locale.getDefault());
+
+            Date date1 = inputFormat.parse(date);
+            return String.format(Locale.getDefault(), "%s", outputFormat.format(date1));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return String.format(Locale.getDefault(), "%s", date);
+    }
     public static long getCurrentTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.getTime();

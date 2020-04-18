@@ -179,6 +179,8 @@ public class Urls {
     }
 
     public class SmartGirl{
+        public static final String GET_MASTER_TRAINER_DASHBOARD = "api/masterTrainerDashboard";
+
         public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
         public static final String CREATE_BATCH_API = "api/createBatch";
         public static final String EDIT_BATCH_API = "api/editBatch";
@@ -186,8 +188,36 @@ public class Urls {
         public static final String GET_BATCH_LIST_API = "api/getBatchList";
         public static final String ADD_TRAINER_TO_BATCH = "api/addTrainerToBatch";
         public static final String REGISTER_AS_TRAINER_TO_BATCH = "api/registerToBatch";
+        public static final String CANCEL_BATCH_API = "api/cancelBatch";
+        public static final String CANCEL_WORKSHOP_API = "api/cancelBatch";
         public static final String TRAINER_PRE_TEST = "api/trainerPreTest";
         public static final String TRAINER_BATCH_FEEDBACK = "api/trainerBatchFeedback";
+
+        public static final String TRAINER_MOCKTEST_TEST = "api/submitTrainerMockTest";
+
+        public static final String GET_ALL_TRAINER_LIST_API = "api/getTrainers";
+        public static final String GET_ALL_MASTER_LIST_API = "api/getMasterTrainers";
+        public static final String GET_ALL_BENEFICIARY_LIST_API = "api/getBeneficiaries";
+
+
+
+        //workshops
+        public static final String CREATE_WORKSHOP_API = "api/createWorkshop";
+        public static final String EDIT_WORKSHOP_API = "api/editWorkshop";
+        public static final String CREATE_WORKSHOP_LIST_API = "api/workshopList";
+
+        public static final String REGISTER_TO_WORKSHOP = "api/registerToWorkshop";
+        public static final String ADD_BENEFICIARY_TO_WORKSHOP = "api/addBeneficiaryToWorkshop";
+
+        public static final String GET_BENEFICIARY_API = "api/getBeneficiaries";
+        public static final String BENEFICIARY_WORKSHOP_FEEDBACK_API = "api/beneficiaryWorkshopFeedback";
+
+
+        //user name from mobile
+        public static final String GET_USER_NAME_FROM_MOBILE = "api/mvUserInfo";
+
+        //get
+        public static final String GET_MASTER_TRAINERS_API = "api/getMasterTrainers";
 
 
     }

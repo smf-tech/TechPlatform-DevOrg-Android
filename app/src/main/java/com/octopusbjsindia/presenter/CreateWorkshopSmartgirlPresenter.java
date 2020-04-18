@@ -11,14 +11,14 @@ import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
-import com.octopusbjsindia.view.activities.CreateTrainerWorkshop;
+import com.octopusbjsindia.view.activities.CreateWorkshopSmartgirlActivity;
 
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
+public class CreateWorkshopSmartgirlPresenter implements APIPresenterListener {
 
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
@@ -34,24 +34,24 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
     private final String GET_MASTER_TRAINERS = "GET_MASTER_TRAINERS";
     private final String TAG = CreateStructureActivityPresenter.class.getName();
 
-    private final WeakReference<CreateTrainerWorkshop> mContext;
+    private final WeakReference<CreateWorkshopSmartgirlActivity> mContext;
 
-    public CreateTrainerWorkshopPresenter(CreateTrainerWorkshop mContext) {
+    public CreateWorkshopSmartgirlPresenter(CreateWorkshopSmartgirlActivity mContext) {
         this.mContext = new WeakReference<>(mContext);
     }
 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        if (requestID.equalsIgnoreCase(EDIT_BATCH)) {
-
+        if (requestID.equalsIgnoreCase(CREATE_BATCH)) {
+            mContext.get().finish();
         }
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        if (requestID.equalsIgnoreCase(EDIT_BATCH)) {
-
+        if (requestID.equalsIgnoreCase(CREATE_BATCH)) {
+            mContext.get().finish();
         }
     }
 
@@ -90,7 +90,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
                 } else if (requestID.equalsIgnoreCase(GET_MASTER_TRAINERS)) {
                     mContext.get().showTrainerList(response);
                 } else if (requestID.equalsIgnoreCase(CREATE_BATCH)) {
-                    mContext.get().batchCreatedSuccess(response);
+                    mContext.get().workshopCreatedSuccess(response);
                 }
             }
 
@@ -136,7 +136,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
 
     public void createBatch(String requestJson) {
         final String createBatchUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SmartGirl.CREATE_BATCH_API);
+                + String.format(Urls.SmartGirl.CREATE_WORKSHOP_API);
         Log.d("TAG", "getRoleAccessUrl: url" + createBatchUrl);
         //homeFragment.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
@@ -146,7 +146,7 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
 
     public void editBatch(String requestJson) {
         final String createBatchUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SmartGirl.EDIT_BATCH_API);
+                + String.format(Urls.SmartGirl.EDIT_WORKSHOP_API);
         Log.d("TAG", "getRoleAccessUrl: url" + createBatchUrl);
         //homeFragment.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();

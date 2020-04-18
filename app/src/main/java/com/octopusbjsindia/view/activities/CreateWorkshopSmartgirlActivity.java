@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -29,10 +28,12 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
 import com.octopusbjsindia.models.smartgirl.AdditionalTrainerListResponseModel;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
-import com.octopusbjsindia.models.smartgirl.TrainerBachList;
+import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
 import com.octopusbjsindia.presenter.CreateTrainerWorkshopPresenter;
+import com.octopusbjsindia.presenter.CreateWorkshopSmartgirlPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
@@ -47,21 +48,19 @@ import java.util.Objects;
 
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 
-public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnClickListener, CustomSpinnerListener {
+public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implements View.OnClickListener, CustomSpinnerListener {
     //--Constant
     final String GET_CATEGORY = "getCategory";
     boolean isforEdit = false;
-    private String strJsonObjectString;
-    private TrainerBachList trainerBachList;
     //-------
     SmartGirlCategoryResponseModel smartGirlCategoryResponseModel;
     //------
     public EditText tv_startdate, tv_enddate;
-    public EditText et_select_state_trainer, et_select_district_trainer,et_title_batch;
+    public EditText et_select_state_trainer, et_select_district_trainer,et_title_workshop;
     public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries;
     public String et_select_program_str = "", et_workshop_category_str = "", et_select_state_str = "", et_select_district_str = "", et_select_city_str = "", et_select_venue_str = "", et_traner_name_str = "", et_traner_additional_id = "", et_total_beneficiaries__str = "";
     public String et_select_state_str_trainer, et_select_district_str_trainer;
-    public CreateTrainerWorkshopPresenter presenter;
+    public CreateWorkshopSmartgirlPresenter presenter;
     private Button btn_create_batch, btn_cancel;
     //----declaration
     private RelativeLayout progressBar;
@@ -72,16 +71,17 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     private ArrayList<CustomSpinnerObject> TrainerList = new ArrayList<>();
     private String selectedDistrictId, selectedDistrict, selectedStateId, selectedState;
     private String selectedTrainerDistrictId,selectedTrainerStateId;
+    private String strJsonObjectString;
     private TextView tvTitle;
+    WorkshopBachList workshopBachList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_trainer_workshop);
+        setContentView(R.layout.activity_create_workshop_smartgirl);
 
         tvTitle = findViewById(R.id.toolbar_title);
-        tvTitle.setText("Create Batch");
-
-        presenter = new CreateTrainerWorkshopPresenter(this);
+        tvTitle.setText("Create Workshop");
+        presenter = new CreateWorkshopSmartgirlPresenter(this);
 
         progressBar = findViewById(R.id.ly_progress_bar);
         btn_create_batch = findViewById(R.id.btn_create_batch);
@@ -101,7 +101,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
         et_select_state_trainer = findViewById(R.id.et_select_state_trainer);
         et_select_district_trainer = findViewById(R.id.et_select_district_trainer);
-        et_title_batch = findViewById(R.id.et_title_batch);
+        et_title_workshop  = findViewById(R.id.et_title_workshop);
         et_select_city = findViewById(R.id.et_select_city);
         et_select_venue = findViewById(R.id.et_select_venue);
         et_traner_name = findViewById(R.id.et_traner_name);
@@ -130,14 +130,15 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         if (getIntent().getStringExtra(Constants.Login.ACTION_EDIT) != null
                 && getIntent().getStringExtra(Constants.Login.ACTION_EDIT)
                 .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-            Toast.makeText(CreateTrainerWorkshop.this, "request to edit batch.", Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateWorkshopSmartgirlActivity.this, "request to edit batch.", Toast.LENGTH_LONG).show();
             isforEdit = true;
 
             if (getIntent().getExtras() != null) {
                 strJsonObjectString = getIntent().getExtras().getString("jsonObjectString");
-                trainerBachList = new Gson().fromJson(strJsonObjectString, TrainerBachList.class);
-                Log.d("venue---",trainerBachList.getVenue());
-                setEditDataToFields(trainerBachList);
+                 workshopBachList
+                        = new Gson().fromJson(strJsonObjectString, WorkshopBachList.class);
+                Log.d("venue---",workshopBachList.getVenue());
+                setEditDataToFields(workshopBachList);
             }
 
         } else {
@@ -145,29 +146,32 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void setEditDataToFields(TrainerBachList trainerBachList) {
-        et_title_batch.setText("Title");
-        if (trainerBachList.getBatch_category_id()!=null) {
-            et_workshop_category.setText("" + trainerBachList.getBatch_category_id());
-            et_workshop_category_str = trainerBachList.getBatch_category_id();
+    private void setEditDataToFields(WorkshopBachList workshopBachList) {
+        et_title_workshop.setText("Title");
+        if (workshopBachList.getWorkshop_category_id()!=null) {
+            et_workshop_category.setText("" + workshopBachList.getWorkshop_category_id());
+            et_workshop_category_str = workshopBachList.getWorkshop_category_id();
+        }else {
+            et_workshop_category.setText("" + workshopBachList.getBatch_category_id());
+            et_workshop_category_str = workshopBachList.getBatch_category_id();
         }
-        et_select_state.setText(trainerBachList.getState().getName());
-        et_select_state_str = trainerBachList.getState_id();
-        et_select_district.setText(trainerBachList.getDistrict().getName());
-        et_select_district_str = trainerBachList.getDistrict_id();
-        et_select_city.setText(trainerBachList.getCity());
-        et_select_venue.setText(trainerBachList.getVenue());
-        et_traner_name.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
+        et_select_state.setText(workshopBachList.getState().getName());
+        et_select_state_str = workshopBachList.getState_id();
+        et_select_district.setText(workshopBachList.getDistrict().getName());
+        et_select_district_str = workshopBachList.getDistrict_id();
+        et_select_city.setText(workshopBachList.getCity());
+        et_select_venue.setText(workshopBachList.getVenue());
+        et_traner_name.setText(workshopBachList.getAdditional_master_trainer().getUser_name());
 
-        et_select_state_trainer.setText(trainerBachList.getAdditional_master_trainer().getState_name());
-        et_select_state_str_trainer = trainerBachList.getAdditional_master_trainer().getState_id();
-        et_select_district_trainer.setText(trainerBachList.getAdditional_master_trainer().getDistrict_name());
-        et_select_district_str_trainer = trainerBachList.getAdditional_master_trainer().getDistrict_id();
+        et_select_state_trainer.setText(workshopBachList.getAdditional_master_trainer().getState_name());
+        et_select_state_str_trainer = workshopBachList.getAdditional_master_trainer().getState_id();
+        et_select_district_trainer.setText(workshopBachList.getAdditional_master_trainer().getDistrict_name());
+        et_select_district_str_trainer = workshopBachList.getAdditional_master_trainer().getDistrict_id();
 
-        et_traner_additional.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
-        tv_startdate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getStartDate()));
-        tv_enddate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getEndDate()));
-        et_total_beneficiaries.setText(trainerBachList.getTotal_praticipants());
+        et_traner_additional.setText(workshopBachList.getAdditional_master_trainer().getUser_name());
+        tv_startdate.setText(Util.getFormattedDateFromTimestamp(workshopBachList.getWorkShopSchedule().getStartDate()));
+        tv_enddate.setText(Util.getFormattedDateFromTimestamp(workshopBachList.getWorkShopSchedule().getEndDate()));
+        et_total_beneficiaries.setText(workshopBachList.getTotal_praticipants());
     }
 
     @Override
@@ -179,14 +183,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                     if (isforEdit) {
                         editBatch();
                     } else {
-                        btn_create_batch.setEnabled(false);
-                        Handler handler = new Handler();
-                        handler.postDelayed(() -> {
-                            btn_create_batch.setEnabled(true);
-
-                        }, 100);
                         createBatch();
-
                     }
                 }
                 break;
@@ -263,7 +260,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(CreateTrainerWorkshop.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(CreateWorkshopSmartgirlActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override
@@ -289,7 +286,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                                 e.printStackTrace();
                             }
                             if (startDate.getTime() > endDate.getTime()) {
-                                Toast.makeText(CreateTrainerWorkshop.this, "Start date should be less than end date.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(CreateWorkshopSmartgirlActivity.this, "Start date should be less than end date.", Toast.LENGTH_LONG).show();
                             } else {
                                 textview.setText(selectedDateString);
                             }
@@ -301,7 +298,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                                 e.printStackTrace();
                             }
                             if (startDate.getTime() < endDate.getTime()) {
-                                Toast.makeText(CreateTrainerWorkshop.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(CreateWorkshopSmartgirlActivity.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
                             } else {
                                 textview.setText(selectedDateString);
                             }
@@ -403,11 +400,6 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
             categoryList.add(meetCountry);
         }
     }
-    public void batchCreatedSuccess(String response){
-        Toast.makeText(CreateTrainerWorkshop.this,"Batch created successfully",Toast.LENGTH_LONG).show();
-        finish();
-    }
-
 
     @Override
     public void onCustomSpinnerSelection(String type) {
@@ -555,7 +547,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
     public void createBatch() {
         String paramjson = new Gson().toJson(getCreateBatchReqJson());
-        //presenter.createBatch(paramjson);
+        //creating workshop here
         presenter.createBatch(paramjson);
     }
 
@@ -563,12 +555,11 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
         JsonObject requestObject = new JsonObject();
         if (isforEdit) {
-            requestObject.addProperty("batch_id", trainerBachList.get_id());
+            requestObject.addProperty("workshop_id",workshopBachList.get_id() );
         } else {
             requestObject.addProperty("batch_id", "");
         }
-
-        requestObject.addProperty("title", et_title_batch.getText().toString());
+        requestObject.addProperty("title", et_title_workshop.getText().toString());
         requestObject.addProperty("batch_category_id", et_workshop_category_str);
         requestObject.addProperty("state_id", et_select_state_str);
         requestObject.addProperty("district_id", et_select_district_str);
@@ -608,8 +599,8 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     private boolean isAllInputsValid() {
         String msg = "";
 
-        if (TextUtils.isEmpty(et_title_batch.getText().toString())) {
-            msg = "Please enter batch title";//getResources().getString(R.string.msg_enter_name);
+        if (TextUtils.isEmpty(et_title_workshop.getText().toString())) {
+            msg = "Please enter workshop title";//getResources().getString(R.string.msg_enter_name);
         } else
         if (TextUtils.isEmpty(et_workshop_category_str)) {
             msg = "Please select batch category";//getResources().getString(R.string.msg_enter_name);
@@ -714,5 +705,9 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+    public void workshopCreatedSuccess(String response){
+        Toast.makeText(CreateWorkshopSmartgirlActivity.this,"Workshop created successfully",Toast.LENGTH_LONG).show();
+        finish();
     }
 }

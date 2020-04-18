@@ -1,10 +1,8 @@
-package com.octopusbjsindia.view.adapters;
+package com.octopusbjsindia.view.adapters.smartGirlAdapters;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -15,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -26,27 +25,28 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.smartgirl.TrainerBachList;
+import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.CreateTrainerWorkshop;
+import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.octopusbjsindia.utility.Constants.ATTENDANCE_DATE;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
+import static com.octopusbjsindia.utility.Constants.SmartGirlModule.ACCESS_CODE_ADD_BENEFICIARY;
 
-public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<TrainerBatchListRecyclerAdapter.EmployeeViewHolder> {
+public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<WorkshopBatchListRecyclerAdapter.EmployeeViewHolder> {
 
     Context mContext;
-    private List<TrainerBachList> dataList;
+    private List<WorkshopBachList> dataList;
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
     private PreferenceHelper preferenceHelper;
 
-    public TrainerBatchListRecyclerAdapter(Context context, List<TrainerBachList> dataList, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
+    public WorkshopBatchListRecyclerAdapter(Context context, List<WorkshopBachList> dataList, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
         mContext = context;
         this.dataList = dataList;
         this.clickListener = clickListener;
@@ -63,7 +63,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-        holder.tv_main_trainer_name.setText(Util.getBatchCreatedDate(dataList.get(position).getCreated_at(),DAY_MONTH_YEAR));
+        if (dataList.get(position).getAdditional_master_trainer()!=null) {
+            holder.tv_main_trainer_name.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
+        }
         holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
         holder.tv_venue_value.setText(dataList.get(position).getVenue());
@@ -73,23 +75,24 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         }
 
         holder.tv_city_value.setText(dataList.get(position).getCity());
-        if (dataList.get(position).getTrainerList()!=null) {
-            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getTrainerList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+        if (dataList.get(position).getBeneficiariesList()!=null) {
+            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getBeneficiariesList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
         }
-        holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getStartDate(),DAY_MONTH_YEAR));
-        holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getEndDate(),DAY_MONTH_YEAR));
-        /*if (dataList.get(position).getTrainerList()!=null) {
-            holder.tv_additional_trainer_value.setText(dataList.get(position).getTrainerList().get(0).getName());
-            if (dataList.get(position).getTrainerList().size() > 1) {
-                holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getTrainerList().get(1).getName());
-            }
+        holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getStartDate(),DAY_MONTH_YEAR));
+        holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getEndDate(),DAY_MONTH_YEAR));
+
+        /*holder.tv_additional_trainer_title.setText(dataList.get(position).getTrainerList().get(0).getName());*/
+        /*if (dataList.get(position).getAdditional_master_trainer()!=null) {
+            holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }*/
+
         if (dataList.get(position).getCreated_by()!=null) {
             holder.tv_additional_trainer_value.setText(dataList.get(position).getCreated_by().get(0).getName());
         }
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }
+
 
         //holder.tv_startdate_value.setText(String.valueOf(dataList.get(position).getBatchschedule().getStartDate()));
         //holder.tv_enddate_value.setText(String.valueOf(dataList.get(position).getBatchschedule().getStartDate()));
@@ -107,8 +110,8 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_venue_value,
-                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_main_trainer_name;
+        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,
+                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value;
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
@@ -117,8 +120,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         EmployeeViewHolder(View itemView) {
             super(itemView);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
-            tv_state_value = itemView.findViewById(R.id.tv_state_value);
+
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
+            tv_main_trainer_name = itemView.findViewById(R.id.tv_main_trainer_name);
+            tv_state_value = itemView.findViewById(R.id.tv_state_value);
             tv_district_value = itemView.findViewById(R.id.tv_district_value);
             tv_program_value = itemView.findViewById(R.id.tv_program_value);
             tv_category_value = itemView.findViewById(R.id.tv_category_value);
@@ -129,7 +134,6 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             tv_additional_trainer_value = itemView.findViewById(R.id.tv_additional_trainer_value);
             tv_additional_trainer_tow_value = itemView.findViewById(R.id.tv_additional_trainer_tow_value);
 
-            tv_main_trainer_name = itemView.findViewById(R.id.tv_main_trainer_name);
             //btn_approve = itemView.findViewById(R.id.btn_approve);
             //btn_reject = itemView.findViewById(R.id.btn_reject);
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
@@ -145,15 +149,14 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                     buttonClickListner.onRejectClicked(getAdapterPosition());
                 }
             });*/
-
             btn_view_members.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //show member list fragment
-                    if (dataList.get(getAdapterPosition()).getTrainerList()!=null) {
-                        ((TrainerBatchListActivity) mContext).addMemberListFragment(getAdapterPosition());
+                    if (dataList.get(getAdapterPosition()).getBeneficiariesList()!=null) {
+                        ((SmartGirlWorkshopListActivity) mContext).addMemberListFragment(getAdapterPosition());
                     }else {
-                        Util.showToast("Trainers not added yet.",mContext);
+                        Util.showToast("Beneficiaries not added yet.",mContext);
                     }
                 }
             });
@@ -173,29 +176,16 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                             switch(roleAccessObject.getActionCode()){
 
                                 case Constants.SmartGirlModule.ACCESS_CODE_EDIT_WORKSHOP:
+                                    popup.getMenu().findItem(R.id.action_edit_batch).setVisible(true);
+                                    popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_ADD_BENEFICIARY:
                                     //add beneficiary
-                                    //popup.getMenu().findItem(R.id.action_add_beneficiary).setVisible(true);
+                                    popup.getMenu().findItem(R.id.action_add_beneficiary).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_REGISTER_WORKSHOP:
                                     //add beneficiary
-                                    //popup.getMenu().findItem(R.id.action_register_beneficiary).setVisible(true);
-                                    break;
-
-
-                                case Constants.SmartGirlModule.ACCESS_CODE_REGISTER_BATCH:
-                                    popup.getMenu().findItem(R.id.action_register_trainer).setVisible(true);
-                                    break;
-                                case Constants.SmartGirlModule.ACCESS_CODE_ADD_TRAINER:
-                                    popup.getMenu().findItem(R.id.action_add_trainer).setVisible(true);
-                                    break;
-                                case Constants.SmartGirlModule.ACCESS_CODE_EDIT_BATCH:
-                                    popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
-                                    popup.getMenu().findItem(R.id.action_edit_batch).setVisible(true);
-                                    break;
-                                case Constants.SmartGirlModule.ACCESS_CODE_PRE_TEST:
-                                    popup.getMenu().findItem(R.id.action_pretest_trainer).setVisible(true);
+                                    popup.getMenu().findItem(R.id.action_register_beneficiary).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_PRE_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_pre_feedback).setVisible(true);
@@ -204,13 +194,16 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     popup.getMenu().findItem(R.id.action_post_feedback).setVisible(true);
                                     break;
 
+                                case Constants.SmartGirlModule.ACCESS_CODE_REGISTER_BATCH:
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_ADD_TRAINER:
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_EDIT_BATCH:
+                                    break;
 
                             }
                         }
                     }
-
-
-
 
 
 
@@ -223,18 +216,18 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                         public boolean onMenuItemClick(MenuItem item) {
                             if (Util.isConnected(mContext)) {
                                 switch (item.getItemId()) {
-                                    case R.id.action_add_trainer:
+                                    case R.id.action_add_beneficiary:
                                         if (Util.isConnected(mContext)) {
 
-                                            showDialog(mContext, "Alert", "Do you want to register as trainer?", "No", "Yes", false,1,getAdapterPosition());
+                                            showDialog(mContext, "Alert", "Do you want register beneficiary for workshop?", "No", "Yes", false,1,getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
-                                    case R.id.action_register_trainer:
+                                    case R.id.action_register_beneficiary:
                                         if (Util.isConnected(mContext)) {
 
-                                            showDialog(mContext, "Alert", "Do you want to register as trainer?", "No", "Yes", false,2,getAdapterPosition());
+                                            showDialog(mContext, "Alert", "Do you want to register to workshop?", "No", "Yes", false,2,getAdapterPosition());
 
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -242,14 +235,14 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         break;
                                     case R.id.action_post_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((TrainerBatchListActivity)mContext).addPostFeedbackFragment(getAdapterPosition());
+                                            ((SmartGirlWorkshopListActivity)mContext).addPostFeedbackFragment(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
                                     case R.id.action_pre_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((TrainerBatchListActivity)mContext).addPreFeedbackFragment(getAdapterPosition());
+                                            ((SmartGirlWorkshopListActivity)mContext).addPreFeedbackFragment(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
@@ -257,7 +250,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     case R.id.action_pretest_trainer:
                                         if (Util.isConnected(mContext)) {
                                             //((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
-                                            ((TrainerBatchListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            ((SmartGirlWorkshopListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
 
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -265,7 +258,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         break;
                                     case R.id.action_cancel_batch:
                                         if (Util.isConnected(mContext)) {
-                                            //((TrainerBatchListActivity)mContext).cancelBatchRequest(getAdapterPosition());
+                                            //((SmartGirlWorkshopListActivity)mContext).cancelWorkshopRequest(getAdapterPosition());
                                             Util.showToast(mContext.getString(R.string.coming_soon), mContext);
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -273,14 +266,11 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         break;
                                     case R.id.action_edit_batch:
                                         if (Util.isConnected(mContext)) {
-                                            ((TrainerBatchListActivity)mContext).EditBatchRequest(getAdapterPosition());
-
+                                            ((SmartGirlWorkshopListActivity)mContext).EditWorkshopRequest(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
-
-
 
                                 }
                             } else {
@@ -340,10 +330,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                 // Close dialog
 
                 if (type==1){
-                    ((TrainerBatchListActivity)mContext).addRegisterTrainerFragment(pos);
+                    ((SmartGirlWorkshopListActivity)mContext).addRegisterTrainerFragment(pos);
                 }
                 if (type==2){
-                    ((TrainerBatchListActivity)mContext).addSelfTrainerToBatch(pos);
+                    ((SmartGirlWorkshopListActivity)mContext).addSelfTrainerToBatch(pos);
                 }
 
                 if (discardFlag) {
