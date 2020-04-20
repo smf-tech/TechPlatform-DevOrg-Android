@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -21,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -76,11 +79,13 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private SubmittedFormsListAdapter adapter;
-    private FloatingActionButton btnFilter,btnNoFilter,btnFilter1,btnFilter2,btnFilter3;
+    private FloatingActionButton btnFilter;//,btnNoFilter,btnFilter1,btnFilter2,btnFilter3;
+    private ExtendedFloatingActionButton btnNoFilter, btnFilter1, btnFilter2, btnFilter3;
     private boolean isFABOpen = false;
     private ArrayList<String> unSyncProcessNameList = new ArrayList<>();
     private HashMap<String, String> processSyncStatusHashmap = new HashMap<>();
     private int selectedFilter = 0;
+    private Animation animFadeIn, animFadeOut;
 
     // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
     // commenting this code for now.
@@ -145,6 +150,9 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 setPendingForms();
             }
         }, filter);
+
+        animFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animFadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
     }
 
     private void getProcessData() {
@@ -477,32 +485,58 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             case R.id.btn_no_filter:
                 selectedFilter = 1;
                 filterData(Constants.PM.NO_FILTER);
-                closeFABMenu();
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
                 break;
             case R.id.btn_filter1:
                 selectedFilter = 2;
                 filterData(Constants.PM.PENDING_STATUS);
-                closeFABMenu();
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
                 break;
             case R.id.btn_filter2:
                 selectedFilter = 3;
                 filterData(Constants.PM.APPROVED_STATUS);
-                closeFABMenu();
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
                 break;
             case R.id.btn_filter3:
                 selectedFilter = 4;
                 filterData(Constants.PM.REJECTED_STATUS);
-                closeFABMenu();
+                if (!isFABOpen) {
+                    showFABMenu();
+                } else {
+                    closeFABMenu();
+                }
                 break;
         }
     }
 
     private void showFABMenu(){
         isFABOpen=true;
+        btnFilter.show();
+        btnNoFilter.show();
+        btnFilter1.show();
+        btnFilter2.show();
+        btnFilter3.show();
         btnNoFilter.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         btnFilter1.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
         btnFilter2.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
         btnFilter3.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        btnFilter.startAnimation(animFadeIn);
+        btnNoFilter.startAnimation(animFadeIn);
+        btnFilter1.startAnimation(animFadeIn);
+        btnFilter2.startAnimation(animFadeIn);
+        btnFilter3.startAnimation(animFadeIn);
         btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
     }
 
@@ -516,18 +550,34 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         switch (selectedFilter){
             case 0:
                 btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_filter_icon_list));
+                btnNoFilter.hide();
+                btnFilter1.hide();
+                btnFilter2.hide();
+                btnFilter3.hide();
                 break;
             case 1:
-                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_all_icon));
+                btnFilter.hide();
+                btnFilter1.hide();
+                btnFilter2.hide();
+                btnFilter3.hide();
                 break;
             case 2:
-                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_pending_icon_db));
+                btnFilter.hide();
+                btnNoFilter.hide();
+                btnFilter2.hide();
+                btnFilter3.hide();
                 break;
             case 3:
-                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_approved_icon_db));
+                btnFilter.hide();
+                btnNoFilter.hide();
+                btnFilter1.hide();
+                btnFilter3.hide();
                 break;
             case 4:
-                btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_rejected_icon_db));
+                btnFilter.hide();
+                btnNoFilter.hide();
+                btnFilter1.hide();
+                btnFilter2.hide();
                 break;
         }
     }
