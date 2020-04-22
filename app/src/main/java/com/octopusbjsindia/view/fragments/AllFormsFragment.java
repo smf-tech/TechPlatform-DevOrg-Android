@@ -232,33 +232,37 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
 
             // For now, we dont need submitted forms, so commenting below code.
-//            List<String> localFormResults
-//                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
-//
-//            String url;
-//
-//            if (Util.isConnected(getContext()) && ((submitCount != null &&
-//                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
-//
-//                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-//
-//                    setSubmittedFormsCount();
-//                    url = data.getApi_url() + "/" + data.getId();
-//                    presenter.getSubmittedForms(data.getId(), url);
-//                }
-//            } else if ((submitCount == null || submitCount.equals("0")) ||
-//                    (localFormResults == null || localFormResults.isEmpty())) {
-//
-//                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
-//                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-//
-//                        setSubmittedFormsCount();
-//                        url = data.getApi_url() + "/" + data.getId();
-//                        presenter.getSubmittedForms(data.getId(), url);
-//                    }
-//                }
-//            }
+            List<String> localFormResults
+                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+
+            String url;
+
+            if (Util.isConnected(getContext()) && ((submitCount != null &&
+                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
+
+                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
+
+                    setSubmittedFormsCount();
+                    url = data.getApi_url() + "/" + data.getId();
+                    presenter.getSubmittedForms(data.getId(), url);
+
+                    //presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
+                }
+            } else if ((submitCount == null || submitCount.equals("0")) ||
+                    (localFormResults == null || localFormResults.isEmpty())) {
+
+                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
+                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
+
+                        setSubmittedFormsCount();
+                        url = data.getApi_url() + "/" + data.getId();
+                        presenter.getSubmittedForms(data.getId(), url);
+                        //presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
+                    }
+                }
+            }
         }
+        //presenter.getSubmittedForms("5e9ab9ea56c8d04ef6755c54", BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
 
         if (!mChildList.isEmpty()) {
             setAdapter(mChildList);

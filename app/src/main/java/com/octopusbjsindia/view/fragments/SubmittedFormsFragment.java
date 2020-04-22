@@ -39,7 +39,6 @@ import com.octopusbjsindia.models.pm.Processes;
 import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.SubmittedFormsListAdapter;
 
@@ -259,8 +258,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                     String formID;
                     for (final ProcessData data : pData) {
 
-                        List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                                .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
+//                        List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
+//                                .getAllFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
+
+                        List<com.octopusbjsindia.models.forms.FormResult> localFormResults = DatabaseManager.getDBInstance(getActivity())
+                                .getFormResults(data.getId(), SyncAdapterUtils.FormStatus.SYNCED);
 
                         ProcessData pd = DatabaseManager.getDBInstance(
                                 Objects.requireNonNull(getActivity()).getApplicationContext())
@@ -287,29 +289,49 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
                             List<ProcessData> processData = new ArrayList<>();
 
-                            for (final String result : localFormResults) {
-                                FormResult formResult = PlatformGson.getPlatformGsonInstance()
-                                        .fromJson(result, FormResult.class);
+//                            for (final String result : localFormResults) {
+//                                FormResult formResult = PlatformGson.getPlatformGsonInstance()
+//                                        .fromJson(result, FormResult.class);
+//
+//                                if (formResult.updatedDateTime != null) {
+//                                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
+//                                        continue;
+//                                    }
+//                                }
+//
+//                                formID = formResult.formID;
+//
+//                                ProcessData object = new ProcessData();
+//                                if (formResult.mOID != null && formResult.mOID.oid != null) {
+//                                    object.setId(formResult.mOID.oid);
+//                                }
+//
+//                                object.setFormTitle(data.getName().getLocaleValue());
+//                                object.setName(new LocaleData(formResult.formTitle));
+//                                object.setFormApprovalStatus(formResult.formStatus);
+//                                Microservice microservice = new Microservice();
+//                                microservice.setUpdatedAt(formResult.updatedDateTime);
+//                                microservice.setId(formID);
+//                                object.setMicroservice(microservice);
+//                                processData.add(object);
+//                            }
 
-                                if (formResult.updatedDateTime != null) {
-                                    if (isFormOneMonthOld(formResult.updatedDateTime)) {
+                            for (com.octopusbjsindia.models.forms.FormResult formResult : localFormResults) {
+
+                                if (formResult.getCreatedAt() != null) {
+                                    if (isFormOneMonthOld(formResult.getCreatedAt())) {
                                         continue;
                                     }
                                 }
-
-                                formID = formResult.formID;
-
                                 ProcessData object = new ProcessData();
-                                if (formResult.mOID != null && formResult.mOID.oid != null) {
-                                    object.setId(formResult.mOID.oid);
-                                }
-
+                                object.setId(formResult.getFormId());
                                 object.setFormTitle(data.getName().getLocaleValue());
-                                object.setName(new LocaleData(formResult.formTitle));
-                                object.setFormApprovalStatus(formResult.formStatus);
+                                object.setName(new LocaleData(formResult.getFormName()));
+                                object.setFormApprovalStatus(formResult.getFormApprovalStatus());
+
                                 Microservice microservice = new Microservice();
-                                microservice.setUpdatedAt(formResult.updatedDateTime);
-                                microservice.setId(formID);
+                                microservice.setUpdatedAt(formResult.getCreatedAt());
+                                microservice.setId(formResult.get_id());
                                 object.setMicroservice(microservice);
                                 processData.add(object);
                             }
