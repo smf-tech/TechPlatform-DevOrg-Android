@@ -44,9 +44,9 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
             for (int j = 0; j < elements.getColumns().size(); j++) {
                 if (fragment.rowMap != null) {
                     String str = String.valueOf(fragment.rowMap.get(elements.getRowsList().get(i).getValue()).get(elements.getColumns().get(j).getName()));
-                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), Boolean.parseBoolean(str));
+                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), str);
                 }else {
-                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), true);
+                    ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), "Yes");
                 }
             }
             requestJsonObject.add(elements.getRowsList().get(i).getValue(), ColomJsonObject);
@@ -84,7 +84,11 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
         Log.d("onItemClicked", "onItemClicked-->" + pos);
         JsonObject ColomJsonObject = new JsonObject();
         for (int j = 0; j < dataList.getColumns().size(); j++) {
-            ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), columnListAnswers.get(j));
+            if (columnListAnswers.get(j)) {
+                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
+            }else {
+                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
+            }
         }
         Log.d("JsonObjectAdapter->", new Gson().toJson(columnListAnswers));
         //clickListener.onItemClicked(pos);
