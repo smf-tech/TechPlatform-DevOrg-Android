@@ -22,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -33,7 +34,6 @@ import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ExpandableAdapter;
@@ -236,6 +236,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                     = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
 
             String url;
+            if (data.getId().equalsIgnoreCase("5e9ab9ea56c8d04ef6755c54")) {
+                presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/" + data.getId());
+            }
 
             if (Util.isConnected(getContext()) && ((submitCount != null &&
                     !submitCount.equals("0")) && localFormResults.isEmpty())) {
@@ -244,9 +247,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
                     setSubmittedFormsCount();
                     url = data.getApi_url() + "/" + data.getId();
-                    presenter.getSubmittedForms(data.getId(), url);
+                    //presenter.getSubmittedForms(data.getId(), url);
 
-                    //presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
                 }
             } else if ((submitCount == null || submitCount.equals("0")) ||
                     (localFormResults == null || localFormResults.isEmpty())) {
@@ -256,8 +258,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
                         setSubmittedFormsCount();
                         url = data.getApi_url() + "/" + data.getId();
-                        presenter.getSubmittedForms(data.getId(), url);
-                        //presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
+                        //presenter.getSubmittedForms(data.getId(), url);
                     }
                 }
             }
@@ -305,46 +306,69 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
 
                 for (int i = 0; i < values.length(); i++) {
-                    SubmittedFormsFragment.FormResult formResult =
-                            PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
-                                    SubmittedFormsFragment.FormResult.class);
-
+//                    SubmittedFormsFragment.FormResult formResult =
+//                            PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
+//                                    SubmittedFormsFragment.FormResult.class);
+//
+//                    String uuid = UUID.randomUUID().toString();
+//                    String formID = formResult.formID;
+//                    if (TextUtils.isEmpty(formID)) {
+//                        if (metadataObj != null) {
+//                            formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+//                                    .getString(Constants.FormDynamicKeys.FORM_ID);
+//                        }
+//                    }
+//
+//                    com.octopusbjsindia.models.forms.FormResult result = new com.octopusbjsindia.models.forms.FormResult();
+//                    if (formResult.mOID.oid != null) {
+//                        result.set_id(formResult.mOID.oid);
+//                        result.setOid(formResult.mOID.oid);
+//                    } else {
+//                        result.set_id(uuid);
+//                    }
+//                    result.setFormId(formID);
+//                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+//                    result.setCreatedAt(formResult.updatedDateTime);
+//                    result.setFormApprovalStatus(formResult.formStatus);
+//
+//                    JSONObject obj = (JSONObject) values.get(i);
+//                    if (obj == null) {
+//                        return;
+//                    }
+//
+//                    if (!obj.has(Constants.FormDynamicKeys.FORM_ID)) {
+//                        obj.put(Constants.FormDynamicKeys.FORM_ID, formID);
+//                    }
+                    JSONObject resultObject = values.getJSONObject(i);
+                    String resultId = resultObject.getString(Constants.FormDynamicKeys.OID);
+                    com.octopusbjsindia.models.forms.FormResult tempResult = DatabaseManager.getDBInstance
+                            (getActivity()).getFormResult(resultId);
+                    if (tempResult != null) {
+                        continue;
+                    }
                     String uuid = UUID.randomUUID().toString();
-                    String formID = formResult.formID;
+                    String formID = resultObject.getString(Constants.FormDynamicKeys.FORM_ID);
                     if (TextUtils.isEmpty(formID)) {
                         if (metadataObj != null) {
                             formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
                                     .getString(Constants.FormDynamicKeys.FORM_ID);
                         }
                     }
-
                     com.octopusbjsindia.models.forms.FormResult result = new com.octopusbjsindia.models.forms.FormResult();
-                    if (formResult.mOID.oid != null) {
-                        result.set_id(formResult.mOID.oid);
-                        result.setOid(formResult.mOID.oid);
+                    if (resultObject.getString(Constants.FormDynamicKeys.OID) != null) {
+                        result.set_id(resultObject.getString(Constants.FormDynamicKeys.OID));
+                        result.setOid(resultObject.getString(Constants.FormDynamicKeys.OID));
                     } else {
                         result.set_id(uuid);
                     }
                     result.setFormId(formID);
+                    result.setFormTitle(resultObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                     result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-                    result.setCreatedAt(formResult.updatedDateTime);
-                    result.setFormApprovalStatus(formResult.formStatus);
+                    result.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+                    result.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                    result.setResult(resultObject.getString(Constants.FormDynamicKeys.RESULT));
 
-                    JSONObject obj = (JSONObject) values.get(i);
-                    if (obj == null) {
-                        return;
-                    }
-
-                    if (!obj.has(Constants.FormDynamicKeys.FORM_ID)) {
-                        obj.put(Constants.FormDynamicKeys.FORM_ID, formID);
-                    }
-
-                    List<String> localFormResults = DatabaseManager.getDBInstance(getActivity())
-                            .getAllFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
-                    if (!localFormResults.contains(obj.toString())) {
-                        result.setResult(obj.toString());
-                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
-                    }
+                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
                 }
             }
         } catch (JSONException e) {

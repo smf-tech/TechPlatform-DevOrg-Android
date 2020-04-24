@@ -296,6 +296,8 @@ public class Constants {
         public static final String OID = "$oid";
         public static final String UPDATED_DATE_TIME = "updatedDateTime";
         public static final String CREATED_DATE_TIME = "createdDateTime";
+        public static final String STATUS = "status";
+        public static final String RESULT = "result";
     }
 
     class Expression {
