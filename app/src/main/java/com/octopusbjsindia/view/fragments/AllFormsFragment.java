@@ -22,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -236,7 +237,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
             String url;
             if (data.getId().equalsIgnoreCase("5e9ab9ea56c8d04ef6755c54")) {
-                //presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/" + data.getId());
+                presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/" + data.getId());
             }
 
             if (Util.isConnected(getContext()) && ((submitCount != null &&

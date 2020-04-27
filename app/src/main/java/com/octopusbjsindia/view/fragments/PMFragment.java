@@ -65,8 +65,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void init() {
         FloatingActionButton txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
         txtViewAllForms.setOnClickListener(this);
-//        FloatingActionButton btnNewForm = pmFragmentView.findViewById(R.id.btn_new_form);
-//        btnNewForm.setOnClickListener(this);
+        FloatingActionButton btnNewForm = pmFragmentView.findViewById(R.id.btn_new_form);
+        btnNewForm.setOnClickListener(this);
         rvFormsStatusCount = pmFragmentView.findViewById(R.id.rv_forms_dashboard);
         formsDashboardAdapter = new FormsDashboardAdapter(getActivity(), formStatusCountDataList);
         rvFormsStatusCount.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -105,11 +105,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         if (v.getId() == R.id.txt_view_all_forms) {
             Util.launchFragment(new FormsFragment(), getContext(),
                     getString(R.string.forms), true);
+        } else if (v.getId() == R.id.btn_new_form) {
+            Util.launchFragment(new AllFormsFragment(), getContext(),
+                    getString(R.string.forms), true);
         }
-//        else if (v.getId() == R.id.btn_new_form) {
-//            Util.launchFragment(new AllFormsFragment(), getContext(),
-//                    getString(R.string.forms), true);
-//        }
     }
 
     @Override
