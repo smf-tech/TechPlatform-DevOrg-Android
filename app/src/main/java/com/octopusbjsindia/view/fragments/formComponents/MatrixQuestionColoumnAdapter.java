@@ -47,9 +47,12 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
 
         if (fragment.rowMap != null) {
             for (int i = 0; i < columnList.size(); i++) {
-                String str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getTitle().getLocaleValue()));
-                Log.d("columnValue", str);//fragment.rowMap.get(RowName).get("Insta").values().toString());
-                columnListAnswers.add(Boolean.parseBoolean(str));
+                String str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getName()));
+                if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
+                    columnListAnswers.add(true);
+                } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
+                    columnListAnswers.add(false);
+                }
             }
         } else {
             for (int i = 0; i < columnList.size(); i++) {

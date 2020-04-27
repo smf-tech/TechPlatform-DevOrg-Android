@@ -32,17 +32,17 @@
         app:tint="@color/white"
         android:src="@drawable/ic_form_category"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_new_form"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="@dimen/dimen_20dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:tint="@color/white"
-        android:src="@drawable/ic_form_category" />
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/btn_new_form"-->
+    <!--        style="@style/Widget.MaterialComponents.FloatingActionButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_margin="@dimen/dimen_20dp"-->
+    <!--        app:backgroundTint="@color/colorPrimary"-->
+    <!--        app:tint="@color/white"-->
+    <!--        android:src="@drawable/ic_form_category" />-->
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"

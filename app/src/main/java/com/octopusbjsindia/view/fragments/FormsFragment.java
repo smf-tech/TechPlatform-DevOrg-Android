@@ -101,17 +101,17 @@ public class FormsFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = new AllFormsFragment();
             switch (position) {
-//                case 0:
-//                    fragment = new AllFormsFragment();
-//                    break;
-
                 case 0:
-                    fragment = new PendingFormsFragment();
+                    fragment = new AllFormsFragment();
                     break;
 
                 case 1:
-                    fragment = new SubmittedFormsFragment();
+                    fragment = new PendingFormsFragment();
                     break;
+
+//                case 1:
+//                    fragment = new SubmittedFormsFragment();
+//                    break;
             }
 
             return fragment;
@@ -127,17 +127,17 @@ public class FormsFragment extends Fragment {
             String title = "";
             try {
                 switch (position) {
-//                    case 0:
-//                        title = getResources().getString(R.string.new_forms);
-//                        break;
-
                     case 0:
-                        title = getResources().getString(R.string.saved_forms);
+                        title = getResources().getString(R.string.new_forms);
                         break;
 
                     case 1:
-                        title = getResources().getString(R.string.submitted_forms);
+                        title = getResources().getString(R.string.saved_forms);
                         break;
+
+//                    case 1:
+//                        title = getResources().getString(R.string.submitted_forms);
+//                        break;
                 }
             } catch (Resources.NotFoundException | IllegalStateException e) {
                 Log.e("TAG", e.getMessage());
