@@ -232,38 +232,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
 
             // For now, we dont need submitted forms, so commenting below code.
-            List<String> localFormResults
-                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
+//            List<String> localFormResults
+//                    = DatabaseManager.getDBInstance(getActivity()).getAllFormResults(data.getId());
 
-            String url;
-            if (data.getId().equalsIgnoreCase("5e9ab9ea56c8d04ef6755c54")) {
+            setSubmittedFormsCount();
+
+            if (Util.isConnected(getActivity())) {
                 presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/" + data.getId());
             }
-
-            if (Util.isConnected(getContext()) && ((submitCount != null &&
-                    !submitCount.equals("0")) && localFormResults.isEmpty())) {
-
-                if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-
-                    setSubmittedFormsCount();
-                    url = data.getApi_url() + "/" + data.getId();
-                    //presenter.getSubmittedForms(data.getId(), url);
-
-                }
-            } else if ((submitCount == null || submitCount.equals("0")) ||
-                    (localFormResults == null || localFormResults.isEmpty())) {
-
-                if (!Util.isSubmittedFormsLoaded() && Util.isConnected(getContext())) {
-                    if (data.getApi_url() != null && !TextUtils.isEmpty(data.getApi_url())) {
-
-                        setSubmittedFormsCount();
-                        url = data.getApi_url() + "/" + data.getId();
-                        //presenter.getSubmittedForms(data.getId(), url);
-                    }
-                }
-            }
         }
-        //presenter.getSubmittedForms("5e9ab9ea56c8d04ef6755c54", BuildConfig.BASE_URL + "api/forms/5e9ab9ea56c8d04ef6755c54");
 
         if (!mChildList.isEmpty()) {
             setAdapter(mChildList);
@@ -280,32 +257,33 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
         try {
             String count;
-            JSONObject metadataObj = null;
-            if (new JSONObject(response).has(Constants.FormDynamicKeys.METADATA)) {
-                JSONArray metadata = (JSONArray) new JSONObject(response).get(Constants.FormDynamicKeys.METADATA);
-                if (metadata != null && metadata.length() > 0) {
-                    metadataObj = metadata.getJSONObject(0);
+            if (new JSONObject(response).has(Constants.FormDynamicKeys.DATA)) {
+                JSONObject dataObject = new JSONObject(response).getJSONObject(Constants.FormDynamicKeys.DATA);
+                JSONObject metadataObj = null;
+                if (dataObject.has(Constants.FormDynamicKeys.METADATA)) {
+                    JSONArray metadata = (JSONArray) dataObject.get(Constants.FormDynamicKeys.METADATA);
+                    if (metadata != null && metadata.length() > 0) {
+                        metadataObj = metadata.getJSONObject(0);
 
-                    count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
-                            .getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
+                        count = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                                .getString(Constants.FormDynamicKeys.SUBMIT_COUNT);
 
-                    String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
-                            .getString(Constants.FormDynamicKeys.FORM_ID);
+                        String formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                                .getString(Constants.FormDynamicKeys.FORM_ID);
 
-                    mCountList.put(formID, count);
-                    DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
-                            .getApplicationContext()).updateProcessSubmitCount(formID, count);
-                } else {
-                    mCountList.put(formId, String.valueOf(0));
-                    DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
-                            .getApplicationContext()).updateProcessSubmitCount(formId, String.valueOf(0));
+                        mCountList.put(formID, count);
+                        DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                                .getApplicationContext()).updateProcessSubmitCount(formID, count);
+                    } else {
+                        mCountList.put(formId, String.valueOf(0));
+                        DatabaseManager.getDBInstance(Objects.requireNonNull(getActivity())
+                                .getApplicationContext()).updateProcessSubmitCount(formId, String.valueOf(0));
+                    }
                 }
-            }
+                if (dataObject.has(Constants.FormDynamicKeys.VALUES)) {
+                    JSONArray values = dataObject.getJSONArray(Constants.FormDynamicKeys.VALUES);
 
-            if (new JSONObject(response).has(Constants.FormDynamicKeys.VALUES)) {
-                JSONArray values = new JSONObject(response).getJSONArray(Constants.FormDynamicKeys.VALUES);
-
-                for (int i = 0; i < values.length(); i++) {
+                    for (int i = 0; i < values.length(); i++) {
 //                    SubmittedFormsFragment.FormResult formResult =
 //                            PlatformGson.getPlatformGsonInstance().fromJson(String.valueOf(values.get(i)),
 //                                    SubmittedFormsFragment.FormResult.class);
@@ -339,38 +317,40 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 //                    if (!obj.has(Constants.FormDynamicKeys.FORM_ID)) {
 //                        obj.put(Constants.FormDynamicKeys.FORM_ID, formID);
 //                    }
-                    JSONObject resultObject = values.getJSONObject(i);
-                    String resultId = resultObject.getString(Constants.FormDynamicKeys.OID);
-                    com.octopusbjsindia.models.forms.FormResult tempResult = DatabaseManager.getDBInstance
-                            (getActivity()).getFormResult(resultId);
-                    if (tempResult != null) {
-                        continue;
-                    }
-                    String uuid = UUID.randomUUID().toString();
-                    String formID = resultObject.getString(Constants.FormDynamicKeys.FORM_ID);
-                    if (TextUtils.isEmpty(formID)) {
-                        if (metadataObj != null) {
-                            formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
-                                    .getString(Constants.FormDynamicKeys.FORM_ID);
+                        JSONObject resultObject = values.getJSONObject(i);
+                        String resultId = resultObject.getString(Constants.FormDynamicKeys.OID);
+                        com.octopusbjsindia.models.forms.FormResult tempResult = DatabaseManager.getDBInstance
+                                (getActivity()).getFormResult(resultId);
+                        if (tempResult != null) {
+                            continue;
                         }
-                    }
-                    com.octopusbjsindia.models.forms.FormResult result = new com.octopusbjsindia.models.forms.FormResult();
-                    if (resultObject.getString(Constants.FormDynamicKeys.OID) != null) {
-                        result.set_id(resultObject.getString(Constants.FormDynamicKeys.OID));
-                        result.setOid(resultObject.getString(Constants.FormDynamicKeys.OID));
-                    } else {
-                        result.set_id(uuid);
-                    }
-                    result.setFormId(formID);
-                    result.setFormTitle(resultObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-                    result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
-                    result.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
-                    result.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
-                    result.setResult(resultObject.getString(Constants.FormDynamicKeys.RESULT));
+                        String uuid = UUID.randomUUID().toString();
+                        String formID = resultObject.getString(Constants.FormDynamicKeys.FORM_ID);
+                        if (TextUtils.isEmpty(formID)) {
+                            if (metadataObj != null) {
+                                formID = metadataObj.getJSONObject(Constants.FormDynamicKeys.FORM)
+                                        .getString(Constants.FormDynamicKeys.FORM_ID);
+                            }
+                        }
+                        com.octopusbjsindia.models.forms.FormResult result = new com.octopusbjsindia.models.forms.FormResult();
+                        if (resultObject.getString(Constants.FormDynamicKeys.OID) != null) {
+                            result.set_id(resultObject.getString(Constants.FormDynamicKeys.OID));
+                            result.setOid(resultObject.getString(Constants.FormDynamicKeys.OID));
+                        } else {
+                            result.set_id(uuid);
+                        }
+                        result.setFormId(formID);
+                        result.setFormTitle(resultObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+                        result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+                        result.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+                        result.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                        result.setResult(resultObject.getString(Constants.FormDynamicKeys.RESULT));
 
-                    DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                        DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
+                    }
                 }
             }
+
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
             hideProgressBar();
