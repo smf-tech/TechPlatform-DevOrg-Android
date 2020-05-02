@@ -268,22 +268,22 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 Objects.requireNonNull(getActivity()).getApplicationContext())
                                 .getProcessData(data.getId());
 
-                        String submitCount = pd.getSubmitCount();
-                        if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
-                            if (Util.isConnected(getContext())) {
-                                String url;
-                                if (data.getApi_url() != null
-                                        && !TextUtils.isEmpty(data.getApi_url())) {
-
-//                                    url = getResources().getString(R.string.form_field_mandatory,
-//                                            data.getMicroservice().getBaseUrl(),
-//                                            data.getMicroservice().getRoute());
-                                    url = data.getApi_url() + "/" + data.getId();
-
-                                    new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
-                                }
-                            }
-                        } else {
+//                        String submitCount = pd.getSubmitCount();
+//                        if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
+//                            if (Util.isConnected(getContext())) {
+//                                String url;
+//                                if (data.getApi_url() != null
+//                                        && !TextUtils.isEmpty(data.getApi_url())) {
+//
+////                                    url = getResources().getString(R.string.form_field_mandatory,
+////                                            data.getMicroservice().getBaseUrl(),
+////                                            data.getMicroservice().getRoute());
+//                                    url = data.getApi_url() + "/" + data.getId();
+//
+//                                    //new FormStatusFragmentPresenter(this).getSubmittedForms(data.getId(), url);
+//                                }
+//                            }
+//                        } else {
 
                             if (localFormResults == null || localFormResults.isEmpty()) continue;
 
@@ -326,7 +326,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 ProcessData object = new ProcessData();
                                 object.setId(formResult.getFormId());
                                 object.setFormTitle(data.getName().getLocaleValue());
-                                object.setName(new LocaleData(formResult.getFormName()));
+                                object.setName(new LocaleData(formResult.getFormTitle()));
                                 object.setFormApprovalStatus(formResult.getFormApprovalStatus());
 
                                 Microservice microservice = new Microservice();
@@ -351,7 +351,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 }
                                 showNoDataText = false;
                             }
-                        }
+                        //}
                     }
                 }
             }
@@ -604,28 +604,28 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         }
     }
 
-    static class FormResult {
-        @SuppressWarnings("unused")
-        @SerializedName("form_title")
-        String formTitle;
-
-        @SuppressWarnings("unused")
-        @SerializedName("form_id")
-        String formID;
-
-        @SuppressWarnings("unused")
-        @SerializedName("updatedDateTime")
-        Long updatedDateTime;
-
-        @SuppressWarnings("unused")
-        @SerializedName("status")
-        String formStatus;
-
-        @SuppressWarnings("unused")
-        @SerializedName("_id")
-        OID mOID;
-    }
-
+    //    static class FormResult {
+//        @SuppressWarnings("unused")
+//        @SerializedName("form_title")
+//        String formTitle;
+//
+//        @SuppressWarnings("unused")
+//        @SerializedName("form_id")
+//        String formID;
+//
+//        @SuppressWarnings("unused")
+//        @SerializedName("updatedDateTime")
+//        Long updatedDateTime;
+//
+//        @SuppressWarnings("unused")
+//        @SerializedName("status")
+//        String formStatus;
+//
+//        @SuppressWarnings("unused")
+//        @SerializedName("_id")
+//        OID mOID;
+//    }
+//
     public static class OID {
         @SuppressWarnings("unused")
         @SerializedName("$oid")

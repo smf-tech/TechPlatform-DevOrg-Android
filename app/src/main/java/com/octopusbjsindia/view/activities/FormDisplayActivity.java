@@ -88,6 +88,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
+    private FormResult formResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +113,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
-            if (mIsPartiallySaved) {
-                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
-            }
+//            if (mIsPartiallySaved) {
+//                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
+//            }
 
             if (formData == null) {
                 if (Util.isConnected(this)) {
@@ -122,15 +123,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 }
             } else {
                 parseFormSchema(formData);
+            }
 
-                FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
-                if (formResult != null) {
-                    Log.d("Result", new Gson().toJson(formResult));
-                    try {
-                        jsonToMap(new Gson().toJson(formResult));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
+            if (formResult != null) {
+                Log.d("Result", new Gson().toJson(formResult));
+                try {
+                    jsonToMap(new Gson().toJson(formResult));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -488,6 +489,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void submitForm() {
+        if (formResult != null && formResult.getOid() != null) {
+            formAnswersMap.put(Constants.PM.PROCESS_ID, formResult.getOid());
+        }
         Location location = gpsTracker.getLocation();
         String strLat, strLong;
         if (location != null) {
@@ -513,7 +517,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formModel.getData().getId(), processId, mUploadedImageUrlList);
         } else {
             if (formModel.getData() != null) {
-                saveFormToLocalDatabase();
+                saveOfflineFormToLocalDb();
 
                 Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
                 LocalBroadcastManager.getInstance(getApplicationContext())
@@ -529,12 +533,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
     }
 
-    private void saveFormToLocalDatabase() {
+    private void saveOfflineFormToLocalDb() {
         FormData formData = formModel.getData();
         FormResult result;
-        if (mIsPartiallySaved) {
+        //if (mIsPartiallySaved) {
             result = DatabaseManager.getDBInstance(this).getFormResult(processId);
-        } else {
+        //} else {
+        if (result == null) {
             result = new FormResult();
             result.setFormId(formData.getId());
             result.setFormNameLocale(formData.getName());
@@ -542,6 +547,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
+        //}
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
@@ -566,11 +572,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             if (obj != null) {
                 result.setResult(obj.toString());
                 //presenter.setSavedForm(result);
-                if (mIsPartiallySaved) {
-                    DatabaseManager.getDBInstance(this).updateFormResult(result);
-                } else {
+//                if (mIsPartiallySaved) {
+//                    DatabaseManager.getDBInstance(this).updateFormResult(result);
+//                } else {
                     DatabaseManager.getDBInstance(this).insertFormResult(result);
-                }
+                //}
             }
         }
     }
@@ -607,16 +613,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 result.setResult(obj.toString());
             }
         }
-        if (mIsPartiallySaved) {
+        //if (mIsPartiallySaved) {
             //String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            FormResult form = DatabaseManager.getDBInstance(this).getPartiallySavedForm(processId);
+        //FormResult form = DatabaseManager.getDBInstance(this).getPartiallySavedForm(processId);
+        FormResult form = DatabaseManager.getDBInstance(this).getFormResult(processId);
             if (form != null) {
                 result.set_id(form.get_id());
             }
-            DatabaseManager.getDBInstance(this).updateFormResult(result);
-        } else {
+        //DatabaseManager.getDBInstance(this).updateFormResult(result);
+        //} else {
             DatabaseManager.getDBInstance(this).insertFormResult(result);
-        }
+        //}
 
         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
