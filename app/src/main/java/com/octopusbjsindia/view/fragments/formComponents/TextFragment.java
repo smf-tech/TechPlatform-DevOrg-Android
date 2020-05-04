@@ -31,6 +31,7 @@ import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import java.util.HashMap;
 
 import static com.octopusbjsindia.utility.Constants.FORM_DATE;
+import static com.octopusbjsindia.utility.Util.showDateDialogEnableAfterMin;
 import static com.octopusbjsindia.utility.Util.showDateDialogEnableBeforeMax;
 import static com.octopusbjsindia.utility.Util.showDateDialogEnableBetweenMinToday;
 
@@ -181,23 +182,40 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         switch (v.getId()) {
             case R.id.et_answer_date:
                 if(element.getInputType().equalsIgnoreCase("date")){
-                    if (element.getMinDate() != null && element.getMaxDate() != null) {
-                        String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
-                        String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
-                        Util.showDateDialogEnableBetweenMinMax(getActivity(), etAnswer,
-                                minDate, maxDate);
-                    } else if (element.getMinDate() != null && element.getMaxDate() == null) {
-                        String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
-                        //    As per MV requirement, calling showDateDialogEnableBetweenMinToday() method.
-                        //    If max date in form schema is null, todays date will be max date.
+                    if (element.getMinDate() != null || element.getMaxDate() != null) {
+                        if (element.getMinDate() != null && element.getMaxDate() != null) {
+                            String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
+                            String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
+                            Util.showDateDialogEnableBetweenMinMax(getActivity(), etAnswer,
+                                    minDate, maxDate);
+                        } else if (element.getMinDate() != null && element.getMaxDate() == null) {
+                            String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
+                            //    As per MV requirement, calling showDateDialogEnableBetweenMinToday() method.
+                            //    If max date in form schema is null, todays date will be max date.
 //                        Util.showDateDialogEnableAfterMin(getActivity(), etAnswer,
 //                                minDate);
-                        showDateDialogEnableBetweenMinToday(getActivity(), etAnswer,
-                                minDate);
-                    } else if (element.getMaxDate() != null && element.getMinDate() == null) {
-                        String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
-                        showDateDialogEnableBeforeMax(getActivity(), etAnswer,
-                                maxDate);
+                            showDateDialogEnableBetweenMinToday(getActivity(), etAnswer,
+                                    minDate);
+                        } else if (element.getMaxDate() != null && element.getMinDate() == null) {
+                            String maxDate = Util.getDateFromTimestamp(element.getMaxDate(), FORM_DATE);
+                            showDateDialogEnableBeforeMax(getActivity(), etAnswer,
+                                    maxDate);
+                        }
+                    } else if (element.getPastAllowedDays() != null || element.getFutureAllowedDays() != null) {
+                        if (element.getPastAllowedDays() != null && element.getFutureAllowedDays() != null) {
+                            String pastAllowedDate = Util.getPastFutureDateStringFromToday(-element.getPastAllowedDays(), FORM_DATE);
+                            String futureAllowedDate = Util.getPastFutureDateStringFromToday(element.getFutureAllowedDays(), FORM_DATE);
+                            Util.showDateDialogEnableBetweenMinMax(getActivity(), etAnswer,
+                                    pastAllowedDate, futureAllowedDate);
+                        } else if (element.getPastAllowedDays() != null && element.getFutureAllowedDays() == null) {
+                            String pastAllowedDate = Util.getPastFutureDateStringFromToday(-element.getPastAllowedDays(), FORM_DATE);
+                            showDateDialogEnableAfterMin(getActivity(), etAnswer,
+                                    pastAllowedDate);
+                        } else if (element.getFutureAllowedDays() != null && element.getPastAllowedDays() == null) {
+                            String futureAllowedDate = Util.getPastFutureDateStringFromToday(element.getFutureAllowedDays(), FORM_DATE);
+                            showDateDialogEnableBeforeMax(getActivity(), etAnswer,
+                                    futureAllowedDate);
+                        }
                     } else {
                         Util.showAllDateDialog(getContext(), etAnswer);
                     }

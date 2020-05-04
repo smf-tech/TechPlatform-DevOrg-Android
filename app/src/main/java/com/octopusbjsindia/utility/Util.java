@@ -604,7 +604,7 @@ public class Util {
         return date;
     }
 
-    private static String getFormattedDate(String date, String dateFormat) {
+    public static String getFormattedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -689,6 +689,20 @@ public class Util {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        }
+        return "";
+    }
+
+    public static String getPastFutureDateStringFromToday(Integer pastFutureCount, String dateFormat) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, pastFutureCount);
+            Date d = cal.getTime();
+            DateFormat dateFormatting = new SimpleDateFormat(dateFormat);
+            String pastFutureDate = dateFormatting.format(d);
+            return pastFutureDate;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
         return "";
     }

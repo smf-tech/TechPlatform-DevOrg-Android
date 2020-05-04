@@ -103,28 +103,19 @@ public class Elements implements Serializable {
     private Boolean hasNone;
     private String locationRequiredLevel;
 
+    @SerializedName("minDays")
+    @Expose
+    private Integer pastAllowedDays;
+    @SerializedName("maxDays")
+    @Expose
+    private Integer futureAllowedDays;
+
     public LocaleData getOtherErrorText() {
         return otherErrorText;
     }
 
     public void setOtherErrorText(LocaleData otherErrorText) {
         this.otherErrorText = otherErrorText;
-    }
-
-    public Long getMinDate() {
-        return minDate;
-    }
-
-    public void setMinDate(long minDate) {
-        this.minDate = minDate;
-    }
-
-    public Long getMaxDate() {
-        return maxDate;
-    }
-
-    public void setMaxDate(long maxDate) {
-        this.maxDate = maxDate;
     }
 
     @SerializedName("minDate")
@@ -376,6 +367,38 @@ public class Elements implements Serializable {
 
     public void setRequiredErrorText(LocaleData requiredErrorText) {
         this.requiredErrorText = requiredErrorText;
+    }
+
+    public Long getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(long minDate) {
+        this.minDate = minDate;
+    }
+
+    public Long getMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(long maxDate) {
+        this.maxDate = maxDate;
+    }
+
+    public Integer getPastAllowedDays() {
+        return pastAllowedDays;
+    }
+
+    public void setPastAllowedDays(Integer pastAllowedDays) {
+        this.pastAllowedDays = pastAllowedDays;
+    }
+
+    public Integer getFutureAllowedDays() {
+        return futureAllowedDays;
+    }
+
+    public void setFutureAllowedDays(Integer futureAllowedDays) {
+        this.futureAllowedDays = futureAllowedDays;
     }
 }
 
