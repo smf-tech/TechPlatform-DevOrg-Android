@@ -636,14 +636,14 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
             intent.putExtra("viewType", viewTypeTrainerList);
             intent.putExtra("title", "");
-            getActivity().startActivity(intent);
+            //getActivity().startActivity(intent);
         }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("masterTrainer")){
 
             intent = new Intent(getActivity(), TrainerBatchListActivity.class);
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
             intent.putExtra("viewType", viewTypeMasterTrainerList);
             intent.putExtra("title", "");
-            getActivity().startActivity(intent);
+            //getActivity().startActivity(intent);
 
         }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("beneficiary")){
 
@@ -651,7 +651,7 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
             intent.putExtra("viewType", viewTypeBeneficiaryList);
             intent.putExtra("title", "");
-            getActivity().startActivity(intent);
+            //getActivity().startActivity(intent);
         }
     }
 }

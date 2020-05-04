@@ -14,6 +14,9 @@ public class WorkshopBachList {
     @SerializedName("workshop_category_id")
     @Expose
     private String workshop_category_id;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("state_id")
     @Expose
     private String state_id;
@@ -39,6 +42,10 @@ public class WorkshopBachList {
     @SerializedName("created_by")
     @Expose
     private List<Created_by> created_by = null;
+
+    @SerializedName("currentUserWorkShopData")
+    @Expose
+    private List<BeneficiariesList> currentUserWorkShopData = null;
 
     @SerializedName("beneficiariesList")
     @Expose
@@ -225,5 +232,22 @@ public class WorkshopBachList {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public List<BeneficiariesList> getCurrentUserWorkShopData() {
+        return currentUserWorkShopData;
+    }
+
+    public void setCurrentUserWorkShopData(List<BeneficiariesList> currentUserWorkShopData) {
+        this.currentUserWorkShopData = currentUserWorkShopData;
     }
 }

@@ -130,7 +130,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         if (getIntent().getStringExtra(Constants.Login.ACTION_EDIT) != null
                 && getIntent().getStringExtra(Constants.Login.ACTION_EDIT)
                 .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-            Toast.makeText(CreateTrainerWorkshop.this, "request to edit batch.", Toast.LENGTH_LONG).show();
+      //      Toast.makeText(CreateTrainerWorkshop.this, "request to edit batch.", Toast.LENGTH_LONG).show();
             isforEdit = true;
 
             if (getIntent().getExtras() != null) {
@@ -146,7 +146,11 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
     }
 
     private void setEditDataToFields(TrainerBachList trainerBachList) {
-        et_title_batch.setText("Title");
+        if (trainerBachList.getTitle()!=null) {
+            et_title_batch.setText(trainerBachList.getTitle());
+        }else {
+            et_title_batch.setText("");
+        }
         if (trainerBachList.getBatch_category_id()!=null) {
             et_workshop_category.setText("" + trainerBachList.getBatch_category_id());
             et_workshop_category_str = trainerBachList.getBatch_category_id();
@@ -163,7 +167,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         et_select_state_str_trainer = trainerBachList.getAdditional_master_trainer().getState_id();
         et_select_district_trainer.setText(trainerBachList.getAdditional_master_trainer().getDistrict_name());
         et_select_district_str_trainer = trainerBachList.getAdditional_master_trainer().getDistrict_id();
-
+        et_traner_additional_id = trainerBachList.getAdditional_master_trainer().getUser_id();
         et_traner_additional.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
         tv_startdate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getStartDate()));
         tv_enddate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getEndDate()));
@@ -582,8 +586,8 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         trainerObject.addProperty("district_id", "5e2eb9e6385c23393400741d");
         trainerObject.addProperty("user_id", "5e2ebdce42d73f03fe6ab142");*/
 
-        trainerObject.addProperty("state_id", selectedTrainerStateId);
-        trainerObject.addProperty("district_id", selectedTrainerDistrictId);
+        trainerObject.addProperty("state_id", et_select_state_str_trainer);
+        trainerObject.addProperty("district_id", et_select_district_str_trainer);
         trainerObject.addProperty("user_id", et_traner_additional_id);
 
 
@@ -597,8 +601,8 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
 
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("project_id", "5e2eb798385c233934007414");
-        requestObject.addProperty("state_id", "5e58c53dfcba8f309f672b43");
-        requestObject.addProperty("district_id", "");// et_select_district_str_trainer);
+        requestObject.addProperty("state_id", et_select_state_str_trainer);
+        requestObject.addProperty("district_id", et_select_district_str_trainer);// et_select_district_str_trainer);
 
         return requestObject;
     }

@@ -63,6 +63,9 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
+        if (dataList.get(position).getTitle()!=null) {
+            holder.tv_title_batch.setText(dataList.get(position).getTitle());
+        }
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_main_trainer_name.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }
@@ -110,7 +113,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,
+        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,tv_title_batch,
                 tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value;
         ImageView btnPopupMenu;
         PopupMenu popup;
@@ -120,7 +123,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         EmployeeViewHolder(View itemView) {
             super(itemView);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
-
+            tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
             tv_main_trainer_name = itemView.findViewById(R.id.tv_main_trainer_name);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
@@ -193,6 +196,20 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                 case Constants.SmartGirlModule.ACCESS_CODE_POST_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_post_feedback).setVisible(true);
                                     break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_PRE_FEEDBACK_WORKSHOP:
+                                    popup.getMenu().findItem(R.id.action_pre_feedback).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_POST_FEEDBACK_WORKSHOP:
+                                    popup.getMenu().findItem(R.id.action_post_feedback).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_ORGANIZER_FEEDBACK:
+                                    popup.getMenu().findItem(R.id.action_organizer_feedback).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_PARENTS_FEEDBACK:
+                                    popup.getMenu().findItem(R.id.action_parent_feedback).setVisible(true);
+                                    break;
+
+
 
                                 case Constants.SmartGirlModule.ACCESS_CODE_REGISTER_BATCH:
                                     break;
@@ -235,22 +252,64 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                         break;
                                     case R.id.action_post_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((SmartGirlWorkshopListActivity)mContext).addPostFeedbackFragment(getAdapterPosition());
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData()!=null) {
+                                                if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData().get(0).getPreFeedBackStatus()!=null) {
+                                                    if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData().get(0).getPreFeedBackStatus()) {
+                                                        if (!dataList.get(getAdapterPosition()).getCurrentUserWorkShopData().get(0).getPostFeedBackStatus()) {
+                                                            ((SmartGirlWorkshopListActivity) mContext).addPostFeedbackFragment(getAdapterPosition());
+                                                        }else {Util.showToast("Feedback already submitted.",mContext);}
+                                                    } else {
+                                                        Util.showToast("you need to fill pre feedback first.", mContext);
+                                                    }
+                                                }else {Util.showToast("feedback status not available.", mContext);}
+                                            }else {
+                                                Util.showToast("Please Register to workshop first.",mContext);
+                                            }
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
                                     case R.id.action_pre_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((SmartGirlWorkshopListActivity)mContext).addPreFeedbackFragment(getAdapterPosition());
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData()!=null) {
+                                                if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData().get(0).getPreFeedBackStatus()!=null) {
+                                                    if (!dataList.get(getAdapterPosition()).getCurrentUserWorkShopData().get(0).getPreFeedBackStatus()) {
+                                                        ((SmartGirlWorkshopListActivity) mContext).addPreFeedbackFragment(getAdapterPosition());
+                                                    } else {
+                                                        Util.showToast("Feedback already submitted.", mContext);
+                                                    }
+                                                }else {Util.showToast("feedback status not available.", mContext);}
+                                            }else {
+                                                Util.showToast("Please Register to workshop first.",mContext);
+                                            }
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
+
+                                    case R.id.action_parent_feedback:
+                                        if (Util.isConnected(mContext)) {
+                                            ((SmartGirlWorkshopListActivity)mContext).addParentFeedbackFragment(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_organizer_feedback:
+                                        if (Util.isConnected(mContext)) {
+                                            ((SmartGirlWorkshopListActivity)mContext).addOrganiserFeedbackFragment(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+
                                     case R.id.action_pretest_trainer:
                                         if (Util.isConnected(mContext)) {
-                                            //((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
-                                            ((SmartGirlWorkshopListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserWorkShopData()!=null) {
+                                                ((SmartGirlWorkshopListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            }else {
+                                                Util.showToast("Please Register to workshop first.",mContext);
+                                            }
+
 
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -281,6 +340,18 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                     });
                 }
             });
+            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+            if(roleAccessList != null) {
+                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                    if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_VIEW_PROFILE){
+                        btn_view_members.setVisibility(View.VISIBLE);
+                    }else {
+                        btn_view_members.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
     }
 

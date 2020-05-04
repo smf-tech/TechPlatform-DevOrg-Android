@@ -88,7 +88,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
-
+    private String batchId = "";
+    private String workshopId = "";
+    public boolean isForSmartGirl = false;
+    public boolean isForWorkshop = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
 
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
+
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
+
+            batchId = getIntent().getExtras().getString(Constants.SmartGirlModule.BATCH_ID);
+            if (batchId!=null && !TextUtils.isEmpty(batchId)) {
+                isForSmartGirl = true;
+            }
+            workshopId = getIntent().getExtras().getString(Constants.SmartGirlModule.WORKSHOP_ID);
+            if (workshopId!=null && !TextUtils.isEmpty(workshopId)) {
+                isForWorkshop = true;
+            }
+
 
             mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
@@ -646,7 +660,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
+        if (isForSmartGirl){
+            showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
+        }else {
+            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
+        }
     }
 
     public void submitForm() {
@@ -662,6 +680,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         //enableSubmitButton(false);
         formAnswersMap.put(Constants.Location.LATITUDE, strLat);
         formAnswersMap.put(Constants.Location.LONGITUDE, strLong);
+        if (isForSmartGirl) {
+            if (isForWorkshop){
+                formAnswersMap.put(Constants.SmartGirlModule.WORKSHOP_ID, batchId);
+            }else {
+                formAnswersMap.put(Constants.SmartGirlModule.BATCH_ID, batchId);
+            }
+        }
+
 
         if (Util.isConnected(this)) {
             presenter.setRequestedObject(formAnswersMap);
@@ -874,6 +900,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         if (!TextUtils.isEmpty(dialogTitle)) {
             TextView title = dialog.findViewById(R.id.tv_dialog_title);
+
             title.setText(dialogTitle);
             title.setVisibility(View.VISIBLE);
         }
@@ -886,12 +913,20 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         if (!TextUtils.isEmpty(btn1String)) {
             Button button = dialog.findViewById(R.id.btn_dialog);
-            button.setText(btn1String);
+            if (isForSmartGirl) {
+                button.setText(R.string.cancel);
+            }else {
+                button.setText(btn1String);
+            }
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 // Close dialog
-                savePartialForm();
-                dialog.dismiss();
+                if (isForSmartGirl) {
+                    dialog.dismiss();
+                }else {
+                    savePartialForm();
+                    dialog.dismiss();
+                }
             });
         }
 

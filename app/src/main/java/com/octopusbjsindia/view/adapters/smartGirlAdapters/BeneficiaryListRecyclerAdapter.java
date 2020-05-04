@@ -3,9 +3,12 @@ package com.octopusbjsindia.view.adapters.smartGirlAdapters;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +21,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.smartgirl.BeneficiariesList;
 import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
@@ -34,13 +39,14 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
     Context mContext;
     private List<BeneficiariesList> dataList;
     private OnRequestItemClicked clickListener;
-
+    private RequestOptions requestOptions;
 
     public BeneficiaryListRecyclerAdapter(Context context, List<BeneficiariesList> dataList, final OnRequestItemClicked clickListener) {
         mContext = context;
         this.dataList = dataList;
         this.clickListener = clickListener;
-
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
     }
 
     @Override
@@ -55,6 +61,15 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
         holder.tv_member_name.setText(dataList.get(position).getName());
         holder.tv_member_phone.setText(dataList.get(position).getPhone());
 
+
+        if (!TextUtils.isEmpty(dataList.get(position).getProfilePic())) {
+            Glide.with(mContext)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(dataList.get(position).getProfilePic())
+                    .into(holder.user_profile_pic);
+
+
+        }
     }
 
     @Override
@@ -65,7 +80,7 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_member_phone,tv_member_name;
-        ImageView btnPopupMenu;
+        ImageView btnPopupMenu,user_profile_pic;
         PopupMenu popup;
 
 
@@ -73,8 +88,28 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
             super(itemView);
             tv_member_phone = itemView.findViewById(R.id.tv_member_phone);
             tv_member_name = itemView.findViewById(R.id.tv_member_name);
+            user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            itemView.setOnClickListener(v -> {
+              //  clickListener.onItemClicked(getAdapterPosition());
+            });
+            tv_member_phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+
+                        {
+                            dial.setData(Uri.parse("tel:" + tv_member_phone.getText().toString()));
+                        }
+
+                        mContext.startActivity(dial);
+                    } catch (Exception e) {
+                        Log.e("Calling Phone", "" + e.getMessage());
+                    }
+                }
+            });
 
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {

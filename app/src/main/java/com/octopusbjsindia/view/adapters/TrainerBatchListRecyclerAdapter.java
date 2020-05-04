@@ -26,10 +26,12 @@ import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.smartgirl.TrainerBachList;
+import com.octopusbjsindia.models.smartgirl.TrainerList;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateTrainerWorkshop;
+import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 
 import java.util.List;
@@ -45,13 +47,14 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
     private PreferenceHelper preferenceHelper;
-
+    TrainerList trainerList;
     public TrainerBatchListRecyclerAdapter(Context context, List<TrainerBachList> dataList, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
         mContext = context;
         this.dataList = dataList;
         this.clickListener = clickListener;
         this.buttonClickListner = approveRejectClickedListner;
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
+
     }
 
     @Override
@@ -63,6 +66,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
+        if (dataList.get(position).getTitle()!=null) {
+            holder.tv_title_batch.setText(dataList.get(position).getTitle());
+        }
         holder.tv_main_trainer_name.setText(Util.getBatchCreatedDate(dataList.get(position).getCreated_at(),DAY_MONTH_YEAR));
         holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
@@ -107,8 +113,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_venue_value,
+        TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_venue_value,tv_title_batch,
                 tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_main_trainer_name;
+
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
@@ -116,6 +123,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
+            tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
@@ -242,14 +250,39 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         break;
                                     case R.id.action_post_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((TrainerBatchListActivity)mContext).addPostFeedbackFragment(getAdapterPosition());
-                                        } else {
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserBatchData() != null) {
+                                                if (dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPreFeedBackStatus()!=null) {
+                                                    if (dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPreFeedBackStatus()) {
+                                                        if (!dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPostFeedBackStatus()) {
+                                                            ((TrainerBatchListActivity) mContext).addPostFeedbackFragment(getAdapterPosition());
+                                                        }else {
+                                                            Util.showToast("Feedback already submitted.",mContext);
+                                                        }
+                                                    } else {
+                                                        Util.showToast("you need to fill pre feedback first.", mContext);
+                                                    }
+                                                }else {Util.showToast("feedback status not available.", mContext);}
+                                            } else {
+                                                Util.showToast("Please Register to batch first.",mContext);
+                                            }
+                                        }else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
                                     case R.id.action_pre_feedback:
                                         if (Util.isConnected(mContext)) {
-                                            ((TrainerBatchListActivity)mContext).addPreFeedbackFragment(getAdapterPosition());
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserBatchData()!=null) {
+                                                if (dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPreFeedBackStatus()!=null) {
+                                                if (!dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPreFeedBackStatus()) {
+                                                    ((TrainerBatchListActivity) mContext).addPreFeedbackFragment(getAdapterPosition());
+                                                }else {
+                                                    Util.showToast("Feedback already submitted.",mContext);
+                                                }
+                                                }else {Util.showToast("feedback status not available.", mContext);}
+
+                                            }else {
+                                                Util.showToast("Please Register to batch first.",mContext);
+                                            }
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
@@ -257,7 +290,11 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     case R.id.action_pretest_trainer:
                                         if (Util.isConnected(mContext)) {
                                             //((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
-                                            ((TrainerBatchListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            if (dataList.get(getAdapterPosition()).getCurrentUserBatchData()!=null) {
+                                                ((TrainerBatchListActivity) mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            }else {
+                                                Util.showToast("Please Register to batch first.",mContext);
+                                            }
 
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -291,6 +328,19 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                     });
                 }
             });
+
+            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+            if(roleAccessList != null) {
+                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                    if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_VIEW_PROFILE){
+                        btn_view_members.setVisibility(View.VISIBLE);
+                    }else {
+                        btn_view_members.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
     }
 

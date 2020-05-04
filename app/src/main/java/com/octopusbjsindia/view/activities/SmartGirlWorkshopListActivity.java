@@ -78,6 +78,13 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
     private WorkshopBachListResponseModel trainerBachListResponseModel;
     private Context mContext;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getBatchList();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +94,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText("Workshop List");
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setVisibility(View.VISIBLE);
+        toolbar_edit_action.setVisibility(View.INVISIBLE);
         toolbar_edit_action.setImageResource(R.drawable.ic_add);
         presenter = new SmartGirlWorkshopListPresenter(this);
         //setMasterData();
@@ -171,6 +178,16 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 });
             }
         });
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()==Constants.SmartGirlModule.ACCESS_CODE_CREATE_WORKSHOP){
+                    toolbar_edit_action.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
 
@@ -200,6 +217,10 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         dataList.clear();
         dataList.addAll(trainerBachListResponseModel.getWorkshopBachLists());
         trainerBatchListRecyclerAdapter.notifyDataSetChanged();
+            if (trainerBachListResponseModel.getWorkshopBachLists()!=null&&trainerBachListResponseModel.getWorkshopBachLists().size()<1){
+                ly_no_data.setVisibility(View.VISIBLE);
+            }
+
         if (dataList!=null) {
             tvTitle.setText("Workshop List" + "("+dataList.size()+")");
         }
@@ -224,6 +245,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
 
     //------------
     public void addBeneficiaryToWorkshop(int adapterPosition, int type, String paramjson) {
+        CloseFragment();
         rv_trainerbactchlistview.setVisibility(View.VISIBLE);
         presenter.addTrainerToBatch(paramjson);
 
@@ -320,9 +342,25 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         }
     }
 
+    public void addOrganiserFeedbackFragment(int adapterPosition){
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.ORGANISER_FEEDBACK_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        mContext.startActivity(intent);
+    }
+    public void addParentFeedbackFragment(int adapterPosition){
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PARENTS_FEEDBACK_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        mContext.startActivity(intent);
+    }
     //Add Pre Test form fragment
     public void addPreFeedbackFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
         fragment = new WorkshopPreFeedbackFragment();
@@ -337,11 +375,17 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             tvTitle.setText("Pre Feedback");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_FEEDBACK_WORKSHOP_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        mContext.startActivity(intent);
     }
 
     public void addPostFeedbackFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
@@ -358,12 +402,20 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             tvTitle.setText("Post Feedback");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
+
+
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.POST_FEEDBACK_WORKSHOP_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        mContext.startActivity(intent);
     }
 
     //pre test
     public void addTrainingPreTestFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
@@ -380,7 +432,13 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             tvTitle.setText("Pre training test");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_TEST_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        mContext.startActivity(intent);
     }
 
     //pre test
@@ -410,15 +468,27 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
     //close fragment if available else close activity on backpress
     @Override
     public void onBackPressed() {
-        tvTitle.setText("Workshop List");
+        /*tvTitle.setText("Workshop List");
         if (dataList!=null) {
             tvTitle.setText("Workshop List" + "("+dataList.size()+")");
-        }
+        }*/
         if (fManager.getBackStackEntryCount() == 0) {
             finish();
         }
         else {
-            showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
+            //showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
+
+            try {
+                tvTitle.setText("Workshop List");
+                if (dataList!=null) {
+                    tvTitle.setText("Workshop List" + "("+dataList.size()+")");
+                }
+                fManager.popBackStackImmediate();
+                rv_trainerbactchlistview.setVisibility(View.VISIBLE);
+
+            } catch (IllegalStateException e) {
+                Log.e("TAG", e.getMessage());
+            }
         }
 
 
@@ -426,6 +496,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
 
     public void showToastMessage(String message) {
         Util.showToast(message, mContext);
+        CloseFragment();
     }
 
     //back button confirmation
@@ -465,6 +536,10 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             button1.setOnClickListener(v -> {
                 // Close dialog
                 try {
+                    tvTitle.setText("Workshop List");
+                    if (dataList!=null) {
+                        tvTitle.setText("Workshop List" + "("+dataList.size()+")");
+                    }
                     fManager.popBackStackImmediate();
                     rv_trainerbactchlistview.setVisibility(View.VISIBLE);
                     dialog.dismiss();
@@ -482,7 +557,9 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
 
     public void CloseFragment(){
         try {
+            showProgressBar();
             fManager.popBackStackImmediate();
+            hideProgressBar();
             rv_trainerbactchlistview.setVisibility(View.VISIBLE);
 
         } catch (IllegalStateException e) {

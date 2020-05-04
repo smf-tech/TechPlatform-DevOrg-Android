@@ -13,6 +13,9 @@ public class TrainerBachList {
     @SerializedName("batch_id")
     @Expose
     private String batch_id;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("batch_category_id")
     @Expose
     private String batch_category_id;
@@ -62,6 +65,12 @@ public class TrainerBachList {
     @SerializedName("trainerList")
     @Expose
     private List<TrainerList> trainerList = null;
+
+
+    @SerializedName("currentUserBatchData")
+    @Expose
+    private List<TrainerList> currentUserBatchData = null;
+
     @SerializedName("state")
     @Expose
     private State state;
@@ -231,5 +240,21 @@ public class TrainerBachList {
 
     public void setBatchschedule(BatchSchedule batchschedule) {
         this.batchschedule = batchschedule;
+    }
+
+    public List<TrainerList> getCurrentUserBatchData() {
+        return currentUserBatchData;
+    }
+
+    public void setCurrentUserBatchData(List<TrainerList> currentUserBatchData) {
+        this.currentUserBatchData = currentUserBatchData;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

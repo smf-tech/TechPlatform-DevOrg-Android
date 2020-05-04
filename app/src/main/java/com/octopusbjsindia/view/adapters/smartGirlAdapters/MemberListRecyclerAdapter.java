@@ -3,9 +3,12 @@ package com.octopusbjsindia.view.adapters.smartGirlAdapters;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +21,16 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.smartgirl.TrainerList;
 import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
@@ -36,12 +45,16 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
     Context mContext;
     private List<TrainerList>  dataList;
     private OnRequestItemClicked clickListener;
-
+    private RequestOptions requestOptions;
 
     public MemberListRecyclerAdapter(Context context,List<TrainerList>  dataList, final OnRequestItemClicked clickListener) {
         mContext = context;
         this.dataList = dataList;
         this.clickListener = clickListener;
+
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+
 
     }
 
@@ -56,6 +69,21 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.tv_member_name.setText(dataList.get(position).getName());
         holder.tv_member_phone.setText(dataList.get(position).getPhone());
+        if (dataList.get(position).getMocktTestStatus()){
+            holder.tv_mock_test.setText("Mock completed");
+        }else {
+            holder.tv_mock_test.setText("Mock pending");
+        }
+
+
+        if (!TextUtils.isEmpty(dataList.get(position).getProfilePic())) {
+            Glide.with(mContext)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(dataList.get(position).getProfilePic())
+                    .into(holder.user_profile_pic);
+
+
+        }
         /*holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
 
@@ -89,8 +117,9 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_member_phone,tv_member_name;
+        TextView tv_member_phone,tv_member_name,tv_mock_test;
         ImageView btnPopupMenu;
+        ImageView user_profile_pic;
         PopupMenu popup;
 
 
@@ -98,10 +127,31 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
             super(itemView);
             tv_member_phone = itemView.findViewById(R.id.tv_member_phone);
             tv_member_name = itemView.findViewById(R.id.tv_member_name);
+            tv_mock_test = itemView.findViewById(R.id.tv_mock_test);
+            user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
             //btn_approve = itemView.findViewById(R.id.btn_approve);
             //btn_reject = itemView.findViewById(R.id.btn_reject);
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            itemView.setOnClickListener(v -> {
+                //clickListener.onItemClicked(getAdapterPosition());
+            });
+            tv_member_phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+
+                        {
+                            dial.setData(Uri.parse("tel:" + tv_member_phone.getText().toString()));
+                        }
+
+                        mContext.startActivity(dial);
+                    } catch (Exception e) {
+                        Log.e("Calling Phone", "" + e.getMessage());
+                    }
+                }
+            });
             /*btn_approve.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,7 +175,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                     popup.getMenu().findItem(R.id.action_register_beneficiary).setVisible(false);
                     popup.getMenu().findItem(R.id.action_pre_feedback).setVisible(false);
                     popup.getMenu().findItem(R.id.action_post_feedback).setVisible(false);
-
+                    popup.getMenu().findItem(R.id.action_take_mocktest).setVisible(true);
                     popup.show();
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -164,10 +214,9 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
-                                    case R.id.action_pretest_trainer:
+                                    case R.id.action_take_mocktest:
                                         if (Util.isConnected(mContext)) {
-                                            //((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
-                                            ((SmartGirlWorkshopListActivity)mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                            clickListener.onItemClicked(getAdapterPosition());
 
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
@@ -184,6 +233,18 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                     });
                 }
             });
+            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+            if(roleAccessList != null) {
+                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                    if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_MOCK_TEST){
+                        btnPopupMenu.setVisibility(View.VISIBLE);
+                    }else {
+                        btnPopupMenu.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
         }
     }
 

@@ -130,7 +130,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         if (getIntent().getStringExtra(Constants.Login.ACTION_EDIT) != null
                 && getIntent().getStringExtra(Constants.Login.ACTION_EDIT)
                 .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-            Toast.makeText(CreateWorkshopSmartgirlActivity.this, "request to edit batch.", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(CreateWorkshopSmartgirlActivity.this, "request to edit batch.", Toast.LENGTH_LONG).show();
             isforEdit = true;
 
             if (getIntent().getExtras() != null) {
@@ -147,10 +147,14 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
     }
 
     private void setEditDataToFields(WorkshopBachList workshopBachList) {
-        et_title_workshop.setText("Title");
-        if (workshopBachList.getWorkshop_category_id()!=null) {
-            et_workshop_category.setText("" + workshopBachList.getWorkshop_category_id());
-            et_workshop_category_str = workshopBachList.getWorkshop_category_id();
+        if (workshopBachList.getTitle()!=null) {
+            et_title_workshop.setText(workshopBachList.getTitle());
+        }else {
+            et_title_workshop.setText("");
+        }
+        if (workshopBachList.getCategory()!=null) {
+            et_workshop_category.setText("" + workshopBachList.getCategory().getCategoryName().getDefault());
+            et_workshop_category_str = workshopBachList.getCategory().get_id();
         }else {
             et_workshop_category.setText("" + workshopBachList.getBatch_category_id());
             et_workshop_category_str = workshopBachList.getBatch_category_id();
@@ -161,7 +165,9 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         et_select_district_str = workshopBachList.getDistrict_id();
         et_select_city.setText(workshopBachList.getCity());
         et_select_venue.setText(workshopBachList.getVenue());
-        et_traner_name.setText(workshopBachList.getAdditional_master_trainer().getUser_name());
+        if (workshopBachList.getCreated_by()!=null){
+            et_traner_name.setText(workshopBachList.getCreated_by().get(0).getName());
+        }
 
         et_select_state_trainer.setText(workshopBachList.getAdditional_master_trainer().getState_name());
         et_select_state_str_trainer = workshopBachList.getAdditional_master_trainer().getState_id();
@@ -573,8 +579,8 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         trainerObject.addProperty("district_id", "5e2eb9e6385c23393400741d");
         trainerObject.addProperty("user_id", "5e2ebdce42d73f03fe6ab142");*/
 
-        trainerObject.addProperty("state_id", selectedTrainerStateId);
-        trainerObject.addProperty("district_id", selectedTrainerDistrictId);
+        trainerObject.addProperty("state_id", et_select_state_str_trainer);
+        trainerObject.addProperty("district_id", et_select_district_str_trainer);
         trainerObject.addProperty("user_id", et_traner_additional_id);
 
 
@@ -588,8 +594,8 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
 
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("project_id", "5e2eb798385c233934007414");
-        requestObject.addProperty("state_id", "5e58c53dfcba8f309f672b43");
-        requestObject.addProperty("district_id", "");// et_select_district_str_trainer);
+        requestObject.addProperty("state_id", et_select_state_str_trainer);
+        requestObject.addProperty("district_id", et_select_district_str_trainer);// et_select_district_str_trainer);
 
         return requestObject;
     }

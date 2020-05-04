@@ -442,6 +442,9 @@ public class Constants {
         public static final String APP_CONFIG_RESPONSE = "appconfigresponse";
     }
     public static class SmartGirlModule {
+
+        public static final String BATCH_ID = "batch_id";
+        public static final String WORKSHOP_ID = "workshop_id";
         public static final String TRAINER_lIST = "trainerlist";
         public static final String BENEFICIARY_lIST = "beneficiarylist";
         public static final Integer BATCH_WORKSHOP_RESULT= 111;
@@ -464,7 +467,32 @@ public class Constants {
         public static final int ACCESS_CODE_PRE_FEEDBACK_WORKSHOP = 146;
         public static final int ACCESS_CODE_POST_FEEDBACK_WORKSHOP = 147;
 
+        public static final int ACCESS_CODE_ORGANIZER_FEEDBACK = 148;
+        public static final int ACCESS_CODE_PARENTS_FEEDBACK = 149;
+        public static final int ACCESS_CODE_MOCK_TEST = 150;
+        public static final int ACCESS_CODE_VIEW_PROFILE = 151;
 
+
+
+
+
+
+
+
+        public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
+        public static final String PRE_TEST_FORM = "5ea6a6b385046668f74b7f97";
+
+        public static final String ORGANISER_FEEDBACK_FORM = "5ea7cb4849c5d7695b51203f";
+        public static final String PARENTS_FEEDBACK_FORM = "5ea7cfa1d2e7326994634a32";
+
+
+        public static final String POST_FEEDBACK_FORM = "5ea6ae606d30f831af2bfc74";
+        public static final String PRE_FEEDBACK_FORM = "5ea7d58689bf971e0b5fd9a2";
+
+
+
+        public static final String PRE_FEEDBACK_WORKSHOP_FORM = "5ea7bf66ba182a798b313c48";
+        public static final String POST_FEEDBACK_WORKSHOP_FORM = "5ea7c6ad49c5d7695b51203e";
 
 
     }

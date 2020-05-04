@@ -30,12 +30,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_leave_category"
+                        android:id="@+id/tv_title_batch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_05dp"
-                        android:text="Created Date"
-                        android:visibility="gone"
+                        android:text=""
+                        android:visibility="visible"
+                        android:fontFamily="@font/opensans"
+                        android:textStyle="bold"
                         android:textSize="@dimen/text_size_title_14" />
 
                     <ImageView
@@ -64,52 +66,6 @@
                     android:text="Kishore"
                     android:textSize="@dimen/text_size_title_14"
                     android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/tv_state_title"
-                        android:text="State"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/tv_state_value"
-                        android:layout_below="@+id/tv_state_title"
-                        android:text="value"
-                        android:fontFamily="@font/opensans_bold"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/tv_district_title"
-                        android:text="District"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/tv_district_value"
-                        android:layout_below="@+id/tv_district_title"
-                        android:text="value"
-                        android:fontFamily="@font/opensans_bold"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -159,6 +115,11 @@
                 </RelativeLayout>
             </LinearLayout>
 
+
+
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -193,7 +154,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:id="@+id/tv_attendence_title"
-                        android:text="Registered"
+                        android:text="Registered count"
                         android:layout_height="wrap_content" />
 
                     <TextView
@@ -232,6 +193,52 @@
                     android:text="" />
             </RelativeLayout>
         </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_state_title"
+                        android:text="State"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_state_value"
+                        android:layout_below="@+id/tv_state_title"
+                        android:text="value"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_district_title"
+                        android:text="District"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_district_value"
+                        android:layout_below="@+id/tv_district_title"
+                        android:text="value"
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

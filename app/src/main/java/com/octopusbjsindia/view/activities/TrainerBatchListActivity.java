@@ -83,7 +83,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     @Override
     protected void onResume() {
         super.onResume();
-
+        presenter.getBatchList();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText("Batch List");
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setVisibility(View.VISIBLE);
+        toolbar_edit_action.setVisibility(View.INVISIBLE);
         toolbar_edit_action.setImageResource(R.drawable.ic_add);
         presenter = new TrainerBatchListPresenter(this);
         //setMasterData();
@@ -145,7 +145,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                                 popup.getMenu().findItem(R.id.action_add_new_batch).setVisible(true);
                                 break;
                             case Constants.SmartGirlModule.ACCESS_CODE_CREATE_WORKSHOP:
-                                popup.getMenu().findItem(R.id.action_add_new_batch).setVisible(true);
+                                //popup.getMenu().findItem(R.id.action_add_new_batch).setVisible(true);
                                 break;
                         }
                     }
@@ -185,6 +185,18 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                 });
             }
         });
+
+
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()==Constants.SmartGirlModule.ACCESS_CODE_CREATE_BATCH){
+                    toolbar_edit_action.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
 
@@ -214,6 +226,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         dataList.clear();
         dataList.addAll(trainerBachListResponseModel.getTrainerBachListdata());
         trainerBatchListRecyclerAdapter.notifyDataSetChanged();
+
+        if (trainerBachListResponseModel.getTrainerBachListdata()!=null&&trainerBachListResponseModel.getTrainerBachListdata().size()<1){
+            ly_no_data.setVisibility(View.VISIBLE);
+        }
         if (dataList!=null) {
             tvTitle.setText("Batch List " + "("+dataList.size()+")");
         }
@@ -318,7 +334,12 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
     //Add Pre Test form fragment
     public void addPreFeedbackFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_FEEDBACK_FORM);
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        mContext.startActivity(intent);
+        /*Bundle bundle = new Bundle();
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
         fragment = new PreFeedbackFragment();
@@ -333,11 +354,16 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             tvTitle.setText("Pre Feedback");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
     }
 
     public void addPostFeedbackFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.POST_FEEDBACK_FORM);
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        mContext.startActivity(intent);
+        /*Bundle bundle = new Bundle();
 
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
@@ -354,7 +380,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             tvTitle.setText("Post Feedback");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
     }
 
     public void addMemberListFragment(int adapterPosition) {
@@ -377,7 +403,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
             rv_trainerbactchlistview.setVisibility(View.GONE);
-            tvTitle.setText("Member List");
+            tvTitle.setText("Trainer List");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
@@ -388,7 +414,12 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     //Mock Test
 
     public void addTrainingMockTestFragment(int adapterPosition, String userId, String batchId, String phone) {
-        Bundle bundle = new Bundle();
+
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.MOCK_TEST_FORM);
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        mContext.startActivity(intent);
+        /*Bundle bundle = new Bundle();
 
         bundle.putString("batch_id", batchId);
         bundle.putString("trainer_id", userId);
@@ -408,11 +439,16 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             tvTitle.setText("Mock trainer test");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
     }
     //pre test
     public void addTrainingPreTestFragment(int adapterPosition) {
-        Bundle bundle = new Bundle();
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_TEST_FORM);
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        mContext.startActivity(intent);
+        /*Bundle bundle = new Bundle();
 
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         bundle.putString("batch_id", batchId);
@@ -429,7 +465,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             tvTitle.setText("Pre training test");
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
-        }
+        }*/
     }
     //pre test
     public void addRegisterTrainerFragment(int adapterPosition) {
@@ -458,13 +494,20 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     //close fragment if available else close activity on backpress
     @Override
     public void onBackPressed() {
-        if (dataList!=null) {
+        /*if (dataList!=null) {
             tvTitle.setText("Batch List " + "("+dataList.size()+")");
-        }
+        }*/
         if (fManager.getBackStackEntryCount() == 0) {
             finish();
         }else {
-            showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
+            //showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
+            try {
+                fManager.popBackStackImmediate();
+                rv_trainerbactchlistview.setVisibility(View.VISIBLE);
+                presenter.getBatchList();
+            } catch (IllegalStateException e) {
+                Log.e("TAG", e.getMessage());
+            }
         }
     }
 
@@ -523,7 +566,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 // Close dialog
-
+                if (dataList!=null) {
+                    tvTitle.setText("Batch List " + "("+dataList.size()+")");
+                }
                 dialog.dismiss();
             });
         }
@@ -534,6 +579,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             button1.setVisibility(View.VISIBLE);
             button1.setOnClickListener(v -> {
                 // Close dialog
+                if (dataList!=null) {
+                    tvTitle.setText("Batch List " + "("+dataList.size()+")");
+                }
                 if (viewType==viewTypeTrainerList){
                     dialog.dismiss();
                     finish();
