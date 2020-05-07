@@ -28,7 +28,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     private List<Column> columnList;
     private List<Boolean> columnListAnswers = new ArrayList<>();
     private OnRequestItemClicked clickListener;
-
     private PreferenceHelper preferenceHelper;
     private String RowName;
     private int rowPosition;
@@ -42,7 +41,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         rowPosition = position;
         this.columnList = columnList;
         this.clickListener = clickListener;
-
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
         if (fragment.rowMap != null) {
@@ -59,8 +57,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 columnListAnswers.add(true);
             }
         }
-
-
     }
 
     @Override
@@ -115,16 +111,10 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
     }
 
-
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
-
         TextView column_name;
-
         MaterialButtonToggleGroup toggleGroup2;
-
         Button btn_yes, btn_no;
-
-
         EmployeeViewHolder(View itemView) {
             super(itemView);
             column_name = itemView.findViewById(R.id.column_name);

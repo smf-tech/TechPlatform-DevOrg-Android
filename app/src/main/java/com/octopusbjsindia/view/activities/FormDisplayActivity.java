@@ -34,7 +34,6 @@ import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.forms.Form;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.forms.VisibleIf;
@@ -69,7 +68,7 @@ import java.util.UUID;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
-    private Form formModel;
+    private FormData formData;
     private ViewPager vpFormElements;
     private ViewPagerAdapter adapter;
     private List<Elements> formDataArrayList = new ArrayList<Elements>();
@@ -89,6 +88,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
     private FormResult formResult;
+    public boolean isEditable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +96,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         setContentView(R.layout.activity_form_display);
 
         tvTitle = findViewById(R.id.toolbar_title);
-        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setVisibility(View.VISIBLE);
-        toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
         vpFormElements = findViewById(R.id.viewpager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -110,12 +107,23 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
-            mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
+            //mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
 //            if (mIsPartiallySaved) {
 //                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 //            }
+
+            if (processId != null && processId != "") {
+                formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
+                if (formResult != null) {
+                    try {
+                        jsonToMap(new Gson().toJson(formResult));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
             if (formData == null) {
                 if (Util.isConnected(this)) {
@@ -124,24 +132,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             } else {
                 parseFormSchema(formData);
             }
-
-            formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
-            if (formResult != null) {
-                Log.d("Result", new Gson().toJson(formResult));
-                try {
-                    jsonToMap(new Gson().toJson(formResult));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         initView();
     }
 
     public void jsonToMap(String str) throws JSONException {
 
-        HashMap<String, String> map = new HashMap<String, String>();
-        Gson g = new Gson();
+//        HashMap<String, String> map = new HashMap<String, String>();
+//        Gson g = new Gson();
 
         JsonObject jObject = PlatformGson.getPlatformGsonInstance().fromJson(str, JsonObject.class);
         Iterator iterator = jObject.entrySet().iterator();
@@ -158,7 +156,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         }
     }
-
 
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
@@ -184,13 +181,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         });
 
-        findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
+        if (isEditable) {
+            toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+            toolbar_edit_action.setVisibility(View.VISIBLE);
+            toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
+            toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
     }
 
     @Override
@@ -276,8 +277,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formData == null) {
             return;
         }
-        formModel = new Form();
-        formModel.setData(formData);
+        this.formData = new FormData();
+        this.formData = formData;
+        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED || formResult.getFormStatus()
+                == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
+            if (formData.getEditable().equalsIgnoreCase("false")) {
+                isEditable = false;
+            }
+        }
         TextView tvFormTitle = findViewById(R.id.tv_form_title);
         tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {
@@ -308,7 +315,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            if (isEditable) {
+                showDialog(this, "Alert", "Do you want to submit?",
+                        "Save", "Submit", false);
+            } else {
+                showDialog(this, "Alert", "Do you want to close the form?",
+                        "OK", "Cancel");
+            }
         } else {
             if (formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf() == null) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
@@ -345,7 +358,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        if (isEditable) {
+                            showDialog(this, "Alert", "Do you want to submit?",
+                                    "Save", "Submit", false);
+                        } else {
+                            showDialog(this, "Alert", "Do you want to close the form?",
+                                    "OK", "Cancel");
+                        }
                     } else {
                         if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                             tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -373,7 +392,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formAnswersMap.remove(elementKey);
                 if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                     formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                    showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                    if (isEditable) {
+                        showDialog(this, "Alert", "Do you want to submit?",
+                                "Save", "Submit", false);
+                    } else {
+                        showDialog(this, "Alert", "Do you want to close the form?",
+                                "OK", "Cancel");
+                    }
                 } else {
                     if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                         tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -402,7 +427,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formAnswersMap.remove(elementKey);
                 if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                     formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                    showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                    if (isEditable) {
+                        showDialog(this, "Alert", "Do you want to submit?",
+                                "Save", "Submit", false);
+                    } else {
+                        showDialog(this, "Alert", "Do you want to close the form?",
+                                "OK", "Cancel");
+                    }
                 } else {
                     if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                         tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -485,7 +516,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
-        showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
+        if (isEditable) {
+            showDialog(this, "Alert", "Do you want to save the form?",
+                    "Save", "Discard", true);
+        } else {
+            showDialog(this, "Alert", "Do you want to close the form?",
+                    "OK", "Cancel");
+        }
     }
 
     public void submitForm() {
@@ -512,11 +549,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
             //url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             //}
-            url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
+            url = BuildConfig.BASE_URL + String.format(Urls.PM.SET_PROCESS_RESULT, formData.getId());
+
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
-                    formModel.getData().getId(), processId, mUploadedImageUrlList);
+                    formData.getId(), processId, mUploadedImageUrlList);
         } else {
-            if (formModel.getData() != null) {
+            if (formData != null) {
                 saveOfflineFormToLocalDb();
 
                 Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
@@ -524,17 +562,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         .sendBroadcast(intent);
 
                 AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
-                        formModel.getData().getName()));
+                        formData.getName()));
 
                 Util.showToast(getResources().getString(R.string.form_saved_offline), this);
-                Log.d(TAG, "Form saved " + formModel.getData().getId());
+                Log.d(TAG, "Form saved " + formData.getId());
                 Objects.requireNonNull(this).onBackPressed();
             }
         }
     }
 
     private void saveOfflineFormToLocalDb() {
-        FormData formData = formModel.getData();
+        //FormData formData = this.formData;
         FormResult result;
         //if (mIsPartiallySaved) {
             result = DatabaseManager.getDBInstance(this).getFormResult(processId);
@@ -568,7 +606,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     }
                 }
             }
-            result.setRequestObject(json);
+            //result.setRequestObject(json);
             if (obj != null) {
                 result.setResult(obj.toString());
                 //presenter.setSavedForm(result);
@@ -582,15 +620,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void savePartialForm() {
-        FormData formData = formModel.getData();
-        FormResult result = new FormResult();
-        result.set_id(UUID.randomUUID().toString());
-
-        result.setFormId(formData.getId());
-        result.setFormCategoryLocale(formData.getCategory().getName());
+        //FormData formData = formModel.getData();
+        FormResult result;//= new FormResult();
+        result = DatabaseManager.getDBInstance(this).getFormResult(processId);
+        if (result == null) {
+            result = new FormResult();
+            result.set_id(UUID.randomUUID().toString());
+            result.setFormId(formData.getId());
+            result.setCreatedAt(Util.getCurrentTimeStamp());
+        }
         result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
             LocaleData category = formData.getCategory().getName();
@@ -616,10 +656,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         //if (mIsPartiallySaved) {
             //String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         //FormResult form = DatabaseManager.getDBInstance(this).getPartiallySavedForm(processId);
-        FormResult form = DatabaseManager.getDBInstance(this).getFormResult(processId);
-            if (form != null) {
-                result.set_id(form.get_id());
-            }
+
+//        FormResult form = DatabaseManager.getDBInstance(this).getFormResult(processId);
+//            if (form != null) {
+//                result.set_id(form.get_id());
+//            }
+
         //DatabaseManager.getDBInstance(this).updateFormResult(result);
         //} else {
             DatabaseManager.getDBInstance(this).insertFormResult(result);
@@ -746,6 +788,51 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
 
         dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+                finish();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();

@@ -30,8 +30,9 @@ public class Urls {
         public static final String GET_DASHBOARD_DETAILS = "api/statuscount/%1$s/%2$s";
         public static final String GET_PROCESS = "api/forms/schema";
         public static final String GET_PROCESS_DETAILS = "api/forms/schema/%1$s";
-        public static final String SET_PROCESS_RESULT = "api/forms/result";
+        public static final String SET_PROCESS_RESULT = "api/forms/result/%1$s";
         public static final String GET_MV_USER_INFO = "api/mvUserInfo";
+        public static final String GET_SUBMITTED_FORMS = "api/forms/%1$s";
     }
 
     public class TM {

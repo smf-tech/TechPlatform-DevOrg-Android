@@ -34,6 +34,7 @@ import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ExpandableAdapter;
@@ -238,7 +239,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             setSubmittedFormsCount();
 
             if (Util.isConnected(getActivity())) {
-                presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL + "api/forms/" + data.getId());
+                presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL +
+                        String.format(Urls.PM.GET_SUBMITTED_FORMS, data.getId()));
             }
         }
 
@@ -322,7 +324,15 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                         com.octopusbjsindia.models.forms.FormResult tempResult = DatabaseManager.getDBInstance
                                 (getActivity()).getFormResult(resultId);
                         if (tempResult != null) {
-                            continue;
+                            if (tempResult.getFormApprovalStatus().equalsIgnoreCase(resultObject.getString
+                                    (Constants.FormDynamicKeys.STATUS))) {
+                                continue;
+                            } else {
+                                tempResult.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                                tempResult.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+                                DatabaseManager.getDBInstance(getActivity()).updateFormResult(tempResult);
+                                continue;
+                            }
                         }
                         String uuid = UUID.randomUUID().toString();
                         String formID = resultObject.getString(Constants.FormDynamicKeys.FORM_ID);

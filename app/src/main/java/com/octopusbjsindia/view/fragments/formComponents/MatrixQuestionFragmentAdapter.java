@@ -114,10 +114,8 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
             super(itemView);
             row_title = itemView.findViewById(R.id.row_title);
             rv_matrix_question = itemView.findViewById(R.id.rv_matrix_question);
-
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
             rv_matrix_question.setLayoutManager(layoutManager);
-
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
         }

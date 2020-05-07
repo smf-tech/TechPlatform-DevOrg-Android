@@ -317,12 +317,11 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 //                            }
 
                             for (com.octopusbjsindia.models.forms.FormResult formResult : localFormResults) {
-
-                                if (formResult.getCreatedAt() != null) {
-                                    if (isFormOneMonthOld(formResult.getCreatedAt())) {
-                                        continue;
-                                    }
-                                }
+//                                if (formResult.getCreatedAt() != null) {
+//                                    if (isFormOneMonthOld(formResult.getCreatedAt())) {
+//                                        continue;
+//                                    }
+//                                }
                                 ProcessData object = new ProcessData();
                                 object.setId(formResult.getFormId());
                                 object.setFormTitle(data.getName().getLocaleValue());
@@ -366,28 +365,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
     private void updateView() {
         mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
-    }
-
-    private void filterData(String status){
-        mFilteredProcessDataMap.clear();
-        if(status.equalsIgnoreCase("NO_FILTER")){
-            mFilteredProcessDataMap.putAll(mProcessDataMap);
-        }else {
-            for (int i = 0; i < mProcessDataMap.size(); i++) {
-                List<ProcessData> filterStatusProcessData = new ArrayList<ProcessData>();
-                List<ProcessData> filterProcessData = new ArrayList<ProcessData>();
-                filterProcessData.addAll(mProcessDataMap.get(processFormList.get(i)));
-                for (ProcessData pd : filterProcessData) {
-                    if (pd.getFormApprovalStatus() != null && pd.getFormApprovalStatus().equalsIgnoreCase(status)) {
-                        filterStatusProcessData.add(pd);
-                    }
-                }
-                if (filterProcessData.size() > 0 && filterStatusProcessData.size() > 0) {
-                    mFilteredProcessDataMap.put(filterProcessData.get(0).getFormTitle(), filterStatusProcessData);
-                }
-            }
-        }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -506,37 +483,37 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 break;
             case R.id.btn_no_filter:
                 selectedFilter = 1;
-                filterData(Constants.PM.NO_FILTER);
                 if (!isFABOpen) {
                     showFABMenu();
                 } else {
+                    filterData(Constants.PM.NO_FILTER);
                     closeFABMenu();
                 }
                 break;
             case R.id.btn_filter1:
                 selectedFilter = 2;
-                filterData(Constants.PM.PENDING_STATUS);
                 if (!isFABOpen) {
                     showFABMenu();
                 } else {
+                    filterData(Constants.PM.PENDING_STATUS);
                     closeFABMenu();
                 }
                 break;
             case R.id.btn_filter2:
                 selectedFilter = 3;
-                filterData(Constants.PM.APPROVED_STATUS);
                 if (!isFABOpen) {
                     showFABMenu();
                 } else {
+                    filterData(Constants.PM.APPROVED_STATUS);
                     closeFABMenu();
                 }
                 break;
             case R.id.btn_filter3:
                 selectedFilter = 4;
-                filterData(Constants.PM.REJECTED_STATUS);
                 if (!isFABOpen) {
                     showFABMenu();
                 } else {
+                    filterData(Constants.PM.REJECTED_STATUS);
                     closeFABMenu();
                 }
                 break;
@@ -546,10 +523,15 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private void showFABMenu(){
         isFABOpen=true;
         btnFilter.show();
+        btnFilter.setEnabled(true);
         btnNoFilter.show();
+        btnNoFilter.setEnabled(true);
         btnFilter1.show();
+        btnFilter1.setEnabled(true);
         btnFilter2.show();
+        btnFilter2.setEnabled(true);
         btnFilter3.show();
+        btnFilter3.setEnabled(true);
         btnNoFilter.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         btnFilter1.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
         btnFilter2.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
@@ -573,35 +555,77 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             case 0:
                 btnFilter.setImageDrawable(getResources().getDrawable(R.drawable.ic_filter_icon_list));
                 btnNoFilter.hide();
+                btnNoFilter.setEnabled(false);
                 btnFilter1.hide();
+                btnFilter1.setEnabled(false);
                 btnFilter2.hide();
+                btnFilter2.setEnabled(false);
                 btnFilter3.hide();
+                btnFilter3.setEnabled(false);
                 break;
             case 1:
                 btnFilter.hide();
+                btnFilter.setEnabled(false);
                 btnFilter1.hide();
+                btnFilter1.setEnabled(false);
                 btnFilter2.hide();
+                btnFilter2.setEnabled(false);
                 btnFilter3.hide();
+                btnFilter3.setEnabled(false);
                 break;
             case 2:
                 btnFilter.hide();
+                btnFilter.setEnabled(false);
                 btnNoFilter.hide();
+                btnNoFilter.setEnabled(false);
                 btnFilter2.hide();
+                btnFilter2.setEnabled(false);
                 btnFilter3.hide();
+                btnFilter3.setEnabled(false);
                 break;
             case 3:
                 btnFilter.hide();
+                btnFilter.setEnabled(false);
                 btnNoFilter.hide();
+                btnNoFilter.setEnabled(false);
                 btnFilter1.hide();
+                btnFilter1.setEnabled(false);
                 btnFilter3.hide();
+                btnFilter3.setEnabled(false);
                 break;
             case 4:
                 btnFilter.hide();
+                btnFilter.setEnabled(false);
                 btnNoFilter.hide();
+                btnNoFilter.setEnabled(false);
                 btnFilter1.hide();
+                btnFilter1.setEnabled(false);
                 btnFilter2.hide();
+                btnFilter2.setEnabled(false);
                 break;
         }
+    }
+
+    private void filterData(String status) {
+        mFilteredProcessDataMap.clear();
+        if (status.equalsIgnoreCase("NO_FILTER")) {
+            mFilteredProcessDataMap.putAll(mProcessDataMap);
+        } else {
+            for (int i = 0; i < mProcessDataMap.size(); i++) {
+                List<ProcessData> filterStatusProcessData = new ArrayList<ProcessData>();
+                List<ProcessData> filterProcessData = new ArrayList<ProcessData>();
+                filterProcessData.addAll(mProcessDataMap.get(processFormList.get(i)));
+                for (ProcessData pd : filterProcessData) {
+                    if (pd.getFormApprovalStatus() != null && pd.getFormApprovalStatus().equalsIgnoreCase(status)) {
+                        filterStatusProcessData.add(pd);
+                    }
+                }
+                if (filterProcessData.size() > 0 && filterStatusProcessData.size() > 0) {
+                    mFilteredProcessDataMap.put(filterProcessData.get(0).getFormTitle(), filterStatusProcessData);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     //    static class FormResult {

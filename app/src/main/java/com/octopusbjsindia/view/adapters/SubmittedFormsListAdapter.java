@@ -151,8 +151,8 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
                     Intent intent = new Intent(mContext, FormDisplayActivity.class);
                     intent.putExtra(Constants.PM.PROCESS_ID, processID);
                     intent.putExtra(Constants.PM.FORM_ID, formID);
-                    intent.putExtra(Constants.PM.EDIT_MODE, true);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+                    //intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    //intent.putExtra(Constants.PM.PARTIAL_FORM, false);
 
 //                    if(finalData.getFormApprovalStatus()!=null && finalData.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
 //                        intent.putExtra(Constants.PM.FORM_ID, formID);

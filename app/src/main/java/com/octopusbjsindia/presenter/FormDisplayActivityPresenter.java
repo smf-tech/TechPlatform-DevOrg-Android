@@ -304,6 +304,8 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         result.setResult(requestObject.toString());
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                         result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                        result.setFormApprovalStatus(dataObject.getString(Constants.FormDynamicKeys.STATUS));
+
                         DatabaseManager.getDBInstance(fragmentWeakReference.get()).insertFormResult(result);
 
                         AppEvents.trackAppEvent(fragmentWeakReference.get().getString(R.string.event_form_submitted_success,

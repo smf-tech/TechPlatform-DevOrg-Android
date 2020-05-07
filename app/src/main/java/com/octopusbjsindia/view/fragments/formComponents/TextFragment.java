@@ -67,6 +67,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         if (TextUtils.isEmpty(element.getInputType())) {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                etAnswer.setFocusable(false);
+            }
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
@@ -75,7 +78,11 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         } else if (element.getInputType().equals("date")) {
             view.findViewById(R.id.ti_answer).setVisibility(View.GONE);
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.et_answer_date).setOnClickListener(this);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                view.findViewById(R.id.et_answer_date).setFocusable(false);
+            } else {
+                view.findViewById(R.id.et_answer_date).setOnClickListener(this);
+            }
             etAnswer = view.findViewById(R.id.et_answer_date);
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
@@ -85,7 +92,11 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         } else if (element.getInputType().equals("time")) {
             view.findViewById(R.id.ti_answer).setVisibility(View.GONE);
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.et_answer_date).setOnClickListener(this);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                view.findViewById(R.id.et_answer_date).setFocusable(false);
+            } else {
+                view.findViewById(R.id.et_answer_date).setOnClickListener(this);
+            }
             etAnswer = view.findViewById(R.id.et_answer_date);
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
@@ -95,6 +106,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         } else if (element.getInputType().equals("number")) {
             if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                 etAnswer = view.findViewById(R.id.et_answer);
+                if (!((FormDisplayActivity) getActivity()).isEditable) {
+                    etAnswer.setFocusable(false);
+                }
                 if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                     etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
                 etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -130,6 +144,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
+                if (!((FormDisplayActivity) getActivity()).isEditable) {
+                    etAnswer.setFocusable(false);
+                }
                 if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                     etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
                 etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -141,6 +158,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
         } else {
             etAnswer = view.findViewById(R.id.et_answer);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                etAnswer.setFocusable(false);
+            }
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.form_component.RadioButtonData;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class RadioButtonAdapter extends RecyclerView.Adapter<RadioButtonAdapter.
 
 
     public RadioButtonAdapter(RadioButtonFragment radioButtonFragment, ArrayList<RadioButtonData> list) {
-        this.mContext = mContext;
+        this.mContext = radioButtonFragment;
         this.list = list;
     }
 
@@ -54,6 +55,9 @@ public class RadioButtonAdapter extends RecyclerView.Adapter<RadioButtonAdapter.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             radioButton = itemView.findViewById(R.id.radio_button);
+            if (!((FormDisplayActivity) mContext.getActivity()).isEditable) {
+                radioButton.setEnabled(false);
+            }
             radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
