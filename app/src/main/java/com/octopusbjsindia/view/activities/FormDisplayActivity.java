@@ -88,7 +88,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
     private FormResult formResult;
-    public boolean isEditable = true;
+    public boolean isEditable = false;
+    private ImageView imgNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         tvTitle = findViewById(R.id.toolbar_title);
         vpFormElements = findViewById(R.id.viewpager);
+        imgNoData = findViewById(R.id.img_no_data);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
@@ -128,6 +130,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             if (formData == null) {
                 if (Util.isConnected(this)) {
                     presenter.getFormSchema(formId);
+                } else {
+                    imgNoData.setVisibility(View.VISIBLE);
+                    Util.showToast(getString(R.string.offline_no_form_schema_msg), this);
                 }
             } else {
                 parseFormSchema(formData);
@@ -275,14 +280,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     public void parseFormSchema(FormData formData) {
         if (formData == null) {
+            imgNoData.setVisibility(View.VISIBLE);
             return;
         }
         this.formData = new FormData();
         this.formData = formData;
         if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED || formResult.getFormStatus()
                 == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
-            if (formData.getEditable().equalsIgnoreCase("false")) {
-                isEditable = false;
+            if (formData.getEditable().equalsIgnoreCase("true")) {
+                isEditable = true;
             }
         }
         TextView tvFormTitle = findViewById(R.id.tv_form_title);

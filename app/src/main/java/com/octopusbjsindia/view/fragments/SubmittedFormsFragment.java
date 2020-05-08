@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private HashMap<String, String> processSyncStatusHashmap = new HashMap<>();
     private int selectedFilter = 0;
     private Animation animFadeIn, animFadeOut;
+    private ImageView imgNoData;
 
     // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
     // commenting this code for now.
@@ -121,6 +123,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
         mExpandableListView.setAdapter(adapter);
+
+        imgNoData = view.findViewById(R.id.img_no_data);
 
         // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
 
@@ -172,7 +176,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         } catch (Exception e) {
             Log.e(TAG, e.getMessage() + "");
         }
-
         updateView();
     }
 
@@ -180,7 +183,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         mProcessDataMap.clear();
         List<com.octopusbjsindia.models.forms.FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
         if (savedForms != null && !savedForms.isEmpty()) {
-
             showNoDataText = false;
             for (com.octopusbjsindia.models.forms.FormResult formResult : savedForms) {
                 if (!unSyncProcessNameList.contains(formResult.getFormName())) {
@@ -189,39 +191,36 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             }
 
             for (String processName : unSyncProcessNameList) {
-
                 List<ProcessData> unSyncProcessData = new ArrayList<>();
 
-            for (com.octopusbjsindia.models.forms.FormResult formResult : savedForms) {
-                if (formResult.getFormName().equalsIgnoreCase(processName)){
-                    ProcessData object = new ProcessData();
-                object.setId(formResult.getFormId());
-                object.setFormTitle(formResult.getFormTitle());
-                object.setName(new LocaleData(formResult.getFormName()));
-                object.setFormApprovalStatus(Constants.PM.UNSYNC_STATUS);
-                Microservice microservice = new Microservice();
-                microservice.setUpdatedAt(formResult.getCreatedAt());
-                microservice.setId(formResult.get_id());
-                object.setMicroservice(microservice);
+                for (com.octopusbjsindia.models.forms.FormResult formResult : savedForms) {
+                    if (formResult.getFormName().equalsIgnoreCase(processName)) {
+                        ProcessData object = new ProcessData();
+                        object.setId(formResult.getFormId());
+                        object.setFormTitle(formResult.getFormTitle());
+                        object.setName(new LocaleData(formResult.getFormName()));
+                        object.setFormApprovalStatus(Constants.PM.UNSYNC_STATUS);
+                        Microservice microservice = new Microservice();
+                        microservice.setUpdatedAt(formResult.getCreatedAt());
+                        microservice.setId(formResult.get_id());
+                        object.setMicroservice(microservice);
 
-                if (getContext() == null) {
-                    continue;
+                        if (getContext() == null) {
+                            continue;
+                        }
+                        unSyncProcessData.add(object);
+                    }
                 }
-
-                unSyncProcessData.add(object);
-            }
-            }
                 if (!unSyncProcessData.isEmpty()) {
                     Util.sortProcessDataListByCreatedDate(unSyncProcessData);
 
                     mProcessDataMap.put(unSyncProcessData.get(0).getName().getLocaleValue(), unSyncProcessData);
                     processFormList.add(unSyncProcessData.get(0).getName().getLocaleValue());
                     processSyncStatus.add(Constants.PM.UNSYNC_STATUS);
-                    processSyncStatusHashmap.put(unSyncProcessData.get(0).getName().getLocaleValue(),Constants.PM.UNSYNC_STATUS);
+                    processSyncStatusHashmap.put(unSyncProcessData.get(0).getName().getLocaleValue(), Constants.PM.UNSYNC_STATUS);
                     showNoDataText = false;
                 }
-        }
-
+            }
         }
     }
 
@@ -358,13 +357,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             mFilteredProcessDataMap.putAll(mProcessDataMap);
 //            adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
 //            mExpandableListView.setAdapter(adapter);
-
+            if (mFilteredProcessDataMap.size() > 0) {
+                btnFilter.setVisibility(View.VISIBLE);
+            }
             updateView();
         }
     }
 
     private void updateView() {
-        mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
+        //mNoRecordsView.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
+        imgNoData.setVisibility(showNoDataText ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -622,10 +624,14 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 }
                 if (filterProcessData.size() > 0 && filterStatusProcessData.size() > 0) {
                     mFilteredProcessDataMap.put(filterProcessData.get(0).getFormTitle(), filterStatusProcessData);
+                    showNoDataText = false;
+                } else {
+                    showNoDataText = true;
                 }
             }
         }
         adapter.notifyDataSetChanged();
+        updateView();
     }
 
     //    static class FormResult {

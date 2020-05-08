@@ -292,9 +292,10 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                     }
                                     return;
                                 }
+                            } else {
+                                hashMap.put(element.getName(), etAnswer.getText().toString());
                             }
                         }
-
                         ((FormDisplayActivity) getActivity()).goNext(hashMap);
                     }
                 } else {

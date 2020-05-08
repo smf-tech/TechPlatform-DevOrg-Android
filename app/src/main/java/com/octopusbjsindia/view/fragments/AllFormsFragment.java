@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,8 +57,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
     private static final String TAG = AllFormsFragment.class.getSimpleName();
     private final Map<String, List<ProcessData>> mChildList = new HashMap<>();
-
-    private TextView mNoRecordsView;
+    private ImageView imgNoData;
     private Map<String, String> mCountList;
     private ExpandableAdapter adapter;
     private RelativeLayout progressBarLayout;
@@ -98,7 +97,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mNoRecordsView = view.findViewById(R.id.no_records_view);
+        imgNoData = view.findViewById(R.id.img_no_data);
         mCountList = new HashMap<>();
 
         progressBarLayout = FormsFragment.getProgressBarView();
@@ -135,7 +134,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 processes.setData(processDataArrayList);
                 processResponse(processes);
             } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
+                imgNoData.setVisibility(View.VISIBLE);
                 if (Util.isConnected(getContext())) {
                     FormStatusFragmentPresenter presenter
                             = new FormStatusFragmentPresenter(this, this);
@@ -188,7 +187,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
         try {
             Processes json = new Gson().fromJson(response, Processes.class);
             if (json != null && json.getData() != null && !json.getData().isEmpty()) {
-                mNoRecordsView.setVisibility(View.GONE);
+                imgNoData.setVisibility(View.GONE);
                 for (ProcessData processData : json.getData()) {
                     DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
                 }
@@ -246,9 +245,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
         if (!mChildList.isEmpty()) {
             setAdapter(mChildList);
-            mNoRecordsView.setVisibility(View.GONE);
+            imgNoData.setVisibility(View.GONE);
         } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
+            imgNoData.setVisibility(View.VISIBLE);
         }
     }
 
@@ -371,9 +370,9 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
 
         if (!mChildList.isEmpty()) {
             setAdapter(mChildList);
-            mNoRecordsView.setVisibility(View.GONE);
+            imgNoData.setVisibility(View.GONE);
         } else {
-            mNoRecordsView.setVisibility(View.VISIBLE);
+            imgNoData.setVisibility(View.VISIBLE);
         }
 
         if (mSubmittedFormsDownloadedCount == mSubmittedFormsCount) {
@@ -386,7 +385,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     private void setAdapter(final Map<String, List<ProcessData>> data) {
         if (data != null && !data.isEmpty()) {
             adapter.notifyDataSetChanged();
-            mNoRecordsView.setVisibility(View.GONE);
+            imgNoData.setVisibility(View.GONE);
         }
     }
 

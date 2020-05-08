@@ -778,5 +778,6 @@
     <string name="select_locations">Please select locations</string>
     <string name="required_error">Please  submit valid data.</string>
     <string name="cant_submit_form_offline">This form can not be submitted offline as this form contains image. Please submit form online.</string>
+    <string name="offline_no_form_schema_msg">You are offline. You need to go online and fetch the form at least once.</string>
 
 </resources>

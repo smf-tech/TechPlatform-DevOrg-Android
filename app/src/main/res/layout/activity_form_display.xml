@@ -52,4 +52,12 @@
             android:visibility="gone" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/img_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_235dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/empty_matrimony_back"
+        android:visibility="gone" />
+
 </RelativeLayout>
