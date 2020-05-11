@@ -28,7 +28,8 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
     //private ArrayList<String> processStatus;
     private HashMap<String, String> processSyncStatusHashmap;
 
-    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map, HashMap<String, String> processSyncStatusHashmap) {
+    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map,
+                                     HashMap<String, String> processSyncStatusHashmap) {
         this.mContext = context;
         this.mMap = map;
         this.processSyncStatusHashmap = processSyncStatusHashmap;

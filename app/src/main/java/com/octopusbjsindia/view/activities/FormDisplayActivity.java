@@ -88,7 +88,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
     private FormResult formResult;
-    public boolean isEditable = false;
+    public boolean isEditable = true;
     private ImageView imgNoData;
 
     @Override
@@ -99,6 +99,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         tvTitle = findViewById(R.id.toolbar_title);
         vpFormElements = findViewById(R.id.viewpager);
         imgNoData = findViewById(R.id.img_no_data);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
@@ -135,6 +136,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     Util.showToast(getString(R.string.offline_no_form_schema_msg), this);
                 }
             } else {
+                this.formData = formData;
                 parseFormSchema(formData);
             }
         }
@@ -179,6 +181,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         }
 
+        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED
+                || formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
+            if (formData.getEditable().equalsIgnoreCase("false")) {
+                isEditable = false;
+            }
+        }
+
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,7 +196,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         });
 
         if (isEditable) {
-            toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
             toolbar_edit_action.setVisibility(View.VISIBLE);
             toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
             toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
@@ -285,12 +293,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
         this.formData = new FormData();
         this.formData = formData;
-        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED || formResult.getFormStatus()
-                == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
-            if (formData.getEditable().equalsIgnoreCase("true")) {
-                isEditable = true;
-            }
-        }
+//        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED || formResult.getFormStatus()
+//                == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
+//            if (formData.getEditable().equalsIgnoreCase("false")) {
+//                isEditable = false;
+//                toolbar_edit_action.setVisibility(View.GONE);
+//            }
+//        }
         TextView tvFormTitle = findViewById(R.id.tv_form_title);
         tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {

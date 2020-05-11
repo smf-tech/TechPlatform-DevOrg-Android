@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.FormsDashboardAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 // We have updated this fragment. We are not going to show forms section over here.So all all the respective api and Ui code has been commented.
@@ -68,7 +70,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         FloatingActionButton btnNewForm = pmFragmentView.findViewById(R.id.btn_new_form);
         btnNewForm.setOnClickListener(this);
         rvFormsStatusCount = pmFragmentView.findViewById(R.id.rv_forms_dashboard);
-        formsDashboardAdapter = new FormsDashboardAdapter(getActivity(), formStatusCountDataList);
+        formsDashboardAdapter = new FormsDashboardAdapter(this, formStatusCountDataList);
         rvFormsStatusCount.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvFormsStatusCount.setAdapter(formsDashboardAdapter);
 
@@ -108,6 +110,30 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         } else if (v.getId() == R.id.btn_new_form) {
             Util.launchFragment(new AllFormsFragment(), getContext(),
                     getString(R.string.forms), true);
+        }
+    }
+
+    public void navigateToScreen(String status, int count) {
+        if (count > 0) {
+            Bundle b = new Bundle();
+            b.putSerializable("TITLE", getString(R.string.forms));
+            b.putBoolean("SHOW_BACK", true);
+            b.putString("NAVIGATE_TO", status);
+
+            FormsFragment fragment = new FormsFragment();
+            fragment.setArguments(b);
+            //FragmentManager fragmentManager = getFragmentManager();
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = ((HomeActivity) Objects
+                    .requireNonNull(getContext()))
+                    .getSupportFragmentManager().beginTransaction();
+
+            fragmentTransaction.replace(R.id.home_page_container, fragment);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack(fragment.getTag());
+            fragmentTransaction.commit();
+        } else {
+            Util.showToast("There are no " + status + " forms available.", this);
         }
     }
 
