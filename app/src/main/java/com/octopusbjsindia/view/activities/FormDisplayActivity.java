@@ -89,6 +89,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
     private String batchId = "";
+    private String trainerId = "";
+    private String beneficiaryId = "";
+    private String formStatus = "";
     private String workshopId = "";
     public boolean isForSmartGirl = false;
     public boolean isForWorkshop = false;
@@ -113,9 +116,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
+            trainerId = getIntent().getExtras().getString(Constants.SmartGirlModule.TRAINER_ID);
+            formStatus = getIntent().getExtras().getString(Constants.SmartGirlModule.FORM_STATUS);
             batchId = getIntent().getExtras().getString(Constants.SmartGirlModule.BATCH_ID);
             if (batchId!=null && !TextUtils.isEmpty(batchId)) {
                 isForSmartGirl = true;
+                toolbar_edit_action.setVisibility(View.GONE);
             }
             workshopId = getIntent().getExtras().getString(Constants.SmartGirlModule.WORKSHOP_ID);
             if (workshopId!=null && !TextUtils.isEmpty(workshopId)) {
@@ -683,9 +689,16 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (isForSmartGirl) {
             if (isForWorkshop){
                 formAnswersMap.put(Constants.SmartGirlModule.WORKSHOP_ID, batchId);
+                formAnswersMap.put(Constants.SmartGirlModule.BENEFICIARY_ID, null);
             }else {
                 formAnswersMap.put(Constants.SmartGirlModule.BATCH_ID, batchId);
+                formAnswersMap.put(Constants.SmartGirlModule.TRAINER_ID, trainerId);
+
             }
+
+            formAnswersMap.put("role_code", String.valueOf(Util.getUserObjectFromPref().getRoleCode()));
+            formAnswersMap.put(Constants.SmartGirlModule.FORM_STATUS, formStatus);
+
         }
 
 

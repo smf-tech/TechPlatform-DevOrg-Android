@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
 import com.octopusbjsindia.models.smartgirl.AdditionalTrainerListResponseModel;
@@ -119,6 +121,15 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         btn_create_batch.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
 
+        ImageView img_back = findViewById(R.id.toolbar_back_action);
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    onBackPressed();
+            }
+        });
+
+
         // calling states first-
 
         presenter.getLocationData("",
@@ -169,12 +180,20 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
             et_traner_name.setText(workshopBachList.getCreated_by().get(0).getName());
         }
 
-        et_select_state_trainer.setText(workshopBachList.getAdditional_master_trainer().getState_name());
-        et_select_state_str_trainer = workshopBachList.getAdditional_master_trainer().getState_id();
-        et_select_district_trainer.setText(workshopBachList.getAdditional_master_trainer().getDistrict_name());
-        et_select_district_str_trainer = workshopBachList.getAdditional_master_trainer().getDistrict_id();
-
-        et_traner_additional.setText(workshopBachList.getAdditional_master_trainer().getUser_name());
+        if (workshopBachList.getAdditional_master_trainer()!=null) {
+            if (workshopBachList.getAdditional_master_trainer().getState_obj()!=null) {
+                et_select_state_trainer.setText(workshopBachList.getAdditional_master_trainer().getState_obj().getName());
+                et_select_state_str_trainer = workshopBachList.getAdditional_master_trainer().getState_id();
+            }
+            if (workshopBachList.getAdditional_master_trainer().getDistrict_obj()!=null) {
+                et_select_district_trainer.setText(workshopBachList.getAdditional_master_trainer().getDistrict_obj().getName());
+                et_select_district_str_trainer = workshopBachList.getAdditional_master_trainer().getDistrict_id();
+            }
+            if (workshopBachList.getAdditional_master_trainer().getUser_name()!=null) {
+                et_traner_additional.setText(workshopBachList.getAdditional_master_trainer().getUser_name());
+                et_traner_additional_id = workshopBachList.getAdditional_master_trainer().getUser_id();
+            }
+        }
         tv_startdate.setText(Util.getFormattedDateFromTimestamp(workshopBachList.getWorkShopSchedule().getStartDate()));
         tv_enddate.setText(Util.getFormattedDateFromTimestamp(workshopBachList.getWorkShopSchedule().getEndDate()));
         et_total_beneficiaries.setText(workshopBachList.getTotal_praticipants());
@@ -204,11 +223,16 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                 selectStartDate(tv_enddate, 2);
                 break;
             case R.id.et_traner_additional:
-                CustomSpinnerDialogClass csdTrainer = new CustomSpinnerDialogClass(this, this,
-                        "Select Trainer", TrainerList, false);
-                csdTrainer.show();
-                csdTrainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (TrainerList!=null && TrainerList.size()>0) {
+                    CustomSpinnerDialogClass csdTrainer = new CustomSpinnerDialogClass(this, this,
+                            "Select Trainer", TrainerList, false);
+                    csdTrainer.show();
+                    csdTrainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                }else {
+                    et_traner_additional.setText("");
+                    Util.showToast("Please select Other locations for available trainers",this);
+                }
                 break;
 
 
@@ -313,6 +337,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                         //-----
                     }
                 }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -609,7 +634,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
             msg = "Please enter workshop title";//getResources().getString(R.string.msg_enter_name);
         } else
         if (TextUtils.isEmpty(et_workshop_category_str)) {
-            msg = "Please select batch category";//getResources().getString(R.string.msg_enter_name);
+            msg = "Please select Workshop category";//getResources().getString(R.string.msg_enter_name);
         } else if (TextUtils.isEmpty(et_select_state_str)) {
             msg = "Please select state";//getResources().getString(R.string.msg_enter_name);
         } else if (TextUtils.isEmpty(et_select_district_str)) {
@@ -624,6 +649,8 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
             msg = "Please select the end date.";//getResources().getString(R.string.msg_enter_proper_date);
         } else if (et_total_beneficiaries.getText().toString().trim().length() == 0) {
             msg = "Please enter total beneficiaries.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_traner_additional.getText().toString().trim().length() == 0) {
+            msg = "Please Select additional trainer.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);
@@ -713,7 +740,10 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         dialog.show();
     }
     public void workshopCreatedSuccess(String response){
-        Toast.makeText(CreateWorkshopSmartgirlActivity.this,"Workshop created successfully",Toast.LENGTH_LONG).show();
+        //{"status":"200","message":"The workshop has been updated successfully."} "Workshop created successfully"
+//        CommonResponse commonResponse = new CommonResponse(response,CommonResponse.class);
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+        Toast.makeText(CreateWorkshopSmartgirlActivity.this,responseOBJ.getMessage(),Toast.LENGTH_LONG).show();
         finish();
     }
 }

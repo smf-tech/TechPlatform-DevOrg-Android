@@ -77,10 +77,17 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         if (dataList.get(position).getCategory()!=null && dataList.get(position).getCategory().getCategoryName()!=null) {
             holder.tv_category_value.setText(dataList.get(position).getCategory().getCategoryName().getDefault());
         }
+        if (dataList.get(position).getCurrentUserBatchData() != null) {
+            holder.tv_register_lable.setVisibility(View.VISIBLE);
+        }else {
+            holder.tv_register_lable.setVisibility(View.GONE);
+        }
 
         holder.tv_city_value.setText(dataList.get(position).getCity());
         if (dataList.get(position).getTrainerList()!=null) {
             holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getTrainerList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+        }else {
+            holder.tv_attendence_value.setText("0"+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
         }
         holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getStartDate(),DAY_MONTH_YEAR));
         holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getEndDate(),DAY_MONTH_YEAR));
@@ -114,7 +121,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_venue_value,tv_title_batch,
-                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_main_trainer_name;
+                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_main_trainer_name,tv_register_lable;
 
         ImageView btnPopupMenu;
         PopupMenu popup;
@@ -123,6 +130,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
+            tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
@@ -201,6 +209,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                 case Constants.SmartGirlModule.ACCESS_CODE_EDIT_BATCH:
                                     popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
                                     popup.getMenu().findItem(R.id.action_edit_batch).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_CANCEL_BATCH:
+                                    //CANCEL WORKSHOP
+                                    popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_PRE_TEST:
                                     popup.getMenu().findItem(R.id.action_pretest_trainer).setVisible(true);
@@ -302,7 +314,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         break;
                                     case R.id.action_cancel_batch:
                                         if (Util.isConnected(mContext)) {
-                                            //((TrainerBatchListActivity)mContext).cancelBatchRequest(getAdapterPosition());
+                                            ((TrainerBatchListActivity)mContext).cancelBatchRequest(getAdapterPosition());
                                             Util.showToast(mContext.getString(R.string.coming_soon), mContext);
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);

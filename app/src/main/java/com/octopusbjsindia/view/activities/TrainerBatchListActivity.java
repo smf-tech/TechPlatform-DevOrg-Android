@@ -38,6 +38,7 @@ import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.smartgirl.TrainerBachList;
 import com.octopusbjsindia.models.smartgirl.TrainerBachListResponseModel;
 import com.octopusbjsindia.models.smartgirl.TrainerList;
+import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.presenter.TrainerBatchListPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -49,6 +50,7 @@ import com.octopusbjsindia.view.fragments.smartgirlfragment.PostFeedbackFragment
 import com.octopusbjsindia.view.fragments.smartgirlfragment.PreFeedbackFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.PreTestTrainingFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.RegisterTrainerFragment;
+import com.octopusbjsindia.view.fragments.smartgirlfragment.UserProfileSmartgirlFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -241,6 +243,17 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     public void showReceivedTrainerListResponse(String response) {
         addAllTrainerListFragment(0,response);
     }
+    public void showReceivedUserProfile(String response) {
+        //addAllTrainerListFragment(0,response);
+        Log.d("received profile",response);
+        User user = new Gson().fromJson(response, User.class);
+        if (response != null && user.getUserInfo() != null) {
+            //Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+            addUserProfileSmartgirlFragment(0, response);
+
+        }
+    }
+
 
     @Override
     public void onItemClicked(int pos) {
@@ -267,6 +280,11 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         presenter.addSelfTrainerToBatch(paramjson);
     }
 
+    public void getSelectedUserProfile(int adapterPosition,String user_id) {
+        String paramjson = new Gson().toJson(getUserProfileReqJson(adapterPosition,user_id));
+        presenter.getSelectedUserProfile(paramjson);
+    }
+
     public void cancelBatchRequest(int adapterPosition) {
         String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
         presenter.cancelBatchAPI(paramjson);
@@ -289,6 +307,12 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("batch_id", batchId);
+        return requestObject;
+    }
+    public JsonObject getUserProfileReqJson(int pos,String user_id) {
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("user_id", user_id);
         return requestObject;
     }
 //-------------- PRE TEST
@@ -338,6 +362,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_FEEDBACK_FORM);
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"preFeedBackStatus");
         mContext.startActivity(intent);
         /*Bundle bundle = new Bundle();
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
@@ -362,6 +387,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.POST_FEEDBACK_FORM);
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"postFeedBackStatus");
         mContext.startActivity(intent);
         /*Bundle bundle = new Bundle();
 
@@ -418,6 +444,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         Intent intent = new Intent(mContext, FormDisplayActivity.class);
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.MOCK_TEST_FORM);
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"mocktTestStatus");
+        intent.putExtra(Constants.SmartGirlModule.TRAINER_ID,userId);
+
         mContext.startActivity(intent);
         /*Bundle bundle = new Bundle();
 
@@ -447,6 +476,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.PRE_TEST_FORM);
         String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"preTestStatus");
         mContext.startActivity(intent);
         /*Bundle bundle = new Bundle();
 
@@ -491,6 +521,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
 
+    public  void changeTitle(String member_list){
+        tvTitle.setText(member_list);
+    }
+
     //close fragment if available else close activity on backpress
     @Override
     public void onBackPressed() {
@@ -501,12 +535,18 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             finish();
         }else {
             //showDialog(mContext, "Alert", "Do you want really want to close ?", "No", "Yes");
-            try {
+
+            if (fManager.getBackStackEntryCount()>1){
                 fManager.popBackStackImmediate();
-                rv_trainerbactchlistview.setVisibility(View.VISIBLE);
-                presenter.getBatchList();
-            } catch (IllegalStateException e) {
-                Log.e("TAG", e.getMessage());
+            }else {
+
+                try {
+                    fManager.popBackStackImmediate();
+                    rv_trainerbactchlistview.setVisibility(View.VISIBLE);
+                    presenter.getBatchList();
+                } catch (IllegalStateException e) {
+                    Log.e("TAG", e.getMessage());
+                }
             }
         }
     }
@@ -516,7 +556,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         Util.showToast(message,mContext);
         presenter.getBatchList();
     }
-
+    /*public void refreshData(){
+        presenter.getBatchList();
+    }*/
     //add fragment show all trainer list
 
     public void addAllTrainerListFragment(int adapterPosition,String response) {
@@ -539,6 +581,28 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
     }
+
+    public void addUserProfileSmartgirlFragment(int adapterPosition,String response) {
+        Bundle bundle = new Bundle();
+        Gson gson = new Gson();
+        bundle.putString("memberList", response);
+        //bundle.putString("listType", Constants.SmartGirlModule.TRAINER_lIST);
+
+        fragment = new UserProfileSmartgirlFragment();
+        fragment.setArguments(bundle);
+        try {
+            FragmentTransaction fragmentTransaction = fManager.beginTransaction();
+            fragmentTransaction.replace(R.id.feedback_form_container, fragment, "formFragment");
+            fragmentTransaction.addToBackStack("profiledetail");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.commit();
+            rv_trainerbactchlistview.setVisibility(View.GONE);
+            tvTitle.setText("Profile");
+        } catch (Exception e) {
+            Log.e("addFragment", "Exception :: FormActivity : addFragment");
+        }
+    }
+
 
 
     //back button confirmation

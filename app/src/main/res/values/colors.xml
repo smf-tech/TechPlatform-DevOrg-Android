@@ -100,4 +100,9 @@
     <color name="active_tab">#3e3e3e</color>
     <color name="frag_act_back">#fbfbfb</color>
 
+
+    <color name="mockcompleted">#5047A713</color>
+
+    <color name="mockpending">#50ff0000</color>
+
 </resources>

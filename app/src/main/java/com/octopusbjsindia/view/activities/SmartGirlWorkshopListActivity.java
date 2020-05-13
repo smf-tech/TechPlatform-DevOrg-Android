@@ -348,6 +348,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
         intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"organizerFeedBackStatus");
         mContext.startActivity(intent);
     }
     public void addParentFeedbackFragment(int adapterPosition){
@@ -356,6 +357,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
         intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"parentFeedBackStatus");
         mContext.startActivity(intent);
     }
     //Add Pre Test form fragment
@@ -381,6 +383,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
         intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"preFeedBackStatus");
         mContext.startActivity(intent);
     }
 
@@ -410,6 +413,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
         intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"postFeedBackStatus");
         mContext.startActivity(intent);
     }
 
@@ -438,6 +442,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
         intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
         intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"preTestStatus");
         mContext.startActivity(intent);
     }
 
@@ -497,6 +502,9 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
     public void showToastMessage(String message) {
         Util.showToast(message, mContext);
         CloseFragment();
+    }
+    public void refreshData(){
+        presenter.getBatchList();
     }
 
     //back button confirmation

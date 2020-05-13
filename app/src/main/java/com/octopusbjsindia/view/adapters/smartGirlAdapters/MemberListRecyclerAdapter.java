@@ -34,6 +34,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
+import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 
 import java.util.List;
 import java.util.Objects;
@@ -71,8 +72,10 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
         holder.tv_member_phone.setText(dataList.get(position).getPhone());
         if (dataList.get(position).getMocktTestStatus()){
             holder.tv_mock_test.setText("Mock completed");
+            holder.tv_mock_test.setBackgroundResource(R.drawable.bg_rect_mock_completed);
         }else {
             holder.tv_mock_test.setText("Mock pending");
+            holder.tv_mock_test.setBackgroundResource(R.drawable.bg_rect_mock_pending);
         }
 
 
@@ -121,6 +124,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
         ImageView btnPopupMenu;
         ImageView user_profile_pic;
         PopupMenu popup;
+        Button btn_view_profile;
 
 
         EmployeeViewHolder(View itemView) {
@@ -130,6 +134,15 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
             tv_mock_test = itemView.findViewById(R.id.tv_mock_test);
             user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
+            btn_view_profile = itemView.findViewById(R.id.btn_view_profile);
+            btn_view_profile.setVisibility(View.VISIBLE);
+            btn_view_profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((TrainerBatchListActivity)mContext).getSelectedUserProfile(getAdapterPosition(),
+                            dataList.get(getAdapterPosition()).getUserId());
+                }
+            });
             //btn_approve = itemView.findViewById(R.id.btn_approve);
             //btn_reject = itemView.findViewById(R.id.btn_reject);
             itemView.setOnClickListener(v -> {

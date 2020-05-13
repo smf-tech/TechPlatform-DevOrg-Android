@@ -189,7 +189,7 @@ public class Urls {
         public static final String ADD_TRAINER_TO_BATCH = "api/addTrainerToBatch";
         public static final String REGISTER_AS_TRAINER_TO_BATCH = "api/registerToBatch";
         public static final String CANCEL_BATCH_API = "api/cancelBatch";
-        public static final String CANCEL_WORKSHOP_API = "api/cancelBatch";
+        public static final String CANCEL_WORKSHOP_API = "api/cancelWorkshop";
         public static final String TRAINER_PRE_TEST = "api/trainerPreTest";
         public static final String TRAINER_BATCH_FEEDBACK = "api/trainerBatchFeedback";
 
@@ -218,7 +218,7 @@ public class Urls {
 
         //get
         public static final String GET_MASTER_TRAINERS_API = "api/getMasterTrainers";
-
+        public static final String GET_USER_PROJECT_PROFILE_API = "api/getUserProjectProfile";
 
     }
 

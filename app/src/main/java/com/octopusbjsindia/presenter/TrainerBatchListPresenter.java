@@ -23,6 +23,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
     private final String GET_CATEGORY = "getbatchlist";
     private final String CANCEL_EVENT_REQUEST = "CANCELEVENTREQUEST";
     private final String ADD_TRAINERS_TO_BATCH = "addtrainertobatch";
+    private final String GET_PROJECT_USER_PROFILE = "GETUSERPROFILE";
     private final String ADD_PRETEST_BATCH = "PRETESTFORBACTH";
     private final String ADD_POSTFEEDACK_TO_BATCH = "POSTFEEDBACK";
 
@@ -73,7 +74,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
                 }else if (requestID.equalsIgnoreCase(ADD_TRAINERS_TO_BATCH)) {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());
-
+                    //mContext.get().refreshData();
                     /*if(commonResponse.getStatus()==200){
                         Util.showToast(commonResponse.getMessage(),this);
                     } else {
@@ -88,7 +89,12 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
                 }else if (requestID.equalsIgnoreCase(CANCEL_EVENT_REQUEST)) {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());
+                }else if (requestID.equalsIgnoreCase(GET_PROJECT_USER_PROFILE)) {
+                    /*CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
+                    mContext.get().showToastMessage(commonResponse.getMessage());*/
+                    mContext.get().showReceivedUserProfile(response);
                 }
+
             }
 
         } catch (Exception e) {
@@ -159,6 +165,14 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(ADD_TRAINERS_TO_BATCH,requestJson,url);
+
+    }
+    public void getSelectedUserProfile(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_USER_PROJECT_PROFILE_API);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_PROJECT_USER_PROFILE,requestJson,url);
 
     }
     public void cancelBatchAPI(String requestJson){

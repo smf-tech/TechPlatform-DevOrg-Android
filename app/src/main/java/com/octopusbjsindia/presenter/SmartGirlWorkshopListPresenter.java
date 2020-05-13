@@ -66,6 +66,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
                 }else if (requestID.equalsIgnoreCase(ADD_TRAINERS_TO_BATCH)) {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());
+                    mContext.get().refreshData();
 
                     /*if(commonResponse.getStatus()==200){
                         Util.showToast(commonResponse.getMessage(),this);
@@ -128,7 +129,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
     }
     public void cancelWorkshopRequest(String requestJson){
         final String url  = BuildConfig.BASE_URL
-                + String.format(Urls.SmartGirl.CREATE_WORKSHOP_API);
+                + String.format(Urls.SmartGirl.CANCEL_WORKSHOP_API);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CANCEL_EVENT_REQUEST,requestJson,url);

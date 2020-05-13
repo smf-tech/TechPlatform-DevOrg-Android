@@ -28,6 +28,7 @@ import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.smartgirl.AdditionalTrainerListResponseModel;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
@@ -139,7 +140,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 Log.d("venue---",trainerBachList.getVenue());
                 setEditDataToFields(trainerBachList);
             }
-
+            tvTitle.setText("Edit Batch");
         } else {
             isforEdit = false;
         }
@@ -151,8 +152,10 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         }else {
             et_title_batch.setText("");
         }
-        if (trainerBachList.getBatch_category_id()!=null) {
-            et_workshop_category.setText("" + trainerBachList.getBatch_category_id());
+        if (trainerBachList.getCategory()!=null) {
+            if (trainerBachList.getCategory().getCategoryName()!=null) {
+                et_workshop_category.setText("" + trainerBachList.getCategory().getCategoryName().getDefault());
+            }
             et_workshop_category_str = trainerBachList.getBatch_category_id();
         }
         et_select_state.setText(trainerBachList.getState().getName());
@@ -161,14 +164,25 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         et_select_district_str = trainerBachList.getDistrict_id();
         et_select_city.setText(trainerBachList.getCity());
         et_select_venue.setText(trainerBachList.getVenue());
-        et_traner_name.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
+        if (trainerBachList.getCreated_by()!=null){
+            et_traner_name.setText(trainerBachList.getCreated_by().get(0).getName());
+        }
 
-        et_select_state_trainer.setText(trainerBachList.getAdditional_master_trainer().getState_name());
-        et_select_state_str_trainer = trainerBachList.getAdditional_master_trainer().getState_id();
-        et_select_district_trainer.setText(trainerBachList.getAdditional_master_trainer().getDistrict_name());
-        et_select_district_str_trainer = trainerBachList.getAdditional_master_trainer().getDistrict_id();
-        et_traner_additional_id = trainerBachList.getAdditional_master_trainer().getUser_id();
-        et_traner_additional.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
+
+        if (trainerBachList.getAdditional_master_trainer()!=null) {
+            if (trainerBachList.getAdditional_master_trainer().getState_obj()!=null) {
+                et_select_state_trainer.setText(trainerBachList.getAdditional_master_trainer().getState_obj().getName());
+                et_select_state_str_trainer = trainerBachList.getAdditional_master_trainer().getState_id();
+            }
+            if (trainerBachList.getAdditional_master_trainer().getDistrict_obj()!=null) {
+                et_select_district_trainer.setText(trainerBachList.getAdditional_master_trainer().getDistrict_obj().getName());
+                et_select_district_str_trainer = trainerBachList.getAdditional_master_trainer().getDistrict_id();
+            }
+            if (trainerBachList.getAdditional_master_trainer().getUser_id()!=null) {
+                et_traner_additional_id = trainerBachList.getAdditional_master_trainer().getUser_id();
+                et_traner_additional.setText(trainerBachList.getAdditional_master_trainer().getUser_name());
+            }
+        }
         tv_startdate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getStartDate()));
         tv_enddate.setText(Util.getFormattedDateFromTimestamp(trainerBachList.getBatchschedule().getEndDate()));
         et_total_beneficiaries.setText(trainerBachList.getTotal_praticipants());
@@ -205,11 +219,16 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                 selectStartDate(tv_enddate, 2);
                 break;
             case R.id.et_traner_additional:
-                CustomSpinnerDialogClass csdTrainer = new CustomSpinnerDialogClass(this, this,
-                        "Select Trainer", TrainerList, false);
-                csdTrainer.show();
-                csdTrainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (TrainerList!=null && TrainerList.size()>0) {
+                    CustomSpinnerDialogClass csdTrainer = new CustomSpinnerDialogClass(this, this,
+                            "Select Trainer", TrainerList, false);
+                    csdTrainer.show();
+                    csdTrainer.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                }else {
+                    et_traner_additional.setText("");
+                    Util.showToast("Please select Other locations for available trainers",this);
+                }
                 break;
 
 
@@ -314,6 +333,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                         //-----
                     }
                 }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -408,7 +428,13 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         }
     }
     public void batchCreatedSuccess(String response){
-        Toast.makeText(CreateTrainerWorkshop.this,"Batch created successfully",Toast.LENGTH_LONG).show();
+
+        CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+
+        if(responseOBJ.getStatus() == 200){
+            Util.showToast(responseOBJ.getMessage(), this);
+        }
+        //Toast.makeText(CreateTrainerWorkshop.this,"Batch created successfully",Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -631,6 +657,8 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
             msg = "Please select the end date.";//getResources().getString(R.string.msg_enter_proper_date);
         } else if (et_total_beneficiaries.getText().toString().trim().length() == 0) {
             msg = "Please enter total beneficiaries.";//getResources().getString(R.string.msg_enter_proper_date);
+        } else if (et_traner_additional.getText().toString().trim().length() == 0) {
+            msg = "Please Select additional trainer.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         /*else if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);

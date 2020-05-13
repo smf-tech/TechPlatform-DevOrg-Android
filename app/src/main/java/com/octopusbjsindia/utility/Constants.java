@@ -443,13 +443,15 @@ public class Constants {
     }
     public static class SmartGirlModule {
 
+        public static final String BENEFICIARY_ID = "beneficiary_id";
+        public static final String TRAINER_ID = "trainer_id";
         public static final String BATCH_ID = "batch_id";
         public static final String WORKSHOP_ID = "workshop_id";
         public static final String TRAINER_lIST = "trainerlist";
         public static final String BENEFICIARY_lIST = "beneficiarylist";
         public static final Integer BATCH_WORKSHOP_RESULT= 111;
 
-
+        public static final String FORM_STATUS = "formStatus";
         //Access code
 
         public static final int ACCESS_CODE_CREATE_BATCH = 135;
@@ -472,7 +474,8 @@ public class Constants {
         public static final int ACCESS_CODE_MOCK_TEST = 150;
         public static final int ACCESS_CODE_VIEW_PROFILE = 151;
 
-
+        public static final int ACCESS_CODE_CANCEL_BATCH = 152;
+        public static final int ACCESS_CODE_CANCEL_WORKSHOP = 153;
 
 
 
@@ -493,6 +496,7 @@ public class Constants {
 
         public static final String PRE_FEEDBACK_WORKSHOP_FORM = "5ea7bf66ba182a798b313c48";
         public static final String POST_FEEDBACK_WORKSHOP_FORM = "5ea7c6ad49c5d7695b51203e";
+
 
 
     }

@@ -69,6 +69,13 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_main_trainer_name.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }
+
+        if (dataList.get(position).getCurrentUserWorkShopData() != null) {
+            holder.tv_register_lable.setVisibility(View.VISIBLE);
+        }else {
+            holder.tv_register_lable.setVisibility(View.GONE);
+        }
+
         holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
         holder.tv_venue_value.setText(dataList.get(position).getVenue());
@@ -80,6 +87,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         holder.tv_city_value.setText(dataList.get(position).getCity());
         if (dataList.get(position).getBeneficiariesList()!=null) {
             holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getBeneficiariesList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+        }else {
+            holder.tv_attendence_value.setText("0"+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
         }
         holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getStartDate(),DAY_MONTH_YEAR));
         holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getEndDate(),DAY_MONTH_YEAR));
@@ -114,7 +123,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,tv_title_batch,
-                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value;
+                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_register_lable;
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
@@ -122,6 +131,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
+
+            tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
@@ -159,7 +170,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                     if (dataList.get(getAdapterPosition()).getBeneficiariesList()!=null) {
                         ((SmartGirlWorkshopListActivity) mContext).addMemberListFragment(getAdapterPosition());
                     }else {
-                        Util.showToast("Beneficiaries not added yet.",mContext);
+                        Util.showToast("Members not found.",mContext);
                     }
                 }
             });
@@ -180,6 +191,11 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
                                 case Constants.SmartGirlModule.ACCESS_CODE_EDIT_WORKSHOP:
                                     popup.getMenu().findItem(R.id.action_edit_batch).setVisible(true);
+
+                                    break;
+
+                                case Constants.SmartGirlModule.ACCESS_CODE_CANCEL_WORKSHOP:
+                                    //CANCEL WORKSHOP
                                     popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_ADD_BENEFICIARY:
@@ -317,8 +333,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                         break;
                                     case R.id.action_cancel_batch:
                                         if (Util.isConnected(mContext)) {
-                                            //((SmartGirlWorkshopListActivity)mContext).cancelWorkshopRequest(getAdapterPosition());
-                                            Util.showToast(mContext.getString(R.string.coming_soon), mContext);
+                                            ((SmartGirlWorkshopListActivity)mContext).cancelWorkshopRequest(getAdapterPosition());
+                                            //Util.showToast(mContext.getString(R.string.coming_soon), mContext);
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }

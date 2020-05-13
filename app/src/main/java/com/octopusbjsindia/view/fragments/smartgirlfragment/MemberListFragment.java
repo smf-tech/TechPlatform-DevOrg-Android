@@ -19,6 +19,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.smartgirl.BeneficiariesList;
 import com.octopusbjsindia.models.smartgirl.TrainerList;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.adapters.smartGirlAdapters.BeneficiaryListRecyclerAdapter;
 import com.octopusbjsindia.view.adapters.smartGirlAdapters.MemberListRecyclerAdapter;
@@ -58,8 +59,8 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
         if (getArguments() != null) {
             batchId = getArguments().getString("batch_id");
             Log.d("batch_id received", "-> " + batchId);
-            memberListStr = batchId = getArguments().getString("memberList");
-            listType = batchId = getArguments().getString("listType");
+            memberListStr = getArguments().getString("memberList");
+            listType =  getArguments().getString("listType");
             /*bundle.putString("memberList", jsonInString);
             bundle.putString("listtype", Constants.SmartGirlModule.TRAINER_lIST);*/
 
@@ -123,6 +124,17 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
                     "trainer_phone":"9881499768",*/
         } else if (listType.equalsIgnoreCase(Constants.SmartGirlModule.BENEFICIARY_lIST)) {
             //BeneficiariesList beneficiariesList = beneficiariesLists.get(pos);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Util.showToast("onResume Member list",getActivity());
+        if (listType.equalsIgnoreCase(Constants.SmartGirlModule.BENEFICIARY_lIST)) {
+
+        }else {
+            ((TrainerBatchListActivity) getActivity()).changeTitle("Member List");
         }
     }
 }
