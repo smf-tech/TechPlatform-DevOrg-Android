@@ -39,6 +39,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private ArrayList<FormStatusCountData> formStatusCountDataList = new ArrayList<>();
     private RecyclerView rvFormsStatusCount;
     private FormsDashboardAdapter formsDashboardAdapter;
+    private FloatingActionButton fbSelect, fbNewForm, fbUserForms;
+    private boolean isFABOpen = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,10 +67,12 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     }
 
     private void init() {
-        FloatingActionButton txtViewAllForms = pmFragmentView.findViewById(R.id.txt_view_all_forms);
-        txtViewAllForms.setOnClickListener(this);
-        FloatingActionButton btnNewForm = pmFragmentView.findViewById(R.id.btn_new_form);
-        btnNewForm.setOnClickListener(this);
+        fbSelect = pmFragmentView.findViewById(R.id.fb_select);
+        fbSelect.setOnClickListener(this);
+        fbUserForms = pmFragmentView.findViewById(R.id.fb_user_forms);
+        fbUserForms.setOnClickListener(this);
+        fbNewForm = pmFragmentView.findViewById(R.id.fb_new_form);
+        fbNewForm.setOnClickListener(this);
         rvFormsStatusCount = pmFragmentView.findViewById(R.id.rv_forms_dashboard);
         formsDashboardAdapter = new FormsDashboardAdapter(this, formStatusCountDataList);
         rvFormsStatusCount.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -79,10 +83,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy < -5 && txtViewAllForms.getVisibility() != View.VISIBLE) {
-                    txtViewAllForms.setVisibility(View.VISIBLE);
-                } else if (dy > 5 && txtViewAllForms.getVisibility() == View.VISIBLE) {
-                    txtViewAllForms.setVisibility(View.INVISIBLE);
+                if (dy < -5 && fbSelect.getVisibility() != View.VISIBLE) {
+                    fbSelect.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && fbSelect.getVisibility() == View.VISIBLE) {
+                    fbSelect.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -92,6 +96,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     @Override
     public void onResume() {
         super.onResume();
+        closeFABMenu();
         if (Util.isConnected(getContext())) {
             UserInfo user = Util.getUserObjectFromPref();
             PMFragmentPresenter pmFragmentPresenter = new PMFragmentPresenter(this);
@@ -104,13 +109,33 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.txt_view_all_forms) {
+        if (v.getId() == R.id.fb_select) {
+            if (!isFABOpen) {
+                showFabMenu();
+            } else {
+                closeFABMenu();
+            }
+        } else if (v.getId() == R.id.fb_user_forms) {
             Util.launchFragment(new FormsFragment(), getContext(),
                     getString(R.string.forms), true);
-        } else if (v.getId() == R.id.btn_new_form) {
+        } else if (v.getId() == R.id.fb_new_form) {
             Util.launchFragment(new AllFormsFragment(), getContext(),
                     getString(R.string.forms), true);
         }
+    }
+
+    private void showFabMenu() {
+        fbNewForm.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        fbUserForms.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        fbSelect.setRotation(45);
+        isFABOpen = true;
+    }
+
+    private void closeFABMenu() {
+        fbNewForm.animate().translationY(0);
+        fbUserForms.animate().translationY(0);
+        fbSelect.setRotation(0);
+        isFABOpen = false;
     }
 
     public void navigateToScreen(String status, int count) {
