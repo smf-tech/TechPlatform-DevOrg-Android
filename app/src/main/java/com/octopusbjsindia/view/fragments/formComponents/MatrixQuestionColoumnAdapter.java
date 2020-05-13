@@ -105,9 +105,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
-        holder.toggleGroup2.setEnabled(false);
-        holder.btn_yes.setEnabled(false);
-        holder.btn_no.setEnabled(false);
+
     }
 
     @Override
