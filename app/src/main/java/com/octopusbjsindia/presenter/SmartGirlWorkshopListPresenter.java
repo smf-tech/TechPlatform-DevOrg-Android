@@ -76,6 +76,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
                 }else if (requestID.equalsIgnoreCase(CANCEL_EVENT_REQUEST)){
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());
+                    mContext.get().refreshData();
                 }
             }
 

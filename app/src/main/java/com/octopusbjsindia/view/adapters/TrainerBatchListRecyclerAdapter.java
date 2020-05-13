@@ -223,7 +223,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                 case Constants.SmartGirlModule.ACCESS_CODE_POST_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_post_feedback).setVisible(true);
                                     break;
-
+                                case Constants.SmartGirlModule.ACCESS_CODE_ORGANIZER_FEEDBACK:
+                                    popup.getMenu().findItem(R.id.action_organizer_feedback).setVisible(true);
+                                    break;
 
                             }
                         }
@@ -260,6 +262,15 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
+
+                                    case R.id.action_organizer_feedback:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).addOrganiserFeedbackFragment(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+
                                     case R.id.action_post_feedback:
                                         if (Util.isConnected(mContext)) {
                                             if (dataList.get(getAdapterPosition()).getCurrentUserBatchData() != null) {

@@ -86,6 +86,7 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 //     Log.d("isChecked", "isChecked-->" + RowName + " " + isChecked + "  checkedId " + checkedId);
             }
         });
+
         holder.btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +105,9 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
+        holder.toggleGroup2.setEnabled(false);
+        holder.btn_yes.setEnabled(false);
+        holder.btn_no.setEnabled(false);
     }
 
     @Override

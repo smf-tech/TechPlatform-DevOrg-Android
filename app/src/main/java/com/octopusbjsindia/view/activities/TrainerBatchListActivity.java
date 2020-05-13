@@ -356,6 +356,15 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         }
     }
 
+
+    public void addOrganiserFeedbackFragment(int adapterPosition){
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.ORGANISER_FEEDBACK_FORM);
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"organizerFeedBackStatus");
+        mContext.startActivity(intent);
+    }
     //Add Pre Test form fragment
     public void addPreFeedbackFragment(int adapterPosition) {
         Intent intent = new Intent(mContext, FormDisplayActivity.class);

@@ -151,7 +151,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                 Log.d("venue---",workshopBachList.getVenue());
                 setEditDataToFields(workshopBachList);
             }
-
+            tvTitle.setText("Edit Workshop");
         } else {
             isforEdit = false;
         }
