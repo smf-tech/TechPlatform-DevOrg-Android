@@ -54,7 +54,7 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        android:src="@drawable/ic_form_category"
+        android:src="@drawable/ic_form_list_icon"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,7 +66,7 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_form_category"
+        android:src="@drawable/ic_new_form_icon"
         app:fabSize="mini"
         app:tint="@color/white" />
 

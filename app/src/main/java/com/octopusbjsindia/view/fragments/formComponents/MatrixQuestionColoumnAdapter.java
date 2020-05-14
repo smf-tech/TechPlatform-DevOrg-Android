@@ -17,6 +17,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,8 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     private int rowPosition;
     private Fragment mfragment;
 
-    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context, List<Column> columnList, final OnRequestItemClicked clickListener,
-                                        String s, int position) {
+    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context, List<Column> columnList,
+                                        final OnRequestItemClicked clickListener, String s, int position) {
         mfragment = fragment;
         mContext = context;
         RowName = s;
@@ -100,6 +101,12 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 clickListener.onItemClicked(rowPosition, columnListAnswers);
             }
         });
+
+        if (!((FormDisplayActivity) mContext).isEditable) {
+            holder.toggleGroup2.setEnabled(false);
+            holder.btn_yes.setEnabled(false);
+            holder.btn_no.setEnabled(false);
+        }
     }
 
     @Override
