@@ -582,7 +582,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
                 Util.showToast(getResources().getString(R.string.form_saved_offline), this);
                 Log.d(TAG, "Form saved " + formData.getId());
-                Objects.requireNonNull(this).onBackPressed();
+                //Objects.requireNonNull(this).onBackPressed();
             }
         }
     }
@@ -596,12 +596,12 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (result == null) {
             result = new FormResult();
             result.setFormId(formData.getId());
-            result.setFormNameLocale(formData.getName());
             result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
         //}
+        result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
