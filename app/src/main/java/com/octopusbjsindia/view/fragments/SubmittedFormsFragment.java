@@ -286,6 +286,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this, this);
                                 presenter.getSubmittedForms(data.getId(), BuildConfig.BASE_URL +
                                         String.format(Urls.PM.GET_SUBMITTED_FORMS, data.getId()));
+                            } else {
+                                setSubmittedFormsData(localFormResults);
                             }
                         } else {
                             //if (localFormResults == null || localFormResults.isEmpty()) continue;

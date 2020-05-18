@@ -41,7 +41,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     RelativeLayout progressBar;
     LocationFragmentPresenter presenter;
     Elements element;
-    ArrayList<String> jurisdictions = new ArrayList<>();
+    ArrayList<String> juridictions = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
 
     String selectedCountry = "", selectedCountryId = "", selectedState = "", selectedStateId = "",
@@ -75,8 +75,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         progressBar = view.findViewById(R.id.progress_bar);
         element = (Elements) getArguments().getSerializable("Element");
         isFirstpage = getArguments().getBoolean("isFirstpage");
-        jurisdictions.clear();
-        jurisdictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
+        juridictions.clear();
+        juridictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
 //        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -96,7 +96,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         boolean flag = true; // have in profile
-        for (String str : jurisdictions) {
+        for (String str : juridictions) {
             if (str.equalsIgnoreCase(Util.getUserObjectFromPref().getMultipleLocationLevel().getName())) {
                 flag = false;
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
@@ -459,8 +459,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedCountryId))
-                                    ? selectedCountryId : Util.getUserObjectFromPref().getUserLocation().getCityIds().get(0).getId(),
+                    getLocation("",
                             Constants.JurisdictionLevelName.COUNTRY_LEVEL);
                 }
                 break;
@@ -472,9 +471,19 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-                            Constants.JurisdictionLevelName.STATE_LEVEL);
+                    if (view.findViewById(R.id.ly_country).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedCountryId)) {
+                            getLocation(selectedCountryId,
+                                    Constants.JurisdictionLevelName.STATE_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select country.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    } else {
+                        getLocation("",
+                                Constants.JurisdictionLevelName.STATE_LEVEL);
+                    }
                 }
                 break;
             case R.id.etDistrict:
@@ -485,13 +494,16 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    if (!TextUtils.isEmpty(selectedStateId)) {
+                        getLocation(selectedStateId, Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select state.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
                 break;
             case R.id.etCity:
-
                 if (cityList.size() > 0) {
                     CustomSpinnerDialogClass csdCity = new CustomSpinnerDialogClass(getActivity(), this,
                             "Select City", cityList, false);
@@ -499,9 +511,13 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedCountryId))
-                                    ? selectedCountryId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.CITY_LEVEL);
+                    if (!TextUtils.isEmpty(selectedStateId)) {
+                        getLocation(selectedStateId, Constants.JurisdictionLevelName.CITY_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select state.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
                 break;
             case R.id.etTaluka:
@@ -512,24 +528,49 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    if (view.findViewById(R.id.ly_district).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedDistrictId)) {
+                            getLocation(selectedDistrictId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select district.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    } else if (view.findViewById(R.id.ly_city).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedCityId)) {
+                            getLocation(selectedCityId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select city.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    }
                 }
                 break;
             case R.id.etCluster:
-                ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                        .getAccessibleLocationData(selectedTalukaId);
+                if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedTalukaId)) {
+                        ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>)
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                        .getAccessibleLocationData(selectedTalukaId);
 
-                if (clusterData != null && !clusterData.isEmpty()) {
-                    clusterList.clear();
-                    for (int i = 0; i < clusterData.size(); i++) {
-                        JurisdictionLocation location = clusterData.get(i);
-                        CustomSpinnerObject obj = new CustomSpinnerObject();
-                        obj.set_id(location.getId());
-                        obj.setName(location.getName());
-                        obj.setSelected(false);
-                        clusterList.add(obj);
+                        if (clusterData != null && !clusterData.isEmpty()) {
+                            clusterList.clear();
+                            for (int i = 0; i < clusterData.size(); i++) {
+                                JurisdictionLocation location = clusterData.get(i);
+                                CustomSpinnerObject obj = new CustomSpinnerObject();
+                                obj.set_id(location.getId());
+                                obj.setName(location.getName());
+                                obj.setSelected(false);
+                                clusterList.add(obj);
+                            }
+                        }
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select taluka.",
+                                Snackbar.LENGTH_LONG);
                     }
                 }
                 CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(getActivity(), this,
@@ -537,19 +578,39 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 csdCluster.show();
                 csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+
                 break;
             case R.id.etVillage:
-
-                ArrayList<JurisdictionLocation> villageData;
-                if (TextUtils.isEmpty(selectedClusterId)) {
-                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
-                } else {
-                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+                ArrayList<JurisdictionLocation> villageData = new ArrayList<>();
+                if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedClusterId)) {
+                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                                .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select cluster.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedTalukaId)) {
+                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                                .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select taluka.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
 
-                if (villageData != null && !villageData.isEmpty()) {
+//                if (TextUtils.isEmpty(selectedClusterId)) {
+//                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
+//                } else {
+//                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+//                }
+
+                if (!villageData.isEmpty()) {
                     villageList.clear();
                     for (int i = 0; i < villageData.size(); i++) {
                         JurisdictionLocation location = villageData.get(i);
@@ -560,27 +621,36 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                         villageList.add(obj);
                     }
                 }
-
-                CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Village", villageList, false);
-                csdVillage.show();
-                csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (villageList.size() > 0) {
+                    CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Village", villageList, false);
+                    csdVillage.show();
+                    csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                }
                 break;
             case R.id.etSchool:
+                if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedVillageId)) {
+                        ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>)
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                        .getAccessibleLocationData(selectedVillageId);
 
-                ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                        .getAccessibleLocationData(selectedVillageId);
-
-                if (SchoolData != null && !SchoolData.isEmpty()) {
-                    schoolList.clear();
-                    for (int i = 0; i < SchoolData.size(); i++) {
-                        JurisdictionLocation location = SchoolData.get(i);
-                        CustomSpinnerObject obj = new CustomSpinnerObject();
-                        obj.set_id(location.getId());
-                        obj.setName(location.getName());
-                        obj.setSelected(false);
-                        schoolList.add(obj);
+                        if (SchoolData != null && !SchoolData.isEmpty()) {
+                            schoolList.clear();
+                            for (int i = 0; i < SchoolData.size(); i++) {
+                                JurisdictionLocation location = SchoolData.get(i);
+                                CustomSpinnerObject obj = new CustomSpinnerObject();
+                                obj.set_id(location.getId());
+                                obj.setName(location.getName());
+                                obj.setSelected(false);
+                                schoolList.add(obj);
+                            }
+                        }
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select village.",
+                                Snackbar.LENGTH_LONG);
                     }
                 }
 
@@ -589,6 +659,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 csdSchool.show();
                 csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+
+
                 break;
             case R.id.bt_previous:
                 ((FormDisplayActivity) getActivity()).goPrevious();

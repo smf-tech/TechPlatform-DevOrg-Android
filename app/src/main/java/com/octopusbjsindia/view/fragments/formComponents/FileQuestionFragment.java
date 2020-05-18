@@ -107,6 +107,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.iv_img1:
                 if (Util.isConnected(getActivity())) {
+                    ((FormDisplayActivity) getActivity()).isImageUploadPending = false;
                     onAddImageClick();
                 } else {
                     ((FormDisplayActivity) getActivity()).isImageUploadPending = true;
