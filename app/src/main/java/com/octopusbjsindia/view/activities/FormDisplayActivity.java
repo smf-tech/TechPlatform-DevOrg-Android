@@ -792,7 +792,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 } else {
                     if (isImageUploadPending) {
                         Util.showDialog(this, "Alert", "You can not submit this form as " +
-                                "image selection is remaining. Now, you can save this form and again complete" +
+                                "image selection is pending. Now, you can save this form and again complete " +
                                 "image question while you are connected to network and then submit form.", "OK", "");
                         return;
                     }

@@ -89,6 +89,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
             Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"));
             imageView.setImageURI(imageUri);
+            ((FormDisplayActivity) getActivity()).isImageUploadPending = false;
         }
     }
 

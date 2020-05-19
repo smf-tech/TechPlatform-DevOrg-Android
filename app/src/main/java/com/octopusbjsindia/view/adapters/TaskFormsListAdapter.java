@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.events.AddForm;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.view.activities.FormActivity;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.ArrayList;
 
@@ -76,7 +76,8 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
                 @Override
                 public void onClick(View v) {
                     taskFormsList.get(getAdapterPosition()).getId();
-                    Intent intent = new Intent(mContext, FormActivity.class);
+                    //Intent intent = new Intent(mContext, FormActivity.class);
+                    Intent intent = new Intent(mContext, FormDisplayActivity.class);
                     intent.putExtra(Constants.PM.FORM_ID, taskFormsList.get(getAdapterPosition()).getId());
 //                    intent.putExtra(Constants.PM.PROCESS_ID, taskFormsList.get(getAdapterPosition()).getId());
 //                    intent.putExtra(Constants.PM.EDIT_MODE, true);
