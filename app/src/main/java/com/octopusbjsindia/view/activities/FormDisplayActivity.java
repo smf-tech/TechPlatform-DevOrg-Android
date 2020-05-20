@@ -132,6 +132,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 if (Util.isConnected(this)) {
                     presenter.getFormSchema(formId);
                 } else {
+                    tvTitle.setText("Forms");
                     imgNoData.setVisibility(View.VISIBLE);
                     Util.showToast(getString(R.string.offline_no_form_schema_msg), this);
                 }
@@ -282,12 +283,26 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         this.formData = new FormData();
         this.formData = formData;
 
-        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED
-                || formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
-            if (formData.getEditable().equalsIgnoreCase("false")) {
+        if (formResult != null) {
+            if (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED) {
+                if (formResult.getFormApprovalStatus() == Constants.PM.REJECTED_STATUS) {
+                    if (formData.getEditable().equalsIgnoreCase("false")) {
+                        isEditable = false;
+                    }
+                } else {
+                    isEditable = false;
+                }
+            } else if (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED) {
                 isEditable = false;
             }
         }
+
+//        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED
+//                || formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
+//            if (formData.getEditable().equalsIgnoreCase("false")) {
+//                isEditable = false;
+//            }
+//        }
 
         if (isEditable) {
             toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
@@ -532,6 +547,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
+        if (formData == null) {
+            finish();
+            return;
+        }
         if (isEditable) {
             showDialog(this, "Alert", "Do you want to save the form?",
                     "Save", "Discard", true);
