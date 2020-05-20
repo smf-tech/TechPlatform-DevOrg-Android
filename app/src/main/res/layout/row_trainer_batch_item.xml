@@ -317,9 +317,19 @@
                         android:id="@+id/tv_additional_trainer_value"
                         android:paddingStart="@dimen/dimen_05dp"
                         android:layout_below="@+id/tv_additional_trainer_title"
-                        android:text="Trainer"
+                        android:text=""
                         android:fontFamily="@font/opensans_bold"
                         android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_phone"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_below="@+id/tv_additional_trainer_value"
+                        android:text=""
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -342,7 +352,16 @@
                         android:id="@+id/tv_additional_trainer_tow_value"
                         android:paddingStart="@dimen/dimen_05dp"
                         android:layout_below="@+id/tv_additional_trainer_two_title"
-                        android:text="Trainer"
+                        android:text=""
+                        android:fontFamily="@font/opensans_bold"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_additional_trainer_two_phone"
+                        android:paddingStart="@dimen/dimen_05dp"
+                        android:layout_below="@+id/tv_additional_trainer_tow_value"
+                        android:text=""
                         android:fontFamily="@font/opensans_bold"
                         android:layout_height="wrap_content" />
                 </RelativeLayout>

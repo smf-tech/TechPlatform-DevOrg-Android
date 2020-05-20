@@ -322,12 +322,12 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                             }
                         } else {
                             try {
-                                startDate = formatter.parse(selectedDateString);
-                                endDate = formatter.parse(tv_enddate.getText().toString());
+                                startDate = formatter.parse(tv_startdate.getText().toString());
+                                endDate = formatter.parse(selectedDateString);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            if (startDate.getTime() < endDate.getTime()) {
+                            if (startDate.getTime() > endDate.getTime()) {
                                 Toast.makeText(CreateWorkshopSmartgirlActivity.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
                             } else {
                                 textview.setText(selectedDateString);

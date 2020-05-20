@@ -73,6 +73,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
         if (dataList.get(position).getMocktTestStatus()){
             holder.tv_mock_test.setText("Mock completed");
             holder.tv_mock_test.setBackgroundResource(R.drawable.bg_rect_mock_completed);
+            holder.btnPopupMenu.setVisibility(View.INVISIBLE);
         }else {
             holder.tv_mock_test.setText("Mock pending");
             holder.tv_mock_test.setBackgroundResource(R.drawable.bg_rect_mock_pending);
@@ -250,11 +251,12 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
             RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
             if(roleAccessList != null) {
                 List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                btnPopupMenu.setVisibility(View.INVISIBLE);
                 for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                     if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_MOCK_TEST){
                         btnPopupMenu.setVisibility(View.VISIBLE);
                     }else {
-                        btnPopupMenu.setVisibility(View.INVISIBLE);
+
                     }
                 }
             }

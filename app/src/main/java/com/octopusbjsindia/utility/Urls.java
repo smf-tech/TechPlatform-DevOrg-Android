@@ -199,6 +199,7 @@ public class Urls {
         public static final String GET_ALL_MASTER_LIST_API = "api/getMasterTrainers";
         public static final String GET_ALL_BENEFICIARY_LIST_API = "api/getBeneficiaries";
 
+        public static final String GET_COMMUNITY_USER_INFO = "api/communityUserInfo";
 
 
         //workshops

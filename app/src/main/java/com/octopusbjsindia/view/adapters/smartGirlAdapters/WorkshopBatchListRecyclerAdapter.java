@@ -100,9 +100,11 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
         if (dataList.get(position).getCreated_by()!=null) {
             holder.tv_additional_trainer_value.setText(dataList.get(position).getCreated_by().get(0).getName());
+            holder.tv_additional_trainer_phone.setText(dataList.get(position).getCreated_by().get(0).getPhone());
         }
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
+            holder.tv_additional_trainer_two_phone.setText(dataList.get(position).getAdditional_master_trainer().getUser_phone());
         }
 
 
@@ -123,7 +125,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,tv_title_batch,
-                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_register_lable;
+                tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_register_lable
+        ,tv_additional_trainer_phone,tv_additional_trainer_two_phone;
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
@@ -132,6 +135,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         EmployeeViewHolder(View itemView) {
             super(itemView);
 
+            tv_additional_trainer_phone = itemView.findViewById(R.id.tv_additional_trainer_phone);
+            tv_additional_trainer_two_phone = itemView.findViewById(R.id.tv_additional_trainer_two_phone);
             tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);

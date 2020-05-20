@@ -95,7 +95,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         tvTitle.setText("Workshop List");
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         toolbar_edit_action.setVisibility(View.INVISIBLE);
-        toolbar_edit_action.setImageResource(R.drawable.ic_add);
+        toolbar_edit_action.setImageResource(R.drawable.ic_plus);
         presenter = new SmartGirlWorkshopListPresenter(this);
         //setMasterData();
         //---

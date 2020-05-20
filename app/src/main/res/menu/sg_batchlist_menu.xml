@@ -8,20 +8,20 @@
         android:visible="false"/>
     <item
         android:id="@+id/action_add_trainer"
-        android:title="Add trainer batch"
+        android:title="Add Trainer"
         android:visible="false"/>
     <item
         android:id="@+id/action_register_trainer"
-        android:title="Register as trainer"
+        android:title="Register As Trainer"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_add_beneficiary"
-        android:title="Add beneficiary workshop"
+        android:title="Add Beneficiary"
         android:visible="false"/>
     <item
         android:id="@+id/action_register_beneficiary"
-        android:title="Register to workshop"
+        android:title="Register To Workshop"
         android:visible="false"/>
 
     <item
@@ -31,31 +31,31 @@
 
     <item
         android:id="@+id/action_pre_feedback"
-        android:title="pre feedback"
+        android:title="Pre Feedback"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_post_feedback"
-        android:title="Post feedback"
+        android:title="Post Feedback"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_organizer_feedback"
-        android:title="organizer feedback"
+        android:title="Organizer Feedback"
         android:visible="false"/>
     <item
         android:id="@+id/action_parent_feedback"
-        android:title="Parent feedback"
+        android:title="Parent Feedback"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_cancel_batch"
-        android:title="Cancel event"
+        android:title="Cancel Event"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_edit_batch"
-        android:title="Edit event"
+        android:title="Edit Event"
         android:visible="false"/>
 
     <item

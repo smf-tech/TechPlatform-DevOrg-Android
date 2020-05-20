@@ -75,7 +75,11 @@ public class RegisterTrainerFragment extends Fragment implements View.OnClickLis
                 //Log.d("mvUserName_Phone", String.valueOf(charSequence));
                 if (count >= 9) {
 
-                    registerTrainerFragmentPresenter.GET_MV_USER_INFO(String.valueOf(charSequence));
+                    if (registrationtype==1) {
+                        registerTrainerFragmentPresenter.GET_MV_USER_INFO(String.valueOf(charSequence));
+                    }else {
+                        registerTrainerFragmentPresenter.GET_COMMUNITY_USER_INFO(String.valueOf(charSequence));
+                    }
                 }else {
                     et_name.setText("");
                     et_name.setEnabled(true);

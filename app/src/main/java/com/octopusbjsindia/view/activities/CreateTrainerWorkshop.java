@@ -144,6 +144,13 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
         } else {
             isforEdit = false;
         }
+        findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //onBackPressed();
+                finish();
+            }
+        });
     }
 
     private void setEditDataToFields(TrainerBachList trainerBachList) {
@@ -202,7 +209,7 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                         handler.postDelayed(() -> {
                             btn_create_batch.setEnabled(true);
 
-                        }, 100);
+                        }, 500);
                         createBatch();
 
                     }
@@ -318,12 +325,12 @@ public class CreateTrainerWorkshop extends AppCompatActivity implements View.OnC
                             }
                         } else {
                             try {
-                                startDate = formatter.parse(selectedDateString);
-                                endDate = formatter.parse(tv_enddate.getText().toString());
+                                startDate = formatter.parse(tv_startdate.getText().toString());
+                                endDate = formatter.parse(selectedDateString);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            if (startDate.getTime() < endDate.getTime()) {
+                            if (startDate.getTime() > endDate.getTime()) {
                                 Toast.makeText(CreateTrainerWorkshop.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
                             } else {
                                 textview.setText(selectedDateString);

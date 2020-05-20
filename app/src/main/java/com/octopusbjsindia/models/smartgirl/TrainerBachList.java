@@ -69,7 +69,7 @@ public class TrainerBachList {
 
     @SerializedName("currentUserBatchData")
     @Expose
-    private List<TrainerList> currentUserBatchData = null;
+    private List<CurrentUserBatchData> currentUserBatchData = null;
 
     @SerializedName("state")
     @Expose
@@ -242,11 +242,11 @@ public class TrainerBachList {
         this.batchschedule = batchschedule;
     }
 
-    public List<TrainerList> getCurrentUserBatchData() {
+    public List<CurrentUserBatchData> getCurrentUserBatchData() {
         return currentUserBatchData;
     }
 
-    public void setCurrentUserBatchData(List<TrainerList> currentUserBatchData) {
+    public void setCurrentUserBatchData(List<CurrentUserBatchData> currentUserBatchData) {
         this.currentUserBatchData = currentUserBatchData;
     }
 

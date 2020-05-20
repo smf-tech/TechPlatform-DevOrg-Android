@@ -98,7 +98,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         tvTitle.setText("Batch List");
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         toolbar_edit_action.setVisibility(View.INVISIBLE);
-        toolbar_edit_action.setImageResource(R.drawable.ic_add);
+        toolbar_edit_action.setImageResource(R.drawable.ic_plus);
         presenter = new TrainerBatchListPresenter(this);
         //setMasterData();
         //---
@@ -310,7 +310,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         return requestObject;
     }
     public JsonObject getUserProfileReqJson(int pos,String user_id) {
-        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
+        //String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(pos).get_id();
         JsonObject requestObject = new JsonObject();
         requestObject.addProperty("user_id", user_id);
         return requestObject;

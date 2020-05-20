@@ -68,4 +68,20 @@ public class RegisterTrainerFragmentPresenter  implements APIPresenterListener {
         final String url = BuildConfig.BASE_URL + String.format(Urls.PM.GET_MV_USER_INFO);
         requestCall.postDataApiCall(GET_MV_USER_INFO, params, url);
     }
+
+    public void GET_COMMUNITY_USER_INFO(String phone) {
+        APIRequestCall requestCall = new APIRequestCall();
+
+        Gson gson = new GsonBuilder().create();
+        Map<String,String> map = new HashMap<>();
+        map.put("phone",phone);
+        map.put("profileFlag","is_smartGirl_user");
+
+        String params = gson.toJson(map);
+
+        requestCall.setApiPresenterListener(this);
+        mContax.showProgressBar();
+        final String url = BuildConfig.BASE_URL + String.format(Urls.SmartGirl.GET_COMMUNITY_USER_INFO);
+        requestCall.postDataApiCall(GET_MV_USER_INFO, params, url);
+    }
 }
