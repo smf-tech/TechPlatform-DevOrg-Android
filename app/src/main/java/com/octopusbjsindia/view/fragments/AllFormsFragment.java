@@ -255,7 +255,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
     public void onMastersFormsLoaded(final String response, final String formId) {
         hideProgressBar();
         mSubmittedFormsDownloadedCount++;
-
         try {
             String count;
             if (new JSONObject(response).has(Constants.FormDynamicKeys.DATA)) {

@@ -285,7 +285,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         if (formResult != null) {
             if (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED) {
-                if (formResult.getFormApprovalStatus() == Constants.PM.REJECTED_STATUS) {
+                if (formResult.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.REJECTED_STATUS)) {
                     if (formData.getEditable().equalsIgnoreCase("false")) {
                         isEditable = false;
                     }
@@ -615,11 +615,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (result == null) {
             result = new FormResult();
             result.setFormId(formData.getId());
-            result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
         //}
+        result.setCreatedAt(Util.getCurrentTimeStamp());
         result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
@@ -662,8 +662,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             result = new FormResult();
             result.set_id(UUID.randomUUID().toString());
             result.setFormId(formData.getId());
-            result.setCreatedAt(Util.getCurrentTimeStamp());
         }
+        result.setCreatedAt(Util.getCurrentTimeStamp());
         result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
 

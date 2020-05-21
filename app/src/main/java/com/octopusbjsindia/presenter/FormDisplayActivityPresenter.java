@@ -297,8 +297,10 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         FormResult result = new FormResult();
                         result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                         result.setFormId(formId);
-                        String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
-                        result.setCreatedAt(Long.parseLong(date));
+//                        String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+//                        result.setCreatedAt(Long.parseLong(date));
+                        String updatedDate = dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME);
+                        result.setCreatedAt(Long.parseLong(updatedDate));
                         result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                         result.setResult(requestObject.toString());
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);

@@ -280,7 +280,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         String submitCount = pd.getSubmitCount();
 
                         //if (submitCount != null && !submitCount.equals("0") && localFormResults.isEmpty()) {
-                        if (localFormResults.isEmpty()) {
+                        //if (localFormResults.isEmpty()) {
                             if (Util.isConnected(getContext())) {
                                 submittedApiCallCount++;
                                 FormStatusFragmentPresenter presenter = new FormStatusFragmentPresenter(this, this);
@@ -289,10 +289,10 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                             } else {
                                 setSubmittedFormsData(localFormResults);
                             }
-                        } else {
-                            //if (localFormResults == null || localFormResults.isEmpty()) continue;
-                            setSubmittedFormsData(localFormResults);
-                        }
+//                        } else {
+//                            //if (localFormResults == null || localFormResults.isEmpty()) continue;
+//                            setSubmittedFormsData(localFormResults);
+//                        }
                     }
                 }
             }
