@@ -336,6 +336,15 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
+                                    case R.id.action_complete_batch:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).completeBatchRequest(getAdapterPosition());
+                                            Util.showToast(mContext.getString(R.string.coming_soon), mContext);
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+
                                     case R.id.action_edit_batch:
                                         if (Util.isConnected(mContext)) {
                                             ((TrainerBatchListActivity)mContext).EditBatchRequest(getAdapterPosition());

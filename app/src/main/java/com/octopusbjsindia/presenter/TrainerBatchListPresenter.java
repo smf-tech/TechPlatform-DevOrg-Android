@@ -22,6 +22,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
     private final String GET_TRAINERS_LIST = "gettrainerslist";
     private final String GET_CATEGORY = "getbatchlist";
     private final String CANCEL_EVENT_REQUEST = "CANCELEVENTREQUEST";
+    private final String COMPLETE_EVENT_REQUEST = "COMPLETEEVENTREQUEST";
     private final String ADD_TRAINERS_TO_BATCH = "addtrainertobatch";
     private final String GET_PROJECT_USER_PROFILE = "GETUSERPROFILE";
     private final String ADD_PRETEST_BATCH = "PRETESTFORBACTH";
@@ -181,6 +182,14 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CANCEL_EVENT_REQUEST,requestJson,url);
+
+    }
+    public void completeBatchAPI(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.COMPLETE_BATCH_API);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(COMPLETE_EVENT_REQUEST,requestJson,url);
 
     }
 

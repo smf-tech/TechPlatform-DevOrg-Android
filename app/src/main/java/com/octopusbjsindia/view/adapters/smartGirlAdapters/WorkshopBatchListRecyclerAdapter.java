@@ -344,6 +344,15 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
+                                    case R.id.action_complete_batch:
+                                        if (Util.isConnected(mContext)) {
+                                            ((SmartGirlWorkshopListActivity)mContext).completeWorkshopRequest(getAdapterPosition());
+                                            //Util.showToast(mContext.getString(R.string.coming_soon), mContext);
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+
                                     case R.id.action_edit_batch:
                                         if (Util.isConnected(mContext)) {
                                             ((SmartGirlWorkshopListActivity)mContext).EditWorkshopRequest(getAdapterPosition());

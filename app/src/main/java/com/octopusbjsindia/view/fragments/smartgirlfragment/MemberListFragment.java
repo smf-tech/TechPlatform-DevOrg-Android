@@ -135,6 +135,7 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
 
         }else {
             ((TrainerBatchListActivity) getActivity()).changeTitle("Member List");
+
         }
     }
 }

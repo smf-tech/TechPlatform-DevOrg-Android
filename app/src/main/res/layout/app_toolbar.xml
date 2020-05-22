@@ -32,7 +32,7 @@
                 android:paddingBottom ="@dimen/dimen_03dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:lines="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18"
@@ -49,6 +49,7 @@
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_10dp"
                 android:tint="@color/white"
+                android:src="@drawable/ic_search"
                 android:visibility="gone" />
 
             <ImageView
@@ -61,6 +62,19 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_edit"
                 android:visibility="invisible" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_box"
+                android:iconifiedByDefault="false"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/toolbar_action1"
+                app:iconifiedByDefault="false"
+                android:visibility="gone"
+                app:queryHint="Search here" />
+
         </LinearLayout>
 
 </com.google.android.material.appbar.AppBarLayout>

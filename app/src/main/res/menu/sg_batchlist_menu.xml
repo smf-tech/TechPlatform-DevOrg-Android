@@ -57,6 +57,10 @@
         android:id="@+id/action_edit_batch"
         android:title="Edit Event"
         android:visible="false"/>
+    <item
+        android:id="@+id/action_complete_batch"
+        android:title="Complete Event"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_add_new_batch"

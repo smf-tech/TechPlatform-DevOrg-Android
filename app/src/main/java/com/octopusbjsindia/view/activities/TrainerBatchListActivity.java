@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
@@ -56,7 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TrainerBatchListActivity extends AppCompatActivity implements TrainerBatchListRecyclerAdapter.OnRequestItemClicked, TrainerBatchListRecyclerAdapter.OnApproveRejectClicked {
+public class TrainerBatchListActivity extends AppCompatActivity implements TrainerBatchListRecyclerAdapter.OnRequestItemClicked, TrainerBatchListRecyclerAdapter.OnApproveRejectClicked, SearchView.OnQueryTextListener {
     //--Constant
     int viewType = 0;
     int viewTypeTrainerList = 102,viewTypeMasterTrainerList=101,viewTypeBeneficiaryList=103;
@@ -67,8 +69,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     public TrainerBatchListRecyclerAdapter trainerBatchListRecyclerAdapter;
     private List<TrainerBachList> dataList = new ArrayList<>();
     PopupMenu popup;
-    private ImageView toolbar_back_action, toolbar_edit_action;
+    private ImageView toolbar_back_action, toolbar_edit_action,toolbar_action;
     private TextView tvTitle;
+    private SearchView editSearch;
+    private boolean isSearchVisible = false;
     //----declaration
     private Fragment fragment;
     private FragmentManager fManager;
@@ -96,9 +100,13 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         fManager = getSupportFragmentManager();
         tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText("Batch List");
+        toolbar_back_action = findViewById(R.id.toolbar_back_action);
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_action  = findViewById(R.id.toolbar_action);
         toolbar_edit_action.setVisibility(View.INVISIBLE);
         toolbar_edit_action.setImageResource(R.drawable.ic_plus);
+        editSearch = findViewById(R.id.search_view1);
+        editSearch.setOnQueryTextListener(this);
         presenter = new TrainerBatchListPresenter(this);
         //setMasterData();
         //---
@@ -130,6 +138,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                 onBackPressed();
             }
         });
+
         findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -289,6 +298,11 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
         presenter.cancelBatchAPI(paramjson);
     }
+    public void completeBatchRequest(int adapterPosition) {
+        String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
+        presenter.completeBatchAPI(paramjson);
+    }
+
 
     public void EditBatchRequest(int adapterPosition) {
         String paramjson = new Gson().toJson(trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition));
@@ -532,7 +546,27 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
     public  void changeTitle(String member_list){
         tvTitle.setText(member_list);
+        toolbar_action.setVisibility(View.VISIBLE);
+        toolbar_action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isSearchVisible) {
+                    isSearchVisible = false;
+                    editSearch.setVisibility(View.VISIBLE);
+                    editSearch.requestFocus();
+                    toolbar_action.setImageResource(R.drawable.ic_close);
+                    toolbar_back_action.setVisibility(View.GONE);
+                } else {
+                    isSearchVisible = true;
+                    editSearch.setVisibility(View.GONE);
+                    toolbar_back_action.setVisibility(View.VISIBLE);
+                    toolbar_action.setImageResource(R.drawable.ic_search);
+                    filter("");
+                }
+            }
+        });
     }
+
 
     //close fragment if available else close activity on backpress
     @Override
@@ -702,5 +736,40 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
     public void showNoData() {
         ly_no_data.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        filter(newText);
+        return false;
+    }
+
+
+    void filter(String str) {
+        /*ArrayList<UserProfileList> temp = new ArrayList();
+        userProfileLists.clear();
+        updateUserListWithFilter(currentSelectedFilter);*/
+        if (!TextUtils.isEmpty(str)) {
+            /*temp.clear();
+            for (UserProfileList d : userProfileLists) {
+                if (d.getMatrimonial_profile().getPersonal_details().getFirst_name().toLowerCase().contains(str.toLowerCase())) {
+                    temp.add(d);
+                }
+            }*/
+            //update recyclerview
+            /*userProfileLists.clear();
+            userProfileLists = temp;
+            matrimonyProfileListRecyclerAdapter.updateList(userProfileLists);*/
+            Util.logger("Search Text---",str);
+        } else {
+            /*temp.clear();
+            updateUserListWithFilter(currentSelectedFilter);
+            matrimonyProfileListRecyclerAdapter.updateList(userProfileLists);*/
+        }
     }
 }

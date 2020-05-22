@@ -261,6 +261,11 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
         presenter.cancelWorkshopRequest(paramjson);
     }
+    public void completeWorkshopRequest(int adapterPosition) {
+        String paramjson = new Gson().toJson(getTrainerReqJson(adapterPosition));
+        presenter.completeWorkshopRequest(paramjson);
+    }
+
     public void EditWorkshopRequest(int adapterPosition) {
         String paramjson = new Gson().toJson(trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition));
         if (Util.isConnected(mContext)) {
