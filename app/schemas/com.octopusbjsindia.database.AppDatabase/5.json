@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "7d7bfafb616b98cab27e9db051078a91",
+    "identityHash": "e9ac91fb26787b184fd40dfe4662ddce",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -358,7 +358,7 @@
       },
       {
         "tableName": "ProcessData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `form_title` TEXT, `active` TEXT, `editable` TEXT, `multiple_entry` TEXT, `microservice` TEXT, `api_url` TEXT, `submit_count` TEXT, `category` TEXT, `form_approvalStatus` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `form_title` TEXT, `project_id` TEXT, `active` TEXT, `editable` TEXT, `multiple_entry` TEXT, `microservice` TEXT, `api_url` TEXT, `submit_count` TEXT, `category` TEXT, `form_approvalStatus` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -375,6 +375,12 @@
           {
             "fieldPath": "formTitle",
             "columnName": "form_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "project_id",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1206,7 +1212,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7d7bfafb616b98cab27e9db051078a91')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e9ac91fb26787b184fd40dfe4662ddce')"
     ]
   }
 }

@@ -2,7 +2,6 @@ package com.octopusbjsindia.models.pm;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -11,9 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.database.DataConverter;
 import com.octopusbjsindia.models.LocaleData;
 import com.octopusbjsindia.models.common.Category;
-import com.octopusbjsindia.models.common.Entity;
 import com.octopusbjsindia.models.common.Microservice;
-import com.octopusbjsindia.models.common.Project;
 
 @SuppressWarnings("unused")
 @androidx.room.Entity
@@ -36,6 +33,19 @@ public class ProcessData {
     @SerializedName("form_title")
     @Expose
     private String formTitle;
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    @ColumnInfo(name = "project_id")
+    @SerializedName("project_id")
+    @Expose
+    private String projectId;
 
     @ColumnInfo(name = "active")
     @SerializedName("active")
@@ -63,10 +73,10 @@ public class ProcessData {
     @Expose
     private String api_url;
 
-    @Ignore
-    @SerializedName("project")
-    @Expose
-    private Project project;
+//    @Ignore
+//    @SerializedName("project")
+//    @Expose
+//    private Project project;
 
     @ColumnInfo(name = "submit_count")
     @Expose
@@ -78,10 +88,10 @@ public class ProcessData {
     @Expose
     private Category category;
 
-    @Ignore
-    @SerializedName("entity")
-    @Expose
-    private Entity entity;
+//    @Ignore
+//    @SerializedName("entity")
+//    @Expose
+//    private Entity entity;
 
     @ColumnInfo(name = "form_approvalStatus")
     @SerializedName("form_approvalStatus")
@@ -153,13 +163,13 @@ public class ProcessData {
         this.api_url = api_url;
     }
 
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
+//    public Project getProject() {
+//        return project;
+//    }
+//
+//    public void setProject(Project project) {
+//        this.project = project;
+//    }
 
     public Category getCategory() {
         return category;
@@ -169,13 +179,13 @@ public class ProcessData {
         this.category = category;
     }
 
-    public Entity getEntity() {
-        return entity;
-    }
-
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
+//    public Entity getEntity() {
+//        return entity;
+//    }
+//
+//    public void setEntity(Entity entity) {
+//        this.entity = entity;
+//    }
 
     public String getFormTitle() {
         return formTitle;

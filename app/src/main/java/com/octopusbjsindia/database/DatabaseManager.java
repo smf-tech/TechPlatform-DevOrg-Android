@@ -30,6 +30,7 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.reports.ReportData;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 
 import java.util.List;
 
@@ -157,7 +158,7 @@ public class DatabaseManager {
 
     public List<ProcessData> getAllProcesses() {
         ProcessDataDao processDataDao = appDatabase.processDataDao();
-        return processDataDao.getAllProcesses();
+        return processDataDao.getAllProcesses(Util.getUserObjectFromPref().getProjectIds().get(0).getId());
     }
 
     public void deleteAllProcesses() {

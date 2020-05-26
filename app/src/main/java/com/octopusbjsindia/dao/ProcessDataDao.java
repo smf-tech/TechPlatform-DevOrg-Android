@@ -15,8 +15,8 @@ public interface ProcessDataDao {
     @Query("SELECT * FROM processdata where id = :processId")
     ProcessData getProcessData(String processId);
 
-    @Query("SELECT * FROM processdata")
-    List<ProcessData> getAllProcesses();
+    @Query("SELECT * FROM processdata where project_id = :projectId")
+    List<ProcessData> getAllProcesses(String projectId);
 
     @Query("SELECT submit_count FROM processdata where id = :processId")
     String getSubmitCount(String processId);
