@@ -83,8 +83,9 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
             ratingBar.setRating(Float.parseFloat(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName())));
         }
-
-
+        if (!((FormDisplayActivity) getActivity()).isEditable) {
+            ratingBar.setFocusable(false);
+        }
 //        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 //            @Override
 //            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -93,8 +94,6 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
 ////                ratingJsonObject.addProperty(elements.getName(),ratingBar.getRating());
 //            }
 //        });
-
-
         // set quetion at top
         text_title.setText(elements.getTitle().getLocaleValue());
 

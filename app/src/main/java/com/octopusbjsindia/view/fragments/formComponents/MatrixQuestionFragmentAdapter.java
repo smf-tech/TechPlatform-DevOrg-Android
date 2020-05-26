@@ -86,7 +86,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
         for (int j = 0; j < dataList.getColumns().size(); j++) {
             if (columnListAnswers.get(j)) {
                 ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
-            }else {
+            } else {
                 ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
             }
         }
@@ -114,10 +114,8 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
             super(itemView);
             row_title = itemView.findViewById(R.id.row_title);
             rv_matrix_question = itemView.findViewById(R.id.rv_matrix_question);
-
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
             rv_matrix_question.setLayoutManager(layoutManager);
-
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
         }

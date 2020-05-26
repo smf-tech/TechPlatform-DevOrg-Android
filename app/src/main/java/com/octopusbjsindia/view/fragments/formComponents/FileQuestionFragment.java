@@ -73,7 +73,9 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         element = (Elements) getArguments().getSerializable("Element");
         TextView tvQuetion = view.findViewById(R.id.tv_question);
         imageView = view.findViewById(R.id.iv_img1);
-        imageView.setOnClickListener(this);
+        if (((FormDisplayActivity) getActivity()).isEditable) {
+            imageView.setOnClickListener(this);
+        }
         tvQuetion.setText(element.getTitle().getLocaleValue());
         isFirstpage = getArguments().getBoolean("isFirstpage");
 
@@ -87,6 +89,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
             Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"));
             imageView.setImageURI(imageUri);
+            ((FormDisplayActivity) getActivity()).isImageUploadPending = false;
         }
     }
 
@@ -105,6 +108,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.iv_img1:
                 if (Util.isConnected(getActivity())) {
+                    ((FormDisplayActivity) getActivity()).isImageUploadPending = false;
                     onAddImageClick();
                 } else {
                     ((FormDisplayActivity) getActivity()).isImageUploadPending = true;

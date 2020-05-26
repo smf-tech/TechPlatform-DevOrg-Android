@@ -1034,7 +1034,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         fbSelect.setRotation(0);
         if (viewType == 1) {
             if (!isStructureAdd && !isOperatorAdd) {
-
                 fbCreateOperator.setVisibility(View.GONE);
                 fbCreate.setVisibility(View.GONE);
                 fbSelect.setVisibility(View.GONE);

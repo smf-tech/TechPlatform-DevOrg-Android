@@ -711,6 +711,20 @@ public class Util {
         return "";
     }
 
+    public static String getPastFutureDateStringFromToday(Integer pastFutureCount, String dateFormat) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, pastFutureCount);
+            Date d = cal.getTime();
+            DateFormat dateFormatting = new SimpleDateFormat(dateFormat);
+            String pastFutureDate = dateFormatting.format(d);
+            return pastFutureDate;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return "";
+    }
+
     public static String getAmPmTimeStringFromTimeString(String time) {
 
         try {

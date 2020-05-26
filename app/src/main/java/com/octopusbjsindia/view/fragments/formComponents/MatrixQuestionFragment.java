@@ -85,8 +85,8 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
         if (getActivity() != null && getArguments() != null) {
             if (getArguments().containsKey("Element")) {
                 elements = (Elements) getArguments().getSerializable("Element");
-                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(MatrixQuestionFragment.this, getActivity(), elements,
-                        this);
+                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
+                        MatrixQuestionFragment.this, getActivity(), elements, this);
                 rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
             }
         }

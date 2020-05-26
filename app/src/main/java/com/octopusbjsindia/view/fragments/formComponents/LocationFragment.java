@@ -23,9 +23,6 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
-import com.octopusbjsindia.models.home.RoleAccessList;
-import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocation;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.LocationFragmentPresenter;
@@ -44,9 +41,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     RelativeLayout progressBar;
     LocationFragmentPresenter presenter;
     Elements element;
-    ArrayList<String> jurisdictions = new ArrayList<>();
+    ArrayList<String> juridictions = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
-
 
     String selectedCountry = "", selectedCountryId = "", selectedState = "", selectedStateId = "",
             selectedDistrict = "", selectedDistrictId = "", selectedCity = "", selectedCityId = "",
@@ -79,34 +75,31 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         progressBar = view.findViewById(R.id.progress_bar);
         element = (Elements) getArguments().getSerializable("Element");
         isFirstpage = getArguments().getBoolean("isFirstpage");
-        jurisdictions.clear();
-        jurisdictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
+        juridictions.clear();
+        juridictions.addAll((ArrayList<String>) getArguments().getSerializable("jurisdictions"));
 
-        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
-        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        if (roleAccessList != null) {
-            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_OFFLINE_LOCATION_ALLOWED)) {
-                    isOffline = true;
-                    continue;
-                }
-            }
-        }
-
+//        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+//        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+//        if (roleAccessList != null) {
+//            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+//            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+//                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_OFFLINE_LOCATION_ALLOWED)) {
+//                    isOffline = true;
+//                    continue;
+//                }
+//            }
+//        }
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         boolean flag = true; // have in profile
-        for (String str : jurisdictions) {
+        for (String str : juridictions) {
             if (str.equalsIgnoreCase(Util.getUserObjectFromPref().getMultipleLocationLevel().getName())) {
                 flag = false;
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
-
                     countryList.clear();
                     for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++) {
                         JurisdictionType location = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
@@ -116,9 +109,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                         obj.setSelected(false);
                         countryList.add(obj);
                     }
-
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
-
                     stateList.clear();
                     for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
                         JurisdictionType location = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
@@ -253,7 +244,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etCountry);
                     view.findViewById(R.id.ly_country).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL));
                         selectedCountryId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id");
@@ -266,7 +261,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etState);
                     view.findViewById(R.id.ly_state).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL));
                         selectedStateId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.STATE_LEVEL + "Id");
@@ -279,7 +278,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etDistrict);
                     view.findViewById(R.id.ly_district).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL));
                         selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id");
@@ -292,7 +295,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etCity);
                     view.findViewById(R.id.ly_city).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
                         selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id");
@@ -305,7 +312,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etTaluka);
                     view.findViewById(R.id.ly_taluka).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL));
                         selectedTalukaId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id");
@@ -318,7 +329,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etCluster);
                     view.findViewById(R.id.ly_cluster).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL));
                         selectedClusterId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id");
@@ -331,7 +346,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etVillage);
                     view.findViewById(R.id.ly_village).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL));
                         selectedVillageId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id");
@@ -344,7 +363,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
                     EditText editText = view.findViewById(R.id.etSchool);
                     view.findViewById(R.id.ly_school).setVisibility(View.VISIBLE);
-                    editText.setOnClickListener(this);
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        editText.setFocusable(false);
+                    } else {
+                        editText.setOnClickListener(this);
+                    }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL));
                         selectedSchoolId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id");
@@ -436,8 +459,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedCountryId))
-                                    ? selectedCountryId : Util.getUserObjectFromPref().getUserLocation().getCityIds().get(0).getId(),
+                    getLocation("",
                             Constants.JurisdictionLevelName.COUNTRY_LEVEL);
                 }
                 break;
@@ -449,9 +471,19 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
-                            Constants.JurisdictionLevelName.STATE_LEVEL);
+                    if (view.findViewById(R.id.ly_country).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedCountryId)) {
+                            getLocation(selectedCountryId,
+                                    Constants.JurisdictionLevelName.STATE_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select country.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    } else {
+                        getLocation("",
+                                Constants.JurisdictionLevelName.STATE_LEVEL);
+                    }
                 }
                 break;
             case R.id.etDistrict:
@@ -462,13 +494,16 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    if (!TextUtils.isEmpty(selectedStateId)) {
+                        getLocation(selectedStateId, Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select state.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
                 break;
             case R.id.etCity:
-
                 if (cityList.size() > 0) {
                     CustomSpinnerDialogClass csdCity = new CustomSpinnerDialogClass(getActivity(), this,
                             "Select City", cityList, false);
@@ -476,9 +511,13 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedCountryId))
-                                    ? selectedCountryId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.CITY_LEVEL);
+                    if (!TextUtils.isEmpty(selectedStateId)) {
+                        getLocation(selectedStateId, Constants.JurisdictionLevelName.CITY_LEVEL);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select state.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
                 break;
             case R.id.etTaluka:
@@ -489,24 +528,49 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    getLocation((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                    if (view.findViewById(R.id.ly_district).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedDistrictId)) {
+                            getLocation(selectedDistrictId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select district.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    } else if (view.findViewById(R.id.ly_city).getVisibility() == View.VISIBLE) {
+                        if (!TextUtils.isEmpty(selectedCityId)) {
+                            getLocation(selectedCityId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else {
+                            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                            .findViewById(android.R.id.content), "Please select city.",
+                                    Snackbar.LENGTH_LONG);
+                        }
+                    }
                 }
                 break;
             case R.id.etCluster:
-                ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                        .getAccessibleLocationData(selectedTalukaId);
+                if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedTalukaId)) {
+                        ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>)
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                        .getAccessibleLocationData(selectedTalukaId);
 
-                if (clusterData != null && !clusterData.isEmpty()) {
-                    clusterList.clear();
-                    for (int i = 0; i < clusterData.size(); i++) {
-                        JurisdictionLocation location = clusterData.get(i);
-                        CustomSpinnerObject obj = new CustomSpinnerObject();
-                        obj.set_id(location.getId());
-                        obj.setName(location.getName());
-                        obj.setSelected(false);
-                        clusterList.add(obj);
+                        if (clusterData != null && !clusterData.isEmpty()) {
+                            clusterList.clear();
+                            for (int i = 0; i < clusterData.size(); i++) {
+                                JurisdictionLocation location = clusterData.get(i);
+                                CustomSpinnerObject obj = new CustomSpinnerObject();
+                                obj.set_id(location.getId());
+                                obj.setName(location.getName());
+                                obj.setSelected(false);
+                                clusterList.add(obj);
+                            }
+                        }
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select taluka.",
+                                Snackbar.LENGTH_LONG);
                     }
                 }
                 CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(getActivity(), this,
@@ -514,19 +578,39 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 csdCluster.show();
                 csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+
                 break;
             case R.id.etVillage:
-
-                ArrayList<JurisdictionLocation> villageData;
-                if (TextUtils.isEmpty(selectedClusterId)) {
-                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
-                } else {
-                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
-                            .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+                ArrayList<JurisdictionLocation> villageData = new ArrayList<>();
+                if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedClusterId)) {
+                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                                .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select cluster.",
+                                Snackbar.LENGTH_LONG);
+                    }
+                } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedTalukaId)) {
+                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                                .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select taluka.",
+                                Snackbar.LENGTH_LONG);
+                    }
                 }
 
-                if (villageData != null && !villageData.isEmpty()) {
+//                if (TextUtils.isEmpty(selectedClusterId)) {
+//                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
+//                } else {
+//                    villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+//                            .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
+//                }
+
+                if (!villageData.isEmpty()) {
                     villageList.clear();
                     for (int i = 0; i < villageData.size(); i++) {
                         JurisdictionLocation location = villageData.get(i);
@@ -537,27 +621,36 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                         villageList.add(obj);
                     }
                 }
-
-                CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Village", villageList, false);
-                csdVillage.show();
-                csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                if (villageList.size() > 0) {
+                    CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Village", villageList, false);
+                    csdVillage.show();
+                    csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                }
                 break;
             case R.id.etSchool:
+                if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(selectedVillageId)) {
+                        ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>)
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                        .getAccessibleLocationData(selectedVillageId);
 
-                ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                        .getAccessibleLocationData(selectedVillageId);
-
-                if (SchoolData != null && !SchoolData.isEmpty()) {
-                    schoolList.clear();
-                    for (int i = 0; i < SchoolData.size(); i++) {
-                        JurisdictionLocation location = SchoolData.get(i);
-                        CustomSpinnerObject obj = new CustomSpinnerObject();
-                        obj.set_id(location.getId());
-                        obj.setName(location.getName());
-                        obj.setSelected(false);
-                        schoolList.add(obj);
+                        if (SchoolData != null && !SchoolData.isEmpty()) {
+                            schoolList.clear();
+                            for (int i = 0; i < SchoolData.size(); i++) {
+                                JurisdictionLocation location = SchoolData.get(i);
+                                CustomSpinnerObject obj = new CustomSpinnerObject();
+                                obj.set_id(location.getId());
+                                obj.setName(location.getName());
+                                obj.setSelected(false);
+                                schoolList.add(obj);
+                            }
+                        }
+                    } else {
+                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Please select village.",
+                                Snackbar.LENGTH_LONG);
                     }
                 }
 
@@ -566,6 +659,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 csdSchool.show();
                 csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+
+
                 break;
             case R.id.bt_previous:
                 ((FormDisplayActivity) getActivity()).goPrevious();

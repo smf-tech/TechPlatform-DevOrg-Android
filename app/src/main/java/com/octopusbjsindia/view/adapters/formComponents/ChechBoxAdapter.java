@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Choice;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 
 import java.util.ArrayList;
@@ -55,18 +56,20 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.check_box);
+            if (!((FormDisplayActivity) mContext.getActivity()).isEditable) {
+                checkBox.setEnabled(false);
+            }
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         mContext.isNone = false;
                         mContext.cbNone.setChecked(false);
-                        if(!mContext.selectedList.contains(list.get(getAdapterPosition()).getValue()))
+                        if (!mContext.selectedList.contains(list.get(getAdapterPosition()).getValue()))
                             mContext.selectedList.add(list.get(getAdapterPosition()).getValue());
                     } else {
                         mContext.selectedList.remove(list.get(getAdapterPosition()).getValue());
                     }
-
                 }
             });
         }

@@ -17,6 +17,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +29,19 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
     private List<Column> columnList;
     private List<Boolean> columnListAnswers = new ArrayList<>();
     private OnRequestItemClicked clickListener;
-
     private PreferenceHelper preferenceHelper;
     private String RowName;
     private int rowPosition;
     private Fragment mfragment;
 
-    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context, List<Column> columnList, final OnRequestItemClicked clickListener,
-                                        String s, int position) {
+    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context, List<Column> columnList,
+                                        final OnRequestItemClicked clickListener, String s, int position) {
         mfragment = fragment;
         mContext = context;
         RowName = s;
         rowPosition = position;
         this.columnList = columnList;
         this.clickListener = clickListener;
-
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
         if (fragment.rowMap != null) {
@@ -59,8 +58,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 columnListAnswers.add(true);
             }
         }
-
-
     }
 
     @Override
@@ -86,7 +83,6 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
                 //     Log.d("isChecked", "isChecked-->" + RowName + " " + isChecked + "  checkedId " + checkedId);
             }
         });
-
         holder.btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +102,11 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
             }
         });
 
+        if (!((FormDisplayActivity) mContext).isEditable) {
+            holder.toggleGroup2.setEnabled(false);
+            holder.btn_yes.setEnabled(false);
+            holder.btn_no.setEnabled(false);
+        }
     }
 
     @Override
@@ -117,16 +118,10 @@ public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQue
         void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
     }
 
-
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
-
         TextView column_name;
-
         MaterialButtonToggleGroup toggleGroup2;
-
         Button btn_yes, btn_no;
-
-
         EmployeeViewHolder(View itemView) {
             super(itemView);
             column_name = itemView.findViewById(R.id.column_name);

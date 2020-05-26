@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.utility.AppEvents;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 
 public class FormsFragment extends Fragment {
@@ -30,6 +31,7 @@ public class FormsFragment extends Fragment {
     private static RelativeLayout progressBarLayout;
     @SuppressLint("StaticFieldLeak")
     private static ProgressBar progressBar;
+    private String navigateToStatus = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class FormsFragment extends Fragment {
 
             if ((boolean) getArguments().getSerializable("SHOW_BACK")) {
                 ((HomeActivity) getActivity()).showBackArrow();
+            }
+            if (getArguments().getSerializable("NAVIGATE_TO") != null) {
+                navigateToStatus = (String) getArguments().getSerializable("NAVIGATE_TO");
             }
         }
 
@@ -72,6 +77,20 @@ public class FormsFragment extends Fragment {
 
         progressBarLayout = formsFragmentView.findViewById(R.id.gen_frag_progress_bar);
         progressBar = formsFragmentView.findViewById(R.id.pb_gen_form_fragment);
+
+        if (navigateToStatus != "") {
+            switch (navigateToStatus) {
+                case Constants.PM.PENDING_STATUS:
+                case Constants.PM.APPROVED_STATUS:
+                case Constants.PM.REJECTED_STATUS:
+                case Constants.PM.UNSYNC_STATUS:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case Constants.PM.SAVED_STATUS:
+                    viewPager.setCurrentItem(0);
+
+            }
+        }
     }
 
     static RelativeLayout getProgressBarView() {
@@ -99,7 +118,7 @@ public class FormsFragment extends Fragment {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new AllFormsFragment();
+            Fragment fragment = new PendingFormsFragment();
             switch (position) {
 //                case 0:
 //                    fragment = new AllFormsFragment();

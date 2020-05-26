@@ -292,6 +292,7 @@ public class Constants {
     public class FormDynamicKeys {
         public static final String FORM_ID = "form_id";
         public static final String FORM_TITLE = "form_title";
+        public static final String DATA = "data";
         public static final String METADATA = "metadata";
         public static final String FORM = "form";
         public static final String SUBMIT_COUNT = "submit_count";
@@ -300,6 +301,8 @@ public class Constants {
         public static final String OID = "$oid";
         public static final String UPDATED_DATE_TIME = "updatedDateTime";
         public static final String CREATED_DATE_TIME = "createdDateTime";
+        public static final String STATUS = "status";
+        public static final String RESULT = "result";
     }
 
     class Expression {

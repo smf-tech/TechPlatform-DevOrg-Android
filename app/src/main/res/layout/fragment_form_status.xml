@@ -87,59 +87,85 @@
         android:scrollbars="none"
         android:transitionGroup="true" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_filter3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:text="Rejected"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_rejected_icon_filter"
-        app:tint="@color/white"/>
+        app:icon="@drawable/ic_rejected_icon_filter"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_filter2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:text="Approved"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_approved_icon_filter"
-        app:tint="@color/white"/>
+        app:icon="@drawable/ic_approved_icon_filter"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_filter1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:text="Pending"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_pending_icon_filter"
-        app:tint="@color/white"/>
+        app:icon="@drawable/ic_pending_icon_filter"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btn_no_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_view_all_icon"
-        app:tint="@color/white"/>
+        android:text="All Forms"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_view_all_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_filter_icon_list"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_235dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/empty_matrimony_back"
+        android:visibility="gone" />
 
 </RelativeLayout>

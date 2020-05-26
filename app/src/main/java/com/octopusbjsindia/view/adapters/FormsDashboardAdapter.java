@@ -1,10 +1,10 @@
 package com.octopusbjsindia.view.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.FormStatusCountData;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.view.fragments.PMFragment;
 
 import java.util.ArrayList;
 
 public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAdapter.ViewHolder>{
 
-    private Context mContext;
+    private PMFragment mContext;
     private ArrayList<FormStatusCountData> formStatusCountDataList;
 
-    public FormsDashboardAdapter(final Context context, final ArrayList<FormStatusCountData> formStatusCountDataList) {
+    public FormsDashboardAdapter(final PMFragment context, final ArrayList<FormStatusCountData> formStatusCountDataList) {
         this.mContext = context;
         this.formStatusCountDataList = formStatusCountDataList;
     }
@@ -49,10 +50,14 @@ public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAd
         }
         holder.txtStatus.setText(formStatusCountData.getType());
         holder.txtCount.setText(String.valueOf(formStatusCountData.getCount()));
+        holder.rlListItem.setOnClickListener(v -> {
+            mContext.navigateToScreen(formStatusCountData.getType(), formStatusCountData.getCount());
+        });
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout rlListItem;
         ImageView imgIcon;
         TextView txtStatus;
         TextView txtCount;
@@ -60,6 +65,7 @@ public class FormsDashboardAdapter extends RecyclerView.Adapter<FormsDashboardAd
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            rlListItem = itemView.findViewById(R.id.rl_list_item);
             imgIcon = itemView.findViewById(R.id.img_status_icon);
             txtStatus = itemView.findViewById(R.id.text_status);
             txtCount = itemView.findViewById(R.id.text_status_count);

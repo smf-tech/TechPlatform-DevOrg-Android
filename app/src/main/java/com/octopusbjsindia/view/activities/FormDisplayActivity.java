@@ -34,7 +34,6 @@ import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.forms.Form;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.forms.VisibleIf;
@@ -69,7 +68,7 @@ import java.util.UUID;
 
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
-    private Form formModel;
+    private FormData formData;
     private ViewPager vpFormElements;
     private ViewPagerAdapter adapter;
     private List<Elements> formDataArrayList = new ArrayList<Elements>();
@@ -88,6 +87,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
+    private FormResult formResult;
+    public boolean isEditable = true;
+    private ImageView imgNoData;
+
     private String batchId = "";
     private String trainerId = "";
     private String beneficiaryId = "";
@@ -101,10 +104,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         setContentView(R.layout.activity_form_display);
 
         tvTitle = findViewById(R.id.toolbar_title);
-        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setVisibility(View.VISIBLE);
-        toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
         vpFormElements = findViewById(R.id.viewpager);
+        imgNoData = findViewById(R.id.img_no_data);
+        //toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
@@ -116,6 +118,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
+            //mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             trainerId = getIntent().getExtras().getString(Constants.SmartGirlModule.TRAINER_ID);
             formStatus = getIntent().getExtras().getString(Constants.SmartGirlModule.FORM_STATUS);
             batchId = getIntent().getExtras().getString(Constants.SmartGirlModule.BATCH_ID);
@@ -132,20 +135,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
-            if (mIsPartiallySaved) {
-                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
-            }
+//            if (mIsPartiallySaved) {
+//                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
+//            }
 
-            if (formData == null) {
-                if (Util.isConnected(this)) {
-                    presenter.getFormSchema(formId);
-                }
-            } else {
-                parseFormSchema(formData);
-
-                FormResult formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
+            if (processId != null && processId != "") {
+                formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
                 if (formResult != null) {
-                    Log.d("Result", new Gson().toJson(formResult));
                     try {
                         jsonToMap(new Gson().toJson(formResult));
                     } catch (JSONException e) {
@@ -153,14 +149,24 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     }
                 }
             }
+
+            if (formData == null) {
+                if (Util.isConnected(this)) {
+                    presenter.getFormSchema(formId);
+                } else {
+                    tvTitle.setText("Forms");
+                    imgNoData.setVisibility(View.VISIBLE);
+                    Util.showToast(getString(R.string.offline_no_form_schema_msg), this);
+                }
+            } else {
+                this.formData = formData;
+                parseFormSchema(formData);
+            }
         }
         initView();
     }
 
     public void jsonToMap(String str) throws JSONException {
-
-        HashMap<String, String> map = new HashMap<String, String>();
-        Gson g = new Gson();
 
         JsonObject jObject = PlatformGson.getPlatformGsonInstance().fromJson(str, JsonObject.class);
         Iterator iterator = jObject.entrySet().iterator();
@@ -177,7 +183,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         }
     }
-
 
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
@@ -203,13 +208,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         });
 
-        findViewById(R.id.toolbar_edit_action).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
+//        toolbar_edit_action.setVisibility(View.VISIBLE);
+//        toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
+//        toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onBackPressed();
+//            }
+//        });
     }
 
     @Override
@@ -293,10 +299,45 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     public void parseFormSchema(FormData formData) {
         if (formData == null) {
+            imgNoData.setVisibility(View.VISIBLE);
             return;
         }
-        formModel = new Form();
-        formModel.setData(formData);
+        this.formData = new FormData();
+        this.formData = formData;
+
+        if (formResult != null) {
+            if (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED) {
+                if (formResult.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.REJECTED_STATUS)) {
+                    if (formData.getEditable().equalsIgnoreCase("false")) {
+                        isEditable = false;
+                    }
+                } else {
+                    isEditable = false;
+                }
+            } else if (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED) {
+                isEditable = false;
+            }
+        }
+
+//        if (formResult != null && (formResult.getFormStatus() == SyncAdapterUtils.FormStatus.SYNCED
+//                || formResult.getFormStatus() == SyncAdapterUtils.FormStatus.UN_SYNCED)) {
+//            if (formData.getEditable().equalsIgnoreCase("false")) {
+//                isEditable = false;
+//            }
+//        }
+
+        if (isEditable) {
+            toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+            toolbar_edit_action.setVisibility(View.VISIBLE);
+            toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
+            toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
+
         TextView tvFormTitle = findViewById(R.id.tv_form_title);
         tvFormTitle.setText(formData.getName().getLocaleValue());
         if (formData.getLocationRequired()) {
@@ -327,109 +368,19 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         formAnswersMap.putAll(hashMap);
         if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 1) {
             formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+            if (isEditable) {
+                showDialog(this, "Alert", "Do you want to submit?",
+                        "Save", "Submit", false);
+            } else {
+                showDialog(this, "Alert", "Do you want to close the form?",
+                        "OK", "Cancel");
+            }
         } else {
             if (formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf() == null) {
                 tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
                 vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
             } else {
                 isQuestionVisible(1);
-//                String elementKey = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getName();
-//                VisibleIf visibleIf = formDataArrayList.get((vpFormElements.getCurrentItem() + 1)).getVisibleIf();
-//                String conditionType = visibleIf.getConditionType();
-//                List<VisibleIfListObject> conditionsList = visibleIf.getConditionsList();
-
-//                if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_NO_CONDITION)) {
-//                    for (VisibleIfListObject object : conditionsList) {
-//                        String question = object.getQuestionKey();
-//                        String answer = object.getAnswer();
-//                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                            tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-//                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-//                            break;
-//                        } else {
-//                            formAnswersMap.remove(elementKey);
-//                            if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-//                                formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-//                                showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-//                            } else {
-//                                tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-//                                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
-//                            }
-//                        }
-//                    }
-//                } else if(isQuestionVisible() == 1) {
-//                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-//                } else if(isQuestionVisible() == -1) {
-//                    isQuestionVisible();
-//                    tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
-//                }
-//                    if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_OR_CONDITION)) {
-//                    boolean isConditionMatched = false;
-//                    for (VisibleIfListObject object : conditionsList) {
-//                        String question = object.getQuestionKey();
-//                        String answer = object.getAnswer();
-//                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                            isConditionMatched = true;
-//                            break;
-//                        }
-//                    }
-//                    if (isConditionMatched) {
-//                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-//                    } else {
-//                        formAnswersMap.remove(elementKey);
-//                        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-//                            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-//                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-//                        } else {
-//                            tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-//                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
-//                        }
-//                    }
-//                } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_AND_CONDITION)) {
-//                    boolean isConditionMatched = false;
-//                    for (VisibleIfListObject object : conditionsList) {
-//                        String question = object.getQuestionKey();
-//                        String answer = object.getAnswer();
-//                        if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                            isConditionMatched = true;
-//                        } else {
-//                            isConditionMatched = false;
-//                            break;
-//                        }
-//                    }
-//                    if (isConditionMatched) {
-//                        tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-//                    } else {
-//                        formAnswersMap.remove(elementKey);
-//                        if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-//                            formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-//                            showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-//                        } else {
-//                            tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-//                            vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
-//                        }
-//                    }
-//                }
-//                String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
-//                String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
-//                if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-//                    tvTitle.setText((vpFormElements.getCurrentItem() + 2) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 1));
-//                } else {
-//                    formAnswersMap.remove(elementKey);
-//                    if (formDataArrayList.size() == vpFormElements.getCurrentItem() + 2) {
-//                        formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-//                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
-//                    } else {
-//                        tvTitle.setText((vpFormElements.getCurrentItem() + 3) + "/" + formDataArrayList.size());
-//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + 2));
-//                    }
-//                }
             }
         }
     }
@@ -440,73 +391,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
         } else {
             isPreviousQuestionVisible(1);
-//            VisibleIf visibleIf = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
-//            String conditionType = visibleIf.getConditionType();
-//            List<VisibleIfListObject> conditionsList = visibleIf.getConditionsList();
-//
-//            if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_NO_CONDITION)) {
-//                for (VisibleIfListObject object : conditionsList) {
-//                    String question = object.getQuestionKey();
-//                    String answer = object.getAnswer();
-//                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                        tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-//                        break;
-//                    } else {
-//                        tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
-//                        vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
-//                    }
-//                }
-//            } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_OR_CONDITION)) {
-//                boolean isConditionMatched = false;
-//                for (VisibleIfListObject object : conditionsList) {
-//                    String question = object.getQuestionKey();
-//                    String answer = object.getAnswer();
-//                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                        isConditionMatched = true;
-//                        break;
-//                    }
-//                }
-//                if (isConditionMatched) {
-//                    tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-//                } else {
-//                    tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
-//                }
-//            } else if (conditionType.equalsIgnoreCase(Constants.PM.VISIBLE_IF_AND_CONDITION)) {
-//                boolean isConditionMatched = false;
-//                for (VisibleIfListObject object : conditionsList) {
-//                    String question = object.getQuestionKey();
-//                    String answer = object.getAnswer();
-//                    if (formAnswersMap.get(question).equalsIgnoreCase(answer)) {
-//                        isConditionMatched = true;
-//                    } else {
-//                        isConditionMatched = false;
-//                        break;
-//                    }
-//                }
-//                if (isConditionMatched) {
-//                    tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-//                } else {
-//                    tvTitle.setText((vpFormElements.getCurrentItem() - 1) + "/" + formDataArrayList.size());
-//                    vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
-//                }
-//            }
         }
-//        else {
-//            String visible = formDataArrayList.get((vpFormElements.getCurrentItem() - 1)).getVisibleIf();
-//            String quetion = visible.substring(visible.indexOf('{') + 1, visible.indexOf('}'));
-//            String selection = visible.substring(visible.indexOf("=") + 3, visible.length() - 1);
-//            if (selection.equalsIgnoreCase(formAnswersMap.get(quetion))) {
-//                tvTitle.setText((vpFormElements.getCurrentItem()) + "/" + formDataArrayList.size());
-//                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 1));
-//            } else {
-//                tvTitle.setText((vpFormElements.getCurrentItem() - 2) + "/" + formDataArrayList.size());
-//                vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - 2));
-//            }
-//        }
     }
 
     private void isQuestionVisible(int i) {
@@ -526,7 +411,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     formAnswersMap.remove(elementKey);
                     if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                         formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                        showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                        if (isEditable) {
+                            showDialog(this, "Alert", "Do you want to submit?",
+                                    "Save", "Submit", false);
+                        } else {
+                            showDialog(this, "Alert", "Do you want to close the form?",
+                                    "OK", "Cancel");
+                        }
                     } else {
                         if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                             tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -554,7 +445,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formAnswersMap.remove(elementKey);
                 if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                     formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                    showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                    if (isEditable) {
+                        showDialog(this, "Alert", "Do you want to submit?",
+                                "Save", "Submit", false);
+                    } else {
+                        showDialog(this, "Alert", "Do you want to close the form?",
+                                "OK", "Cancel");
+                    }
                 } else {
                     if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                         tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -583,7 +480,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formAnswersMap.remove(elementKey);
                 if (formDataArrayList.size() == vpFormElements.getCurrentItem() + (i + 1)) {
                     formAnswersMap.put("Lang", Util.getLocaleLanguageCode());
-                    showDialog(this, "Alert", "Do you want to submit?", "Save", "Submit", false);
+                    if (isEditable) {
+                        showDialog(this, "Alert", "Do you want to submit?",
+                                "Save", "Submit", false);
+                    } else {
+                        showDialog(this, "Alert", "Do you want to close the form?",
+                                "OK", "Cancel");
+                    }
                 } else {
                     if (formDataArrayList.get((vpFormElements.getCurrentItem() + (i + 1))).getVisibleIf() == null) {
                         tvTitle.setText((vpFormElements.getCurrentItem() + (i + 2)) + "/" + formDataArrayList.size());
@@ -666,6 +569,17 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
     @Override
     public void onBackPressed() {
+        if (formData == null) {
+            finish();
+            return;
+        }
+        if (isEditable) {
+            showDialog(this, "Alert", "Do you want to save the form?",
+                    "Save", "Discard", true);
+        } else {
+            showDialog(this, "Alert", "Do you want to close the form?",
+                    "OK", "Cancel");
+        }
         if (isForSmartGirl){
             showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
         }else {
@@ -674,6 +588,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public void submitForm() {
+        if (formResult != null && formResult.getOid() != null) {
+            formAnswersMap.put(Constants.PM.PROCESS_ID, formResult.getOid());
+        }
         Location location = gpsTracker.getLocation();
         String strLat, strLong;
         if (location != null) {
@@ -709,40 +626,43 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
             //url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
             //}
-            url = BuildConfig.BASE_URL + Urls.PM.SET_PROCESS_RESULT + "/" + formModel.getData().getId();
+            url = BuildConfig.BASE_URL + String.format(Urls.PM.SET_PROCESS_RESULT, formData.getId());
+
             presenter.onSubmitClick(Constants.ONLINE_SUBMIT_FORM_TYPE, url,
-                    formModel.getData().getId(), processId, mUploadedImageUrlList);
+                    formData.getId(), processId, mUploadedImageUrlList);
         } else {
-            if (formModel.getData() != null) {
-                saveFormToLocalDatabase();
+            if (formData != null) {
+                saveOfflineFormToLocalDb();
 
                 Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
                 LocalBroadcastManager.getInstance(getApplicationContext())
                         .sendBroadcast(intent);
 
                 AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
-                        formModel.getData().getName()));
+                        formData.getName()));
 
                 Util.showToast(getResources().getString(R.string.form_saved_offline), this);
-                Log.d(TAG, "Form saved " + formModel.getData().getId());
-                Objects.requireNonNull(this).onBackPressed();
+                Log.d(TAG, "Form saved " + formData.getId());
+                //Objects.requireNonNull(this).onBackPressed();
             }
         }
     }
 
-    private void saveFormToLocalDatabase() {
-        FormData formData = formModel.getData();
+    private void saveOfflineFormToLocalDb() {
+        //FormData formData = this.formData;
         FormResult result;
-        if (mIsPartiallySaved) {
+        //if (mIsPartiallySaved) {
             result = DatabaseManager.getDBInstance(this).getFormResult(processId);
-        } else {
+        //} else {
+        if (result == null) {
             result = new FormResult();
             result.setFormId(formData.getId());
-            result.setFormNameLocale(formData.getName());
-            result.setCreatedAt(Util.getCurrentTimeStamp());
             String locallySavedFormID = UUID.randomUUID().toString();
             result.set_id(locallySavedFormID);
         }
+        //}
+        result.setCreatedAt(Util.getCurrentTimeStamp());
+        result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.UN_SYNCED);
 
         if (formData.getCategory() != null) {
@@ -763,29 +683,31 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     }
                 }
             }
-            result.setRequestObject(json);
+            //result.setRequestObject(json);
             if (obj != null) {
                 result.setResult(obj.toString());
                 //presenter.setSavedForm(result);
-                if (mIsPartiallySaved) {
-                    DatabaseManager.getDBInstance(this).updateFormResult(result);
-                } else {
+//                if (mIsPartiallySaved) {
+//                    DatabaseManager.getDBInstance(this).updateFormResult(result);
+//                } else {
                     DatabaseManager.getDBInstance(this).insertFormResult(result);
-                }
+                //}
             }
         }
     }
 
     public void savePartialForm() {
-        FormData formData = formModel.getData();
-        FormResult result = new FormResult();
-        result.set_id(UUID.randomUUID().toString());
-
-        result.setFormId(formData.getId());
-        result.setFormCategoryLocale(formData.getCategory().getName());
+        //FormData formData = formModel.getData();
+        FormResult result;//= new FormResult();
+        result = DatabaseManager.getDBInstance(this).getFormResult(processId);
+        if (result == null) {
+            result = new FormResult();
+            result.set_id(UUID.randomUUID().toString());
+            result.setFormId(formData.getId());
+        }
+        result.setCreatedAt(Util.getCurrentTimeStamp());
         result.setFormNameLocale(formData.getName());
         result.setFormStatus(SyncAdapterUtils.FormStatus.PARTIAL);
-        result.setCreatedAt(Util.getCurrentTimeStamp());
 
         if (formData.getCategory() != null) {
             LocaleData category = formData.getCategory().getName();
@@ -808,16 +730,19 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 result.setResult(obj.toString());
             }
         }
-        if (mIsPartiallySaved) {
+        //if (mIsPartiallySaved) {
             //String processId = getArguments().getString(Constants.PM.PROCESS_ID);
-            FormResult form = DatabaseManager.getDBInstance(this).getPartiallySavedForm(processId);
-            if (form != null) {
-                result.set_id(form.get_id());
-            }
-            DatabaseManager.getDBInstance(this).updateFormResult(result);
-        } else {
+        //FormResult form = DatabaseManager.getDBInstance(this).getPartiallySavedForm(processId);
+
+//        FormResult form = DatabaseManager.getDBInstance(this).getFormResult(processId);
+//            if (form != null) {
+//                result.set_id(form.get_id());
+//            }
+
+        //DatabaseManager.getDBInstance(this).updateFormResult(result);
+        //} else {
             DatabaseManager.getDBInstance(this).insertFormResult(result);
-        }
+        //}
 
         Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -871,25 +796,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     }
 
     public <T> void showNextScreen(T data) {
-//        formModel = PlatformGson.getPlatformGsonInstance().fromJson((String) data, Form.class);
-//        //initViews();
-//
-//        if (mIsInEditMode) {
-//            FormResult formResult = DatabaseManager.getDBInstance(getActivity()).getFormResult(processId);
-//            if (formResult != null) {
-//                getFormDataAndParse(formResult);
-//            } else {
-//                if (Util.isConnected(getContext())) {
-//                    String url;
-//                    if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
-//
-//                        url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
-//
-//                        presenter.getFormResults(url);
-//                    }
-//                }
-//            }
-//        }
     }
 
     public void uploadImage(File file, String type, final String formName) {
@@ -956,7 +862,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 } else {
                     if (isImageUploadPending) {
                         Util.showDialog(this, "Alert", "You can not submit this form as " +
-                                "image selection is remaining. Now, you can save this form and again complete" +
+                                "image selection is pending. Now, you can save this form and again complete " +
                                 "image question while you are connected to network and then submit form.", "OK", "");
                         return;
                     }
@@ -968,6 +874,51 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
 
         dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+                finish();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         dialog.show();

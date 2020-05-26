@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
+import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
@@ -42,6 +43,7 @@ import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.pm.ProcessData;
+import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GsonRequestFactory;
 import com.octopusbjsindia.utility.PlatformGson;
@@ -125,7 +127,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void submitForm(final FormResult form) {
         try {
-            URL formUrl = new URL(getFormUrl(form));
+            //URL formUrl = new URL(getFormUrl(form));
+            URL formUrl = new URL(BuildConfig.BASE_URL + String.format(Urls.PM.SET_PROCESS_RESULT,
+                    form.getFormId()));
 
             Login loginObj = getLoginObjectFromPref();
             if (loginObj == null || loginObj.getLoginData() == null ||
@@ -141,6 +145,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             connection.setRequestProperty("Accept", "application/json, text/plain, */*");
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             connection.setRequestProperty(Constants.Login.AUTHORIZATION, accessToken);
+            connection.setRequestProperty("orgId", getUserObjectFromPref().getOrgId());
+            connection.setRequestProperty("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+            connection.setRequestProperty("roleId", getUserObjectFromPref().getRoleIds());
             connection.setChunkedStreamingMode(0);
             connection.connect();
 
@@ -206,34 +213,62 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
-                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
-                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
-                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+//                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+//                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//
+//                requestObject.put(Constants.FormDynamicKeys.FORM_ID, form.getFormId());
+//                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+//                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+//
+//                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+//                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
-                requestObject.put(Constants.FormDynamicKeys.FORM_ID, form.getFormId());
-                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+//                FormResult result = new FormResult();
+//                result.setFormName(form.getFormName());
+//                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+//                result.setFormId(form.getFormId());
+//                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+//                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//                result.setResult(requestObject.toString());
+//
+//                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+//                result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+//
+//                DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
 
-                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
+                //FormResult result = DatabaseManager.getDBInstance(getContext()).getFormResult(form.get_id());
+
+//                if (idObject.getString(Constants.FormDynamicKeys.OID) != null) {
+//                    FormResult formResult = DatabaseManager
+//                            .getDBInstance(getContext()).getFormResult(idObject.getString(Constants.FormDynamicKeys.OID));
+
+                if (form != null) {
+                    DatabaseManager.getDBInstance(getContext())
+                            .deleteFormResult(form);
+                }
+                //}
 
                 FormResult result = new FormResult();
-                result.setFormName(form.getFormName());
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                 result.setFormId(form.getFormId());
-                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                //String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                String updatedDate = dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME);
+                result.setCreatedAt(Long.parseLong(updatedDate));
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
-
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                result.setFormApprovalStatus(dataObject.getString(Constants.FormDynamicKeys.STATUS));
 
                 DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
 
-                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
-                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
-            }
+                AppEvents.trackAppEvent(getContext().getString(R.string.event_form_submitted_success,
+                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
+//                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
+//                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+            }
 
             updateFormSubmittedCount(form);
 

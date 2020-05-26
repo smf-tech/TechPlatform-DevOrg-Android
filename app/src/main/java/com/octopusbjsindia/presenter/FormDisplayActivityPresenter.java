@@ -134,7 +134,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                     if (form != null && form.getData() != null) {
                         FormDisplayActivity activity = fragmentWeakReference.get();
                         if (activity != null) {
-
                             DatabaseManager.getDBInstance(activity).insertFormSchema(form.getData());
                         }
                     }
@@ -274,16 +273,16 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                         JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
-                        requestObject.put(Constants.FormDynamicKeys._ID, idObject);
-                        requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
-                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
-
-                        requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
-                        requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
-                                dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
-
-                        requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
-                                dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
+//                        requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+//                        requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+//                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//
+//                        requestObject.put(Constants.FormDynamicKeys.FORM_ID, formId);
+//                        requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+//                                dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+//
+//                        requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+//                                dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
                         if (oid != null) {
                             FormResult formResult = DatabaseManager
@@ -298,12 +297,16 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         FormResult result = new FormResult();
                         result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                         result.setFormId(formId);
-                        String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
-                        result.setCreatedAt(Long.parseLong(date));
+//                        String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+//                        result.setCreatedAt(Long.parseLong(date));
+                        String updatedDate = dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME);
+                        result.setCreatedAt(Long.parseLong(updatedDate));
                         result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                         result.setResult(requestObject.toString());
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                         result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                        result.setFormApprovalStatus(dataObject.getString(Constants.FormDynamicKeys.STATUS));
+
                         DatabaseManager.getDBInstance(fragmentWeakReference.get()).insertFormResult(result);
 
                         AppEvents.trackAppEvent(fragmentWeakReference.get().getString(R.string.event_form_submitted_success,
