@@ -121,6 +121,7 @@ public class Urls {
         public static final String CHECK_USER_CREATED = "api/checkProfile/%1$s/%2$s";
 
         public static final String REGISTER_USER_TO_MEET = "api/registration_meet";
+        public static final String MATRIMONY_NEW_USER = "api/newUserRegister";
     }
 
     public class SSModule {

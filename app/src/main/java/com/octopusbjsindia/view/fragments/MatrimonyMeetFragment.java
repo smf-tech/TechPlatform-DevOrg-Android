@@ -46,7 +46,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
     private MatrimonyMeetFragmentPresenter matrimonyMeetFragmentPresenter;
     MatrimonyMeet meetData;
     PopupMenu popup;
-    private MatrimonyFragment matrimonyFragment;
+    private MatrimonyMeetDetailFragment matrimonyFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,7 +147,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                 meetData.setBadgeFanlize(true);
-                MatrimonyFragment.getInstance().updateBadgeStatus(true);
+                MatrimonyMeetDetailFragment.getInstance().updateBadgeStatus(true);
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
@@ -159,13 +159,13 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)){
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
-                MatrimonyFragment.getInstance().updateMeetList();
+                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
-                MatrimonyFragment.getInstance().updateBadgeStatus(false);
+                MatrimonyMeetDetailFragment.getInstance().updateBadgeStatus(false);
             }
         }
     }

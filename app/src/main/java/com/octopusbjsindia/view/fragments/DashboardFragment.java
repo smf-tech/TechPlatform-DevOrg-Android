@@ -156,6 +156,7 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.MATRIMONY:
                     adapter.addFragment(new MatrimonyFragment());
+//                    adapter.addFragment(new MatrimonyMeetDetailFragment());
                     break;
 
                 case Constants.Home.SUJALAM_SUPHALAM:
