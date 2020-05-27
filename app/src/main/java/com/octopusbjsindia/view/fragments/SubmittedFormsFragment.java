@@ -419,7 +419,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             for (ProcessData processData : json.getData()) {
                 DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
             }
-            populateData(json);
+            //populateData(json);
+            List<ProcessData> processDataArrayList = DatabaseManager
+                    .getDBInstance(getActivity()).getAllProcesses();
+            if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                Processes processes = new Processes();
+                processes.setData(processDataArrayList);
+                populateData(processes);
+            } else {
+                showNoDataText = true;
+            }
         }
     }
 

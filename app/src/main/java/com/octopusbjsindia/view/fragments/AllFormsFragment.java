@@ -191,8 +191,17 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 for (ProcessData processData : json.getData()) {
                     DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
                 }
-                processResponse(json);
+                //processResponse(json);
+                List<ProcessData> processDataArrayList =
+                        DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+
+                if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                    Processes processes = new Processes();
+                    processes.setData(processDataArrayList);
+                    processResponse(processes);
+                }
             }
+
             hideProgressBar();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
