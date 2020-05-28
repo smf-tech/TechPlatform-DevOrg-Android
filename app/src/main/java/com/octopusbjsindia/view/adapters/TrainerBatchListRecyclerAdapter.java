@@ -331,7 +331,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     case R.id.action_cancel_batch:
                                         if (Util.isConnected(mContext)) {
                                             ((TrainerBatchListActivity)mContext).cancelBatchRequest(getAdapterPosition());
-                                            Util.showToast(mContext.getString(R.string.coming_soon), mContext);
+                                            //Util.showToast(mContext.getString(R.string.coming_soon), mContext);
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }

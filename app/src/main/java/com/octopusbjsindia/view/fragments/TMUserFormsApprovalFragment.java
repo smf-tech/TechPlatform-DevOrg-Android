@@ -170,6 +170,8 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             tmApprovalRequestModel.setEnddate("");
             tmApprovalRequestModel.setUserId(requetsObject.getString("user_id"));
             tmApprovalRequestModel.setId("" + tmUserFormsApplicationsList.get(pos).get_id().get$oid());
+            tmApprovalRequestModel.setSurvey_id(tmUserFormsApplicationsList.get(pos).getSurvey_id());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,6 +215,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
                 tmApprovalRequestModel.setStartdate("");
                 tmApprovalRequestModel.setEnddate("");
                 tmApprovalRequestModel.setId("" + tmUserFormsApplicationsList.get(pos).get_id().get$oid());
+                tmApprovalRequestModel.setSurvey_id(tmUserFormsApplicationsList.get(pos).getSurvey_id());
             } catch (Exception e) {
                 e.printStackTrace();
             }

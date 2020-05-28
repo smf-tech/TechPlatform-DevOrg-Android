@@ -242,7 +242,11 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             ly_no_data.setVisibility(View.VISIBLE);
         }
         if (dataList!=null) {
-            tvTitle.setText("Batch List " + "("+dataList.size()+")");
+            if (fManager.getBackStackEntryCount()>0){
+
+            }else {
+                tvTitle.setText("Batch List " + "(" + dataList.size() + ")");
+            }
         }
         /*trainerBatchListRecyclerAdapter = new TrainerBatchListRecyclerAdapter(this, trainerBachListResponseModel.getTrainerBachListdata(),
                 this, this);
@@ -546,7 +550,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
     public  void changeTitle(String member_list){
         tvTitle.setText(member_list);
-        toolbar_action.setVisibility(View.VISIBLE);
+        toolbar_action.setVisibility(View.GONE);
         toolbar_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
