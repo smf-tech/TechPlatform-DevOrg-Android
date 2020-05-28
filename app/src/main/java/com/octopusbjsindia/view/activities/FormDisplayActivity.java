@@ -33,6 +33,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
+import com.octopusbjsindia.models.appoval_forms_detail.FeedbackFormHistoryData;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
@@ -87,6 +88,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
+    public boolean isFromApproval = false;
     private FormResult formResult;
     public boolean isEditable = true;
     private ImageView imgNoData;
@@ -116,6 +118,13 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
 
+            String formResultString = getIntent().getExtras().getString("formData");
+            String fromHistory = getIntent().getExtras().getString("fromHistory");
+            if (fromHistory != null && !TextUtils.isEmpty(fromHistory)) {
+                isFromApproval = true;
+                isEditable = false;
+            }
+
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
             //mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
@@ -138,8 +147,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //            if (mIsPartiallySaved) {
 //                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 //            }
-
-            if (processId != null && processId != "") {
+            if (isFromApproval){
+                try {
+                    FeedbackFormHistoryData feedbackFormHistoryData = new Gson().fromJson(formResultString, FeedbackFormHistoryData.class);
+                    FormResult formResult =  new Gson().fromJson(new Gson().toJson(feedbackFormHistoryData.getHistoryData().getValues().get(0)), FormResult.class);
+                    //jsonToMap(formResultString);
+                    jsonToMap(new Gson().toJson(formResult));
+                    //presenter.getFormSchema(formId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (processId != null && processId != "") {
                 formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
                 if (formResult != null) {
                     try {
@@ -573,17 +592,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             finish();
             return;
         }
-        if (isEditable) {
+
+        if (isForSmartGirl){
+            showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
+        }else if (isEditable) {
             showDialog(this, "Alert", "Do you want to save the form?",
                     "Save", "Discard", true);
         } else {
             showDialog(this, "Alert", "Do you want to close the form?",
                     "OK", "Cancel");
-        }
-        if (isForSmartGirl){
-            showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
-        }else {
-            showDialog(this, "Alert", "Do you want to save the form?", "Save", "Discard", true);
         }
     }
 

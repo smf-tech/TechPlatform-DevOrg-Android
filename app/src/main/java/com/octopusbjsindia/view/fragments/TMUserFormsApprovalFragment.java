@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,12 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.appoval_forms_detail.FeedbackFormHistoryData;
 import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.tm.TMUserFormsApprovalRequest;
 import com.octopusbjsindia.presenter.TMUserFormsApprovalFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.adapters.TMUserFormsApprovalRecyclerAdapter;
 
 import org.json.JSONException;
@@ -102,8 +108,46 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
 
     @Override
     public void onItemClicked(int pos) {
-        Util.showToast("open form details here", getActivity());
+        //Util.showToast("open form details here", getActivity());
+        tmUserFormsApprovalFragmentPresenter.getFormDetailsRequest(getFormDataReqJson(pos));
     }
+    public void showFeedbackData(String response)
+    {
+        FeedbackFormHistoryData feedbackFormHistoryData = new Gson().fromJson(response, FeedbackFormHistoryData.class);
+
+
+
+        final String formID = feedbackFormHistoryData.getHistoryData().getValues().get(0).getForm_id();
+        final String processID = feedbackFormHistoryData.getHistoryData().getValues().get(0).get$oid();
+
+        Intent intent = new Intent(getActivity(), FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.PROCESS_ID, processID);
+        intent.putExtra(Constants.PM.FORM_ID, formID);
+        intent.putExtra("formData",response);
+        intent.putExtra("fromHistory","fromHistory");
+
+        startActivity(intent);
+    }
+
+    public JSONObject getFormDataReqJson(int pos) {
+        //String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(pos).get_id();
+        JSONObject requestObject = new JSONObject();
+        try {
+            /*requestObject.put("id", "5ece295829083b17e9612886");
+            requestObject.put("userName", "5ec7e0ffead37f192b66a092");
+            requestObject.put("survey_id", "5ea7dd593af8354ace6a0732");*/
+            requestObject.put("id", tmUserFormsApplicationsList.get(pos).get_id().get$oid());
+            requestObject.put("userName", tmUserFormsApplicationsList.get(pos).getUserName());
+            requestObject.put("survey_id", tmUserFormsApplicationsList.get(pos).getSurvey_id());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return requestObject;
+    }
+
 
     public void updateRequestStatus(String response, int position) {
         //Util.showToast("form is approved or rejected",getActivity());
