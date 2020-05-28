@@ -49,7 +49,6 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
         if (formResults != null) {
             return formResults.size();
         }
-
         return 0;
     }
 
@@ -113,10 +112,16 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
-                             final boolean isLastChild, final View convertView, final ViewGroup parent) {
+                             final boolean isLastChild, View view, final ViewGroup parent) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
-                parent, false);
+//        View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
+//                parent, false);
+
+        if (view == null) {
+            LayoutInflater infalInflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = infalInflater.inflate(R.layout.row_dashboard_pending_forms_card_view, null);
+        }
 
         ArrayList<String> list = new ArrayList<>(mMap.keySet());
         String cat = list.get(groupPosition);
@@ -132,6 +137,17 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             if (data.getMicroservice() != null && data.getMicroservice().getUpdatedAt() != null) {
                 ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                         .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
+            }
+
+            ((TextView) view.findViewById(R.id.txt_status)).setText(data.getFormApprovalStatus().
+                    substring(0, 1).toUpperCase() + data.getFormApprovalStatus().substring(1));
+
+            if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.PENDING_STATUS)) {
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.yellow));
+            } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.APPROVED_STATUS)) {
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.green));
+            } else {
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.red));
             }
         }
 

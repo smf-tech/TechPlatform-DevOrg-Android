@@ -97,6 +97,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
     private ImageView imgNoData;
     private int submittedApiCallCount = 0;
     private int submittedApiResponseCount = 0;
+    private int lastExpandedPosition = -1;
 
     // Here we show unsync forms seperately, but now we are showing unsync forms and sync forms in same expandable list view and so
     // commenting this code for now.
@@ -133,6 +134,18 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
 
         adapter = new SubmittedFormsListAdapter(getContext(), mFilteredProcessDataMap,processSyncStatusHashmap);
         mExpandableListView.setAdapter(adapter);
+
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
 
         imgNoData = view.findViewById(R.id.img_no_data);
 
@@ -406,7 +419,16 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
             for (ProcessData processData : json.getData()) {
                 DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
             }
-            populateData(json);
+            //populateData(json);
+            List<ProcessData> processDataArrayList = DatabaseManager
+                    .getDBInstance(getActivity()).getAllProcesses();
+            if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                Processes processes = new Processes();
+                processes.setData(processDataArrayList);
+                populateData(processes);
+            } else {
+                showNoDataText = true;
+            }
         }
     }
 

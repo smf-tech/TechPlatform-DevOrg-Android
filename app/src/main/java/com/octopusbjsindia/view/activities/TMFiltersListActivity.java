@@ -162,7 +162,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_filtertype:
-                CustomDialogClass cdd=new CustomDialogClass(TMFiltersListActivity.this,"Select filters");
+                CustomDialogClass cdd = new CustomDialogClass(TMFiltersListActivity.this, "Select date range");
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);

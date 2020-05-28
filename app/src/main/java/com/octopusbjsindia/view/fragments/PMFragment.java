@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
-// We have updated this fragment. We are not going to show forms section over here.So all all the respective api and Ui code has been commented.
+// We have updated this fragment. We are not going to show forms section over here.So all the respective api and Ui code has been commented.
 // Now we are showing forms dashboard data.
 public class PMFragment extends Fragment implements View.OnClickListener, PlatformTaskListener {
 
@@ -39,8 +42,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private ArrayList<FormStatusCountData> formStatusCountDataList = new ArrayList<>();
     private RecyclerView rvFormsStatusCount;
     private FormsDashboardAdapter formsDashboardAdapter;
-    private FloatingActionButton fbSelect, fbNewForm, fbUserForms;
+    private FloatingActionButton fbSelect;
+    private ExtendedFloatingActionButton fbNewForm, fbUserForms;
     private boolean isFABOpen = false;
+    private Animation animFadeIn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +95,7 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
                 }
             }
         });
-
+        animFadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
     }
 
     @Override
@@ -127,6 +132,10 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void showFabMenu() {
         fbNewForm.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         fbUserForms.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        fbNewForm.show();
+        fbUserForms.show();
+        fbNewForm.startAnimation(animFadeIn);
+        fbUserForms.startAnimation(animFadeIn);
         fbSelect.setRotation(45);
         isFABOpen = true;
     }
@@ -134,6 +143,8 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
     private void closeFABMenu() {
         fbNewForm.animate().translationY(0);
         fbUserForms.animate().translationY(0);
+        fbNewForm.hide();
+        fbUserForms.hide();
         fbSelect.setRotation(0);
         isFABOpen = false;
     }

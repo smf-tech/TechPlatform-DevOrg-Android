@@ -44,7 +44,7 @@
     <!--        app:tint="@color/white"-->
     <!--        android:src="@drawable/ic_form_category" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_user_forms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,10 +54,14 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        android:src="@drawable/ic_form_list_icon"
-        app:tint="@color/white" />
+        android:text="Your Forms"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_form_list_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_new_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,9 +70,13 @@
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_new_form_icon"
         app:fabSize="mini"
-        app:tint="@color/white" />
+        android:text="New Form"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_new_form_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_select"
