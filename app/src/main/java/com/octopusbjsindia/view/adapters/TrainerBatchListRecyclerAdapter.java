@@ -212,7 +212,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     popup.getMenu().findItem(R.id.action_add_trainer).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_EDIT_BATCH:
-                                    popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
+                           //         popup.getMenu().findItem(R.id.action_cancel_batch).setVisible(true);
                                     popup.getMenu().findItem(R.id.action_edit_batch).setVisible(true);
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_CANCEL_BATCH:

@@ -108,7 +108,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         tvTitle = findViewById(R.id.toolbar_title);
         vpFormElements = findViewById(R.id.viewpager);
         imgNoData = findViewById(R.id.img_no_data);
-        //toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);

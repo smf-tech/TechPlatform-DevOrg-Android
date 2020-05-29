@@ -73,6 +73,17 @@
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_description_12"
                             android:textStyle="normal" />
+                            <com.octopusbjsindia.view.customs.TextViewRegular
+                                android:id="@+id/tv_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_title"
+                                android:paddingStart="@dimen/dimen_16dp"
+                                android:text="Captain"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/text_size_description_12"
+                                android:textStyle="normal" />
+
                         </RelativeLayout>
                         <ImageView
                             android:layout_width="wrap_content"
