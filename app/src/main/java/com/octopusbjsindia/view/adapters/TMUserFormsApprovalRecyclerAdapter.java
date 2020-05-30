@@ -44,7 +44,7 @@ private PreferenceHelper preferenceHelper;
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
             holder.txtTitle.setText(dataList.get(position).getForm_title());
             holder.txtValue.setText(String.valueOf(dataList.get(position).getSurvey_name().getDefault()));
-            holder.tv_date.setText(Util.getDateFromTimestamp(dataList.get(position).getCreatedDateTime(), Constants.FORM_DATE));
+            holder.tv_date.setText(Util.getDateFromTimestamp(dataList.get(position).getCreatedDateTime(), Constants.DAY_MONTH_YEAR));
             String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
 
 

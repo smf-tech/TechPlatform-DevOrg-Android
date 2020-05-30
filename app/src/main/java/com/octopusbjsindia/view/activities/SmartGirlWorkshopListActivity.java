@@ -222,7 +222,11 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             }
 
         if (dataList!=null) {
-            tvTitle.setText("Workshop List" + "("+dataList.size()+")");
+            if (fManager.getBackStackEntryCount()>0){
+
+            }else {
+                tvTitle.setText("Workshop List" + "(" + dataList.size() + ")");
+            }
         }
         /*trainerBatchListRecyclerAdapter = new WorkshopBatchListRecyclerAdapter(this, trainerBachListResponseModel.getWorkshopBachLists(),
                 this, this);

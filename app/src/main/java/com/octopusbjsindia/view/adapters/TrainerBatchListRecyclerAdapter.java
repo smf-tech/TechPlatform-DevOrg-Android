@@ -319,7 +319,11 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                         if (Util.isConnected(mContext)) {
                                             //((TrainerBatchListActivity)mContext).fillPreTestFormToBatch(getAdapterPosition());
                                             if (dataList.get(getAdapterPosition()).getCurrentUserBatchData()!=null) {
-                                                ((TrainerBatchListActivity) mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                                if (!dataList.get(getAdapterPosition()).getCurrentUserBatchData().get(0).getPreTestStatus()) {
+                                                    ((TrainerBatchListActivity) mContext).addTrainingPreTestFragment(getAdapterPosition());
+                                                }else {
+                                                    Util.showToast("Pre test already submitted.",mContext);
+                                                }
                                             }else {
                                                 Util.showToast("Please Register to batch first.",mContext);
                                             }

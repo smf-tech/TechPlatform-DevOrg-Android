@@ -467,6 +467,8 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                 }
                 et_select_state_trainer.setText(selectedState);
                 et_select_state_str_trainer = selectedStateId;
+                et_select_district_trainer.setText("");
+                et_traner_additional.setText("");
                 //get District
                 if (!TextUtils.isEmpty(selectedStateId)) {
                     presenter.getLocationData(selectedStateId,

@@ -64,17 +64,31 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_member_phone"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tv_leave_category"
-                    android:fontFamily="@font/opensans_regular"
-                    android:layout_marginStart="@dimen/dimen_05dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:text="@string/mobile_no"
-                    android:textSize="@dimen/text_size_title_14"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_member_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_toEndOf="@+id/tv_leave_category"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:text="Mobile number"
+                        android:textSize="@dimen/text_size_title_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_15dp"
+                        android:layout_height="@dimen/dimen_15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_toRightOf="@+id/tv_member_phone"
+                        android:src="@drawable/ic_menu_call" />
+                </RelativeLayout>
                 <TextView
                     android:id="@+id/tv_mock_test"
                     android:layout_width="wrap_content"
