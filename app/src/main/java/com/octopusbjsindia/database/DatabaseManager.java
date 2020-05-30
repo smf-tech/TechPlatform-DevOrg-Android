@@ -86,7 +86,6 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE StructurePripretionData ADD COLUMN beneficiary_id TEXT");
             database.execSQL("ALTER TABLE FormData ADD COLUMN api_url TEXT");
             database.execSQL("ALTER TABLE ProcessData ADD COLUMN api_url TEXT");
-
         }
     };
 
@@ -97,7 +96,7 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE FormData ADD COLUMN jurisdictions_ TEXT");
             database.execSQL("CREATE TABLE IF NOT EXISTS `JurisdictionLocation`" +
                     " (`id` TEXT PRIMARY KEY NOT NULL, `name` TEXT, `parent_id` TEXT)");
-
+            database.execSQL("ALTER TABLE ProcessData ADD COLUMN project_id TEXT");
         }
     };
 
