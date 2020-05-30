@@ -177,7 +177,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private int currentState = 0;
     private RequestOptions requestOptions,requestOptionsjcb;
 private Toolbar toolbar;
-private ImageView toolbar_edit_action;
+private ImageView toolbar_edit_action,toolbar_action;
     private void updateStatusAndProceed(int currentStateReceived) {
         Log.e("currentstate--3", "----"+currentState);
         currentState  =currentStateReceived;
@@ -462,6 +462,7 @@ private ImageView toolbar_edit_action;
         tv_device_name = findViewById(R.id.tv_device_name);
         toolbar =  findViewById(R.id.operator_toolbar);
         toolbar_edit_action =  findViewById(R.id.toolbar_edit_action);
+        toolbar_action  =  findViewById(R.id.toolbar_action);
         gear_action_start = findViewById(R.id.gear_action_start);
         gear_action_stop = findViewById(R.id.gear_action_stop);
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
@@ -585,6 +586,12 @@ private ImageView toolbar_edit_action;
             }
         });*/
 
+        toolbar_action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                syncMachineOperatorData();
+            }
+        });
 
         toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -774,6 +781,7 @@ private ImageView toolbar_edit_action;
 
       //  setDailyAlarm();
     }
+
 
     private void callStartButtonClick() {
         if (Permissions.isCameraPermissionGranted(OperatorMeterReadingActivity.this, this)) {
@@ -1748,5 +1756,108 @@ private void initConnectivityReceiver() {
 
 
         return "";
+    }
+
+
+    ///manual sync
+    private void syncMachineOperatorData() {
+
+        if (Util.isConnected(OperatorMeterReadingActivity.this)) {
+            List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+            for (final OperatorRequestResponseModel data : list) {
+                uploadMachineLog(data);
+            }
+        }else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), this);
+        }
+    }
+
+    private void uploadMachineLog(OperatorRequestResponseModel data) {
+
+        final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
+
+        Log.e("sync--", "---" + new Gson().toJson(data));
+        String imageToSend = data.getImage();
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("response Received -", jsonString);
+                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                    deleteSinglSynccedOperatorRecord(data.get_id());
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(OperatorMeterReadingActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(OperatorMeterReadingActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(data));
+                params.put("imageArraySize", String.valueOf("1"));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                {
+                    if (TextUtils.isEmpty(imageToSend)) {
+                        params.put("image0", new DataPart("image0", new byte[0],
+                                "image/jpeg"));
+                    } else {
+                        drawable = new BitmapDrawable(getResources(), imageToSend);
+
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
+                }
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                12000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(OperatorMeterReadingActivity.this);
+        rQueue.add(volleyMultipartRequest);
     }
 }

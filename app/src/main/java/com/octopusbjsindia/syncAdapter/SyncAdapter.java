@@ -105,7 +105,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
         syncSavedForms();
-        syncMachineOperatorData();
+        //syncMachineOperatorData();
         syncStructureVisitMonitoring();
         syncStructurePripretion();
         syncStructureBoundary();
