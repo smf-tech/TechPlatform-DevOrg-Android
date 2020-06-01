@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -48,9 +49,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
@@ -377,10 +380,12 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                     dismiss();
                     break;
                  case R.id.tv_startdate:
-                     selectStartDate(tv_startdate);
+                     //selectStartDate(tv_startdate);
+                     selectStartDate(tv_startdate, 1);
                      break;
                  case R.id.tv_enddate:
-                     selectStartDate(tv_enddate);
+                     //selectStartDate(tv_enddate);
+                     selectStartDate(tv_enddate, 2);
                      break;
                 default:
                     break;
@@ -525,6 +530,67 @@ private void selectStartDate(TextView textview) {
             }, mYear, mMonth, mDay);
     datePickerDialog.show();
 }
+//date validations
+private void selectStartDate(TextView textview, int flagDateStartEnd) {
+    final Calendar c = Calendar.getInstance();
+    mYear = c.get(Calendar.YEAR);
+    mMonth = c.get(Calendar.MONTH);
+    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+    DatePickerDialog datePickerDialog = new DatePickerDialog(TMFiltersListActivity.this,
+            new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, monthOfYear, dayOfMonth);
+                    String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
+                    // textview.setText(selectedDateString);
+                    //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    //check for Date-->
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR);//new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                    Date startDate = null;
+                    Date endDate = null;
+
+                    if (flagDateStartEnd == 1) {
+                        try {
+                            startDate = formatter.parse(selectedDateString);
+                            endDate = formatter.parse(tv_enddate.getText().toString());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if (startDate.getTime() > endDate.getTime()) {
+                            Toast.makeText(TMFiltersListActivity.this, "Start date should be less than end date.", Toast.LENGTH_LONG).show();
+                        } else {
+                            textview.setText(selectedDateString);
+                        }
+                    } else {
+                        try {
+                            startDate = formatter.parse(tv_startdate.getText().toString());
+                            endDate = formatter.parse(selectedDateString);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if (startDate.getTime() > endDate.getTime()) {
+                            Toast.makeText(TMFiltersListActivity.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
+                        } else {
+                            textview.setText(selectedDateString);
+                        }
+                    }
+
+                    //-----
+                }
+            }, mYear, mMonth, mDay);
+    //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+    datePickerDialog.show();
+}
+
+
+
     }
     public void setFilterClickListener(OnFilterSelected listener) {
         clickListener = listener;

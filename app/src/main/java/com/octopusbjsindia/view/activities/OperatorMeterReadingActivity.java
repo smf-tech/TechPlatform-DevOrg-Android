@@ -590,6 +590,20 @@ private ImageView toolbar_edit_action,toolbar_action;
             @Override
             public void onClick(View view) {
                 syncMachineOperatorData();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
+                    Log.e("clickTime retuned", "" + "Return");
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+
+                toolbar_action.setEnabled(false);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    toolbar_action.setEnabled(true);
+                }, 2000);
+
             }
         });
 
@@ -1764,15 +1778,29 @@ private void initConnectivityReceiver() {
 
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
             List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
-            for (final OperatorRequestResponseModel data : list) {
-                uploadMachineLog(data);
+            /*for (final OperatorRequestResponseModel data : list) {
+
+            }*/
+            if (list!=null) {
+                if (list.size()>0) {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Data sync started.",
+                            Snackbar.LENGTH_LONG);
+                    for (int i = 0; i < list.size(); i++) {
+                        uploadMachineLog(list.get(i),list.get(list.size()-1).get_id());
+                    }
+                }else {
+                    Util.showToast("No data for sync", this);
+                }
+            }else {
+                Util.showToast("No data for sync", this);
             }
         }else {
             Util.showToast(getResources().getString(R.string.msg_no_network), this);
         }
     }
 
-    private void uploadMachineLog(OperatorRequestResponseModel data) {
+    private void uploadMachineLog(OperatorRequestResponseModel data, int id) {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
@@ -1786,8 +1814,12 @@ private void initConnectivityReceiver() {
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Log.d("response Received -", jsonString);
+                            //Util.showToast("Sync response->"+ jsonString, this);
                             DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                     deleteSinglSynccedOperatorRecord(data.get_id());
+                            if (id == data.get_id()){
+                                Util.showToast("Sync Successful.", this);
+                            }
 
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();

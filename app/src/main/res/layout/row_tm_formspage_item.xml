@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="match_parent"
-                    android:text="Reason"
+                    android:text=""
                     android:visibility="gone"
                     android:id="@+id/tv_leave_reason"
                     android:textSize="@dimen/text_size_12"

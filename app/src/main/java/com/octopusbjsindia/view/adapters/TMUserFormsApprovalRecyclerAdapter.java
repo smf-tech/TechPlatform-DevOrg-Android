@@ -56,6 +56,7 @@ private PreferenceHelper preferenceHelper;
                 holder.btn_reject.setVisibility(View.GONE);
                 holder.btn_approve.setVisibility(View.GONE);
                 holder.tv_leave_reason.setVisibility(View.VISIBLE);
+
                 if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
 
                     holder.tv_leave_reason.setText("Rejected Reason:- "+dataList.get(position).getStatus().getRejection_reason());
