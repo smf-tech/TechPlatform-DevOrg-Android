@@ -374,33 +374,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 getString(R.string.app_name_ss), false);
     }
 
-    private void loadFormsPage() {
-        setActionBarTitle(getString(R.string.forms));
-        Util.launchFragment(new PMFragment(), this,
-                getString(R.string.forms), true);
-    }
-
-    private void loadMeetingsPage() {
-        Util.launchFragment(new PlannerFragment(), this,
-                getString(R.string.planner), true);
-    }
-
-    private void loadTeamsPage() {
-        /*Util.launchFragment(new TMUserLandingFragment(), this,
-                getString(R.string.approvals), true);*/
-        Intent startMain = new Intent(HomeActivity.this, UserRegistrationMatrimonyActivity.class);
-        startActivity(startMain);
-        Intent startMain1 = new Intent(HomeActivity.this, MatrimonyProfileListActivity.class);
-        startMain.putExtra("meetid", "5d6f90c25dda765c2f0b5dd4");
-        startActivity(startMain1);
-
-    }
-
-    private void loadReportsPage() {
-        Util.launchFragment(new ReportsFragment(), this,
-                getString(R.string.reports), true);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

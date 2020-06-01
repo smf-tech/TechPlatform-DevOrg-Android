@@ -33,6 +33,7 @@ import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
+import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.adapters.UserProfileAdapter;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 
@@ -51,6 +52,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ViewPager vpUpcomingMeets;
 
     private ArrayList<UserProfileList> newUserList = new ArrayList<UserProfileList>();
+    private ArrayList<UserProfileList> unverifiedUserList = new ArrayList<UserProfileList>();
 
     private RecyclerView rvNewUser, rvVarificationPending;
     private FloatingActionButton fbSelect, fbCreatMeet, fbAllUser;
@@ -108,6 +110,9 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbAllUser = view.findViewById(R.id.fb_all_users);
         fbAllUser.setOnClickListener(this);
 
+        view.findViewById(R.id.tv_see_all_newuser).setOnClickListener(this);
+        view.findViewById(R.id.tv_see_all_varification_pending).setOnClickListener(this);
+
     }
 
     @Override
@@ -115,7 +120,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         super.onResume();
         presentr.getMatrimonyMeets();
         presentr.getNewUser();
-//        presentr.getUnVarifiedUser();//temrery
     }
 
     @Override
@@ -131,7 +135,24 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetFirstFragment");
             startActivity(createMatrimonyIntent);
         } else if (v.getId() == R.id.fb_all_users) {
-            Util.showToast("going on", getActivity());
+            Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+            startMain.putExtra("toOpean","AllUserList");
+            startActivity(startMain);
+        }else if (v.getId() == R.id.tv_see_all_newuser) {
+            if(newUserList.size()>0){
+                Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+                startMain.putExtra("toOpean","NewUserList");
+                startMain.putExtra("userList",newUserList);
+                startActivity(startMain);
+            }
+
+        } else if (v.getId() == R.id.tv_see_all_varification_pending) {
+            if(unverifiedUserList.size()>0) {
+                Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+                startMain.putExtra("toOpean", "UnverifiedUserList");
+                startMain.putExtra("userList", unverifiedUserList);
+                startActivity(startMain);
+            }
         }
     }
 
@@ -234,16 +255,16 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     public void onNewProfileFetched(String requestID, NewRegisteredUserResponse newUserResponse) {
         if (newUserResponse != null && newUserResponse.getData() != null
                 && newUserResponse.getData().size() > .0) {
-            view.findViewById(R.id.ly_no_recommended).setVisibility(View.GONE);
-//            view.findViewById(R.id.tv_see_all_recommended).setOnClickListener(this);
+            view.findViewById(R.id.ly_no_newuser).setVisibility(View.GONE);
+//            view.findViewById(R.id.tv_see_all_newuser).setOnClickListener(this);
             newUserList.clear();
             newUserList.addAll(newUserResponse.getData());
             UserProfileAdapter adapter = new UserProfileAdapter(getContext(), newUserList, false, false);
             rvNewUser.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             rvNewUser.setAdapter(adapter);
         } else {
-            view.findViewById(R.id.ly_no_recommended).setVisibility(View.VISIBLE);
-            TextView tv = view.findViewById(R.id.tv_no_recommended);
+            view.findViewById(R.id.ly_no_newuser).setVisibility(View.VISIBLE);
+            TextView tv = view.findViewById(R.id.tv_no_newuser);
             tv.setText("No data");
         }
     }
@@ -252,15 +273,15 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         if (newUserResponse != null && newUserResponse.getData() != null
                 && newUserResponse.getData().size() > .0) {
             view.findViewById(R.id.ly_no_varification).setVisibility(View.GONE);
-//            view.findViewById(R.id.tv_see_all_recommended).setOnClickListener(this);
-            newUserList.clear();
-            newUserList.addAll(newUserResponse.getData());
-            UserProfileAdapter adapter = new UserProfileAdapter(getContext(), newUserList, false, false);
+//            view.findViewById(R.id.tv_see_all_newuser).setOnClickListener(this);
+            unverifiedUserList.clear();
+            unverifiedUserList.addAll(newUserResponse.getData());
+            UserProfileAdapter adapter = new UserProfileAdapter(getContext(), unverifiedUserList, false, false);
             rvVarificationPending.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             rvVarificationPending.setAdapter(adapter);
         } else {
             view.findViewById(R.id.ly_no_varification).setVisibility(View.VISIBLE);
-            TextView tv = view.findViewById(R.id.tv_no_recommended);
+            TextView tv = view.findViewById(R.id.tv_no_newuser);
             tv.setText("No data");
         }
     }

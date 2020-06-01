@@ -37,18 +37,20 @@
 
             <!--new user -->
             <RelativeLayout
-                android:id="@+id/ly_main_recommended"
+                android:id="@+id/ly_main_newuser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:id="@+id/ly_recommended"
+                    android:id="@+id/ly_newuser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_05dp">
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp">
 
                     <TextView
-                        android:id="@+id/tv_recommended"
+                        android:id="@+id/tv_newuser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -61,12 +63,12 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/dimen_05dp"
                         android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_toStartOf="@+id/tv_see_all_recommended"
-                        android:layout_toEndOf="@+id/tv_recommended" />
+                        android:layout_toStartOf="@+id/tv_see_all_newuser"
+                        android:layout_toEndOf="@+id/tv_newuser" />
                     <!--                android:background="@color/grey_light" />-->
 
                     <TextView
-                        android:id="@+id/tv_see_all_recommended"
+                        android:id="@+id/tv_see_all_newuser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -76,9 +78,8 @@
                         android:paddingTop="@dimen/dimen_05dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_05dp"
-                        android:text="See All"
-                        android:visibility="gone" />
-                    <!--                android:background="@drawable/bg_border_cercular_grey"-->
+                        android:background="@drawable/bg_circular_border_gray_30"
+                        android:text="See All" />
 
                 </RelativeLayout>
 
@@ -86,17 +87,17 @@
                     android:id="@+id/rv_new_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_recommended" />
+                    android:layout_below="@+id/ly_newuser" />
 
                 <RelativeLayout
-                    android:id="@+id/ly_no_recommended"
+                    android:id="@+id/ly_no_newuser"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_235dp"
-                    android:layout_below="@+id/ly_recommended"
+                    android:layout_below="@+id/ly_newuser"
                     android:layout_margin="@dimen/dimen_05dp">
 
                     <TextView
-                        android:id="@+id/tv_no_recommended"
+                        android:id="@+id/tv_no_newuser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/opensans_regular"
@@ -107,7 +108,7 @@
 
 
                     <ImageView
-                        android:id="@+id/iv_recommended"
+                        android:id="@+id/iv_newuser"
                         android:layout_width="@dimen/dimen_235dp"
                         android:layout_height="@dimen/dimen_235dp"
                         android:layout_centerHorizontal="true"
@@ -125,8 +126,9 @@
                     android:id="@+id/ly_varification_pending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:layout_margin="@dimen/dimen_05dp">
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp">
 
                     <TextView
                         android:id="@+id/tv_varification_pending"
@@ -142,12 +144,12 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/dimen_05dp"
                         android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_toStartOf="@+id/tv_tv_varification_pending"
+                        android:layout_toStartOf="@+id/tv_see_all_varification_pending"
                         android:layout_toEndOf="@+id/tv_varification_pending" />
                     <!--                android:background="@color/grey_light" />-->
 
                     <TextView
-                        android:id="@+id/tv_tv_varification_pending"
+                        android:id="@+id/tv_see_all_varification_pending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -157,9 +159,8 @@
                         android:paddingTop="@dimen/dimen_05dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_05dp"
-                        android:text="See All"
-                        android:visibility="gone" />
-                    <!--                android:background="@drawable/bg_border_cercular_grey"-->
+                        android:background="@drawable/bg_circular_border_gray_30"
+                        android:text="See All" />
 
                 </RelativeLayout>
 

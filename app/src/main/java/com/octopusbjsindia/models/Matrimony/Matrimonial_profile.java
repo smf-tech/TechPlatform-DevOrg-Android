@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Matrimonial_profile {
+import java.io.Serializable;
+
+public class Matrimonial_profile implements Serializable {
 
     @SerializedName("personal_details")
     @Expose

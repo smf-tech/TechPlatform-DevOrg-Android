@@ -329,8 +329,8 @@ public class MatrimonyMeetDetailFragment extends Fragment implements  View.OnCli
                 break;
             case R.id.btn_view_profiles:
                 Intent startMain = new Intent(activity, MatrimonyProfileListActivity.class);
+                startMain.putExtra("toOpean","MeetUserList");
                 startMain.putExtra("meetid",matrimonyMeetList.get(currentPosition).getId());
-                startMain.putExtra("mobileNumber",mobileNumberEntered);
                 startActivity(startMain);
                 break;
         }
