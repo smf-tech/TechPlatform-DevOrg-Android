@@ -464,7 +464,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             @Override
             public EmployeeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.row_filterdialog_item, parent, false);
+                View view = layoutInflater.inflate(R.layout.approval_row_filterdialog_item, parent, false);
                 return new EmployeeViewHolder(view);
             }
 

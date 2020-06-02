@@ -22,6 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.Constants;
@@ -50,6 +52,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     private Uri finalUri;
     private Elements element;
     private String currentPhotoPath;
+    private RequestOptions requestOptions;
     private final String TAG = FileQuestionFragment.class.getName();
     private boolean isImageSelected = false;
 
@@ -82,10 +85,20 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_img);
+        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+
         if (isFirstpage) {
             view.findViewById(R.id.bt_previous).setVisibility(View.GONE);
         }
-
+        if (((FormDisplayActivity) getActivity()).isFromApproval) {
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+                Glide.with(getActivity())
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))
+                        .into(imageView);
+            }
+        }else
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
             Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"));
             imageView.setImageURI(imageUri);

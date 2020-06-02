@@ -32,8 +32,13 @@ public class ContentData {
     @SerializedName("content_title")
     @Expose
     private String contentTiltle;
+
+    @ColumnInfo(name = "downloadedFileName")
+    @SerializedName("downloadedFileName")
     @Expose
     private String downloadedFileName;
+
+
     @ColumnInfo(name = "file_type")
     @SerializedName("file_type")
     @Expose

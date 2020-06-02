@@ -136,10 +136,12 @@
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="match_parent"
-                    android:text=""
-                    android:visibility="gone"
+                    android:text="jfsjkfdsjk sdfjskjfs sjkfhskjf"
+                    android:visibility="visible"
                     android:id="@+id/tv_leave_reason"
                     android:textSize="@dimen/text_size_12"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:fontFamily="@font/opensans_regular"
                     android:layout_height="wrap_content" />
                 <com.google.android.material.button.MaterialButton

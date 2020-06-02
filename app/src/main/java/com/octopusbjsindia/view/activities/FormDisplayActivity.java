@@ -306,6 +306,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         Fragment fileFragment = new FileQuestionFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putBoolean("isFirstpage", isFirstpage);
+                        bundle.putBoolean("isFromApproval", isFromApproval);
+
                         fileFragment.setArguments(bundle);
                         adapter.addFragment(fileFragment, "Question Title");
                         break;
