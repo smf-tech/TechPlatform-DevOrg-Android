@@ -40,14 +40,15 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.WebviewFormDisplayActivity"
+        <activity android:name=".view.activities.MatrimonyActivity"></activity>
+        <activity
+            android:name=".view.activities.WebviewFormDisplayActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".view.activities.CreateTrainerWorkshop"
             android:label="@string/title_activity_create_trainer_workshop"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
             android:theme="@style/AppTheme.NoActionBar" />

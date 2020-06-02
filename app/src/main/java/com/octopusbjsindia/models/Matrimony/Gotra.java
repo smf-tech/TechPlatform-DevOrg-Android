@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Gotra {
+import java.io.Serializable;
+
+public class Gotra implements Serializable {
 
     @SerializedName("self_gotra")
     @Expose

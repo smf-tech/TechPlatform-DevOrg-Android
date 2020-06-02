@@ -6,32 +6,43 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
+import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
+import com.octopusbjsindia.models.Matrimony.AllUserResponse;
 import com.octopusbjsindia.models.Matrimony.MatrimonyUserProfileRequestModel;
+import com.octopusbjsindia.models.Matrimony.NewRegisteredUserResponse;
+import com.octopusbjsindia.models.stories.FeedListResponse;
 import com.octopusbjsindia.models.tm.PendingRequest;
+import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.MatrimonyProfileListRequestCall;
+import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfilesListActivityPresenter implements TMFilterListRequestCallListener {
+public class MatrimonyProfilesListActivityPresenter implements TMFilterListRequestCallListener, APIPresenterListener {
 
     private final String TAG = this.getClass().getName();
-    private WeakReference<MatrimonyProfileListActivity> fragmentWeakReference;
+    private final String GET_ALL_USER = "GetAllUserList";
+    private WeakReference<MatrimonyProfileListActivity> mContax;
 
     public MatrimonyProfilesListActivityPresenter(MatrimonyProfileListActivity tmFiltersListActivity) {
-        fragmentWeakReference = new WeakReference<>(tmFiltersListActivity);
+        mContax = new WeakReference<>(tmFiltersListActivity);
     }
 
     public void getAllFiltersRequests(String meetId) {
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
         requestCall.setListener(this);
 
-        //fragmentWeakReference.get().showProgressBar();
+        //mContax.get().showProgressBar();
         requestCall.getAllPendingRequests(meetId);
     }
 
@@ -39,13 +50,13 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
         requestCall.setListener(this);
 
-        //fragmentWeakReference.get().showProgressBar();
+        //mContax.get().showProgressBar();
         requestCall.approveRejectRequest(requestObject, position,requestType);
     }
 
     @Override
     public void onFilterListRequestsFetched(String response) {
-        //fragmentWeakReference.get().hideProgressBar();
+        //mContax.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
             JSONObject jsonObject = null;
             try {
@@ -59,14 +70,14 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
                 if (pendingRequestsResponse != null && pendingRequestsResponse.getUserProfileList() != null
                         && !pendingRequestsResponse.getUserProfileList().isEmpty()
                         && pendingRequestsResponse.getUserProfileList().size() > 0) {
-                    fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getUserProfileList());
+                    mContax.get().showUserProfileList(pendingRequestsResponse.getUserProfileList());
                 }
             }else {
 
             }
             } catch (JSONException e) {
                 e.printStackTrace();
-                fragmentWeakReference.get().setTxt_no_data();
+                mContax.get().setTxt_no_data();
             }
         }
     }
@@ -74,22 +85,22 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
 
     @Override
     public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
-        //fragmentWeakReference.get().hideProgressBar();
+        //mContax.get().hideProgressBar();
         if (!TextUtils.isEmpty(response)) {
-            //  fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
+            //  mContax.get().updateRequestStatus(response, pendingRequest);
         }
     }
 
     @Override
     public void onRequestStatusChanged(String response, int position) {
         if (!TextUtils.isEmpty(response)) {
-            fragmentWeakReference.get().updateRequestStatus(response, position);
+            mContax.get().updateRequestStatus(response, position);
         }
     }
 
     @Override
     public void onFailureListener(String message) {
-        //fragmentWeakReference.get().hideProgressBar();
+        //mContax.get().hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -104,7 +115,7 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
             Log.i(TAG, "Error: " + message);
         }
 
-        //fragmentWeakReference.get().hideProgressBar();
+        //mContax.get().hideProgressBar();
     }
 
 
@@ -133,6 +144,40 @@ public class MatrimonyProfilesListActivityPresenter implements TMFilterListReque
         return null;
     }
 
+    // as per the new implimentetion
+    public void getAllUserList(String url,String params) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        mContax.get().showProgressBar();
 
+        requestCall.postDataApiCall(GET_ALL_USER, params,url);
+    }
 
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        mContax.get().onFailureListener(requestID, message);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        mContax.get().onFailureListener(requestID, error.getMessage());
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        mContax.get().hideProgressBar();
+        Gson gson = new Gson();
+        if(requestID.equalsIgnoreCase(GET_ALL_USER)){
+            AllUserResponse responseData = gson.fromJson(response, AllUserResponse.class);
+            if (responseData.getStatus() == 1000) {
+                Util.logOutUser(mContax.get());
+                mContax.get().finish();
+            } else if (responseData.getStatus() == 200){
+//                NewRegisteredUserResponse newUserResponse = new Gson().fromJson(responseData, NewRegisteredUserResponse.class);
+                mContax.get().onNewProfileFetched(requestID, responseData.getData());
+            } else {
+                mContax.get().onFailureListener(requestID, responseData.getMessage());
+            }
+        }
+    }
 }

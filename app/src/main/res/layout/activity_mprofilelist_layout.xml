@@ -134,7 +134,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/gen_frag_progress_bar"
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -150,7 +150,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:indeterminateOnly="true"
-                android:visibility="gone" />
+                />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

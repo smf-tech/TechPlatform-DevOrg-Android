@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
-public class StoriesFragment extends Fragment implements APIDataListener {
+    public class StoriesFragment extends Fragment implements APIDataListener {
 
     View view;
     Context mContext;

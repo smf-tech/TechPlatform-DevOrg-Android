@@ -693,6 +693,25 @@ public class Util {
         return "";
     }
 
+    public static String getFormattedDatee(String date, String opFormat, String ipFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
+
+        try {
+            //String strLocale = getLocaleLanguageCode();
+            Locale.setDefault(new Locale("en"));
+            DateFormat outputFormat = new SimpleDateFormat(opFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(ipFormat, Locale.getDefault());
+
+            Date date1 = inputFormat.parse(date);
+            return String.format(Locale.getDefault(), "%s", outputFormat.format(date1));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return String.format(Locale.getDefault(), "%s", date);
+    }
+
     public static String getPastFutureDateStringFromToday(Integer pastFutureCount, String dateFormat) {
         try {
             Calendar cal = Calendar.getInstance();
