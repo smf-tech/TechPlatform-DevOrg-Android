@@ -199,31 +199,35 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_create_meet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        app:fabSize="mini"
-        android:src="@drawable/ic_new_form_icon"
-        app:tint="@color/white" />
+        android:text="Create Meet"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_new_form_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_all_users"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_form_list_icon"
-        app:fabSize="mini"
-        app:tint="@color/white" />
+        android:text="All Candidates"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_form_list_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_select"

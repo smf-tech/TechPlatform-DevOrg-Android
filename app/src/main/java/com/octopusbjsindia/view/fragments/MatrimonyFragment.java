@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
@@ -55,7 +56,8 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ArrayList<UserProfileList> unverifiedUserList = new ArrayList<UserProfileList>();
 
     private RecyclerView rvNewUser, rvVarificationPending;
-    private FloatingActionButton fbSelect, fbCreatMeet, fbAllUser;
+    private FloatingActionButton fbSelect;
+    private ExtendedFloatingActionButton fbCreatMeet, fbAllUser;
     private boolean isFABOpen = false;
 
     View view;
@@ -157,6 +159,10 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void showFabMenu() {
+        fbCreatMeet.show();
+        fbCreatMeet.setEnabled(true);
+        fbAllUser.show();
+        fbAllUser.setEnabled(true);
         fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
         fbAllUser.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         fbSelect.setRotation(45);
@@ -164,8 +170,13 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void closeFABMenu() {
+
         fbCreatMeet.animate().translationY(0);
         fbAllUser.animate().translationY(0);
+        fbCreatMeet.hide();
+        fbCreatMeet.setEnabled(false);
+        fbAllUser.hide();
+        fbAllUser.setEnabled(false);
         fbSelect.setRotation(0);
         isFABOpen = false;
     }
