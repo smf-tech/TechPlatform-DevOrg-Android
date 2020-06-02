@@ -335,6 +335,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                 object.setFormTitle(pd.getName().getLocaleValue());
                 object.setName(new LocaleData(formResult.getFormTitle()));
                 object.setFormApprovalStatus(formResult.getFormApprovalStatus());
+                object.setFormRejectionReason(formResult.getRejectionReason());
 
                 Microservice microservice = new Microservice();
                 microservice.setUpdatedAt(formResult.getCreatedAt());
@@ -474,6 +475,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                                 continue;
                             } else {
                                 tempResult.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                                tempResult.setRejectionReason(resultObject.getString(Constants.FormDynamicKeys.REJECTION_REASON));
                                 tempResult.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
                                 DatabaseManager.getDBInstance(getActivity()).updateFormResult(tempResult);
                                 continue;
@@ -499,8 +501,8 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                         result.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
                         result.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                        result.setRejectionReason(resultObject.getString(Constants.FormDynamicKeys.REJECTION_REASON));
                         result.setResult(resultObject.getString(Constants.FormDynamicKeys.RESULT));
-
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
                     }
                 }
@@ -522,7 +524,6 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         List<com.octopusbjsindia.models.forms.FormResult> localFormResults = DatabaseManager.
                 getDBInstance(getActivity()).getFormResults(formID, SyncAdapterUtils.FormStatus.SYNCED);
         setSubmittedFormsData(localFormResults);
-
     }
 
     private boolean isFormOneMonthOld(final Long updatedAt) {

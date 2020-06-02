@@ -147,6 +147,9 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.APPROVED_STATUS)) {
                 ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.green));
             } else {
+                (view.findViewById(R.id.txt_rejection_reason)).setVisibility(View.VISIBLE);
+                ((TextView) view.findViewById(R.id.txt_rejection_reason))
+                        .setText("Rejection reason : " + data.getFormRejectionReason());
                 ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.red));
             }
         }

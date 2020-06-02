@@ -97,6 +97,7 @@ public class DatabaseManager {
             database.execSQL("CREATE TABLE IF NOT EXISTS `JurisdictionLocation`" +
                     " (`id` TEXT PRIMARY KEY NOT NULL, `name` TEXT, `parent_id` TEXT)");
             database.execSQL("ALTER TABLE ProcessData ADD COLUMN project_id TEXT");
+            database.execSQL("ALTER TABLE FormResult ADD COLUMN rejection_reason TEXT");
         }
     };
 

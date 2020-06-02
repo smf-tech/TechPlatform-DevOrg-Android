@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -30,7 +29,6 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.AllUserData;
-import com.octopusbjsindia.models.Matrimony.NewRegisteredUserResponse;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesListActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -96,6 +94,34 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             String params = gson.toJson(map);
             presenter.getAllUserList(BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS), params);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //initViews();
+        if (toOpean.equals("MeetUserList")) {
+            presenter.getAllFiltersRequests(meetIdReceived);
+        }
+
+    }
+
+    private void initViews() {
+        progressBar = findViewById(R.id.progress_bar);
+        txt_no_data = findViewById(R.id.txt_no_data);
+        toolbar_back_action = findViewById(R.id.toolbar_back_action1);
+        toolbar_back_action.setVisibility(View.VISIBLE);
+        editSearch = findViewById(R.id.search_view1);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action1);
+        toolbar_action = findViewById(R.id.toolbar_action1);
+        toolbar_action.setVisibility(View.VISIBLE);
+        toolbar_title = findViewById(R.id.toolbar_title1);
+        toolbar_title.setText("Candidate List");
+        toolbar_back_action.setOnClickListener(this);
+        toolbar_edit_action.setOnClickListener(this);
+        toolbar_action.setOnClickListener(this);
+        editSearch.setOnQueryTextListener(this);
+        presenter = new MatrimonyProfilesListActivityPresenter(this);
 
         rv_matrimonyprofileview = findViewById(R.id.rv_matrimonyprofileview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -103,7 +129,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, userProfileLists,
                 this, this);
         rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
-
 
         rv_matrimonyprofileview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -144,34 +169,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 //                }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //initViews();
-        if (toOpean.equals("MeetUserList")) {
-            presenter.getAllFiltersRequests(meetIdReceived);
-        }
-
-    }
-
-    private void initViews() {
-        progressBar = findViewById(R.id.progress_bar);
-        txt_no_data = findViewById(R.id.txt_no_data);
-        toolbar_back_action = findViewById(R.id.toolbar_back_action1);
-        toolbar_back_action.setVisibility(View.VISIBLE);
-        editSearch = findViewById(R.id.search_view1);
-        toolbar_edit_action = findViewById(R.id.toolbar_edit_action1);
-        toolbar_action = findViewById(R.id.toolbar_action1);
-        toolbar_action.setVisibility(View.VISIBLE);
-        toolbar_title = findViewById(R.id.toolbar_title1);
-        toolbar_title.setText("Candidate List");
-        toolbar_back_action.setOnClickListener(this);
-        toolbar_edit_action.setOnClickListener(this);
-        toolbar_action.setOnClickListener(this);
-        editSearch.setOnQueryTextListener(this);
-        presenter = new MatrimonyProfilesListActivityPresenter(this);
 
         CreateFilterList();
     }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "e9ac91fb26787b184fd40dfe4662ddce",
+    "identityHash": "d23bb8d4dc8bc236e79191b86a0066ac",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -266,7 +266,7 @@
       },
       {
         "tableName": "FormResult",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`result_id` TEXT NOT NULL, `form_id` TEXT, `form_title` TEXT, `result` TEXT, `form_name` TEXT, `form_status` INTEGER NOT NULL, `form_category` TEXT, `request_object` TEXT, `createdDateTime` INTEGER, `form_approvalStatus` TEXT, `oid` TEXT, `formCategoryLocale` TEXT, `formNameLocale` TEXT, PRIMARY KEY(`result_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`result_id` TEXT NOT NULL, `form_id` TEXT, `form_title` TEXT, `result` TEXT, `form_name` TEXT, `form_status` INTEGER NOT NULL, `form_category` TEXT, `request_object` TEXT, `createdDateTime` INTEGER, `rejection_reason` TEXT, `form_approvalStatus` TEXT, `oid` TEXT, `formCategoryLocale` TEXT, `formNameLocale` TEXT, PRIMARY KEY(`result_id`))",
         "fields": [
           {
             "fieldPath": "_id",
@@ -320,6 +320,12 @@
             "fieldPath": "createdAt",
             "columnName": "createdDateTime",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rejectionReason",
+            "columnName": "rejection_reason",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -1212,7 +1218,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e9ac91fb26787b184fd40dfe4662ddce')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd23bb8d4dc8bc236e79191b86a0066ac')"
     ]
   }
 }

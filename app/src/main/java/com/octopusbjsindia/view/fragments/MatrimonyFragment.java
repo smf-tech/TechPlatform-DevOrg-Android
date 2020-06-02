@@ -3,6 +3,11 @@ package com.octopusbjsindia.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,12 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,13 +23,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserProfileRequestModel;
 import com.octopusbjsindia.models.Matrimony.NewRegisteredUserResponse;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyFragmentPresenter;
-import com.octopusbjsindia.presenter.MatrimonyMeetDetailFragmentPresenter;
-import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -45,22 +40,17 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     private final String MEET_DATA = "MeetData";
     private final String MEET_POS = "MeetPos";
-
     private MatrimonyFragmentPresenter presentr;
     private RelativeLayout pbLayout;
-
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPager vpUpcomingMeets;
-
     private ArrayList<UserProfileList> newUserList = new ArrayList<UserProfileList>();
     private ArrayList<UserProfileList> unverifiedUserList = new ArrayList<UserProfileList>();
-
     private RecyclerView rvNewUser, rvVarificationPending;
     private FloatingActionButton fbSelect;
     private ExtendedFloatingActionButton fbCreatMeet, fbAllUser;
     private boolean isFABOpen = false;
-
-    View view;
+    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,9 +82,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
         pbLayout = view.findViewById(R.id.progress_bar);
 
-//        if(Util.isConnected(getActivity())){
-//            presentr.getNewUser();
-//        }
         vpUpcomingMeets = view.findViewById(R.id.vp_upcoming_meets);
         vpUpcomingMeets.setClipToPadding(false);
         // set padding manually, the more you set the padding the more you see of prev & next page
