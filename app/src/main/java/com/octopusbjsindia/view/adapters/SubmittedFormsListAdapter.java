@@ -142,11 +142,13 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             ((TextView) view.findViewById(R.id.txt_status)).setText(data.getFormApprovalStatus().
                     substring(0, 1).toUpperCase() + data.getFormApprovalStatus().substring(1));
 
+            (view.findViewById(R.id.txt_rejection_reason)).setVisibility(View.GONE);
+
             if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.PENDING_STATUS)) {
                 ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.yellow));
             } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.APPROVED_STATUS)) {
                 ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.green));
-            } else {
+            } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.REJECTED_STATUS)) {
                 (view.findViewById(R.id.txt_rejection_reason)).setVisibility(View.VISIBLE);
                 ((TextView) view.findViewById(R.id.txt_rejection_reason))
                         .setText("Rejection reason : " + data.getFormRejectionReason());
