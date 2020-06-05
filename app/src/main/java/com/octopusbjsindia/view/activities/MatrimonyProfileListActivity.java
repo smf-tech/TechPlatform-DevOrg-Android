@@ -13,18 +13,26 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.Matrimony.AllUserData;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesListActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
@@ -32,17 +40,23 @@ import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfileListActivity extends BaseActivity implements View.OnClickListener, MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked, SingleSelectBottomSheet.MultiSpinnerListener
-        , SearchView.OnQueryTextListener {
-    public String meetIdReceived, mobileNumberReceived;
+public class MatrimonyProfileListActivity extends BaseActivity implements View.OnClickListener,
+        MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked,
+        MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked,
+        SingleSelectBottomSheet.MultiSpinnerListener,
+        SearchView.OnQueryTextListener,
+        APIDataListener {
+    public String meetIdReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
     private String currentSelectedFilter = "";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
-    private MatrimonyProfilesListActivityPresenter tmFilterListActivityPresenter;
+    private MatrimonyProfilesListActivityPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
     private RecyclerView rv_matrimonyprofileview;
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
@@ -51,27 +65,49 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private ImageView toolbar_back_action, toolbar_edit_action, toolbar_action;
     private TextView toolbar_title, txt_no_data;
     private boolean isSearchVisible = false;
+    private String toOpean = "";
+
+    private RelativeLayout progressBar;
+    //peginetion
+    private String nextPageUrl;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mprofilelist_layout);
         //receive intent data
-        meetIdReceived = getIntent().getStringExtra("meetid");
-
 
         initViews();
+        toOpean = getIntent().getStringExtra("toOpean");
+        if (toOpean.equals("MeetUserList")) {
+            meetIdReceived = getIntent().getStringExtra("meetid");
+        } else if (toOpean.equals("NewUserList")) {
+            showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
+        } else if (toOpean.equals("UnverifiedUserList")) {
+            showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
+        } else if (toOpean.equals("AllUserList")) {
+            Gson gson = new GsonBuilder().create();
+            Map<String, String> map = new HashMap<>();
+            map.put("filter", "No");
+            String params = gson.toJson(map);
+            presenter.getAllUserList(BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS), params);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //initViews();
-        tmFilterListActivityPresenter.getAllFiltersRequests(meetIdReceived);
+        if (toOpean.equals("MeetUserList")) {
+            presenter.getAllFiltersRequests(meetIdReceived);
+        }
+
     }
 
     private void initViews() {
-
+        progressBar = findViewById(R.id.progress_bar);
         txt_no_data = findViewById(R.id.txt_no_data);
         toolbar_back_action = findViewById(R.id.toolbar_back_action1);
         toolbar_back_action.setVisibility(View.VISIBLE);
@@ -85,28 +121,59 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         toolbar_edit_action.setOnClickListener(this);
         toolbar_action.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
+        presenter = new MatrimonyProfilesListActivityPresenter(this);
+
         rv_matrimonyprofileview = findViewById(R.id.rv_matrimonyprofileview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-
         rv_matrimonyprofileview.setLayoutManager(layoutManager);
-
-        tmFilterListActivityPresenter = new MatrimonyProfilesListActivityPresenter(this);
-
-        CreateFilterList();
         matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, userProfileLists,
                 this, this);
         rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
+
+        rv_matrimonyprofileview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
+//                                if (((ProfilesActivity) getActivity()).isFilterApplied() &&
+//                                        ((ProfilesActivity) getActivity()).getFilterCandidatesData() != null) {
+//                                    presenter.getFilteredUserList(((ProfilesActivity) getActivity()).
+//                                            getFilterCandidatesData(), allUserProfileobj.getNext_page_url());
+//                                } else {
+                                Gson gson = new GsonBuilder().create();
+                                Map<String, String> map = new HashMap<>();
+                                map.put("filter", "No");
+                                String params = gson.toJson(map);
+                                presenter.getAllUserList(nextPageUrl, params);
+//                                }
+                            }
+                        }
+                    }
+                }
+
+//                if (dy < -5 && ((ProfilesActivity) getActivity()).isFilterApplied() &&
+//                        btnClearFilters.getVisibility() != View.VISIBLE) {
+//                    btnClearFilters.setVisibility(View.VISIBLE);
+//                } else if (dy > 5 && (!((ProfilesActivity) getActivity()).isFilterApplied()) &&
+//                        btnClearFilters.getVisibility() == View.VISIBLE) {
+//                    btnClearFilters.setVisibility(View.GONE);
+//                }
+            }
+        });
+
+        CreateFilterList();
     }
 
     private void CreateFilterList() {
-        /*ListDrink.add("Male");
-        ListDrink.add("Female");
-        ListDrink.add("Paid");
-        ListDrink.add("Yet to pay");
-        ListDrink.add("Approved");
-        ListDrink.add("Rejected");
-        ListDrink.add("Deleted");*/
-
         ListDrink.add("Approved");
         ListDrink.add("Rejected");
         ListDrink.add("Pending");
@@ -126,7 +193,12 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 finish();
                 break;
             case R.id.toolbar_edit_action1:
-                showMultiSelectBottomsheet("Filter", "filter", ListDrink);
+                if (toOpean.equals("AllUserList")) {
+
+                } else {
+                    showMultiSelectBottomsheet("Filter", "filter", ListDrink);
+                }
+
                 break;
             case R.id.toolbar_action1:
                 if (isSearchVisible) {
@@ -169,13 +241,14 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     }
 
 
-    public void showPendingApprovalRequests(List<UserProfileList> pendingRequestList) {
+    public void showUserProfileList(List<UserProfileList> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
             userProfileLists.clear();
             userProfileListsFiltered = (ArrayList<UserProfileList>) pendingRequestList;
-            for (int i = 0; i < userProfileListsFiltered.size(); i++) {
-                userProfileLists.add(userProfileListsFiltered.get(i));
-            }
+            userProfileLists.addAll(userProfileListsFiltered);
+//            for (int i = 0; i < userProfileListsFiltered.size(); i++) {
+//                userProfileLists.add(userProfileListsFiltered.get(i));
+//            }
             /*matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, userProfileLists,
                     this, this);*/
             // rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
@@ -194,6 +267,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
     }
 
+
     @Override
     public void onItemClicked(int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
@@ -207,7 +281,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     @Override
     public void onApproveClicked(int pos) {
-
         approvalType = Constants.APPROVE;
         String message = "Do you want to approve?";
         showApproveRejectDialog(this, pos, approvalType, message);
@@ -217,18 +290,14 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void onRejectClicked(int pos) {
 
         approvalType = Constants.REJECT;
-        //String message = "Do you want to reject?";
-        //showApproveRejectDialog(this, pos, approvalType, message);
-
-        //String strReason = Util.showReasonDialog(getActivity(), pos, this);
         showReasonDialog(this, pos);
     }
 
     public void callRejectAPI(String strReason, int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
-        tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
+        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
+        presenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
         approvalType = Constants.REJECT;
 
     }
@@ -236,8 +305,8 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     public void callApproveAPI(int pos) {
         UserProfileList userProfileList = userProfileLists.get(pos);
 
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
-        tmFilterListActivityPresenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
+        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
+        presenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
         approvalType = Constants.APPROVE;
 
     }
@@ -257,9 +326,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
     }
 
-
     private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
-
         bottomSheetDialogFragment = new SingleSelectBottomSheet(this, selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
         bottomSheetDialogFragment.toolbarTitle.setText(Title);
@@ -267,13 +334,11 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
-
     @Override
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
         userProfileLists.clear();
         currentSelectedFilter = selectedValues;
         updateUserListWithFilter(selectedValues);
-
     }
 
     private void updateUserListWithFilter(String selectedValues) {
@@ -317,7 +382,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
     }
 
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -328,7 +392,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         filter(newText);
         return false;
     }
-
 
     //ApproveReject Confirm dialog
     public void showApproveRejectDialog(final Activity context, int pos, String approvalType, String dialogMessage) {
@@ -363,9 +426,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
                     callApproveAPI(pos);
                 }
-                /*if (approvalType.equalsIgnoreCase(Constants.REJECT)) {
-                    callRejectAPI(pos);
-                }*/
                 dialog.dismiss();
             }
         });
@@ -377,10 +437,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         txt_no_data.setVisibility(View.VISIBLE);
     }
 
-
     public String showReasonDialog(final Activity context, int pos) {
-
-
         Dialog dialog;
         Button btnSubmit, btn_cancel;
         EditText edt_reason;
@@ -406,10 +463,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   /*Intent loginIntent = new Intent(context, LoginActivity.class);
-                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                   loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                   context.startActivity(loginIntent);*/
                 String strReason = edt_reason.getText().toString();
 
                 if (TextUtils.isEmpty(strReason)) {
@@ -418,18 +471,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                                     .findViewById(android.R.id.content), "Reason Can not be blank",
                             Snackbar.LENGTH_LONG);
                 } else {
-                    /*if (fragment instanceof TMUserLeavesApprovalFragment) {
-                        ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                    }
-                    if (fragment instanceof TMUserAttendanceApprovalFragment) {
-                        ((TMUserAttendanceApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                    }
-                    if (fragment instanceof TMUserProfileApprovalFragment) {
-                        ((TMUserProfileApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                    }
-                    if (fragment instanceof TMUserFormsApprovalFragment) {
-                        ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
-                    }*/
                     onReceiveReason(strReason, pos);
                     dialog.dismiss();
                 }
@@ -443,6 +484,41 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     public void onReceiveReason(String strReason, int pos) {
         callRejectAPI(strReason, pos);
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(message, this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
+    }
+
+    public void onNewProfileFetched(String requestID, AllUserData newUserResponse) {
+        loading = true;
+        nextPageUrl = newUserResponse.getNextPageUrl();
+        showUserProfileList(newUserResponse.getData());
     }
 
 }

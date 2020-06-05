@@ -3,9 +3,10 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserProfileList {
+public class UserProfileList implements Serializable {
 
     @SerializedName("_id")
     @Expose

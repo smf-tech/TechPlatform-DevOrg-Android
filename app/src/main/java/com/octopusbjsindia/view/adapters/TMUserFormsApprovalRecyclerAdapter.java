@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ private PreferenceHelper preferenceHelper;
                 holder.tv_leave_reason.setVisibility(View.VISIBLE);
 
                 if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
-                    holder.tv_leave_reason.setText("Rejected Reason:- "+dataList.get(position).getStatus().getRejection_reason());
+                    if (!TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
+                        holder.tv_leave_reason.setText("Rejected Reason:- " + dataList.get(position).getStatus().getRejection_reason());
+                    }else {
+                        holder.tv_leave_reason.setVisibility(View.GONE);
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.octopusbjsindia.models.pm;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -97,6 +98,10 @@ public class ProcessData {
     @SerializedName("form_approvalStatus")
     @Expose
     private String formApprovalStatus;
+
+    @Ignore
+    @Expose
+    private String formRejectionReason;
 
     @NonNull
     public String getId() {
@@ -201,5 +206,13 @@ public class ProcessData {
 
     public void setFormApprovalStatus(String formApprovalStatus) {
         this.formApprovalStatus = formApprovalStatus;
+    }
+
+    public String getFormRejectionReason() {
+        return formRejectionReason;
+    }
+
+    public void setFormRejectionReason(String formRejectionReason) {
+        this.formRejectionReason = formRejectionReason;
     }
 }

@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/white"
-                android:gravity="bottom"
+
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
@@ -142,6 +142,7 @@
                     android:textSize="@dimen/text_size_12"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans_regular"
                     android:layout_height="wrap_content" />
                 <com.google.android.material.button.MaterialButton

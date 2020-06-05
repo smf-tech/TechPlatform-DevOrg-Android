@@ -138,6 +138,9 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
         tmUserLeavesApprovalRecyclerAdapter.notifyItemRemoved(position);
         Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
+        if (tmUserLeaveApplicationsList.size()<1) {
+            getActivity().finish();
+        }
     }
 
     private void rejectApprovalRequest(String strReason, int pos) {

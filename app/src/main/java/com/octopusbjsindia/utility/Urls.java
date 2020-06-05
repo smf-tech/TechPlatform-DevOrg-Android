@@ -114,6 +114,7 @@ public class Urls {
         public static final String MEET_ARCHIVE_DELETE = "api/archiveMeet/%1$s/%2$s";
         public static final String MEET_ALLOCATE_BADGES = "api/allocateBadge/%1$s/%2$s";
         public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
+        public static final String ALL_FILTER_USERS ="api/getAllFilterUsers";
 
         //for batches
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
@@ -123,6 +124,7 @@ public class Urls {
         public static final String CHECK_USER_CREATED = "api/checkProfile/%1$s/%2$s";
 
         public static final String REGISTER_USER_TO_MEET = "api/registration_meet";
+        public static final String MATRIMONY_NEW_USER = "api/newUserRegister";
     }
 
     public class SSModule {

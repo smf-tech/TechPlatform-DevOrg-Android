@@ -50,6 +50,9 @@ public class FormResult {
     @ColumnInfo(name = "createdDateTime")
     private Long createdAt;
 
+    @ColumnInfo(name = "rejection_reason")
+    private String rejectionReason;
+
     public String getFormApprovalStatus() {
         return formApprovalStatus;
     }
@@ -173,5 +176,13 @@ public class FormResult {
 
     public void setFormNameLocale(LocaleData formNameLocale) {
         this.formNameLocale = formNameLocale;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }

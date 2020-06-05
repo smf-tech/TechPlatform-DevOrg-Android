@@ -155,6 +155,9 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
         tmUserFormsApprovalRecyclerAdapter.notifyItemRemoved(position);
         Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
+        if (tmUserFormsApplicationsList.size()<1) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -210,7 +213,7 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
             try {
                 tmApprovalRequestModel.setType("form");
                 tmApprovalRequestModel.setApprove_type("rejected");
-                tmApprovalRequestModel.setReason("");
+                tmApprovalRequestModel.setReason(strReason);
                 tmApprovalRequestModel.setLeave_type("");
                 tmApprovalRequestModel.setStartdate("");
                 tmApprovalRequestModel.setEnddate("");

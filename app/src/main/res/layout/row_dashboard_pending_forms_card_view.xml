@@ -80,6 +80,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/dimen_10dp" />
 
+                <TextView
+                    android:id="@+id/txt_rejection_reason"
+                    style="@style/roboto_regular_light_grey_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="shdbvhdb"
+                    android:visibility="gone"
+                    android:layout_below="@+id/txt_dashboard_pending_form_created_at" />
+
             </RelativeLayout>
 
             <ImageView
