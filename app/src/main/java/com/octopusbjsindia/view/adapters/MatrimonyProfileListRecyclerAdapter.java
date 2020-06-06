@@ -26,7 +26,9 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 
-        public MatrimonyProfileListRecyclerAdapter(Context context, List<UserProfileList> dataListreceived, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
+    public MatrimonyProfileListRecyclerAdapter(Context context, List<UserProfileList> dataListreceived,
+                                               final OnRequestItemClicked clickListener,
+                                               final OnApproveRejectClicked approveRejectClickedListner) {
             mContext = context;
             this.dataList = dataListreceived;
             this.clickListener =clickListener;

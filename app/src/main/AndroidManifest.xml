@@ -40,7 +40,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.MatrimonyActivity"></activity>
+        <activity android:name=".view.activities.MatrimonyUsersFilterFragment"></activity>
+        <activity android:name=".view.activities.MatrimonyActivity" />
         <activity
             android:name=".view.activities.WebviewFormDisplayActivity"
             android:screenOrientation="portrait"

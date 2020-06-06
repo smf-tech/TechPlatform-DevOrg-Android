@@ -274,8 +274,6 @@ public class Constants {
         public static final String IMAGE_TYPE_PROFILE = "profile";
         public static final String IMAGE_TYPE_EVENT = "event";
         public static final String PDF = "pdf";
-
-
         //-------
         public static final String IMAGE_TYPE_ADHARCARD = "ADHAR";
         public static final String IMAGE_TYPE_EDUCATION = "EDUCATION";
@@ -323,7 +321,6 @@ public class Constants {
         public static final Integer REPEAT_EVENT = 001;
         public static final Integer MEMBER_LIST = 002;
         public static final String SPINNER_ADD_FORMS = "Add forms";
-
         public static final String KEY_IS_DASHBOARD = "isDashboard";
         public static final String TO_OPEN = "ToOpen";
         public static final String EVENT_DETAIL = "EventDetail";
@@ -338,7 +335,6 @@ public class Constants {
         public static final String MEMBER_LIST_COUNT = "MemberListCount";
         public static final String PLANNED_STATUS = "planned";
         public static final String COMPLETED_STATUS = "completed";
-
         public static final String LEAVE_TYPE_CL = "CL";
         public static final String LEAVE_TYPE_PAID = "Paid";
         public static final String LEAVE_TYPE_COMP_OFF = "CompOff";
@@ -380,7 +376,6 @@ public class Constants {
         public static final Integer MACHINE_MOU_EXPIRED_STATUS_CODE = 114;
         public static final Integer MACHINE_REALEASED_STATUS_CODE = 115;
         public static final Integer MACHINE_PAUSE_STATUS_CODE = 113;
-
         public static final Integer ACCESS_CODE_VIEW_STRUCTURES = 101;
         public static final Integer ACCESS_CODE_ADD_MACHINE = 108;
         public static final Integer ACCESS_CODE_VIEW_MACHINES = 109;
@@ -408,7 +403,6 @@ public class Constants {
         public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
         public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
         public static final Integer ACCESS_CODE_ADD_OPERATOR = 131;
-
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
         public static final Integer STRUCTURE_IN_PROGRESS =	117;
@@ -418,7 +412,6 @@ public class Constants {
         public static final Integer STRUCTURE_CLOSED = 121;
         public static final Integer STRUCTURE_NON_COMPLIANT = 122;
         public static final Integer STRUCTURE_PARTIALLY_CLOSED = 123;
-
         public static final Integer ACCESS_CODE_STATE = 120;
         public static final Integer ACCESS_CODE_DISTRICT = 121;
         public static final Integer ACCESS_CODE_TALUKA = 122;
@@ -426,8 +419,6 @@ public class Constants {
         public static final Integer ACCESS_CODE_ASSIGN_OPERATOR = 132;
         public static final Integer ACCESS_CODE_REALISE_OPERATOR = 133;
         public static final Integer ACCESS_CODE_OFFLINE_LOCATION_ALLOWED = 134;
-
-
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
 
     }
@@ -437,8 +428,14 @@ public class Constants {
         public static final String MACHINE_END_READING = "machineendreading";
         public static final String MACHINE_START_IMAGE = "machinestartimage";
         public static final String MACHINE_END_IMAGE = "machineendimage";
-
         public static final String PROJECT_RELEVENT_LOGO = "projectlogo";
         public static final String APP_CONFIG_RESPONSE = "appconfigresponse";
+    }
+
+    public static class MatrimonyModule {
+        public static final String NEWLY_JOINED_SECTION = "newly_joined";
+        public static final String VERIFICATION_PENDING_SECTION = "verification_pending";
+        public static final String ALL_USERS_SECTION = "all_users";
+        public static final String MEET_USERS_SECTION = "meet_users";
     }
 }

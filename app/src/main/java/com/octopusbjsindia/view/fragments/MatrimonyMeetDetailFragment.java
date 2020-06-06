@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,8 +39,6 @@ import com.octopusbjsindia.presenter.MatrimonyMeetDetailFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
-import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
@@ -86,8 +83,6 @@ public class MatrimonyMeetDetailFragment extends Fragment implements  View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
-
-
         AppEvents.trackAppEvent(getString(R.string.event_matrimony_screen_visit));
     }
 
