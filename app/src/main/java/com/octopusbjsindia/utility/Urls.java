@@ -123,6 +123,10 @@ public class Urls {
 
         public static final String REGISTER_USER_TO_MEET = "api/registration_meet";
         public static final String MATRIMONY_NEW_USER = "api/newUserRegister";
+        public static final String MATRIMONY_FIELD_MASTER = "api/MatrimonialFieldMaster";
+        public static final String MISSING_FIELD_REQ = "api/MissingFields";
+        public static final String BLOCK_UNBLOCK_USER = "api/adminBanUser";
+
     }
 
     public class SSModule {

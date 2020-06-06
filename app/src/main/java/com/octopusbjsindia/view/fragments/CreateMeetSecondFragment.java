@@ -312,7 +312,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             button.setOnClickListener(v -> {
                 // Close dialog
                 dialog.dismiss();
-                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
+//                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
                 closeCurrentActivity();
             });
         }

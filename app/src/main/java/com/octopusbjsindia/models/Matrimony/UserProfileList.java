@@ -26,6 +26,30 @@ public class UserProfileList implements Serializable {
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
+    @SerializedName("markAttendance")
+    @Expose
+    private boolean markAttendance;
+    @SerializedName("interviewDone")
+    @Expose
+    private boolean interviewDone;
+    @SerializedName("paymentDone")
+    @Expose
+    private boolean paymentDone;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("createdDateTime")
+    @Expose
+    private int createdDateTime;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private int updatedDateTime;
+    @SerializedName("updated_at")
+    @Expose
+    private String updated_at;
+    @SerializedName("created_at")
+    @Expose
+    private String created_at;
 
     public boolean isMarkAttendance() {
         return markAttendance;
@@ -50,34 +74,6 @@ public class UserProfileList implements Serializable {
     public void setPaymentDone(boolean paymentDone) {
         this.paymentDone = paymentDone;
     }
-
-    @SerializedName("markAttendance")
-    @Expose
-    private boolean markAttendance;
-
-    @SerializedName("interviewDone")
-    @Expose
-    private boolean interviewDone;
-
-    @SerializedName("paymentDone")
-    @Expose
-    private boolean paymentDone;
-
-    @SerializedName("phone")
-    @Expose
-    private String phone;
-    @SerializedName("createdDateTime")
-    @Expose
-    private int createdDateTime;
-    @SerializedName("updatedDateTime")
-    @Expose
-    private int updatedDateTime;
-    @SerializedName("updated_at")
-    @Expose
-    private String updated_at;
-    @SerializedName("created_at")
-    @Expose
-    private String created_at;
 
     public String get_id() {
         return _id;

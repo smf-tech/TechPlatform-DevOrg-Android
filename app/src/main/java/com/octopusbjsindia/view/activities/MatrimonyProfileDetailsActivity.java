@@ -1,44 +1,58 @@
 package com.octopusbjsindia.view.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.gson.Gson;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesDetailsActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
 import com.octopusbjsindia.view.adapters.ProfileImagesPagerAdapter;
+import com.octopusbjsindia.view.fragments.MatrimonyMeetDetailFragment;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import me.relex.circleindicator.CircleIndicator;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener,
+        PopupMenu.OnMenuItemClickListener, APIDataListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
     private RequestOptions requestOptions;
     private UserProfileList userProfileList;
-    private MatrimonyProfilesDetailsActivityPresenter matrimonyProfilesDetailsActivityPresenter;
+    private MatrimonyProfilesDetailsActivityPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
     private RecyclerView rv_matrimonyprofileview;
     private ArrayList<UserProfileList> userProfileLists;
@@ -60,11 +74,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private TextView tv_address, tv_town_city, tv_state, tv_country, tv_primary_mobile, tv_secondary_mobile, tv_primary_email;
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
-    private ImageView iv_aadhar, iv_education_certificates;
+    private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
     private Button btn_mark_attendance, btn_interview_done;
     private TextView tv_approval_status, tv_premium;
     private String meetIdReceived;
-
+    private RelativeLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +94,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         meetIdReceived = getIntent().getStringExtra("meetid");
         requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+        progressBar = findViewById(R.id.progress_bar);
         initView();
     }
 
@@ -92,16 +107,13 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
 
     private void initView() {
-        matrimonyProfilesDetailsActivityPresenter = new MatrimonyProfilesDetailsActivityPresenter(this);
+        presenter = new MatrimonyProfilesDetailsActivityPresenter(this);
         //for(int i=0;i<IMAGES.length;i++)
         {
             if (userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
                     && userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image().size() > 0) {
                 ProfileImageList.addAll(userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image());
             }
-           /* ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
-            ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");
-            ProfileImageList.add("https://mvappimages.s3.amazonaws.com/BJS/Images/profile/picture_1567854788767.jpg");*/
         }
 
         TextView title = findViewById(R.id.toolbar_title);
@@ -125,6 +137,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
 
+        ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
+        popupMenu.setVisibility(View.VISIBLE);
+        popupMenu.setImageResource(R.drawable.ic_options_icon);
+        popupMenu.setOnClickListener(this);
 
         btn_interview_done = findViewById(R.id.btn_interview_done);
         btn_mark_attendance = findViewById(R.id.btn_mark_attendance);
@@ -337,20 +353,53 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
                 break;
             case R.id.btn_mark_attendance:
-                JSONObject jsonObject = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_ATTENDANCE);
-                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObject, 1, Constants.MARK_ATTENDANCE);
+                JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_ATTENDANCE);
+                presenter.markAttendanceRequest(jsonObject, 1, Constants.MARK_ATTENDANCE);
 
                 break;
             case R.id.btn_interview_done:
-                JSONObject jsonObj = matrimonyProfilesDetailsActivityPresenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_INTERVIEW);
-                matrimonyProfilesDetailsActivityPresenter.markAttendanceRequest(jsonObj, 1, Constants.MARK_INTERVIEW);
+                JSONObject jsonObj = presenter.createBodyParams(meetIdReceived, userProfileList.get_id(), Constants.MARK_INTERVIEW);
+                presenter.markAttendanceRequest(jsonObj, 1, Constants.MARK_INTERVIEW);
                 break;
             case R.id.toolbar_back_action:
                 finish();
                 break;
-
-
+            case R.id.toolbar_edit_action:
+                PopupMenu popup = new PopupMenu(this, v);
+                popup.setOnMenuItemClickListener(MatrimonyProfileDetailsActivity.this);
+                popup.inflate(R.menu.matrimony_profile_menu);
+                if(userProfileList.getMatrimonial_profile().isBan()){
+                    popup.getMenu().findItem(R.id.action_block).setTitle("Unblock");
+                } else {
+                    popup.getMenu().findItem(R.id.action_block).setTitle("Block");
+                }
+                popup.show();
+                break;
         }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_missing_info:
+                Intent intent = new Intent(this,MissingInfoActivity.class);
+                intent.putExtra("user_id",userProfileList.get_id());
+                intent.putExtra("user_email",userProfileList.getMatrimonial_profile()
+                        .getResidential_details().getPrimary_email_address());
+                startActivity(intent);
+                break;
+            case R.id.action_block:
+                if(userProfileList.getMatrimonial_profile().isBan()){
+                    showDialog("Alert", "Are you sure you want to Unblock this user?",
+                            "YES", "NO");
+                } else {
+                        showDialog("Alert", "Are you sure you want to Block this user?",
+                                "YES", "NO");
+                }
+
+                break;
+        }
+        return false;
     }
 
     private void setupMeetsViewPager() {
@@ -365,90 +414,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
             }
         });
-        /*String json = null;
-        try {
-            InputStream is = getApplicationContext().getResources().getAssets().open("recommended.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        Gson gson = new Gson();
-       *//* RecomandedResponse data = gson.fromJson(json, RecomandedResponse.class);
-
-        for (UserProfile userProfile : data.getData()) {
-            VPProfileFragment profileFragment = new VPProfileFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(USER_PROFILE_DATA, userProfile);
-            profileFragment.setArguments(bundle);
-            adapter.addFragment(profileFragment, "Profile");
-        }*//*
-
-        vpProfileImage.setAdapter(adapter);*/
-
     }
-
-
-    /*private void setActionbar(String title) {
-        if (title.contains("\n")) {
-            title = title.replace("\n", " ");
-        }
-
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText(title);
-
-        ImageView img_back = findViewById(R.id.toolbar_back_action);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-    }
-*/
-
-/*    public void showPendingApprovalRequests(List<UserProfileList> pendingRequestList) {
-        if (!pendingRequestList.isEmpty()) {
-            userProfileLists = (ArrayList<UserProfileList>) pendingRequestList;
-            matrimonyProfileListRecyclerAdapter = new MatrimonyProfileListRecyclerAdapter(this, pendingRequestList,
-                    this, this);
-            rv_matrimonyprofileview.setAdapter(matrimonyProfileListRecyclerAdapter);
-        } else {
-     
-        }
-    }
-
-    @Override
-    public void onItemClicked(int pos) {
-        Util.showToast("item ->" + pos + " Open detais", this);
-        UserProfileList userProfileList = userProfileLists.get(pos);
-    }
-
-    @Override
-    public void onApproveClicked(int pos) {
-        Util.showToast("item ->" + pos + " Approve Clicked", this);
-        UserProfileList userProfileList = userProfileLists.get(pos);
-
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams("5d6f90c25dda765c2f0b5dd4", "user", userProfileList.get_id(), Constants.APPROVE);
-        tmFilterListActivityPresenter.approveRejectRequest(jsonObject, 0,Constants.APPROVE);
-    }
-
-    @Override
-    public void onRejectClicked(int pos) {
-        Util.showToast("item ->" + pos + " Reject Clicked", this);
-        UserProfileList userProfileList = userProfileLists.get(pos);
-
-        JSONObject jsonObject = tmFilterListActivityPresenter.createBodyParams("5d6f90c25dda765c2f0b5dd4", "user", userProfileList.get_id(), Constants.REJECT);
-        tmFilterListActivityPresenter.approveRejectRequest(jsonObject, 0,Constants.REJECT);
-    }
-
-    public void updateRequestStatus(String response, int position) {
-        if (Constants.REJECT.equalsIgnoreCase(approvalType)){
-            userProfileLists.get(position).setIsApproved(Constants.APPROVE);
-        }
-        if (Constants.APPROVE.equalsIgnoreCase(approvalType)){
-            userProfileLists.get(position).setIsApproved(Constants.REJECT);
-        }
-    }*/
 
     private void enlargePhoto(String photoUrl) {
         // stop the video if playing
@@ -511,4 +477,94 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
         }
     }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(message,this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void closeCurrentActivity() {
+
+    }
+
+    private void showDialog(String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(this));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+                if(userProfileList.getMatrimonial_profile().isBan()){
+                    HashMap<String,Object> map=new HashMap<>();
+                    map.put("block_type", false);
+                    map.put("user_id", userProfileList.get_id());
+                    String paramjson =  new Gson().toJson(map);
+
+                    presenter.userAction(paramjson);
+                } else {
+                    HashMap<String,Object> map=new HashMap<>();
+                    map.put("block_type", true);
+                    map.put("user_id", userProfileList.get_id());
+                    String paramjson =  new Gson().toJson(map);
+
+                    presenter.userAction(paramjson);
+                }
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
 }

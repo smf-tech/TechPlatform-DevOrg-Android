@@ -98,15 +98,6 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 if(meetData.getIs_published()){
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
-                //if(meetData.getBadgeFanlize()){
-                /*if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
-                    *//*popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
-                    popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);*//*
-                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
-                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(true);
-                }else {
-                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
-                }*/
 
                 if (meetData.getRegistrationSchedule().getRegEndDateTime() <= Util.getCurrentTimeStamp())
                 {
@@ -159,7 +150,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)){
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
-                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
+//                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
