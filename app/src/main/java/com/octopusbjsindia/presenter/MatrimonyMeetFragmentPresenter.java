@@ -120,6 +120,7 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
             requestCall.getDataApiCall(MATRIMONY_MEET_ARCHIVE, meetArchiveDeleteUrl);
         }
     }
+
     public void meetAllocateBadges(String meetId, String type) {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);

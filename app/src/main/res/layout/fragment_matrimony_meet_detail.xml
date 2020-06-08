@@ -24,8 +24,76 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/meet_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="220dp"
+            android:visibility="gone" />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_15dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_margin="@dimen/dimen_05dp"
+                app:cardCornerRadius="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/iv_meet_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="210dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/matrimony_meet_bg" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_60dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/gradient_sample" />
+
+                        <ImageView
+                            android:id="@+id/btn_popmenu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:background="@drawable/ic_options_icon" />
+
+                        <!--<ImageView
+                            android:id="@+id/iv_icon_published"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="@dimen/dimen_10dp"/>-->
+                        <TextView
+                            android:layout_width="@dimen/dimen_75dp"
+                            android:text=""
+                            android:id="@+id/iv_icon_published"
+                            android:layout_marginTop="@dimen/dimen_16dp"
+                            android:background="@drawable/ic_publish_ribbon"
+                            android:paddingEnd="@dimen/dimen_10dp"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/opensans_bold"
+                            android:textSize="@dimen/text_size_10"
+                            android:paddingStart="@dimen/dimen_05dp"
+                            android:layout_height="@dimen/dimen_25dp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
         <TextView
             android:id="@+id/tv_meet_title"
             android:layout_width="match_parent"
