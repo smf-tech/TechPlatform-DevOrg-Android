@@ -72,9 +72,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private String toOpen = "";
     private Button btnClearFilters;
     private ImageView ivNoData;
-
     private RelativeLayout progressBar;
-    //peginetion
+    //paginetion
     private String nextPageUrl;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
@@ -139,7 +138,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         btnClearFilters.setOnClickListener(this);
         ivNoData = view.findViewById(R.id.iv_no_data);
         presenter = new MatrimonyProfilesListFragmentPresenter(this);
-
+        userProfileLists.clear();
+        userProfileListsFiltered.clear();
         rv_matrimonyprofileview = view.findViewById(R.id.rv_matrimonyprofileview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_matrimonyprofileview.setLayoutManager(layoutManager);

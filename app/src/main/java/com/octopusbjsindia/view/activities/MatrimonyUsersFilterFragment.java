@@ -391,10 +391,13 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 } else {
                     matrimonyUserFilterData.setAge_ranges(null);
                 }
-                if (matrimonyUserFilterData.getUser_meet_status() != null || matrimonyUserFilterData.getState_names() != null
+                if (matrimonyUserFilterData.getUser_verification_status() != null
+                        || matrimonyUserFilterData.getUser_meet_status() != null
+                        || matrimonyUserFilterData.getState_names() != null
+                        || matrimonyUserFilterData.getUser_sect() != null
                         || matrimonyUserFilterData.getQualification_degrees() != null
                         || matrimonyUserFilterData.getGender() != null
-                        || matrimonyUserFilterData.getMarital_status() != null || matrimonyUserFilterData.getUser_sect() != null
+                        || matrimonyUserFilterData.getMarital_status() != null
                         || matrimonyUserFilterData.getUser_paid_free() != null) {
                     ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
                 }

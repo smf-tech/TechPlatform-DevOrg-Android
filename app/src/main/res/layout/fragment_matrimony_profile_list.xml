@@ -156,10 +156,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Clear Filters"
+            android:textAllCaps="false"
             android:layout_marginStart="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_20dp"
             android:layout_alignParentBottom="true"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_no_data"
