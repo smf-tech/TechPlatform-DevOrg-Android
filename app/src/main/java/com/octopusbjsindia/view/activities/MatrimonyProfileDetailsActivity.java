@@ -139,7 +139,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
         popupMenu.setVisibility(View.VISIBLE);
-        popupMenu.setImageResource(R.drawable.ic_options_icon);
+        popupMenu.setImageResource(R.drawable.ic_popup_menu);
         popupMenu.setOnClickListener(this);
 
         btn_interview_done = findViewById(R.id.btn_interview_done);
