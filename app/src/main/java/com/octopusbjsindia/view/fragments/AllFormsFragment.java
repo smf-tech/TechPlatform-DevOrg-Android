@@ -191,8 +191,17 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                 for (ProcessData processData : json.getData()) {
                     DatabaseManager.getDBInstance(getContext()).insertProcessData(processData);
                 }
-                processResponse(json);
+                //processResponse(json);
+                List<ProcessData> processDataArrayList =
+                        DatabaseManager.getDBInstance(getActivity()).getAllProcesses();
+
+                if (processDataArrayList != null && !processDataArrayList.isEmpty()) {
+                    Processes processes = new Processes();
+                    processes.setData(processDataArrayList);
+                    processResponse(processes);
+                }
             }
+
             hideProgressBar();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -327,6 +336,7 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                                 continue;
                             } else {
                                 tempResult.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                                tempResult.setRejectionReason(resultObject.getString(Constants.FormDynamicKeys.REJECTION_REASON));
                                 tempResult.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
                                 DatabaseManager.getDBInstance(getActivity()).updateFormResult(tempResult);
                                 continue;
@@ -352,8 +362,8 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                         result.setCreatedAt(resultObject.getLong(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
                         result.setFormApprovalStatus(resultObject.getString(Constants.FormDynamicKeys.STATUS));
+                        result.setRejectionReason(resultObject.getString(Constants.FormDynamicKeys.REJECTION_REASON));
                         result.setResult(resultObject.getString(Constants.FormDynamicKeys.RESULT));
-
                         DatabaseManager.getDBInstance(getActivity()).insertFormResult(result);
                     }
                 }

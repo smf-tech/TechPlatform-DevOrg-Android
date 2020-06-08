@@ -30,6 +30,7 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.reports.ReportData;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 
 import java.util.List;
 
@@ -85,7 +86,6 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE StructurePripretionData ADD COLUMN beneficiary_id TEXT");
             database.execSQL("ALTER TABLE FormData ADD COLUMN api_url TEXT");
             database.execSQL("ALTER TABLE ProcessData ADD COLUMN api_url TEXT");
-
         }
     };
 
@@ -96,7 +96,8 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE FormData ADD COLUMN jurisdictions_ TEXT");
             database.execSQL("CREATE TABLE IF NOT EXISTS `JurisdictionLocation`" +
                     " (`id` TEXT PRIMARY KEY NOT NULL, `name` TEXT, `parent_id` TEXT)");
-
+            database.execSQL("ALTER TABLE ProcessData ADD COLUMN project_id TEXT");
+            database.execSQL("ALTER TABLE FormResult ADD COLUMN rejection_reason TEXT");
         }
     };
 
@@ -157,7 +158,7 @@ public class DatabaseManager {
 
     public List<ProcessData> getAllProcesses() {
         ProcessDataDao processDataDao = appDatabase.processDataDao();
-        return processDataDao.getAllProcesses();
+        return processDataDao.getAllProcesses(Util.getUserObjectFromPref().getProjectIds().get(0).getId());
     }
 
     public void deleteAllProcesses() {
