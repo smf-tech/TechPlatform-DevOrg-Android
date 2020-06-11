@@ -74,14 +74,20 @@ public class MissingInfoActivity extends AppCompatActivity implements APIDataLis
                 break;
             case R.id.bt_submit:
 
-                HashMap<String, String> map = new HashMap<>();
-                map.put("user_email", getIntent().getStringExtra("user_email"));
-                map.put("user_id", getIntent().getStringExtra("user_id"));
-                map.put("fields", etFealds.getText().toString());
-                map.put("comment", etNote.getText().toString());
-                String paramjson = new Gson().toJson(map);
+                if (TextUtils.isEmpty(etFealds.getText().toString())) {
+                    Util.showToast("Please select the field's.",this);
+                } else if (TextUtils.isEmpty(etNote.getText().toString())) {
+                    Util.showToast("Please enter the instructions.",this);
+                } else {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("user_email", getIntent().getStringExtra("user_email"));
+                    map.put("user_id", getIntent().getStringExtra("user_id"));
+                    map.put("fields", etFealds.getText().toString());
+                    map.put("comment", etNote.getText().toString());
+                    String paramjson = new Gson().toJson(map);
 
-                presenter.sentRequest(paramjson);
+                    presenter.sentRequest(paramjson);
+                }
                 break;
         }
 

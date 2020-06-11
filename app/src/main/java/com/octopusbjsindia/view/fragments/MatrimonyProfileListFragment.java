@@ -1,19 +1,13 @@
 package com.octopusbjsindia.view.fragments;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
@@ -43,8 +36,6 @@ import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class MatrimonyProfileListFragment extends Fragment implements View.OnClickListener,
@@ -58,23 +49,19 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     public String meetIdReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
-    private String currentSelectedFilter = "";
+    private String currentSelectedFilter = "",toOpen = "",nextPageUrl="";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private MatrimonyProfilesListFragmentPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
     private RecyclerView rv_matrimonyprofileview;
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
     private ArrayList<UserProfileList> userProfileListsFiltered = new ArrayList<>();
-    private String approvalType;
-    private ImageView toolbar_back_action, toolbarFilter, toolbar_action;
+    private ImageView toolbar_back_action, toolbarFilter, toolbar_action, ivNoData;
     private TextView toolbar_title;
     private boolean isSearchVisible = false;
-    private String toOpen = "";
     private Button btnClearFilters;
-    private ImageView ivNoData;
     private RelativeLayout progressBar;
     //paginetion
-    private String nextPageUrl;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
 
@@ -166,7 +153,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //                                    presenter.getFilteredUserList(((ProfilesActivity) getActivity()).
 //                                            getFilterCandidatesData(), allUserProfileobj.getNext_page_url());
 //                                } else {
-                                presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(), nextPageUrl);
+                                presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity())
+                                        .getMatrimonyUserFilterData(), nextPageUrl);
 //                                }
                             }
                         }
@@ -240,10 +228,6 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             case R.id.toolbar_filter:
                 userProfileLists.clear();
                 ((MatrimonyProfileListActivity) getActivity()).openFragment("filter_fragment");
-//                else {
-//                    showMultiSelectBottomsheet("Filter", "filter", ListDrink);
-//                }
-
                 break;
             case R.id.toolbar_action1:
                 if (isSearchVisible) {
@@ -370,57 +354,57 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
     @Override
     public void onApproveClicked(int pos) {
-        approvalType = Constants.APPROVE;
-        String message = "Do you want to approve?";
-        showApproveRejectDialog(getActivity(), pos, approvalType, message);
+//        approvalType = Constants.APPROVE;
+//        String message = "Do you want to approve?";
+//        showApproveRejectDialog(getActivity(), pos, approvalType, message);
     }
 
     @Override
     public void onRejectClicked(int pos) {
-        approvalType = Constants.REJECT;
-        showReasonDialog(getActivity(), pos);
+//        approvalType = Constants.REJECT;
+//        showReasonDialog(getActivity(), pos);
     }
 
-    public void callRejectAPI(String strReason, int pos) {
-        UserProfileList userProfileList = userProfileLists.get(pos);
-
-        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
-        presenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
-        approvalType = Constants.REJECT;
-
-    }
-
-    public void callApproveAPI(int pos) {
-        UserProfileList userProfileList = userProfileLists.get(pos);
-
-        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
-        presenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
-        approvalType = Constants.APPROVE;
-
-    }
-
-    public void updateRequestStatus(String response, int position) {
-        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
-                .findViewById(android.R.id.content));
-        if (Constants.REJECT.equalsIgnoreCase(approvalType)) {
-            userProfileLists.get(position).setIsApproved(Constants.REJECT);
-            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
-            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-        }
-        if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
-            userProfileLists.get(position).setIsApproved(Constants.APPROVE);
-            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
-            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
-        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
-        bottomSheetDialogFragment.show();
-        bottomSheetDialogFragment.toolbarTitle.setText(Title);
-        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-    }
+//    public void callRejectAPI(String strReason, int pos) {
+//        UserProfileList userProfileList = userProfileLists.get(pos);
+//
+//        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
+//        presenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
+//        approvalType = Constants.REJECT;
+//
+//    }
+//
+//    public void callApproveAPI(int pos) {
+//        UserProfileList userProfileList = userProfileLists.get(pos);
+//
+//        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
+//        presenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
+//        approvalType = Constants.APPROVE;
+//
+//    }
+//
+//    public void updateRequestStatus(String response, int position) {
+//        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
+//                .findViewById(android.R.id.content));
+//        if (Constants.REJECT.equalsIgnoreCase(approvalType)) {
+//            userProfileLists.get(position).setIsApproved(Constants.REJECT);
+//            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
+//            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+//        }
+//        if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
+//            userProfileLists.get(position).setIsApproved(Constants.APPROVE);
+//            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
+//            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+//        }
+//    }
+//
+//    private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
+//        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
+//        bottomSheetDialogFragment.show();
+//        bottomSheetDialogFragment.toolbarTitle.setText(Title);
+//        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT);
+//    }
 
     @Override
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
@@ -470,96 +454,97 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         }
     }
 
-    //ApproveReject Confirm dialog
-    public void showApproveRejectDialog(final Activity context, int pos, String approvalType, String dialogMessage) {
-        Dialog dialog;
-        Button btnSubmit, btn_cancel;
-        EditText edt_reason;
-        TextView tv_message;
-        Activity activity = context;
-
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_approve_reject_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        tv_message = dialog.findViewById(R.id.tv_message);
-        edt_reason = dialog.findViewById(R.id.edt_reason);
-        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-        btnSubmit = dialog.findViewById(R.id.btn_submit);
-
-        tv_message.setText(dialogMessage);
-
-
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
-                    callApproveAPI(pos);
-                }
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
-
     public void setTxt_no_data() {
         ivNoData.setVisibility(View.VISIBLE);
     }
 
-    public String showReasonDialog(final Activity context, int pos) {
-        Dialog dialog;
-        Button btnSubmit, btn_cancel;
-        EditText edt_reason;
-        Activity activity = context;
+    //ApproveReject Confirm dialog
+//    public void showApproveRejectDialog(final Activity context, int pos, String approvalType, String dialogMessage) {
+//        Dialog dialog;
+//        Button btnSubmit, btn_cancel;
+//        EditText edt_reason;
+//        TextView tv_message;
+//        Activity activity = context;
+//
+//        dialog = new Dialog(context);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialog_approve_reject_layout);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        tv_message = dialog.findViewById(R.id.tv_message);
+//        edt_reason = dialog.findViewById(R.id.edt_reason);
+//        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+//        btnSubmit = dialog.findViewById(R.id.btn_submit);
+//
+//        tv_message.setText(dialogMessage);
+//
+//
+//        btn_cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        btnSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
+//                    callApproveAPI(pos);
+//                }
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+//
+//    }
 
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_reason_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+//    public String showReasonDialog(final Activity context, int pos) {
+//        Dialog dialog;
+//        Button btnSubmit, btn_cancel;
+//        EditText edt_reason;
+//        Activity activity = context;
+//
+//        dialog = new Dialog(context);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialog_reason_layout);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//
+//        edt_reason = dialog.findViewById(R.id.edt_reason);
+//        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+//        btnSubmit = dialog.findViewById(R.id.btn_submit);
+//
+//        btn_cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        btnSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String strReason = edt_reason.getText().toString();
+//
+//                if (TextUtils.isEmpty(strReason)) {
+//                    Util.logger("Empty Reason", "Reason Can not be blank");
+//                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+//                                    .findViewById(android.R.id.content), "Reason Can not be blank",
+//                            Snackbar.LENGTH_LONG);
+//                } else {
+//                    onReceiveReason(strReason, pos);
+//                    dialog.dismiss();
+//                }
+//            }
+//        });
+//        dialog.show();
+//        return "";
+//    }
 
-        edt_reason = dialog.findViewById(R.id.edt_reason);
-        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-        btnSubmit = dialog.findViewById(R.id.btn_submit);
-
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String strReason = edt_reason.getText().toString();
-
-                if (TextUtils.isEmpty(strReason)) {
-                    Util.logger("Empty Reason", "Reason Can not be blank");
-                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Reason Can not be blank",
-                            Snackbar.LENGTH_LONG);
-                } else {
-                    onReceiveReason(strReason, pos);
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
-        return "";
-    }
-
-    public void onReceiveReason(String strReason, int pos) {
-        callRejectAPI(strReason, pos);
-    }
+//    public void onReceiveReason(String strReason, int pos) {
+//        callRejectAPI(strReason, pos);
+//    }
 
 //    public void onNewProfileFetched(String requestID, AllUserData newUserResponse) {
 //        loading = true;

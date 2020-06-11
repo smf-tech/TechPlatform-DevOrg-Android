@@ -12,6 +12,7 @@ import com.octopusbjsindia.listeners.ProfileDetailRequestCallListener;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.MatrimonyProfileDetailRequestCall;
+import com.octopusbjsindia.request.MatrimonyProfileListRequestCall;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.MatrimonyProfileDetailsActivity;
 
@@ -95,6 +96,14 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         requestCall.postDataApiCall("BLOCK_UNBLOCK_USER", paramjson, url);
     }
 
+    public void approveRejectRequest(String paramjson) {
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_APPROVAL_API;
+        requestCall.postDataApiCall("APPROVE_REJECT_USER", paramjson, url);
+    }
+
     @Override
     public void onFailureListener(String requestID, String message) {
         fragmentWeakReference.get().hideProgressBar();
@@ -113,8 +122,12 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         if (requestID.equals("BLOCK_UNBLOCK_USER")) {
             CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
             if (commonResponse.getStatus() == 200) {
+                fragmentWeakReference.get().updateBlockUnblock(commonResponse.getMessage());
+            } else {
                 fragmentWeakReference.get().onFailureListener(requestID, commonResponse.getMessage());
             }
+        } else if(requestID.equals("APPROVE_REJECT_USER")){
+            fragmentWeakReference.get().updateRequestStatus(response);
         }
     }
 }

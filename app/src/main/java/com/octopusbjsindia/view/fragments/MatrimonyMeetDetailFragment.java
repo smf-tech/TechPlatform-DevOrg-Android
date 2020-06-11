@@ -92,6 +92,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
+        presenter = new MatrimonyMeetDetailFragmentPresenter(this);
         AppEvents.trackAppEvent(getString(R.string.event_matrimony_screen_visit));
     }
 

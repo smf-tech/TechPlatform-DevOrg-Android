@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,27 +19,28 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesDetailsActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
 import com.octopusbjsindia.view.adapters.ProfileImagesPagerAdapter;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -51,13 +53,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private RequestOptions requestOptions;
     private UserProfileList userProfileList;
     private MatrimonyProfilesDetailsActivityPresenter presenter;
-    private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
-    private RecyclerView rv_matrimonyprofileview;
-    private ArrayList<UserProfileList> userProfileLists;
     private ArrayList<String> ProfileImageList = new ArrayList<>();
-    private String approvalType, filterTypeReceived;
+    private String filterTypeReceived;
     private ViewPager vpProfileImage;
     private CircleIndicator indicator;
+    private String approvalType;
 
     //personal
     private TextView tv_name, tv_birth_date, tv_birth_time, tv_age,
@@ -73,10 +73,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
-    private Button btn_mark_attendance, btn_interview_done;
+    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove;
     private TextView tv_approval_status, tv_premium;
     private String meetIdReceived;
     private RelativeLayout progressBar;
+    private boolean isBlock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
+        findViewById(R.id.btn_reject).setOnClickListener(this);
+        findViewById(R.id.btn_approve).setOnClickListener(this);
 
         ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
         popupMenu.setVisibility(View.VISIBLE);
@@ -164,30 +167,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             tv_premium.setVisibility(View.VISIBLE);
         }
 
-        tv_approval_status.setText(userProfileList.getIsApproved());
-
-        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
-            if (userProfileList.isMarkAttendance()) {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_mark_attendance.setEnabled(false);
-                if (userProfileList.isInterviewDone()) {
-                    btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                    btn_interview_done.setEnabled(false);
-                }
-            } else {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_interview_done.setEnabled(false);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            btn_interview_done.setVisibility(View.GONE);
-            btn_mark_attendance.setVisibility(View.GONE);
-        }
-
+        setApprovelFlag();
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
@@ -294,6 +274,39 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     }
 
+    private void setApprovelFlag() {
+        tv_approval_status.setText(userProfileList.getIsApproved());
+
+        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+            if (userProfileList.isMarkAttendance()) {
+                btn_interview_done.setVisibility(View.VISIBLE);
+                btn_mark_attendance.setVisibility(View.VISIBLE);
+                btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                btn_mark_attendance.setEnabled(false);
+                if (userProfileList.isInterviewDone()) {
+                    btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                    btn_interview_done.setEnabled(false);
+                }
+            } else {
+                btn_interview_done.setVisibility(View.VISIBLE);
+                btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                btn_interview_done.setEnabled(false);
+                btn_mark_attendance.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            btn_interview_done.setVisibility(View.GONE);
+            btn_mark_attendance.setVisibility(View.GONE);
+        }
+        if (userProfileList.getIsApproved().toLowerCase().startsWith("a")) {
+            findViewById(R.id.btn_reject).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_approve).setVisibility(View.GONE);
+        } else if (userProfileList.getIsApproved().toLowerCase().startsWith("r")) {
+            findViewById(R.id.btn_reject).setVisibility(View.GONE);
+            findViewById(R.id.btn_approve).setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -373,6 +386,16 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
                 popup.show();
                 break;
+            case R.id.btn_approve:
+                approvalType = Constants.APPROVE;
+                showDialog("Alert", "Are you sure, Do you want to approve?",
+                        "YES", "NO", 2);//flag 3 for approve
+                break;
+            case R.id.btn_reject:
+                approvalType = Constants.REJECT;
+                showReasonDialog("Alert", "Please write the reason for rejection.",
+                        "Submit", "Cancle", 2);
+                break;
         }
     }
 
@@ -389,10 +412,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             case R.id.action_block:
                 if (userProfileList.getMatrimonial_profile().isBan()) {
                     showDialog("Alert", "Are you sure you want to Unblock this user?",
-                            "YES", "NO");
+                            "YES", "NO", 1);//flag 1 for unblock
                 } else {
-                    showDialog("Alert", "Are you sure you want to Block this user?",
-                            "YES", "NO");
+                    showReasonDialog("Alert", "Please write the reason for blocking.",
+                            "Submit", "Cancle", 1);
+//                    showDialog("Alert", "Are you sure you want to Block this user?",
+//                            "YES", "NO",2);//flag 2 for block
                 }
 
                 break;
@@ -506,8 +531,98 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     }
 
+    public void updateBlockUnblock(String message) {
+        userProfileList.getMatrimonial_profile().setBan(isBlock);
+        Util.showToast(message,this);
+    }
+
+    public void updateRequestStatus(String response) {
+        Util.showSuccessFailureToast(response, this, this.getWindow().getDecorView()
+                .findViewById(android.R.id.content));
+        if (Constants.REJECT.equalsIgnoreCase(approvalType)) {
+            userProfileList.setIsApproved(Constants.REJECT);
+            setApprovelFlag();
+        }
+        if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
+            userProfileList.setIsApproved(Constants.APPROVE);
+            setApprovelFlag();
+        }
+    }
+
+    public void showReasonDialog(String title, String hint, String txtPositive, String txtNigetive, int flag) {
+        Dialog dialog;
+        Button btPositive, btNigetive;
+        EditText edt_reason;
+        TextView tvTitle;
+
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_reason_layout);
+
+        tvTitle = dialog.findViewById(R.id.txt_dialog_title);
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btPositive = dialog.findViewById(R.id.btn_submit);
+        btNigetive = dialog.findViewById(R.id.btn_cancel);
+
+        tvTitle.setText(title);
+        edt_reason.setHint(hint);
+        btPositive.setText(txtPositive);
+        btNigetive.setText(txtNigetive);
+        btPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strReason = edt_reason.getText().toString();
+
+                if (TextUtils.isEmpty(strReason)) {
+                    Util.snackBarToShowMsg(MatrimonyProfileDetailsActivity.this.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Reason Can not be blank",
+                            Snackbar.LENGTH_LONG);
+                } else {
+                    if (flag == 1) {
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("block_type", true);
+                        map.put("user_id", userProfileList.get_id());
+                        map.put("ban_reason", strReason);
+                        String paramjson = new Gson().toJson(map);
+                        presenter.userAction(paramjson);
+                        isBlock = true;
+                    } else if (flag == 2) {
+                        Map<String, String> request = new HashMap<>();
+                        if(TextUtils.isEmpty(meetIdReceived)){
+                            request.put("type", " ");
+                            request.put("approval", Constants.APPROVE);
+                            request.put("user_id", userProfileList.get_id());
+                            request.put("rejection_reason", strReason);
+                        } else {
+                            request.put("meet_id", meetIdReceived);
+                            request.put("type", "user");
+                            request.put("approval", Constants.APPROVE);
+                            request.put("user_id", userProfileList.get_id());
+                            request.put("rejection_reason", strReason);
+                        }
+                        Gson gson = new GsonBuilder().create();
+                        String json = gson.toJson(request);
+                        presenter.approveRejectRequest(json);
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        btNigetive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
     private void showDialog(String dialogTitle, String message, String btn1String, String
-            btn2String) {
+            btn2String, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(this));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
@@ -531,20 +646,29 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             button.setOnClickListener(v -> {
                 // Close dialog
                 dialog.dismiss();
-                if (userProfileList.getMatrimonial_profile().isBan()) {
+                if (flag == 1) {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("block_type", false);
                     map.put("user_id", userProfileList.get_id());
                     String paramjson = new Gson().toJson(map);
-
                     presenter.userAction(paramjson);
-                } else {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("block_type", true);
-                    map.put("user_id", userProfileList.get_id());
-                    String paramjson = new Gson().toJson(map);
-
-                    presenter.userAction(paramjson);
+                    isBlock = false;
+                } else if (flag == 2) {
+                    Map<String, String> request = new HashMap<>();
+                    if(TextUtils.isEmpty(meetIdReceived)){
+                        request.put("type", " ");
+                        request.put("approval", Constants.APPROVE);
+                        request.put("user_id", userProfileList.get_id());
+                    } else {
+                        request.put("meet_id", meetIdReceived);
+                        request.put("type", "user");
+                        request.put("approval", Constants.APPROVE);
+                        request.put("user_id", userProfileList.get_id());
+                        request.put("rejection_reason", " ");
+                    }
+                    Gson gson = new GsonBuilder().create();
+                    String json = gson.toJson(request);
+                    presenter.approveRejectRequest(json);
                 }
             });
         }
@@ -559,10 +683,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             });
         }
 
-        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
-
 
 }

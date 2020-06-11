@@ -33,13 +33,13 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
         mContext = new WeakReference<>(tmFragment);
     }
 
-    public void getAllFiltersRequests(String meetId) {
-        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
-        requestCall.setListener(this);
-
-        //mContax.get().showProgressBar();
-        requestCall.getAllPendingRequests(meetId);
-    }
+//    public void getAllFiltersRequests(String meetId) {
+//        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
+//        requestCall.setListener(this);
+//
+//        //mContax.get().showProgressBar();
+//        requestCall.getAllPendingRequests(meetId);
+//    }
 
     public void approveRejectRequest(JSONObject requestObject, int position,String requestType) {
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
@@ -86,9 +86,9 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
 
     @Override
     public void onRequestStatusChanged(String response, int position) {
-        if (!TextUtils.isEmpty(response)) {
-            mContext.get().updateRequestStatus(response, position);
-        }
+//        if (!TextUtils.isEmpty(response)) {
+//            mContext.get().updateRequestStatus(response, position);
+//        }
     }
 
     @Override
