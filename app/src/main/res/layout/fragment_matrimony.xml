@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/opensans_bold"
-                        android:text="New User" />
+                        android:text="New Users" />
 
                     <View
                         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/opensans_regular"
                         android:gravity="center"
-                        android:text="Your matrimonial profile is missing, please go to PROFILE tab and create it."
+                        android:text="No profiles found."
                         android:textSize="@dimen/text_size_12" />
                     <!--                android:textColor="@color/grey_light"-->
 
@@ -120,7 +120,9 @@
             <RelativeLayout
                 android:id="@+id/ly_main_varification"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_10dp">
 
                 <RelativeLayout
                     android:id="@+id/ly_varification_pending"
@@ -136,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/opensans_bold"
-                        android:text="Varification Pending" />
+                        android:text="Verification Pending" />
 
                     <View
                         android:layout_width="match_parent"
@@ -183,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/opensans_regular"
                         android:gravity="center"
-                        android:text="Your matrimonial profile is missing, please go to PROFILE tab and create it."
+                        android:text="No profiles found."
                         android:textSize="@dimen/text_size_12" />
                     <!--                android:textColor="@color/grey_light"-->
 
@@ -208,6 +210,7 @@
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Create Meet"
+        android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:icon="@drawable/ic_new_form_icon"
@@ -223,6 +226,7 @@
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="All Candidates"
+        android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:icon="@drawable/ic_form_list_icon"

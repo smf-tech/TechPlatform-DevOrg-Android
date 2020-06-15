@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +39,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     private final String MEET_DATA = "MeetData";
     private final String MEET_POS = "MeetPos";
-    private MatrimonyFragmentPresenter presentr;
+    private MatrimonyFragmentPresenter presenter;
     private RelativeLayout pbLayout;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPager vpUpcomingMeets;
@@ -55,8 +54,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presentr = new MatrimonyFragmentPresenter(this);
-
+        presenter = new MatrimonyFragmentPresenter(this);
     }
 
     @Override
@@ -107,8 +105,9 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     @Override
     public void onResume() {
         super.onResume();
-        presentr.getMatrimonyMeets();
-        presentr.getNewUser();
+        presenter.getMatrimonyMeets();
+        presenter.getRecentelyJoinedUsers();
+        presenter.getUnVerifiedUsers();
     }
 
     @Override
@@ -131,7 +130,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             if(newUserList.size()>0){
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("toOpean","NewUserList");
-                startMain.putExtra("userList",newUserList);
+                //startMain.putExtra("userList",newUserList);
                 startActivity(startMain);
             }
 
@@ -139,7 +138,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             if(unverifiedUserList.size()>0) {
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("toOpean", "UnverifiedUserList");
-                startMain.putExtra("userList", unverifiedUserList);
+                //startMain.putExtra("userList", unverifiedUserList);
                 startActivity(startMain);
             }
         }
@@ -157,7 +156,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void closeFABMenu() {
-
         fbCreatMeet.animate().translationY(0);
         fbAllUser.animate().translationY(0);
         fbCreatMeet.hide();
@@ -195,7 +193,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     @Override
     public void showProgressBar() {
-
         if (pbLayout != null) {
             pbLayout.setVisibility(View.VISIBLE);
         }
@@ -215,9 +212,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     public void setMatrimonyMeets(List<MatrimonyMeet> data, String earliestMeetId) {
         matrimonyMeetList.clear();
-
         if (data.size() > 0) {
-
             matrimonyMeetList.addAll(data);
             setupViewPager(earliestMeetId);
             //setCurrentMeetData(0);
@@ -231,7 +226,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void setupViewPager(String earliestMeetId) {
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         if (matrimonyMeetList.size() > 0) {
             for (int i = 0; i < matrimonyMeetList.size(); i++) {
@@ -262,8 +256,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             rvNewUser.setAdapter(adapter);
         } else {
             view.findViewById(R.id.ly_no_newuser).setVisibility(View.VISIBLE);
-            TextView tv = view.findViewById(R.id.tv_no_newuser);
-            tv.setText("No data");
         }
     }
 
@@ -279,8 +271,6 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             rvVarificationPending.setAdapter(adapter);
         } else {
             view.findViewById(R.id.ly_no_varification).setVisibility(View.VISIBLE);
-            TextView tv = view.findViewById(R.id.tv_no_newuser);
-            tv.setText("No data");
         }
     }
 

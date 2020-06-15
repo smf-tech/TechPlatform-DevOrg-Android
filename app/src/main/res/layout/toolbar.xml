@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:weightSum="10">
+
+    <ImageView
+        android:id="@+id/iv_toobar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back_white"
+        android:paddingTop="@dimen/dimen_20dp"
+        android:paddingBottom="@dimen/dimen_20dp"
+        android:paddingStart="@dimen/dimen_05dp"
+        android:paddingEnd="@dimen/dimen_05dp"
+        android:tint="@color/white"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_bold"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="@color/white"
+        android:layout_weight="8.5"
+        android:gravity="center"
+        android:layout_gravity="center_vertical" />
+
+    <ImageView
+        android:id="@+id/iv_toolbar_action1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:tint="@color/white"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_filter_white"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_toolbar_action2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone" />
+
+</LinearLayout>

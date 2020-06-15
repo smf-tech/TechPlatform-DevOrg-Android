@@ -135,11 +135,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     implementation 'com.airbnb.android:lottie:2.7.0'
-
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-
     //circular progress bar
     implementation 'com.budiyev.android:circular-progress-bar:1.2.2'
+    //age selection range view library
+    implementation 'me.bendik.simplerangeview:simplerangeview:0.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

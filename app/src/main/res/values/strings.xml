@@ -779,5 +779,16 @@
     <string name="required_error">Please  submit valid data.</string>
     <string name="cant_submit_form_offline">This form can not be submitted offline as this form contains image. Please submit form online.</string>
     <string name="offline_no_form_schema_msg">You are offline. You need to go online and fetch the form at least once.</string>
+    <string name="name">Name</string>
+    <string name="age_range">Select age range :</string>
+    <string name="occupation">Occupation</string>
+    <string name="qualification">Qualification/Degree</string>
+    <string name="marital_status">Marital status</string>
+    <string name="income">Annual income</string>
+    <string name="apply_filter">Apply filters</string>
+    <string name="status">Status</string>
+    <string name="gender_filter">Gender</string>
+    <string name="user_meet_status">User status in meet</string>
+    <string name="user_verification_status">User verification status</string>
 
 </resources>

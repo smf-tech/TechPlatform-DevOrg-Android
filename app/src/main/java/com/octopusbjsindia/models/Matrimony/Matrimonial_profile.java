@@ -25,6 +25,9 @@ public class Matrimonial_profile implements Serializable {
     @SerializedName("other_marital_information")
     @Expose
     private Other_marital_information other_marital_information;
+    @SerializedName("isBan")
+    @Expose
+    private boolean isBan;
 
     public Personal_details getPersonal_details() {
         return personal_details;
@@ -74,4 +77,11 @@ public class Matrimonial_profile implements Serializable {
         this.other_marital_information = other_marital_information;
     }
 
+    public boolean isBan() {
+        return isBan;
+    }
+
+    public void setBan(boolean ban) {
+        isBan = ban;
+    }
 }

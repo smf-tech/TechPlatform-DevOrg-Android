@@ -1,16 +1,10 @@
 package com.octopusbjsindia.view.fragments;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +14,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -312,7 +312,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             button.setOnClickListener(v -> {
                 // Close dialog
                 dialog.dismiss();
-                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
+//                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
                 closeCurrentActivity();
             });
         }

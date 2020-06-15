@@ -26,7 +26,9 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 
-        public MatrimonyProfileListRecyclerAdapter(Context context, List<UserProfileList> dataListreceived, final OnRequestItemClicked clickListener, final OnApproveRejectClicked approveRejectClickedListner) {
+    public MatrimonyProfileListRecyclerAdapter(Context context, List<UserProfileList> dataListreceived,
+                                               final OnRequestItemClicked clickListener,
+                                               final OnApproveRejectClicked approveRejectClickedListner) {
             mContext = context;
             this.dataList = dataListreceived;
             this.clickListener =clickListener;
@@ -55,15 +57,15 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             }
 
             holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
-            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
-
-            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
-                holder.btn_reject.setVisibility(View.GONE);
-                holder.btn_approve.setVisibility(View.VISIBLE);
-            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("a")){
-                holder.btn_approve.setVisibility(View.GONE);
-                holder.btn_reject.setVisibility(View.VISIBLE);
-            }
+//            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
+//
+//            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
+//                holder.btn_reject.setVisibility(View.GONE);
+//                holder.btn_approve.setVisibility(View.VISIBLE);
+//            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("a")){
+//                holder.btn_approve.setVisibility(View.GONE);
+//                holder.btn_reject.setVisibility(View.VISIBLE);
+//            }
             if (dataList.get(position).isIsPremium()){
                 holder.tv_premium.setVisibility(View.VISIBLE);
                 holder.tv_premium.setText("Premium");
@@ -96,7 +98,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
             TextView txtTitle, txtValue,tv_approval_status,tv_premium,tv_payment_status;
             ImageView user_profile_pic;
-            Button btn_reject,btn_approve;
+//            Button btn_reject,btn_approve;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
@@ -107,20 +109,20 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 tv_premium = itemView.findViewById(R.id.tv_premium);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
-                btn_reject = itemView.findViewById(R.id.btn_reject);
-                btn_approve = itemView.findViewById(R.id.btn_approve);
-                btn_approve.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        buttonClickListner.onApproveClicked(getAdapterPosition());
-                    }
-                });
-                btn_reject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        buttonClickListner.onRejectClicked(getAdapterPosition());
-                    }
-                });
+//                btn_reject = itemView.findViewById(R.id.btn_reject);
+//                btn_approve = itemView.findViewById(R.id.btn_approve);
+//                btn_approve.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        buttonClickListner.onApproveClicked(getAdapterPosition());
+//                    }
+//                });
+//                btn_reject.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        buttonClickListner.onRejectClicked(getAdapterPosition());
+//                    }
+//                });
 
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             }

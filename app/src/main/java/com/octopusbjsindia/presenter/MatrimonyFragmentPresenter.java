@@ -8,9 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.Matrimony.AllMatrimonyMeetsAPIResponse;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserProfileRequestModel;
 import com.octopusbjsindia.models.Matrimony.NewRegisteredUserResponse;
-import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
@@ -23,13 +21,11 @@ import java.util.HashMap;
 public class MatrimonyFragmentPresenter implements APIPresenterListener {
 
     private static final String GET_MATRIMONY_MEETS ="getMatrimonyMeets";
-    private static final String GET_NEW_USER ="getNewUser";
-    private static final String GET_UNVERIFED_USER ="getUnVerifiedUser";
-
+    private static final String GET_NEW_USER = "getNewUsers";
+    private static final String GET_UNVERIFED_USER = "getUnVerifiedUsers";
     private static final String KEY_COUNTRY_ID = "country_id";
     private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_CITY_ID = "city_id";
-    
     private MatrimonyFragment mContext;
     
     public MatrimonyFragmentPresenter(MatrimonyFragment matrimonyFragment) {
@@ -66,7 +62,7 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
                 } else if(requestID.equals(GET_NEW_USER)){
                     NewRegisteredUserResponse newUserResponse = new Gson().fromJson(response, NewRegisteredUserResponse.class);
                     mContext.onNewProfileFetched(requestID, newUserResponse);
-                    mContext.onUnverifiedProfileFetched(requestID, newUserResponse);// temprery
+                    //mContext.onUnverifiedProfileFetched(requestID, newUserResponse);// temprery
                 }else if(requestID.equals(GET_UNVERIFED_USER)){
                     NewRegisteredUserResponse newUserResponse = new Gson().fromJson(response, NewRegisteredUserResponse.class);
                     mContext.onUnverifiedProfileFetched(requestID, newUserResponse);
@@ -129,19 +125,19 @@ public class MatrimonyFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(GET_MATRIMONY_MEETS, paramjson, getMatrimonyMeetsUrl);
     }
 
-    public void getNewUser() {
+    public void getRecentelyJoinedUsers() {
         mContext.showProgressBar();
-        final String getNewUserMatrimonyUrl = BuildConfig.BASE_URL + String.format(Urls.Matrimony.MATRIMONY_NEW_USER);
+        final String getNewUserMatrimonyUrl = BuildConfig.BASE_URL + String.format(Urls.Matrimony.MATRIMONY_RECENTELY_JOINED_USERS);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_NEW_USER, getNewUserMatrimonyUrl);
     }
 
-    public void getUnVarifiedUser() {
+    public void getUnVerifiedUsers() {
         mContext.showProgressBar();
-        final String getNewUserMatrimonyUrl = BuildConfig.BASE_URL + String.format(Urls.Matrimony.MATRIMONY_NEW_USER);
+        final String getUnverifiedUersUrl = BuildConfig.BASE_URL + String.format(Urls.Matrimony.MATRIMONY_VERIFICATION_PENDING_USERS);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall(GET_UNVERIFED_USER, getNewUserMatrimonyUrl);
+        requestCall.getDataApiCall(GET_UNVERIFED_USER, getUnverifiedUersUrl);
     }
 }

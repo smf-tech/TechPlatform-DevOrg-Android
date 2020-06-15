@@ -6,8 +6,14 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
+import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ProfileDetailRequestCallListener;
+import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.MatrimonyProfileDetailRequestCall;
+import com.octopusbjsindia.request.MatrimonyProfileListRequestCall;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.MatrimonyProfileDetailsActivity;
 
 import org.json.JSONException;
@@ -16,7 +22,8 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("CanBeFinal")
-public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailRequestCallListener {
+public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailRequestCallListener,
+        APIPresenterListener {
 
     private final String TAG = this.getClass().getName();
     private WeakReference<MatrimonyProfileDetailsActivity> fragmentWeakReference;
@@ -25,55 +32,16 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         fragmentWeakReference = new WeakReference<>(tmFiltersListActivity);
     }
 
-  /*  public void getAllFiltersRequests() {
-        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
-        requestCall.setListener(this);
-
-        //fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
-    }*/
-
     public void markAttendanceRequest(JSONObject requestObject, int position, String requestType) {
         MatrimonyProfileDetailRequestCall requestCall = new MatrimonyProfileDetailRequestCall();
         requestCall.setListener(this);
 
-        //fragmentWeakReference.get().showProgressBar();
         requestCall.approveRejectRequest(requestObject, position, requestType);
     }
 
-   /* @Override
-    public void onFilterListRequestsFetched(String response) {
-        //fragmentWeakReference.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            MatrimonyUserProfileRequestModel pendingRequestsResponse
-                    = new Gson().fromJson(response, MatrimonyUserProfileRequestModel.class);
-            if (pendingRequestsResponse != null && pendingRequestsResponse.getUserProfileList() != null
-                    && !pendingRequestsResponse.getUserProfileList().isEmpty()
-                    && pendingRequestsResponse.getUserProfileList().size() > 0) {
-                fragmentWeakReference.get().showPendingApprovalRequests(pendingRequestsResponse.getUserProfileList());
-            }
-        }
-    }
-
-
-    @Override
-    public void onRequestStatusChanged(String response, PendingRequest pendingRequest) {
-        //fragmentWeakReference.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            //  fragmentWeakReference.get().updateRequestStatus(response, pendingRequest);
-        }
-    }
-
-    @Override
-    public void onRequestStatusChanged(String response, int position) {
-        if (!TextUtils.isEmpty(response)) {
-            fragmentWeakReference.get().updateRequestStatus(response, position);
-        }
-    }*/
-
     @Override
     public void onRequestStatusChanged(String response, int position, String requestType) {
-        fragmentWeakReference.get().updateRequestStatus(response, position,requestType);
+        fragmentWeakReference.get().updateRequestStatus(response, position, requestType);
     }
 
     @Override
@@ -120,5 +88,46 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         return null;
     }
 
+    public void userAction(String paramjson) {
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String url = BuildConfig.BASE_URL + Urls.Matrimony.BLOCK_UNBLOCK_USER;
+        requestCall.postDataApiCall("BLOCK_UNBLOCK_USER", paramjson, url);
+    }
 
+    public void approveRejectRequest(String paramjson) {
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_APPROVAL_API;
+        requestCall.postDataApiCall("APPROVE_REJECT_USER", paramjson, url);
+    }
+
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        fragmentWeakReference.get().hideProgressBar();
+        fragmentWeakReference.get().onFailureListener(requestID, message);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        fragmentWeakReference.get().hideProgressBar();
+        fragmentWeakReference.get().onFailureListener(requestID, error.getMessage());
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        fragmentWeakReference.get().hideProgressBar();
+        if (requestID.equals("BLOCK_UNBLOCK_USER")) {
+            CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
+            if (commonResponse.getStatus() == 200) {
+                fragmentWeakReference.get().updateBlockUnblock(commonResponse.getMessage());
+            } else {
+                fragmentWeakReference.get().onFailureListener(requestID, commonResponse.getMessage());
+            }
+        } else if(requestID.equals("APPROVE_REJECT_USER")){
+            fragmentWeakReference.get().updateRequestStatus(response);
+        }
+    }
 }

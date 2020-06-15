@@ -76,7 +76,6 @@
                             android:layout_height="wrap_content"
                             android:inputType="text|textCapWords|textMultiLine"
                             android:id="@+id/et_about_me"
-
                             android:hint="About me" />
                     </com.google.android.material.textfield.TextInputLayout>
 
