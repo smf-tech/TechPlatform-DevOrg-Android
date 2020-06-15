@@ -17,6 +17,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.List;
 
@@ -81,23 +82,27 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
 
     @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
-        Log.d("onItemClicked", "onItemClicked-->" + pos);
-        JsonObject ColomJsonObject = new JsonObject();
-        for (int j = 0; j < dataList.getColumns().size(); j++) {
-            if (columnListAnswers.get(j)) {
-                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
-            } else {
-                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
-            }
-        }
-        Log.d("JsonObjectAdapter->", new Gson().toJson(columnListAnswers));
-        //clickListener.onItemClicked(pos);
+        if (!((FormDisplayActivity) mContext).isEditable) {
 
-        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), ColomJsonObject);
-        Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
-        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
-        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+        }else {
+            Log.d("onItemClicked", "onItemClicked-->" + pos);
+            JsonObject ColomJsonObject = new JsonObject();
+            for (int j = 0; j < dataList.getColumns().size(); j++) {
+                if (columnListAnswers.get(j)) {
+                    ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
+                } else {
+                    ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
+                }
+            }
+            Log.d("JsonObjectAdapter->", new Gson().toJson(columnListAnswers));
+            //clickListener.onItemClicked(pos);
+
+            requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), ColomJsonObject);
+            Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
+            MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+            Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
+            this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+        }
     }
 
 

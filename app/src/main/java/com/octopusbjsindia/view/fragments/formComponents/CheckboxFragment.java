@@ -86,7 +86,12 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
         } else {
             cbOther.setVisibility(View.GONE);
         }
-
+        if (!((FormDisplayActivity) getActivity()).isEditable) {
+            cbOther.setEnabled(false);
+            cbNone.setEnabled(false);
+            etOther.setFocusable(false);
+            etOther.setEnabled(false);
+        }
         tvQuetion.setText(element.getTitle().getLocaleValue());
 
         // set data logic

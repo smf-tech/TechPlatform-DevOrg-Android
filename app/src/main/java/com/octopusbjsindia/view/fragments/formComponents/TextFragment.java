@@ -69,6 +69,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             etAnswer = view.findViewById(R.id.et_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
+                etAnswer.setEnabled(false);
+
             }
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
@@ -80,6 +82,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 view.findViewById(R.id.et_answer_date).setFocusable(false);
+                view.findViewById(R.id.et_answer_date).setEnabled(false);
             } else {
                 view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             }
@@ -94,6 +97,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 view.findViewById(R.id.et_answer_date).setFocusable(false);
+                view.findViewById(R.id.et_answer_date).setEnabled(false);
             } else {
                 view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             }
@@ -108,6 +112,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 etAnswer = view.findViewById(R.id.et_answer);
                 if (!((FormDisplayActivity) getActivity()).isEditable) {
                     etAnswer.setFocusable(false);
+                    view.findViewById(R.id.et_answer_date).setEnabled(false);
                 }
                 if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                     etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
@@ -140,12 +145,18 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 }
                 if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
                     et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
+                    if (!((FormDisplayActivity) getActivity()).isEditable) {
+                        et_answer_name.setFocusable(false);
+                        et_answer_name.setEnabled(false);
+
+                    }
                 }
 
             } else {
                 etAnswer = view.findViewById(R.id.et_answer);
                 if (!((FormDisplayActivity) getActivity()).isEditable) {
                     etAnswer.setFocusable(false);
+                    etAnswer.setEnabled(false);
                 }
                 if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                     etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
@@ -160,6 +171,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             etAnswer = view.findViewById(R.id.et_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
+                etAnswer.setEnabled(false);
             }
             if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());

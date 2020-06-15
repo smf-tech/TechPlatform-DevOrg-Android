@@ -79,13 +79,15 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
         }
-
+        if (!((FormDisplayActivity) getActivity()).isEditable) {
+            ratingBar.setFocusable(false);
+            ratingBar.setClickable(false);
+            ratingBar.setEnabled(false);
+        }
         if(!TextUtils.isEmpty(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName()))){
             ratingBar.setRating(Float.parseFloat(((FormDisplayActivity)getActivity()).formAnswersMap.get(elements.getName())));
         }
-        if (!((FormDisplayActivity) getActivity()).isEditable) {
-            ratingBar.setFocusable(false);
-        }
+
 //        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 //            @Override
 //            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
