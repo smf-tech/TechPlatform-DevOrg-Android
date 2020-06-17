@@ -1592,7 +1592,20 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/dimen_200dp"
                                         android:layout_below="@+id/tv_aadhar_lable"
+                                        android:scaleType="fitXY"
+                                        android:adjustViewBounds="true"
                                         android:src="@mipmap/app_logo" />
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btn_verify_ids"
+                                        style="@style/AppStyleBorderButton"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/dimen_10dp"
+                                        android:layout_weight="1"
+                                        android:text="Verify ID"
+                                        android:layout_below="@+id/iv_aadhar"
+                                        android:textColor="@color/dark_grey" />
+
                                 </RelativeLayout>
 
                                 <RelativeLayout
@@ -1613,6 +1626,17 @@
                                         android:layout_height="@dimen/dimen_200dp"
                                         android:layout_below="@+id/tv_education_certificates_lable"
                                         android:src="@mipmap/app_logo" />
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btn_verify_edu"
+                                        style="@style/AppStyleBorderButton"
+                                        android:layout_gravity="center"
+
+                                        android:layout_marginTop="@dimen/dimen_10dp"
+                                        android:layout_below="@+id/iv_education_certificates"
+                                        android:layout_weight="1"
+                                        android:text="Verify Education"
+                                        android:textColor="@color/dark_grey" />
+
 
                                 </RelativeLayout>
                             </LinearLayout>

@@ -28,6 +28,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
@@ -73,7 +74,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
-    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove;
+    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids,btn_verify_edu;
     private TextView tv_approval_status, tv_premium;
     private String meetIdReceived;
     private RelativeLayout progressBar;
@@ -137,6 +138,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
         findViewById(R.id.btn_reject).setOnClickListener(this);
         findViewById(R.id.btn_approve).setOnClickListener(this);
+        findViewById(R.id.btn_verify_ids).setOnClickListener(this);
+        findViewById(R.id.btn_verify_edu).setOnClickListener(this);
+
+
 
         ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
         popupMenu.setVisibility(View.VISIBLE);
@@ -396,6 +401,17 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 showReasonDialog("Alert", "Please write the reason for rejection.",
                         "Submit", "Cancle", 2);
                 break;
+            case R.id.btn_verify_ids:
+                verifyDocument(1,true);
+                /*showDialog("Alert", "Are you sure, Do you want to approve?",
+                        "YES", "NO", 2);//flag 3 for approve*/
+                break;
+            case R.id.btn_verify_edu:
+                verifyDocument(2,true);
+                /*showReasonDialog("Alert", "Please write the reason for rejection.",
+                        "Submit", "Cancle", 2);*/
+                break;
+
         }
     }
 
@@ -562,12 +578,6 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tvTitle = dialog.findViewById(R.id.txt_dialog_title);
         edt_reason = dialog.findViewById(R.id.edt_reason);
         btPositive = dialog.findViewById(R.id.btn_submit);
-        btNigetive = dialog.findViewById(R.id.btn_cancel);
-
-        tvTitle.setText(title);
-        edt_reason.setHint(hint);
-        btPositive.setText(txtPositive);
-        btNigetive.setText(txtNigetive);
         btPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -608,6 +618,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
             }
         });
+        btNigetive = dialog.findViewById(R.id.btn_cancel);
+
+        tvTitle.setText(title);
+        edt_reason.setHint(hint);
+        btPositive.setText(txtPositive);
+        btNigetive.setText(txtNigetive);
 
         btNigetive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -685,6 +701,28 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    private void verifyDocument(int type ,boolean approveReject){
+        // type 1 ID
+        //"identification_type":"ID/Education",
+          //      "action_type":false/true
+        String paramjson = new Gson().toJson(getVerifyDocReqJson(type, approveReject));
+        presenter.approveRejectDocumentsRequest(paramjson);
+    }
+    public JsonObject getVerifyDocReqJson(int type,boolean approveReject) {
+        JsonObject requestObject = new JsonObject();
+        if (type == 1) {
+            requestObject.addProperty("identification_type", "ID");
+            requestObject.addProperty("user_id", userProfileList.get_id());
+            requestObject.addProperty("action_type", approveReject);
+        }else {
+            requestObject.addProperty("identification_type", "Education");
+            requestObject.addProperty("user_id", userProfileList.get_id());
+            requestObject.addProperty("action_type", approveReject);
+        }
+
+        return requestObject;
     }
 
 }

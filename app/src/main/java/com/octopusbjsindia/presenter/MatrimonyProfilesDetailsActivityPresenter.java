@@ -104,6 +104,14 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         requestCall.postDataApiCall("APPROVE_REJECT_USER", paramjson, url);
     }
 
+    public void approveRejectDocumentsRequest(String paramjson) {
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_DOC_VERIFY_API;
+        requestCall.postDataApiCall("APPROVE_REJECT_DOC", paramjson, url);
+    }
+
     @Override
     public void onFailureListener(String requestID, String message) {
         fragmentWeakReference.get().hideProgressBar();
