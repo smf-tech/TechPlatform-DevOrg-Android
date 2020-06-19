@@ -62,13 +62,14 @@
             style="@style/textinputstyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <EditText
                 android:id="@+id/et_meet_status"
                 style="@style/RegistrationEditTextLayout"
                 android:hint="@string/user_meet_status"
-                android:longClickable="false" />
+                android:longClickable="false"
+                android:focusable="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

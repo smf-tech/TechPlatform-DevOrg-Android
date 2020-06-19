@@ -49,7 +49,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     public String meetIdReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
-    private String currentSelectedFilter = "",toOpen = "",nextPageUrl="";
+    private String currentSelectedFilter = "",toOpen = "",nextPageUrl="",ispending= "";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private MatrimonyProfilesListFragmentPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
@@ -84,6 +84,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
         initViews();
         toOpen = getArguments().getString("toOpen");
+        ispending = getArguments().getString("ispending");
+
         if (toOpen.equals("MeetUserList")) {
             meetIdReceived = getArguments().getString("meetId");
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
@@ -253,8 +255,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 // api call
                 if (toOpen.equals("MeetUserList")) {
                     meetIdReceived = getArguments().getString("meetId");
-                    ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-                            setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
+                    /*((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
+                            setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);*/
+                    matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
                     matrimonyUserFilterData.setMeet_id(meetIdReceived);
                     //((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
                     //presenter.getAllFiltersRequests(meetIdReceived);

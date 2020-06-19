@@ -94,7 +94,13 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 equalsIgnoreCase(Constants.MatrimonyModule.MEET_USERS_SECTION)) {
             etMeetStatus.setVisibility(View.VISIBLE);
             etMeetStatus.setOnClickListener(this);
+        }else if (((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().getSection_type().
+                equalsIgnoreCase(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION)) {
+            etVerificationStatus.setVisibility(View.GONE);
+            etMeetStatus.setVisibility(View.VISIBLE);
+            etMeetStatus.setOnClickListener(this);
         }
+
         etVerificationStatus.setOnClickListener(this);
         etState.setOnClickListener(this);
         etGender.setOnClickListener(this);
@@ -376,6 +382,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             case R.id.btn_apply:
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
+                matrimonyUserFilterData = new MatrimonyUserFilterData();
                 if (etMeetStatus.getText().toString().trim().length() > 0) {
                     matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
                     ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
@@ -410,6 +417,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             case R.id.iv_clear_filter:
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
+                matrimonyUserFilterData = new MatrimonyUserFilterData();
                 etMeetStatus.setText("");
                 etVerificationStatus.setText("");
                 etState.setText("");
@@ -482,6 +490,8 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                 }
                 Util.showToast("All selected filters have cleared.", getActivity());
+                ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
+                ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 break;
         }
     }

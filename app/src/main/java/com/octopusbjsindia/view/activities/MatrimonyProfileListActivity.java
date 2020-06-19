@@ -124,14 +124,17 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 case "profile_list_fragment":
                     fragment = new MatrimonyProfileListFragment();
                     bundle.putString("toOpen", toOpen);
+                    bundle.putString("ispending", "ispending");
                     fragment.setArguments(bundle);
                     break;
                 case "filter_fragment":
                     fragment = new MatrimonyUsersFilterFragment();
                     fragment.setArguments(bundle);
+                    break;
             }
         }
         // Begin transaction.
+        //getSupportFragmentManager().popBackStack();
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.ly_main, fragment).addToBackStack(null)
                 .commit();
@@ -242,7 +245,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
             bundle.putString("meetId", getIntent().getStringExtra("meetid"));
         }
         matrimonyProfileListFragment.setArguments(bundle);
-        transaction.replace(R.id.ly_main, matrimonyProfileListFragment);
+        transaction.replace(R.id.ly_main, matrimonyProfileListFragment).addToBackStack(null);
         transaction.commit();
 
 //        progressBar = findViewById(R.id.progress_bar);
@@ -326,6 +329,24 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment instanceof MatrimonyUsersFilterFragment) {
+                getSupportFragmentManager().popBackStack();
+                break;
+            }else if (fragment != null && fragment instanceof MatrimonyProfileListFragment) {
+                finish();
+            }
+        }
+        /*if (fragments.size()<2){
+            finish();
+        }else {
+            getSupportFragmentManager().popBackStack();
+        }*/
+    }
 
     @Override
     public void onClick(View v) {
