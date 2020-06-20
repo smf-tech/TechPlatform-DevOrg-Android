@@ -1598,12 +1598,13 @@
 
                                     <com.google.android.material.button.MaterialButton
                                         android:id="@+id/btn_verify_ids"
-                                        style="@style/AppStyleBorderButton"
+                                        style="@style/AppStyleBorderButtonheight60"
                                         android:layout_gravity="center"
                                         android:layout_marginTop="@dimen/dimen_10dp"
                                         android:layout_weight="1"
                                         android:text="Verify ID"
                                         android:layout_below="@+id/iv_aadhar"
+                                        android:textSize="@dimen/text_size_12"
                                         android:textColor="@color/dark_grey" />
 
                                 </RelativeLayout>
@@ -1628,13 +1629,14 @@
                                         android:src="@mipmap/app_logo" />
                                     <com.google.android.material.button.MaterialButton
                                         android:id="@+id/btn_verify_edu"
-                                        style="@style/AppStyleBorderButton"
+                                        style="@style/AppStyleBorderButtonheight60"
                                         android:layout_gravity="center"
 
                                         android:layout_marginTop="@dimen/dimen_10dp"
                                         android:layout_below="@+id/iv_education_certificates"
                                         android:layout_weight="1"
                                         android:text="Verify Education"
+                                        android:textSize="@dimen/text_size_12"
                                         android:textColor="@color/dark_grey" />
 
 
@@ -1656,24 +1658,26 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_interview_done"
-                        style="@style/AppStyleButton"
+                        style="@style/AppStyleButtonheight60"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:text="Interview Completed"
+                        android:textSize="@dimen/text_size_12"
                         android:textColor="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_mark_attendance"
-                        style="@style/AppStyleButton"
+                        style="@style/AppStyleButtonheight60"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:text="Mark Attendance"
+                        android:textSize="@dimen/text_size_12"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </RelativeLayout>

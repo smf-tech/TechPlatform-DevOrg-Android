@@ -76,7 +76,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
     private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids,btn_verify_edu;
     private TextView tv_approval_status, tv_premium;
-    private String meetIdReceived;
+    private String meetIdReceived="";
     private RelativeLayout progressBar;
     private boolean isBlock;
 
@@ -283,6 +283,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_approval_status.setText(userProfileList.getIsApproved());
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+            if(!TextUtils.isEmpty(meetIdReceived)){
             if (userProfileList.isMarkAttendance()) {
                 btn_interview_done.setVisibility(View.VISIBLE);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
@@ -298,7 +299,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 btn_interview_done.setEnabled(false);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
             }
-
+        }
         } else {
             btn_interview_done.setVisibility(View.GONE);
             btn_mark_attendance.setVisibility(View.GONE);
