@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,6 +152,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         btn_interview_done = findViewById(R.id.btn_interview_done);
         btn_mark_attendance = findViewById(R.id.btn_mark_attendance);
+        btn_verify_ids = findViewById(R.id.btn_verify_ids);
+        btn_verify_edu = findViewById(R.id.btn_verify_edu);
         //Personal details -
         tv_name = findViewById(R.id.tv_name);
         tv_birth_date = findViewById(R.id.tv_birth_date);
@@ -276,6 +280,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
         }
+
+        tv_primary_mobile.setOnClickListener(this);
+        tv_secondary_mobile.setOnClickListener(this);
+        tv_primary_email.setOnClickListener(this);
 
     }
 
@@ -412,6 +420,21 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 /*showReasonDialog("Alert", "Please write the reason for rejection.",
                         "Submit", "Cancle", 2);*/
                 break;
+            case R.id.tv_primary_mobile:
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 4);//flag 4 for call primary number
+                break;
+            case R.id.tv_secondary_mobile:
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 5);//flag 5 for call primary number
+                break;
+            case R.id.tv_primary_email:
+                showDialog("Alert", "Are you sure, Do you want to E-mail user?",
+                        "YES", "NO", 6);//flag 5 for call primary number
+                break;
+
+
+
 
         }
     }
@@ -437,6 +460,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 //                            "YES", "NO",2);//flag 2 for block
                 }
 
+                break;
+            case R.id.action_call:
+
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 4);//flag 4 for call primary number
                 break;
         }
         return false;
@@ -566,6 +594,19 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         }
     }
 
+    public void updateVerificationStatus(int type, String message){
+        if (type==1){
+            btn_verify_ids.setEnabled(false);
+            btn_verify_ids.setText("Verified");
+            Util.showToast(message,this);
+        }else {
+            btn_verify_edu.setEnabled(false);
+            btn_verify_edu.setText("Verified");
+            Util.showToast(message,this);
+        }
+
+    }
+
     public void showReasonDialog(String title, String hint, String txtPositive, String txtNigetive, int flag) {
         Dialog dialog;
         Button btPositive, btNigetive;
@@ -686,6 +727,33 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     Gson gson = new GsonBuilder().create();
                     String json = gson.toJson(request);
                     presenter.approveRejectRequest(json);
+                }if (flag == 4) {
+                    if (!TextUtils.isEmpty(tv_primary_mobile.getText()))
+                        try {
+                            Intent dial = new Intent();
+                            dial.setAction("android.intent.action.DIAL");
+                            dial.setData(Uri.parse("tel:" + tv_primary_mobile.getText()));
+                            startActivity(dial);
+                        } catch (Exception e) {
+                            Log.e("Calling Phone", "" + e.getMessage());
+                        }
+                }if (flag == 5) {
+                    if (!TextUtils.isEmpty(tv_secondary_mobile.getText()))
+                        try {
+                            Intent dial = new Intent();
+                            dial.setAction("android.intent.action.DIAL");
+                            dial.setData(Uri.parse("tel:" + tv_secondary_mobile.getText()));
+                            startActivity(dial);
+                        } catch (Exception e) {
+                            Log.e("Calling Phone", "" + e.getMessage());
+                        }
+                }if (flag == 6){
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"+tv_primary_email.getText())); // only email apps should handle this
+                    intent.putExtra(Intent.EXTRA_EMAIL, tv_primary_email.getText());
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
                 }
             });
         }
@@ -705,11 +773,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     }
 
     private void verifyDocument(int type ,boolean approveReject){
-        // type 1 ID
+        // type 1 ID  type 2 education
         //"identification_type":"ID/Education",
           //      "action_type":false/true
         String paramjson = new Gson().toJson(getVerifyDocReqJson(type, approveReject));
-        presenter.approveRejectDocumentsRequest(paramjson);
+        presenter.approveRejectDocumentsRequest(paramjson,type);
     }
     public JsonObject getVerifyDocReqJson(int type,boolean approveReject) {
         JsonObject requestObject = new JsonObject();
