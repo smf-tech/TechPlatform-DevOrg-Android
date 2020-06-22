@@ -46,10 +46,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         APIDataListener {
 
     private View view;
-    public String meetIdReceived;
+    private String meetIdReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
-    private String currentSelectedFilter = "",toOpen = "",nextPageUrl="",ispending= "";
+    private String currentSelectedFilter = "", toOpen = "", nextPageUrl = "";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private MatrimonyProfilesListFragmentPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
@@ -57,11 +57,11 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
     private ArrayList<UserProfileList> userProfileListsFiltered = new ArrayList<>();
     private ImageView toolbar_back_action, toolbarFilter, toolbar_action, ivNoData;
-    private TextView toolbar_title;
+    private TextView toolbarTitle, tvNoData;
     private boolean isSearchVisible = false;
     private Button btnClearFilters;
     private RelativeLayout progressBar;
-    //paginetion
+    //pagination
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
 
@@ -84,10 +84,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
         initViews();
         toOpen = getArguments().getString("toOpen");
-        ispending = getArguments().getString("ispending");
-
         if (toOpen.equals("MeetUserList")) {
-            meetIdReceived = getArguments().getString("meetId");
+            meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
@@ -117,8 +115,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         toolbarFilter = view.findViewById(R.id.toolbar_filter);
         toolbar_action = view.findViewById(R.id.toolbar_action1);
         toolbar_action.setVisibility(View.VISIBLE);
-        toolbar_title = view.findViewById(R.id.toolbar_title1);
-        toolbar_title.setText("Candidate List");
+        toolbarTitle = view.findViewById(R.id.toolbar_title1);
+        toolbarTitle.setText("Candidate List");
         toolbar_back_action.setOnClickListener(this);
         toolbarFilter.setOnClickListener(this);
         toolbar_action.setOnClickListener(this);
@@ -126,6 +124,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         btnClearFilters = view.findViewById(R.id.btn_clear_filters);
         btnClearFilters.setOnClickListener(this);
         ivNoData = view.findViewById(R.id.iv_no_data);
+        tvNoData = view.findViewById(R.id.tv_no_data);
         presenter = new MatrimonyProfilesListFragmentPresenter(this);
         userProfileLists.clear();
         userProfileListsFiltered.clear();
@@ -254,7 +253,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 MatrimonyUserFilterData matrimonyUserFilterData = new MatrimonyUserFilterData();
                 // api call
                 if (toOpen.equals("MeetUserList")) {
-                    meetIdReceived = getArguments().getString("meetId");
+                    meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
                     /*((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                             setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);*/
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
@@ -289,13 +288,28 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         if (userResponse.getData().size() > 0) {
             toolbarFilter.setVisibility(View.VISIBLE);
             ivNoData.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.GONE);
             userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+            toolbarTitle.setText("Candidate List (" + userProfileLists.size() + ")");
         } else {
-            toolbarFilter.setVisibility(View.INVISIBLE);
-            ivNoData.setVisibility(View.VISIBLE);
+            dispayNoData("No Data available.");
         }
+
+        if (((MatrimonyProfileListActivity) getActivity()).isFilterApplied()) {
+            btnClearFilters.setVisibility(View.VISIBLE);
+        } else {
+            btnClearFilters.setVisibility(View.GONE);
+        }
+    }
+
+    public void dispayNoData(String responseMessage) {
+        toolbarFilter.setVisibility(View.INVISIBLE);
+        ivNoData.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.VISIBLE);
+        tvNoData.setText(responseMessage);
+
         if (((MatrimonyProfileListActivity) getActivity()).isFilterApplied()) {
             btnClearFilters.setVisibility(View.VISIBLE);
         } else {
@@ -452,13 +466,11 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         }
         if (userProfileLists.size() > 0) {
             ivNoData.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.GONE);
         } else {
             ivNoData.setVisibility(View.VISIBLE);
+            tvNoData.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void setTxt_no_data() {
-        ivNoData.setVisibility(View.VISIBLE);
     }
 
     //ApproveReject Confirm dialog

@@ -170,5 +170,13 @@
             android:src="@drawable/empty_matrimony_back"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_below="@+id/iv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

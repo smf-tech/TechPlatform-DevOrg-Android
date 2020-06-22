@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +45,9 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
         @Override
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-            holder.txtTitle.setText(dataList.get(position).getMatrimonial_profile().getPersonal_details().getFirst_name()+dataList.get(position).getMatrimonial_profile().getPersonal_details().getLast_name());
+            holder.txtTitle.setText(dataList.get(position).getMatrimonial_profile().
+                    getPersonal_details().getFirst_name() + " " + dataList.get(position).
+                    getMatrimonial_profile().getPersonal_details().getLast_name());
             String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years,"))
                     .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getEducation_level()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getMarital_status()+",")
