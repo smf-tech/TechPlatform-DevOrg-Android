@@ -27,6 +27,7 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.AllUserData;
 import com.octopusbjsindia.models.Matrimony.MatrimonyUserFilterData;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
+import com.octopusbjsindia.models.events.Participant;
 import com.octopusbjsindia.presenter.MatrimonyProfilesListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
@@ -366,7 +367,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         Intent startMain1 = new Intent(getActivity(), MatrimonyProfileDetailsActivity.class);
         startMain1.putExtra("filter_type", jsonInString);
         startMain1.putExtra("meetid", meetIdReceived);
-        startActivity(startMain1);
+        startMain1.putExtra("selectedPos",pos);
+        startActivityForResult(startMain1, Constants.MatrimonyModule.FLAG_UPDATE_RESULT);
+
     }
 
     @Override
@@ -566,4 +569,19 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //        nextPageUrl = newUserResponse.getNextPageUrl();
 //        //showUserProfileList(newUserResponse.getData());
 //    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
+            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
+            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT,-1);
+            if (receivedPos!=-1){
+                userProfileLists.set(receivedPos,listItem);
+                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
+            }
+        }
+
+    }
 }

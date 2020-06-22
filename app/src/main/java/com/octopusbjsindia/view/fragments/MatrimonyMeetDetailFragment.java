@@ -64,7 +64,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private View view;
     private String mobileNumberEntered="";
     private MatrimonyMeet meetData;
-    private ViewPagerAdapter adapter;
+
     private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt,tvRegPeriod,tvBadgesInfo,btnViewProfiles, btnRegisterProfile;
     private RecyclerView rvMeetContacts,rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
@@ -354,7 +354,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 Snackbar.LENGTH_LONG);
         if(status == 200){
             meetData.setIs_published(true);
-            adapter.notifyDataSetChanged();
+
             btnPublishMeet.setVisibility(View.GONE);
         }
     }

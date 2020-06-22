@@ -110,7 +110,10 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_DOC_VERIFY_API;
-        if (type==1) {
+        if (type ==3){
+            requestCall.postDataApiCall("VERIFY_PROFILE", paramjson, url);
+        }
+        else if (type==1) {
             requestCall.postDataApiCall("APPROVE_REJECT_ID", paramjson, url);
         }else {
             requestCall.postDataApiCall("APPROVE_REJECT_EDU", paramjson, url);
@@ -145,6 +148,9 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
             fragmentWeakReference.get().updateVerificationStatus(1,commonResponse.getMessage());
         }else if(requestID.equals("APPROVE_REJECT_EDU")){
             fragmentWeakReference.get().updateVerificationStatus(2,commonResponse.getMessage());
+        }else if(requestID.equals("VERIFY_PROFILE")){
+            fragmentWeakReference.get().updateVerificationStatus(3,commonResponse.getMessage());
         }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,11 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 holder.tv_payment_status.setVisibility(View.VISIBLE);
             }
 
-            holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
+            if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
+                holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
+            }else {
+                holder.tv_approval_status.setVisibility(View.GONE);
+            }
 //            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
 //
 //            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
