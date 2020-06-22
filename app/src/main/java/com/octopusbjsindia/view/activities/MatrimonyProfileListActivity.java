@@ -43,10 +43,10 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 //    private TextView toolbar_title, txt_no_data;
 //    private boolean isSearchVisible = false;
     private String toOpen = "";
+    private String meetId;
     private boolean isFilterApplied = false;
     private MatrimonyUserFilterData matrimonyUserFilterData;
     private String minAge, maxAge;
-
     // FilterCandidateFragment arraylists
     private List<String> minMaxAgeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -98,6 +98,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
         //initViews();
         toOpen = getIntent().getStringExtra("toOpean");
+        if (toOpen.equalsIgnoreCase("MeetUserList")) {
+            meetId = getIntent().getStringExtra("meetid");
+        }
         initViews();
 //        if (toOpen.equals("MeetUserList")) {
 //            meetId = getIntent().getStringExtra("meetid");
@@ -124,7 +127,6 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 case "profile_list_fragment":
                     fragment = new MatrimonyProfileListFragment();
                     bundle.putString("toOpen", toOpen);
-                    bundle.putString("ispending", "ispending");
                     fragment.setArguments(bundle);
                     break;
                 case "filter_fragment":
@@ -138,6 +140,14 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.ly_main, fragment).addToBackStack(null)
                 .commit();
+    }
+
+    public String getMeetId() {
+        return meetId;
+    }
+
+    public void setMeetId(String meetId) {
+        this.meetId = meetId;
     }
 
     public boolean isFilterApplied() {
@@ -241,9 +251,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         Bundle bundle = new Bundle();
         MatrimonyProfileListFragment matrimonyProfileListFragment = new MatrimonyProfileListFragment();
         bundle.putString("toOpen", toOpen);
-        if (toOpen.equalsIgnoreCase("MeetUserList")) {
-            bundle.putString("meetId", getIntent().getStringExtra("meetid"));
-        }
+//        if (toOpen.equalsIgnoreCase("MeetUserList")) {
+//            bundle.putString("meetId", meetId);
+//        }
         matrimonyProfileListFragment.setArguments(bundle);
         transaction.replace(R.id.ly_main, matrimonyProfileListFragment).addToBackStack(null);
         transaction.commit();
