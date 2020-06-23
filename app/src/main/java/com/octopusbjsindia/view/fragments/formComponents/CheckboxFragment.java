@@ -33,17 +33,17 @@ import java.util.HashMap;
 
 public class CheckboxFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    View view;
+    private View view;
     private Elements element;
-    public boolean isNone = false, isOther = false;
-    public CheckBox cbNone, cbOther;
-    public TextInputLayout tiOther;
+    private boolean isNone = false, isOther = false;
+    private CheckBox cbNone, cbOther;
+    private TextInputLayout tiOther;
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
-    EditText etOther;
-    boolean isFirstpage = false;
-    public ArrayList<String> selectedList = new ArrayList<String>();
-    HashMap<String, String> hashMap = new HashMap<String, String>();
+    private EditText etOther;
+    private boolean isFirstpage = false;
+    private ArrayList<String> selectedList = new ArrayList<String>();
+    private HashMap<String, String> hashMap = new HashMap<String, String>();
 
     @Override
     public void onAttach(@NonNull Context context) {

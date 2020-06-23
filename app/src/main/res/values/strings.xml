@@ -56,7 +56,7 @@
     <string name="gender">Gender *</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="other">Other</string>
+    <string name="other">Other(please specify)</string>
     <string name="mandatory_organization">Type organization name *</string>
     <string name="organization">Organization</string>
     <string name="mandatory_project">Type project name *</string>
