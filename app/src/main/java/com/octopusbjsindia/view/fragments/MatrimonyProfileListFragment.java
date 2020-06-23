@@ -62,6 +62,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private boolean isSearchVisible = false;
     private Button btnClearFilters;
     private RelativeLayout progressBar;
+    private String titleStr = "Candidate List";
     //pagination
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
@@ -86,20 +87,24 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         initViews();
         toOpen = getArguments().getString("toOpen");
         if (toOpen.equals("MeetUserList")) {
+            titleStr = "Meet Candidates";
             meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
             //presenter.getAllFiltersRequests(meetIdReceived);
         } else if (toOpen.equals("NewUserList")) {
+            titleStr = "Recently Joined";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
         } else if (toOpen.equals("UnverifiedUserList")) {
+            titleStr = "Verification Pending";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
         } else if (toOpen.equals("AllUserList")) {
+            titleStr = "All Candidates";
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
         }
@@ -297,7 +302,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             userProfileLists.clear();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-            toolbarTitle.setText("Candidate List (" + userResponse.getTotal() + ")");
+            toolbarTitle.setText(titleStr+"(" + userResponse.getTotal() + ")");
         } else {
             dispayNoData("No Data available.");
         }
