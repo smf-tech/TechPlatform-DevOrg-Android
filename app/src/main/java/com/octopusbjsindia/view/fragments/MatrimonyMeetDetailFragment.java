@@ -51,7 +51,6 @@ import com.octopusbjsindia.view.activities.ShowMeetBatchesActivity;
 import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.adapters.MeetAnalyticsAdapter;
 import com.octopusbjsindia.view.adapters.MeetContactsListAdapter;
-import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -80,7 +79,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private RelativeLayout rlNoMeet, rl_meetLayout;
     private final String TAG = this.getClass().getSimpleName();
     private Activity activity;
-    PopupMenu popup;
+    private PopupMenu popup;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -294,7 +293,6 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 RecyclerView.VERTICAL, false);
         rvMeetAnalytics.setLayoutManager(mLayoutManagerLeave);
         rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
-//        adapter.notifyDataSetChanged();
         meetContactsListAdapter.notifyDataSetChanged();
     }
 

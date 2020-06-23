@@ -28,7 +28,6 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
     private boolean isFirstpage = false;
     private View view;
     private Elements element;
-
     private RadioButtonAdapter adapter;
     private RecyclerView rvRadiobutton;
     private ArrayList<RadioButtonData> list = new ArrayList<RadioButtonData>();
@@ -55,7 +54,6 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         isFirstpage = getArguments().getBoolean("isFirstpage");
         rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
         tvQuetion.setText(element.getTitle().getLocaleValue());
-
         list.clear();
         for (Choice obj : element.getChoices()) {
             RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getLocaleValue(), false);
@@ -71,10 +69,8 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         }
 
         adapter = new RadioButtonAdapter(this, list);
-
         rvRadiobutton.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvRadiobutton.setAdapter(adapter);
-
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
 
