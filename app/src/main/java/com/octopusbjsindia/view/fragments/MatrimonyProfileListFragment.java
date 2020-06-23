@@ -292,7 +292,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-            toolbarTitle.setText("Candidate List (" + userProfileLists.size() + ")");
+            toolbarTitle.setText("Candidate List (" + userResponse.getTotal() + ")");
         } else {
             dispayNoData("No Data available.");
         }
