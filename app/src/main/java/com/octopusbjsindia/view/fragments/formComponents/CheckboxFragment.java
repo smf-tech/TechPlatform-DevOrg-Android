@@ -35,14 +35,14 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
 
     private View view;
     private Elements element;
-    private boolean isNone = false, isOther = false;
-    private CheckBox cbNone, cbOther;
+    public boolean isNone = false, isOther = false;
+    public CheckBox cbNone, cbOther;
     private TextInputLayout tiOther;
     private RecyclerView rvCheckbox;
     private ChechBoxAdapter adapter;
     private EditText etOther;
     private boolean isFirstpage = false;
-    private ArrayList<String> selectedList = new ArrayList<String>();
+    public ArrayList<String> selectedList = new ArrayList<String>();
     private HashMap<String, String> hashMap = new HashMap<String, String>();
 
     @Override
