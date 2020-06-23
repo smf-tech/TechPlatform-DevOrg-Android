@@ -410,9 +410,7 @@
                                         style="@style/StyleTextViewValue"
                                         android:layout_below="@+id/tv_name_lable"
                                         android:text="Sachin Kakade Kakade" />
-
                                 </RelativeLayout>
-
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -420,7 +418,19 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:layout_weight="1">
 
+                                    <TextView
+                                        android:id="@+id/tv_gender_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Gender" />
+
+                                    <TextView
+                                        android:id="@+id/tv_gender"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_gender_lable"
+                                        android:text="" />
+
                                 </RelativeLayout>
+
                             </LinearLayout>
 
                             <!--DOB / birt time-->
@@ -951,15 +961,15 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:layout_weight="1">
 
-                                    <!-- <TextView
-                                         android:id="@+id/tv_marital_status_lable"
-                                         style="@style/StyleTextViewLable"
-                                         android:text="Marital Status"/>
                                      <TextView
-                                         android:id="@+id/tv_marital_status"
-                                         android:layout_below="@+id/tv_marital_status_lable"
+                                         android:id="@+id/tv_degree_lable"
+                                         style="@style/StyleTextViewLable"
+                                         android:text="Degree"/>
+                                     <TextView
+                                         android:id="@+id/tv_degree"
+                                         android:layout_below="@+id/tv_degree_lable"
                                          style="@style/StyleTextViewValue"
-                                         android:text="Never Married"/>-->
+                                         android:text=""/>
                                 </RelativeLayout>
                             </LinearLayout>
 

@@ -63,11 +63,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private String approvalType;
 private int receivedPos = -1;
     //personal
-    private TextView tv_name, tv_birth_date, tv_birth_time, tv_age,
+    private TextView tv_gender,tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
             tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink;
     //educational and fammily
-    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income,
+    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income,tv_degree,
             tv_family_type, tv_sakha_gotra_1, tv_sakha_gotra_2, tv_sakha_gotra_3, tv_sakha_gotra_4,
             tv_father_fullname, tv_father_occupation, tv_mother_fullname, tv_mother_occupation, tv_family_income,
             tv_brothers_fullname, tv_sisters;
@@ -158,6 +158,7 @@ private int receivedPos = -1;
         btn_verify_edu = findViewById(R.id.btn_verify_edu);
         //Personal details -
         tv_name = findViewById(R.id.tv_name);
+        tv_gender = findViewById(R.id.tv_gender);
         tv_birth_date = findViewById(R.id.tv_birth_date);
         tv_birth_time = findViewById(R.id.tv_birth_time);
         tv_age = findViewById(R.id.tv_age);
@@ -184,6 +185,7 @@ private int receivedPos = -1;
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
                 + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
+        tv_gender.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getGender());
         tv_birth_date.setText(Util.getDateFromTimestamp(userProfileList.getMatrimonial_profile().getPersonal_details().getBirthDate(), Constants.EVENT_DATE_FORMAT));
         tv_birth_time.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_time());
         tv_age.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getAge());
@@ -206,6 +208,7 @@ private int receivedPos = -1;
         tv_company = findViewById(R.id.tv_company);
         tv_business_job = findViewById(R.id.tv_business_job);
         tv_annual_income = findViewById(R.id.tv_annual_income);
+        tv_degree = findViewById(R.id.tv_degree);
         tv_family_type = findViewById(R.id.tv_family_type);
         tv_sakha_gotra_1 = findViewById(R.id.tv_sakha_gotra_1);
         tv_sakha_gotra_2 = findViewById(R.id.tv_sakha_gotra_2);
@@ -224,6 +227,9 @@ private int receivedPos = -1;
         tv_company.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getEmployer_company());
         tv_business_job.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getBusiness_description());
         tv_annual_income.setText(userProfileList.getMatrimonial_profile().getEducational_details().getIncome());
+        if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree())) {
+            tv_degree.setText(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree());
+        }
         tv_family_type.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_type());
         tv_sakha_gotra_1.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getSelf_gotra());
         tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
