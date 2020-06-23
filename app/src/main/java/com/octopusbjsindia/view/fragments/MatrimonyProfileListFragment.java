@@ -277,6 +277,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //                            setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
+                userProfileListsFiltered.clear();
+                userProfileLists.clear();
                 presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(),
                         BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS));
                 break;
@@ -290,7 +292,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             toolbarFilter.setVisibility(View.VISIBLE);
             ivNoData.setVisibility(View.GONE);
             tvNoData.setVisibility(View.GONE);
-            userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            //userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            userProfileListsFiltered.addAll((ArrayList<UserProfileList>) userResponse.getData());
+            userProfileLists.clear();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
             toolbarTitle.setText("Candidate List (" + userResponse.getTotal() + ")");
