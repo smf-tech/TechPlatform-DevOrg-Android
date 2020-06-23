@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/opensans_bold"
-                        android:text="New Users" />
+                        android:text="Recently Joined" />
 
                     <View
                         android:layout_width="match_parent"

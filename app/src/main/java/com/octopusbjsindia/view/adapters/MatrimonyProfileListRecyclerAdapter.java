@@ -50,7 +50,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     getPersonal_details().getFirst_name() + " " + dataList.get(position).
                     getMatrimonial_profile().getPersonal_details().getLast_name());
             String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years,"))
-                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getEducation_level()+",")
+                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getQualification_degree()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getMarital_status()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getSect()).toString();
                     /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ly_main"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen_10dp"
-    >
-
+    android:layout_marginStart="@dimen/dimen_10dp">
+<androidx.cardview.widget.CardView
+    android:layout_width="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/dimen_07dp"
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_user_profile_pic"
         android:layout_width="@dimen/dimen_225dp"
@@ -24,7 +28,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_60dp"
-        android:layout_gravity="bottom">
+
+        android:layout_gravity="bottom|center_horizontal">
 
 
         <TextView
@@ -35,21 +40,26 @@
             android:textColor="@color/white"
             android:layout_marginStart="@dimen/dimen_05dp"
             android:maxLines="1"
+            android:layout_centerHorizontal="true"
             android:fontFamily="@font/opensans_semibold"
             android:text="Title"/>
 
         <TextView
             android:id="@+id/tv_location"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dimen_225dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
             android:textColor="@color/white"
             android:layout_marginStart="@dimen/dimen_05dp"
             android:maxLines="1"
+            android:layout_centerHorizontal="true"
             android:fontFamily="@font/opensans_regular"
             android:text="Description"
+            android:ellipsize="end"
             android:textSize="@dimen/text_size_12"/>
 
 
     </RelativeLayout>
+</androidx.cardview.widget.CardView>
 </FrameLayout>
