@@ -257,8 +257,9 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="@dimen/dimen_10dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:text="Verified"
+                                    android:text="Profile Verified"
                                     android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_10"
                                     android:visibility="gone" />
 
                                 <ImageView
@@ -286,8 +287,9 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="@dimen/dimen_10dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:text="Verified"
+                                    android:text="Education Verified"
                                     android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_10"
                                     android:visibility="gone" />
 
                                 <ImageView
@@ -315,7 +317,8 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="@dimen/dimen_10dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:text="Verified"
+                                    android:text="ID Verified"
+                                    android:textSize="@dimen/text_size_10"
                                     android:textColor="@color/white"
                                     android:visibility="gone" />
 
@@ -1814,6 +1817,7 @@
                                         android:id="@+id/iv_education_certificates"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/dimen_200dp"
+                                        android:scaleType="fitXY"
                                         android:layout_below="@+id/tv_education_certificates_lable"
                                         android:src="@mipmap/app_logo" />
                                     <com.google.android.material.button.MaterialButton

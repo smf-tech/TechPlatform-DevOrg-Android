@@ -108,6 +108,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         presenter.getMatrimonyMeets();
         presenter.getRecentelyJoinedUsers();
         presenter.getUnVerifiedUsers();
+        closeFABMenu();
     }
 
     @Override

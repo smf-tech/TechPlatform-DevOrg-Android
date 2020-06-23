@@ -692,10 +692,15 @@ private int receivedPos = -1;
         }else if (type==1){
             btn_verify_ids.setEnabled(false);
             btn_verify_ids.setText("Verified");
+            userProfileList.getMatrimonial_profile().setIdApproved(true);
+            setFlags();
             Util.showToast(message,this);
+
         }else {
             btn_verify_edu.setEnabled(false);
             btn_verify_edu.setText("Verified");
+            userProfileList.getMatrimonial_profile().setEducationApproved(true);
+            setFlags();
             Util.showToast(message,this);
         }
 
