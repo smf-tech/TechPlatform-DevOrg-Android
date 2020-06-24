@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Group {
 
+
+    @SerializedName("title")
+    @Expose
+    private List<String> title = null;
     @SerializedName("male")
     @Expose
     private List<List<Male>> male = null;
@@ -28,4 +32,11 @@ public class Group {
         this.female = female;
     }
 
+    public List<String> getTitle() {
+        return title;
+    }
+
+    public void setTitle(List<String> title) {
+        this.title = title;
+    }
 }

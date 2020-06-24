@@ -27,6 +27,7 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.AllUserData;
 import com.octopusbjsindia.models.Matrimony.MatrimonyUserFilterData;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
+import com.octopusbjsindia.models.events.Participant;
 import com.octopusbjsindia.presenter.MatrimonyProfilesListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
@@ -61,6 +62,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private boolean isSearchVisible = false;
     private Button btnClearFilters;
     private RelativeLayout progressBar;
+    private String titleStr = "Candidate List";
     //pagination
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
@@ -85,20 +87,24 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         initViews();
         toOpen = getArguments().getString("toOpen");
         if (toOpen.equals("MeetUserList")) {
+            titleStr = "Meet Candidates";
             meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
             //presenter.getAllFiltersRequests(meetIdReceived);
         } else if (toOpen.equals("NewUserList")) {
+            titleStr = "Recently Joined";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
         } else if (toOpen.equals("UnverifiedUserList")) {
+            titleStr = "Verification Pending";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
         } else if (toOpen.equals("AllUserList")) {
+            titleStr = "All Candidates";
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
         }
@@ -276,6 +282,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //                            setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
+                userProfileListsFiltered.clear();
+                userProfileLists.clear();
                 presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(),
                         BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS));
                 break;
@@ -289,10 +297,12 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             toolbarFilter.setVisibility(View.VISIBLE);
             ivNoData.setVisibility(View.GONE);
             tvNoData.setVisibility(View.GONE);
-            userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            //userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            userProfileListsFiltered.addAll((ArrayList<UserProfileList>) userResponse.getData());
+            userProfileLists.clear();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-            toolbarTitle.setText("Candidate List (" + userResponse.getTotal() + ")");
+            toolbarTitle.setText(titleStr+"(" + userResponse.getTotal() + ")");
         } else {
             dispayNoData("No Data available.");
         }
@@ -366,7 +376,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         Intent startMain1 = new Intent(getActivity(), MatrimonyProfileDetailsActivity.class);
         startMain1.putExtra("filter_type", jsonInString);
         startMain1.putExtra("meetid", meetIdReceived);
-        startActivity(startMain1);
+        startMain1.putExtra("selectedPos",pos);
+        startActivityForResult(startMain1, Constants.MatrimonyModule.FLAG_UPDATE_RESULT);
+
     }
 
     @Override
@@ -566,4 +578,19 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //        nextPageUrl = newUserResponse.getNextPageUrl();
 //        //showUserProfileList(newUserResponse.getData());
 //    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
+            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
+            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT,-1);
+            if (receivedPos!=-1){
+                userProfileLists.set(receivedPos,listItem);
+                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
+            }
+        }
+
+    }
 }

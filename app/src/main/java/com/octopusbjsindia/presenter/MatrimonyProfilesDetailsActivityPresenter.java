@@ -104,12 +104,20 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         requestCall.postDataApiCall("APPROVE_REJECT_USER", paramjson, url);
     }
 
-    public void approveRejectDocumentsRequest(String paramjson) {
+    public void approveRejectDocumentsRequest(String paramjson, int type) {
+
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_DOC_VERIFY_API;
-        requestCall.postDataApiCall("APPROVE_REJECT_DOC", paramjson, url);
+        if (type ==3){
+            requestCall.postDataApiCall("VERIFY_PROFILE", paramjson, url);
+        }
+        else if (type==1) {
+            requestCall.postDataApiCall("APPROVE_REJECT_ID", paramjson, url);
+        }else {
+            requestCall.postDataApiCall("APPROVE_REJECT_EDU", paramjson, url);
+        }
     }
 
     @Override
@@ -127,8 +135,8 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
     @Override
     public void onSuccessListener(String requestID, String response) {
         fragmentWeakReference.get().hideProgressBar();
+        CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
         if (requestID.equals("BLOCK_UNBLOCK_USER")) {
-            CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
             if (commonResponse.getStatus() == 200) {
                 fragmentWeakReference.get().updateBlockUnblock(commonResponse.getMessage());
             } else {
@@ -136,6 +144,13 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
             }
         } else if(requestID.equals("APPROVE_REJECT_USER")){
             fragmentWeakReference.get().updateRequestStatus(response);
+        }else if(requestID.equals("APPROVE_REJECT_ID")){
+            fragmentWeakReference.get().updateVerificationStatus(1,commonResponse.getMessage());
+        }else if(requestID.equals("APPROVE_REJECT_EDU")){
+            fragmentWeakReference.get().updateVerificationStatus(2,commonResponse.getMessage());
+        }else if(requestID.equals("VERIFY_PROFILE")){
+            fragmentWeakReference.get().updateVerificationStatus(3,commonResponse.getMessage());
         }
+
     }
 }

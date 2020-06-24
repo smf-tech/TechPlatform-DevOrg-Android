@@ -23,6 +23,15 @@ public class UserProfileList implements Serializable {
     @SerializedName("isApproved")
     @Expose
     private String isApproved;
+
+
+
+
+    @SerializedName("userMeetStatus")
+    @Expose
+    private String userMeetStatus;
+
+
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
@@ -161,6 +170,15 @@ public class UserProfileList implements Serializable {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+
+    public String getUserMeetStatus() {
+        return userMeetStatus;
+    }
+
+    public void setUserMeetStatus(String userMeetStatus) {
+        this.userMeetStatus = userMeetStatus;
     }
 
 }

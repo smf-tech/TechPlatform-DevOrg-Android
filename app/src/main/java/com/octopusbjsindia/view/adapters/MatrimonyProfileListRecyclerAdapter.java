@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +49,9 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             holder.txtTitle.setText(dataList.get(position).getMatrimonial_profile().
                     getPersonal_details().getFirst_name() + " " + dataList.get(position).
                     getMatrimonial_profile().getPersonal_details().getLast_name());
-            String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years,"))
-                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getEducation_level()+",")
-                    .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getMarital_status()+",")
+            String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years, "))
+                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getQualification_degree()+", ")
+                    .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getMarital_status()+", ")
                     .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getSect()).toString();
                     /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();*/
@@ -59,7 +60,11 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 holder.tv_payment_status.setVisibility(View.VISIBLE);
             }
 
-            holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
+            if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
+                holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
+            }else {
+                holder.tv_approval_status.setVisibility(View.GONE);
+            }
 //            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
 //
 //            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
