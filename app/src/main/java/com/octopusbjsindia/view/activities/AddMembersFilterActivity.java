@@ -30,7 +30,6 @@ import com.octopusbjsindia.presenter.AddMemberFilterActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
-import com.octopusbjsindia.widgets.MultiSelectSpinner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -195,8 +194,8 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
-                    if (selectedClusters != null && selectedClusters.size()>0 &&
-                            !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
+                    if (selectedTalukas != null && selectedTalukas.size() > 0 &&
+                            !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                         if (etUserVillage.getVisibility() == View.VISIBLE) {
                             if(selectedRolesJurisdictionTypeId.size()!=0) {
                                 addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
@@ -205,7 +204,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                             }
                         }
                     } else {
-                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
                     }
                 }
                 break;

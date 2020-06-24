@@ -3,13 +3,6 @@ package com.octopusbjsindia.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.airbnb.lottie.utils.Utils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.octopusbjsindia.R;
@@ -33,7 +30,6 @@ public class VPMeetFragment extends Fragment implements View.OnClickListener{
     private View view;
     private MatrimonyMeet meetData;
     private CardView cvMain;
-
     private RelativeLayout progressBar;
     boolean regFlag;
     String status;
@@ -55,8 +51,6 @@ public class VPMeetFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
         meetData = (MatrimonyMeet) getArguments().getSerializable(MEET_DATA);
         pos = getArguments().getInt(MEET_POS,0);
 
