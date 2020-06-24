@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ly_main"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/dimen_225dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dimen_10dp">
 <androidx.cardview.widget.CardView
     android:layout_width="wrap_content"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/dimen_07dp"
+    app:cardCornerRadius="@dimen/dimen_10dp"
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_user_profile_pic"
