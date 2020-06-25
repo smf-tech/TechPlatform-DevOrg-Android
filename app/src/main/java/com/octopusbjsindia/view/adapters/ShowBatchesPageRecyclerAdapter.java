@@ -35,9 +35,8 @@ public class ShowBatchesPageRecyclerAdapter extends RecyclerView.Adapter<ShowBat
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.txtTitle.setText("Batch");
-        holder.txtValue.setText(dataList.get(position).getTitle().get(0));
+        holder.txtValue.setText(dataList.get(position).getTitle().get(0) + "\n" + dataList.get(position).getTitleUnit().get(0));
         //holder.txtValue.setText(String.valueOf(position+1));
-
     }
 
     @Override
@@ -53,11 +52,12 @@ public class ShowBatchesPageRecyclerAdapter extends RecyclerView.Adapter<ShowBat
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
             txtValue = (TextView) itemView.findViewById(R.id.tv_value);
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition(),
+                    dataList.get(getAdapterPosition()).getTitle().get(0) + " " + dataList.get(getAdapterPosition()).getTitleUnit().get(0)));
         }
     }
 
     public interface OnRequestItemClicked {
-        void onItemClicked(int pos);
+        void onItemClicked(int pos, String title);
     }
 }

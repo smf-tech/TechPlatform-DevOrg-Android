@@ -36,7 +36,6 @@ import java.util.List;
 import me.bendik.simplerangeview.SimpleRangeView;
 
 public class MatrimonyUsersFilterFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
-
     private View view;
     private ImageView toolbar_back_action, ivClearFilter;
     private TextView toolbar_title;
@@ -45,7 +44,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private TextView txtMinAge, txtMaxAge;
     private MatrimonyUsersFilterActivityPresenter presenter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
-    private EditText etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification, etMaritalStatus, etPaidOrFree;
+    private EditText etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedState, selectedQualification, selectedGender, selectedSect,
             selectedMaritalStatus, selectedPaidOrFree;
     private SimpleRangeView rangeView;
@@ -81,6 +80,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         toolbar_back_action.setOnClickListener(this);
         ivClearFilter = view.findViewById(R.id.iv_clear_filter);
         ivClearFilter.setOnClickListener(this);
+        etName = view.findViewById(R.id.et_name);
         etMeetStatus = view.findViewById(R.id.et_meet_status);
         etVerificationStatus = view.findViewById(R.id.et_verification_status);
         etState = view.findViewById(R.id.et_state);
@@ -105,6 +105,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 etVerificationStatus.setOnClickListener(this);
             }
         }
+        etName.setOnClickListener(this);
         etState.setOnClickListener(this);
         etGender.setOnClickListener(this);
         etSect.setOnClickListener(this);
@@ -148,6 +149,9 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private void setFilterData() {
         matrimonyUserFilterData = ((MatrimonyProfileListActivity) getActivity()).
                 getMatrimonyUserFilterData();
+        if (matrimonyUserFilterData.getUser_name() != null) {
+            etName.setText(matrimonyUserFilterData.getUser_name());
+        }
         if (matrimonyUserFilterData.getUser_meet_status() != null) {
             etMeetStatus.setText(matrimonyUserFilterData.getUser_meet_status());
         }
@@ -386,6 +390,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
+                if (etName.getText().toString().trim().length() > 0) {
+                    matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                } else {
+                    matrimonyUserFilterData.setUser_name(null);
+                }
                 if (etMeetStatus.getText().toString().trim().length() > 0) {
                     matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
                     ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
@@ -421,6 +431,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
+                etName.setText("");
                 etMeetStatus.setText("");
                 etVerificationStatus.setText("");
                 etState.setText("");
@@ -435,6 +446,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 txtMinAge.setText(String.valueOf(rangeView.getStart() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
                 txtMaxAge.setText(String.valueOf(rangeView.getEnd() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
 
+                matrimonyUserFilterData.setUser_name(null);
                 matrimonyUserFilterData.setUser_meet_status(null);
                 matrimonyUserFilterData.setUser_verification_status(null);
                 matrimonyUserFilterData.setState_names(null);

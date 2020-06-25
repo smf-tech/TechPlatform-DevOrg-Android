@@ -208,7 +208,6 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     }
                 }
                 break;
-
         }
     }
 
@@ -308,8 +307,6 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                 break;
         }
     }
-
-
 
     private void submitDetails() {
         ParametersFilterMember parametersFilter = new ParametersFilterMember();

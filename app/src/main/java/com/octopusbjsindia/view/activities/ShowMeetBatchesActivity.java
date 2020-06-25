@@ -48,17 +48,13 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         }
         fManager = getSupportFragmentManager();
         Gson gson = new Gson();
-
         meetBatchesResponseModel = gson.fromJson(meetBatchesResponseString, MeetBatchesResponseModel.class);
-
         txtNoData = findViewById(R.id.txt_no_data);
         txtNoData.setText("No Batches available yet.");
         txtNoData.setVisibility(View.GONE);
         rvBaches = findViewById(R.id.rvLandingPageView);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
-
         rvBaches.setLayoutManager(layoutManager);
-
         mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getData().getGroup(), this::onItemClicked);
         rvBaches.setAdapter(mAdapter);
 
@@ -96,7 +92,7 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void onItemClicked(int pos) {
+    public void onItemClicked(int pos, String title) {
         Bundle bundle = new Bundle();
         meetBatchesResponseModel.getData().getGroup().get(pos);
         if (meetBatchesResponseModel.getData().getGroup().get(pos).getMale().get(0).size()>0 ||
@@ -110,7 +106,7 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
             fragment.setArguments(bundle);
             openFragment();
 
-            toolbar_title.setText("Batch " + (pos + 1));
+            toolbar_title.setText(title);
         }else {
             Util.showToast("No profiles under this batch yet.",this);
         }

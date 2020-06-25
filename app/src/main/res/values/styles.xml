@@ -286,7 +286,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/opensans_regular</item>
-        <item name="android:textSize">@dimen/text_size_10</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:layout_marginTop">@dimen/dimen_10dp</item>
     </style>
 
@@ -294,7 +294,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:layout_marginTop">@dimen/dimen_02dp</item>
     </style>
 

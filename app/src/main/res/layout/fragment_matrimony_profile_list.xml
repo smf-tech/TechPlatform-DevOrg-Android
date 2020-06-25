@@ -54,7 +54,7 @@
             android:padding="@dimen/dimen_10dp"
             android:tint="@color/white"
             android:src="@drawable/ic_search"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/toolbar_filter"

@@ -136,7 +136,6 @@ private int receivedPos = -1;
         findViewById(R.id.iv_arrow_family).setOnClickListener(this);
         findViewById(R.id.iv_arrow_residential).setOnClickListener(this);
         findViewById(R.id.iv_arrow_other).setOnClickListener(this);
-
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
         findViewById(R.id.btn_reject).setOnClickListener(this);
@@ -144,9 +143,6 @@ private int receivedPos = -1;
         findViewById(R.id.btn_verify_profile).setOnClickListener(this);
         findViewById(R.id.btn_verify_ids).setOnClickListener(this);
         findViewById(R.id.btn_verify_edu).setOnClickListener(this);
-
-
-
         ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
         popupMenu.setVisibility(View.VISIBLE);
         popupMenu.setImageResource(R.drawable.ic_popup_menu);
@@ -173,11 +169,19 @@ private int receivedPos = -1;
         tv_disability = findViewById(R.id.tv_disability);
         tv_smoke = findViewById(R.id.tv_smoke);
         tv_drink = findViewById(R.id.tv_drink);
-        tv_approval_status = findViewById(R.id.tv_approval_status);
+        //tv_approval_status = findViewById(R.id.tv_approval_status);
         tv_premium = findViewById(R.id.tv_premium);
+//        if (userProfileList.isIsPremium()) {
+//            tv_premium.setVisibility(View.VISIBLE);
+//            findViewById(R.id.ly_premium).setVisibility(View.INVISIBLE);
+//        }
+
         if (userProfileList.isIsPremium()) {
-            tv_premium.setVisibility(View.VISIBLE);
-            findViewById(R.id.ly_premium).setVisibility(View.INVISIBLE);
+            findViewById(R.id.ly_premium).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_premium).setOnClickListener(this);
+        } else {
+            findViewById(R.id.ly_premium).setVisibility(View.GONE);
+            findViewById(R.id.ly_premium).setOnClickListener(this);
         }
 
         setApprovelFlag();
@@ -331,10 +335,18 @@ private int receivedPos = -1;
     private void setApprovelFlag() {
         setFlags();
         //tv_approval_status.setText(userProfileList.getIsApproved());
-        if(!TextUtils.isEmpty(meetIdReceived)) {
-            tv_approval_status.setText(userProfileList.getUserMeetStatus());
-        }else {
-            tv_approval_status.setVisibility(View.GONE);
+//        if(!TextUtils.isEmpty(meetIdReceived)) {
+//            tv_approval_status.setText(userProfileList.getUserMeetStatus());
+//        }else {
+//            tv_approval_status.setVisibility(View.GONE);
+//        }
+
+        if (!TextUtils.isEmpty(meetIdReceived)) {
+            findViewById(R.id.ly_verified).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_verified).setOnClickListener(this);
+        } else {
+            findViewById(R.id.ly_verified).setVisibility(View.GONE);
+            findViewById(R.id.ly_verified).setOnClickListener(this);
         }
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
@@ -389,7 +401,18 @@ private int receivedPos = -1;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.ly_verified:
+                if (findViewById(R.id.tv_meet_verified).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_meet_verified).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_meet_verified).setVisibility(View.VISIBLE);
+                break;
+            case R.id.ly_premium:
+                if (findViewById(R.id.tv_premium).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_premium).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_premium).setVisibility(View.VISIBLE);
+                break;
             case R.id.ly_profile_varified:
                 if(findViewById(R.id.tv_profile_varified).getVisibility() == View.VISIBLE)
                     findViewById(R.id.tv_profile_varified).setVisibility(View.GONE);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,9 +21,9 @@ import java.util.List;
 
 public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<MatrimonyProfileListRecyclerAdapter.EmployeeViewHolder> {
 
-        private List<UserProfileList> dataList;
-        private Context mContext;
-        private RequestOptions requestOptions;
+    private List<UserProfileList> dataList;
+    private Context mContext;
+    private RequestOptions requestOptions;
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 
@@ -56,14 +57,16 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();*/
             holder.txtValue.setText(s);
-            if (dataList.get(position).isPaymentDone()){
-                holder.tv_payment_status.setVisibility(View.VISIBLE);
-            }
-
+//            if (dataList.get(position).isPaymentDone()){
+//                holder.tv_payment_status.setVisibility(View.VISIBLE);
+//            }
+            //sectionType.equalsIgnoreCase("MeetUserList")
             if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
-                holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
+                //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
+                holder.lyMeetApproved.setVisibility(View.VISIBLE);
             }else {
-                holder.tv_approval_status.setVisibility(View.GONE);
+                //holder.tv_approval_status.setVisibility(View.GONE);
+                holder.lyMeetApproved.setVisibility(View.GONE);
             }
 //            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
 //
@@ -75,13 +78,13 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 //                holder.btn_reject.setVisibility(View.VISIBLE);
 //            }
             if (dataList.get(position).isIsPremium()){
-                holder.tv_premium.setVisibility(View.VISIBLE);
-                holder.tv_premium.setText("Premium");
+//                holder.tv_premium.setVisibility(View.VISIBLE);
+//                holder.tv_premium.setText("Premium");
+                holder.lyPremium.setVisibility(View.VISIBLE);
             }else {
-                holder.tv_premium.setVisibility(View.GONE);
+                //holder.tv_premium.setVisibility(View.GONE);
+                holder.lyPremium.setVisibility(View.GONE);
             }
-
-
 
             if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null&&dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
                 Glide.with(mContext)
@@ -89,7 +92,6 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                         .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))
                         .into(holder.user_profile_pic);
             }
-
         }
 
         @Override
@@ -104,17 +106,22 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtTitle, txtValue,tv_approval_status,tv_premium,tv_payment_status;
+        TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium, tvMeetApproved;
             ImageView user_profile_pic;
+        LinearLayout lyPremium, lyMeetApproved;
 //            Button btn_reject,btn_approve;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
+                lyPremium = itemView.findViewById(R.id.ly_premium);
+                tvPremium = itemView.findViewById(R.id.tv_premium);
+                lyMeetApproved = itemView.findViewById(R.id.ly_meet_approved);
+                tvMeetApproved = itemView.findViewById(R.id.tv_meet_approved);
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
-                tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
-                tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
-                tv_premium = itemView.findViewById(R.id.tv_premium);
+                //tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
+                //tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
+                //tv_premium = itemView.findViewById(R.id.tv_premium);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
 //                btn_reject = itemView.findViewById(R.id.btn_reject);
@@ -131,6 +138,26 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 //                        buttonClickListner.onRejectClicked(getAdapterPosition());
 //                    }
 //                });
+
+                lyPremium.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tvPremium.getVisibility() == View.VISIBLE)
+                            tvPremium.setVisibility(View.GONE);
+                        else
+                            tvPremium.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                lyMeetApproved.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tvMeetApproved.getVisibility() == View.VISIBLE)
+                            tvMeetApproved.setVisibility(View.GONE);
+                        else
+                            tvMeetApproved.setVisibility(View.VISIBLE);
+                    }
+                });
 
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             }

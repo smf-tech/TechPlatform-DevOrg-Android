@@ -27,7 +27,6 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.AllUserData;
 import com.octopusbjsindia.models.Matrimony.MatrimonyUserFilterData;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
-import com.octopusbjsindia.models.events.Participant;
 import com.octopusbjsindia.presenter.MatrimonyProfilesListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
@@ -86,6 +85,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
         initViews();
         toOpen = getArguments().getString("toOpen");
+        // we have checked toOpen in adapter. so be careful while chaging its values.
         if (toOpen.equals("MeetUserList")) {
             titleStr = "Meet Candidates";
             meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
@@ -119,13 +119,13 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         toolbar_back_action.setVisibility(View.VISIBLE);
         editSearch = view.findViewById(R.id.search_view1);
         toolbarFilter = view.findViewById(R.id.toolbar_filter);
-        toolbar_action = view.findViewById(R.id.toolbar_action1);
-        toolbar_action.setVisibility(View.VISIBLE);
+//        toolbar_action = view.findViewById(R.id.toolbar_action1);
+//        toolbar_action.setVisibility(View.VISIBLE);
         toolbarTitle = view.findViewById(R.id.toolbar_title1);
         toolbarTitle.setText("Candidate List");
         toolbar_back_action.setOnClickListener(this);
         toolbarFilter.setOnClickListener(this);
-        toolbar_action.setOnClickListener(this);
+        //toolbar_action.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
         btnClearFilters = view.findViewById(R.id.btn_clear_filters);
         btnClearFilters.setOnClickListener(this);
@@ -237,17 +237,17 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 ((MatrimonyProfileListActivity) getActivity()).openFragment("filter_fragment");
                 break;
             case R.id.toolbar_action1:
-                if (isSearchVisible) {
-                    isSearchVisible = false;
-                    editSearch.setVisibility(View.VISIBLE);
-                    editSearch.requestFocus();
-                    toolbar_action.setImageResource(R.drawable.ic_close);
-                } else {
-                    isSearchVisible = true;
-                    editSearch.setVisibility(View.GONE);
-                    toolbar_action.setImageResource(R.drawable.ic_search);
-                    filter("");
-                }
+//                if (isSearchVisible) {
+//                    isSearchVisible = false;
+//                    editSearch.setVisibility(View.VISIBLE);
+//                    editSearch.requestFocus();
+//                    toolbar_action.setImageResource(R.drawable.ic_close);
+//                } else {
+//                    isSearchVisible = true;
+//                    editSearch.setVisibility(View.GONE);
+//                    toolbar_action.setImageResource(R.drawable.ic_search);
+//                    filter("");
+//                }
                 break;
             case R.id.btn_clear_filters:
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();

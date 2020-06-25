@@ -132,51 +132,35 @@
                             android:src="@drawable/ic_share"
                             android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/tv_approval_status"
-                            android:layout_width="@dimen/dimen_75dp"
-                            android:layout_height="@dimen/dimen_25dp"
-                            android:layout_gravity="start"
-                            android:layout_marginTop="@dimen/dimen_20dp"
-                            android:background="@drawable/ic_publish_ribbon"
-                            android:fontFamily="@font/opensans_bold"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dimen_05dp"
-                            android:paddingEnd="@dimen/dimen_10dp"
-                            android:text="Approved"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_10" />
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/tv_approval_status"-->
+                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
+                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
+                        <!--                            android:layout_gravity="start"-->
+                        <!--                            android:layout_marginTop="@dimen/dimen_20dp"-->
+                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
+                        <!--                            android:fontFamily="@font/opensans_bold"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
+                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
+                        <!--                            android:text="Approved"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/text_size_10" />-->
 
-                        <TextView
-                            android:id="@+id/tv_premium"
-                            android:layout_width="@dimen/dimen_75dp"
-                            android:layout_height="@dimen/dimen_25dp"
-                            android:layout_gravity="start"
-                            android:layout_marginTop="@dimen/dimen_50dp"
-                            android:background="@drawable/ic_publish_ribbon"
-                            android:fontFamily="@font/opensans_bold"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dimen_05dp"
-                            android:paddingEnd="@dimen/dimen_10dp"
-                            android:text="Premium"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_10" />
-
-                        <!--<TextView
-                            android:id="@+id/tv_premium"
-                            android:layout_width="@dimen/dimen_75dp"
-                            android:layout_height="@dimen/dimen_25dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="@dimen/dimen_25dp"
-                            android:background="@drawable/ic_publish_ribbon_right"
-                            android:fontFamily="@font/opensans_bold"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dimen_16dp"
-                            android:text="Premium"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_10"
-                            android:visibility="gone" />-->
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/tv_premium"-->
+                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
+                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
+                        <!--                            android:layout_gravity="start"-->
+                        <!--                            android:layout_marginTop="@dimen/dimen_50dp"-->
+                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
+                        <!--                            android:fontFamily="@font/opensans_bold"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
+                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
+                        <!--                            android:text="Premium"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/text_size_10" />-->
 
 
                         <LinearLayout
@@ -186,9 +170,7 @@
                             android:layout_margin="@dimen/dimen_05dp"
                             android:background="@drawable/bg_circular_tsp_black_40"
                             android:orientation="horizontal"
-                            android:paddingStart="@dimen/dimen_10dp"
-                            android:visibility="invisible"
-                            android:paddingEnd="@dimen/dimen_10dp">
+                            android:padding="@dimen/dimen_02dp">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -197,12 +179,15 @@
                                 android:src="@drawable/ic_premium" />
 
                             <TextView
+                                android:id="@+id/tv_premium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_margin="@dimen/dimen_05dp"
                                 android:text="Premium"
-                                android:textColor="@color/white" />
+                                android:textSize="@dimen/text_size_11"
+                                android:textColor="@color/white"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -214,22 +199,26 @@
                             android:orientation="vertical">
 
                             <LinearLayout
-                                android:id="@+id/ly_varified"
+                                android:id="@+id/ly_verified"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
                                 android:layout_margin="@dimen/dimen_05dp"
                                 android:background="@drawable/bg_circular_tsp_black_40"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/dimen_05dp"
-                                android:visibility="gone">
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
 
                                 <TextView
+                                    android:id="@+id/tv_meet_verified"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:text="Verified"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="Approved in meet"
                                     android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
                                     android:visibility="gone" />
 
                                 <ImageView
@@ -247,7 +236,7 @@
                                 android:layout_margin="@dimen/dimen_05dp"
                                 android:background="@drawable/bg_circular_tsp_black_40"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/dimen_05dp"
+                                android:padding="@dimen/dimen_02dp"
                                 android:visibility="visible">
 
                                 <TextView
@@ -259,7 +248,7 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:text="Profile Verified"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/text_size_10"
+                                    android:textSize="@dimen/text_size_11"
                                     android:visibility="gone" />
 
                                 <ImageView
@@ -277,7 +266,7 @@
                                 android:layout_margin="@dimen/dimen_05dp"
                                 android:background="@drawable/bg_circular_tsp_black_40"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/dimen_05dp"
+                                android:padding="@dimen/dimen_02dp"
                                 android:visibility="visible">
 
                                 <TextView
@@ -289,7 +278,7 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:text="Education Verified"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/text_size_10"
+                                    android:textSize="@dimen/text_size_11"
                                     android:visibility="gone" />
 
                                 <ImageView
@@ -307,7 +296,7 @@
                                 android:layout_margin="@dimen/dimen_05dp"
                                 android:background="@drawable/bg_circular_tsp_black_40"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/dimen_05dp"
+                                android:padding="@dimen/dimen_02dp"
                                 android:visibility="visible">
 
                                 <TextView
@@ -318,7 +307,7 @@
                                     android:layout_marginStart="@dimen/dimen_10dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:text="ID Verified"
-                                    android:textSize="@dimen/text_size_10"
+                                    android:textSize="@dimen/text_size_11"
                                     android:textColor="@color/white"
                                     android:visibility="gone" />
 
@@ -408,8 +397,7 @@
                                     <TextView
                                         android:id="@+id/tv_name"
                                         style="@style/StyleTextViewValue"
-                                        android:layout_below="@+id/tv_name_lable"
-                                        android:text="Sachin Kakade Kakade" />
+                                        android:layout_below="@+id/tv_name_lable" />
                                 </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="match_parent"
