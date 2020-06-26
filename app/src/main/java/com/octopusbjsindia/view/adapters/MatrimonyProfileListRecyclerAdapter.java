@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<MatrimonyProfileListRecyclerAdapter.EmployeeViewHolder> {
-
     private List<UserProfileList> dataList;
     private Context mContext;
     private RequestOptions requestOptions;
@@ -64,7 +63,16 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
             if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
                 //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
                 holder.lyMeetApproved.setVisibility(View.VISIBLE);
-            }else {
+                if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("pending")) {
+                    holder.tvMeetApproved.setText("Pending in meet");
+                } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("approved")) {
+                    holder.tvMeetApproved.setText("Approved in meet");
+                } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                    holder.tvMeetApproved.setText("Rejected in meet");
+                }
+
+
+            } else {
                 //holder.tv_approval_status.setVisibility(View.GONE);
                 holder.lyMeetApproved.setVisibility(View.GONE);
             }
@@ -77,7 +85,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 //                holder.btn_approve.setVisibility(View.GONE);
 //                holder.btn_reject.setVisibility(View.VISIBLE);
 //            }
-            if (dataList.get(position).isIsPremium()){
+            if (dataList.get(position).isPaid()) {
 //                holder.tv_premium.setVisibility(View.VISIBLE);
 //                holder.tv_premium.setText("Premium");
                 holder.lyPremium.setVisibility(View.VISIBLE);
@@ -86,7 +94,8 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 holder.lyPremium.setVisibility(View.GONE);
             }
 
-            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null&&dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
+            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
+                    && dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size() > 0) {
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))

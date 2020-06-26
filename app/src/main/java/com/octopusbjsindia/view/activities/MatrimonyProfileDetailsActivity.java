@@ -53,7 +53,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         PopupMenu.OnMenuItemClickListener, APIDataListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
-    private RequestOptions requestOptions;
+    private RequestOptions docRequestOptions;
+    private RequestOptions certificateRequestOptions;
     private UserProfileList userProfileList;
     private MatrimonyProfilesDetailsActivityPresenter presenter;
     private ArrayList<String> ProfileImageList = new ArrayList<>();
@@ -95,8 +96,10 @@ private int receivedPos = -1;
         }
         meetIdReceived = getIntent().getStringExtra("meetid");
         receivedPos = getIntent().getIntExtra("selectedPos",-1);
-        requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
-        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+        docRequestOptions = new RequestOptions().placeholder(R.drawable.ic_doc_placeholder);
+        docRequestOptions = docRequestOptions.apply(RequestOptions.noTransformation());
+        certificateRequestOptions = new RequestOptions().placeholder(R.drawable.ic_certifcate_placeholder);
+        certificateRequestOptions = certificateRequestOptions.apply(RequestOptions.noTransformation());
         progressBar = findViewById(R.id.progress_bar);
         initView();
     }
@@ -176,7 +179,7 @@ private int receivedPos = -1;
 //            findViewById(R.id.ly_premium).setVisibility(View.INVISIBLE);
 //        }
 
-        if (userProfileList.isIsPremium()) {
+        if (userProfileList.isPaid()) {
             findViewById(R.id.ly_premium).setVisibility(View.VISIBLE);
             findViewById(R.id.ly_premium).setOnClickListener(this);
         } else {
@@ -185,6 +188,17 @@ private int receivedPos = -1;
         }
 
         setApprovelFlag();
+
+        TextView txtTitle = findViewById(R.id.tv_title);
+        TextView txtValue = findViewById(R.id.tv_value);
+        txtTitle.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name()
+                + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
+        String s = new StringBuffer().append(String.valueOf(userProfileList.getMatrimonial_profile().
+                getPersonal_details().getAge() + " years, "))
+                .append(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree() + ", ")
+                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status() + ", ")
+                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getSect()).toString();
+        txtValue.setText(s);
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
@@ -283,13 +297,13 @@ private int receivedPos = -1;
         iv_education_certificates.setOnClickListener(this);
         if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())) {
             Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(docRequestOptions)
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())
                     .into(iv_aadhar);
         }
         if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
             Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(certificateRequestOptions)
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
         }
@@ -342,11 +356,11 @@ private int receivedPos = -1;
 //        }
 
         if (!TextUtils.isEmpty(meetIdReceived)) {
-            findViewById(R.id.ly_verified).setVisibility(View.VISIBLE);
-            findViewById(R.id.ly_verified).setOnClickListener(this);
+            findViewById(R.id.ly_meet_verified).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         } else {
-            findViewById(R.id.ly_verified).setVisibility(View.GONE);
-            findViewById(R.id.ly_verified).setOnClickListener(this);
+            findViewById(R.id.ly_meet_verified).setVisibility(View.GONE);
+            findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         }
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
@@ -401,11 +415,20 @@ private int receivedPos = -1;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ly_verified:
+            case R.id.ly_meet_verified:
                 if (findViewById(R.id.tv_meet_verified).getVisibility() == View.VISIBLE)
                     findViewById(R.id.tv_meet_verified).setVisibility(View.GONE);
-                else
-                    findViewById(R.id.tv_meet_verified).setVisibility(View.VISIBLE);
+                else {
+                    TextView tv = findViewById(R.id.tv_meet_verified);
+                    tv.setVisibility(View.VISIBLE);
+                    if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
+                        tv.setText("Pending in meet");
+                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+                        tv.setText("Approved in meet");
+                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                        tv.setText("Rejected in meet");
+                    }
+                }
                 break;
             case R.id.ly_premium:
                 if (findViewById(R.id.tv_premium).getVisibility() == View.VISIBLE)

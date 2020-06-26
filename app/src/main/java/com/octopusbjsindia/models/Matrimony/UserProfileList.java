@@ -23,18 +23,24 @@ public class UserProfileList implements Serializable {
     @SerializedName("isApproved")
     @Expose
     private String isApproved;
-
-
-
-
     @SerializedName("userMeetStatus")
     @Expose
     private String userMeetStatus;
-
-
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
+    @SerializedName("isPaid")
+    @Expose
+    private boolean isPaid;
     @SerializedName("markAttendance")
     @Expose
     private boolean markAttendance;
