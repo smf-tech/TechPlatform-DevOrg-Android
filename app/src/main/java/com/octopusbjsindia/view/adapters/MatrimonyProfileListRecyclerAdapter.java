@@ -64,13 +64,15 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
                 holder.lyMeetApproved.setVisibility(View.VISIBLE);
                 if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("pending")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_pending);
                     holder.tvMeetApproved.setText("Pending in meet");
                 } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("approved")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_approved);
                     holder.tvMeetApproved.setText("Approved in meet");
                 } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_rejected);
                     holder.tvMeetApproved.setText("Rejected in meet");
                 }
-
 
             } else {
                 //holder.tv_approval_status.setVisibility(View.GONE);
@@ -116,7 +118,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium, tvMeetApproved;
-            ImageView user_profile_pic;
+        ImageView user_profile_pic, ivMeetApproved;
         LinearLayout lyPremium, lyMeetApproved;
 //            Button btn_reject,btn_approve;
 
@@ -125,6 +127,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 lyPremium = itemView.findViewById(R.id.ly_premium);
                 tvPremium = itemView.findViewById(R.id.tv_premium);
                 lyMeetApproved = itemView.findViewById(R.id.ly_meet_approved);
+                ivMeetApproved = itemView.findViewById(R.id.iv_meet_approved);
                 tvMeetApproved = itemView.findViewById(R.id.tv_meet_approved);
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);

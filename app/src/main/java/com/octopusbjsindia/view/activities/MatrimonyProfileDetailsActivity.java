@@ -184,7 +184,7 @@ private int receivedPos = -1;
             findViewById(R.id.ly_premium).setOnClickListener(this);
         } else {
             findViewById(R.id.ly_premium).setVisibility(View.GONE);
-            findViewById(R.id.ly_premium).setOnClickListener(this);
+            //findViewById(R.id.ly_premium).setOnClickListener(this);
         }
 
         setApprovelFlag();
@@ -323,7 +323,7 @@ private int receivedPos = -1;
         } else {
 //            view.findViewById(R.id.ly_profile_varified).setVisibility(View.GONE);
             findViewById(R.id.ly_profile_varified).setVisibility(View.GONE);
-            findViewById(R.id.ly_profile_varified).setOnClickListener(this);
+            //findViewById(R.id.ly_profile_varified).setOnClickListener(this);
         }
 
         if (userProfileList.getMatrimonial_profile().isEducationApproved()) {
@@ -357,10 +357,22 @@ private int receivedPos = -1;
 
         if (!TextUtils.isEmpty(meetIdReceived)) {
             findViewById(R.id.ly_meet_verified).setVisibility(View.VISIBLE);
+            ImageView ivMeetStatus = findViewById(R.id.iv_meet_approved);
+            TextView tv = findViewById(R.id.tv_meet_verified);
+            if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_pending);
+                tv.setText("Pending in meet");
+            } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_approved);
+                tv.setText("Approved in meet");
+            } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_rejected);
+                tv.setText("Rejected in meet");
+            }
             findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         } else {
             findViewById(R.id.ly_meet_verified).setVisibility(View.GONE);
-            findViewById(R.id.ly_meet_verified).setOnClickListener(this);
+            //findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         }
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
@@ -421,13 +433,13 @@ private int receivedPos = -1;
                 else {
                     TextView tv = findViewById(R.id.tv_meet_verified);
                     tv.setVisibility(View.VISIBLE);
-                    if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
-                        tv.setText("Pending in meet");
-                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
-                        tv.setText("Approved in meet");
-                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
-                        tv.setText("Rejected in meet");
-                    }
+//                    if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
+//                        tv.setText("Pending in meet");
+//                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+//                        tv.setText("Approved in meet");
+//                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
+//                        tv.setText("Rejected in meet");
+//                    }
                 }
                 break;
             case R.id.ly_premium:
