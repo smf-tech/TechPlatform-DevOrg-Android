@@ -742,7 +742,9 @@ private int receivedPos = -1;
         if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
             userProfileList.setIsApproved(Constants.APPROVE);
             userProfileList.setUserMeetStatus(Constants.APPROVE);
+            userProfileList.getMatrimonial_profile().setVerified(true);
             setApprovelFlag();
+            setFlags();
         }
     }
 
