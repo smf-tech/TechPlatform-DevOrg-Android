@@ -136,8 +136,8 @@ public class Urls {
     }
 
     public class SSModule {
-        public static final String GET_SS_STRUCTURE_ANALYTICS = "api/structureAnalyst";
-        public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalytics";
+        public static final String GET_SS_STRUCTURE_ANALYTICS = "api/getStructureAnalystV2";
+        public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalyticsV2";
         public static final String GET_SS_MASTER_DATA = "api/masterDataList";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
