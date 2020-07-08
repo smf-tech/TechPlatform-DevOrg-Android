@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.view.activities.MatrimonyProfileDetailsActivity;
-import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,6 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         if (userProfileList.get(position).getMatrimonial_profile() != null) {
             if (userProfileList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
                     && !userProfileList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().equals("")) {
-
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(userProfileList.get(position).getMatrimonial_profile()
@@ -68,6 +66,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
             } else {
                 holder.ivUserProfilePic.setImageResource(R.drawable.ic_no_image);
             }
+
             holder.tvName.setText(userProfileList.get(position).getMatrimonial_profile().getPersonal_details().getFirst_name()
                     + ", " + userProfileList.get(position).getMatrimonial_profile().getPersonal_details().getAge() + " yrs");
             holder.tvLocation.setText(userProfileList.get(position).getMatrimonial_profile().getEducational_details().getQualification_degree()

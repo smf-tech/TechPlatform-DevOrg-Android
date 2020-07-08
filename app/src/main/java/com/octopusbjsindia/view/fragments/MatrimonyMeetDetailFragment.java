@@ -391,9 +391,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
     public void showBachesResponse(String response) {
         Util.logger("Batches response-", response);
-
         Gson gson = new Gson();
-
         MeetBatchesResponseModel meetBatchesResponseModel = gson.fromJson(response, MeetBatchesResponseModel.class);
         if (meetBatchesResponseModel.getStatus().equalsIgnoreCase("200")) {
             Intent intent = new Intent(getActivity(), ShowMeetBatchesActivity.class);
