@@ -443,11 +443,12 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     }
 
     private void updateUserListWithFilter(String selectedValues) {
+        //TODO remember to discuss  about getIsApproved() now replacing with
         userProfileLists.clear();
         if ("Approved".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }
@@ -456,7 +457,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         } else if ("Rejected".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }
@@ -465,7 +466,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         } else if ("Pending".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }

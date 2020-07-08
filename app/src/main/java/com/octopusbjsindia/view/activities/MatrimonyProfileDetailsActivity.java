@@ -337,8 +337,12 @@ private int receivedPos = -1;
             tv_approval_status.setVisibility(View.GONE);
         }
 
-        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
-            if(!TextUtils.isEmpty(meetIdReceived)){
+
+        //if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+        // no is approved flag is used hereon from both ends
+        if(!TextUtils.isEmpty(meetIdReceived))
+            {
+                if (userProfileList.getUserMeetStatus().toLowerCase().startsWith("a")){
             if (userProfileList.isMarkAttendance()) {
                 btn_interview_done.setVisibility(View.VISIBLE);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
@@ -684,6 +688,7 @@ private int receivedPos = -1;
         if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
             userProfileList.setIsApproved(Constants.APPROVE);
             userProfileList.setUserMeetStatus(Constants.APPROVE);
+
             setApprovelFlag();
         }
     }
