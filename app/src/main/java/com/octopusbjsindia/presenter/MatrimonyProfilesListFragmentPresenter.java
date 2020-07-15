@@ -70,7 +70,7 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
             }
             } catch (JSONException e) {
                 e.printStackTrace();
-                mContext.get().setTxt_no_data();
+                //mContext.get().setTxt_no_data();
             }
         }
     }
@@ -168,8 +168,8 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
                 mContext.get().getActivity().finish();
             } else if (responseData.getStatus() == 200){
                 mContext.get().showUserProfileList(responseData.getData());
-            } else {
-                mContext.get().onFailureListener(requestID, responseData.getMessage());
+            } else if (responseData.getStatus() == 300) {
+                mContext.get().dispayNoData(responseData.getMessage());
             }
         }
     }

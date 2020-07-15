@@ -192,7 +192,8 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    public void onSuccessListener(String requestID, String response) {
+    public void onSuccessListener(String requestID, String response)
+    {
         showEditProfileScreen();
     }
 

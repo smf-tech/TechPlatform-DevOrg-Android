@@ -606,12 +606,22 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         ArrayList<String> displayFormList = new ArrayList<>();
         String CurrentLang = Locale.getDefault().getLanguage();
         for (AddForm obj : formsList) {
-            if (CurrentLang.equalsIgnoreCase("mr"))
-                displayFormList.add(obj.getName().getMr());
-            else if (CurrentLang.equalsIgnoreCase("hi"))
+            if (CurrentLang.equalsIgnoreCase("mr")) {
+                if (obj.getName().getMr() != null) {
+                    displayFormList.add(obj.getName().getMr());
+                } else {
+                    displayFormList.add(obj.getName().getDefault());
+                }
+            } else if (CurrentLang.equalsIgnoreCase("hi")) {
                 displayFormList.add(obj.getName().getHi());
-            else
+                if (obj.getName().getHi() != null) {
+                    displayFormList.add(obj.getName().getHi());
+                } else {
+                    displayFormList.add(obj.getName().getDefault());
+                }
+            } else {
                 displayFormList.add(obj.getName().getDefault());
+            }
         }
         spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
         if (eventTask != null) {

@@ -29,6 +29,19 @@ public class Matrimonial_profile implements Serializable {
     @Expose
     private boolean isBan;
 
+    @SerializedName("isVerified")
+    @Expose
+    private boolean isVerified;
+
+    @SerializedName("idApproved")
+    @Expose
+    private boolean idApproved;
+
+    @SerializedName("educationApproved")
+    @Expose
+    private boolean educationApproved;
+
+
     public Personal_details getPersonal_details() {
         return personal_details;
     }
@@ -83,5 +96,30 @@ public class Matrimonial_profile implements Serializable {
 
     public void setBan(boolean ban) {
         isBan = ban;
+    }
+
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    public boolean isIdApproved() {
+        return idApproved;
+    }
+
+    public void setIdApproved(boolean idApproved) {
+        this.idApproved = idApproved;
+    }
+
+    public boolean isEducationApproved() {
+        return educationApproved;
+    }
+
+    public void setEducationApproved(boolean educationApproved) {
+        this.educationApproved = educationApproved;
     }
 }

@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.tm.TMUserFormsApprovalRequest;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
+import com.octopusbjsindia.utility.Util;
 
 import java.util.List;
 
@@ -42,6 +45,7 @@ private PreferenceHelper preferenceHelper;
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
             holder.txtTitle.setText(dataList.get(position).getForm_title());
             holder.txtValue.setText(String.valueOf(dataList.get(position).getSurvey_name().getDefault()));
+            holder.tv_date.setText(Util.getDateFromTimestamp(dataList.get(position).getCreatedDateTime(), Constants.DAY_MONTH_YEAR));
             String ispending = preferenceHelper.getString(PreferenceHelper.IS_PENDING);
 
 
@@ -53,9 +57,13 @@ private PreferenceHelper preferenceHelper;
                 holder.btn_reject.setVisibility(View.GONE);
                 holder.btn_approve.setVisibility(View.GONE);
                 holder.tv_leave_reason.setVisibility(View.VISIBLE);
-                if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
 
-                    holder.tv_leave_reason.setText("Rejected Reason:- "+dataList.get(position).getStatus().getRejection_reason());
+                if (dataList.get(position).getStatus()!=null&&dataList.get(position).getStatus().getRejection_reason()!=null) {
+                    if (!TextUtils.isEmpty(dataList.get(position).getStatus().getRejection_reason())) {
+                        holder.tv_leave_reason.setText("Rejected Reason:- " + dataList.get(position).getStatus().getRejection_reason());
+                    }else {
+                        holder.tv_leave_reason.setVisibility(View.GONE);
+                    }
                 }
             }
         }
@@ -67,13 +75,14 @@ private PreferenceHelper preferenceHelper;
 
         class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtTitle, txtValue,tv_leave_reason;
+            TextView txtTitle, txtValue,tv_leave_reason,tv_date;
             Button btn_approve,btn_reject;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
+                tv_date = itemView.findViewById(R.id.tv_date);
                 tv_leave_reason = itemView.findViewById(R.id.tv_leave_reason);
                 btn_approve = itemView.findViewById(R.id.btn_approve);
                 btn_reject  = itemView.findViewById(R.id.btn_reject);

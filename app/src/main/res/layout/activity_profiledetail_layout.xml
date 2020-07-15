@@ -3,11 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/profile_toolbar"
+        layout="@layout/app_toolbar" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+
         android:layout_marginBottom="@dimen/dimen_16dp">
 
         <FrameLayout
@@ -66,41 +72,33 @@
                                 <me.relex.circleindicator.CircleIndicator
                                     android:id="@+id/circle_indicator"
                                     android:layout_width="match_parent"
-                                    android:layout_height="28dp"
+                                    android:layout_height="20dp"
                                     android:layout_gravity="center" />
 
-                                <LinearLayout
-                                    android:id="@+id/ly_approve"
+                                <TextView
+                                    android:id="@+id/tv_title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center">
+                                    android:gravity="center"
+                                    android:fontFamily="@font/opensans_regular"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14"
+                                    android:textStyle="bold" />
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/btn_approve"
-                                        style="@style/AppStyleBorderButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_margin="@dimen/dimen_05dp"
-                                        android:gravity="center"
-                                        android:text="Approve"
-                                        android:textColor="@color/white"
-                                        app:strokeColor="@color/white" />
+                                <TextView
+                                    android:id="@+id/tv_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/opensans_regular"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginBottom="@dimen/dimen_05dp"
+                                    android:text="Captain"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_12"
+                                    android:textStyle="normal" />
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/btn_reject"
-                                        style="@style/AppStyleBorderButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_horizontal"
-                                        android:layout_margin="@dimen/dimen_05dp"
-                                        android:gravity="center"
-                                        android:text="Reject"
-                                        android:textColor="@color/white"
-                                        app:strokeColor="@color/white" />
-
-
-                                </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
 
@@ -113,45 +111,240 @@
                             android:src="@drawable/ic_share"
                             android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/tv_approval_status"
-                            android:layout_width="@dimen/dimen_75dp"
-                            android:layout_height="@dimen/dimen_25dp"
-                            android:layout_gravity="start"
-                            android:layout_marginTop="@dimen/dimen_25dp"
-                            android:background="@drawable/ic_publish_ribbon"
-                            android:fontFamily="@font/opensans_bold"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dimen_05dp"
-                            android:paddingEnd="@dimen/dimen_10dp"
-                            android:text="Approved"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_10" />
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/tv_approval_status"-->
+                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
+                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
+                        <!--                            android:layout_gravity="start"-->
+                        <!--                            android:layout_marginTop="@dimen/dimen_20dp"-->
+                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
+                        <!--                            android:fontFamily="@font/opensans_bold"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
+                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
+                        <!--                            android:text="Approved"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/text_size_10" />-->
 
-                        <TextView
-                            android:id="@+id/tv_premium"
-                            android:layout_width="@dimen/dimen_75dp"
-                            android:layout_height="@dimen/dimen_25dp"
-                            android:layout_alignParentEnd="true"
+                        <!--                        <TextView-->
+                        <!--                            android:id="@+id/tv_premium"-->
+                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
+                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
+                        <!--                            android:layout_gravity="start"-->
+                        <!--                            android:layout_marginTop="@dimen/dimen_50dp"-->
+                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
+                        <!--                            android:fontFamily="@font/opensans_bold"-->
+                        <!--                            android:gravity="center_vertical"-->
+                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
+                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
+                        <!--                            android:text="Premium"-->
+                        <!--                            android:textColor="@color/white"-->
+                        <!--                            android:textSize="@dimen/text_size_10" />-->
+
+
+                        <LinearLayout
+                            android:id="@+id/ly_premium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:background="@drawable/bg_circular_tsp_black_40"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_02dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:src="@drawable/ic_premium" />
+
+                            <TextView
+                                android:id="@+id/tv_premium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:text="Premium"
+                                android:textSize="@dimen/text_size_11"
+                                android:textColor="@color/white"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="end"
-                            android:layout_marginTop="@dimen/dimen_25dp"
-                            android:background="@drawable/ic_publish_ribbon_right"
-                            android:fontFamily="@font/opensans_bold"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dimen_16dp"
-                            android:text="Premium"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_10"
-                            android:visibility="gone" />
+                            android:layout_alignParentEnd="true"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ly_meet_verified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_meet_verified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:id="@+id/iv_meet_approved"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_varified" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_profile_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_profile_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="Profile Verified"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_profile" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_education_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_education_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="Education Verified"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_eduucation" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_id_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_id_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="ID Verified"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_id" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/ly_approve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_profile_images"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_approve"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Approve"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_reject"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Reject"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_verify_profile"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:visibility="gone"
+                        android:text="Verify profile"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+                </LinearLayout>
 
                 <!--Personal details-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_personal_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cv_profile_images"
+                    android:layout_below="@+id/ly_approve"
                     android:layout_margin="@dimen/dimen_05dp"
                     app:cardCornerRadius="@dimen/dimen_08dp">
 
@@ -216,11 +409,8 @@
                                     <TextView
                                         android:id="@+id/tv_name"
                                         style="@style/StyleTextViewValue"
-                                        android:layout_below="@+id/tv_name_lable"
-                                        android:text="Sachin Kakade Kakade" />
-
+                                        android:layout_below="@+id/tv_name_lable" />
                                 </RelativeLayout>
-
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -228,7 +418,19 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:layout_weight="1">
 
+                                    <TextView
+                                        android:id="@+id/tv_gender_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Gender" />
+
+                                    <TextView
+                                        android:id="@+id/tv_gender"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_gender_lable"
+                                        android:text="" />
+
                                 </RelativeLayout>
+
                             </LinearLayout>
 
                             <!--DOB / birt time-->
@@ -759,15 +961,15 @@
                                     android:layout_marginEnd="@dimen/dimen_05dp"
                                     android:layout_weight="1">
 
-                                    <!-- <TextView
-                                         android:id="@+id/tv_marital_status_lable"
-                                         style="@style/StyleTextViewLable"
-                                         android:text="Marital Status"/>
                                      <TextView
-                                         android:id="@+id/tv_marital_status"
-                                         android:layout_below="@+id/tv_marital_status_lable"
+                                         android:id="@+id/tv_degree_lable"
+                                         style="@style/StyleTextViewLable"
+                                         android:text="Degree"/>
+                                     <TextView
+                                         android:id="@+id/tv_degree"
+                                         android:layout_below="@+id/tv_degree_lable"
                                          style="@style/StyleTextViewValue"
-                                         android:text="Never Married"/>-->
+                                         android:text=""/>
                                 </RelativeLayout>
                             </LinearLayout>
 
@@ -1592,7 +1794,21 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/dimen_200dp"
                                         android:layout_below="@+id/tv_aadhar_lable"
-                                        android:src="@mipmap/app_logo" />
+                                        android:scaleType="fitXY"
+                                        android:adjustViewBounds="true"
+                                        android:src="@drawable/ic_doc_placeholder" />
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btn_verify_ids"
+                                        style="@style/AppStyleBorderButtonheight60"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/dimen_10dp"
+                                        android:layout_weight="1"
+                                        android:text="Verify ID"
+                                        android:layout_below="@+id/iv_aadhar"
+                                        android:textSize="@dimen/text_size_12"
+                                        android:textColor="@color/dark_grey" />
+
                                 </RelativeLayout>
 
                                 <RelativeLayout
@@ -1611,8 +1827,21 @@
                                         android:id="@+id/iv_education_certificates"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/dimen_200dp"
+                                        android:scaleType="fitXY"
                                         android:layout_below="@+id/tv_education_certificates_lable"
-                                        android:src="@mipmap/app_logo" />
+                                        android:src="@drawable/ic_certifcate_placeholder" />
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btn_verify_edu"
+                                        style="@style/AppStyleBorderButtonheight60"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/dimen_10dp"
+                                        android:layout_below="@+id/iv_education_certificates"
+                                        android:layout_weight="1"
+                                        android:text="Verify Education"
+                                        android:textSize="@dimen/text_size_12"
+                                        android:textColor="@color/dark_grey" />
+
 
                                 </RelativeLayout>
                             </LinearLayout>
@@ -1624,42 +1853,40 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_below="@+id/cv_other_details"
                     android:background="@color/white"
-
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_interview_done"
-                        style="@style/AppStyleButton"
+                        style="@style/AppStyleButtonheight60"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:text="Interview Completed"
+                        android:textSize="@dimen/text_size_12"
                         android:textColor="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_mark_attendance"
-                        style="@style/AppStyleButton"
+                        style="@style/AppStyleButtonheight60"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_weight="1"
                         android:text="Mark Attendance"
+                        android:textSize="@dimen/text_size_12"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </RelativeLayout>
         </FrameLayout>
     </ScrollView>
 
-    <include
-        android:id="@+id/profile_toolbar"
-        layout="@layout/app_toolbar" />
 
+</LinearLayout>
     <RelativeLayout
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"

@@ -17,9 +17,8 @@ import java.util.ArrayList;
 
 public class RadioButtonAdapter extends RecyclerView.Adapter<RadioButtonAdapter.ViewHolder> {
 
-    RadioButtonFragment mContext;
-    ArrayList<RadioButtonData> list;
-
+    private RadioButtonFragment mContext;
+    private ArrayList<RadioButtonData> list;
 
     public RadioButtonAdapter(RadioButtonFragment radioButtonFragment, ArrayList<RadioButtonData> list) {
         this.mContext = radioButtonFragment;

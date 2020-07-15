@@ -6,18 +6,65 @@
     android:layout_height="match_parent"
     android:background="@color/card_gray_bg"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".view.activities.UserRegistrationMatrimonyActivity">
 
+    tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/ly_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/iv_no_data"
+                android:layout_width="@dimen/standard_240"
+                android:layout_height="@dimen/standard_240"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_no_data"/>
+            <TextView
+                android:layout_below="@+id/iv_no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="No Data"/>
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/rv_trainerbactchlistview"
             android:layout_weight="1"
+            android:padding="10dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dimen_05dp" />
+        <FrameLayout
+            android:id="@+id/feedback_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <RelativeLayout
+            android:id="@+id/ly_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/pb_profile_act"
+                style="@android:style/Widget.DeviceDefault.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:indeterminateOnly="true" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

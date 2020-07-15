@@ -98,4 +98,9 @@ public class TMUserProfileApprovalFragmentPresenter implements TMUserProfileAppr
 
     //    fragmentWeakReference.get().hideProgressBar();
     }
+
+    @Override
+    public void onSuccessListener(String response, String type) {
+
+    }
 }

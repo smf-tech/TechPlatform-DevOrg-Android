@@ -3,6 +3,8 @@ package com.octopusbjsindia.models.smartgirl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class TrainerBachList {
 
     @SerializedName("_id")
@@ -11,6 +13,9 @@ public class TrainerBachList {
     @SerializedName("batch_id")
     @Expose
     private String batch_id;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("batch_category_id")
     @Expose
     private String batch_category_id;
@@ -44,15 +49,69 @@ public class TrainerBachList {
     @SerializedName("schedule")
     @Expose
     private BatchSchedule batchschedule;
+
     @SerializedName("created_by")
     @Expose
-    private String created_by;
+    private List<Created_by> created_by = null;
+
+
     @SerializedName("updated_at")
     @Expose
     private String updated_at;
     @SerializedName("created_at")
     @Expose
     private String created_at;
+
+    @SerializedName("trainerList")
+    @Expose
+    private List<TrainerList> trainerList = null;
+
+
+    @SerializedName("currentUserBatchData")
+    @Expose
+    private List<CurrentUserBatchData> currentUserBatchData = null;
+
+    @SerializedName("state")
+    @Expose
+    private State state;
+    @SerializedName("district")
+    @Expose
+    private District district;
+    @SerializedName("category")
+    @Expose
+    private Category category;
+
+    public List<TrainerList> getTrainerList() {
+        return trainerList;
+    }
+
+    public void setTrainerList(List<TrainerList> trainerList) {
+        this.trainerList = trainerList;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public String get_id() {
         return _id;
@@ -151,11 +210,11 @@ public class TrainerBachList {
     }
 
 
-    public String getCreated_by() {
+    public List<Created_by> getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(String created_by) {
+    public void setCreated_by(List<Created_by> created_by) {
         this.created_by = created_by;
     }
 
@@ -181,5 +240,21 @@ public class TrainerBachList {
 
     public void setBatchschedule(BatchSchedule batchschedule) {
         this.batchschedule = batchschedule;
+    }
+
+    public List<CurrentUserBatchData> getCurrentUserBatchData() {
+        return currentUserBatchData;
+    }
+
+    public void setCurrentUserBatchData(List<CurrentUserBatchData> currentUserBatchData) {
+        this.currentUserBatchData = currentUserBatchData;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

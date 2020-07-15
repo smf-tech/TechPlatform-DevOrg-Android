@@ -48,6 +48,8 @@ public class Urls {
         public static final String GET_TM_USER_DETAILS_REQUESTS ="api/getuserbyfilter";
         public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
 
+        public static final String GET_USER_FORM_RECORD ="api/forms/getUserFormRecords";
+
 
         public static final String PUT_UPDATE_FIREBASEID_TO_SERVER ="api/updateFirebaseId";
     }
@@ -114,6 +116,7 @@ public class Urls {
         public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
         public static final String ALL_FILTER_USERS ="api/getAllFilterUsers";
         public static final String GET_FILTER_MASTER_DATA = "api/matrimonyUserFilterMasterData";
+        public static final String USER_DOC_VERIFY_API = "api/documentVerificaton";
 
         //for batches
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
@@ -133,8 +136,8 @@ public class Urls {
     }
 
     public class SSModule {
-        public static final String GET_SS_STRUCTURE_ANALYTICS = "api/structureAnalyst";
-        public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalytics";
+        public static final String GET_SS_STRUCTURE_ANALYTICS = "api/getStructureAnalystV2";
+        public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalyticsV2";
         public static final String GET_SS_MASTER_DATA = "api/masterDataList";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
@@ -189,11 +192,50 @@ public class Urls {
     }
 
     public class SmartGirl{
+        public static final String GET_MASTER_TRAINER_DASHBOARD = "api/masterTrainerDashboard";
+
         public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
         public static final String CREATE_BATCH_API = "api/createBatch";
         public static final String EDIT_BATCH_API = "api/editBatch";
         public static final String GET_MASTER_TRAINERS_SG = "api/getAdditionalMasterTrainers";
         public static final String GET_BATCH_LIST_API = "api/getBatchList";
+        public static final String ADD_TRAINER_TO_BATCH = "api/addTrainerToBatch";
+        public static final String REGISTER_AS_TRAINER_TO_BATCH = "api/registerToBatch";
+        public static final String CANCEL_BATCH_API = "api/cancelBatch";
+        public static final String COMPLETE_BATCH_API = "api/completeBatch";
+
+        public static final String CANCEL_WORKSHOP_API = "api/cancelWorkshop";
+        public static final String COMPLETE_WORKSHOP_API = "api/completeWorkshop";
+        public static final String TRAINER_PRE_TEST = "api/trainerPreTest";
+        public static final String TRAINER_BATCH_FEEDBACK = "api/trainerBatchFeedback";
+
+        public static final String TRAINER_MOCKTEST_TEST = "api/submitTrainerMockTest";
+
+        public static final String GET_ALL_TRAINER_LIST_API = "api/getTrainers";
+        public static final String GET_ALL_MASTER_LIST_API = "api/getMasterTrainers";
+        public static final String GET_ALL_BENEFICIARY_LIST_API = "api/getBeneficiaries";
+
+        public static final String GET_COMMUNITY_USER_INFO = "api/communityUserInfo";
+
+
+        //workshops
+        public static final String CREATE_WORKSHOP_API = "api/createWorkshop";
+        public static final String EDIT_WORKSHOP_API = "api/editWorkshop";
+        public static final String CREATE_WORKSHOP_LIST_API = "api/workshopList";
+
+        public static final String REGISTER_TO_WORKSHOP = "api/registerToWorkshop";
+        public static final String ADD_BENEFICIARY_TO_WORKSHOP = "api/addBeneficiaryToWorkshop";
+
+        public static final String GET_BENEFICIARY_API = "api/getBeneficiaries";
+        public static final String BENEFICIARY_WORKSHOP_FEEDBACK_API = "api/beneficiaryWorkshopFeedback";
+
+
+        //user name from mobile
+        public static final String GET_USER_NAME_FROM_MOBILE = "api/mvUserInfo";
+
+        //get
+        public static final String GET_MASTER_TRAINERS_API = "api/getMasterTrainers";
+        public static final String GET_USER_PROJECT_PROFILE_API = "api/getUserProjectProfile";
 
     }
 

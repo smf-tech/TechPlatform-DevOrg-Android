@@ -55,7 +55,7 @@
     <string name="gender">लिंग *</string>
     <string name="male">पुरुष</string>
     <string name="female">महिला</string>
-    <string name="other">अन्य</string>
+    <string name="other">अन्य(कृपया निर्दिष्ट करें)</string>
     <string name="mandatory_organization">Type organization name *</string>
     <string name="organization">संगठन</string>
     <string name="mandatory_project">Type project name *</string>
@@ -72,8 +72,8 @@
     <string name="cluster">समूह</string>
     <string name="mandatory_village">गाँव *</string>
     <string name="village">गाँव</string>
-    <string name="mandatory_school">संरचना का नाम  *</string>
-    <string name="school">संरचना का नाम</string>
+    <string name="mandatory_school">विद्यालय का नाम  *</string>
+    <string name="school">विद्यालय का नाम</string>
     <string name="profile_pic">प्रोफ़ाइल चित्र जोड़ें</string>
     <string name="update_profile">अपडेट प्रोफाइल</string>
     <string name="update_profile_pic">प्रोफ़ाइल चित्र अपडेट करें</string>
@@ -82,7 +82,7 @@
     <!--<string name="approve_profile2">आपको मंजूर होगा।</string>-->
 
     <string name="title_choose_picture">चित्र चुनें</string>
-    <string name="label_gallery">गेलरी</string>
+    <string name="label_gallery">गॅलरी</string>
     <string name="label_camera">कैमरा</string>
 
     <!--Profile error message-->
@@ -558,7 +558,7 @@
     <string name="event_content_screen_visit">Content Module Screen visited</string>
     <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
     <string name="type_of_beneficiary">Type of beneficiary</string>
-    <string name="none">None</string>
+    <string name="none">कुछ भी नहीं</string>
     <string name="select_max">Can select max</string>
     <string name="answer">Answer</string>
     <string name="select_locations">Please select locations</string>

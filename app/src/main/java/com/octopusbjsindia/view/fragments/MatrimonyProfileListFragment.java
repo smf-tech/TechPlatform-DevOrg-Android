@@ -46,10 +46,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         APIDataListener {
 
     private View view;
-    public String meetIdReceived;
+    private String meetIdReceived;
     ArrayList<String> ListDrink = new ArrayList<>();
     private SearchView editSearch;
-    private String currentSelectedFilter = "",toOpen = "",nextPageUrl="";
+    private String currentSelectedFilter = "", toOpen = "", nextPageUrl = "";
     private SingleSelectBottomSheet bottomSheetDialogFragment;
     private MatrimonyProfilesListFragmentPresenter presenter;
     private MatrimonyProfileListRecyclerAdapter matrimonyProfileListRecyclerAdapter;
@@ -57,11 +57,12 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private ArrayList<UserProfileList> userProfileLists = new ArrayList<>();
     private ArrayList<UserProfileList> userProfileListsFiltered = new ArrayList<>();
     private ImageView toolbar_back_action, toolbarFilter, toolbar_action, ivNoData;
-    private TextView toolbar_title;
+    private TextView toolbarTitle, tvNoData;
     private boolean isSearchVisible = false;
     private Button btnClearFilters;
     private RelativeLayout progressBar;
-    //paginetion
+    private String titleStr = "Candidate List";
+    //pagination
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
 
@@ -84,21 +85,26 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
         initViews();
         toOpen = getArguments().getString("toOpen");
+        // we have checked toOpen in adapter. so be careful while chaging its values.
         if (toOpen.equals("MeetUserList")) {
-            meetIdReceived = getArguments().getString("meetId");
+            titleStr = "Meet Candidates";
+            meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
             //presenter.getAllFiltersRequests(meetIdReceived);
         } else if (toOpen.equals("NewUserList")) {
+            titleStr = "Recently Joined";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
         } else if (toOpen.equals("UnverifiedUserList")) {
+            titleStr = "Verification Pending";
             //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
         } else if (toOpen.equals("AllUserList")) {
+            titleStr = "All Candidates";
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
         }
@@ -113,17 +119,18 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         toolbar_back_action.setVisibility(View.VISIBLE);
         editSearch = view.findViewById(R.id.search_view1);
         toolbarFilter = view.findViewById(R.id.toolbar_filter);
-        toolbar_action = view.findViewById(R.id.toolbar_action1);
-        toolbar_action.setVisibility(View.VISIBLE);
-        toolbar_title = view.findViewById(R.id.toolbar_title1);
-        toolbar_title.setText("Candidate List");
+//        toolbar_action = view.findViewById(R.id.toolbar_action1);
+//        toolbar_action.setVisibility(View.VISIBLE);
+        toolbarTitle = view.findViewById(R.id.toolbar_title1);
+        toolbarTitle.setText("Candidate List");
         toolbar_back_action.setOnClickListener(this);
         toolbarFilter.setOnClickListener(this);
-        toolbar_action.setOnClickListener(this);
+        //toolbar_action.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
         btnClearFilters = view.findViewById(R.id.btn_clear_filters);
         btnClearFilters.setOnClickListener(this);
         ivNoData = view.findViewById(R.id.iv_no_data);
+        tvNoData = view.findViewById(R.id.tv_no_data);
         presenter = new MatrimonyProfilesListFragmentPresenter(this);
         userProfileLists.clear();
         userProfileListsFiltered.clear();
@@ -230,17 +237,17 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 ((MatrimonyProfileListActivity) getActivity()).openFragment("filter_fragment");
                 break;
             case R.id.toolbar_action1:
-                if (isSearchVisible) {
-                    isSearchVisible = false;
-                    editSearch.setVisibility(View.VISIBLE);
-                    editSearch.requestFocus();
-                    toolbar_action.setImageResource(R.drawable.ic_close);
-                } else {
-                    isSearchVisible = true;
-                    editSearch.setVisibility(View.GONE);
-                    toolbar_action.setImageResource(R.drawable.ic_search);
-                    filter("");
-                }
+//                if (isSearchVisible) {
+//                    isSearchVisible = false;
+//                    editSearch.setVisibility(View.VISIBLE);
+//                    editSearch.requestFocus();
+//                    toolbar_action.setImageResource(R.drawable.ic_close);
+//                } else {
+//                    isSearchVisible = true;
+//                    editSearch.setVisibility(View.GONE);
+//                    toolbar_action.setImageResource(R.drawable.ic_search);
+//                    filter("");
+//                }
                 break;
             case R.id.btn_clear_filters:
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
@@ -252,9 +259,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 MatrimonyUserFilterData matrimonyUserFilterData = new MatrimonyUserFilterData();
                 // api call
                 if (toOpen.equals("MeetUserList")) {
-                    meetIdReceived = getArguments().getString("meetId");
-                    ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-                            setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
+                    meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
+                    /*((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
+                            setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);*/
+                    matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
                     matrimonyUserFilterData.setMeet_id(meetIdReceived);
                     //((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
                     //presenter.getAllFiltersRequests(meetIdReceived);
@@ -274,6 +282,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //                            setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
+                userProfileListsFiltered.clear();
+                userProfileLists.clear();
                 presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(),
                         BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS));
                 break;
@@ -286,13 +296,30 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         if (userResponse.getData().size() > 0) {
             toolbarFilter.setVisibility(View.VISIBLE);
             ivNoData.setVisibility(View.GONE);
-            userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            tvNoData.setVisibility(View.GONE);
+            //userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+            userProfileListsFiltered.addAll((ArrayList<UserProfileList>) userResponse.getData());
+            userProfileLists.clear();
             userProfileLists.addAll(userProfileListsFiltered);
             matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+            toolbarTitle.setText(titleStr+"(" + userResponse.getTotal() + ")");
         } else {
-            toolbarFilter.setVisibility(View.INVISIBLE);
-            ivNoData.setVisibility(View.VISIBLE);
+            dispayNoData("No Data available.");
         }
+
+        if (((MatrimonyProfileListActivity) getActivity()).isFilterApplied()) {
+            btnClearFilters.setVisibility(View.VISIBLE);
+        } else {
+            btnClearFilters.setVisibility(View.GONE);
+        }
+    }
+
+    public void dispayNoData(String responseMessage) {
+        toolbarFilter.setVisibility(View.INVISIBLE);
+        ivNoData.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.VISIBLE);
+        tvNoData.setText(responseMessage);
+
         if (((MatrimonyProfileListActivity) getActivity()).isFilterApplied()) {
             btnClearFilters.setVisibility(View.VISIBLE);
         } else {
@@ -349,7 +376,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         Intent startMain1 = new Intent(getActivity(), MatrimonyProfileDetailsActivity.class);
         startMain1.putExtra("filter_type", jsonInString);
         startMain1.putExtra("meetid", meetIdReceived);
-        startActivity(startMain1);
+        startMain1.putExtra("selectedPos",pos);
+        startActivityForResult(startMain1, Constants.MatrimonyModule.FLAG_UPDATE_RESULT);
+
     }
 
     @Override
@@ -414,11 +443,12 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     }
 
     private void updateUserListWithFilter(String selectedValues) {
+        //TODO remember to discuss  about getIsApproved() now replacing with
         userProfileLists.clear();
         if ("Approved".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }
@@ -427,7 +457,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         } else if ("Rejected".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }
@@ -436,7 +466,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         } else if ("Pending".equalsIgnoreCase(selectedValues)) {
             for (int i = 0; i < userProfileListsFiltered.size(); i++) {
 
-                if (userProfileListsFiltered.get(i).getIsApproved().equalsIgnoreCase(selectedValues)) {
+                if (userProfileListsFiltered.get(i).getUserMeetStatus().equalsIgnoreCase(selectedValues)) {
                     userProfileLists.add(userProfileListsFiltered.get(i));
                 }
             }
@@ -449,13 +479,11 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         }
         if (userProfileLists.size() > 0) {
             ivNoData.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.GONE);
         } else {
             ivNoData.setVisibility(View.VISIBLE);
+            tvNoData.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void setTxt_no_data() {
-        ivNoData.setVisibility(View.VISIBLE);
     }
 
     //ApproveReject Confirm dialog
@@ -551,4 +579,19 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //        nextPageUrl = newUserResponse.getNextPageUrl();
 //        //showUserProfileList(newUserResponse.getData());
 //    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
+            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
+            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT,-1);
+            if (receivedPos!=-1){
+                userProfileLists.set(receivedPos,listItem);
+                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
+            }
+        }
+
+    }
 }

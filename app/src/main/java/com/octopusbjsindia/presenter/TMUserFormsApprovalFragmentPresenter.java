@@ -1,14 +1,18 @@
 package com.octopusbjsindia.presenter;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.listeners.TMUserProfileApprovalRequestCallListener;
+import com.octopusbjsindia.models.appoval_forms_detail.FeedbackFormHistoryData;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.TMUserFormsApprovalRequest;
 import com.octopusbjsindia.request.TMUserFormsApprovalRequestCall;
+import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
 
 import org.json.JSONObject;
@@ -31,6 +35,13 @@ public class TMUserFormsApprovalFragmentPresenter implements TMUserProfileApprov
 
         //fragmentWeakReference.get().showProgressBar();
         requestCall.getAllPendingRequests(requestObject);
+    }
+    public void getFormDetailsRequest(JSONObject requestObject) {
+        TMUserFormsApprovalRequestCall requestCall = new TMUserFormsApprovalRequestCall();
+        requestCall.setListener(this);
+
+        //fragmentWeakReference.get().showProgressBar();
+        requestCall.getFormDetailsRequestAPI(requestObject,"formdetails");
     }
 
     public void approveRejectRequest(String requestStatus, int position) {
@@ -91,5 +102,12 @@ public class TMUserFormsApprovalFragmentPresenter implements TMUserProfileApprov
         }
 
     //    fragmentWeakReference.get().hideProgressBar();
+    }
+
+    @Override
+    public void onSuccessListener(String response, String type) {
+        if (type.equalsIgnoreCase("formdetails")){
+            fragmentWeakReference.get().showFeedbackData(response);
+        }
     }
 }

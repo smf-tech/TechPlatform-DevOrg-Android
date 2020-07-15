@@ -73,6 +73,17 @@
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_description_12"
                             android:textStyle="normal" />
+                            <com.octopusbjsindia.view.customs.TextViewRegular
+                                android:id="@+id/tv_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_value"
+                                android:paddingStart="@dimen/dimen_16dp"
+                                android:text="Captain"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/text_size_description_12"
+                                android:textStyle="normal" />
+
                         </RelativeLayout>
                         <ImageView
                             android:layout_width="wrap_content"
@@ -119,16 +130,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/white"
-                android:gravity="bottom"
+
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:visibility="visible"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="match_parent"
-                    android:text="Reason"
-                    android:visibility="gone"
+                    android:text="jfsjkfdsjk sdfjskjfs sjkfhskjf"
+                    android:visibility="visible"
                     android:id="@+id/tv_leave_reason"
                     android:textSize="@dimen/text_size_12"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans_regular"
                     android:layout_height="wrap_content" />
                 <com.google.android.material.button.MaterialButton

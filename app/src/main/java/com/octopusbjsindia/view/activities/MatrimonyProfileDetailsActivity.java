@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
@@ -50,7 +53,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         PopupMenu.OnMenuItemClickListener, APIDataListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
-    private RequestOptions requestOptions;
+    private RequestOptions docRequestOptions;
+    private RequestOptions certificateRequestOptions;
     private UserProfileList userProfileList;
     private MatrimonyProfilesDetailsActivityPresenter presenter;
     private ArrayList<String> ProfileImageList = new ArrayList<>();
@@ -58,13 +62,13 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private ViewPager vpProfileImage;
     private CircleIndicator indicator;
     private String approvalType;
-
+private int receivedPos = -1;
     //personal
-    private TextView tv_name, tv_birth_date, tv_birth_time, tv_age,
+    private TextView tv_gender,tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
             tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink;
     //educational and fammily
-    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income,
+    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income,tv_degree,
             tv_family_type, tv_sakha_gotra_1, tv_sakha_gotra_2, tv_sakha_gotra_3, tv_sakha_gotra_4,
             tv_father_fullname, tv_father_occupation, tv_mother_fullname, tv_mother_occupation, tv_family_income,
             tv_brothers_fullname, tv_sisters;
@@ -73,9 +77,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
-    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove;
+    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids,btn_verify_edu,btn_verify_profile;
     private TextView tv_approval_status, tv_premium;
-    private String meetIdReceived;
+    private String meetIdReceived="";
     private RelativeLayout progressBar;
     private boolean isBlock;
 
@@ -91,8 +95,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             userProfileList = gson.fromJson(filterTypeReceived, UserProfileList.class);
         }
         meetIdReceived = getIntent().getStringExtra("meetid");
-        requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
-        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+        receivedPos = getIntent().getIntExtra("selectedPos",-1);
+        docRequestOptions = new RequestOptions().placeholder(R.drawable.ic_doc_placeholder);
+        docRequestOptions = docRequestOptions.apply(RequestOptions.noTransformation());
+        certificateRequestOptions = new RequestOptions().placeholder(R.drawable.ic_certifcate_placeholder);
+        certificateRequestOptions = certificateRequestOptions.apply(RequestOptions.noTransformation());
         progressBar = findViewById(R.id.progress_bar);
         initView();
     }
@@ -132,12 +139,13 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.iv_arrow_family).setOnClickListener(this);
         findViewById(R.id.iv_arrow_residential).setOnClickListener(this);
         findViewById(R.id.iv_arrow_other).setOnClickListener(this);
-
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
         findViewById(R.id.btn_reject).setOnClickListener(this);
         findViewById(R.id.btn_approve).setOnClickListener(this);
-
+        findViewById(R.id.btn_verify_profile).setOnClickListener(this);
+        findViewById(R.id.btn_verify_ids).setOnClickListener(this);
+        findViewById(R.id.btn_verify_edu).setOnClickListener(this);
         ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
         popupMenu.setVisibility(View.VISIBLE);
         popupMenu.setImageResource(R.drawable.ic_popup_menu);
@@ -145,8 +153,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         btn_interview_done = findViewById(R.id.btn_interview_done);
         btn_mark_attendance = findViewById(R.id.btn_mark_attendance);
+        btn_verify_ids = findViewById(R.id.btn_verify_ids);
+        btn_verify_edu = findViewById(R.id.btn_verify_edu);
         //Personal details -
         tv_name = findViewById(R.id.tv_name);
+        tv_gender = findViewById(R.id.tv_gender);
         tv_birth_date = findViewById(R.id.tv_birth_date);
         tv_birth_time = findViewById(R.id.tv_birth_time);
         tv_age = findViewById(R.id.tv_age);
@@ -161,17 +172,38 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_disability = findViewById(R.id.tv_disability);
         tv_smoke = findViewById(R.id.tv_smoke);
         tv_drink = findViewById(R.id.tv_drink);
-        tv_approval_status = findViewById(R.id.tv_approval_status);
+        //tv_approval_status = findViewById(R.id.tv_approval_status);
         tv_premium = findViewById(R.id.tv_premium);
-        if (userProfileList.isIsPremium()) {
-            tv_premium.setVisibility(View.VISIBLE);
+//        if (userProfileList.isIsPremium()) {
+//            tv_premium.setVisibility(View.VISIBLE);
+//            findViewById(R.id.ly_premium).setVisibility(View.INVISIBLE);
+//        }
+
+        if (userProfileList.isPaid()) {
+            findViewById(R.id.ly_premium).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_premium).setOnClickListener(this);
+        } else {
+            findViewById(R.id.ly_premium).setVisibility(View.GONE);
+            //findViewById(R.id.ly_premium).setOnClickListener(this);
         }
 
         setApprovelFlag();
 
+        TextView txtTitle = findViewById(R.id.tv_title);
+        TextView txtValue = findViewById(R.id.tv_value);
+        txtTitle.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name()
+                + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
+        String s = new StringBuffer().append(String.valueOf(userProfileList.getMatrimonial_profile().
+                getPersonal_details().getAge() + " years, "))
+                .append(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree() + ", ")
+                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status() + ", ")
+                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getSect()).toString();
+        txtValue.setText(s);
+
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
                 + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
+        tv_gender.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getGender());
         tv_birth_date.setText(Util.getDateFromTimestamp(userProfileList.getMatrimonial_profile().getPersonal_details().getBirthDate(), Constants.EVENT_DATE_FORMAT));
         tv_birth_time.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_time());
         tv_age.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getAge());
@@ -194,6 +226,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_company = findViewById(R.id.tv_company);
         tv_business_job = findViewById(R.id.tv_business_job);
         tv_annual_income = findViewById(R.id.tv_annual_income);
+        tv_degree = findViewById(R.id.tv_degree);
         tv_family_type = findViewById(R.id.tv_family_type);
         tv_sakha_gotra_1 = findViewById(R.id.tv_sakha_gotra_1);
         tv_sakha_gotra_2 = findViewById(R.id.tv_sakha_gotra_2);
@@ -212,6 +245,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_company.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getEmployer_company());
         tv_business_job.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getBusiness_description());
         tv_annual_income.setText(userProfileList.getMatrimonial_profile().getEducational_details().getIncome());
+        if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree())) {
+            tv_degree.setText(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree());
+        }
         tv_family_type.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_type());
         tv_sakha_gotra_1.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getSelf_gotra());
         tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
@@ -261,23 +297,86 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         iv_education_certificates.setOnClickListener(this);
         if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())) {
             Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(docRequestOptions)
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())
                     .into(iv_aadhar);
         }
         if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
             Glide.with(this)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(certificateRequestOptions)
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
         }
 
+        tv_primary_mobile.setOnClickListener(this);
+        tv_secondary_mobile.setOnClickListener(this);
+        tv_primary_email.setOnClickListener(this);
+
     }
 
+    private void setFlags() {
+
+        if (userProfileList.getMatrimonial_profile().isVerified()) {
+            findViewById(R.id.ly_profile_varified).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_profile_varified).setOnClickListener(this);
+            findViewById(R.id.btn_verify_profile).setVisibility(View.GONE);
+        } else {
+//            view.findViewById(R.id.ly_profile_varified).setVisibility(View.GONE);
+            findViewById(R.id.ly_profile_varified).setVisibility(View.GONE);
+            //findViewById(R.id.ly_profile_varified).setOnClickListener(this);
+        }
+
+        if (userProfileList.getMatrimonial_profile().isEducationApproved()) {
+            findViewById(R.id.ly_education_varified).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_education_varified).setOnClickListener(this);
+            btn_verify_edu.setEnabled(false);
+            btn_verify_edu.setText("Verified");
+            btn_verify_edu.setVisibility(View.GONE);
+
+        } else {
+            findViewById(R.id.ly_education_varified).setVisibility(View.GONE);
+        }
+        if (userProfileList.getMatrimonial_profile().isIdApproved()) {
+            findViewById(R.id.ly_id_varified).setVisibility(View.VISIBLE);
+            findViewById(R.id.ly_id_varified).setOnClickListener(this);
+            btn_verify_ids.setEnabled(false);
+            btn_verify_ids.setText("Verified");
+            btn_verify_ids.setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.ly_id_varified).setVisibility(View.GONE);
+        }
+    }
     private void setApprovelFlag() {
-        tv_approval_status.setText(userProfileList.getIsApproved());
+        setFlags();
+        //tv_approval_status.setText(userProfileList.getIsApproved());
+//        if(!TextUtils.isEmpty(meetIdReceived)) {
+//            tv_approval_status.setText(userProfileList.getUserMeetStatus());
+//        }else {
+//            tv_approval_status.setVisibility(View.GONE);
+//        }
+
+        if (!TextUtils.isEmpty(meetIdReceived)) {
+            findViewById(R.id.ly_meet_verified).setVisibility(View.VISIBLE);
+            ImageView ivMeetStatus = findViewById(R.id.iv_meet_approved);
+            TextView tv = findViewById(R.id.tv_meet_verified);
+            if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_pending);
+                tv.setText("Pending in meet");
+            } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_approved);
+                tv.setText("Approved in meet");
+            } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                ivMeetStatus.setImageResource(R.drawable.ic_meet_rejected);
+                tv.setText("Rejected in meet");
+            }
+            findViewById(R.id.ly_meet_verified).setOnClickListener(this);
+        } else {
+            findViewById(R.id.ly_meet_verified).setVisibility(View.GONE);
+            //findViewById(R.id.ly_meet_verified).setOnClickListener(this);
+        }
 
         if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+            if(!TextUtils.isEmpty(meetIdReceived)){
             if (userProfileList.isMarkAttendance()) {
                 btn_interview_done.setVisibility(View.VISIBLE);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
@@ -293,23 +392,83 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 btn_interview_done.setEnabled(false);
                 btn_mark_attendance.setVisibility(View.VISIBLE);
             }
-
+        }else {
+                btn_interview_done.setVisibility(View.GONE);
+                btn_mark_attendance.setVisibility(View.GONE);
+            }
         } else {
             btn_interview_done.setVisibility(View.GONE);
             btn_mark_attendance.setVisibility(View.GONE);
         }
-        if (userProfileList.getIsApproved().toLowerCase().startsWith("a")) {
-            findViewById(R.id.btn_reject).setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(meetIdReceived)) {
+            if (userProfileList.getUserMeetStatus().toLowerCase().startsWith("a")) {
+                findViewById(R.id.btn_reject).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_approve).setVisibility(View.GONE);
+                if (!userProfileList.getMatrimonial_profile().isVerified()) {
+                    findViewById(R.id.btn_verify_profile).setVisibility(View.VISIBLE);
+                }
+            } else if (userProfileList.getUserMeetStatus().toLowerCase().startsWith("r")) {
+                findViewById(R.id.btn_reject).setVisibility(View.GONE);
+                findViewById(R.id.btn_approve).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_verify_profile).setVisibility(View.GONE);
+            }else {
+                findViewById(R.id.btn_verify_profile).setVisibility(View.GONE);
+            }
+        }else {
             findViewById(R.id.btn_approve).setVisibility(View.GONE);
-        } else if (userProfileList.getIsApproved().toLowerCase().startsWith("r")) {
             findViewById(R.id.btn_reject).setVisibility(View.GONE);
-            findViewById(R.id.btn_approve).setVisibility(View.VISIBLE);
+            if (!userProfileList.getMatrimonial_profile().isVerified()) {
+                findViewById(R.id.btn_verify_profile).setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ly_meet_verified:
+                if (findViewById(R.id.tv_meet_verified).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_meet_verified).setVisibility(View.GONE);
+                else {
+                    TextView tv = findViewById(R.id.tv_meet_verified);
+                    tv.setVisibility(View.VISIBLE);
+//                    if (userProfileList.getUserMeetStatus().equalsIgnoreCase("pending")) {
+//                        tv.setText("Pending in meet");
+//                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+//                        tv.setText("Approved in meet");
+//                    } else if (userProfileList.getUserMeetStatus().equalsIgnoreCase("rejected")) {
+//                        tv.setText("Rejected in meet");
+//                    }
+                }
+                break;
+            case R.id.ly_premium:
+                if (findViewById(R.id.tv_premium).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_premium).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_premium).setVisibility(View.VISIBLE);
+                break;
+            case R.id.ly_profile_varified:
+                if(findViewById(R.id.tv_profile_varified).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_profile_varified).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_profile_varified).setVisibility(View.VISIBLE);
+                break;
+            case R.id.ly_education_varified:
+                if(findViewById(R.id.tv_education_varified).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_education_varified).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_education_varified).setVisibility(View.VISIBLE);
+                break;
+            case R.id.ly_id_varified:
+                if(findViewById(R.id.tv_id_varified).getVisibility() == View.VISIBLE)
+                    findViewById(R.id.tv_id_varified).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.tv_id_varified).setVisibility(View.VISIBLE);
+
+                break;
+
+
             case R.id.iv_aadhar:
                 enlargePhoto(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url());
                 break;
@@ -373,7 +532,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 presenter.markAttendanceRequest(jsonObj, 1, Constants.MARK_INTERVIEW);
                 break;
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
             case R.id.toolbar_edit_action:
                 PopupMenu popup = new PopupMenu(this, v);
@@ -396,6 +555,37 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 showReasonDialog("Alert", "Please write the reason for rejection.",
                         "Submit", "Cancle", 2);
                 break;
+            case R.id.btn_verify_profile:
+                //verifyDocument(3,true);
+                showDialog("Alert", "Are you sure, Do you want make this profile as verified?",
+                        "YES", "NO", 3);//flag 3 for verify
+                break;
+            case R.id.btn_verify_ids:
+                verifyDocument(1,true);
+                /*showDialog("Alert", "Are you sure, Do you want to approve?",
+                        "YES", "NO", 2);//flag 3 for approve*/
+                break;
+            case R.id.btn_verify_edu:
+                verifyDocument(2,true);
+                /*showReasonDialog("Alert", "Please write the reason for rejection.",
+                        "Submit", "Cancle", 2);*/
+                break;
+            case R.id.tv_primary_mobile:
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 4);//flag 4 for call primary number
+                break;
+            case R.id.tv_secondary_mobile:
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 5);//flag 5 for call primary number
+                break;
+            case R.id.tv_primary_email:
+                showDialog("Alert", "Are you sure, Do you want to E-mail user?",
+                        "YES", "NO", 6);//flag 5 for call primary number
+                break;
+
+
+
+
         }
     }
 
@@ -420,6 +610,11 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 //                            "YES", "NO",2);//flag 2 for block
                 }
 
+                break;
+            case R.id.action_call:
+
+                showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 4);//flag 4 for call primary number
                 break;
         }
         return false;
@@ -541,12 +736,40 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 .findViewById(android.R.id.content));
         if (Constants.REJECT.equalsIgnoreCase(approvalType)) {
             userProfileList.setIsApproved(Constants.REJECT);
+            userProfileList.setUserMeetStatus(Constants.REJECT);
             setApprovelFlag();
         }
         if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
             userProfileList.setIsApproved(Constants.APPROVE);
+            userProfileList.setUserMeetStatus(Constants.APPROVE);
+            userProfileList.getMatrimonial_profile().setVerified(true);
             setApprovelFlag();
+            setFlags();
         }
+    }
+
+    public void updateVerificationStatus(int type, String message){
+        if (type==3){
+            /*btn_verify_ids.setEnabled(false);
+            btn_verify_ids.setText("Verified");*/
+            userProfileList.getMatrimonial_profile().setVerified(true);
+            setFlags();
+            Util.showToast(message,this);
+        }else if (type==1){
+            btn_verify_ids.setEnabled(false);
+            btn_verify_ids.setText("Verified");
+            userProfileList.getMatrimonial_profile().setIdApproved(true);
+            setFlags();
+            Util.showToast(message,this);
+
+        }else {
+            btn_verify_edu.setEnabled(false);
+            btn_verify_edu.setText("Verified");
+            userProfileList.getMatrimonial_profile().setEducationApproved(true);
+            setFlags();
+            Util.showToast(message,this);
+        }
+
     }
 
     public void showReasonDialog(String title, String hint, String txtPositive, String txtNigetive, int flag) {
@@ -562,12 +785,6 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tvTitle = dialog.findViewById(R.id.txt_dialog_title);
         edt_reason = dialog.findViewById(R.id.edt_reason);
         btPositive = dialog.findViewById(R.id.btn_submit);
-        btNigetive = dialog.findViewById(R.id.btn_cancel);
-
-        tvTitle.setText(title);
-        edt_reason.setHint(hint);
-        btPositive.setText(txtPositive);
-        btNigetive.setText(txtNigetive);
         btPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -596,7 +813,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                         } else {
                             request.put("meet_id", meetIdReceived);
                             request.put("type", "user");
-                            request.put("approval", Constants.APPROVE);
+                            request.put("approval", Constants.REJECT);
                             request.put("user_id", userProfileList.get_id());
                             request.put("rejection_reason", strReason);
                         }
@@ -608,6 +825,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
             }
         });
+        btNigetive = dialog.findViewById(R.id.btn_cancel);
+
+        tvTitle.setText(title);
+        edt_reason.setHint(hint);
+        btPositive.setText(txtPositive);
+        btNigetive.setText(txtNigetive);
 
         btNigetive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -669,6 +892,35 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     Gson gson = new GsonBuilder().create();
                     String json = gson.toJson(request);
                     presenter.approveRejectRequest(json);
+                }else if (flag == 4) {
+                    if (!TextUtils.isEmpty(tv_primary_mobile.getText()))
+                        try {
+                            Intent dial = new Intent();
+                            dial.setAction("android.intent.action.DIAL");
+                            dial.setData(Uri.parse("tel:" + tv_primary_mobile.getText()));
+                            startActivity(dial);
+                        } catch (Exception e) {
+                            Log.e("Calling Phone", "" + e.getMessage());
+                        }
+                }else if (flag == 5) {
+                    if (!TextUtils.isEmpty(tv_secondary_mobile.getText()))
+                        try {
+                            Intent dial = new Intent();
+                            dial.setAction("android.intent.action.DIAL");
+                            dial.setData(Uri.parse("tel:" + tv_secondary_mobile.getText()));
+                            startActivity(dial);
+                        } catch (Exception e) {
+                            Log.e("Calling Phone", "" + e.getMessage());
+                        }
+                }else if (flag == 6){
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"+tv_primary_email.getText())); // only email apps should handle this
+                    intent.putExtra(Intent.EXTRA_EMAIL, tv_primary_email.getText());
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }else if (flag == 3){
+                    verifyDocument(3,true);
                 }
             });
         }
@@ -687,4 +939,38 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         dialog.show();
     }
 
+    private void verifyDocument(int type ,boolean approveReject){
+        // type 1 ID  type 2 education type 3 user verification
+        //"identification_type":"ID/Education",
+          //      "action_type":false/true
+        String paramjson = new Gson().toJson(getVerifyDocReqJson(type, approveReject));
+        presenter.approveRejectDocumentsRequest(paramjson,type);
+    }
+    public JsonObject getVerifyDocReqJson(int type,boolean approveReject) {
+        JsonObject requestObject = new JsonObject();
+        if (type == 3) {
+            requestObject.addProperty("identification_type", "verification");
+            requestObject.addProperty("user_id", userProfileList.get_id());
+            requestObject.addProperty("action_type", approveReject);
+        }else if (type == 1) {
+            requestObject.addProperty("identification_type", "ID");
+            requestObject.addProperty("user_id", userProfileList.get_id());
+            requestObject.addProperty("action_type", approveReject);
+        }else {
+            requestObject.addProperty("identification_type", "Education");
+            requestObject.addProperty("user_id", userProfileList.get_id());
+            requestObject.addProperty("action_type", approveReject);
+        }
+
+        return requestObject;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, userProfileList);
+        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, receivedPos);
+        setResult(Constants.MatrimonyModule.FLAG_UPDATE_RESULT, returnIntent);
+        finish();
+    }
 }

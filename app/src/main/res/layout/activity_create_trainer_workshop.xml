@@ -7,10 +7,13 @@
     android:layout_height="match_parent"
     android:background="@color/card_gray_bg"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar"/>
 <RelativeLayout
     android:layout_width="match_parent"
+    android:padding="10dp"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,13 +73,29 @@
                                 style="@style/RegistrationEditTextLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/et_title_batch"
+                                android:inputType="text|textCapWords|textMultiLine"
+
+                                android:hint="Enter batch title"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:id="@+id/et_workshop_category"
                                 android:inputType="text|textCapWords"
                                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                                 android:clickable="false"
                                 android:focusable="false"
                                 android:longClickable="false"
-                                android:hint="Workshop category"/>
+                                android:hint="Batch category"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -144,8 +163,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/et_select_venue"
-                                android:inputType="text|textCapWords"
-                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                                android:inputType="text|textCapWords|textMultiLine"
                                 android:hint="Enter Venue"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -271,7 +289,7 @@
                                     android:clickable="false"
                                     android:drawableEnd="@drawable/ic_cal_event"
                                     android:focusable="false"
-                                    android:hint="@string/task_start_date"
+                                    android:hint="@string/end_date"
                                     android:inputType="date"
                                     android:longClickable="false"/>
                                 <!--android:drawableEnd="@drawable/ic_cal_event"-->
@@ -328,7 +346,7 @@
                         android:layout_marginEnd="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:layout_weight="1"
-                        android:text="Save" />
+                        android:text="Submit" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

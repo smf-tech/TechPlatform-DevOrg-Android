@@ -89,6 +89,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Log.d("Rolecode","" + Util.getUserObjectFromPref().getRoleCode());
         if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
             Intent intent = new Intent(HomeActivity.this, OperatorMeterReadingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -700,10 +701,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             case R.id.unread_notification_count:
                 Intent intent = new Intent(this, NotificationsActivity.class);
                 this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
-                /*Intent intent = new Intent(this, CreateTrainerWorkshop.class);
-                this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);*/
-//                Intent intent = new Intent(this, TrainerBatchListActivity.class);
-//                this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+
 
                 break;
 

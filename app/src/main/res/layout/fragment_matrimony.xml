@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:fontFamily="@font/opensans_bold"
-                        android:text="New Users" />
+                        android:text="Recently Joined" />
 
                     <View
                         android:layout_width="match_parent"
@@ -213,7 +213,7 @@
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_new_form_icon"
+        app:icon="@drawable/ic_create_meet"
         app:iconTint="@color/white"
         android:visibility="gone" />
 
@@ -229,7 +229,22 @@
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_form_list_icon"
+        app:icon="@drawable/ic_all_candidate"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_all_blocked_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="All Candidates"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_all_candidate"
         app:iconTint="@color/white"
         android:visibility="gone" />
 

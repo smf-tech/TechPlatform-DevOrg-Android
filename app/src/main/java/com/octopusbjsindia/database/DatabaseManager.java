@@ -94,10 +94,19 @@ public class DatabaseManager {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
             database.execSQL("ALTER TABLE FormData ADD COLUMN jurisdictions_ TEXT");
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN location_required_level TEXT");
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN location_required INTEGER");
+
             database.execSQL("CREATE TABLE IF NOT EXISTS `JurisdictionLocation`" +
                     " (`id` TEXT PRIMARY KEY NOT NULL, `name` TEXT, `parent_id` TEXT)");
+
             database.execSQL("ALTER TABLE ProcessData ADD COLUMN project_id TEXT");
+
             database.execSQL("ALTER TABLE FormResult ADD COLUMN rejection_reason TEXT");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS ContentData (contentId TEXT PRIMARY KEY NOT NULL, category_id TEXT, category_name TEXT,content_title TEXT,file_type TEXT,file_size TEXT,downloadedFileName TEXT,languageDetailsString TEXT)");
         }
     };
 

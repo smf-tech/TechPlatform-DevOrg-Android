@@ -53,6 +53,7 @@ public class Constants {
 
     public static final String WEEK_FORMAT = "EEEE";
     public static final String ATTENDANCE_DATE="yyyy/MM/dd HH:mm:ss";
+    public static final String BATCH_CREATED_DATE="yyyy-MM-dd HH:mm:ss";
     public static final String DECIMAL_FORMAT = "#0.00";
 
     public static class App {
@@ -176,6 +177,9 @@ public class Constants {
         public static final Integer NEVIGET_TO= 001;
         public static final String MATRIMONY="Matrimony";
         public static final String SUJALAM_SUPHALAM="SujalamSuphalam";
+        public static final String SMARTGIRL="Smart Girl";
+
+
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
         //public static final String MY_CONTENT= "MV Content";
         //public static final String TEAM_MANAGEMENT = "Team Management";
@@ -431,11 +435,71 @@ public class Constants {
         public static final String PROJECT_RELEVENT_LOGO = "projectlogo";
         public static final String APP_CONFIG_RESPONSE = "appconfigresponse";
     }
+    public static class SmartGirlModule {
+
+        public static final String BENEFICIARY_ID = "beneficiary_id";
+        public static final String TRAINER_ID = "trainer_id";
+        public static final String BATCH_ID = "batch_id";
+        public static final String WORKSHOP_ID = "workshop_id";
+        public static final String TRAINER_lIST = "trainerlist";
+        public static final String BENEFICIARY_lIST = "beneficiarylist";
+        public static final Integer BATCH_WORKSHOP_RESULT= 111;
+
+        public static final String FORM_STATUS = "formStatus";
+        //Access code
+
+        public static final int ACCESS_CODE_CREATE_BATCH = 135;
+        public static final int ACCESS_CODE_EDIT_BATCH = 136;
+        public static final int ACCESS_CODE_CREATE_WORKSHOP = 137;
+        public static final int ACCESS_CODE_EDIT_WORKSHOP = 138;
+        public static final int ACCESS_CODE_ADD_TRAINER = 139;
+        public static  final int ACCESS_CODE_ADD_BENEFICIARY = 140;
+        public static final int ACCESS_CODE_REGISTER_BATCH = 141;
+        public static final int ACCESS_CODE_REGISTER_WORKSHOP = 142;
+
+        public static final int ACCESS_CODE_PRE_TEST = 143;
+        public static final int ACCESS_CODE_PRE_FEEDBACK = 144;
+        public static final int ACCESS_CODE_POST_FEEDBACK = 145;
+        public static final int ACCESS_CODE_PRE_FEEDBACK_WORKSHOP = 146;
+        public static final int ACCESS_CODE_POST_FEEDBACK_WORKSHOP = 147;
+
+        public static final int ACCESS_CODE_ORGANIZER_FEEDBACK = 148;
+        public static final int ACCESS_CODE_PARENTS_FEEDBACK = 149;
+        public static final int ACCESS_CODE_MOCK_TEST = 150;
+        public static final int ACCESS_CODE_VIEW_PROFILE = 151;
+
+        public static final int ACCESS_CODE_CANCEL_BATCH = 152;
+        public static final int ACCESS_CODE_CANCEL_WORKSHOP = 153;
+
+
+
+
+
+
+        public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
+        public static final String PRE_TEST_FORM = "5ea6a6b385046668f74b7f97";
+
+        public static final String ORGANISER_FEEDBACK_FORM = "5ea7cb4849c5d7695b51203f";
+        public static final String PARENTS_FEEDBACK_FORM = "5ea7cfa1d2e7326994634a32";
+
+
+        public static final String POST_FEEDBACK_FORM = "5ea6ae606d30f831af2bfc74";
+        public static final String PRE_FEEDBACK_FORM = "5ea7d58689bf971e0b5fd9a2";
+
+
+
+        public static final String PRE_FEEDBACK_WORKSHOP_FORM = "5ea7bf66ba182a798b313c48";
+        public static final String POST_FEEDBACK_WORKSHOP_FORM = "5ea7c6ad49c5d7695b51203e";
+
+
+
+    }
 
     public static class MatrimonyModule {
         public static final String NEWLY_JOINED_SECTION = "newly_joined";
         public static final String VERIFICATION_PENDING_SECTION = "verification_pending";
         public static final String ALL_USERS_SECTION = "all_users";
         public static final String MEET_USERS_SECTION = "meet_users";
+        public static final Integer FLAG_UPDATE_RESULT = 110;
     }
 }

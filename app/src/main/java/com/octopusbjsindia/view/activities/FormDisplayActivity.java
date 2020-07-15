@@ -33,6 +33,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.LocaleData;
+import com.octopusbjsindia.models.appoval_forms_detail.FeedbackFormHistoryData;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
@@ -87,10 +88,18 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private ImageView toolbar_back_action,toolbar_edit_action;
     private boolean isImageFileAvailable = false;
     public boolean isImageUploadPending = false;
+    public boolean isFromApproval = false;
     private FormResult formResult;
     public boolean isEditable = true;
     private ImageView imgNoData;
 
+    private String batchId = "";
+    private String trainerId = "";
+    private String beneficiaryId = "";
+    private String formStatus = "";
+    private String workshopId = "";
+    public boolean isForSmartGirl = false;
+    public boolean isForWorkshop = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +108,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         tvTitle = findViewById(R.id.toolbar_title);
         vpFormElements = findViewById(R.id.viewpager);
         imgNoData = findViewById(R.id.img_no_data);
-        //toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+        toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
@@ -108,16 +117,48 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
 
             String formId = getIntent().getExtras().getString(Constants.PM.FORM_ID);
+
+            String formResultString = getIntent().getExtras().getString("formData");
+            String fromHistory = getIntent().getExtras().getString("fromHistory");
+            if (fromHistory != null && !TextUtils.isEmpty(fromHistory)) {
+                isFromApproval = true;
+                isEditable = false;
+            }
+
             FormData formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 
             //mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
+            trainerId = getIntent().getExtras().getString(Constants.SmartGirlModule.TRAINER_ID);
+            formStatus = getIntent().getExtras().getString(Constants.SmartGirlModule.FORM_STATUS);
+            batchId = getIntent().getExtras().getString(Constants.SmartGirlModule.BATCH_ID);
+            if (batchId!=null && !TextUtils.isEmpty(batchId)) {
+                isForSmartGirl = true;
+                toolbar_edit_action.setVisibility(View.GONE);
+            }
+            workshopId = getIntent().getExtras().getString(Constants.SmartGirlModule.WORKSHOP_ID);
+            if (workshopId!=null && !TextUtils.isEmpty(workshopId)) {
+                isForWorkshop = true;
+            }
+
+
+            mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
 
 //            if (mIsPartiallySaved) {
 //                formData = DatabaseManager.getDBInstance(this).getFormSchema(formId);
 //            }
-
-            if (processId != null && processId != "") {
+            if (isFromApproval){
+                try {
+                    FeedbackFormHistoryData feedbackFormHistoryData = new Gson().fromJson(formResultString, FeedbackFormHistoryData.class);
+                    FormResult formResult =  new Gson().fromJson(new Gson().toJson(feedbackFormHistoryData.getHistoryData().getValues().get(0)), FormResult.class);
+                    //jsonToMap(formResultString);
+                    jsonToMap(new Gson().toJson(formResult));
+                    //presenter.getFormSchema(formId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (processId != null && processId != "") {
                 formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
                 if (formResult != null) {
                     try {
@@ -265,6 +306,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         Fragment fileFragment = new FileQuestionFragment();
                         bundle.putSerializable("Element", element);
                         bundle.putBoolean("isFirstpage", isFirstpage);
+                        bundle.putBoolean("isFromApproval", isFromApproval);
+
                         fileFragment.setArguments(bundle);
                         adapter.addFragment(fileFragment, "Question Title");
                         break;
@@ -551,7 +594,10 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             finish();
             return;
         }
-        if (isEditable) {
+
+        if (isForSmartGirl){
+            showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
+        }else if (isEditable) {
             showDialog(this, "Alert", "Do you want to save the form?",
                     "Save", "Discard", true);
         } else {
@@ -576,6 +622,21 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         //enableSubmitButton(false);
         formAnswersMap.put(Constants.Location.LATITUDE, strLat);
         formAnswersMap.put(Constants.Location.LONGITUDE, strLong);
+        if (isForSmartGirl) {
+            if (isForWorkshop){
+                formAnswersMap.put(Constants.SmartGirlModule.WORKSHOP_ID, batchId);
+                formAnswersMap.put(Constants.SmartGirlModule.BENEFICIARY_ID, null);
+            }else {
+                formAnswersMap.put(Constants.SmartGirlModule.BATCH_ID, batchId);
+                formAnswersMap.put(Constants.SmartGirlModule.TRAINER_ID, trainerId);
+
+            }
+
+            formAnswersMap.put("role_code", String.valueOf(Util.getUserObjectFromPref().getRoleCode()));
+            formAnswersMap.put(Constants.SmartGirlModule.FORM_STATUS, formStatus);
+
+        }
+
 
         if (Util.isConnected(this)) {
             presenter.setRequestedObject(formAnswersMap);
@@ -777,6 +838,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         if (!TextUtils.isEmpty(dialogTitle)) {
             TextView title = dialog.findViewById(R.id.tv_dialog_title);
+
             title.setText(dialogTitle);
             title.setVisibility(View.VISIBLE);
         }
@@ -789,12 +851,20 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         if (!TextUtils.isEmpty(btn1String)) {
             Button button = dialog.findViewById(R.id.btn_dialog);
-            button.setText(btn1String);
+            if (isForSmartGirl) {
+                button.setText(R.string.cancel);
+            }else {
+                button.setText(btn1String);
+            }
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 // Close dialog
-                savePartialForm();
-                dialog.dismiss();
+                if (isForSmartGirl) {
+                    dialog.dismiss();
+                }else {
+                    savePartialForm();
+                    dialog.dismiss();
+                }
             });
         }
 

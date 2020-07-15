@@ -1,11 +1,12 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<MatrimonyProfileListRecyclerAdapter.EmployeeViewHolder> {
-
-        private List<UserProfileList> dataList;
-        private Context mContext;
-        private RequestOptions requestOptions;
+    private List<UserProfileList> dataList;
+    private Context mContext;
+    private RequestOptions requestOptions;
     private OnRequestItemClicked clickListener;
     private OnApproveRejectClicked buttonClickListner;
 
@@ -46,17 +46,38 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
         @Override
         public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-            holder.txtTitle.setText(dataList.get(position).getMatrimonial_profile().getPersonal_details().getFirst_name());
-            String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years,"))
-                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getEducation_level()+",")
-                    .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
-                    .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();
+            holder.txtTitle.setText(dataList.get(position).getMatrimonial_profile().
+                    getPersonal_details().getFirst_name() + " " + dataList.get(position).
+                    getMatrimonial_profile().getPersonal_details().getLast_name());
+            String s = new StringBuffer().append(String.valueOf(dataList.get(position).getMatrimonial_profile().getPersonal_details().getAge()+" Years, "))
+                    .append(dataList.get(position).getMatrimonial_profile().getEducational_details().getQualification_degree()+", ")
+                    .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getMarital_status()+", ")
+                    .append(dataList.get(position).getMatrimonial_profile().getPersonal_details().getSect()).toString();
+                    /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
+                    .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();*/
             holder.txtValue.setText(s);
-            if (dataList.get(position).isPaymentDone()){
-                holder.tv_payment_status.setVisibility(View.VISIBLE);
-            }
+//            if (dataList.get(position).isPaymentDone()){
+//                holder.tv_payment_status.setVisibility(View.VISIBLE);
+//            }
+            //sectionType.equalsIgnoreCase("MeetUserList")
+            if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
+                //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
+                holder.lyMeetApproved.setVisibility(View.VISIBLE);
+                if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("pending")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_pending);
+                    holder.tvMeetApproved.setText("Pending in meet");
+                } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("approved")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_approved);
+                    holder.tvMeetApproved.setText("Approved in meet");
+                } else if (dataList.get(position).getUserMeetStatus().equalsIgnoreCase("rejected")) {
+                    holder.ivMeetApproved.setImageResource(R.drawable.ic_meet_rejected);
+                    holder.tvMeetApproved.setText("Rejected in meet");
+                }
 
-            holder.tv_approval_status.setText(dataList.get(position).getIsApproved());
+            } else {
+                //holder.tv_approval_status.setVisibility(View.GONE);
+                holder.lyMeetApproved.setVisibility(View.GONE);
+            }
 //            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
 //
 //            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
@@ -66,22 +87,22 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 //                holder.btn_approve.setVisibility(View.GONE);
 //                holder.btn_reject.setVisibility(View.VISIBLE);
 //            }
-            if (dataList.get(position).isIsPremium()){
-                holder.tv_premium.setVisibility(View.VISIBLE);
-                holder.tv_premium.setText("Premium");
+            if (dataList.get(position).isPaid()) {
+//                holder.tv_premium.setVisibility(View.VISIBLE);
+//                holder.tv_premium.setText("Premium");
+                holder.lyPremium.setVisibility(View.VISIBLE);
             }else {
-                holder.tv_premium.setVisibility(View.GONE);
+                //holder.tv_premium.setVisibility(View.GONE);
+                holder.lyPremium.setVisibility(View.GONE);
             }
 
-
-
-            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image()!=null&&dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size()>0){
+            if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
+                    && dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().size() > 0) {
                 Glide.with(mContext)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image().get(0))
                         .into(holder.user_profile_pic);
             }
-
         }
 
         @Override
@@ -96,17 +117,23 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-            TextView txtTitle, txtValue,tv_approval_status,tv_premium,tv_payment_status;
-            ImageView user_profile_pic;
+        TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium, tvMeetApproved;
+        ImageView user_profile_pic, ivMeetApproved;
+        LinearLayout lyPremium, lyMeetApproved;
 //            Button btn_reject,btn_approve;
 
             EmployeeViewHolder(View itemView) {
                 super(itemView);
+                lyPremium = itemView.findViewById(R.id.ly_premium);
+                tvPremium = itemView.findViewById(R.id.tv_premium);
+                lyMeetApproved = itemView.findViewById(R.id.ly_meet_approved);
+                ivMeetApproved = itemView.findViewById(R.id.iv_meet_approved);
+                tvMeetApproved = itemView.findViewById(R.id.tv_meet_approved);
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
-                tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
-                tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
-                tv_premium = itemView.findViewById(R.id.tv_premium);
+                //tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
+                //tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
+                //tv_premium = itemView.findViewById(R.id.tv_premium);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
 //                btn_reject = itemView.findViewById(R.id.btn_reject);
@@ -123,6 +150,26 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 //                        buttonClickListner.onRejectClicked(getAdapterPosition());
 //                    }
 //                });
+
+                lyPremium.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tvPremium.getVisibility() == View.VISIBLE)
+                            tvPremium.setVisibility(View.GONE);
+                        else
+                            tvPremium.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                lyMeetApproved.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tvMeetApproved.getVisibility() == View.VISIBLE)
+                            tvMeetApproved.setVisibility(View.GONE);
+                        else
+                            tvMeetApproved.setVisibility(View.VISIBLE);
+                    }
+                });
 
                 itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
             }

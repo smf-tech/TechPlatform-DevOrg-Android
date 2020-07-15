@@ -1,9 +1,11 @@
 package com.octopusbjsindia.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,10 +45,10 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 //    private TextView toolbar_title, txt_no_data;
 //    private boolean isSearchVisible = false;
     private String toOpen = "";
+    private String meetId;
     private boolean isFilterApplied = false;
     private MatrimonyUserFilterData matrimonyUserFilterData;
     private String minAge, maxAge;
-
     // FilterCandidateFragment arraylists
     private List<String> minMaxAgeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -98,6 +100,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
         //initViews();
         toOpen = getIntent().getStringExtra("toOpean");
+        if (toOpen.equalsIgnoreCase("MeetUserList")) {
+            meetId = getIntent().getStringExtra("meetid");
+        }
         initViews();
 //        if (toOpen.equals("MeetUserList")) {
 //            meetId = getIntent().getStringExtra("meetid");
@@ -129,12 +134,22 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
                 case "filter_fragment":
                     fragment = new MatrimonyUsersFilterFragment();
                     fragment.setArguments(bundle);
+                    break;
             }
         }
         // Begin transaction.
+        //getSupportFragmentManager().popBackStack();
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.ly_main, fragment).addToBackStack(null)
                 .commit();
+    }
+
+    public String getMeetId() {
+        return meetId;
+    }
+
+    public void setMeetId(String meetId) {
+        this.meetId = meetId;
     }
 
     public boolean isFilterApplied() {
@@ -238,11 +253,11 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         Bundle bundle = new Bundle();
         MatrimonyProfileListFragment matrimonyProfileListFragment = new MatrimonyProfileListFragment();
         bundle.putString("toOpen", toOpen);
-        if (toOpen.equalsIgnoreCase("MeetUserList")) {
-            bundle.putString("meetId", getIntent().getStringExtra("meetid"));
-        }
+//        if (toOpen.equalsIgnoreCase("MeetUserList")) {
+//            bundle.putString("meetId", meetId);
+//        }
         matrimonyProfileListFragment.setArguments(bundle);
-        transaction.replace(R.id.ly_main, matrimonyProfileListFragment);
+        transaction.replace(R.id.ly_main, matrimonyProfileListFragment).addToBackStack(null);
         transaction.commit();
 
 //        progressBar = findViewById(R.id.progress_bar);
@@ -326,6 +341,24 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment instanceof MatrimonyUsersFilterFragment) {
+                getSupportFragmentManager().popBackStack();
+                break;
+            }else if (fragment != null && fragment instanceof MatrimonyProfileListFragment) {
+                finish();
+            }
+        }
+        /*if (fragments.size()<2){
+            finish();
+        }else {
+            getSupportFragmentManager().popBackStack();
+        }*/
+    }
 
     @Override
     public void onClick(View v) {
@@ -670,4 +703,9 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 //        showUserProfileList(newUserResponse.getData());
 //    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

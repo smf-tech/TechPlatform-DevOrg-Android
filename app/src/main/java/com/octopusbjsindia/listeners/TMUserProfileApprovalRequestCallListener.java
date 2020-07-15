@@ -14,4 +14,5 @@ public interface TMUserProfileApprovalRequestCallListener {
 
     void onErrorListener(VolleyError error);
 
+    void onSuccessListener(String response, String type);
 }

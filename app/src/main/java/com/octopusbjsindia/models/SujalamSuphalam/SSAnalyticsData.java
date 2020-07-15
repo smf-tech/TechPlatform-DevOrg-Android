@@ -22,7 +22,7 @@ public class SSAnalyticsData {
 
     @SerializedName("percentValue")
     @Expose
-    private Integer percentValue;
+    private float percentValue;
 
     public String getTitle() {
         return title;
@@ -64,7 +64,7 @@ public class SSAnalyticsData {
         this.statusCode = statusCode;
     }
 
-    public Integer getPercentValue() {
+    public float getPercentValue() {
         return percentValue;
     }
 

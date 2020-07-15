@@ -43,12 +43,16 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
 
     @Override
     public void onFailureListener(String requestID, String message) {
+        if (requestID.equalsIgnoreCase(EDIT_BATCH)) {
 
+        }
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
+        if (requestID.equalsIgnoreCase(EDIT_BATCH)) {
 
+        }
     }
 
     @Override
@@ -85,6 +89,8 @@ public class CreateTrainerWorkshopPresenter implements APIPresenterListener {
                     mContext.get().showReceivedCategories(jurisdictionLevelResponse);
                 } else if (requestID.equalsIgnoreCase(GET_MASTER_TRAINERS)) {
                     mContext.get().showTrainerList(response);
+                } else if (requestID.equalsIgnoreCase(CREATE_BATCH)) {
+                    mContext.get().batchCreatedSuccess(response);
                 }
             }
 

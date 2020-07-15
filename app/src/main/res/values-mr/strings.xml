@@ -55,7 +55,7 @@
     <string name="gender">लिंग *</string>
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
-    <string name="other">अन्य</string>
+    <string name="other">इतर(कृपया निर्दिष्ट करा)</string>
     <string name="mandatory_organization">Type organization name *</string>
     <string name="organization">संघटना</string>
     <string name="mandatory_project">Type project name *</string>
@@ -72,8 +72,8 @@
     <string name="cluster">क्लस्टर</string>
     <string name="mandatory_village">गाव *</string>
     <string name="village">गाव</string>
-    <string name="mandatory_school">संरचना नाव  *</string>
-    <string name="school">संरचना नाव</string>
+    <string name="mandatory_school">शाळेचे नाव  *</string>
+    <string name="school">शाळेचे नाव</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
     <string name="update_profile">प्रोफाइल अद्ययावत करा</string>
     <string name="update_profile_pic">प्रोफाइल चित्र अद्यतनित करा</string>
@@ -559,7 +559,7 @@
     <string name="event_content_screen_visit">Content Module Screen visited</string>
     <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
     <string name="type_of_beneficiary">Type of beneficiary</string>
-    <string name="none">None</string>
+    <string name="none">काहीही नाही</string>
     <string name="select_max">Can select max</string>
     <string name="answer">Answer</string>
     <string name="select_locations">Please select locations</string>
