@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.octopusbjsindia.view.fragments.MatrimonyMeetFragment"
-    android:background="@color/lighter_grey">
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,6 +35,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivBanner"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_img"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:background="@drawable/edittext_border"
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        />
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:gravity="center_horizontal"
+                        android:text="Add meet banner" />
 
                     <!--Title-->
                     <com.google.android.material.textfield.TextInputLayout
@@ -366,6 +385,101 @@
                             android:textColor="@color/dark_grey"/>
 
                     </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/lyCriteria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_border_dark_grey"
+                        android:orientation="vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add Meet Criteria"
+                            android:layout_margin="@dimen/dimen_05dp" />
+                        <!--tly_minAge-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tlyMinAge"
+                            style="@style/textinputstyle"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etMinAge"
+                                style="@style/RegistrationEditTextLayout"
+                                android:hint="Minimum age"
+                                android:maxLength="50"
+                                android:inputType="number"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--tly_maxAge-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tlyMaxAge"
+                            style="@style/textinputstyle"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etMaxAge"
+                                style="@style/RegistrationEditTextLayout"
+                                android:hint="Maximum age"
+                                android:maxLength="50"
+                                android:inputType="number"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--education-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tlyEducation"
+                            style="@style/textinputstyle"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etEducation"
+                                style="@style/RegistrationEditTextLayout"
+                                android:hint="Select education"
+                                android:maxLength="50"
+                                android:inputType="textMultiLine|textCapWords"
+                                android:focusable="false"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--Marital status-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tlyMaritalStatus"
+                            style="@style/textinputstyle"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etMaritalStatus"
+                                style="@style/RegistrationEditTextLayout"
+                                android:hint="Select marital Status"
+                                android:maxLength="50"
+                                android:inputType="textMultiLine|textCapWords"
+                                android:focusable="false"
+                                android:longClickable="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCriteria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Criteria"
+                        android:padding="@dimen/dimen_10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_border_dark_grey"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <Button

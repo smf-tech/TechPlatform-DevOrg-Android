@@ -126,24 +126,45 @@
                         android:src="@drawable/ic_varified" />
                 </LinearLayout>
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="@dimen/dimen_75dp"-->
-                <!--                    android:layout_height="@dimen/dimen_25dp"-->
-                <!--                    android:layout_alignParentEnd="true"-->
-                <!--                    android:layout_gravity="end"-->
-                <!--                    android:text="Premium"-->
-                <!--                    android:gravity="center_vertical"-->
-                <!--                    android:id="@+id/tv_premium"-->
-                <!--                    android:layout_marginTop="@dimen/dimen_25dp"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:visibility="gone"-->
-                <!--                    android:fontFamily="@font/opensans_bold"-->
-                <!--                    android:textSize="@dimen/text_size_10"-->
-                <!--                    android:background="@drawable/ic_publish_ribbon_right"-->
-                <!--                    android:paddingStart="@dimen/dimen_16dp"-->
-                <!--                    />-->
+                <LinearLayout
+                    android:id="@+id/ly_blocked_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_02dp"
+                    android:layout_above="@+id/ly_gradient"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_blocked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="22"
+                        android:textSize="@dimen/text_size_14"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_blocked_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Blocked Count"
+                        android:textSize="@dimen/text_size_11"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
 
                 <FrameLayout
+                    android:id="@+id/ly_gradient"
                     android:layout_width="match_parent"
                     android:background="@drawable/gradient_sample"
                     android:layout_alignParentBottom="true"

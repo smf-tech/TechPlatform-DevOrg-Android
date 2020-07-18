@@ -56,9 +56,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();*/
             holder.txtValue.setText(s);
-//            if (dataList.get(position).isPaymentDone()){
-//                holder.tv_payment_status.setVisibility(View.VISIBLE);
-//            }
+
             //sectionType.equalsIgnoreCase("MeetUserList")
             if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
                 //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
@@ -75,25 +73,19 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 }
 
             } else {
-                //holder.tv_approval_status.setVisibility(View.GONE);
                 holder.lyMeetApproved.setVisibility(View.GONE);
             }
-//            if (dataList.get(position).getIsApproved().toLowerCase().startsWith("p")){
-//
-//            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("r")){
-//                holder.btn_reject.setVisibility(View.GONE);
-//                holder.btn_approve.setVisibility(View.VISIBLE);
-//            }else if (dataList.get(position).getIsApproved().toLowerCase().startsWith("a")){
-//                holder.btn_approve.setVisibility(View.GONE);
-//                holder.btn_reject.setVisibility(View.VISIBLE);
-//            }
+
             if (dataList.get(position).isPaid()) {
-//                holder.tv_premium.setVisibility(View.VISIBLE);
-//                holder.tv_premium.setText("Premium");
                 holder.lyPremium.setVisibility(View.VISIBLE);
             }else {
-                //holder.tv_premium.setVisibility(View.GONE);
                 holder.lyPremium.setVisibility(View.GONE);
+            }
+            if (dataList.get(position).getBlockCount()!=0) {
+                holder.ly_blocked_count.setVisibility(View.VISIBLE);
+                holder.tv_blocked.setText(""+dataList.get(position).getBlockCount());
+            }else {
+                holder.ly_blocked_count.setVisibility(View.GONE);
             }
 
             if (dataList.get(position).getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
@@ -117,9 +109,10 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium, tvMeetApproved;
+        TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium,
+                tvMeetApproved, tv_blocked, tv_blocked_count;
         ImageView user_profile_pic, ivMeetApproved;
-        LinearLayout lyPremium, lyMeetApproved;
+        LinearLayout lyPremium, lyMeetApproved,ly_blocked_count;
 //            Button btn_reject,btn_approve;
 
             EmployeeViewHolder(View itemView) {
@@ -131,26 +124,20 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 tvMeetApproved = itemView.findViewById(R.id.tv_meet_approved);
                 txtTitle = itemView.findViewById(R.id.tv_title);
                 txtValue = itemView.findViewById(R.id.tv_value);
-                //tv_approval_status = itemView.findViewById(R.id.tv_approval_status);
-                //tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
-                //tv_premium = itemView.findViewById(R.id.tv_premium);
+                tv_blocked = itemView.findViewById(R.id.tv_blocked);
+                tv_blocked_count = itemView.findViewById(R.id.tv_blocked_count);
+                ly_blocked_count = itemView.findViewById(R.id.ly_blocked_count);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 
-//                btn_reject = itemView.findViewById(R.id.btn_reject);
-//                btn_approve = itemView.findViewById(R.id.btn_approve);
-//                btn_approve.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        buttonClickListner.onApproveClicked(getAdapterPosition());
-//                    }
-//                });
-//                btn_reject.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        buttonClickListner.onRejectClicked(getAdapterPosition());
-//                    }
-//                });
-
+                ly_blocked_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tv_blocked_count.getVisibility() == View.VISIBLE)
+                            tv_blocked_count.setVisibility(View.GONE);
+                        else
+                            tv_blocked_count.setVisibility(View.VISIBLE);
+                    }
+                });
                 lyPremium.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -266,7 +266,6 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     private void updateMeetData(boolean isPublish) {
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetOrganizers(selectedOrganizersList);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetReferences(selectedNonOrganizersList);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetImageUrl("");
         if(isPublish){
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(true);
             showPublishApiDialog("Confirmation", "This meet will be visible to users. " +

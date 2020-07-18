@@ -65,6 +65,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("is_allocate")
     @Expose
     private Boolean isAllocate;
+    @SerializedName("meetCriteria")
+    @Expose
+    private MeetCriteria meetCriteria;
 
     public String getId() {
         return id;
@@ -218,4 +221,11 @@ public class MatrimonyMeet implements Serializable {
         isAllocate = allocate;
     }
 
+    public MeetCriteria getMeetCriteria() {
+        return meetCriteria;
+    }
+
+    public void setMeetCriteria(MeetCriteria meetCriteria) {
+        this.meetCriteria = meetCriteria;
+    }
 }

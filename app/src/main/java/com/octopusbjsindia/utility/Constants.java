@@ -500,6 +500,8 @@ public class Constants {
         public static final String VERIFICATION_PENDING_SECTION = "verification_pending";
         public static final String ALL_USERS_SECTION = "all_users";
         public static final String MEET_USERS_SECTION = "meet_users";
+        public static final String BLOCKED_USER_SECTION = "blockUsers";
+        public static final String BANGED_USER_SECTION = "isBan";
         public static final Integer FLAG_UPDATE_RESULT = 110;
     }
 }

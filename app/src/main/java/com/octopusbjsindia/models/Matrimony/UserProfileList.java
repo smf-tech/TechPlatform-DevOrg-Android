@@ -29,15 +29,6 @@ public class UserProfileList implements Serializable {
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
-    }
-
     @SerializedName("isPaid")
     @Expose
     private boolean isPaid;
@@ -65,6 +56,18 @@ public class UserProfileList implements Serializable {
     @SerializedName("created_at")
     @Expose
     private String created_at;
+    @SerializedName("blockCount")
+    @Expose
+    private int blockCount=0;
+
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
 
     public boolean isMarkAttendance() {
         return markAttendance;
@@ -187,4 +190,11 @@ public class UserProfileList implements Serializable {
         this.userMeetStatus = userMeetStatus;
     }
 
+    public int getBlockCount() {
+        return blockCount;
+    }
+
+    public void setBlockCount(int blockCount) {
+        this.blockCount = blockCount;
+    }
 }

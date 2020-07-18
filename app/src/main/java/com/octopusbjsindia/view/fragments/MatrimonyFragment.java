@@ -47,7 +47,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ArrayList<UserProfileList> unverifiedUserList = new ArrayList<UserProfileList>();
     private RecyclerView rvNewUser, rvVarificationPending;
     private FloatingActionButton fbSelect;
-    private ExtendedFloatingActionButton fbCreatMeet, fbAllUser;
+    private ExtendedFloatingActionButton fbCreatMeet, fbAllUser, fbBlockedUsers, fbBangUsers;
     private boolean isFABOpen = false;
     private View view;
 
@@ -96,6 +96,10 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbCreatMeet.setOnClickListener(this);
         fbAllUser = view.findViewById(R.id.fb_all_users);
         fbAllUser.setOnClickListener(this);
+        fbBlockedUsers = view.findViewById(R.id.fb_blocked_users);
+        fbBlockedUsers.setOnClickListener(this);
+        fbBangUsers = view.findViewById(R.id.fb_bang_users);
+        fbBangUsers.setOnClickListener(this);
 
         view.findViewById(R.id.tv_see_all_newuser).setOnClickListener(this);
         view.findViewById(R.id.tv_see_all_varification_pending).setOnClickListener(this);
@@ -127,7 +131,15 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
             startMain.putExtra("toOpean","AllUserList");
             startActivity(startMain);
-        }else if (v.getId() == R.id.tv_see_all_newuser) {
+        } else if (v.getId() == R.id.fb_blocked_users) {
+            Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+            startMain.putExtra("toOpean","BlockedUsers");
+            startActivity(startMain);
+        } else if (v.getId() == R.id.fb_bang_users) {
+            Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
+            startMain.putExtra("toOpean","BangUsers");
+            startActivity(startMain);
+        } else if (v.getId() == R.id.tv_see_all_newuser) {
             if(newUserList.size()>0){
                 Intent startMain = new Intent(getActivity(), MatrimonyProfileListActivity.class);
                 startMain.putExtra("toOpean","NewUserList");
@@ -150,8 +162,14 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbCreatMeet.setEnabled(true);
         fbAllUser.show();
         fbAllUser.setEnabled(true);
+        fbBlockedUsers.show();
+        fbBlockedUsers.setEnabled(true);
+        fbBangUsers.show();
+        fbBangUsers.setEnabled(true);
         fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
         fbAllUser.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        fbBlockedUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
+        fbBangUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
         fbSelect.setRotation(45);
         isFABOpen = true;
     }
@@ -159,10 +177,16 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private void closeFABMenu() {
         fbCreatMeet.animate().translationY(0);
         fbAllUser.animate().translationY(0);
+        fbBlockedUsers.animate().translationY(0);
+        fbBangUsers.animate().translationY(0);
         fbCreatMeet.hide();
         fbCreatMeet.setEnabled(false);
         fbAllUser.hide();
         fbAllUser.setEnabled(false);
+        fbBlockedUsers.hide();
+        fbBlockedUsers.setEnabled(false);
+        fbBangUsers.hide();
+        fbBangUsers.setEnabled(false);
         fbSelect.setRotation(0);
         isFABOpen = false;
     }

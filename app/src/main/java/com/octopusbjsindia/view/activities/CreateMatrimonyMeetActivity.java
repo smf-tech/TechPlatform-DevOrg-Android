@@ -1,10 +1,12 @@
 package com.octopusbjsindia.view.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
+import com.octopusbjsindia.presenter.CreateMatrimonyMeetActivityPresenter;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.CreateMeetFirstFragment;
 import com.octopusbjsindia.view.fragments.CreateMeetSecondFragment;
 import com.octopusbjsindia.view.fragments.CreateMeetThirdFragment;
@@ -25,6 +29,8 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
     private Fragment fragment;
     private MatrimonyMeet matrimonyMeet;
 
+    public CreateMatrimonyMeetActivityPresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +38,15 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
         init();
     }
 
-    private void init(){
+    private void init() {
+        presenter = new CreateMatrimonyMeetActivityPresenter(this);
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(R.string.create_meet);
 
-        if(getIntent().getStringExtra("SwitchToFragment")!=null){
-            if(getIntent().getStringExtra("SwitchToFragment").equals("CreateMeetFirstFragment")){
+        if (getIntent().getStringExtra("SwitchToFragment") != null) {
+            if (getIntent().getStringExtra("SwitchToFragment").equals("CreateMeetFirstFragment")) {
                 matrimonyMeet = new MatrimonyMeet();
                 fManager = getSupportFragmentManager();
                 fragment = new CreateMeetFirstFragment();
@@ -79,7 +86,7 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toolbar_back_action:
                 finish();
                 break;
@@ -102,6 +109,11 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private boolean shouldHandleBackPress() {
         if (fManager != null && fManager.getFragments().size() > 0) {
 
@@ -122,4 +134,23 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
         fragment = null;
         super.onDestroy();
     }
+
+    public void imageUploadedSuccessfully(String url, String formName) {
+        matrimonyMeet.setMeetImageUrl(url);
+        Util.showToast(getResources().getString(R.string.image_upload_success), this);
+    }
+
+    public void showProgressBar() {
+        runOnUiThread(() -> {
+            findViewById(R.id.lyProgress).setVisibility(View.VISIBLE);
+        });
+    }
+
+    public void hideProgressBar() {
+        runOnUiThread(() -> {
+            findViewById(R.id.lyProgress).setVisibility(View.GONE);
+        });
+    }
+
+
 }

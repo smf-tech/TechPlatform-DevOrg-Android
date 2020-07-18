@@ -117,6 +117,8 @@ public class Urls {
         public static final String ALL_FILTER_USERS ="api/getAllFilterUsers";
         public static final String GET_FILTER_MASTER_DATA = "api/matrimonyUserFilterMasterData";
         public static final String USER_DOC_VERIFY_API = "api/documentVerificaton";
+        public static final String CRITERIA_MASTER_DATA = "api/masterDataMeetCriteria";
+        public static final String BANNED_USERS = "api/bannedUsers";
 
         //for batches
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";

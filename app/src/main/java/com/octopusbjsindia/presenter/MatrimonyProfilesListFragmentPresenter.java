@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
 import com.octopusbjsindia.models.Matrimony.AllUserResponse;
@@ -14,6 +15,7 @@ import com.octopusbjsindia.models.Matrimony.MatrimonyUserProfileRequestModel;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.MatrimonyProfileListRequestCall;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.MatrimonyProfileListFragment;
 
@@ -32,14 +34,6 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
     public MatrimonyProfilesListFragmentPresenter(MatrimonyProfileListFragment tmFragment) {
         mContext = new WeakReference<>(tmFragment);
     }
-
-//    public void getAllFiltersRequests(String meetId) {
-//        MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
-//        requestCall.setListener(this);
-//
-//        //mContax.get().showProgressBar();
-//        requestCall.getAllPendingRequests(meetId);
-//    }
 
     public void approveRejectRequest(JSONObject requestObject, int position,String requestType) {
         MatrimonyProfileListRequestCall requestCall = new MatrimonyProfileListRequestCall();
@@ -110,8 +104,6 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
 
         //mContax.get().hideProgressBar();
     }
-
-
     //---------Approve Reject Request-----------
 
     public JSONObject createBodyParams(String meetid,String type,String userid,String approval_type,String strReason){
@@ -135,16 +127,6 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
             e.printStackTrace();
         }
         return null;
-    }
-
-    // as per the new implimentetion
-    public void getAllUserList(MatrimonyUserFilterData matrimonyUserFilterData, String url) {
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        mContext.get().showProgressBar();
-        Gson gson = new Gson();
-        String paramJson = gson.toJson(matrimonyUserFilterData);
-        requestCall.postDataApiCall(GET_ALL_USER, paramJson, url);
     }
 
     @Override
@@ -173,4 +155,15 @@ public class MatrimonyProfilesListFragmentPresenter implements TMFilterListReque
             }
         }
     }
+
+    // as per the new implimentetion
+    public void getAllUserList(MatrimonyUserFilterData matrimonyUserFilterData, String url) {
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        mContext.get().showProgressBar();
+        Gson gson = new Gson();
+        String paramJson = gson.toJson(matrimonyUserFilterData);
+        requestCall.postDataApiCall(GET_ALL_USER, paramJson, url);
+    }
+
 }

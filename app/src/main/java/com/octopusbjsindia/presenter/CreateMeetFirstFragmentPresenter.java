@@ -1,21 +1,28 @@
 package com.octopusbjsindia.presenter;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
+import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIPresenterListener;
+import com.octopusbjsindia.listeners.ImageRequestCallListener;
+import com.octopusbjsindia.models.Matrimony.MatrimonyMasterRequestModel;
 import com.octopusbjsindia.models.Matrimony.MeetTypesAPIResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.request.APIRequestCall;
+import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.CreateMeetFirstFragment;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -48,6 +55,14 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_MATRIMONY_MEET_TYPES, getMatrimonyMeetTypesUrl);
+    }
+
+    public void getFilterMasterData() {
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        final String Url = BuildConfig.BASE_URL + Urls.Matrimony.CRITERIA_MASTER_DATA;
+        requestCall.getDataApiCall("GET_CRITERIA_MASTER_DATA", Url);
     }
 
 //    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
@@ -125,8 +140,7 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_MATRIMONY_MEET_TYPES)){
                     MeetTypesAPIResponse meetTypes = PlatformGson.getPlatformGsonInstance().fromJson(response, MeetTypesAPIResponse.class);
                     fragmentWeakReference.get().setMatrimonyMeetTypes(meetTypes.getData());
-                }
-                if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_COUNTRIES) ||
+                }else if(requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_COUNTRIES) ||
                         requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_STATES) ||
                         requestID.equalsIgnoreCase(CreateMeetFirstFragmentPresenter.GET_CITIES)){
                     JurisdictionLevelResponse jurisdictionLevelResponse
@@ -146,10 +160,22 @@ public class CreateMeetFirstFragmentPresenter implements APIPresenterListener {
                                     Constants.JurisdictionLevelName.CITY_LEVEL);
                         }
                     }
+                } else if(requestID.equalsIgnoreCase("GET_CRITERIA_MASTER_DATA")){
+                    MatrimonyMasterRequestModel matrimonyMasterRequestModel = new Gson().fromJson(response, MatrimonyMasterRequestModel.class);
+                    if (matrimonyMasterRequestModel != null && matrimonyMasterRequestModel.getData() != null
+                            && !matrimonyMasterRequestModel.getData().isEmpty()
+                            && matrimonyMasterRequestModel.getData().size() > 0) {
+                        if (matrimonyMasterRequestModel.getData().get(0).getMaster_data() != null &&
+                                matrimonyMasterRequestModel.getData().get(0).getMaster_data().size() > 0) {
+                            fragmentWeakReference.get().setMasterData(matrimonyMasterRequestModel.getData().get(0).getMaster_data());
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
         }
     }
+
+
 }
