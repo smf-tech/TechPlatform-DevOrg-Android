@@ -213,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_05dp"
-                        android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
+                        android:orientation="horizontal"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -231,6 +231,23 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_05dp"
                         android:drawableStart="@drawable/ic_rupee_black"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:text="Payment Information" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_regular" />
 
@@ -260,6 +277,65 @@
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:id="@+id/lyCriteria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:background="@drawable/bg_border_dark_grey"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Meet Criteria" />
+                        <!--minAge - maxAge-->
+                        <TextView
+                            android:id="@+id/tvMinMaxAge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:drawablePadding="@dimen/dimen_05dp"
+                            android:fontFamily="@font/opensans_regular" />
+
+                        <!--education-->
+                        <TextView
+                            android:id="@+id/tvEducation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:drawablePadding="@dimen/dimen_05dp"
+                            android:fontFamily="@font/opensans_regular" />
+                        <!--Marital status-->
+                        <TextView
+                            android:id="@+id/tvMaritalStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:drawablePadding="@dimen/dimen_05dp"
+                            android:fontFamily="@font/opensans_regular" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvNotelbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:text="Note" />
+
+                    <TextView
+                        android:id="@+id/tvNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

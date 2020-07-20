@@ -82,7 +82,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private String selectedMeetType, selectedCountry, selectedState, selectedCity,
             selectedCountryId, selectedStateId, selectedCityId;
     private EditText edtMeetName, edtMeetVenue, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
-            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etMinAge, etMaxAge;
+            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etMinAge, etMaxAge, etPaymentInfo ,etNote;
     private RadioGroup rgPaidFree, rgOnlinePayment;
     private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
@@ -162,6 +162,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         etMaxAge = view.findViewById(R.id.etMaxAge);
         tvCriteria = view.findViewById(R.id.tvCriteria);
         lyCriteria = view.findViewById(R.id.lyCriteria);
+        etPaymentInfo = view.findViewById(R.id.etPaymentInfo);
+        etNote = view.findViewById(R.id.etNote);
+
         userInfo = Util.getUserObjectFromPref();
         if (((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getVenue() != null &&
                 ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getVenue().length() > 0) {
@@ -451,6 +454,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setRegAmount(0);
         }
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIsOnlinePaymentAllowed(isOnlinePaymentAllowed);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setPaymentInfo(etPaymentInfo.getText().toString());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setNote(etNote.getText().toString());
         if (lyCriteria.getVisibility() == View.VISIBLE) {
             MeetCriteria meetCriteria = new MeetCriteria();
             meetCriteria.setMinAge(Integer.parseInt(etMinAge.getText().toString()));
@@ -738,6 +743,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 isPaidFreeRGChecked = 1;
                 edtRegAmt.setVisibility(View.GONE);
                 rgOnlinePayment.setVisibility(View.GONE);
+                etPaymentInfo.setVisibility(View.GONE);
                 edtRegAmt.setText("");
                 isOnlinePaymentAllowed = false;
                 break;
@@ -746,6 +752,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 isPaidFreeRGChecked = 2;
                 edtRegAmt.setVisibility(View.VISIBLE);
                 rgOnlinePayment.setVisibility(View.VISIBLE);
+                etPaymentInfo.setVisibility(View.VISIBLE);
                 break;
             case R.id.rb_online_no:
                 isOnlinePaymentAllowed = false;

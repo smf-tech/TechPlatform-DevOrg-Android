@@ -9,10 +9,10 @@ import java.util.List;
 public class MeetCriteria implements Serializable {
     @SerializedName("minAge")
     @Expose
-    private int minAge;
+    private Integer minAge = 0;
     @SerializedName("maxAge")
     @Expose
-    private int maxAge;
+    private Integer maxAge = 0;
     @SerializedName("maritalCriteria")
     @Expose
     private List<String> maritalCriteria = null;
@@ -20,19 +20,19 @@ public class MeetCriteria implements Serializable {
     @Expose
     private List<String> qualificationCriteria = null;
 
-    public int getMinAge() {
+    public Integer getMinAge() {
         return minAge;
     }
 
-    public void setMinAge(int minAge) {
+    public void setMinAge(Integer minAge) {
         this.minAge = minAge;
     }
 
-    public int getMaxAge() {
+    public Integer getMaxAge() {
         return maxAge;
     }
 
-    public void setMaxAge(int maxAge) {
+    public void setMaxAge(Integer maxAge) {
         this.maxAge = maxAge;
     }
 

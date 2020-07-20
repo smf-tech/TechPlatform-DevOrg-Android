@@ -61,13 +61,15 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         ViewPager.OnPageChangeListener,
         PopupMenu.OnMenuItemClickListener {
     private View view;
-    private String mobileNumberEntered="";
+    private String mobileNumberEntered = "";
     private MatrimonyMeet meetData;
 
-    private TextView tvMeetTitle,tvMeetDate,tvMeetTime,tvMeetCity,tvMeetVenue,tvRegAmt,tvRegPeriod,tvBadgesInfo,btnViewProfiles, btnRegisterProfile;
-    private RecyclerView rvMeetContacts,rvMeetAnalytics;
+    private TextView tvMeetTitle, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvRegAmt, tvRegPeriod,
+            tvBadgesInfo, btnViewProfiles, btnRegisterProfile, tvPaymentInfo, tvMinMaxAge, tvEducation,
+            tvMaritalStatus, tvNote;
+    private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
-    private ArrayList<MatrimonyUserDetails> contactsList= new ArrayList<>();
+    private ArrayList<MatrimonyUserDetails> contactsList = new ArrayList<>();
     private ArrayList<MeetAnalytics> meetAnalyticsData = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -132,6 +134,12 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         rvMeetContacts = view.findViewById(R.id.rv_meet_organizer);
         rvMeetAnalytics = view.findViewById(R.id.rv_meet_analytics);
         btnPublishMeet = view.findViewById(R.id.btn_publish_saved_meet);
+        tvPaymentInfo = view.findViewById(R.id.tvPaymentInfo);
+        tvMinMaxAge = view.findViewById(R.id.tvMinMaxAge);
+        tvEducation = view.findViewById(R.id.tvEducation);
+        tvMaritalStatus = view.findViewById(R.id.tvMaritalStatus);
+        tvNote = view.findViewById(R.id.tvNote);
+
         btnPublishMeet.setOnClickListener(this);
 
         btnViewProfiles = view.findViewById(R.id.btn_view_profiles);
@@ -270,7 +278,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         meetAnalyticsData.clear();
         if (meetData.getIs_published()) {
             btnPublishMeet.setVisibility(View.GONE);
-        }else{
+        } else {
             btnPublishMeet.setVisibility(View.VISIBLE);
         }
         tvMeetTitle.setText(meetData.getTitle());
@@ -281,8 +289,32 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         tvMeetVenue.setText(meetData.getVenue());
         tvRegAmt.setText(String.valueOf(meetData.getRegAmount()));
         tvRegPeriod.setText(Util.getDateFromTimestamp(meetData.getRegistrationSchedule().getRegStartDateTime(),
-                DAY_MONTH_YEAR)+" - "+
+                DAY_MONTH_YEAR) + " - " +
                 Util.getDateFromTimestamp(meetData.getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
+
+        tvPaymentInfo.setText(meetData.getPaymentInfo());
+        if (meetData.getMeetCriteria() != null) {
+            tvMinMaxAge.setText("Age: " + meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
+            if (meetData.getMeetCriteria().getQualificationCriteria() != null && meetData.getMeetCriteria().getQualificationCriteria().size() > 0) {
+                tvEducation.setText("Education: " + TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
+            } else {
+                tvEducation.setVisibility(View.GONE);
+            }
+            if (meetData.getMeetCriteria().getMaritalCriteria() != null && meetData.getMeetCriteria().getMaritalCriteria().size() > 0) {
+                tvMaritalStatus.setText(TextUtils.join(",", meetData.getMeetCriteria().getMaritalCriteria()));
+            } else {
+                tvMaritalStatus.setVisibility(View.GONE);
+            }
+        } else {
+            view.findViewById(R.id.lyCriteria).setVisibility(View.GONE);
+        }
+        if (meetData.getNote() != null) {
+            tvNote.setText(meetData.getNote());
+        } else {
+            tvNote.setVisibility(View.GONE);
+            view.findViewById(R.id.tvNotelbl).setVisibility(View.GONE);
+        }
+
 
         for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetOrganizers()) {
             contactsList.add(matrimonyUserDetails);
@@ -302,16 +334,16 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_publish_saved_meet:
                 presenter.publishSavedMeet(meetData.getId());
                 break;
             case R.id.btn_register_profile:
-                showReasonDialog(activity,0);
+                showReasonDialog(activity, 0);
                 break;
             case R.id.btn_view_profiles:
                 Intent startMain = new Intent(activity, MatrimonyProfileListActivity.class);
-                startMain.putExtra("toOpean","MeetUserList");
+                startMain.putExtra("toOpean", "MeetUserList");
                 startMain.putExtra("meetid", meetData.getId());
                 startActivity(startMain);
                 break;
@@ -350,7 +382,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if(status == 200){
+        if (status == 200) {
             meetData.setIs_published(true);
 
             btnPublishMeet.setVisibility(View.GONE);
@@ -407,19 +439,18 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
     public void showResponseVerifyUser(String responseStatus, int status) {
 
-        if(status == 200){
+        if (status == 200) {
             Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                             .findViewById(android.R.id.content), responseStatus,
                     Snackbar.LENGTH_LONG);
-        }else{
+        } else {
             if (meetData.getIs_published()) {
                 if (meetData.getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
-                        && meetData.getRegistrationSchedule().getRegStartDateTime() <= Util.getCurrentTimeStamp())
-                {
+                        && meetData.getRegistrationSchedule().getRegStartDateTime() <= Util.getCurrentTimeStamp()) {
                     //Util.logger("currentTime","-> Current Time greater");
                     Intent startMain1 = new Intent(activity, UserRegistrationMatrimonyActivity.class);
                     startMain1.putExtra("meetid", meetData.getId());
-                    startMain1.putExtra("mobileNumber",mobileNumberEntered);
+                    startMain1.putExtra("mobileNumber", mobileNumberEntered);
 
                     startActivity(startMain1);
                 } else {
@@ -427,7 +458,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                                     .findViewById(android.R.id.content), "Registrations for this meet are not open.",
                             Snackbar.LENGTH_LONG);
                 }
-            }else {
+            } else {
                 Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "This meet is not published yet.",
                         Snackbar.LENGTH_LONG);
@@ -435,13 +466,13 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         }
     }
 
-    public void updateBadgeStatus(boolean badgeAllocatedandFinalisedflag){
+    public void updateBadgeStatus(boolean badgeAllocatedandFinalisedflag) {
 
-            if(badgeAllocatedandFinalisedflag){
-                tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
-            } else {
-                tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
-            }
+        if (badgeAllocatedandFinalisedflag) {
+            tvBadgesInfo.setText(R.string.meet_badges_allocated_finalized);
+        } else {
+            tvBadgesInfo.setText(R.string.meet_badges_allocated_not_finalized);
+        }
     }
 
 
@@ -466,11 +497,11 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         }
     }
 
-    public String showReasonDialog(final Activity context, int pos){
+    public String showReasonDialog(final Activity context, int pos) {
         Dialog dialog;
-        Button btnSubmit,btn_cancel;
+        Button btnSubmit, btn_cancel;
         EditText edt_reason;
-        Activity activity =context;
+        Activity activity = context;
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -492,13 +523,13 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String strReason  = edt_reason.getText().toString();
+                String strReason = edt_reason.getText().toString();
 
-                if (strReason.trim().length() != 10 ) {
+                if (strReason.trim().length() != 10) {
                     String msg = "Please enter the valid mobile number";//getResources().getString(R.string.msg_enter_name);
                     //et_primary_mobile.requestFocus();
-                    Util.showToast(msg,activity);
-                }else {
+                    Util.showToast(msg, activity);
+                } else {
 
                     //-----------------------
                     if (TextUtils.isEmpty(strReason)) {

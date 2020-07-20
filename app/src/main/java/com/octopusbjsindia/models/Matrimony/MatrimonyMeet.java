@@ -68,6 +68,12 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("meetCriteria")
     @Expose
     private MeetCriteria meetCriteria;
+    @SerializedName("paymentInfo")
+    @Expose
+    private String paymentInfo;
+    @SerializedName("note")
+    @Expose
+    private String note;
 
     public String getId() {
         return id;
@@ -227,5 +233,21 @@ public class MatrimonyMeet implements Serializable {
 
     public void setMeetCriteria(MeetCriteria meetCriteria) {
         this.meetCriteria = meetCriteria;
+    }
+
+    public String getPaymentInfo() {
+        return paymentInfo;
+    }
+
+    public void setPaymentInfo(String paymentInfo) {
+        this.paymentInfo = paymentInfo;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
