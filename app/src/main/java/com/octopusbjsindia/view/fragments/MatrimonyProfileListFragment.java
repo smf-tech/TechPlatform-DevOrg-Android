@@ -1,7 +1,9 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,6 +68,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     //pagination
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
+    private BroadcastReceiver mMessageReceiver;
+    int position=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,15 +97,12 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
-            //presenter.getAllFiltersRequests(meetIdReceived);
         } else if (toOpen.equals("NewUserList")) {
             titleStr = "Recently Joined";
-            //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
         } else if (toOpen.equals("UnverifiedUserList")) {
             titleStr = "Verification Pending";
-            //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
         } else if (toOpen.equals("AllUserList")) {
@@ -116,9 +118,36 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.BANGED_USER_SECTION);
         }
-
         presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(),
                 BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS));
+
+        //Updating the flags of perticler profile from profile detail.
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean isBanned = intent.getBooleanExtra("isBanned",false);
+                if(!isBanned && toOpen.equals("BangUsers")) {
+                    if(position<userProfileListsFiltered.size()){
+                        userProfileListsFiltered.remove(position);
+                    }
+                    if(position<userProfileLists.size()){
+                        userProfileLists.remove(position);
+                    }
+                    matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+                } else if(isBanned && !toOpen.equals("BangUsers")) {
+                    if(position<userProfileListsFiltered.size()){
+                        userProfileListsFiltered.remove(position);
+                    }
+                    if(position<userProfileLists.size()){
+                        userProfileLists.remove(position);
+                    }
+                    matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("PROFILE_UPDATE"));
+
     }
 
     private void initViews() {
@@ -127,13 +156,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         toolbar_back_action.setVisibility(View.VISIBLE);
         editSearch = view.findViewById(R.id.search_view1);
         toolbarFilter = view.findViewById(R.id.toolbar_filter);
-//        toolbar_action = view.findViewById(R.id.toolbar_action1);
-//        toolbar_action.setVisibility(View.VISIBLE);
         toolbarTitle = view.findViewById(R.id.toolbar_title1);
         toolbarTitle.setText("Candidate List");
         toolbar_back_action.setOnClickListener(this);
         toolbarFilter.setOnClickListener(this);
-        //toolbar_action.setOnClickListener(this);
         editSearch.setOnQueryTextListener(this);
         btnClearFilters = view.findViewById(R.id.btn_clear_filters);
         btnClearFilters.setOnClickListener(this);
@@ -153,7 +179,6 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 if (dy > 0) {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
@@ -163,14 +188,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
                             if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
-//                                if (((ProfilesActivity) getActivity()).isFilterApplied() &&
-//                                        ((ProfilesActivity) getActivity()).getFilterCandidatesData() != null) {
-//                                    presenter.getFilteredUserList(((ProfilesActivity) getActivity()).
-//                                            getFilterCandidatesData(), allUserProfileobj.getNext_page_url());
-//                                } else {
                                 presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity())
                                         .getMatrimonyUserFilterData(), nextPageUrl);
-//                                }
                             }
                         }
                     }
@@ -183,10 +202,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                         btnClearFilters.getVisibility() == View.VISIBLE) {
                     btnClearFilters.setVisibility(View.GONE);
                 }
-
             }
         });
-
         CreateFilterList();
     }
 
@@ -268,26 +285,14 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 // api call
                 if (toOpen.equals("MeetUserList")) {
                     meetIdReceived = ((MatrimonyProfileListActivity) getActivity()).getMeetId();
-                    /*((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-                            setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);*/
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.MEET_USERS_SECTION);
                     matrimonyUserFilterData.setMeet_id(meetIdReceived);
-                    //((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().setMeet_id(meetIdReceived);
-                    //presenter.getAllFiltersRequests(meetIdReceived);
                 } else if (toOpen.equals("NewUserList")) {
-                    //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
-//                    ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-//                            setSection_type(Constants.MatrimonyModule.NEWLY_JOINED_SECTION);
                 } else if (toOpen.equals("UnverifiedUserList")) {
-                    //showUserProfileList((List<UserProfileList>) getIntent().getSerializableExtra("userList"));
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
-//                    ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-//                            setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
                 } else if (toOpen.equals("AllUserList")) {
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
-//                    ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
-//                            setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
                 userProfileListsFiltered.clear();
@@ -382,6 +387,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
     @Override
     public void onItemClicked(int pos) {
+        position = pos;
         UserProfileList userProfileList = userProfileLists.get(pos);
         Gson gson = new Gson();
         String jsonInString = gson.toJson(userProfileList);
@@ -395,57 +401,11 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
     @Override
     public void onApproveClicked(int pos) {
-//        approvalType = Constants.APPROVE;
-//        String message = "Do you want to approve?";
-//        showApproveRejectDialog(getActivity(), pos, approvalType, message);
     }
 
     @Override
     public void onRejectClicked(int pos) {
-//        approvalType = Constants.REJECT;
-//        showReasonDialog(getActivity(), pos);
     }
-
-//    public void callRejectAPI(String strReason, int pos) {
-//        UserProfileList userProfileList = userProfileLists.get(pos);
-//
-//        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.REJECT, strReason);
-//        presenter.approveRejectRequest(jsonObject, pos, Constants.REJECT);
-//        approvalType = Constants.REJECT;
-//
-//    }
-//
-//    public void callApproveAPI(int pos) {
-//        UserProfileList userProfileList = userProfileLists.get(pos);
-//
-//        JSONObject jsonObject = presenter.createBodyParams(meetIdReceived, "user", userProfileList.get_id(), Constants.APPROVE, "");
-//        presenter.approveRejectRequest(jsonObject, pos, Constants.APPROVE);
-//        approvalType = Constants.APPROVE;
-//
-//    }
-//
-//    public void updateRequestStatus(String response, int position) {
-//        Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
-//                .findViewById(android.R.id.content));
-//        if (Constants.REJECT.equalsIgnoreCase(approvalType)) {
-//            userProfileLists.get(position).setIsApproved(Constants.REJECT);
-//            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
-//            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-//        }
-//        if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
-//            userProfileLists.get(position).setIsApproved(Constants.APPROVE);
-//            matrimonyProfileListRecyclerAdapter.notifyItemChanged(position);
-//            matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-//        }
-//    }
-//
-//    private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
-//        bottomSheetDialogFragment = new SingleSelectBottomSheet(getActivity(), selectedOption, List, this::onValuesSelected);
-//        bottomSheetDialogFragment.show();
-//        bottomSheetDialogFragment.toolbarTitle.setText(Title);
-//        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT);
-//    }
 
     @Override
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
@@ -498,112 +458,17 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         }
     }
 
-    //ApproveReject Confirm dialog
-//    public void showApproveRejectDialog(final Activity context, int pos, String approvalType, String dialogMessage) {
-//        Dialog dialog;
-//        Button btnSubmit, btn_cancel;
-//        EditText edt_reason;
-//        TextView tv_message;
-//        Activity activity = context;
-//
-//        dialog = new Dialog(context);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.dialog_approve_reject_layout);
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//        tv_message = dialog.findViewById(R.id.tv_message);
-//        edt_reason = dialog.findViewById(R.id.edt_reason);
-//        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-//        btnSubmit = dialog.findViewById(R.id.btn_submit);
-//
-//        tv_message.setText(dialogMessage);
-//
-//
-//        btn_cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-//        btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (approvalType.equalsIgnoreCase(Constants.APPROVE)) {
-//                    callApproveAPI(pos);
-//                }
-//                dialog.dismiss();
-//            }
-//        });
-//        dialog.show();
-//
-//    }
-
-
-//    public String showReasonDialog(final Activity context, int pos) {
-//        Dialog dialog;
-//        Button btnSubmit, btn_cancel;
-//        EditText edt_reason;
-//        Activity activity = context;
-//
-//        dialog = new Dialog(context);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.dialog_reason_layout);
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//
-//        edt_reason = dialog.findViewById(R.id.edt_reason);
-//        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-//        btnSubmit = dialog.findViewById(R.id.btn_submit);
-//
-//        btn_cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String strReason = edt_reason.getText().toString();
-//
-//                if (TextUtils.isEmpty(strReason)) {
-//                    Util.logger("Empty Reason", "Reason Can not be blank");
-//                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-//                                    .findViewById(android.R.id.content), "Reason Can not be blank",
-//                            Snackbar.LENGTH_LONG);
-//                } else {
-//                    onReceiveReason(strReason, pos);
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//        dialog.show();
-//        return "";
-//    }
-
-//    public void onReceiveReason(String strReason, int pos) {
-//        callRejectAPI(strReason, pos);
-//    }
-
-//    public void onNewProfileFetched(String requestID, AllUserData newUserResponse) {
-//        loading = true;
-//        nextPageUrl = newUserResponse.getNextPageUrl();
-//        //showUserProfileList(newUserResponse.getData());
-//    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
-            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
-            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT, -1);
-            if (receivedPos != -1) {
-                userProfileLists.set(receivedPos, listItem);
-                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
-            }
-        }
+//        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
+//            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
+//            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT, -1);
+//            if (receivedPos != -1) {
+//                userProfileLists.set(receivedPos, listItem);
+//                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
+//            }
+//        }
 
     }
 }

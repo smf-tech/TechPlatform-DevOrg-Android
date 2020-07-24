@@ -5,7 +5,7 @@
         android:title="Missing Info" />
     <item
         android:id="@+id/action_block"
-        android:title="Block" />
+        android:title="Ban User" />
     <item
         android:id="@+id/action_call"
         android:title="Call User" />

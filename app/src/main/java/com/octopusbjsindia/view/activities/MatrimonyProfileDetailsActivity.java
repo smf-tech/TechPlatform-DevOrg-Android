@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
@@ -62,13 +63,13 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private ViewPager vpProfileImage;
     private CircleIndicator indicator;
     private String approvalType;
-private int receivedPos = -1;
+    private int receivedPos = -1;
     //personal
-    private TextView tv_gender,tv_name, tv_birth_date, tv_birth_time, tv_age,
+    private TextView tv_gender, tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
             tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink;
     //educational and fammily
-    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income,tv_degree,
+    private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income, tv_degree,
             tv_family_type, tv_sakha_gotra_1, tv_sakha_gotra_2, tv_sakha_gotra_3, tv_sakha_gotra_4,
             tv_father_fullname, tv_father_occupation, tv_mother_fullname, tv_mother_occupation, tv_family_income,
             tv_brothers_fullname, tv_sisters;
@@ -77,9 +78,9 @@ private int receivedPos = -1;
     //other
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
     private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
-    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids,btn_verify_edu,btn_verify_profile;
+    private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids, btn_verify_edu, btn_verify_profile;
     private TextView tv_approval_status, tv_premium;
-    private String meetIdReceived="";
+    private String meetIdReceived = "";
     private RelativeLayout progressBar;
     private boolean isBlock;
 
@@ -95,7 +96,7 @@ private int receivedPos = -1;
             userProfileList = gson.fromJson(filterTypeReceived, UserProfileList.class);
         }
         meetIdReceived = getIntent().getStringExtra("meetid");
-        receivedPos = getIntent().getIntExtra("selectedPos",-1);
+        receivedPos = getIntent().getIntExtra("selectedPos", -1);
         docRequestOptions = new RequestOptions().placeholder(R.drawable.ic_doc_placeholder);
         docRequestOptions = docRequestOptions.apply(RequestOptions.noTransformation());
         certificateRequestOptions = new RequestOptions().placeholder(R.drawable.ic_certifcate_placeholder);
@@ -346,6 +347,7 @@ private int receivedPos = -1;
             findViewById(R.id.ly_id_varified).setVisibility(View.GONE);
         }
     }
+
     private void setApprovelFlag() {
         setFlags();
         //tv_approval_status.setText(userProfileList.getIsApproved());
@@ -375,24 +377,25 @@ private int receivedPos = -1;
             //findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         }
 
-        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
-            if(!TextUtils.isEmpty(meetIdReceived)){
-            if (userProfileList.isMarkAttendance()) {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_mark_attendance.setEnabled(false);
-                if (userProfileList.isInterviewDone()) {
+        if (userProfileList.getIsApproved()!=null
+                && userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
+            if (!TextUtils.isEmpty(meetIdReceived)) {
+                if (userProfileList.isMarkAttendance()) {
+                    btn_interview_done.setVisibility(View.VISIBLE);
+                    btn_mark_attendance.setVisibility(View.VISIBLE);
+                    btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                    btn_mark_attendance.setEnabled(false);
+                    if (userProfileList.isInterviewDone()) {
+                        btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                        btn_interview_done.setEnabled(false);
+                    }
+                } else {
+                    btn_interview_done.setVisibility(View.VISIBLE);
                     btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
                     btn_interview_done.setEnabled(false);
+                    btn_mark_attendance.setVisibility(View.VISIBLE);
                 }
             } else {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_interview_done.setEnabled(false);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-            }
-        }else {
                 btn_interview_done.setVisibility(View.GONE);
                 btn_mark_attendance.setVisibility(View.GONE);
             }
@@ -411,10 +414,10 @@ private int receivedPos = -1;
                 findViewById(R.id.btn_reject).setVisibility(View.GONE);
                 findViewById(R.id.btn_approve).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_verify_profile).setVisibility(View.GONE);
-            }else {
+            } else {
                 findViewById(R.id.btn_verify_profile).setVisibility(View.GONE);
             }
-        }else {
+        } else {
             findViewById(R.id.btn_approve).setVisibility(View.GONE);
             findViewById(R.id.btn_reject).setVisibility(View.GONE);
             if (!userProfileList.getMatrimonial_profile().isVerified()) {
@@ -422,6 +425,16 @@ private int receivedPos = -1;
             }
 
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Updating the flags of perticler profile from all profile list.
+        Intent updateInfo = new Intent("PROFILE_UPDATE");
+        updateInfo.putExtra("isBanned", isBlock);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(updateInfo);
+
     }
 
     @Override
@@ -449,19 +462,19 @@ private int receivedPos = -1;
                     findViewById(R.id.tv_premium).setVisibility(View.VISIBLE);
                 break;
             case R.id.ly_profile_varified:
-                if(findViewById(R.id.tv_profile_varified).getVisibility() == View.VISIBLE)
+                if (findViewById(R.id.tv_profile_varified).getVisibility() == View.VISIBLE)
                     findViewById(R.id.tv_profile_varified).setVisibility(View.GONE);
                 else
                     findViewById(R.id.tv_profile_varified).setVisibility(View.VISIBLE);
                 break;
             case R.id.ly_education_varified:
-                if(findViewById(R.id.tv_education_varified).getVisibility() == View.VISIBLE)
+                if (findViewById(R.id.tv_education_varified).getVisibility() == View.VISIBLE)
                     findViewById(R.id.tv_education_varified).setVisibility(View.GONE);
                 else
                     findViewById(R.id.tv_education_varified).setVisibility(View.VISIBLE);
                 break;
             case R.id.ly_id_varified:
-                if(findViewById(R.id.tv_id_varified).getVisibility() == View.VISIBLE)
+                if (findViewById(R.id.tv_id_varified).getVisibility() == View.VISIBLE)
                     findViewById(R.id.tv_id_varified).setVisibility(View.GONE);
                 else
                     findViewById(R.id.tv_id_varified).setVisibility(View.VISIBLE);
@@ -539,9 +552,9 @@ private int receivedPos = -1;
                 popup.setOnMenuItemClickListener(MatrimonyProfileDetailsActivity.this);
                 popup.inflate(R.menu.matrimony_profile_menu);
                 if (userProfileList.getMatrimonial_profile().isBan()) {
-                    popup.getMenu().findItem(R.id.action_block).setTitle("Unblock");
+                    popup.getMenu().findItem(R.id.action_block).setTitle("Remove ban");
                 } else {
-                    popup.getMenu().findItem(R.id.action_block).setTitle("Block");
+                    popup.getMenu().findItem(R.id.action_block).setTitle("Ban User");
                 }
                 popup.show();
                 break;
@@ -561,12 +574,12 @@ private int receivedPos = -1;
                         "YES", "NO", 3);//flag 3 for verify
                 break;
             case R.id.btn_verify_ids:
-                verifyDocument(1,true);
+                verifyDocument(1, true);
                 /*showDialog("Alert", "Are you sure, Do you want to approve?",
                         "YES", "NO", 2);//flag 3 for approve*/
                 break;
             case R.id.btn_verify_edu:
-                verifyDocument(2,true);
+                verifyDocument(2, true);
                 /*showReasonDialog("Alert", "Please write the reason for rejection.",
                         "Submit", "Cancle", 2);*/
                 break;
@@ -584,8 +597,6 @@ private int receivedPos = -1;
                 break;
 
 
-
-
         }
     }
 
@@ -601,10 +612,10 @@ private int receivedPos = -1;
                 break;
             case R.id.action_block:
                 if (userProfileList.getMatrimonial_profile().isBan()) {
-                    showDialog("Alert", "Are you sure you want to Unblock this user?",
+                    showDialog("Alert", "Are you sure you want to remove bane ?",
                             "YES", "NO", 1);//flag 1 for unblock
                 } else {
-                    showReasonDialog("Alert", "Please write the reason for blocking.",
+                    showReasonDialog("Alert", "Please write the reason for bane.",
                             "Submit", "Cancle", 1);
 //                    showDialog("Alert", "Are you sure you want to Block this user?",
 //                            "YES", "NO",2);//flag 2 for block
@@ -728,7 +739,7 @@ private int receivedPos = -1;
 
     public void updateBlockUnblock(String message) {
         userProfileList.getMatrimonial_profile().setBan(isBlock);
-        Util.showToast(message,this);
+        Util.showToast(message, this);
     }
 
     public void updateRequestStatus(String response) {
@@ -748,26 +759,26 @@ private int receivedPos = -1;
         }
     }
 
-    public void updateVerificationStatus(int type, String message){
-        if (type==3){
+    public void updateVerificationStatus(int type, String message) {
+        if (type == 3) {
             /*btn_verify_ids.setEnabled(false);
             btn_verify_ids.setText("Verified");*/
             userProfileList.getMatrimonial_profile().setVerified(true);
             setFlags();
-            Util.showToast(message,this);
-        }else if (type==1){
+            Util.showToast(message, this);
+        } else if (type == 1) {
             btn_verify_ids.setEnabled(false);
             btn_verify_ids.setText("Verified");
             userProfileList.getMatrimonial_profile().setIdApproved(true);
             setFlags();
-            Util.showToast(message,this);
+            Util.showToast(message, this);
 
-        }else {
+        } else {
             btn_verify_edu.setEnabled(false);
             btn_verify_edu.setText("Verified");
             userProfileList.getMatrimonial_profile().setEducationApproved(true);
             setFlags();
-            Util.showToast(message,this);
+            Util.showToast(message, this);
         }
 
     }
@@ -805,7 +816,7 @@ private int receivedPos = -1;
                         isBlock = true;
                     } else if (flag == 2) {
                         Map<String, String> request = new HashMap<>();
-                        if(TextUtils.isEmpty(meetIdReceived)){
+                        if (TextUtils.isEmpty(meetIdReceived)) {
                             request.put("type", " ");
                             request.put("approval", Constants.APPROVE);
                             request.put("user_id", userProfileList.get_id());
@@ -878,7 +889,7 @@ private int receivedPos = -1;
                     isBlock = false;
                 } else if (flag == 2) {
                     Map<String, String> request = new HashMap<>();
-                    if(TextUtils.isEmpty(meetIdReceived)){
+                    if (TextUtils.isEmpty(meetIdReceived)) {
                         request.put("type", " ");
                         request.put("approval", Constants.APPROVE);
                         request.put("user_id", userProfileList.get_id());
@@ -892,7 +903,7 @@ private int receivedPos = -1;
                     Gson gson = new GsonBuilder().create();
                     String json = gson.toJson(request);
                     presenter.approveRejectRequest(json);
-                }else if (flag == 4) {
+                } else if (flag == 4) {
                     if (!TextUtils.isEmpty(tv_primary_mobile.getText()))
                         try {
                             Intent dial = new Intent();
@@ -902,7 +913,7 @@ private int receivedPos = -1;
                         } catch (Exception e) {
                             Log.e("Calling Phone", "" + e.getMessage());
                         }
-                }else if (flag == 5) {
+                } else if (flag == 5) {
                     if (!TextUtils.isEmpty(tv_secondary_mobile.getText()))
                         try {
                             Intent dial = new Intent();
@@ -912,15 +923,15 @@ private int receivedPos = -1;
                         } catch (Exception e) {
                             Log.e("Calling Phone", "" + e.getMessage());
                         }
-                }else if (flag == 6){
+                } else if (flag == 6) {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:"+tv_primary_email.getText())); // only email apps should handle this
+                    intent.setData(Uri.parse("mailto:" + tv_primary_email.getText())); // only email apps should handle this
                     intent.putExtra(Intent.EXTRA_EMAIL, tv_primary_email.getText());
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
                     }
-                }else if (flag == 3){
-                    verifyDocument(3,true);
+                } else if (flag == 3) {
+                    verifyDocument(3, true);
                 }
             });
         }
@@ -939,24 +950,25 @@ private int receivedPos = -1;
         dialog.show();
     }
 
-    private void verifyDocument(int type ,boolean approveReject){
+    private void verifyDocument(int type, boolean approveReject) {
         // type 1 ID  type 2 education type 3 user verification
         //"identification_type":"ID/Education",
-          //      "action_type":false/true
+        //      "action_type":false/true
         String paramjson = new Gson().toJson(getVerifyDocReqJson(type, approveReject));
-        presenter.approveRejectDocumentsRequest(paramjson,type);
+        presenter.approveRejectDocumentsRequest(paramjson, type);
     }
-    public JsonObject getVerifyDocReqJson(int type,boolean approveReject) {
+
+    public JsonObject getVerifyDocReqJson(int type, boolean approveReject) {
         JsonObject requestObject = new JsonObject();
         if (type == 3) {
             requestObject.addProperty("identification_type", "verification");
             requestObject.addProperty("user_id", userProfileList.get_id());
             requestObject.addProperty("action_type", approveReject);
-        }else if (type == 1) {
+        } else if (type == 1) {
             requestObject.addProperty("identification_type", "ID");
             requestObject.addProperty("user_id", userProfileList.get_id());
             requestObject.addProperty("action_type", approveReject);
-        }else {
+        } else {
             requestObject.addProperty("identification_type", "Education");
             requestObject.addProperty("user_id", userProfileList.get_id());
             requestObject.addProperty("action_type", approveReject);
@@ -967,10 +979,10 @@ private int receivedPos = -1;
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, userProfileList);
-        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, receivedPos);
-        setResult(Constants.MatrimonyModule.FLAG_UPDATE_RESULT, returnIntent);
+//        Intent returnIntent = new Intent();
+//        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_DATA, userProfileList);
+//        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, receivedPos);
+//        setResult(Constants.MatrimonyModule.FLAG_UPDATE_RESULT, returnIntent);
         finish();
     }
 }

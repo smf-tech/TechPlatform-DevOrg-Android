@@ -163,6 +163,21 @@
                     android:layout_margin="@dimen/dimen_10dp"
                     android:orientation="vertical">
 
+                    <!--minAge - maxAge-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:text="Meet Type" />
+                    <TextView
+                        android:id="@+id/tvMeetType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular" />
+
                     <TextView
                         android:id="@+id/tv_meet_date"
                         android:layout_width="wrap_content"
@@ -208,6 +223,17 @@
                         android:gravity="center"
                         android:text="Contacts" />
 
+                    <TextView
+                        android:id="@+id/tvMeetWebLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_15dp"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:gravity="center"
+                        android:autoLink="web"
+                        android:drawableLeft="@drawable/ic_weblink"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_meet_organizer"
                         android:layout_width="wrap_content"
@@ -240,6 +266,7 @@
                         android:layout_marginTop="@dimen/dimen_15dp"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
+                        android:drawableStart="@drawable/ic_meet_payment_info"
                         android:text="Payment Information" />
 
                     <TextView
@@ -291,8 +318,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/dimen_10dp"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="Meet Criteria" />
                         <!--minAge - maxAge-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:text="Age" />
                         <TextView
                             android:id="@+id/tvMinMaxAge"
                             android:layout_width="wrap_content"
@@ -303,6 +337,12 @@
 
                         <!--education-->
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:text="Education" />
+                        <TextView
                             android:id="@+id/tvEducation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -310,6 +350,12 @@
                             android:drawablePadding="@dimen/dimen_05dp"
                             android:fontFamily="@font/opensans_regular" />
                         <!--Marital status-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:text="Marital status-" />
                         <TextView
                             android:id="@+id/tvMaritalStatus"
                             android:layout_width="wrap_content"
@@ -326,6 +372,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_10dp"
                         android:drawablePadding="@dimen/dimen_05dp"
+                        android:drawableStart="@drawable/ic_meet_note"
                         android:fontFamily="@font/opensans_semibold"
                         android:text="Note" />
 
