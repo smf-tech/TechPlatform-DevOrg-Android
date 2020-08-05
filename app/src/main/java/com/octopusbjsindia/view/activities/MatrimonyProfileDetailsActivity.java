@@ -374,25 +374,25 @@ private int receivedPos = -1;
             findViewById(R.id.ly_meet_verified).setVisibility(View.GONE);
             //findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         }
-
-        if (userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
-            if(!TextUtils.isEmpty(meetIdReceived)){
-            if (userProfileList.isMarkAttendance()) {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-                btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_mark_attendance.setEnabled(false);
-                if (userProfileList.isInterviewDone()) {
+        if (userProfileList.getUserMeetStatus()!=null) {
+        if (userProfileList.getUserMeetStatus().equalsIgnoreCase("approved")) {
+            if (!TextUtils.isEmpty(meetIdReceived)) {
+                if (userProfileList.isMarkAttendance()) {
+                    btn_interview_done.setVisibility(View.VISIBLE);
+                    btn_mark_attendance.setVisibility(View.VISIBLE);
+                    btn_mark_attendance.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                    btn_mark_attendance.setEnabled(false);
+                    if (userProfileList.isInterviewDone()) {
+                        btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
+                        btn_interview_done.setEnabled(false);
+                    }
+                } else {
+                    btn_interview_done.setVisibility(View.VISIBLE);
                     btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
                     btn_interview_done.setEnabled(false);
+                    btn_mark_attendance.setVisibility(View.VISIBLE);
                 }
             } else {
-                btn_interview_done.setVisibility(View.VISIBLE);
-                btn_interview_done.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.button_gray_color));
-                btn_interview_done.setEnabled(false);
-                btn_mark_attendance.setVisibility(View.VISIBLE);
-            }
-        }else {
                 btn_interview_done.setVisibility(View.GONE);
                 btn_mark_attendance.setVisibility(View.GONE);
             }
@@ -400,6 +400,12 @@ private int receivedPos = -1;
             btn_interview_done.setVisibility(View.GONE);
             btn_mark_attendance.setVisibility(View.GONE);
         }
+    }else {
+            btn_interview_done.setVisibility(View.GONE);
+            btn_mark_attendance.setVisibility(View.GONE);
+        }
+
+
         if (!TextUtils.isEmpty(meetIdReceived)) {
             if (userProfileList.getUserMeetStatus().toLowerCase().startsWith("a")) {
                 findViewById(R.id.btn_reject).setVisibility(View.VISIBLE);
