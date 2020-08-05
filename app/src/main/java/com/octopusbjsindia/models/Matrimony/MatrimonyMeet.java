@@ -23,6 +23,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("venue")
     @Expose
     private String venue;
+    @SerializedName("meetWebLink")
+    @Expose
+    private String meetWebLink;
     @SerializedName("schedule")
     @Expose
     private MeetSchedule schedule;
@@ -113,6 +116,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getMeetWebLink() {
+        return meetWebLink;
+    }
+
+    public void setMeetWebLink(String meetWebLink) {
+        this.meetWebLink = meetWebLink;
     }
 
     public MeetSchedule getSchedule() {

@@ -244,7 +244,7 @@
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_all_candidate"
+        app:icon="@drawable/ic_blockd_user"
         app:iconTint="@color/white"
         android:visibility="gone" />
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -255,11 +255,11 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Banged User"
+        android:text="Banned User"
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_all_candidate"
+        app:icon="@drawable/ic_banned"
         app:iconTint="@color/white"
         android:visibility="gone" />
 

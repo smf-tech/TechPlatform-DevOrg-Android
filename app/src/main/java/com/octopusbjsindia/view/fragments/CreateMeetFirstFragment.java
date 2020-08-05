@@ -56,6 +56,8 @@ import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,13 +67,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import me.bendik.simplerangeview.SimpleRangeView;
+
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.TAG;
 
 public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener,
         RadioGroup.OnCheckedChangeListener, APIDataListener, CustomSpinnerListener {
 
-    private TextView tvMeetType, tvMeetCountry, tvMeetState, tvMeetCity, tvCriteria;
+    private TextView tvMeetType, tvMeetCountry, tvMeetState, tvMeetCity, tvCriteria, tvMinAge, tvMaxAge;
     private Button btnFirstPartMeet;
     private ImageView ivBanner;
     private ArrayList<CustomSpinnerObject> meetTypesList = new ArrayList<>();
@@ -81,8 +85,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
     private String selectedMeetType, selectedCountry, selectedState, selectedCity,
             selectedCountryId, selectedStateId, selectedCityId;
-    private EditText edtMeetName, edtMeetVenue, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
-            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etMinAge, etMaxAge, etPaymentInfo ,etNote;
+    private EditText edtMeetName, edtMeetVenue, etMeetWebLink, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
+            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo ,etNote;
+    private SimpleRangeView rangeView;
     private RadioGroup rgPaidFree, rgOnlinePayment;
     private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
@@ -136,6 +141,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         btnFirstPartMeet.setOnClickListener(this);
         edtMeetName = view.findViewById(R.id.edit_meet_name);
         edtMeetVenue = view.findViewById(R.id.edit_meet_venue);
+        etMeetWebLink = view.findViewById(R.id.etMeetWebLink);
         edtMeetDate = view.findViewById(R.id.edt_meet_date);
         edtMeetDate.setOnClickListener(this);
         edtMeetStartTime = view.findViewById(R.id.edt_start_time);
@@ -158,12 +164,35 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ivBanner = view.findViewById(R.id.ivBanner);
         etEducation = view.findViewById(R.id.etEducation);
         etMaritalStatus = view.findViewById(R.id.etMaritalStatus);
-        etMinAge = view.findViewById(R.id.etMinAge);
-        etMaxAge = view.findViewById(R.id.etMaxAge);
         tvCriteria = view.findViewById(R.id.tvCriteria);
         lyCriteria = view.findViewById(R.id.lyCriteria);
         etPaymentInfo = view.findViewById(R.id.etPaymentInfo);
         etNote = view.findViewById(R.id.etNote);
+
+        tvMinAge = view.findViewById(R.id.tvMinAge);
+        tvMaxAge = view.findViewById(R.id.tvMaxAge);
+        rangeView = view.findViewById(R.id.fixed_rangeview);
+        rangeView.setCount(48);
+        rangeView.setStart(0);
+        rangeView.setEnd(48);
+        rangeView.setStartFixed(0);
+        rangeView.setEndFixed(48);
+        tvMinAge.setText(String.valueOf(rangeView.getStart()+18));
+        tvMaxAge.setText(String.valueOf(rangeView.getEnd()+18));
+
+        rangeView.setOnTrackRangeListener(new SimpleRangeView.OnTrackRangeListener() {
+            @Override
+            public void onStartRangeChanged(@NotNull SimpleRangeView rangeView, int start) {
+                start = start + 18 ;
+                tvMinAge.setText(String.valueOf(start));
+            }
+
+            @Override
+            public void onEndRangeChanged(@NotNull SimpleRangeView rangeView, int end) {
+                end = end + 18 ;
+                tvMaxAge.setText(String.valueOf(end));
+            }
+        });
 
         userInfo = Util.getUserObjectFromPref();
         if (((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getVenue() != null &&
@@ -406,22 +435,27 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             }
         }
 //        if(lyCriteria.getVisibility() == View.VISIBLE){
-        if (TextUtils.isEmpty(etMaxAge.getText().toString())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please add Minimum age in meet criteria",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etMinAge.getText().toString())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please add Maximum age in meet criteria",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        } else if (Integer.parseInt(etMaxAge.getText().toString()) < Integer.parseInt(etMinAge.getText().toString())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Minimum age should be minimum than maximum age",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
+//        if (TextUtils.isEmpty(tvMinAge.getText().toString())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                            .findViewById(android.R.id.content), "Please add Minimum age in meet criteria",
+//                    Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etMinAge.getText().toString())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                            .findViewById(android.R.id.content), "Please add Maximum age in meet criteria",
+//                    Snackbar.LENGTH_LONG);
+//            return false;
+//        }  else if (18 > Integer.parseInt(etMinAge.getText().toString())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                            .findViewById(android.R.id.content), "Minimum age should be 18 or greater.",
+//                    Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (Integer.parseInt(etMaxAge.getText().toString()) < Integer.parseInt(etMinAge.getText().toString())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+//                            .findViewById(android.R.id.content), "Minimum age should be minimum than maximum age",
+//                    Snackbar.LENGTH_LONG);
+//            return false;
+//        }
 //        }
         return true;
     }
@@ -436,6 +470,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         location.setCity(selectedCityId);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setLocation(location);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setVenue(edtMeetVenue.getText().toString().trim());
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetWebLink(etMeetWebLink.getText().toString().trim());
         MeetSchedule meetSchedule = new MeetSchedule();
         meetSchedule.setDateTime(Util.dateTimeToTimeStamp(edtMeetDate.getText().toString(), edtMeetStartTime.getText().toString()));
         meetSchedule.setMeetStartTime(edtMeetStartTime.getText().toString());
@@ -458,8 +493,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setNote(etNote.getText().toString());
         if (lyCriteria.getVisibility() == View.VISIBLE) {
             MeetCriteria meetCriteria = new MeetCriteria();
-            meetCriteria.setMinAge(Integer.parseInt(etMinAge.getText().toString()));
-            meetCriteria.setMaxAge(Integer.parseInt(etMaxAge.getText().toString()));
+            meetCriteria.setMinAge(Integer.parseInt(tvMinAge.getText().toString()));
+            meetCriteria.setMaxAge(Integer.parseInt(tvMaxAge.getText().toString()));
             meetCriteria.setQualificationCriteria(selectedQualificationDegreeList);
             meetCriteria.setMaritalCriteria(selectedMaritalStatusList);
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetCriteria(meetCriteria);

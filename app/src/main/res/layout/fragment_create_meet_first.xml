@@ -157,6 +157,23 @@
                             android:inputType="textMultiLine|textCapWords" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tlyMeetWebLink"
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                        <EditText
+                            android:id="@+id/etMeetWebLink"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="Meet Weblink"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <!--Start Date-->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tly_meet_date"
@@ -416,38 +433,44 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/dimen_05dp"
-                            android:text="Add Meet Criteria" />
-                        <!--tly_minAge-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tlyMinAge"
-                            style="@style/textinputstyle"
+                            android:text="Add Meet Criteria"
+                            android:fontFamily="@font/opensans_semibold"/>
+                        <!--tly_minAge &max Age-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/age_range"
+                            android:layout_marginTop="@dimen/dimen_10dp" />
+
+                        <me.bendik.simplerangeview.SimpleRangeView
+                            android:id="@+id/fixed_rangeview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_10dp">
+                            android:layout_marginTop="@dimen/dimen_10dp" />
 
-                            <EditText
-                                android:id="@+id/etMinAge"
-                                style="@style/RegistrationEditTextLayout"
-                                android:hint="Minimum age"
-                                android:inputType="number"
-                                android:maxLength="50" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!--tly_maxAge-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tlyMaxAge"
-                            style="@style/textinputstyle"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_10dp">
+                            android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/etMaxAge"
-                                style="@style/RegistrationEditTextLayout"
-                                android:hint="Maximum age"
-                                android:inputType="number"
-                                android:maxLength="50" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                            <TextView
+                                android:id="@+id/tvMinAge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dimen_20dp"
+                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:layout_marginLeft="@dimen/dimen_20dp" />
+
+                            <TextView
+                                android:id="@+id/tvMaxAge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dimen_20dp"
+                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="@dimen/dimen_20dp" />
+
+                        </RelativeLayout>
+
 
                         <!--education-->
                         <com.google.android.material.textfield.TextInputLayout

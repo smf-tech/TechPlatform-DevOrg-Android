@@ -64,7 +64,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private String mobileNumberEntered = "";
     private MatrimonyMeet meetData;
 
-    private TextView tvMeetTitle, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvRegAmt, tvRegPeriod,
+    private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvMeetWebLink,tvRegAmt, tvRegPeriod,
             tvBadgesInfo, btnViewProfiles, btnRegisterProfile, tvPaymentInfo, tvMinMaxAge, tvEducation,
             tvMaritalStatus, tvNote;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
@@ -124,10 +124,12 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
         tvMeetTitle = view.findViewById(R.id.tv_meet_title);
+        tvMeetType = view.findViewById(R.id.tvMeetType);
         tvMeetDate = view.findViewById(R.id.tv_meet_date);
         tvMeetTime = view.findViewById(R.id.tv_meet_time);
         tvMeetCity = view.findViewById(R.id.tv_meet_city);
         tvMeetVenue = view.findViewById(R.id.tv_meet_venue);
+        tvMeetWebLink = view.findViewById(R.id.tvMeetWebLink);
         tvRegAmt = view.findViewById(R.id.tv_reg_amt);
         tvRegPeriod = view.findViewById(R.id.tv_reg_period);
         tvBadgesInfo = view.findViewById(R.id.tv_badges_info);
@@ -282,11 +284,13 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             btnPublishMeet.setVisibility(View.VISIBLE);
         }
         tvMeetTitle.setText(meetData.getTitle());
+        tvMeetType.setText(meetData.getMeetType());
         tvMeetDate.setText(Util.getDateFromTimestamp(meetData.getSchedule().getDateTime(), DAY_MONTH_YEAR));
         tvMeetTime.setText(Util.getAmPmTimeStringFromTimeString(meetData.getSchedule().getMeetStartTime()) + " - " +
                 Util.getAmPmTimeStringFromTimeString(meetData.getSchedule().getMeetEndTime()));
         tvMeetCity.setText(meetData.getLocation().getCity());
         tvMeetVenue.setText(meetData.getVenue());
+        tvMeetWebLink.setText(meetData.getMeetWebLink());
         tvRegAmt.setText(String.valueOf(meetData.getRegAmount()));
         tvRegPeriod.setText(Util.getDateFromTimestamp(meetData.getRegistrationSchedule().getRegStartDateTime(),
                 DAY_MONTH_YEAR) + " - " +
@@ -294,9 +298,9 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
         tvPaymentInfo.setText(meetData.getPaymentInfo());
         if (meetData.getMeetCriteria() != null) {
-            tvMinMaxAge.setText("Age: " + meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
+            tvMinMaxAge.setText(meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
             if (meetData.getMeetCriteria().getQualificationCriteria() != null && meetData.getMeetCriteria().getQualificationCriteria().size() > 0) {
-                tvEducation.setText("Education: " + TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
+                tvEducation.setText( TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
             } else {
                 tvEducation.setVisibility(View.GONE);
             }
