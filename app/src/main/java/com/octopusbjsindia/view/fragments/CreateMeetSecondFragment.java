@@ -44,19 +44,19 @@ import java.util.Objects;
 public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener,CustomSpinnerListener {
 
     private CreateMeetSecondFragmentPresenter createMeetSecondFragmentPresenter;
-    private TextView tvMeetOrganizers, tvMeetReferences;
+    private TextView tvMeetSubordinates; //tvMeetOrganizers,
     private Button btnSecondPartMeet, btnPublishMeet;
-    RecyclerView rvMeetOrganizer, rvMeetReference;
-    private MeetOrganizersReferencesAdapter meetOrganizersListAdapter, meetReferencesListAdapter;
+    RecyclerView rvMeetSubordiantes;//rvMeetOrganizer,
+    private MeetOrganizersReferencesAdapter meetSubordinatesAdapter;//, meetOrganizersListAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = CreateMeetSecondFragment.class.getName();
-    private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> nonOrganizersSpinnerList = new ArrayList<>();
-    private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
-    private ArrayList<MatrimonyUserDetails> nonOrganizersList = new ArrayList<>();
-    ArrayList<MatrimonyUserDetails> selectedOrganizersList = new ArrayList<>();
-    ArrayList<MatrimonyUserDetails> selectedNonOrganizersList = new ArrayList<>();
+    //private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> subordinatesSpinnerList = new ArrayList<>();
+    //private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
+    private ArrayList<MatrimonyUserDetails> subordinatesList = new ArrayList<>();
+    //ArrayList<MatrimonyUserDetails> selectedOrganizersList = new ArrayList<>();
+    ArrayList<MatrimonyUserDetails> selectedSubordinatesList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,30 +79,31 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     private void init(View view) {
         progressBarLayout = view.findViewById(R.id.profile_act_progress_bar);
         progressBar = view.findViewById(R.id.pb_profile_act);
-        tvMeetOrganizers = view.findViewById(R.id.tv_meet_organizers);
-        tvMeetOrganizers.setOnClickListener(this);
-        tvMeetReferences = view.findViewById(R.id.tv_meet_references);
-        tvMeetReferences.setOnClickListener(this);
+//        tvMeetOrganizers = view.findViewById(R.id.tv_meet_organizers);
+//        tvMeetOrganizers.setOnClickListener(this);
+        tvMeetSubordinates = view.findViewById(R.id.tv_meet_subordinates);
+        tvMeetSubordinates.setOnClickListener(this);
         btnSecondPartMeet = view.findViewById(R.id.btn_save_meet);
         btnSecondPartMeet.setOnClickListener(this);
         btnPublishMeet = view.findViewById(R.id.btn_publish_meet);
         btnPublishMeet.setOnClickListener(this);
 
-        rvMeetOrganizer = view.findViewById(R.id.rv_meet_organizer);
-        meetOrganizersListAdapter = new MeetOrganizersReferencesAdapter(selectedOrganizersList);
-        rvMeetOrganizer.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvMeetOrganizer.setAdapter(meetOrganizersListAdapter);
+//        rvMeetOrganizer = view.findViewById(R.id.rv_meet_organizer);
+//        meetOrganizersListAdapter = new MeetOrganizersReferencesAdapter(selectedOrganizersList);
+//        rvMeetOrganizer.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        rvMeetOrganizer.setAdapter(meetOrganizersListAdapter);
 
-        rvMeetReference = view.findViewById(R.id.rv_meet_reference);
-        meetReferencesListAdapter = new MeetOrganizersReferencesAdapter(selectedNonOrganizersList);
-        rvMeetReference.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvMeetReference.setAdapter(meetReferencesListAdapter);
+        rvMeetSubordiantes = view.findViewById(R.id.rv_meet_subordinates);
+        meetSubordinatesAdapter = new MeetOrganizersReferencesAdapter(selectedSubordinatesList);
+        rvMeetSubordiantes.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvMeetSubordiantes.setAdapter(meetSubordinatesAdapter);
         createMeetSecondFragmentPresenter = new CreateMeetSecondFragmentPresenter(this);
-        createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).
-                getMatrimonyMeet().getLocation()
-                .getCountry(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
-                .getState(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
-                .getCity());
+//        createMeetSecondFragmentPresenter.getMatrimonyUsersList(((CreateMatrimonyMeetActivity) getActivity()).
+//                getMatrimonyMeet().getLocation()
+//                .getCountry(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+//                .getState(),((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().getLocation()
+//                .getCity());
+        createMeetSecondFragmentPresenter.getMatrimonySubordinatesList();
     }
 
     @Override
@@ -120,15 +121,16 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                 }
                 break;
 
-            case R.id.tv_meet_organizers:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList,
-                        true);
-                cdd.show();
-                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
-            case R.id.tv_meet_references:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this, "Contact person", nonOrganizersSpinnerList,
+//            case R.id.tv_meet_organizers:
+//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList,
+//                        true);
+//                cdd.show();
+//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
+            case R.id.tv_meet_subordinates:
+                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Team Members", subordinatesSpinnerList,
                         true);
                 cdd1.show();
                 cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -205,67 +207,70 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         getActivity().finish();
     }
 
-    public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonyRolesUsersList) {
-        if (matrimonyRolesUsersList.size() > 0) {
-            for (MatrimonyRolesUsers matrimonyRole : matrimonyRolesUsersList) {
-                for (MatrimonyUserDetails matrimonyUserDetails : matrimonyRole.getUserDetails()) {
-                    matrimonyUserDetails.setRoleName(matrimonyRole.getDisplayName());
+    public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonySubordinatesList) {
+        if (matrimonySubordinatesList.size() > 0) {
+            for (MatrimonyRolesUsers matrimonyRole : matrimonySubordinatesList) {
+                for (MatrimonyUserDetails matrimonySubordinateDetails : matrimonyRole.getUserDetails()) {
+                    matrimonySubordinateDetails.setRoleName(matrimonyRole.getDisplayName());
 
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                    customSpinnerObject.set_id(matrimonyUserDetails.getId());
-                    customSpinnerObject.setName(matrimonyUserDetails.getName());
+                    customSpinnerObject.set_id(matrimonySubordinateDetails.getId());
+                    customSpinnerObject.setName(matrimonySubordinateDetails.getName());
                     customSpinnerObject.setSelected(false);
 
-                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
-                        //if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
-                        organizersList.add(matrimonyUserDetails);
-                        organizersSpinnerList.add(customSpinnerObject);
-                    } else {
-                        nonOrganizersList.add(matrimonyUserDetails);
-                        nonOrganizersSpinnerList.add(customSpinnerObject);
-                    }
+//                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
+//                        //if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
+//                        organizersList.add(matrimonySubordinateDetails);
+//                        organizersSpinnerList.add(customSpinnerObject);
+//                    } else {
+//                        nonOrganizersList.add(matrimonySubordinateDetails);
+//                        nonOrganizersSpinnerList.add(customSpinnerObject);
+//                    }
+                    subordinatesList.add(matrimonySubordinateDetails);
+                    subordinatesSpinnerList.add(customSpinnerObject);
                 }
             }
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "No Organizers or References found at your meet location." +
-                            "You need to add Oragnizers and References at meet location.",
+                            .findViewById(android.R.id.content), "No members found in your team." +
+                            "You need to add members.",
                     Snackbar.LENGTH_LONG);
         }
     }
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-        if (type.equalsIgnoreCase("Organizers")) {
-            selectedOrganizersList.clear();
-            for (CustomSpinnerObject c : organizersSpinnerList) {
-                if (c.isSelected()) {
-                    for (MatrimonyUserDetails m : organizersList) {
-                        if (m.getId().equals(c.get_id())) {
-                            selectedOrganizersList.add(m);
-                        }
-                    }
-                }
-            }
-            meetOrganizersListAdapter.notifyDataSetChanged();
-        } else if (type.equalsIgnoreCase("Contact person")) {
-            selectedNonOrganizersList.clear();
-            for (CustomSpinnerObject cReference : nonOrganizersSpinnerList) {
+//        if (type.equalsIgnoreCase("Organizers")) {
+//            selectedOrganizersList.clear();
+//            for (CustomSpinnerObject c : organizersSpinnerList) {
+//                if (c.isSelected()) {
+//                    for (MatrimonyUserDetails m : organizersList) {
+//                        if (m.getId().equals(c.get_id())) {
+//                            selectedOrganizersList.add(m);
+//                        }
+//                    }
+//                }
+//            }
+//            meetOrganizersListAdapter.notifyDataSetChanged();
+//        } else
+        if (type.equalsIgnoreCase("Team Members")) {
+            selectedSubordinatesList.clear();
+            for (CustomSpinnerObject cReference : subordinatesSpinnerList) {
                 if (cReference.isSelected()) {
-                    for (MatrimonyUserDetails mReference : nonOrganizersList) {
+                    for (MatrimonyUserDetails mReference : subordinatesList) {
                         if (mReference.getId().equals(cReference.get_id())) {
-                            selectedNonOrganizersList.add(mReference);
+                            selectedSubordinatesList.add(mReference);
                         }
                     }
                 }
             }
-            meetReferencesListAdapter.notifyDataSetChanged();
+            meetSubordinatesAdapter.notifyDataSetChanged();
         }
     }
 
     private void updateMeetData(boolean isPublish) {
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetOrganizers(selectedOrganizersList);
-        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetReferences(selectedNonOrganizersList);
+        //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetOrganizers(selectedOrganizersList);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetSubordinators(selectedSubordinatesList);
         if(isPublish){
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(true);
             showPublishApiDialog("Confirmation", "This meet will be visible to users. " +
@@ -277,7 +282,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean isAllDataValid() {
-        if(selectedNonOrganizersList.size() == 0){
+        if (selectedSubordinatesList.size() == 0) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.select_meet_organizers_references_msg),
                     Snackbar.LENGTH_LONG);

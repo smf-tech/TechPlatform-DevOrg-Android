@@ -13,6 +13,7 @@
     <color name="dark_grey">#3E3E3E</color>
     <color name="grey">#a0a0a0</color>
     <color name="light_grey">#909090</color>
+    <color name="grey_light">#cccccc</color>
     <color name="lighter_grey">#eeeeee</color>
     <color name="lighter_grey_tab">#F0EFEF</color>
     <color name="lighter_grey_transparent">#EBEBEB</color>

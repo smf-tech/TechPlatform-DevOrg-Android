@@ -13,7 +13,6 @@ import com.octopusbjsindia.models.Matrimony.MatrimonyRoleUsersAPIResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
-import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.CreateMeetSecondFragment;
 
 import java.lang.ref.WeakReference;
@@ -40,18 +39,30 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference = null;
     }
 
-    public void getMatrimonyUsersList(String countryId, String stateId, String cityId){
+//    public void getMatrimonyUsersList(String countryId, String stateId, String cityId){
+//        Gson gson = new GsonBuilder().create();
+//        String paramjson = gson.toJson(getMeetOrganizersJson(Util.getUserObjectFromPref().getProjectIds().get(0).getId(),
+//                countryId, stateId, cityId));
+//
+//        final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
+//        Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
+//        fragmentWeakReference.get().showProgressBar();
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        requestCall.postDataApiCall(GET_MEET_USERS_LIST, paramjson, getMatrimonyUsersUrl);
+//    }
+
+    public void getMatrimonySubordinatesList() {
         Gson gson = new GsonBuilder().create();
-        String paramjson = gson.toJson(getMeetOrganizersJson(Util.getUserObjectFromPref().getProjectIds().get(0).getId(),
-                countryId, stateId, cityId));
 
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Matrimony.MATRIMONY_USERS_LIST);
+                + String.format(Urls.Matrimony.MATRIMONY_SUBORDINATES_LIST);
         Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MEET_USERS_LIST, paramjson, getMatrimonyUsersUrl);
+        requestCall.getDataApiCall(GET_MEET_USERS_LIST, getMatrimonyUsersUrl);
     }
 
     public void submitMeet(MatrimonyMeet matrimonyMeet){
@@ -112,8 +123,8 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
                 if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.GET_MEET_USERS_LIST)){
                     MatrimonyRoleUsersAPIResponse matrimonyRoleUsers = PlatformGson.getPlatformGsonInstance().fromJson(response, MatrimonyRoleUsersAPIResponse.class);
                     fragmentWeakReference.get().setMatrimonyUsers(matrimonyRoleUsers.getData());
-                }
-                if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)){
+
+                } else if (requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)) {
                     try {
                         fragmentWeakReference.get().onSuccessListener(requestID, response);
                     } catch (Exception e) {

@@ -109,7 +109,8 @@ public class Urls {
         public static final String MARK_ATTENDANCE_INTERVIEW_API = "api/markAttendance_interview";
         public static final String MATRIMONY_MEETS = "api/getMeet";
         public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
-        public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
+        //public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
+        public static final String MATRIMONY_SUBORDINATES_LIST = "api/getMatrimonySubordinatesList";
         public static final String SUBMIT_MEET = "api/insertMeet";
         public static final String MEET_ARCHIVE_DELETE = "api/archiveMeet/%1$s/%2$s";
         public static final String MEET_ALLOCATE_BADGES = "api/allocateBadge/%1$s/%2$s";

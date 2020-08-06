@@ -63,10 +63,9 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private View view;
     private String mobileNumberEntered = "";
     private MatrimonyMeet meetData;
-
-    private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvMeetWebLink,tvRegAmt, tvRegPeriod,
-            tvBadgesInfo, btnViewProfiles, btnRegisterProfile, tvPaymentInfo, tvMinMaxAge, tvEducation,
-            tvMaritalStatus, tvNote;
+    private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue,
+            tvMeetWebLink, tvRegAmt, tvRegPeriod, tvBadgesInfo, btnViewProfiles, btnRegisterProfile,
+            tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<MatrimonyUserDetails> contactsList = new ArrayList<>();
@@ -320,9 +319,9 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         }
 
 
-        for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetOrganizers()) {
-            contactsList.add(matrimonyUserDetails);
-        }
+//        for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetSubordinators()) {
+//            contactsList.add(matrimonyUserDetails);
+//        }
         meetAnalyticsData.addAll(meetData.getAnalytics());
         MeetAnalyticsAdapter meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.activity, meetAnalyticsData);
         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(activity,
