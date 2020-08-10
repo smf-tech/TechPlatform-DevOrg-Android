@@ -68,6 +68,7 @@
     <dimen name="standard_120">120dp</dimen>
     <dimen name="standard_180">180dp</dimen>
     <dimen name="standard_240">240dp</dimen>
+    <dimen name="standard_300">300dp</dimen>
 
     <dimen name="text_size_small_10">10sp</dimen>
     <dimen name="text_size_description_12">12sp</dimen>

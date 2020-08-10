@@ -119,6 +119,7 @@ public class Urls {
         public static final String USER_DOC_VERIFY_API = "api/documentVerificaton";
         public static final String CRITERIA_MASTER_DATA = "api/masterDataMeetCriteria";
         public static final String BANNED_USERS = "api/bannedUsers";
+        public static final String CREATE_SUBORDINATE = "api/createSubordinate";
 
         //for batches
         public static final String SHOW_MEET_BACHES = "api/group_batches/%1$s";
@@ -135,6 +136,7 @@ public class Urls {
 
         public static final String MATRIMONY_RECENTELY_JOINED_USERS = "api/newUserRegister";
         public static final String MATRIMONY_VERIFICATION_PENDING_USERS = "api/verificationPendingUser";
+        public static final String MATRIMONY_SUBORDINATE_USERS = "api/getSubordinateRoleUsers";
     }
 
     public class SSModule {
