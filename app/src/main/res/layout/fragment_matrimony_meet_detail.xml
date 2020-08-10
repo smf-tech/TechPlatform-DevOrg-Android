@@ -266,7 +266,7 @@
                         android:layout_marginTop="@dimen/dimen_15dp"
                         android:drawablePadding="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
-                        android:drawableStart="@drawable/ic_meet_payment_info"
+                        android:drawableStart="@drawable/ic_rupees_black"
                         android:text="Payment Information" />
 
                     <TextView

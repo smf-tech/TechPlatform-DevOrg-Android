@@ -119,6 +119,9 @@
             android:name=".view.activities.UserRegistrationMatrimonyActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".matrimonyregistration.RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activities.MatrimonyProfileListActivity"
             android:screenOrientation="portrait" />
         <activity

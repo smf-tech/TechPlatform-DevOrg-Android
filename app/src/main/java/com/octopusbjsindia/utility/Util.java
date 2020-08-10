@@ -497,6 +497,16 @@ public class Util {
         }
     }
 
+    public static void showToast(Context context, String msg) {
+        if (context != null) {
+            if (msg != null && msg.length() > 0) {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Please try again, something went wrong", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     public static void logger(String tag, String msg) {
         Log.e(tag, "@@@@@2" + msg);
     }

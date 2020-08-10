@@ -580,13 +580,62 @@
                                         android:text="Never Married" />
                                 </RelativeLayout>
                             </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/ly_children_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_blood_maerital_status"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                android:weightSum="2">
 
+                                <RelativeLayout
+                                    android:id="@+id/rl_children_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/tv_children_count_label"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Children" />
+
+                                    <TextView
+                                        android:id="@+id/tv_children_count"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_children_count_label" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_legally_divorce"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/tv_legal_divorce_label"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Legally divorced?" />
+
+                                    <TextView
+                                        android:id="@+id/tv_legal_divorce"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_legal_divorce_label" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
                             <!--height / weight-->
                             <LinearLayout
                                 android:id="@+id/ly_height_weight"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/ly_blood_maerital_status"
+                                android:layout_below="@+id/ly_children_info"
                                 android:orientation="horizontal"
                                 android:weightSum="2">
 
@@ -716,15 +765,14 @@
                                     android:layout_weight="1">
 
                                     <TextView
-                                        android:id="@+id/tv_disability_lable"
+                                        android:id="@+id/tv_subcaste_lable"
                                         style="@style/StyleTextViewLable"
-                                        android:text="Disability" />
+                                        android:text="Sub caste" />
 
                                     <TextView
-                                        android:id="@+id/tv_disability"
+                                        android:id="@+id/tv_subcaste"
                                         style="@style/StyleTextViewValue"
-                                        android:layout_below="@+id/tv_disability_lable"
-                                        android:text="No" />
+                                        android:layout_below="@+id/tv_subcaste_lable" />
                                 </RelativeLayout>
                             </LinearLayout>
 
@@ -773,6 +821,35 @@
                                         android:id="@+id/tv_drink"
                                         style="@style/StyleTextViewValue"
                                         android:layout_below="@+id/tv_drink_lable"
+                                        android:text="No" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                            <!--Sampraday / disability -->
+                            <LinearLayout
+                                android:id="@+id/ly_disability"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_smoke_drink"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_disability_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Disability" />
+
+                                    <TextView
+                                        android:id="@+id/tv_disability"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_disability_lable"
                                         android:text="No" />
                                 </RelativeLayout>
                             </LinearLayout>
@@ -841,6 +918,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dimen_05dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:visibility="gone"
                                     android:layout_weight="1">
 
                                     <TextView
@@ -964,7 +1042,7 @@
                                      <TextView
                                          android:id="@+id/tv_degree_lable"
                                          style="@style/StyleTextViewLable"
-                                         android:text="Degree"/>
+                                         android:text="Qualification"/>
                                      <TextView
                                          android:id="@+id/tv_degree"
                                          android:layout_below="@+id/tv_degree_lable"
@@ -1427,6 +1505,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/line4"
+                                android:visibility="gone"
                                 android:orientation="horizontal"
                                 android:weightSum="2">
 
@@ -1770,6 +1849,11 @@
 
                             <!--Aadhar / Education Certificates-->
                             <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_activity_achievements_other"
+                                android:orientation="vertical">
+                            <LinearLayout
                                 android:id="@+id/ly_aadhar_education_certificates"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1846,6 +1930,28 @@
                                 </RelativeLayout>
                             </LinearLayout>
 
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:id="@+id/ly_myproof"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_myproof_title"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Support Documents" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_myproof_certificate"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/dimen_200dp"
+                                        android:scaleType="fitXY"
+                                        android:layout_below="@+id/tv_myproof_title"
+                                        android:src="@drawable/ic_certifcate_placeholder" />
+                                </RelativeLayout>
+                            </LinearLayout>
                         </RelativeLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>

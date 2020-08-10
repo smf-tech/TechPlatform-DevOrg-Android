@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.matrimonyregistration.RegistrationActivity;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesDetailsActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -54,6 +56,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         PopupMenu.OnMenuItemClickListener, APIDataListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
+    private final String PROFILE_ID = "profileId";
     private RequestOptions docRequestOptions;
     private RequestOptions certificateRequestOptions;
     private UserProfileList userProfileList;
@@ -76,12 +79,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //Residential
     private TextView tv_address, tv_town_city, tv_state, tv_country, tv_primary_mobile, tv_secondary_mobile, tv_primary_email;
     //other
-    private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other;
-    private ImageView iv_aadhar, iv_education_certificates, toolbar_edit_action;
+    private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other,tv_myproof_title;
+    private ImageView iv_aadhar, iv_education_certificates,iv_myproof_certificate, toolbar_edit_action;
     private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids, btn_verify_edu, btn_verify_profile;
     private TextView tv_approval_status, tv_premium;
     private String meetIdReceived = "";
-    private RelativeLayout progressBar;
+    private RelativeLayout progressBar,ly_myproof;
     private boolean isBlock;
 
     @Override
@@ -211,6 +214,31 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_birth_place.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_city());
         tv_blood_group.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBlood_group());
         tv_marital_status.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status());
+
+        if (!userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
+            LinearLayout lyChildrenInfo = findViewById(R.id.ly_children_info);
+            lyChildrenInfo.setVisibility(View.VISIBLE);
+            RelativeLayout rlChildrenCount = findViewById(R.id.rl_children_count);
+            rlChildrenCount.setVisibility(View.VISIBLE);
+            TextView tvChildrenCount = findViewById(R.id.tv_children_count);
+            if (userProfileList.getMatrimonial_profile().getPersonal_details().getHaveChildren() != null) {
+                if (userProfileList.getMatrimonial_profile().getPersonal_details().getHaveChildren().equalsIgnoreCase("Yes")) {
+                    tvChildrenCount.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getChildrenCount());
+                } else {
+                    tvChildrenCount.setText("No");
+                }
+            } else {
+                tvChildrenCount.setText("Not mentioned");
+            }
+            if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Divorcee")) {
+                RelativeLayout rlLegallyDivorce = findViewById(R.id.rl_legally_divorce);
+                rlLegallyDivorce.setVisibility(View.VISIBLE);
+                TextView tvLegalDivorce = findViewById(R.id.tv_legal_divorce);
+                tvLegalDivorce.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getIsDivorcedLegal());
+            }
+        }
+
+
         tv_height.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getHeight());
         tv_weight_tile.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getWeight());
         tv_skin_tone.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getComplexion());
@@ -292,6 +320,15 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         tv_other.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getOther_remarks());
 
         //images
+
+        iv_myproof_certificate = findViewById(R.id.iv_myproof_certificate);
+        ly_myproof = findViewById(R.id.ly_myproof);
+
+
+        iv_myproof_certificate.setOnClickListener(this);
+        tv_myproof_title = findViewById(R.id.tv_myproof_title);
+        tv_myproof_title.setOnClickListener(this);
+
         iv_aadhar = findViewById(R.id.iv_aadhar);
         iv_education_certificates = findViewById(R.id.iv_education_certificates);
         iv_aadhar.setOnClickListener(this);
@@ -307,6 +344,21 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     .applyDefaultRequestOptions(certificateRequestOptions)
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
+        }
+        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url() != null) {
+            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
+                ly_myproof.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .applyDefaultRequestOptions(certificateRequestOptions)
+                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
+                        .into(iv_myproof_certificate);
+            }
+            if(userProfileList.getMatrimonial_profile().getPersonal_details().
+                    getMarital_status().equalsIgnoreCase("Divorcee")) {
+                tv_myproof_title.setText("Legal seperation certificate");
+            } else {
+                tv_myproof_title.setText("Partner's death certificate");
+            }
         }
 
         tv_primary_mobile.setOnClickListener(this);
@@ -556,6 +608,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 } else {
                     popup.getMenu().findItem(R.id.action_block).setTitle("Ban User");
                 }
+                popup.getMenu().findItem(R.id.action_edit_profile);
+
                 popup.show();
                 break;
             case R.id.btn_approve:
@@ -627,6 +681,19 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 showDialog("Alert", "Are you sure, Do you want to call user?",
                         "YES", "NO", 4);//flag 4 for call primary number
                 break;
+            case R.id.action_edit_profile:
+
+                Intent editIntent = new Intent(this, RegistrationActivity.class);
+                if (userProfileList.getMatrimonial_profile() != null) {
+                    editIntent.putExtra("matrimonialProfile", userProfileList.getMatrimonial_profile());
+                    editIntent.putExtra(PROFILE_ID, userProfileList.get_id());
+                }
+                editIntent.putExtra("Flag", 1);//for matrimonial
+                startActivity(editIntent);
+                /*showDialog("Alert", "Are you sure, Do you want to call user?",
+                        "YES", "NO", 4);//flag 4 for call primary number*/
+                break;
+
         }
         return false;
     }
