@@ -577,6 +577,7 @@
     <string name="gender_filter">Gender</string>
     <string name="user_meet_status">User status in meet</string>
     <string name="user_verification_status">User verification status</string>
+    <string name="meet_select_subordinates">Select team members</string>
 
 
 </resources>

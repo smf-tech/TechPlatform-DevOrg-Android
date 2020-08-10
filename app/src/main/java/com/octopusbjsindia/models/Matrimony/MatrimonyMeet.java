@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MatrimonyMeet implements Serializable {
     @SerializedName("_id")
@@ -44,12 +43,15 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("meetImageUrl")
     @Expose
     private String meetImageUrl;
-    @SerializedName("meetOrganizers")
+    //    @SerializedName("meetOrganizers")
+//    @Expose
+//    private List<MatrimonyUserDetails> meetOrganizers = null;
+//    @SerializedName("meetReferences")
+//    @Expose
+//    private ArrayList<MatrimonyUserDetails> meetReferences = null;
+    @SerializedName("meetSubordinators")
     @Expose
-    private List<MatrimonyUserDetails> meetOrganizers = null;
-    @SerializedName("meetReferences")
-    @Expose
-    private ArrayList<MatrimonyUserDetails> meetReferences = null;
+    private ArrayList<MatrimonyUserDetails> meetSubordinators = null;
     @SerializedName("analytics")
     @Expose
     private ArrayList<MeetAnalytics> analytics = null;
@@ -174,20 +176,28 @@ public class MatrimonyMeet implements Serializable {
         this.meetImageUrl = meetImageUrl;
     }
 
-    public List<MatrimonyUserDetails> getMeetOrganizers() {
-        return meetOrganizers;
+//    public List<MatrimonyUserDetails> getMeetOrganizers() {
+//        return meetOrganizers;
+//    }
+//
+//    public void setMeetOrganizers(List<MatrimonyUserDetails> meetOrganizers) {
+//        this.meetOrganizers = meetOrganizers;
+//    }
+//
+//    public List<MatrimonyUserDetails> getMeetReferences() {
+//        return meetReferences;
+//    }
+//
+//    public void setMeetReferences(ArrayList<MatrimonyUserDetails> meetReferences) {
+//        this.meetReferences = meetReferences;
+//    }
+
+    public ArrayList<MatrimonyUserDetails> getMeetSubordinators() {
+        return meetSubordinators;
     }
 
-    public void setMeetOrganizers(List<MatrimonyUserDetails> meetOrganizers) {
-        this.meetOrganizers = meetOrganizers;
-    }
-
-    public List<MatrimonyUserDetails> getMeetReferences() {
-        return meetReferences;
-    }
-
-    public void setMeetReferences(ArrayList<MatrimonyUserDetails> meetReferences) {
-        this.meetReferences = meetReferences;
+    public void setMeetSubordinators(ArrayList<MatrimonyUserDetails> meetSubordinators) {
+        this.meetSubordinators = meetSubordinators;
     }
 
     public ArrayList<MeetAnalytics> getAnalytics() {

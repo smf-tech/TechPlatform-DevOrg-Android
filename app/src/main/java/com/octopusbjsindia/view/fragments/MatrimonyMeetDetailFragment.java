@@ -63,10 +63,9 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private View view;
     private String mobileNumberEntered = "";
     private MatrimonyMeet meetData;
-
-    private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue, tvMeetWebLink,tvRegAmt, tvRegPeriod,
-            tvBadgesInfo, btnViewProfiles, btnRegisterProfile, tvPaymentInfo, tvMinMaxAge, tvEducation,
-            tvMaritalStatus, tvNote;
+    private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue,
+            tvMeetWebLink, tvRegAmt, tvRegPeriod, tvBadgesInfo, btnViewProfiles, btnRegisterProfile,
+            tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<MatrimonyUserDetails> contactsList = new ArrayList<>();
@@ -290,13 +289,33 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 Util.getAmPmTimeStringFromTimeString(meetData.getSchedule().getMeetEndTime()));
         tvMeetCity.setText(meetData.getLocation().getCity());
         tvMeetVenue.setText(meetData.getVenue());
-        tvMeetWebLink.setText(meetData.getMeetWebLink());
-        tvRegAmt.setText(String.valueOf(meetData.getRegAmount()));
+
+        if (meetData.getMeetWebLink() != null && meetData.getMeetWebLink().trim().length() > 0) {
+            tvMeetWebLink.setText(meetData.getMeetWebLink());
+        } else {
+            view.findViewById(R.id.tv_weblink_label).setVisibility(View.GONE);
+            tvMeetWebLink.setVisibility(View.GONE);
+        }
+
+        if (meetData.getRegAmount() == 0) {
+            tvRegAmt.setVisibility(View.GONE);
+            view.findViewById(R.id.tv_reg_free).setVisibility(View.VISIBLE);
+        } else {
+            tvRegAmt.setVisibility(View.VISIBLE);
+            tvRegAmt.setText(String.valueOf(meetData.getRegAmount()));
+            view.findViewById(R.id.tv_reg_free).setVisibility(View.GONE);
+        }
+
         tvRegPeriod.setText(Util.getDateFromTimestamp(meetData.getRegistrationSchedule().getRegStartDateTime(),
                 DAY_MONTH_YEAR) + " - " +
                 Util.getDateFromTimestamp(meetData.getRegistrationSchedule().getRegEndDateTime(), DAY_MONTH_YEAR));
 
-        tvPaymentInfo.setText(meetData.getPaymentInfo());
+        if (meetData.getPaymentInfo() != null && !TextUtils.isEmpty(meetData.getPaymentInfo())) {
+            tvPaymentInfo.setText(meetData.getPaymentInfo());
+        } else {
+            view.findViewById(R.id.tv_payment_label).setVisibility(View.GONE);
+            tvPaymentInfo.setVisibility(View.GONE);
+        }
         if (meetData.getMeetCriteria() != null) {
             tvMinMaxAge.setText(meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
             if (meetData.getMeetCriteria().getQualificationCriteria() != null && meetData.getMeetCriteria().getQualificationCriteria().size() > 0) {
@@ -310,19 +329,21 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 tvMaritalStatus.setVisibility(View.GONE);
             }
         } else {
+            view.findViewById(R.id.tv_meet_criteria_label).setVisibility(View.GONE);
             view.findViewById(R.id.lyCriteria).setVisibility(View.GONE);
         }
-        if (meetData.getNote() != null) {
+
+        if (meetData.getNote() != null && !TextUtils.isEmpty(meetData.getNote())) {
             tvNote.setText(meetData.getNote());
         } else {
             tvNote.setVisibility(View.GONE);
             view.findViewById(R.id.tvNotelbl).setVisibility(View.GONE);
         }
 
+//        for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetSubordinators()) {
+//            contactsList.add(matrimonyUserDetails);
+//        }
 
-        for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetOrganizers()) {
-            contactsList.add(matrimonyUserDetails);
-        }
         meetAnalyticsData.addAll(meetData.getAnalytics());
         MeetAnalyticsAdapter meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.activity, meetAnalyticsData);
         RecyclerView.LayoutManager mLayoutManagerLeave = new LinearLayoutManager(activity,

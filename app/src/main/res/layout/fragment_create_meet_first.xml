@@ -378,7 +378,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_semibold"
-                            android:text="Do you want to allow Online Payment?" />
+                            android:text="Do you want to allow payment throgh Community app?" />
 
                         <RadioButton
                             android:id="@+id/rb_online_yes"
@@ -420,33 +420,37 @@
                       </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Add Meet Criteria"
+                        android:fontFamily="@font/opensans_semibold" />
+
                     <LinearLayout
                         android:id="@+id/lyCriteria"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dimen_05dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/bg_border_dark_grey"
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_05dp"
-                            android:text="Add Meet Criteria"
-                            android:fontFamily="@font/opensans_semibold"/>
+
                         <!--tly_minAge &max Age-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/age_range"
-                            android:layout_marginTop="@dimen/dimen_10dp" />
+                            android:layout_margin="@dimen/dimen_10dp" />
 
                         <me.bendik.simplerangeview.SimpleRangeView
                             android:id="@+id/fixed_rangeview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp" />
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginStart="@dimen/dimen_05dp"
+                            android:layout_marginEnd="@dimen/dimen_05dp" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"

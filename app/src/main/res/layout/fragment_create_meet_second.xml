@@ -98,22 +98,22 @@
                     android:layout_marginBottom="@dimen/dimen_10dp">
 
                     <TextView
-                        android:id="@+id/tv_references_label"
+                        android:id="@+id/tv_subordinates_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/organizer_label"
+                        android:text="Team members"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"/>
 
                         <TextView
-                            android:id="@+id/tv_meet_references"
+                            android:id="@+id/tv_meet_subordinates"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dimen_50dp"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:paddingStart="@dimen/dimen_10dp"
                             android:background="@drawable/bg_blue_box"
                             android:gravity="center_vertical"
-                            android:hint="@string/meet_select_organizers"
+                            android:hint="@string/meet_select_subordinates"
                             android:textColorHint="@color/medium_grey"
                             android:fontFamily="@font/opensans"
                             android:layout_marginBottom="@dimen/dimen_10dp"
@@ -125,7 +125,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_meet_reference"
+                android:id="@+id/rv_meet_subordinates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_10dp"></androidx.recyclerview.widget.RecyclerView>
