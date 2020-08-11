@@ -1,45 +1,44 @@
-package com.octopusbjsindia.models.Matrimony;
+package com.octopusbjsindia.matrimonyregistration.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Personal_details implements Serializable {
-
+public class PersonalDetails implements Serializable {
+    @SerializedName("profile_for")
+    @Expose
+    private String profileFor;
     @SerializedName("first_name")
     @Expose
-    private String first_name;
+    private String firstName;
     @SerializedName("middle_name")
     @Expose
-    private String middle_name;
+    private String middleName;
     @SerializedName("last_name")
     @Expose
-    private String last_name;
+    private String lastName;
     @SerializedName("complexion")
     @Expose
     private String complexion;
     @SerializedName("birth_city")
     @Expose
-    private String birth_city;
+    private String birthCity;
     @SerializedName("birth_time")
     @Expose
-    private String birth_time;
+    private String birthTime;
     @SerializedName("age")
     @Expose
-    private String age;
+    private Integer age;
     @SerializedName("birthDate")
     @Expose
     private long birthDate;
     @SerializedName("sect")
     @Expose
     private String sect;
-    @SerializedName("pincode")
-    @Expose
-    private String pincode;
     @SerializedName("blood_group")
     @Expose
-    private String blood_group;
+    private String bloodGroup;
     @SerializedName("height")
     @Expose
     private String height;
@@ -51,11 +50,10 @@ public class Personal_details implements Serializable {
     private String gender;
     @SerializedName("is_manglik")
     @Expose
-    private String is_manglik;
+    private String isManglik;
     @SerializedName("marital_status")
     @Expose
-    private String marital_status;
-
+    private String maritalStatus;
     @SerializedName("is_divorced_legal")
     @Expose
     private String isDivorcedLegal;
@@ -65,17 +63,18 @@ public class Personal_details implements Serializable {
     @SerializedName("children_count")
     @Expose
     private String childrenCount;
-
-
     @SerializedName("match_patrika")
     @Expose
-    private String match_patrika;
+    private boolean matchPatrika;
     @SerializedName("aadhar_number")
     @Expose
-    private String aadhar_number;
+    private String aadharNumber;
     @SerializedName("special_case")
     @Expose
-    private String special_case;
+    private String specialCase;
+    @SerializedName("sub_cast")
+    @Expose
+    private String subCast;
     @SerializedName("smoke")
     @Expose
     private String smoke;
@@ -84,30 +83,38 @@ public class Personal_details implements Serializable {
     private String drink;
     @SerializedName("own_house")
     @Expose
-    private String own_house;
+    private String ownHouse;
 
-    public String getFirst_name() {
-        return first_name;
+    public String getProfileFor() {
+        return profileFor;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setProfileFor(String profileFor) {
+        this.profileFor = profileFor;
     }
 
-    public String getMiddle_name() {
-        return middle_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getComplexion() {
@@ -118,27 +125,27 @@ public class Personal_details implements Serializable {
         this.complexion = complexion;
     }
 
-    public String getBirth_city() {
-        return birth_city;
+    public String getBirthCity() {
+        return birthCity;
     }
 
-    public void setBirth_city(String birth_city) {
-        this.birth_city = birth_city;
+    public void setBirthCity(String birthCity) {
+        this.birthCity = birthCity;
     }
 
-    public String getBirth_time() {
-        return birth_time;
+    public String getBirthTime() {
+        return birthTime;
     }
 
-    public void setBirth_time(String birth_time) {
-        this.birth_time = birth_time;
+    public void setBirthTime(String birthTime) {
+        this.birthTime = birthTime;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -158,20 +165,12 @@ public class Personal_details implements Serializable {
         this.sect = sect;
     }
 
-    public String getPincode() {
-        return pincode;
+    public String getBloodGroup() {
+        return bloodGroup;
     }
 
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
-    }
-
-    public String getBlood_group() {
-        return blood_group;
-    }
-
-    public void setBlood_group(String blood_group) {
-        this.blood_group = blood_group;
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
     }
 
     public String getHeight() {
@@ -198,20 +197,20 @@ public class Personal_details implements Serializable {
         this.gender = gender;
     }
 
-    public String getIs_manglik() {
-        return is_manglik;
+    public String getIsManglik() {
+        return isManglik;
     }
 
-    public void setIs_manglik(String is_manglik) {
-        this.is_manglik = is_manglik;
+    public void setIsManglik(String isManglik) {
+        this.isManglik = isManglik;
     }
 
-    public String getMarital_status() {
-        return marital_status;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setMarital_status(String marital_status) {
-        this.marital_status = marital_status;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getIsDivorcedLegal() {
@@ -238,29 +237,36 @@ public class Personal_details implements Serializable {
         this.childrenCount = childrenCount;
     }
 
-
-    public String getMatch_patrika() {
-        return match_patrika;
+    public boolean getMatchPatrika() {
+        return matchPatrika;
     }
 
-    public void setMatch_patrika(String match_patrika) {
-        this.match_patrika = match_patrika;
+    public void setMatchPatrika(boolean matchPatrika) {
+        this.matchPatrika = matchPatrika;
     }
 
-    public String getAadhar_number() {
-        return aadhar_number;
+    public String getAadharNumber() {
+        return aadharNumber;
     }
 
-    public void setAadhar_number(String aadhar_number) {
-        this.aadhar_number = aadhar_number;
+    public void setAadharNumber(String aadharNumber) {
+        this.aadharNumber = aadharNumber;
     }
 
-    public String getSpecial_case() {
-        return special_case;
+    public String getSpecialCase() {
+        return specialCase;
     }
 
-    public void setSpecial_case(String special_case) {
-        this.special_case = special_case;
+    public void setSpecialCase(String specialCase) {
+        this.specialCase = specialCase;
+    }
+
+    public String getSubCast() {
+        return subCast;
+    }
+
+    public void setSubCast(String subCast) {
+        this.subCast = subCast;
     }
 
     public String getSmoke() {
@@ -279,12 +285,12 @@ public class Personal_details implements Serializable {
         this.drink = drink;
     }
 
-    public String getOwn_house() {
-        return own_house;
+    public String getOwnHouse() {
+        return ownHouse;
     }
 
-    public void setOwn_house(String own_house) {
-        this.own_house = own_house;
+    public void setOwnHouse(String ownHouse) {
+        this.ownHouse = ownHouse;
     }
 
 }

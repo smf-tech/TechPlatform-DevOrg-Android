@@ -30,7 +30,9 @@ public class Other_marital_information implements Serializable {
     @SerializedName("educational_url")
     @Expose
     private String educational_url;
-
+    @SerializedName("support_doc")
+    @Expose
+    private String support_doc;
     public String getAbout_me() {
         return about_me;
     }
@@ -80,6 +82,13 @@ public class Other_marital_information implements Serializable {
         this.educational_url = educational_url;
     }
 
+    public String getSupport_doc() {
+        return support_doc;
+    }
+
+    public void setSupport_doc(String support_doc) {
+        this.support_doc = support_doc;
+    }
     public ArrayList<String> getProfile_image() {
         return profile_image;
     }
