@@ -345,12 +345,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
         }
-        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url() != null) {
-            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
+        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc() != null) {
+            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())) {
                 ly_myproof.setVisibility(View.VISIBLE);
                 Glide.with(this)
                         .applyDefaultRequestOptions(certificateRequestOptions)
-                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
+                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
                         .into(iv_myproof_certificate);
             }
             if(userProfileList.getMatrimonial_profile().getPersonal_details().
