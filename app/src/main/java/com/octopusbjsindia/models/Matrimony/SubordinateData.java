@@ -13,6 +13,9 @@ public class SubordinateData {
     @SerializedName("phone")
     @Expose
     private String phone;
+    @SerializedName("email")
+    @Expose
+    private String email;
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
@@ -39,6 +42,14 @@ public class SubordinateData {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getImageUrl() {

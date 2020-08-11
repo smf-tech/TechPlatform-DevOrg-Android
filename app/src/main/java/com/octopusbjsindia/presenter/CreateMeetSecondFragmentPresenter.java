@@ -9,9 +9,8 @@ import com.google.gson.JsonObject;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
-import com.octopusbjsindia.models.Matrimony.MatrimonyRoleUsersAPIResponse;
+import com.octopusbjsindia.models.Matrimony.SubordinateResponse;
 import com.octopusbjsindia.request.APIRequestCall;
-import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.fragments.CreateMeetSecondFragment;
 
@@ -57,8 +56,8 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         Gson gson = new GsonBuilder().create();
 
         final String getMatrimonyUsersUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Matrimony.MATRIMONY_SUBORDINATES_LIST);
-        Log.d(TAG, "getMatrimonyUsersListUrl: url" + getMatrimonyUsersUrl);
+                + String.format(Urls.Matrimony.MATRIMONY_SUBORDINATE_USERS);
+        Log.d(TAG, "getMatrimonySubordinatesListUrl: url" + getMatrimonyUsersUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
@@ -121,8 +120,12 @@ public class CreateMeetSecondFragmentPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if(requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.GET_MEET_USERS_LIST)){
-                    MatrimonyRoleUsersAPIResponse matrimonyRoleUsers = PlatformGson.getPlatformGsonInstance().fromJson(response, MatrimonyRoleUsersAPIResponse.class);
-                    fragmentWeakReference.get().setMatrimonyUsers(matrimonyRoleUsers.getData());
+                    SubordinateResponse subordinateResponse = new Gson().fromJson(response, SubordinateResponse.class);
+                    if (subordinateResponse.getStatus() == 200) {
+                        fragmentWeakReference.get().setMatrimonyUsers(subordinateResponse.getData());
+                    } else {
+                        fragmentWeakReference.get().showDataMessage(subordinateResponse.getMessage());
+                    }
 
                 } else if (requestID.equalsIgnoreCase(CreateMeetSecondFragmentPresenter.SUBMIT_MEET)) {
                     try {

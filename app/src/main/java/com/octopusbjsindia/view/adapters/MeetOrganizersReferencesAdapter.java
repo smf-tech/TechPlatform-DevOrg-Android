@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserDetails;
+import com.octopusbjsindia.models.Matrimony.SubordinateData;
 
 import java.util.List;
 
 public class MeetOrganizersReferencesAdapter extends RecyclerView.Adapter<MeetOrganizersReferencesAdapter.ViewHolder>{
-    private List<MatrimonyUserDetails> meetOrganizersReferencesList;
+    private List<SubordinateData> meetOrganizersReferencesList;
 
-    public MeetOrganizersReferencesAdapter(final List<MatrimonyUserDetails> meetOrganizersReferencesList) {
+    public MeetOrganizersReferencesAdapter(final List<SubordinateData> meetOrganizersReferencesList) {
         this.meetOrganizersReferencesList = meetOrganizersReferencesList;
     }
     @NonNull
@@ -30,7 +30,7 @@ public class MeetOrganizersReferencesAdapter extends RecyclerView.Adapter<MeetOr
     @Override
     public void onBindViewHolder(@NonNull MeetOrganizersReferencesAdapter.ViewHolder holder, int position) {
         holder.tvUserName.setText(meetOrganizersReferencesList.get(position).getName());
-        holder.tvUserRole.setText(meetOrganizersReferencesList.get(position).getRoleName());
+        //holder.tvUserRole.setText(meetOrganizersReferencesList.get(position).getRoleName());
         holder.tvUserMobile.setText(meetOrganizersReferencesList.get(position).getPhone());
         holder.tvUserEmail.setText(meetOrganizersReferencesList.get(position).getEmail());
     }

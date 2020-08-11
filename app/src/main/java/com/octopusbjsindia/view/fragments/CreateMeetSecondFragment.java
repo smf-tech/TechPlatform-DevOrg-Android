@@ -27,8 +27,7 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.Matrimony.MatrimonyRolesUsers;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserDetails;
+import com.octopusbjsindia.models.Matrimony.SubordinateData;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.presenter.CreateMeetSecondFragmentPresenter;
@@ -54,9 +53,9 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     //private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> subordinatesSpinnerList = new ArrayList<>();
     //private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
-    private ArrayList<MatrimonyUserDetails> subordinatesList = new ArrayList<>();
+    private ArrayList<SubordinateData> subordinatesList = new ArrayList<>();
     //ArrayList<MatrimonyUserDetails> selectedOrganizersList = new ArrayList<>();
-    ArrayList<MatrimonyUserDetails> selectedSubordinatesList = new ArrayList<>();
+    ArrayList<SubordinateData> selectedSubordinatesList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -207,15 +206,15 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         getActivity().finish();
     }
 
-    public void setMatrimonyUsers(List<MatrimonyRolesUsers> matrimonySubordinatesList) {
+    public void setMatrimonyUsers(List<SubordinateData> matrimonySubordinatesList) {
         if (matrimonySubordinatesList.size() > 0) {
-            for (MatrimonyRolesUsers matrimonyRole : matrimonySubordinatesList) {
-                for (MatrimonyUserDetails matrimonySubordinateDetails : matrimonyRole.getUserDetails()) {
-                    matrimonySubordinateDetails.setRoleName(matrimonyRole.getDisplayName());
+            for (SubordinateData subordinateData : matrimonySubordinatesList) {
+//                for (MatrimonyUserDetails matrimonySubordinateDetails : matrimonyRole.getUserDetails()) {
+//                    matrimonySubordinateDetails.setRoleName(matrimonyRole.getDisplayName());
 
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                    customSpinnerObject.set_id(matrimonySubordinateDetails.getId());
-                    customSpinnerObject.setName(matrimonySubordinateDetails.getName());
+                customSpinnerObject.set_id(subordinateData.getUser_id());
+                customSpinnerObject.setName(subordinateData.getName());
                     customSpinnerObject.setSelected(false);
 
 //                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
@@ -226,9 +225,9 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 //                        nonOrganizersList.add(matrimonySubordinateDetails);
 //                        nonOrganizersSpinnerList.add(customSpinnerObject);
 //                    }
-                    subordinatesList.add(matrimonySubordinateDetails);
+                subordinatesList.add(subordinateData);
                     subordinatesSpinnerList.add(customSpinnerObject);
-                }
+                //}
             }
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -236,6 +235,13 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                             "You need to add members.",
                     Snackbar.LENGTH_LONG);
         }
+    }
+
+    public void showDataMessage(String message) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), "No members found in your team." +
+                        "You need to add members.",
+                Snackbar.LENGTH_LONG);
     }
 
     @Override
@@ -257,8 +263,8 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
             selectedSubordinatesList.clear();
             for (CustomSpinnerObject cReference : subordinatesSpinnerList) {
                 if (cReference.isSelected()) {
-                    for (MatrimonyUserDetails mReference : subordinatesList) {
-                        if (mReference.getId().equals(cReference.get_id())) {
+                    for (SubordinateData mReference : subordinatesList) {
+                        if (mReference.getUser_id().equals(cReference.get_id())) {
                             selectedSubordinatesList.add(mReference);
                         }
                     }

@@ -51,7 +51,7 @@ public class MatrimonyMeet implements Serializable {
 //    private ArrayList<MatrimonyUserDetails> meetReferences = null;
     @SerializedName("meetSubordinators")
     @Expose
-    private ArrayList<MatrimonyUserDetails> meetSubordinators = null;
+    private ArrayList<SubordinateData> meetSubordinators = null;
     @SerializedName("analytics")
     @Expose
     private ArrayList<MeetAnalytics> analytics = null;
@@ -192,11 +192,11 @@ public class MatrimonyMeet implements Serializable {
 //        this.meetReferences = meetReferences;
 //    }
 
-    public ArrayList<MatrimonyUserDetails> getMeetSubordinators() {
+    public ArrayList<SubordinateData> getMeetSubordinators() {
         return meetSubordinators;
     }
 
-    public void setMeetSubordinators(ArrayList<MatrimonyUserDetails> meetSubordinators) {
+    public void setMeetSubordinators(ArrayList<SubordinateData> meetSubordinators) {
         this.meetSubordinators = meetSubordinators;
     }
 
