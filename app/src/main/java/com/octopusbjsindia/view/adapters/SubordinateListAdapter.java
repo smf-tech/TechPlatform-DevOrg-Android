@@ -1,6 +1,8 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +52,7 @@ public class SubordinateListAdapter extends RecyclerView.Adapter<SubordinateList
         }
         holder.tvName.setText(list.get(i).getName());
         holder.tvPhone.setText(list.get(i).getPhone());
+        holder.tvEmail.setText(list.get(i).getEmail());
     }
 
     @Override
@@ -59,12 +62,21 @@ public class SubordinateListAdapter extends RecyclerView.Adapter<SubordinateList
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUserImage;
-        TextView tvName, tvPhone;
+        TextView tvName, tvPhone, tvEmail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivUserImage = itemView.findViewById(R.id.iv_user_profile_pic);
             tvName = itemView.findViewById(R.id.tv_name);
             tvPhone = itemView.findViewById(R.id.tv_phone);
+            tvEmail = itemView.findViewById(R.id.tv_email);
+            tvPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:"+list.get(getAdapterPosition()).getPhone()));
+                    mContext.startActivity(callIntent);
+                }
+            });
         }
     }
 }
