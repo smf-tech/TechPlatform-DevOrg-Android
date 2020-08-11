@@ -104,6 +104,7 @@ public class Urls {
         //userRegistration
         public static final String USER_REGI_MASTER = "api/masterData";
         public static final String USER_REGI_SUBMIT_API = "api/insertUser";
+        public static final String USER_UPDATE_SUBMIT_API = "api/bjsUserUpdate";
         public static final String GET_MATRIMONY_PROFILE_API = "api/getMeetUsers/%1$s";
         public static final String USER_APPROVAL_API = "api/userApproval";
         public static final String MARK_ATTENDANCE_INTERVIEW_API = "api/markAttendance_interview";
@@ -137,6 +138,9 @@ public class Urls {
         public static final String MATRIMONY_RECENTELY_JOINED_USERS = "api/newUserRegister";
         public static final String MATRIMONY_VERIFICATION_PENDING_USERS = "api/verificationPendingUser";
         public static final String MATRIMONY_SUBORDINATE_USERS = "api/getSubordinateRoleUsers";
+        public static final String MATRIMONY_MASTER = "api/masterData";
+        public static final String GET_PROFILE_DETAILS = "api/userProfileDetails";
+
     }
 
     public class SSModule {

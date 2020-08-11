@@ -1,24 +1,35 @@
-package com.octopusbjsindia.models.events;
+package com.octopusbjsindia.matrimonyregistration.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CommonResponse {
+public class UserResponse {
     @SerializedName("code")
     @Expose
     private int code;
     @SerializedName("status")
     @Expose
-    private int status;
+    private String status;
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("data")
+    @Expose
+    private Profile data = null;
 
-    public int getStatus() {
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -30,11 +41,11 @@ public class CommonResponse {
         this.message = message;
     }
 
-    public int getCode() {
-        return code;
+    public Profile getData() {
+        return data;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setData(Profile data) {
+        this.data = data;
     }
 }

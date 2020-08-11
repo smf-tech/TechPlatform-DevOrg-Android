@@ -7,6 +7,9 @@
         android:id="@+id/action_block"
         android:title="Ban User" />
     <item
+        android:id="@+id/action_edit_profile"
+        android:title="Edit Profile" />
+    <item
         android:id="@+id/action_call"
         android:title="Call User" />
 </menu>

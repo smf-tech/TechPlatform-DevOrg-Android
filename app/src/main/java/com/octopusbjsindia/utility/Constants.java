@@ -281,6 +281,7 @@ public class Constants {
         //-------
         public static final String IMAGE_TYPE_ADHARCARD = "ADHAR";
         public static final String IMAGE_TYPE_EDUCATION = "EDUCATION";
+        public static final String IMAGE_TYPE_MARITAL_CERTIFICATE = "SUPPORTDOC";
     }
 
     public class Notification {
@@ -503,5 +504,8 @@ public class Constants {
         public static final String BLOCKED_USER_SECTION = "blockUsers";
         public static final String BANGED_USER_SECTION = "isBan";
         public static final Integer FLAG_UPDATE_RESULT = 110;
+        public static final String MALE = "male";
+        public static final String FEMALE = "female";
+        public static final String OTHER = "other";
     }
 }
