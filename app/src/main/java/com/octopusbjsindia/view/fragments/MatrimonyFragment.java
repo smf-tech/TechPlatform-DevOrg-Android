@@ -29,6 +29,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
+import com.octopusbjsindia.view.activities.MyTeamActivity;
 import com.octopusbjsindia.view.adapters.UserProfileAdapter;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 
@@ -47,7 +48,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ArrayList<UserProfileList> unverifiedUserList = new ArrayList<UserProfileList>();
     private RecyclerView rvNewUser, rvVarificationPending;
     private FloatingActionButton fbSelect;
-    private ExtendedFloatingActionButton fbCreatMeet, fbAllUser, fbBlockedUsers, fbBangUsers;
+    private ExtendedFloatingActionButton fbCreatMeet, fbAllUser, fbBlockedUsers, fbBangUsers, fbMyTeam;
     private boolean isFABOpen = false;
     private View view;
 
@@ -90,6 +91,8 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         rvNewUser = view.findViewById(R.id.rv_new_user);
         rvVarificationPending = view.findViewById(R.id.rv_varification_pending);
 
+        fbMyTeam = view.findViewById(R.id.fbMyTeam);
+        fbMyTeam.setOnClickListener(this);
         fbSelect = view.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
         fbCreatMeet = view.findViewById(R.id.fb_create_meet);
@@ -123,7 +126,10 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             } else {
                 closeFABMenu();
             }
-        } else if (v.getId() == R.id.fb_create_meet) {
+        } else if (v.getId() == R.id.fbMyTeam) {
+            Intent myTeamIntent = new Intent(getActivity(), MyTeamActivity.class);
+            startActivity(myTeamIntent);
+        }  else if (v.getId() == R.id.fb_create_meet) {
             Intent createMatrimonyIntent = new Intent(getActivity(), CreateMatrimonyMeetActivity.class);
             createMatrimonyIntent.putExtra("SwitchToFragment", "CreateMeetFirstFragment");
             startActivity(createMatrimonyIntent);
@@ -166,10 +172,13 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbBlockedUsers.setEnabled(true);
         fbBangUsers.show();
         fbBangUsers.setEnabled(true);
+        fbMyTeam.show();
+        fbMyTeam.setEnabled(true);
         fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
         fbAllUser.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         fbBlockedUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
         fbBangUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        fbMyTeam.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
         fbSelect.setRotation(45);
         isFABOpen = true;
     }
@@ -179,6 +188,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbAllUser.animate().translationY(0);
         fbBlockedUsers.animate().translationY(0);
         fbBangUsers.animate().translationY(0);
+        fbMyTeam.animate().translationY(0);
         fbCreatMeet.hide();
         fbCreatMeet.setEnabled(false);
         fbAllUser.hide();
@@ -187,6 +197,8 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
         fbBlockedUsers.setEnabled(false);
         fbBangUsers.hide();
         fbBangUsers.setEnabled(false);
+        fbMyTeam.hide();
+        fbMyTeam.setEnabled(false);
         fbSelect.setRotation(0);
         isFABOpen = false;
     }
