@@ -540,6 +540,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             case R.id.iv_education_certificates:
                 enlargePhoto(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url());
                 break;
+            case R.id.iv_myproof_certificate:
+                enlargePhoto(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc());
+                break;
             case R.id.iv_arrow_personal:
                 if (findViewById(R.id.ly_personal_details).getVisibility() != View.VISIBLE) {
                     findViewById(R.id.ly_personal_details).setVisibility(View.VISIBLE);
