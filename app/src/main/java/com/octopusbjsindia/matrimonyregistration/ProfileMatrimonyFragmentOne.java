@@ -264,9 +264,9 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
         ((RegistrationActivity) getActivity()).personalDetails.setGender(userGender);
 
         gender_male = fragmentview.findViewById(R.id.gender_male);
-        gender_male.setEnabled(false);
+        //gender_male.setEnabled(false);
         gender_female = fragmentview.findViewById(R.id.gender_female);
-        gender_female.setEnabled(false);
+        //gender_female.setEnabled(false);
 
         switch (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getGender()) {
             case Constants.MatrimonyModule.MALE:

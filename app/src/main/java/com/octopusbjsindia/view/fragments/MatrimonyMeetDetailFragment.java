@@ -472,12 +472,15 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             if (meetData.getIs_published()) {
                 if (meetData.getRegistrationSchedule().getRegEndDateTime() >= Util.getCurrentTimeStamp()
                         && meetData.getRegistrationSchedule().getRegStartDateTime() <= Util.getCurrentTimeStamp()) {
+                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "No Matrimonial profile found for this mobile number.",
+                            Snackbar.LENGTH_LONG);
                     //Util.logger("currentTime","-> Current Time greater");
-                    Intent startMain1 = new Intent(activity, UserRegistrationMatrimonyActivity.class);
+                    /*Intent startMain1 = new Intent(activity, UserRegistrationMatrimonyActivity.class);
                     startMain1.putExtra("meetid", meetData.getId());
                     startMain1.putExtra("mobileNumber", mobileNumberEntered);
 
-                    startActivity(startMain1);
+                    startActivity(startMain1);*/
                 } else {
                     Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Registrations for this meet are not open.",
