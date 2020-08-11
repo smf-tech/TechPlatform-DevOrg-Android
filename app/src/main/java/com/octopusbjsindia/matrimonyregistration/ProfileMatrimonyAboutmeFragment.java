@@ -25,8 +25,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.airbnb.lottie.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
@@ -55,7 +53,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
     private Uri outputUri;
     private Uri finalUri;
 
-    boolean isSquare=false;
+    boolean isSquare = false;
 
     private RequestOptions requestOptions;
     private RequestOptions requestOptions_adhar;
@@ -82,8 +80,8 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
     @Override
     public void onResume() {
         super.onResume();
-        if (((RegistrationActivity)getActivity()).matrimonialProfile != null
-                && ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation() != null){
+        if (((RegistrationActivity) getActivity()).matrimonialProfile != null
+                && ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation() != null) {
             //setData();
         }
         //et_about_me.setText("My name is "+((RegistrationActivity) getActivity()).personalDetails.getFirstName()+" and I am working as a "+((RegistrationActivity) getActivity()).occupationalDetails.getOccupation()+" in the "+((RegistrationActivity) getActivity()).occupationalDetails.getEmployerCompany()+". I have completed my "+((RegistrationActivity) getActivity()).educationalDetails.getQualificationDegree()+" I grew up in a middle class"+((RegistrationActivity) getActivity()).familyDetails.getFamilyType()+" family.");
@@ -126,23 +124,23 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
         img_adhar.setOnClickListener(this);
 
         et_about_me.setText(((RegistrationActivity) getActivity()).aboutUsStr);
-        if(((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails() != null &&
-                !((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails().
+        if (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails() != null &&
+                !((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().
                         getMaritalStatus().equalsIgnoreCase("Unmarried")) {
             TextView tvMaritalStatusCerificateLabel = fragmentview.findViewById(R.id.tv_marital_status_cerificate_label);
             imgMaritalStatusCerificate = fragmentview.findViewById(R.id.img_marital_status_certificate);
             tvMaritalStatusCerificateLabel.setVisibility(View.VISIBLE);
             imgMaritalStatusCerificate.setVisibility(View.VISIBLE);
             imgMaritalStatusCerificate.setOnClickListener(this);
-            if(((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails().
+            if (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().
                     getMaritalStatus().equalsIgnoreCase("Divorcee")) {
                 tvMaritalStatusCerificateLabel.setText("Legal seperation certificate");
             } else {
                 tvMaritalStatusCerificateLabel.setText("Partner's death certificate");
             }
         }
-        if (((RegistrationActivity)getActivity()).matrimonialProfile != null
-                && ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation() != null){
+        if (((RegistrationActivity) getActivity()).matrimonialProfile != null
+                && ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation() != null) {
             setData();
         }
         //et_about_me.setText("My name is "+((RegistrationActivity) getActivity()).personalDetails.getFirstName()+" and I am working as a "+((RegistrationActivity) getActivity()).occupationalDetails.getOccupation()+" in the "+((RegistrationActivity) getActivity()).occupationalDetails.getEmployerCompany()+". I have completed my "+((RegistrationActivity) getActivity()).educationalDetails.getQualificationDegree()+" I grew up in a middle class"+((RegistrationActivity) getActivity()).familyDetails.getFamilyType()+" family.");
@@ -156,43 +154,43 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
     private void setData() {
 
-        et_about_me.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getAboutMe());
-        et_partner_expectation.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getExpectation_from_partner());
-        et_achivements.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getActivityAchievements());
-        et_other_remark.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getOtherRemarks());
+        et_about_me.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getAboutMe());
+        et_partner_expectation.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getExpectation_from_partner());
+        et_achivements.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getActivityAchievements());
+        et_other_remark.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getOtherRemarks());
 
         Glide.with(getActivity())
                 .applyDefaultRequestOptions(requestOptions)
-                .load(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage().get(0))
+                .load(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage().get(0))
                 .into(img_user_profle);
-        ((RegistrationActivity)getActivity()).otherMaritialInformation.setProfileImage(
-                ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage());
+        ((RegistrationActivity) getActivity()).otherMaritialInformation.setProfileImage(
+                ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage());
 
 
         Glide.with(getActivity())
                 .applyDefaultRequestOptions(requestOptions_edu)
-                .load(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getEducationalUrl())
+                .load(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getEducationalUrl())
                 .into(img_education_cert);
-        ((RegistrationActivity)getActivity()).otherMaritialInformation.setEducationalUrl(
-                ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getEducationalUrl());
+        ((RegistrationActivity) getActivity()).otherMaritialInformation.setEducationalUrl(
+                ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getEducationalUrl());
 
 
         Glide.with(getActivity())
                 .applyDefaultRequestOptions(requestOptions_adhar)
-                .load(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getAadharUrl())
+                .load(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getAadharUrl())
                 .into(img_adhar);
-        ((RegistrationActivity)getActivity()).otherMaritialInformation.setAadharUrl(
-                ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getAadharUrl());
+        ((RegistrationActivity) getActivity()).otherMaritialInformation.setAadharUrl(
+                ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getAadharUrl());
 
-        if(((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails() != null &&
-                !((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails().
+        if (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails() != null &&
+                !((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().
                         getMaritalStatus().equalsIgnoreCase("Unmarried")) {
             Glide.with(getActivity())
                     .applyDefaultRequestOptions(requestOptions_adhar)
-                    .load(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getSupport_doc())
+                    .load(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getSupport_doc())
                     .into(imgMaritalStatusCerificate);
-            ((RegistrationActivity)getActivity()).otherMaritialInformation.setSupport_doc(
-                    ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getSupport_doc());
+            ((RegistrationActivity) getActivity()).otherMaritialInformation.setSupport_doc(
+                    ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getSupport_doc());
         }
 
     }
@@ -239,10 +237,10 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
     private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            if(isSquare){
+            if (isSquare) {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(1,1)
+                        .setAspectRatio(1, 1)
                         .start(getContext(), this);
             } else {
                 CropImage.activity()
@@ -264,15 +262,15 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                     break;
 
                 case 1:
-                    if(isSquare){
+                    if (isSquare) {
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
-                                .setAspectRatio(1,1)
+                                .setAspectRatio(1, 1)
                                 .start(getContext(), this);
                     } else {
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
-                                .start(getContext(),this);
+                                .start(getContext(), this);
                     }
                     break;
             }
@@ -325,7 +323,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                 if (Util.isConnected(getActivity())) {
                     if (Util.isValidImageSize(new File(resultUri.getPath()))) {
                         //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
-                        ((RegistrationActivity)getActivity()).presenter.uploadProfileImage
+                        ((RegistrationActivity) getActivity()).presenter.uploadProfileImage
                                 (new File(resultUri.getPath()), Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
 
                         if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
@@ -346,7 +344,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                                     .applyDefaultRequestOptions(requestOptions_edu)
                                     .load(resultUri)
                                     .into(img_education_cert);
-                        }else if (uploadImageType.equalsIgnoreCase(Constants.Image.IMAGE_TYPE_MARITAL_CERTIFICATE)) {
+                        } else if (uploadImageType.equalsIgnoreCase(Constants.Image.IMAGE_TYPE_MARITAL_CERTIFICATE)) {
                             Glide.with(getActivity())
                                     .applyDefaultRequestOptions(requestOptions_adhar)
                                     .load(resultUri)
@@ -354,10 +352,10 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                         }
 
                     } else {
-                        Util.showToast(getActivity(),getString(R.string.msg_big_image));
+                        Util.showToast(getActivity(), getString(R.string.msg_big_image));
                     }
                 } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
                 }
 
             }
@@ -475,51 +473,50 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
     //set selected data for request
     private void setValuesInModel() {
-        if(isAllInputsValid())
-        {
-            if (((RegistrationActivity)getActivity()).matrimonialProfile != null) {
-                if (((RegistrationActivity)getActivity()).otherMaritialInformation != null) {
+        if (isAllInputsValid()) {
+            if (((RegistrationActivity) getActivity()).matrimonialProfile != null) {
+                if (((RegistrationActivity) getActivity()).otherMaritialInformation != null) {
 
-                    ((RegistrationActivity)getActivity()).otherMaritialInformation.setAboutMe(et_about_me.getText().toString());
-                    ((RegistrationActivity)getActivity()).otherMaritialInformation.setExpectation_from_partner(et_partner_expectation.getText().toString());
-                    ((RegistrationActivity)getActivity()).otherMaritialInformation.setActivityAchievements(et_achivements.getText().toString());
-                    ((RegistrationActivity)getActivity()).otherMaritialInformation.setOtherRemarks(et_other_remark.getText().toString());
+                    ((RegistrationActivity) getActivity()).otherMaritialInformation.setAboutMe(et_about_me.getText().toString());
+                    ((RegistrationActivity) getActivity()).otherMaritialInformation.setExpectation_from_partner(et_partner_expectation.getText().toString());
+                    ((RegistrationActivity) getActivity()).otherMaritialInformation.setActivityAchievements(et_achivements.getText().toString());
+                    ((RegistrationActivity) getActivity()).otherMaritialInformation.setOtherRemarks(et_other_remark.getText().toString());
                     //((RegistrationActivity)getActivity()).otherMaritialInformation.setProfile_image("");
-                    ((RegistrationActivity)getActivity()).matrimonialProfile.setOtherMaritalInformation(((RegistrationActivity)getActivity()).otherMaritialInformation);
+                    ((RegistrationActivity) getActivity()).matrimonialProfile.setOtherMaritalInformation(((RegistrationActivity) getActivity()).otherMaritialInformation);
                     //((RegistrationActivity) getActivity()).submitUserRegistrationRequest();
                     ((RegistrationActivity) getActivity()).loadNextScreen(5);
                 } else {
-                    Util.showToast( getActivity(),"null object getPersonal_details()");
+                    Util.showToast(getActivity(), "null object getPersonal_details()");
                 }
             } else {
-                Util.showToast( getActivity(),"null object");
+                Util.showToast(getActivity(), "null object");
             }
         }
 
     }
+
     private boolean isAllInputsValid() {
         String msg = "";
 
         /*if (((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage() == null
-                *//**//*&& ((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage().length() == 0*//**//*) {
+         *//**//*&& ((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage().length() == 0*//**//*) {
             msg = "Please add Profile Image.";//getResources().getString(R.string.msg_enter_proper_date);
         } else*//* if (((RegistrationActivity)getActivity()).otherMaritialInformation.getEducationalUrl()==null
-                *//*&&((RegistrationActivity)getActivity()).otherMaritialInformation.getEducationalUrl().length() == 0*//*) {
+         *//*&&((RegistrationActivity)getActivity()).otherMaritialInformation.getEducationalUrl().length() == 0*//*) {
             msg = "Please add Educational Image";//getResources().getString(R.string.msg_enter_name);
         } else if (((RegistrationActivity)getActivity()).otherMaritialInformation.getAadharUrl()==null
                 *//*&&((RegistrationActivity)getActivity()).otherMaritialInformation.getAadharUrl().length() == 0*//*) {
             msg = "Please add Aadhar Image"; //getResources().getString(R.string.msg_enter_name);
         } else */
-        if (et_about_me.getText().toString().trim().length() <100) {
+        if (et_about_me.getText().toString().trim().length() < 100) {
             msg = "Please add minimum 100 characters in information about you."; //getResources().getString(R.string.msg_enter_name);
-        }else
-         if (et_partner_expectation.getText().toString().trim().length() <100) {
+        } else if (et_partner_expectation.getText().toString().trim().length() < 100) {
             msg = "Please add minimum 100 characters about your expectations."; //getResources().getString(R.string.msg_enter_name);
-        }else if (((RegistrationActivity)getActivity()).otherMaritialInformation.getEducationalUrl()==null) {
-             msg = "Please add Educational certificate";//getResources().getString(R.string.msg_enter_name);
-         }
+        } else if (((RegistrationActivity) getActivity()).otherMaritialInformation.getEducationalUrl() == null) {
+            msg = "Please add Educational certificate";//getResources().getString(R.string.msg_enter_name);
+        }
 
-        if (msg.length()==0) {
+        if (msg.length() == 0) {
             return true;
         }
 
@@ -528,29 +525,29 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
     }
 
     public void reloadFragmentData() {
-        if (((RegistrationActivity)getActivity()).matrimonialProfile != null
-                && ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation() != null){
-            et_about_me.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getAboutMe());
-        }else {
+        if (((RegistrationActivity) getActivity()).matrimonialProfile != null
+                && ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation() != null) {
+            et_about_me.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getAboutMe());
+        } else {
             et_about_me.setText(((RegistrationActivity) getActivity()).aboutUsStr);
         }
 
         // for support doc
-        if(((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails() != null &&
-                !((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails().
+        if (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails() != null &&
+                !((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().
                         getMaritalStatus().equalsIgnoreCase("Unmarried")) {
             TextView tvMaritalStatusCerificateLabel = fragmentview.findViewById(R.id.tv_marital_status_cerificate_label);
             imgMaritalStatusCerificate = fragmentview.findViewById(R.id.img_marital_status_certificate);
             tvMaritalStatusCerificateLabel.setVisibility(View.VISIBLE);
             imgMaritalStatusCerificate.setVisibility(View.VISIBLE);
             imgMaritalStatusCerificate.setOnClickListener(this);
-            if(((RegistrationActivity)getActivity()).matrimonialProfile.getPersonalDetails().
+            if (((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().
                     getMaritalStatus().equalsIgnoreCase("Divorcee")) {
                 tvMaritalStatusCerificateLabel.setText("Legal seperation certificate");
             } else {
                 tvMaritalStatusCerificateLabel.setText("Partner's death certificate");
             }
-        }else {
+        } else {
             TextView tvMaritalStatusCerificateLabel = fragmentview.findViewById(R.id.tv_marital_status_cerificate_label);
             imgMaritalStatusCerificate = fragmentview.findViewById(R.id.img_marital_status_certificate);
             tvMaritalStatusCerificateLabel.setVisibility(View.GONE);

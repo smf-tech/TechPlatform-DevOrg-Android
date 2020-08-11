@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userregistrationmatrimony"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -68,10 +67,11 @@
             android:padding="@dimen/dimen_15dp"
             android:src="@drawable/ic_filter_white"
             android:tint="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_Shakha_self"
                             android:inputType="textCapSentences"
-                            android:hint="(Self)Shakha/Gotra*"/>
+                            android:hint="(Self)Shakha/Gotra*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -165,7 +165,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_mama"
                             android:inputType="textCapSentences"
-                            android:hint="(Mamaji)Shakha/Gotra"/>
+                            android:hint="(Mamaji)Shakha/Gotra" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -180,7 +180,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_dada"
                             android:inputType="textCapSentences"
-                            android:hint="(Dadiji)Shakha/Gotra"/>
+                            android:hint="(Dadiji)Shakha/Gotra" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -195,7 +195,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_shakha_nana"
                             android:inputType="textCapSentences"
-                            android:hint="(Naniji)Shakha/Gotra"/>
+                            android:hint="(Naniji)Shakha/Gotra" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -210,7 +210,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_father_name"
                             android:inputType="textCapSentences"
-                            android:hint="Father's full name*"/>
+                            android:hint="Father's full name*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -228,7 +228,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Father's status*"/>
+                            android:hint="Father's status*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -245,7 +245,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Family income"/>
+                            android:hint="Family income" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -260,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/et_mothers_name"
                             android:inputType="textCapSentences"
-                            android:hint="Mother's full name*"/>
+                            android:hint="Mother's full name*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -277,7 +277,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="Mother's status"/>
+                            android:hint="Mother's status" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -296,7 +296,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="No. of brother's*"/>
+                            android:hint="No. of brother's*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -315,7 +315,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:longClickable="false"
-                            android:hint="No. of sister's*"/>
+                            android:hint="No. of sister's*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -346,8 +346,7 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Previous"
-            android:textColor="@color/grey_medium"
-            />
+            android:textColor="@color/grey_medium" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_loadnext"
@@ -357,8 +356,7 @@
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_weight="1"
-            android:text="Next"
-            />
+            android:text="Next" />
     </LinearLayout>
 
 

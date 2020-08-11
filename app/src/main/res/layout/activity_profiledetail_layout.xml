@@ -580,6 +580,7 @@
                                         android:text="Never Married" />
                                 </RelativeLayout>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:id="@+id/ly_children_info"
                                 android:layout_width="match_parent"
@@ -1042,7 +1043,7 @@
                                      <TextView
                                          android:id="@+id/tv_degree_lable"
                                          style="@style/StyleTextViewLable"
-                                         android:text="Qualification"/>
+                                         android:text="Qualification" />
                                      <TextView
                                          android:id="@+id/tv_degree"
                                          android:layout_below="@+id/tv_degree_lable"
@@ -1853,82 +1854,83 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/ly_activity_achievements_other"
                                 android:orientation="vertical">
-                            <LinearLayout
-                                android:id="@+id/ly_aadhar_education_certificates"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/ly_activity_achievements_other"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
 
-                                <RelativeLayout
+                                <LinearLayout
+                                    android:id="@+id/ly_aadhar_education_certificates"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/dimen_05dp"
-                                    android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:layout_weight="1">
+                                    android:layout_below="@+id/ly_activity_achievements_other"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
 
-                                    <TextView
-                                        android:id="@+id/tv_aadhar_lable"
-                                        style="@style/StyleTextViewLable"
-                                        android:text="Aadhar Card" />
-
-                                    <ImageView
-                                        android:id="@+id/iv_aadhar"
+                                    <RelativeLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/dimen_200dp"
-                                        android:layout_below="@+id/tv_aadhar_lable"
-                                        android:scaleType="fitXY"
-                                        android:adjustViewBounds="true"
-                                        android:src="@drawable/ic_doc_placeholder" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_05dp"
+                                        android:layout_marginEnd="@dimen/dimen_05dp"
+                                        android:layout_weight="1">
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/btn_verify_ids"
-                                        style="@style/AppStyleBorderButtonheight60"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="@dimen/dimen_10dp"
-                                        android:layout_weight="1"
-                                        android:text="Verify ID"
-                                        android:layout_below="@+id/iv_aadhar"
-                                        android:textSize="@dimen/text_size_12"
-                                        android:textColor="@color/dark_grey" />
+                                        <TextView
+                                            android:id="@+id/tv_aadhar_lable"
+                                            style="@style/StyleTextViewLable"
+                                            android:text="Aadhar Card" />
 
-                                </RelativeLayout>
+                                        <ImageView
+                                            android:id="@+id/iv_aadhar"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/dimen_200dp"
+                                            android:layout_below="@+id/tv_aadhar_lable"
+                                            android:scaleType="fitXY"
+                                            android:adjustViewBounds="true"
+                                            android:src="@drawable/ic_doc_placeholder" />
 
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/dimen_05dp"
-                                    android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:layout_weight="1">
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/btn_verify_ids"
+                                            style="@style/AppStyleBorderButtonheight60"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/dimen_10dp"
+                                            android:layout_weight="1"
+                                            android:text="Verify ID"
+                                            android:layout_below="@+id/iv_aadhar"
+                                            android:textSize="@dimen/text_size_12"
+                                            android:textColor="@color/dark_grey" />
 
-                                    <TextView
-                                        android:id="@+id/tv_education_certificates_lable"
-                                        style="@style/StyleTextViewLable"
-                                        android:text="Education Certificates" />
+                                    </RelativeLayout>
 
-                                    <ImageView
-                                        android:id="@+id/iv_education_certificates"
+                                    <RelativeLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="@dimen/dimen_200dp"
-                                        android:scaleType="fitXY"
-                                        android:layout_below="@+id/tv_education_certificates_lable"
-                                        android:src="@drawable/ic_certifcate_placeholder" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_05dp"
+                                        android:layout_marginEnd="@dimen/dimen_05dp"
+                                        android:layout_weight="1">
 
-                                    <com.google.android.material.button.MaterialButton
-                                        android:id="@+id/btn_verify_edu"
-                                        style="@style/AppStyleBorderButtonheight60"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="@dimen/dimen_10dp"
-                                        android:layout_below="@+id/iv_education_certificates"
-                                        android:layout_weight="1"
-                                        android:text="Verify Education"
-                                        android:textSize="@dimen/text_size_12"
-                                        android:textColor="@color/dark_grey" />
+                                        <TextView
+                                            android:id="@+id/tv_education_certificates_lable"
+                                            style="@style/StyleTextViewLable"
+                                            android:text="Education Certificates" />
+
+                                        <ImageView
+                                            android:id="@+id/iv_education_certificates"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/dimen_200dp"
+                                            android:scaleType="fitXY"
+                                            android:layout_below="@+id/tv_education_certificates_lable"
+                                            android:src="@drawable/ic_certifcate_placeholder" />
+
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/btn_verify_edu"
+                                            style="@style/AppStyleBorderButtonheight60"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/dimen_10dp"
+                                            android:layout_below="@+id/iv_education_certificates"
+                                            android:layout_weight="1"
+                                            android:text="Verify Education"
+                                            android:textSize="@dimen/text_size_12"
+                                            android:textColor="@color/dark_grey" />
 
 
-                                </RelativeLayout>
-                            </LinearLayout>
+                                    </RelativeLayout>
+                                </LinearLayout>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"

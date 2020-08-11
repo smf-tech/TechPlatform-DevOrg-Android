@@ -227,10 +227,10 @@ public class MatrimonialProfile implements Serializable {
         this.privacySettings = privacySettings;
     }
 
-    public class PrivacySettings implements Serializable{
+    public class PrivacySettings implements Serializable {
         @SerializedName("is_contact_visible_for_mutual")
         @Expose
-        boolean is_contact_visible_for_mutual=true;
+        boolean is_contact_visible_for_mutual = true;
         @SerializedName("is_contact_visible_for_premium")
         @Expose
         boolean is_contact_visible_for_premium = true;

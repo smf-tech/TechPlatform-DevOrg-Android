@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
@@ -80,8 +79,8 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
         et_brother.setOnClickListener(this);
         et_sister.setOnClickListener(this);
 
-        if(((RegistrationActivity)getActivity()).matrimonialProfile!=null &&
-                ((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails()!=null){
+        if (((RegistrationActivity) getActivity()).matrimonialProfile != null &&
+                ((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails() != null) {
             setData();
         }
         fragmentview.findViewById(R.id.iv_toobar_back).setOnClickListener(new View.OnClickListener() {
@@ -93,18 +92,18 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
     }
 
     private void setData() {
-        et_family_type.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getFamilyType());
-        et_Shakha_self.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getSelfGotra());
-        et_shakha_mama.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getMamaGotra());
-        et_shakha_dada.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getDadaGotra());
-        et_shakha_nana.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getNanaGotra());
-        et_father_name.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getFatherName());
-        et_father_occupation.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getFatherOccupation());
-        et_family_income.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getFamilyIncome());
-        et_mothers_name.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getMotherName());
-        et_mothers_occupation.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getMotherOccupation());
-        et_brother.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getBrotherCount());
-        et_sister.setText(((RegistrationActivity)getActivity()).matrimonialProfile.getFamilyDetails().getSisterCount());
+        et_family_type.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getFamilyType());
+        et_Shakha_self.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getSelfGotra());
+        et_shakha_mama.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getMamaGotra());
+        et_shakha_dada.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getDadaGotra());
+        et_shakha_nana.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getGotra().getNanaGotra());
+        et_father_name.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getFatherName());
+        et_father_occupation.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getFatherOccupation());
+        et_family_income.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getFamilyIncome());
+        et_mothers_name.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getMotherName());
+        et_mothers_occupation.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getMotherOccupation());
+        et_brother.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getBrotherCount());
+        et_sister.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getFamilyDetails().getSisterCount());
     }
 
     @Override
@@ -127,7 +126,7 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
             case R.id.et_family_type:
                 for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("family_type")) {
-                        showMultiSelectBottomsheet("Family Type","et_family_type", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Family Type", "et_family_type", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -135,7 +134,7 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
             case R.id.et_father_occupation:
                 for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("parents_occupation")) {
-                        showMultiSelectBottomsheet("Fathers Status","et_father_occupation", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Fathers Status", "et_father_occupation", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -143,7 +142,7 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
             case R.id.et_mothers_occupation:
                 for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("parents_occupation")) {
-                        showMultiSelectBottomsheet("Mothers Status","et_mothers_occupation", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Mothers Status", "et_mothers_occupation", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -151,7 +150,7 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
             case R.id.et_family_income:
                 for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
                     if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("income")) {
-                        showMultiSelectBottomsheet("Family Income","et_family_income", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                        showMultiSelectBottomsheet("Family Income", "et_family_income", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
                         break;
                     }
                 }
@@ -168,30 +167,29 @@ public class ProfileMatrimonyFamilyFragment extends Fragment implements View.OnC
     }
 
     private void setValuesInModel() {
-        if (isAllInputsValid())
-        {
-            if (((RegistrationActivity)getActivity()).matrimonialProfile != null) {
-                if (((RegistrationActivity)getActivity()).familyDetails != null) {
+        if (isAllInputsValid()) {
+            if (((RegistrationActivity) getActivity()).matrimonialProfile != null) {
+                if (((RegistrationActivity) getActivity()).familyDetails != null) {
 
-                    ((RegistrationActivity)getActivity()).familyDetails.setFamilyType(et_family_type.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setFamilyType(et_family_type.getText().toString());
 
-                    ((RegistrationActivity)getActivity()).gotra.setSelfGotra(et_Shakha_self.getText().toString());
-                    ((RegistrationActivity)getActivity()).gotra.setMamaGotra(et_shakha_mama.getText().toString());
-                    ((RegistrationActivity)getActivity()).gotra.setDadaGotra(et_shakha_dada.getText().toString());
-                    ((RegistrationActivity)getActivity()).gotra.setNanaGotra(et_shakha_nana.getText().toString());
+                    ((RegistrationActivity) getActivity()).gotra.setSelfGotra(et_Shakha_self.getText().toString());
+                    ((RegistrationActivity) getActivity()).gotra.setMamaGotra(et_shakha_mama.getText().toString());
+                    ((RegistrationActivity) getActivity()).gotra.setDadaGotra(et_shakha_dada.getText().toString());
+                    ((RegistrationActivity) getActivity()).gotra.setNanaGotra(et_shakha_nana.getText().toString());
 
-                    ((RegistrationActivity)getActivity()).familyDetails.setGotra(((RegistrationActivity)getActivity()).gotra);
-                    ((RegistrationActivity)getActivity()).familyDetails.setFatherName(et_father_name.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setFatherOccupation(et_father_occupation.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setFamilyIncome(et_family_income.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setMotherName(et_mothers_name.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setMotherOccupation(et_mothers_occupation.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setBrotherCount(et_brother.getText().toString());
-                    ((RegistrationActivity)getActivity()).familyDetails.setSisterCount(et_sister.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setGotra(((RegistrationActivity) getActivity()).gotra);
+                    ((RegistrationActivity) getActivity()).familyDetails.setFatherName(et_father_name.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setFatherOccupation(et_father_occupation.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setFamilyIncome(et_family_income.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setMotherName(et_mothers_name.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setMotherOccupation(et_mothers_occupation.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setBrotherCount(et_brother.getText().toString());
+                    ((RegistrationActivity) getActivity()).familyDetails.setSisterCount(et_sister.getText().toString());
 
 
-                    ((RegistrationActivity)getActivity())
-                            .matrimonialProfile.setFamilyDetails(((RegistrationActivity)getActivity()).familyDetails);
+                    ((RegistrationActivity) getActivity())
+                            .matrimonialProfile.setFamilyDetails(((RegistrationActivity) getActivity()).familyDetails);
 
                 } else {
                     Util.showToast(getActivity(), "null object getPersonal_details()");

@@ -40,9 +40,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.MissingInfoActivity"
-        android:screenOrientation="portrait" />
-        <activity android:name=".view.activities.MatrimonyActivity"
+        <activity android:name=".view.activities.AddMemberActivity"></activity>
+        <activity android:name=".view.activities.MyTeamActivity" />
+        <activity
+            android:name=".view.activities.MissingInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MatrimonyActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.WebviewFormDisplayActivity"
@@ -55,20 +59,17 @@
         <activity
             android:name=".view.activities.CreateWorkshopSmartgirlActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activities.SmartGirlWorkshopListActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.fragments.smartgirlfragment.WebActivityTest"
             android:screenOrientation="portrait" />
-
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

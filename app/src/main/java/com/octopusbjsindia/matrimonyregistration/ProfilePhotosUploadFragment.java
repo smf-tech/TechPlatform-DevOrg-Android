@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMasterRequestModel;
 import com.octopusbjsindia.utility.Constants;
@@ -80,7 +79,6 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     }
 
 
-
     private void initView() {
 
         /*Bundle bundle = getIntent().getExtras();
@@ -117,10 +115,9 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         iv_toolbar_action2.setOnClickListener(this);
         btn_load_next.setOnClickListener(this);
         btn_loadprevious.setOnClickListener(this);
-        if (((RegistrationActivity)getActivity()).matrimonialProfile != null
-                && ((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation()!= null){
-            if (((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage() != null)
-            {
+        if (((RegistrationActivity) getActivity()).matrimonialProfile != null
+                && ((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation() != null) {
+            if (((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage() != null) {
                 setData();
             }
         }
@@ -133,7 +130,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     }
 
     private void setData() {
-        datalist.addAll(((RegistrationActivity)getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage());
+        datalist.addAll(((RegistrationActivity) getActivity()).matrimonialProfile.getOtherMaritalInformation().getProfileImage());
         mAdapter.notifyDataSetChanged();
     }
 /*
@@ -159,8 +156,8 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
 
     @Override
     public void onItemClicked(int pos) {
-        if (datalist.size()<1){
-            if (pos==0){
+        if (datalist.size() < 1) {
+            if (pos == 0) {
                 currentSelectedItem = pos;
                 uploadImageType = "Profile";
                 if (currentSelectedItem == 0) {
@@ -168,10 +165,10 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
                 } else {
                     onAddImageClick(pos);
                 }
-            }else {
+            } else {
                 Util.showToast(getActivity(), "Upload first profile Image.");
             }
-        }else {
+        } else {
             currentSelectedItem = pos;
             uploadImageType = "Profile";
             if (currentSelectedItem == 0) {
@@ -257,9 +254,9 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
                         .setAspectRatio(1, 1)
                         .setScaleType(CropImageView.ScaleType.CENTER_CROP)
                         .setFixAspectRatio(true)
-                        .setRequestedSize(width,width)
-                        .setMinCropWindowSize(width,width)
-                        .start(getContext(),this);
+                        .setRequestedSize(width, width)
+                        .setMinCropWindowSize(width, width)
+                        .start(getContext(), this);
             } else {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
@@ -309,10 +306,9 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (currentSelectedItem==0){
-                    datalist.add(currentSelectedItem,url);
-                }else
-                if (datalist.size() < 5) {
+                if (currentSelectedItem == 0) {
+                    datalist.add(currentSelectedItem, url);
+                } else if (datalist.size() < 5) {
                     datalist.add(url);
                 }
 
@@ -341,9 +337,9 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     @Override
     public void onItemRemoved(int pos) {
         if (datalist.size() > 1) {
-            if (pos ==0){
+            if (pos == 0) {
                 Util.showToast(getActivity(), "First profile Image is compulsory");
-            }else {
+            } else {
                 datalist.remove(pos);
                 mAdapter.notifyDataSetChanged();
                 ((RegistrationActivity) getActivity()).otherMaritialInformation.setProfileImage(datalist);
@@ -405,8 +401,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //setValuesInModel();
-                if(isAllInputsValid())
-                {
+                if (isAllInputsValid()) {
                     ((RegistrationActivity) getActivity()).submitUserRegistrationRequest();
                 }
 
@@ -448,15 +443,15 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
             @Override
             public void run() {
                 if (datalist.size() < 5) {
-                    if (currentSelectedItem<datalist.size()){
-                        datalist.set(currentSelectedItem,url);
-                    }else {
+                    if (currentSelectedItem < datalist.size()) {
+                        datalist.set(currentSelectedItem, url);
+                    } else {
                         datalist.add(url);
                     }
-                }else if (currentSelectedItem==0){
-                    datalist.set(currentSelectedItem,url);
-                }else {
-                    datalist.set(currentSelectedItem,url);
+                } else if (currentSelectedItem == 0) {
+                    datalist.set(currentSelectedItem, url);
+                } else {
+                    datalist.set(currentSelectedItem, url);
                 }
 
                 mAdapter.notifyItemChanged(currentSelectedItem);
@@ -481,8 +476,8 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     private boolean isAllInputsValid() {
         String msg = "";
 
-        if (((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage() == null){
-         //&& ((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage().size() == 0) {
+        if (((RegistrationActivity) getActivity()).otherMaritialInformation.getProfileImage() == null) {
+            //&& ((RegistrationActivity)getActivity()).otherMaritialInformation.getProfileImage().size() == 0) {
             msg = "Please add Profile Image.";//getResources().getString(R.string.msg_enter_proper_date);
         }
         /* else if (((RegistrationActivity)getActivity()).otherMaritialInformation.getEducationalUrl()==null
@@ -494,7 +489,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         } else*/
 
 
-        if (msg.length()==0) {
+        if (msg.length() == 0) {
             return true;
         }
 

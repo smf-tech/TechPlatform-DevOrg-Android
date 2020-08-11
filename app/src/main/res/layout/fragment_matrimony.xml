@@ -202,6 +202,22 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fbMyTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="My Team"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_create_meet"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_create_meet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

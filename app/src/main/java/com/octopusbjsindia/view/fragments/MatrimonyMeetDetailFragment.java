@@ -48,7 +48,6 @@ import com.octopusbjsindia.view.activities.LoginActivity;
 import com.octopusbjsindia.view.activities.MatrimonyBookletActivity;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.ShowMeetBatchesActivity;
-import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.adapters.MeetAnalyticsAdapter;
 import com.octopusbjsindia.view.adapters.MeetContactsListAdapter;
 

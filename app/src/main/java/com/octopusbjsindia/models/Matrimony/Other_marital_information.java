@@ -81,6 +81,7 @@ public class Other_marital_information implements Serializable {
     public void setEducational_url(String educational_url) {
         this.educational_url = educational_url;
     }
+
     public String getSupport_doc() {
         return support_doc;
     }

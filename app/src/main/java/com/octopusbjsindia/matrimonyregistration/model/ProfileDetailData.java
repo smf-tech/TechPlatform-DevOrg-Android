@@ -32,7 +32,7 @@ public class ProfileDetailData {
     private String meetStatus;
     @SerializedName("badgeNumber")
     @Expose
-    private int badgeNumber=0;
+    private int badgeNumber = 0;
     @SerializedName("contactUnlocked")
     @Expose
     private Boolean contactUnlocked;

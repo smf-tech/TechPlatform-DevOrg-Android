@@ -79,12 +79,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //Residential
     private TextView tv_address, tv_town_city, tv_state, tv_country, tv_primary_mobile, tv_secondary_mobile, tv_primary_email;
     //other
-    private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other,tv_myproof_title;
-    private ImageView iv_aadhar, iv_education_certificates,iv_myproof_certificate, toolbar_edit_action;
+    private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other, tv_myproof_title;
+    private ImageView iv_aadhar, iv_education_certificates, iv_myproof_certificate, toolbar_edit_action;
     private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids, btn_verify_edu, btn_verify_profile;
     private TextView tv_approval_status, tv_premium;
     private String meetIdReceived = "";
-    private RelativeLayout progressBar,ly_myproof;
+    private RelativeLayout progressBar, ly_myproof;
     private boolean isBlock;
 
     @Override
@@ -353,7 +353,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                         .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
                         .into(iv_myproof_certificate);
             }
-            if(userProfileList.getMatrimonial_profile().getPersonal_details().
+            if (userProfileList.getMatrimonial_profile().getPersonal_details().
                     getMarital_status().equalsIgnoreCase("Divorcee")) {
                 tv_myproof_title.setText("Legal seperation certificate");
             } else {

@@ -113,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
             //matrimonyUserRegRequestModel = new MatrimonyUserRegRequestModel();
         }
         meetId = getIntent().getStringExtra(PROFILE_ID);
-        presenter.getProfile(getIntent().getStringExtra(PROFILE_ID),"");
+        presenter.getProfile(getIntent().getStringExtra(PROFILE_ID), "");
     }
 
     private void setupViewPager(ViewPager viewPager) {

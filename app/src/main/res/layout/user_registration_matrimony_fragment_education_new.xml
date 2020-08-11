@@ -58,9 +58,6 @@
                     android:orientation="vertical">
 
 
-
-
-
                 </LinearLayout>
             </ScrollView>
         </androidx.cardview.widget.CardView>
@@ -89,8 +86,7 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="Previous"
-            android:textColor="@color/grey_medium"
-            />
+            android:textColor="@color/grey_medium" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_loadnext"
@@ -100,8 +96,7 @@
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_weight="1"
-            android:text="Next"
-            />
+            android:text="Next" />
     </LinearLayout>
 
 

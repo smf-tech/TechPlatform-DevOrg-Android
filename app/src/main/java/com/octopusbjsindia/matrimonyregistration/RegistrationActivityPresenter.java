@@ -44,7 +44,7 @@ public class RegistrationActivityPresenter implements PresenterListener, ImageRe
 
     }
 
-    public void getProfile (String id, String meetId){
+    public void getProfile(String id, String meetId) {
         mContax.get().showProgressBar();
         Map<String, String> params = new HashMap<>();
         params.put("user_id", id);

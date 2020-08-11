@@ -72,6 +72,7 @@
                     android:layout_alignParentBottom="true"
                     android:visibility="gone"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="vertical"
@@ -90,6 +91,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_14"
                             android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/tv_value"
                             android:layout_width="wrap_content"
@@ -108,6 +110,7 @@
                             android:layout_width="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_height="wrap_content">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -118,7 +121,7 @@
                                 android:layout_marginBottom="@dimen/dimen_05dp"
                                 android:gravity="center"
                                 android:drawableLeft="@drawable/ic_show_interest"
-                                android:drawablePadding="@dimen/dimen_05dp"/>
+                                android:drawablePadding="@dimen/dimen_05dp" />
 
                             <Button
                                 android:id="@+id/btn_approve"
@@ -131,7 +134,7 @@
                                 android:text="Show Interest"
                                 android:textColor="@color/white"
                                 app:strokeColor="@color/white"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
                 </FrameLayout>
@@ -144,15 +147,16 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit_profile_image" />
-<ImageView
-    android:layout_width="wrap_content"
-    android:id="@+id/img_remove_image"
-    android:layout_alignParentRight="true"
-    android:padding="@dimen/dimen_05dp"
-    android:layout_margin="@dimen/dimen_05dp"
-    android:layout_below="@+id/img_edit_image"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_delete_profile_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/img_remove_image"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dimen_05dp"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_below="@+id/img_edit_image"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete_profile_image" />
 
                 <TextView
                     android:layout_width="wrap_content"

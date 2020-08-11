@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userregistrationmatrimony"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/toolbar_action_view1"
         android:layout_width="match_parent"
@@ -66,7 +65,7 @@
             android:padding="@dimen/dimen_15dp"
             android:src="@drawable/ic_filter_white"
             android:tint="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </RelativeLayout>
@@ -91,7 +90,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
         <ImageView
@@ -191,12 +189,14 @@
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:text="@string/gender"
                             android:paddingStart="@dimen/dimen_05dp"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_height="wrap_content" />
+
                         <RadioGroup
                             android:id="@+id/user_gender_group"
                             android:layout_width="match_parent"
@@ -217,6 +217,7 @@
                                 android:checked="false"
                                 android:text="@string/female" />
                         </RadioGroup>
+
                         <TextView
                             android:layout_width="match_parent"
                             android:text="@string/gender_not_able_to_modify"
@@ -252,8 +253,7 @@
                                 android:focusable="false"
                                 android:longClickable="false"
                                 android:hint="@string/birth_date"
-                                android:inputType="date"
-                                 />
+                                android:inputType="date" />
                             <!--android:drawableEnd="@drawable/ic_cal_event"-->
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -290,6 +290,7 @@
                         android:paddingStart="@dimen/dimen_05dp"
                         android:textSize="@dimen/text_size_11"
                         android:layout_height="wrap_content" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -370,18 +371,21 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:text="Is divorce legal?"
                             android:paddingStart="@dimen/dimen_05dp"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_height="wrap_content" />
+
                         <RadioGroup
                             android:id="@+id/user_divorce_legal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_user_gender_label"
                             android:orientation="horizontal">
+
                             <RadioButton
                                 android:id="@+id/divorce_yes"
                                 style="@style/GenderTypes"
@@ -400,18 +404,21 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:text="Do you have children?"
                             android:paddingStart="@dimen/dimen_05dp"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_height="wrap_content" />
+
                         <RadioGroup
                             android:id="@+id/rg_children"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_user_gender_label"
                             android:orientation="horizontal">
+
                             <RadioButton
                                 android:id="@+id/rb_children_yes"
                                 style="@style/GenderTypes"
@@ -492,16 +499,19 @@
                             android:layout_height="wrap_content"
                             android:hint="Complexion / Skin Tone" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:text="Manglik*"
                             android:paddingStart="@dimen/dimen_05dp"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:layout_height="wrap_content" />
+
                         <RadioGroup
                             android:id="@+id/user_manglik_group"
                             android:layout_width="match_parent"
@@ -544,6 +554,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Do you want to match patrika?" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -591,6 +602,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Do you drink?" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -607,6 +619,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Do you smoke?" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -655,8 +668,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_marginBottom="@dimen/dimen_10dp"
-        android:text="Next"
-        />
+        android:text="Next" />
 
 
 </LinearLayout>

@@ -18,7 +18,7 @@ public class OtherMaritalInformation implements Serializable {
     private String activityAchievements;
     @SerializedName("expectation_from_partner")
     @Expose
-    private String expectation_from_partner ;
+    private String expectation_from_partner;
     @SerializedName("other_remarks")
     @Expose
     private String otherRemarks;
