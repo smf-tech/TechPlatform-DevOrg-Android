@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.matrimonyregistration.model.EducationalDetails;
 import com.octopusbjsindia.matrimonyregistration.model.FamilyDetails;
@@ -71,7 +72,14 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
     @Override
     protected void onResume() {
         super.onResume();
-
+        if (Util.isConnected(this)){
+            presenter.getProfile(getIntent().getStringExtra(PROFILE_ID), "");
+        } else {
+            //Util.showToast(getString(R.string.msg_no_network), this);
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.msg_no_network),
+                    Snackbar.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -113,7 +121,12 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
             //matrimonyUserRegRequestModel = new MatrimonyUserRegRequestModel();
         }
         meetId = getIntent().getStringExtra(PROFILE_ID);
+     if (Util.isConnected(this)){
         presenter.getProfile(getIntent().getStringExtra(PROFILE_ID), "");
+    } else {
+        Util.showToast(getString(R.string.msg_no_network), this);
+        finish();
+    }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -172,6 +185,8 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
 
     //load next fragment for registration
     public void loadNextScreen(int next) {
+        if (Util.isConnected(this)){
+
         viewPager.setCurrentItem(next - 1);
 
         List fragments = getSupportFragmentManager().getFragments();
@@ -181,7 +196,12 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
                 ((ProfileMatrimonyAboutmeFragment) fragment).reloadFragmentData();
             }
         }
-
+        } else {
+            //Util.showToast(getString(R.string.msg_no_network), this);
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.msg_no_network),
+                    Snackbar.LENGTH_LONG);
+        }
 //        switch (next) {
 //            case 1:
 //                viewPager.setCurrentItem(0);

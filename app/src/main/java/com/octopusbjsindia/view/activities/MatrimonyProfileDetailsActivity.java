@@ -685,7 +685,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                         "YES", "NO", 4);//flag 4 for call primary number
                 break;
             case R.id.action_edit_profile:
-
+                if (Util.isConnected(this)) {
                 Intent editIntent = new Intent(this, RegistrationActivity.class);
                 if (userProfileList.getMatrimonial_profile() != null) {
                     editIntent.putExtra("matrimonialProfile", userProfileList.getMatrimonial_profile());
@@ -693,8 +693,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
                 editIntent.putExtra("Flag", 1);//for matrimonial
                 startActivity(editIntent);
-                /*showDialog("Alert", "Are you sure, Do you want to call user?",
-                        "YES", "NO", 4);//flag 4 for call primary number*/
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
+
                 break;
 
         }
