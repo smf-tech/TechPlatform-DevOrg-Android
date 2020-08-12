@@ -99,7 +99,7 @@
             android:layout_marginTop="2dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginEnd="2dp"
-            android:src="@drawable/active2" />
+            android:src="@drawable/ic_active2" />
 
         <!--form start-->
 

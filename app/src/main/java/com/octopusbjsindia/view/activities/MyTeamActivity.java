@@ -33,8 +33,6 @@ public class MyTeamActivity extends AppCompatActivity implements APIDataListener
 
         presenter = new MyTeamActivityPresenter(this);
 
-        presenter.getTeamList();
-
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("My Team");
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
@@ -53,6 +51,12 @@ public class MyTeamActivity extends AppCompatActivity implements APIDataListener
         });
 
         rvTeamList = findViewById(R.id.rv_team_list);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getTeamList();
     }
 
     @Override

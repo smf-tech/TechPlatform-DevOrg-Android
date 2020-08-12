@@ -345,12 +345,12 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
                     .into(iv_education_certificates);
         }
-        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url() != null) {
-            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
+        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc() != null) {
+            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())) {
                 ly_myproof.setVisibility(View.VISIBLE);
                 Glide.with(this)
                         .applyDefaultRequestOptions(certificateRequestOptions)
-                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
+                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
                         .into(iv_myproof_certificate);
             }
             if (userProfileList.getMatrimonial_profile().getPersonal_details().
@@ -540,6 +540,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             case R.id.iv_education_certificates:
                 enlargePhoto(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url());
                 break;
+            case R.id.iv_myproof_certificate:
+                enlargePhoto(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc());
+                break;
             case R.id.iv_arrow_personal:
                 if (findViewById(R.id.ly_personal_details).getVisibility() != View.VISIBLE) {
                     findViewById(R.id.ly_personal_details).setVisibility(View.VISIBLE);
@@ -682,7 +685,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                         "YES", "NO", 4);//flag 4 for call primary number
                 break;
             case R.id.action_edit_profile:
-
+                if (Util.isConnected(this)) {
                 Intent editIntent = new Intent(this, RegistrationActivity.class);
                 if (userProfileList.getMatrimonial_profile() != null) {
                     editIntent.putExtra("matrimonialProfile", userProfileList.getMatrimonial_profile());
@@ -690,8 +693,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 }
                 editIntent.putExtra("Flag", 1);//for matrimonial
                 startActivity(editIntent);
-                /*showDialog("Alert", "Are you sure, Do you want to call user?",
-                        "YES", "NO", 4);//flag 4 for call primary number*/
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
+
                 break;
 
         }
