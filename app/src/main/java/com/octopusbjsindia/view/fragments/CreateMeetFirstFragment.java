@@ -6,13 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -30,6 +23,12 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,7 +50,6 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
-import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
@@ -61,7 +59,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -405,7 +402,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     }
 
     public boolean isAllDataValid() {
-
         if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
                 || TextUtils.isEmpty(edtMeetDate.getText().toString().trim())
@@ -574,8 +570,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
@@ -792,10 +786,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case R.id.rb_online_no:
                 isOnlinePaymentAllowed = false;
                 isOnlinePaymentRGChecked = 2;
+                etPaymentInfo.setVisibility(View.VISIBLE);
                 break;
             case R.id.rb_online_yes:
                 isOnlinePaymentAllowed = true;
                 isOnlinePaymentRGChecked = 1;
+                etPaymentInfo.setVisibility(View.GONE);
                 break;
         }
     }
