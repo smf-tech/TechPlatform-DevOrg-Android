@@ -6,13 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -30,6 +23,12 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,7 +50,6 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
-import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
@@ -61,7 +59,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -405,18 +402,57 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     }
 
     public boolean isAllDataValid() {
-
-        if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())
-                || selectedMeetType == null || selectedStateId == null || selectedCityId == null || selectedCountryId == null
-                || isPaidFreeRGChecked == 0) {
+        if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                            .findViewById(android.R.id.content), "Please enter meet name.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedMeetType == null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet type.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedCountryId == null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select country.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedStateId == null || TextUtils.isEmpty(selectedStateId)) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select state.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedCityId == null || TextUtils.isEmpty(selectedCityId)) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select city.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please enter meet venue.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet start time",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet end time.",
                     Snackbar.LENGTH_LONG);
             return false;
         }
@@ -426,10 +462,34 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Snackbar.LENGTH_LONG);
             return false;
         }
+        if (TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet registration start date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet registration end date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (isPaidFreeRGChecked == 0) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet paid or free.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
         if (isPaidFreeRGChecked == 2) {
-            if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim()) || isOnlinePaymentRGChecked == 0) {
+            if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim())) {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                                .findViewById(android.R.id.content), "Please enter meet registration amount.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (isOnlinePaymentRGChecked == 0) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please select payment through app option.",
                         Snackbar.LENGTH_LONG);
                 return false;
             }
@@ -574,8 +634,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
@@ -792,10 +850,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case R.id.rb_online_no:
                 isOnlinePaymentAllowed = false;
                 isOnlinePaymentRGChecked = 2;
+                etPaymentInfo.setVisibility(View.VISIBLE);
                 break;
             case R.id.rb_online_yes:
                 isOnlinePaymentAllowed = true;
                 isOnlinePaymentRGChecked = 1;
+                etPaymentInfo.setVisibility(View.GONE);
                 break;
         }
     }
