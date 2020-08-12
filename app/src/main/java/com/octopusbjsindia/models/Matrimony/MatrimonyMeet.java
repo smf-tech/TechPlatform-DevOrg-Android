@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatrimonyMeet implements Serializable {
     @SerializedName("_id")
@@ -43,9 +44,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("meetImageUrl")
     @Expose
     private String meetImageUrl;
-    //    @SerializedName("meetOrganizers")
-//    @Expose
-//    private List<MatrimonyUserDetails> meetOrganizers = null;
+    @SerializedName("meetOrganizers")
+    @Expose
+    private List<SubordinateData> meetOrganizers = null;
 //    @SerializedName("meetReferences")
 //    @Expose
 //    private ArrayList<MatrimonyUserDetails> meetReferences = null;
@@ -176,13 +177,13 @@ public class MatrimonyMeet implements Serializable {
         this.meetImageUrl = meetImageUrl;
     }
 
-//    public List<MatrimonyUserDetails> getMeetOrganizers() {
-//        return meetOrganizers;
-//    }
-//
-//    public void setMeetOrganizers(List<MatrimonyUserDetails> meetOrganizers) {
-//        this.meetOrganizers = meetOrganizers;
-//    }
+    public List<SubordinateData> getMeetOrganizers() {
+        return meetOrganizers;
+    }
+
+    public void setMeetOrganizers(List<SubordinateData> meetOrganizers) {
+        this.meetOrganizers = meetOrganizers;
+    }
 //
 //    public List<MatrimonyUserDetails> getMeetReferences() {
 //        return meetReferences;

@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SubordinateData {
+import java.io.Serializable;
+
+public class SubordinateData implements Serializable {
     @SerializedName("user_id")
     @Expose
     private String user_id;

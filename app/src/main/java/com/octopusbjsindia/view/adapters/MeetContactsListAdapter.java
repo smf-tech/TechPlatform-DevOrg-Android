@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserDetails;
+import com.octopusbjsindia.models.Matrimony.SubordinateData;
 import com.octopusbjsindia.utility.Permissions;
 
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ import java.util.Objects;
 
 public class MeetContactsListAdapter extends RecyclerView.Adapter<MeetContactsListAdapter.ViewHolder> {
 
-    private ArrayList<MatrimonyUserDetails> usersList;
+    private ArrayList<SubordinateData> usersList;
     private Activity activity;
 
-    public MeetContactsListAdapter(final ArrayList<MatrimonyUserDetails> usersList, Activity activity) {
+    public MeetContactsListAdapter(final ArrayList<SubordinateData> usersList, Activity activity) {
         this.usersList = usersList;
         this.activity = activity;
     }
