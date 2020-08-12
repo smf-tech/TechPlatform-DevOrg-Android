@@ -104,6 +104,7 @@
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
+            android:visibility="gone"
             app:hintTextAppearance="@style/TextInputLayoutHint">
 
             <EditText

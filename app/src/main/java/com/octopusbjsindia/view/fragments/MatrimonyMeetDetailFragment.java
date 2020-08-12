@@ -37,9 +37,9 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
-import com.octopusbjsindia.models.Matrimony.MatrimonyUserDetails;
 import com.octopusbjsindia.models.Matrimony.MeetAnalytics;
 import com.octopusbjsindia.models.Matrimony.MeetBatchesResponseModel;
+import com.octopusbjsindia.models.Matrimony.SubordinateData;
 import com.octopusbjsindia.presenter.MatrimonyMeetDetailFragmentPresenter;
 import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
@@ -67,7 +67,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
-    private ArrayList<MatrimonyUserDetails> contactsList = new ArrayList<>();
+    private ArrayList<SubordinateData> contactsList = new ArrayList<>();
     private ArrayList<MeetAnalytics> meetAnalyticsData = new ArrayList<>();
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -339,9 +339,17 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             view.findViewById(R.id.tvNotelbl).setVisibility(View.GONE);
         }
 
-//        for (MatrimonyUserDetails matrimonyUserDetails : meetData.getMeetSubordinators()) {
-//            contactsList.add(matrimonyUserDetails);
-//        }
+        if (meetData.getMeetSubordinators() != null) {
+            for (SubordinateData matrimonyUserDetails : meetData.getMeetSubordinators()) {
+                contactsList.add(matrimonyUserDetails);
+            }
+        } else {
+            if (meetData.getMeetOrganizers() != null) {
+                for (SubordinateData matrimonyUserDetails : meetData.getMeetOrganizers()) {
+                    contactsList.add(matrimonyUserDetails);
+                }
+            }
+        }
 
         meetAnalyticsData.addAll(meetData.getAnalytics());
         MeetAnalyticsAdapter meetAnalyticsAdapter = new MeetAnalyticsAdapter(this.activity, meetAnalyticsData);
