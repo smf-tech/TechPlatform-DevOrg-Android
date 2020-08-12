@@ -402,17 +402,57 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     }
 
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())
-                || TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())
-                || selectedMeetType == null || selectedStateId == null || selectedCityId == null || selectedCountryId == null
-                || isPaidFreeRGChecked == 0) {
+        if (TextUtils.isEmpty(edtMeetName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                            .findViewById(android.R.id.content), "Please enter meet name.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedMeetType == null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet type.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedCountryId == null) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select country.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedStateId == null || TextUtils.isEmpty(selectedStateId)) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select state.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (selectedCityId == null || TextUtils.isEmpty(selectedCityId)) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select city.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetVenue.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please enter meet venue.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetStartTime.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet start time",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetEndTime.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet end time.",
                     Snackbar.LENGTH_LONG);
             return false;
         }
@@ -422,10 +462,34 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Snackbar.LENGTH_LONG);
             return false;
         }
+        if (TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet registration start date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet registration end date.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        if (isPaidFreeRGChecked == 0) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please select meet paid or free.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
         if (isPaidFreeRGChecked == 2) {
-            if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim()) || isOnlinePaymentRGChecked == 0) {
+            if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim())) {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                                .findViewById(android.R.id.content), "Please enter meet registration amount.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (isOnlinePaymentRGChecked == 0) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please select payment through app option.",
                         Snackbar.LENGTH_LONG);
                 return false;
             }
