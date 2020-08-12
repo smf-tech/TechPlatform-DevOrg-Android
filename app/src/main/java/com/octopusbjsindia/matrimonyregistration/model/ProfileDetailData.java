@@ -39,6 +39,9 @@ public class ProfileDetailData {
     @SerializedName("contactVisibleForPremium")
     @Expose
     private Boolean contactVisibleForPremium;
+    @SerializedName("meetList")
+    @Expose
+    private List<String> meetList = null;
 
     public String getId() {
         return id;
@@ -119,4 +122,13 @@ public class ProfileDetailData {
     public int getBadgeNumber() {
         return badgeNumber;
     }
+
+    public List<String> getMeetList() {
+        return meetList;
+    }
+
+    public void setMeetList(List<String> meetList) {
+        this.meetList = meetList;
+    }
+
 }

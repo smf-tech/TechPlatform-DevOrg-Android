@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ProfileDetailRequestCallListener;
+import com.octopusbjsindia.matrimonyregistration.model.ProfileDetailResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.MatrimonyProfileDetailRequestCall;
@@ -20,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailRequestCallListener,
@@ -135,6 +138,10 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
     @Override
     public void onSuccessListener(String requestID, String response) {
         fragmentWeakReference.get().hideProgressBar();
+        if (requestID.equalsIgnoreCase("GET_PROFILE_DETAILS")) {
+            ProfileDetailResponse profileResponse = new Gson().fromJson(response, ProfileDetailResponse.class);
+            fragmentWeakReference.get().onProfileReceived(response);
+        }else {
         CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
         if (requestID.equals("BLOCK_UNBLOCK_USER")) {
             if (commonResponse.getStatus() == 200) {
@@ -142,15 +149,31 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
             } else {
                 fragmentWeakReference.get().onFailureListener(requestID, commonResponse.getMessage());
             }
-        } else if(requestID.equals("APPROVE_REJECT_USER")){
+        } else if (requestID.equals("APPROVE_REJECT_USER")) {
             fragmentWeakReference.get().updateRequestStatus(response);
-        }else if(requestID.equals("APPROVE_REJECT_ID")){
-            fragmentWeakReference.get().updateVerificationStatus(1,commonResponse.getMessage());
-        }else if(requestID.equals("APPROVE_REJECT_EDU")){
-            fragmentWeakReference.get().updateVerificationStatus(2,commonResponse.getMessage());
-        }else if(requestID.equals("VERIFY_PROFILE")){
-            fragmentWeakReference.get().updateVerificationStatus(3,commonResponse.getMessage());
+        } else if (requestID.equals("APPROVE_REJECT_ID")) {
+            fragmentWeakReference.get().updateVerificationStatus(1, commonResponse.getMessage());
+        } else if (requestID.equals("APPROVE_REJECT_EDU")) {
+            fragmentWeakReference.get().updateVerificationStatus(2, commonResponse.getMessage());
+        } else if (requestID.equals("VERIFY_PROFILE")) {
+            fragmentWeakReference.get().updateVerificationStatus(3, commonResponse.getMessage());
         }
+    }
 
+    }
+
+
+    public void getProfile(String id, String meetId) {
+        fragmentWeakReference.get().showProgressBar();
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", id);
+        if (!TextUtils.isEmpty(meetId) && meetId.length() > 0) {
+            params.put("meet_id", meetId);
+        }
+        String bodyParams = new Gson().toJson(params);
+        final String url = BuildConfig.BASE_URL + String.format(Urls.Matrimony.GET_PROFILE_DETAILS);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall("GET_PROFILE_DETAILS", bodyParams, url);
     }
 }

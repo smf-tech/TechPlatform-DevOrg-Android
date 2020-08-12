@@ -73,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
     protected void onResume() {
         super.onResume();
         if (Util.isConnected(this)){
-            presenter.getProfile(getIntent().getStringExtra(PROFILE_ID), "");
+            //presenter.getProfile(getIntent().getStringExtra(PROFILE_ID), "");
         } else {
             //Util.showToast(getString(R.string.msg_no_network), this);
             Util.snackBarToShowMsg(getWindow().getDecorView()
@@ -271,6 +271,7 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Util.showToast(this, status);
             /*Login temp = Util.getLoginObjectFromPref();
             temp.getUserDetails().setIsMatrimonialUser(true);
             temp.getUserDetails().setIs_active(true);
