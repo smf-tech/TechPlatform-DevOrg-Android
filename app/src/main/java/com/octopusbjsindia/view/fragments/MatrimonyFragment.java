@@ -25,6 +25,7 @@ import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
 import com.octopusbjsindia.models.Matrimony.NewRegisteredUserResponse;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyFragmentPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -32,6 +33,9 @@ import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.MyTeamActivity;
 import com.octopusbjsindia.view.adapters.UserProfileAdapter;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private ExtendedFloatingActionButton fbCreatMeet, fbAllUser, fbBlockedUsers, fbBangUsers, fbMyTeam;
     private boolean isFABOpen = false;
     private View view;
+    boolean visibleCreatMeet = false,visibleMyTeam = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,22 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
         view.findViewById(R.id.tv_see_all_newuser).setOnClickListener(this);
         view.findViewById(R.id.tv_see_all_varification_pending).setOnClickListener(this);
+
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_CREATE_MEET)) {
+                    visibleCreatMeet = true;
+
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MY_SABORDINET)) {
+                    visibleMyTeam = true;
+                    continue;
+                }
+            }
+        }
 
     }
 
@@ -164,41 +185,49 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     }
 
     private void showFabMenu() {
-        fbCreatMeet.show();
-        fbCreatMeet.setEnabled(true);
         fbAllUser.show();
         fbAllUser.setEnabled(true);
+        fbAllUser.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         fbBlockedUsers.show();
         fbBlockedUsers.setEnabled(true);
+        fbBlockedUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
         fbBangUsers.show();
         fbBangUsers.setEnabled(true);
-        fbMyTeam.show();
-        fbMyTeam.setEnabled(true);
-        fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
-        fbAllUser.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
-        fbBlockedUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
-        fbBangUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
-        fbMyTeam.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        fbBangUsers.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        if(visibleCreatMeet) {
+            fbCreatMeet.show();
+            fbCreatMeet.setEnabled(true);
+            fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        }
+        if(visibleMyTeam) {
+            fbMyTeam.show();
+            fbMyTeam.setEnabled(true);
+            fbMyTeam.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        }
         fbSelect.setRotation(45);
         isFABOpen = true;
     }
 
     private void closeFABMenu() {
-        fbCreatMeet.animate().translationY(0);
         fbAllUser.animate().translationY(0);
-        fbBlockedUsers.animate().translationY(0);
-        fbBangUsers.animate().translationY(0);
-        fbMyTeam.animate().translationY(0);
-        fbCreatMeet.hide();
-        fbCreatMeet.setEnabled(false);
         fbAllUser.hide();
         fbAllUser.setEnabled(false);
+        fbBlockedUsers.animate().translationY(0);
         fbBlockedUsers.hide();
         fbBlockedUsers.setEnabled(false);
+        fbBangUsers.animate().translationY(0);
         fbBangUsers.hide();
         fbBangUsers.setEnabled(false);
-        fbMyTeam.hide();
-        fbMyTeam.setEnabled(false);
+        if(visibleCreatMeet) {
+            fbCreatMeet.animate().translationY(0);
+            fbCreatMeet.hide();
+            fbCreatMeet.setEnabled(false);
+        }
+        if(visibleMyTeam) {
+            fbMyTeam.animate().translationY(0);
+            fbMyTeam.hide();
+            fbMyTeam.setEnabled(false);
+        }
         fbSelect.setRotation(0);
         isFABOpen = false;
     }

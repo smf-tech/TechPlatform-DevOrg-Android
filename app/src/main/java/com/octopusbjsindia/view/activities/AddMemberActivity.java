@@ -41,7 +41,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
         presenter = new AddMamberActivityPresenter(this);
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("Create Subordinate");
+        toolbarTitle.setText("Add Team Member");
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
         etUserFirstName = findViewById(R.id.et_user_first_name);
@@ -93,7 +93,7 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             userInfo.setUserFirstName(String.valueOf(etUserFirstName.getText()).trim());
             userInfo.setUserMiddleName(String.valueOf(etUserMiddleName.getText()).trim());
             userInfo.setUserLastName(String.valueOf(etUserLastName.getText()).trim());
-            userInfo.setUserBirthDate(Util.getDateInLong(String.valueOf(etUserBirthDate.getText()).trim()));
+//            userInfo.setUserBirthDate(Util.getDateInLong(String.valueOf(etUserBirthDate.getText()).trim()));
             userInfo.setUserMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
             userInfo.setUserEmailId(String.valueOf(etUserEmailId.getText()).trim());
             userInfo.setUserGender(userGender);
@@ -113,9 +113,9 @@ public class AddMemberActivity extends AppCompatActivity implements View.OnClick
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-        } else if (etUserBirthDate.getText().toString().trim().length() == 0) {
+        } /*else if (etUserBirthDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_birth_date);
-        } else if (etUserEmailId.getText().toString().trim().length() != 0 &&
+        } */else if (etUserEmailId.getText().toString().trim().length() != 0 &&
                 !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
             msg = getResources().getString(R.string.msg_enter_valid_email_id);
         } else if (TextUtils.isEmpty(userGender)) {

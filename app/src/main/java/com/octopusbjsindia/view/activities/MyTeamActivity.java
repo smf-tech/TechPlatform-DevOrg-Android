@@ -78,7 +78,10 @@ public class MyTeamActivity extends AppCompatActivity implements APIDataListener
             adapter = new SubordinateListAdapter(this, responseOBJ.getData());
             rvTeamList.setLayoutManager(mLayoutManager);
             rvTeamList.setAdapter(adapter);
+            findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
+
+            findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
             Util.showToast(responseOBJ.getMessage(),this);
         }
     }

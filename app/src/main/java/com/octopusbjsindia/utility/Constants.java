@@ -400,14 +400,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_COMMUNITY_MOBILISATION = 105;
         public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
         public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
-        public static final Integer ACCESS_CODE_STRUCTURE_CLOSE = 124;
-        public static final Integer ACCESS_CODE_CREATE_FEED = 125;
-        public static final Integer ACCESS_CODE_DELETE_FEED = 126;
-        public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
-        public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
-        public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
-        public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
-        public static final Integer ACCESS_CODE_ADD_OPERATOR = 131;
+        public static final Integer ROLE_CODE_SS_OPERATOR = 113;
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
         public static final Integer STRUCTURE_IN_PROGRESS =	117;
@@ -421,10 +414,20 @@ public class Constants {
         public static final Integer ACCESS_CODE_DISTRICT = 121;
         public static final Integer ACCESS_CODE_TALUKA = 122;
         public static final Integer ACCESS_CODE_VILLAGE = 123;
+        public static final Integer ACCESS_CODE_STRUCTURE_CLOSE = 124;
+        public static final Integer ACCESS_CODE_CREATE_FEED = 125;
+        public static final Integer ACCESS_CODE_DELETE_FEED = 126;
+        public static final Integer ACCESS_CODE_STRUCTURE_BOUNDARY = 127;
+        public static final Integer ACCESS_CODE_MACHINE_MOU_UPLOAD = 128;
+        public static final Integer ACCESS_CODE_MACHINE_EDIT_READING = 130;
+        public static final Integer ACCESS_CODE_MACHINE_SIGN_OFF = 129;
+        public static final Integer ACCESS_CODE_ADD_OPERATOR = 131;
         public static final Integer ACCESS_CODE_ASSIGN_OPERATOR = 132;
         public static final Integer ACCESS_CODE_REALISE_OPERATOR = 133;
         public static final Integer ACCESS_CODE_OFFLINE_LOCATION_ALLOWED = 134;
-        public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+        public static final Integer ACCESS_CODE_CREATE_MEET = 154;
+        public static final Integer ACCESS_CODE_MY_SABORDINET = 155;
+
 
     }
 
