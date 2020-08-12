@@ -108,7 +108,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="2dp"
-                android:src="@drawable/active4" />
+                android:src="@drawable/ic_active5" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
