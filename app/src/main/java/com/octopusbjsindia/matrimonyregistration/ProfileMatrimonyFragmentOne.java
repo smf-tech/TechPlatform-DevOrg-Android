@@ -588,6 +588,8 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
                     lyChildren.setVisibility(View.VISIBLE);
                 } else {
                     lyChildren.setVisibility(View.GONE);
+                    ((RegistrationActivity) getActivity()).otherMaritialInformation.setSupport_doc("");
+                    haveChildren = "NotApplicable";
                 }
                 if (selectedValues.equalsIgnoreCase("Divorcee")) {
                     lyDivorce.setVisibility(View.VISIBLE);

@@ -395,17 +395,26 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         if (userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc() != null) {
             if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())) {
                 ly_myproof.setVisibility(View.VISIBLE);
+                tv_myproof_title.setVisibility(View.VISIBLE);
+                if (userProfileList.getMatrimonial_profile().getPersonal_details().
+                        getMarital_status().equalsIgnoreCase("Divorcee")) {
+                    tv_myproof_title.setText("Legal seperation certificate");
+                } else {
+                    tv_myproof_title.setText("Partner's death certificate");
+                }
                 Glide.with(this)
                         .applyDefaultRequestOptions(certificateRequestOptions)
                         .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
                         .into(iv_myproof_certificate);
+
+
+            }else {
+                if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
+                    tv_myproof_title.setVisibility(View.GONE);
+                    ly_myproof.setVisibility(View.GONE);
+                }
             }
-            if (userProfileList.getMatrimonial_profile().getPersonal_details().
-                    getMarital_status().equalsIgnoreCase("Divorcee")) {
-                tv_myproof_title.setText("Legal seperation certificate");
-            } else {
-                tv_myproof_title.setText("Partner's death certificate");
-            }
+
         }
 
         tv_primary_mobile.setOnClickListener(this);
@@ -646,17 +655,26 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         if (userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc() != null) {
             if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())) {
                 ly_myproof.setVisibility(View.VISIBLE);
+                tv_myproof_title.setVisibility(View.VISIBLE);
+                if (userProfileList.getMatrimonial_profile().getPersonal_details().
+                        getMarital_status().equalsIgnoreCase("Divorcee")) {
+                    tv_myproof_title.setText("Legal seperation certificate");
+                } else {
+                    tv_myproof_title.setText("Partner's death certificate");
+                }
                 Glide.with(this)
                         .applyDefaultRequestOptions(certificateRequestOptions)
                         .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
                         .into(iv_myproof_certificate);
+
+
+            }else {
+                if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
+                    tv_myproof_title.setVisibility(View.GONE);
+                    ly_myproof.setVisibility(View.GONE);
+                }
             }
-            if (userProfileList.getMatrimonial_profile().getPersonal_details().
-                    getMarital_status().equalsIgnoreCase("Divorcee")) {
-                tv_myproof_title.setText("Legal seperation certificate");
-            } else {
-                tv_myproof_title.setText("Partner's death certificate");
-            }
+
         }
 
         tv_primary_mobile.setOnClickListener(this);

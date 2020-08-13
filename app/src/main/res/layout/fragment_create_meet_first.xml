@@ -378,7 +378,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/opensans_semibold"
-                            android:text="Do you want to allow payment throgh Community app?" />
+                            android:text="Do you want to allow payment through Community app?" />
 
                         <RadioButton
                             android:id="@+id/rb_online_yes"
