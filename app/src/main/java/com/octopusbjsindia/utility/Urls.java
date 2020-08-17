@@ -140,6 +140,7 @@ public class Urls {
         public static final String MATRIMONY_SUBORDINATE_USERS = "api/getSubordinateRoleUsers";
         public static final String MATRIMONY_MASTER = "api/masterData";
         public static final String GET_PROFILE_DETAILS = "api/userProfileDetails";
+        public static final String MEET_TRANSECTION_DETAILS = "api/transactionDetails";
 
     }
 

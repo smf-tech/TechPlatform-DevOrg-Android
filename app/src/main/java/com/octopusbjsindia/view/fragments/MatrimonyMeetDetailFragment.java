@@ -45,9 +45,11 @@ import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.MatrimonyActivity;
 import com.octopusbjsindia.view.activities.MatrimonyBookletActivity;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.ShowMeetBatchesActivity;
+import com.octopusbjsindia.view.activities.TransactionDetailsActivity;
 import com.octopusbjsindia.view.adapters.MeetAnalyticsAdapter;
 import com.octopusbjsindia.view.adapters.MeetContactsListAdapter;
 
@@ -404,6 +406,11 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 break;
             case R.id.action_show_baches:
                 presenter.showMeetBaches(meetData.getId(), "showbaches");
+                break;
+            case R.id.action_transaction_details:
+                Intent intent = new Intent(getActivity(), TransactionDetailsActivity.class);
+                intent.putExtra("MeetId", meetData.getId());
+                startActivity(intent);
                 break;
         }
         return false;
