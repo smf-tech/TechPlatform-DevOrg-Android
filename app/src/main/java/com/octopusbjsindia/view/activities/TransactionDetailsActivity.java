@@ -1,22 +1,20 @@
 package com.octopusbjsindia.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
-import com.octopusbjsindia.models.Matrimony.SubordinateResponse;
 import com.octopusbjsindia.models.Matrimony.TransectionDetailsResponse;
 import com.octopusbjsindia.presenter.TransactionDetailsActivityPresenter;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.adapters.SubordinateListAdapter;
 import com.octopusbjsindia.view.adapters.TransactionDetailsAdapter;
 
 public class TransactionDetailsActivity extends AppCompatActivity implements APIDataListener {
@@ -67,7 +65,6 @@ public class TransactionDetailsActivity extends AppCompatActivity implements API
             rvTransactionDetails.setAdapter(adapter);
             findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
-
             findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
             Util.showToast(responseOBJ.getMessage(),this);
         }

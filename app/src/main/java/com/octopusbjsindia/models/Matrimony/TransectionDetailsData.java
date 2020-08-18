@@ -27,6 +27,9 @@ public class TransectionDetailsData {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("paymentDate")
+    @Expose
+    private String paymentDate;
 
     public String getRazorpayOrderId() {
         return razorpayOrderId;
@@ -82,6 +85,14 @@ public class TransectionDetailsData {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
 }

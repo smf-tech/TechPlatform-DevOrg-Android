@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.TransectionDetailsData;
+
 import java.util.List;
 
 public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionDetailsAdapter.ViewHolder> {
@@ -51,6 +54,7 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionD
         holder.tvEmail.setText(list.get(i).getEmail());
         holder.tvPaymentId.setText("PaymentId: "+list.get(i).getRazorpayPaymentId());
         holder.tvAmount.setText("Amount: "+(list.get(i).getAmount()/100));
+        holder.tvPaymentDate.setText(list.get(i).getPaymentDate());
     }
 
     @Override
@@ -60,7 +64,7 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionD
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUserImage;
-        TextView tvName, tvPhone, tvEmail, tvPaymentId, tvAmount;
+        TextView tvName, tvPhone, tvEmail, tvPaymentId, tvAmount, tvPaymentDate;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivUserImage = itemView.findViewById(R.id.iv_user_profile_pic);
@@ -69,6 +73,7 @@ public class TransactionDetailsAdapter extends RecyclerView.Adapter<TransactionD
             tvEmail = itemView.findViewById(R.id.tv_email);
             tvPaymentId = itemView.findViewById(R.id.tvPaymentId);
             tvAmount = itemView.findViewById(R.id.tvAmount);
+            tvPaymentDate = itemView.findViewById(R.id.tvPaymentDate);
             tvPhone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
