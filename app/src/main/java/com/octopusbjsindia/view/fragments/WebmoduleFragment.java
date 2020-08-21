@@ -197,7 +197,7 @@ public class WebmoduleFragment extends Fragment {
             File imageStorageDir = new File(
                     Environment.getExternalStoragePublicDirectory(
                             Environment.DIRECTORY_PICTURES)
-                    , "Seva");
+                    , "Octopus");
 
             if (!imageStorageDir.exists()) {
                 // Create AndroidExampleFolder at sdcard
@@ -216,7 +216,7 @@ public class WebmoduleFragment extends Fragment {
             File file = null;
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/Seva/Image/picture" + number + ".jpg";
+                        + "/Octopus/Image/picture" + number + ".jpg";
                 file = new File(imageFilePath);
                 number++;
             } catch (Exception ex) {
@@ -318,7 +318,7 @@ public class WebmoduleFragment extends Fragment {
         File imageFile = null;
         try {
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Seva/Image/picture" + number + ".jpg";
+                    + "/Octopus/Image/picture" + number + ".jpg";
             imageFile = new File(imageFilePath);
             number++;
         } catch (Exception ex) {
