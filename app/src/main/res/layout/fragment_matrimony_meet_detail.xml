@@ -255,6 +255,29 @@
                         android:gravity="center"
                         android:autoLink="web" />
 
+
+                    <TextView
+                        android:id="@+id/tv_referallink_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:drawableStart="@drawable/ic_weblink"
+                        android:drawablePadding="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:text="Referral link" />
+
+                    <TextView
+                        android:id="@+id/tv_referallink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:gravity="start|center_vertical"
+                        android:drawableEnd="@drawable/ic_share"
+                        />
+
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -26,6 +26,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("meetWebLink")
     @Expose
     private String meetWebLink;
+    @SerializedName("meetReferralLink")
+    @Expose
+    private String meetReferralLink;
     @SerializedName("schedule")
     @Expose
     private MeetSchedule schedule;
@@ -271,5 +274,13 @@ public class MatrimonyMeet implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getMeetReferralLink() {
+        return meetReferralLink;
+    }
+
+    public void setMeetReferralLink(String meetReferralLink) {
+        this.meetReferralLink = meetReferralLink;
     }
 }

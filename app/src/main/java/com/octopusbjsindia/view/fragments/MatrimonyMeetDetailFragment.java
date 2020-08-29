@@ -66,7 +66,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private MatrimonyMeet meetData;
     private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue,
             tvMeetWebLink, tvRegAmt, tvRegPeriod, tvBadgesInfo, btnViewProfiles, btnRegisterProfile,
-            tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote;
+            tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote,tv_referallink_label,tv_referallink;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<SubordinateData> contactsList = new ArrayList<>();
@@ -130,6 +130,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         tvMeetCity = view.findViewById(R.id.tv_meet_city);
         tvMeetVenue = view.findViewById(R.id.tv_meet_venue);
         tvMeetWebLink = view.findViewById(R.id.tvMeetWebLink);
+        tv_referallink = view.findViewById(R.id.tv_referallink);
         tvRegAmt = view.findViewById(R.id.tv_reg_amt);
         tvRegPeriod = view.findViewById(R.id.tv_reg_period);
         tvBadgesInfo = view.findViewById(R.id.tv_badges_info);
@@ -143,6 +144,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         tvNote = view.findViewById(R.id.tvNote);
 
         btnPublishMeet.setOnClickListener(this);
+        tv_referallink.setOnClickListener(this);
 
         btnViewProfiles = view.findViewById(R.id.btn_view_profiles);
         btnRegisterProfile = view.findViewById(R.id.btn_register_profile);
@@ -298,6 +300,14 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvMeetWebLink.setVisibility(View.GONE);
         }
 
+        if (meetData.getMeetReferralLink() != null && meetData.getMeetReferralLink().trim().length() > 0) {
+            tv_referallink.setText(meetData.getMeetReferralLink());
+        } else {
+            view.findViewById(R.id.tv_referallink_label).setVisibility(View.GONE);
+            tv_referallink.setVisibility(View.GONE);
+        }
+
+
         if (meetData.getRegAmount() == 0) {
             tvRegAmt.setVisibility(View.GONE);
             view.findViewById(R.id.tv_reg_free).setVisibility(View.VISIBLE);
@@ -381,6 +391,20 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 startMain.putExtra("meetid", meetData.getId());
                 startActivity(startMain);
                 break;
+            case R.id.tv_referallink:
+                /*String configDataString = Utils.getStringPref(Constants.Pref.PROFILE_CATEGORY);
+                Gson configDataGson = new Gson();
+                AppConfigResponse appConfigData = configDataGson.fromJson(configDataString, AppConfigResponse.class);*/
+
+                String message = "Please find the referral link to BJS Connect app" + "\n" +
+                                meetData.getMeetWebLink();
+
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, message);
+                getActivity().startActivity(Intent.createChooser(share, "Share Referral"));
+                break;
+
         }
     }
 
