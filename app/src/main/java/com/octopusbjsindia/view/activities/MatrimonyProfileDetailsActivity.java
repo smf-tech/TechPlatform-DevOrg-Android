@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
@@ -92,6 +93,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private String meetIdReceived = "";
     private RelativeLayout progressBar, ly_myproof;
     private boolean isBlock;
+    private CardView cv_meetlist_details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,19 +159,20 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         TextView title = findViewById(R.id.toolbar_title);
         title.setText("Profile Details");
+        cv_meetlist_details  = findViewById(R.id.cv_meetlist_details);
         registered_meet_list = findViewById(R.id.registered_meet_list);
-        registered_meet_list_title = findViewById(R.id.registered_meet_list_title);
+
         if (profileResponse.getData().getMeetList()!=null) {
             if (profileResponse.getData().getMeetList().size()>0) {
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < profileResponse.getData().getMeetList().size(); i++) {
-                    builder.append(profileResponse.getData().getMeetList().get(i));
+                    builder.append((i+1)+". "+profileResponse.getData().getMeetList().get(i));
                     builder.append("\n");
                 }
-                registered_meet_list_title.setText("Meets Registered :");
+                //registered_meet_list_title.setText("Meets Registered :");
                 registered_meet_list.setText(builder.toString().trim());
             }else {
-                registered_meet_list_title.setVisibility(View.GONE);
+                cv_meetlist_details.setVisibility(View.GONE);
                 registered_meet_list.setVisibility(View.GONE);
             }
         }
@@ -191,6 +194,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.iv_arrow_family).setOnClickListener(this);
         findViewById(R.id.iv_arrow_residential).setOnClickListener(this);
         findViewById(R.id.iv_arrow_other).setOnClickListener(this);
+        findViewById(R.id.iv_arrow_meetlist_details).setOnClickListener(this);
+
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
         findViewById(R.id.btn_reject).setOnClickListener(this);
@@ -450,6 +455,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         findViewById(R.id.iv_arrow_family).setOnClickListener(this);
         findViewById(R.id.iv_arrow_residential).setOnClickListener(this);
         findViewById(R.id.iv_arrow_other).setOnClickListener(this);
+        findViewById(R.id.iv_arrow_meetlist_details).setOnClickListener(this);
         findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
         findViewById(R.id.btn_interview_done).setOnClickListener(this);
         findViewById(R.id.btn_reject).setOnClickListener(this);
@@ -904,6 +910,15 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 } else {
                     findViewById(R.id.ly_other_details).setVisibility(View.GONE);
                     findViewById(R.id.iv_arrow_other).setRotation(0);
+                }
+                break;
+            case R.id.iv_arrow_meetlist_details:
+                if (findViewById(R.id.ly_meetlist_details).getVisibility() != View.VISIBLE) {
+                    findViewById(R.id.ly_meetlist_details).setVisibility(View.VISIBLE);
+                    findViewById(R.id.iv_arrow_meetlist_details).setRotation(180);
+                } else {
+                    findViewById(R.id.ly_meetlist_details).setVisibility(View.GONE);
+                    findViewById(R.id.iv_arrow_meetlist_details).setRotation(0);
                 }
                 break;
             case R.id.btn_mark_attendance:

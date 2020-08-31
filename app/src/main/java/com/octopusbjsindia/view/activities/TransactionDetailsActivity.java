@@ -21,6 +21,7 @@ public class TransactionDetailsActivity extends AppCompatActivity implements API
 
     private TransactionDetailsActivityPresenter presenter;
     private RecyclerView rvTransactionDetails;
+    TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class TransactionDetailsActivity extends AppCompatActivity implements API
         presenter = new TransactionDetailsActivityPresenter(this);
         presenter.getTransactionDetails(getIntent().getStringExtra("MeetId"));
 
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText("Transaction Details");
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +65,9 @@ public class TransactionDetailsActivity extends AppCompatActivity implements API
             rvTransactionDetails.setLayoutManager(mLayoutManager);
             rvTransactionDetails.setAdapter(adapter);
             findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            if (responseOBJ.getData()!=null) {
+                toolbarTitle.setText("Transaction Details" + "(" + responseOBJ.getData().size() + ")");
+            }
         } else {
             findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
             Util.showToast(responseOBJ.getMessage(),this);

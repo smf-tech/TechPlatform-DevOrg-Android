@@ -305,8 +305,8 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvMeetWebLink.setVisibility(View.GONE);
         }
 
-        if (meetData.getMeetWebLink() != null && meetData.getMeetWebLink().trim().length() > 0) {
-            tv_referallink.setText(meetData.getMeetWebLink());
+        if (meetData.getMeetReferralLink() != null && meetData.getMeetReferralLink().trim().length() > 0) {
+            tv_referallink.setText(meetData.getMeetReferralLink());
         } else {
             view.findViewById(R.id.tv_referallink_label).setVisibility(View.GONE);
             btn_copy_referral.setVisibility(View.GONE);
@@ -403,7 +403,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 AppConfigResponse appConfigData = configDataGson.fromJson(configDataString, AppConfigResponse.class);*/
 
                 String message = "Please find the referral link to BJS Connect app" + "\n" +
-                                meetData.getMeetWebLink();
+                                meetData.getMeetReferralLink();
 
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
@@ -416,7 +416,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             case R.id.btn_copy_referral:
 
                 String message1 = "Please find the referral link to BJS Connect app" + "\n" +
-                        meetData.getMeetWebLink();
+                        meetData.getMeetReferralLink();
 
                 ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("referal text",message1);
