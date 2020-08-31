@@ -2,6 +2,8 @@ package com.octopusbjsindia.view.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +78,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private RelativeLayout progressBarLayout;
     private MatrimonyMeetDetailFragmentPresenter presenter;
     private ViewPager meetViewPager;
-    private Button btnPublishMeet;
+    private Button btnPublishMeet,btn_copy_referral;
     private int currentPosition;
     private static MatrimonyMeetDetailFragment instance = null;
     private RelativeLayout rlNoMeet, rl_meetLayout;
@@ -131,6 +134,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         tvMeetVenue = view.findViewById(R.id.tv_meet_venue);
         tvMeetWebLink = view.findViewById(R.id.tvMeetWebLink);
         tv_referallink = view.findViewById(R.id.tv_referallink);
+        btn_copy_referral = view.findViewById(R.id.btn_copy_referral);
         tvRegAmt = view.findViewById(R.id.tv_reg_amt);
         tvRegPeriod = view.findViewById(R.id.tv_reg_period);
         tvBadgesInfo = view.findViewById(R.id.tv_badges_info);
@@ -145,6 +149,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
         btnPublishMeet.setOnClickListener(this);
         tv_referallink.setOnClickListener(this);
+        btn_copy_referral.setOnClickListener(this);
 
         btnViewProfiles = view.findViewById(R.id.btn_view_profiles);
         btnRegisterProfile = view.findViewById(R.id.btn_register_profile);
@@ -300,10 +305,11 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvMeetWebLink.setVisibility(View.GONE);
         }
 
-        if (meetData.getMeetReferralLink() != null && meetData.getMeetReferralLink().trim().length() > 0) {
-            tv_referallink.setText(meetData.getMeetReferralLink());
+        if (meetData.getMeetWebLink() != null && meetData.getMeetWebLink().trim().length() > 0) {
+            tv_referallink.setText(meetData.getMeetWebLink());
         } else {
             view.findViewById(R.id.tv_referallink_label).setVisibility(View.GONE);
+            btn_copy_referral.setVisibility(View.GONE);
             tv_referallink.setVisibility(View.GONE);
         }
 
@@ -403,6 +409,19 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, message);
                 getActivity().startActivity(Intent.createChooser(share, "Share Referral"));
+
+
+
+                break;
+            case R.id.btn_copy_referral:
+
+                String message1 = "Please find the referral link to BJS Connect app" + "\n" +
+                        meetData.getMeetWebLink();
+
+                ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("referal text",message1);
+                clipboardManager.setPrimaryClip(clipData);
+
                 break;
 
         }
