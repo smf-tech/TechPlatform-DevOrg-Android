@@ -8,9 +8,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
         android:layout_margin="10dp"
-        android:outlineSpotShadowColor="@color/black"
         card_view:cardCornerRadius="05dp">
 
         <RelativeLayout
@@ -21,11 +19,8 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:fontFamily="@font/opensans_bold"
-                android:gravity="center_vertical"
-                android:text="123"
                 android:textSize="14sp" />
 
             <ImageView
@@ -33,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_margin="5dp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

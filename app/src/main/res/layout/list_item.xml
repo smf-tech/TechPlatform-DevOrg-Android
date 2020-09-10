@@ -19,27 +19,16 @@
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
-                android:text="asafvasvrvrfvs" />
-
-            <TextView
-                android:id="@+id/txt_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/txtName"
-                android:fontFamily="@font/opensans_bold"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                android:layout_margin="@dimen/dimen_05dp" />
 
             <TextView
                 android:id="@+id/txt_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_name"
-                android:text="5.5 MB"
-                android:layout_marginTop="@dimen/dimen_05dp" />
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp" />
 
             <TextView
                 android:id="@+id/txt_type"
@@ -48,23 +37,14 @@
                 android:layout_below="@+id/txt_name"
                 android:layout_toEndOf="@+id/txt_size"
                 android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Video file"
-                android:layout_marginTop="@dimen/dimen_05dp" />
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp" />
 
             <FrameLayout
                 android:id="@+id/frame_images"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true">
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="false"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/circular"
-                    android:visibility="invisible" />
 
                 <ImageView
                     android:id="@+id/img_download"
