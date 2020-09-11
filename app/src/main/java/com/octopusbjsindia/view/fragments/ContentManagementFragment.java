@@ -10,13 +10,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,14 +36,8 @@ import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.content.ContentData;
-import com.octopusbjsindia.models.content.Datum;
-import com.octopusbjsindia.models.content.Datum_;
-import com.octopusbjsindia.models.content.DownloadContent;
-import com.octopusbjsindia.models.content.DownloadInfo;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
-import com.octopusbjsindia.services.ShowTimerService;
 import com.octopusbjsindia.utility.AppEvents;
-import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
@@ -61,36 +52,19 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class ContentManagementFragment extends Fragment implements APIDataListener {
 
     private View contentFragmentview;
-    private ImageView backButton;
-    private FloatingActionButton btn_floating_download;
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
-    private List<DownloadContent> listDownloadContent;
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
     private TextView txt_noData;
-    private File f;
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus";
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
-    private List<Datum> contentList;
-    //private List<ContentDatum> contentDataList;
-    private List<Datum_> contentCategoryList;
-    private DownloadContent downloadContent;
     private ExpandableListAdapter expandableListAdapter;
-    private String downloadFilePath = "";
     private String filename;
-
-    private ImageView imgDwn, imgShare;
     private RelativeLayout progressBarLayout;
-    private ProgressBar progressBar, mProgressBar;
-    private ShowTimerService showTimerService;
-    boolean mBound = false;
-    private Handler handler = new Handler();
+    private ProgressBar progressBar;
     private List<Long> downloadIdList = new ArrayList<>();
-    DownloadInfo downloadInfo;
     DownloadManager downloadmanager;
     private Activity activity;
-    private PreferenceHelper preferenceHelper;
     private ContentFragmentPresenter presenter;
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
     ContentDataDao contentDataDao;
@@ -130,7 +104,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        preferenceHelper = new PreferenceHelper(activity);
         initViews();
     }
 
@@ -147,7 +120,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                //expandableListAdapter.notifyDataSetChanged();
                 return false;
 
             }
@@ -171,11 +143,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                //ContentData dwncontent = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
                 return false;
             }
         });
-
     }
 
     @Override
@@ -219,7 +189,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("Octopus");
         request.setDescription("Downloading");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Octopus", filename);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         downloadID = downloadmanager.enqueue(request);

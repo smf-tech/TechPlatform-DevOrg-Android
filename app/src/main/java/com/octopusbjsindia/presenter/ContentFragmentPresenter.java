@@ -1,7 +1,5 @@
 package com.octopusbjsindia.presenter;
 
-import android.util.Log;
-
 import com.android.volley.VolleyError;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
@@ -31,8 +29,6 @@ public class ContentFragmentPresenter implements APIPresenterListener {
     public void getContentData() {
         final String getContentUrl = BuildConfig.BASE_URL
                 + String.format(Urls.ContentManagement.GET_CONTENT_DATA, Util.getLocaleLanguageCode());
-
-        Log.d(TAG, "getContentUrl: url" + getContentUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
