@@ -116,7 +116,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
                     String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                            + Environment.DIRECTORY_DOWNLOADS + "/Octopus";
+                            + Environment.DIRECTORY_DOWNLOADS;
                     File contentFile = new File(storagePath + "/" + contentData.getDownloadedFileName());
                     openFile(contentFile);
                 } else {
@@ -144,7 +144,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                        + Environment.DIRECTORY_DOWNLOADS + "/Octopus";
+                        + Environment.DIRECTORY_DOWNLOADS;
                 File filePath = new File(storagePath + "/" + contentData.getDownloadedFileName());
                 shareFile(filePath);
             }
@@ -209,7 +209,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private boolean isFileAvailable(String fileName) {
         String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                + Environment.DIRECTORY_DOWNLOADS + "/Octopus";
+                + Environment.DIRECTORY_DOWNLOADS;
         File myFile = new File(storagePath + "/" + fileName);
         if (myFile.exists()) {
             return true;

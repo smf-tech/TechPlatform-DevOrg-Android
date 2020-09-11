@@ -189,7 +189,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("Octopus");
         request.setDescription("Downloading");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Octopus", filename);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         downloadID = downloadmanager.enqueue(request);
