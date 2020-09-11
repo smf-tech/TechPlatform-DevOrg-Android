@@ -183,9 +183,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView != null) {
             ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
             if (isExpanded) {
-                imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
+                Util.rotateImage(180f, imgGroup);
+                //imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
             } else {
-                imgGroup.setImageResource(R.drawable.ic_arrow_right);
+                Util.rotateImage(0f, imgGroup);
+                //imgGroup.setImageResource(R.drawable.ic_right_arrow_grey);
             }
             TextView txtName = convertView.findViewById(R.id.txtName);
             txtName.setText(headerTitle);

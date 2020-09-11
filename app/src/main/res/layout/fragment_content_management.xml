@@ -48,17 +48,4 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
-    <!--       <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--           android:id="@+id/btn_floating_content"-->
-    <!--           android:layout_width="wrap_content"-->
-    <!--           android:layout_height="wrap_content"-->
-    <!--           android:layout_alignParentRight="true"-->
-    <!--           android:layout_alignParentBottom="true"-->
-    <!--           android:layout_marginRight="20dp"-->
-    <!--           android:layout_marginBottom="20dp"-->
-    <!--           android:backgroundTint="@color/colorPrimary"-->
-    <!--           android:src="@drawable/download_file" />-->
-
-
 </RelativeLayout>
