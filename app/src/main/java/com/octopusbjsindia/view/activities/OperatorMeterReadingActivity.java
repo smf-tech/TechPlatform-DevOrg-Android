@@ -1631,7 +1631,6 @@ private void initConnectivityReceiver() {
         }
         updateStatusAndProceed(state_halt);
         clearReadingImages();
-
     }
 
     private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
