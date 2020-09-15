@@ -32,13 +32,10 @@ public class ContentData {
     @SerializedName("content_title")
     @Expose
     private String contentTiltle;
-
     @ColumnInfo(name = "downloadedFileName")
     @SerializedName("downloadedFileName")
     @Expose
     private String downloadedFileName;
-
-
     @ColumnInfo(name = "file_type")
     @SerializedName("file_type")
     @Expose
@@ -50,6 +47,9 @@ public class ContentData {
     @ColumnInfo(name = "languageDetailsString")
     @Expose
     private String languageDetailsString;
+    @Ignore
+    @Expose
+    private boolean dawnloadSatrted = false;
     @Ignore
     @SerializedName("language_details")
     @Expose
@@ -127,4 +127,11 @@ public class ContentData {
         this.languageDetailsString = languageDetailsString;
     }
 
+    public boolean isDawnloadSatrted() {
+        return dawnloadSatrted;
+    }
+
+    public void setDawnloadSatrted(boolean dawnloadSatrted) {
+        this.dawnloadSatrted = dawnloadSatrted;
+    }
 }

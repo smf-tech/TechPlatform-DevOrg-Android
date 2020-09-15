@@ -179,8 +179,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         expandableListAdapter.notifyDataSetChanged();
     }
 
-    public boolean beginDownload(String url) {
+    public boolean beginDownload(String url,int groupCount, int chidCount) {
         boolean isRunning = false;
+        listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
         downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -203,6 +204,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
             if (status == DownloadManager.STATUS_FAILED) {
                 // do something when failed
+                isRunning = false;
+                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(false);
             } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
                 // do something pending or paused
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
@@ -210,8 +213,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
                 isRunning = true;
+                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
             }
         }
+        expandableListAdapter.notifyDataSetChanged();
         return isRunning;
     }
 
