@@ -1,7 +1,10 @@
 package com.octopusbjsindia.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +41,7 @@ import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
+    private Context context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<ContentData>> _listDataChild;
@@ -52,7 +56,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.contentManagementFragment = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this._context = _context;
+        this.context = _context;
     }
 
     @Override
@@ -83,6 +87,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         RelativeLayout rlContent = convertView.findViewById(R.id.rl_content);
         ImageView imgDownload = convertView.findViewById(R.id.img_download);
         ImageView imgShare = convertView.findViewById(R.id.img_share);
+        ProgressBar pbDownloading = convertView.findViewById(R.id.pbDownloading);
         TextView txtTitle = convertView.findViewById(R.id.txt_name);
         TextView txtSize = convertView.findViewById(R.id.txt_size);
         TextView txtType = convertView.findViewById(R.id.txt_type);
@@ -90,6 +95,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtTitle.setText(contentData.getContentTiltle());
         txtSize.setText(contentData.getFileSize());
         txtType.setText(contentData.getFileType());
+
 
         boolean isFileDownloaded = false;
         for (LanguageDetail languageDetail : languageDetailsList) {
@@ -103,18 +109,33 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        if (isFileDownloaded) {
-            imgDownload.setVisibility(View.GONE);
-            imgShare.setVisibility(View.VISIBLE);
-        } else {
-            imgDownload.setVisibility(View.VISIBLE);
+        if(contentData.getFileType().equalsIgnoreCase("youtube")){
             imgShare.setVisibility(View.GONE);
+            imgDownload.setVisibility(View.GONE);
+            pbDownloading.setVisibility(View.GONE);
+        } else if (isFileDownloaded) {
+            imgShare.setVisibility(View.VISIBLE);
+            imgDownload.setVisibility(View.GONE);
+            pbDownloading.setVisibility(View.GONE);
+        } else {
+            if(contentData.isDawnloadSatrted()){
+                pbDownloading.setVisibility(View.VISIBLE);
+                imgDownload.setVisibility(View.GONE);
+                imgShare.setVisibility(View.GONE);
+            } else {
+                imgDownload.setVisibility(View.VISIBLE);
+                imgShare.setVisibility(View.GONE);
+                pbDownloading.setVisibility(View.GONE);
+            }
         }
 
         rlContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
+                if(contentData.getFileType().equalsIgnoreCase("youtube")){
+                    context.startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+                } else if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
                     String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                             + Environment.DIRECTORY_DOWNLOADS;
                     File contentFile = new File(storagePath + "/" + contentData.getDownloadedFileName());
@@ -132,7 +153,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if (Permissions.isWriteExternalStoragePermission(contentManagementFragment.getActivity(), contentManagementFragment)) {
 //                    for (LanguageDetail languageDetail : languageDetailsList) {
 //                        if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
-                    contentManagementFragment.showDownloadPopup(languageDetailsList);
+                    contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition, childPosition);
                     //contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
                     //break;
                     //}
@@ -235,13 +256,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //             Check what kind of file you are trying to open, by comparing the url with extensions.
 //             When the if condition is matched, plugin sets the correct intent (mime) type,
 //             so Android knew what application to use to open the file
-            if (contentFile.toString().contains(".doc") || contentFile.toString().contains(".docx")) {
+           /* if (contentFile.toString().contains(".doc") || contentFile.toString().contains(".docx")) {
                 // Word document
                 intent.setDataAndType(uri, "application/msword");
-            } else if (contentFile.toString().contains(".pdf")) {
+            } else */
+           if (contentFile.toString().contains(".pdf")) {
                 // PDF file
                 intent.setDataAndType(uri, get_mime_type(uri.toString()));
-            } else if (contentFile.toString().contains(".ppt") || contentFile.toString().contains(".pptx")) {
+            }/* else if (contentFile.toString().contains(".ppt") || contentFile.toString().contains(".pptx")) {
                 // Powerpoint file
                 intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
             } else if (contentFile.toString().contains(".xls") || contentFile.toString().contains(".xlsx")) {
@@ -253,25 +275,44 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             } else if (contentFile.toString().contains(".rtf")) {
                 // RTF file
                 intent.setDataAndType(uri, "application/rtf");
-            } else if (contentFile.toString().contains(".wav") || contentFile.toString().contains(".mp3")) {
+            }*/ else if (contentFile.toString().contains(".wav") || contentFile.toString().contains(".mp3")) {
                 // WAV audio file
                 intent.setDataAndType(uri, "audio/x-wav");
             } else if (contentFile.toString().contains(".gif")) {
                 // GIF file
                 intent.setDataAndType(uri, "image/gif");
-            } else if (contentFile.toString().contains(".jpg") || contentFile.toString().contains(".jpeg") ||
+            }/* else if (contentFile.toString().contains(".jpg") || contentFile.toString().contains(".jpeg") ||
                     contentFile.toString().contains(".png")) {
                 // JPG file
                 intent.setDataAndType(uri, "image/jpeg");
             } else if (contentFile.toString().contains(".txt")) {
                 // Text file
                 intent.setDataAndType(uri, "text/plain");
-            } else if (contentFile.toString().contains(".3gp") || contentFile.toString().contains(".mpg") ||
+            }*/ else if (contentFile.toString().contains(".3gp") || contentFile.toString().contains(".mpg") ||
                     contentFile.toString().contains(".mpeg") || contentFile.toString().contains(".mpe") ||
                     contentFile.toString().contains(".mp4") || contentFile.toString().contains(".avi")) {
                 // Video files
                 intent.setDataAndType(uri, "video/*");
-            } else {
+            }  else if (contentFile.toString().contains(".epub")) {
+               String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                       + "/MV/Zip/" + contentFile.getName() + ".epub";
+//               File epubFile = new File(filePath);
+//               Uri outputUri = FileProvider.getUriForFile(this,
+//                       this.getPackageName() + ".fileprovider", epubFile);
+
+               Intent intentEpub = new Intent();
+               intentEpub.setAction(Intent.ACTION_VIEW);
+               intentEpub.setDataAndType(uri, "application/epub+zip");
+               intentEpub.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               intentEpub.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+               PackageManager packageManager = context.getPackageManager();
+               if (intent.resolveActivity(packageManager) != null) {
+                   context.startActivity(intent);
+               } else {
+                   showDialog();
+               }
+           }else {
                 //if you want you can also define the intent type for any other file
                 //additionally use else clause below, to manage other unknown extensions
                 //in this case, Android will show all applications installed on the device
@@ -292,6 +333,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
         }
         return mime;
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(context.getResources().getString(R.string.alert));
+        alertDialog.setMessage("No Application available to open Ebook file, Do you want to install?");
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                final String appPackageName = context.getPackageName();
+                try {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                }
+            }
+        });
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
     private void shareFile(File contentFile) {

@@ -68,7 +68,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
-    private TextView txt_noData;
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private ExpandableListAdapter expandableListAdapter;
@@ -128,9 +127,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private void initViews() {
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
+        //txt_noData = contentFragmentview.findViewById(R.id.textNoData);
         fbSelect = contentFragmentview.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
-        txt_noData = contentFragmentview.findViewById(R.id.textNoData);
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         expListView = contentFragmentview.findViewById(R.id.lvExp);
         expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
@@ -172,11 +171,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getContext())) {
-            listDataHeader.clear();
-            listDataChild.clear();
             presenter = new ContentFragmentPresenter(this);
             presenter.getContentData();
         } else {
+            updateListView();
             Util.showToast(getString(R.string.msg_no_network), this);
         }
         if (expandableListAdapter != null) {
@@ -185,11 +183,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     private void updateListView() {
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
+        listDataHeader.clear();
+        listDataChild.clear();
         List<String> categoryNames = contentDataDao.getDistinctCategories();
         listDataHeader.addAll(categoryNames);
         for (String categoryName : listDataHeader) {
@@ -197,9 +192,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                     categoryName));
         }
         expandableListAdapter.notifyDataSetChanged();
+        if (listDataHeader.size() > 0) {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
-    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList) {
+    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList,int groupPosition, int childPosition) {
         ArrayList<DownloadLanguageSelection> list = new ArrayList<>();
         for (LanguageDetail languageDetail : languageDetailsList) {
             DownloadLanguageSelection downloadLanguageSelection = new DownloadLanguageSelection();
@@ -230,7 +230,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         button.setTextColor(getActivity().getResources().getColor(R.color.white));
         button.setOnClickListener(v -> {
             if (downloadPosition > -1) {
-                beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl());
+                beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
                 dialog.dismiss();
             } else {
                 Util.showToast(getActivity(), "Please select language.");
@@ -247,8 +247,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
 
-    public boolean beginDownload(String url) {
+    public boolean beginDownload(String url,int groupCount, int chidCount) {
         boolean isRunning = false;
+        listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
         downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -271,6 +272,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
             if (status == DownloadManager.STATUS_FAILED) {
                 // do something when failed
+                isRunning = false;
+                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(false);
             } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
                 // do something pending or paused
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
@@ -278,8 +281,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
                 isRunning = true;
+                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
             }
         }
+        expandableListAdapter.notifyDataSetChanged();
         return isRunning;
     }
 

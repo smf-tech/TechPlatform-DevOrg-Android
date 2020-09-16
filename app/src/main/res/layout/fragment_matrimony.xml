@@ -72,13 +72,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="@dimen/dimen_02dp"
+                        android:layout_marginStart="@dimen/dimen_02dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/bg_circular_border_gray_30"
                         android:fontFamily="@font/opensans_regular"
                         android:paddingStart="@dimen/dimen_10dp"
                         android:paddingTop="@dimen/dimen_05dp"
                         android:paddingEnd="@dimen/dimen_10dp"
                         android:paddingBottom="@dimen/dimen_05dp"
-                        android:background="@drawable/bg_circular_border_gray_30"
                         android:text="See All" />
 
                 </RelativeLayout>

@@ -18,14 +18,27 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:groupIndicator="@null" />
 
-        <TextView
-            android:id="@+id/textNoData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="No Data Available"
-            android:textColor="@color/dark_grey"
-            android:visibility="gone" />
+        <RelativeLayout
+            android:id="@+id/ly_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_no_data"
+                android:layout_width="@dimen/standard_240"
+                android:layout_height="@dimen/standard_240"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_no_data" />
+
+            <TextView
+                android:layout_below="@+id/iv_no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="No content data available." />
+        </RelativeLayout>
 
     </RelativeLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
