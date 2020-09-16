@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,6 +51,7 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.StoredContentActivity;
 import com.octopusbjsindia.view.adapters.ContentLanguageSelectionAdapter;
 
 import java.io.File;
@@ -59,9 +61,10 @@ import java.util.List;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
-public class ContentManagementFragment extends Fragment implements APIDataListener {
+public class ContentManagementFragment extends Fragment implements APIDataListener, View.OnClickListener {
 
     private View contentFragmentview;
+    private FloatingActionButton fbSelect;
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
@@ -125,6 +128,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private void initViews() {
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
+        fbSelect = contentFragmentview.findViewById(R.id.fb_select);
+        fbSelect.setOnClickListener(this);
         txt_noData = contentFragmentview.findViewById(R.id.textNoData);
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         expListView = contentFragmentview.findViewById(R.id.lvExp);
@@ -375,5 +380,17 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void closeCurrentActivity() {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.fb_select) {
+            if (Util.isConnected(getActivity())) {
+                Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
+                startActivity(storedContentIntent);
+            }else {
+                Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+            }
+        }
     }
 }
