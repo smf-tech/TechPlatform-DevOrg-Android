@@ -65,7 +65,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
-    private TextView txt_noData;
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private ExpandableListAdapter expandableListAdapter;
@@ -125,7 +124,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private void initViews() {
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
-        txt_noData = contentFragmentview.findViewById(R.id.textNoData);
+        //txt_noData = contentFragmentview.findViewById(R.id.textNoData);
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         expListView = contentFragmentview.findViewById(R.id.lvExp);
         expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
@@ -167,11 +166,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getContext())) {
-            listDataHeader.clear();
-            listDataChild.clear();
             presenter = new ContentFragmentPresenter(this);
             presenter.getContentData();
         } else {
+            updateListView();
             Util.showToast(getString(R.string.msg_no_network), this);
         }
         if (expandableListAdapter != null) {
@@ -180,11 +178,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     private void updateListView() {
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
+        listDataHeader.clear();
+        listDataChild.clear();
         List<String> categoryNames = contentDataDao.getDistinctCategories();
         listDataHeader.addAll(categoryNames);
         for (String categoryName : listDataHeader) {
@@ -192,6 +187,11 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                     categoryName));
         }
         expandableListAdapter.notifyDataSetChanged();
+        if (listDataHeader.size() > 0) {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
 
     public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList) {
