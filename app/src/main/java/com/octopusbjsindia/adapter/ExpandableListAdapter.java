@@ -96,6 +96,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtSize.setText(contentData.getFileSize());
         txtType.setText(contentData.getFileType());
 
+
         boolean isFileDownloaded = false;
         for (LanguageDetail languageDetail : languageDetailsList) {
             Uri uri = Uri.parse(languageDetail.getDownloadUrl());
@@ -108,7 +109,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        if (isFileDownloaded) {
+        if(contentData.getFileType().equalsIgnoreCase("youtube")){
+            imgShare.setVisibility(View.GONE);
+            imgDownload.setVisibility(View.GONE);
+            pbDownloading.setVisibility(View.GONE);
+        } else if (isFileDownloaded) {
             imgShare.setVisibility(View.VISIBLE);
             imgDownload.setVisibility(View.GONE);
             pbDownloading.setVisibility(View.GONE);
@@ -127,7 +132,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         rlContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
+                if(contentData.getFileType().equalsIgnoreCase("youtube")){
+                    context.startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+                } else if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
                     String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                             + Environment.DIRECTORY_DOWNLOADS;
                     File contentFile = new File(storagePath + "/" + contentData.getDownloadedFileName());
