@@ -151,12 +151,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 if (Permissions.isWriteExternalStoragePermission(contentManagementFragment.getActivity(), contentManagementFragment)) {
-                    for (LanguageDetail languageDetail : languageDetailsList) {
+//                    for (LanguageDetail languageDetail : languageDetailsList) {
 //                        if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
-                            contentManagementFragment.beginDownload(languageDetail.getDownloadUrl(),groupPosition,childPosition);
-                            break;
-//                        }
-                    }
+                    contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition, childPosition);
+                    //contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
+                    //break;
+                    //}
+                    //}
                 }
             }
         });

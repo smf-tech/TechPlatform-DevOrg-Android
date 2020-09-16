@@ -1,12 +1,16 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -23,6 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,11 +43,14 @@ import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.content.ContentData;
+import com.octopusbjsindia.models.content.DownloadLanguageSelection;
+import com.octopusbjsindia.models.content.LanguageDetail;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.adapters.ContentLanguageSelectionAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +65,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
-    private TextView txt_noData;
     private long downloadID;
     private String TAG = ContentManagementFragment.class.getSimpleName();
     private ExpandableListAdapter expandableListAdapter;
@@ -68,6 +77,11 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ContentFragmentPresenter presenter;
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
     ContentDataDao contentDataDao;
+    private int downloadPosition = -1;
+
+    public void setDownloadPosition(int downloadPosition) {
+        this.downloadPosition = downloadPosition;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -110,7 +124,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private void initViews() {
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
-        txt_noData = contentFragmentview.findViewById(R.id.textNoData);
+        //txt_noData = contentFragmentview.findViewById(R.id.textNoData);
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         expListView = contentFragmentview.findViewById(R.id.lvExp);
         expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
@@ -152,11 +166,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getContext())) {
-            listDataHeader.clear();
-            listDataChild.clear();
             presenter = new ContentFragmentPresenter(this);
             presenter.getContentData();
         } else {
+            updateListView();
             Util.showToast(getString(R.string.msg_no_network), this);
         }
         if (expandableListAdapter != null) {
@@ -165,11 +178,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     private void updateListView() {
-        if (listDataHeader.size() > 0) {
-            txt_noData.setVisibility(View.GONE);
-        } else {
-            txt_noData.setVisibility(View.VISIBLE);
-        }
+        listDataHeader.clear();
+        listDataChild.clear();
         List<String> categoryNames = contentDataDao.getDistinctCategories();
         listDataHeader.addAll(categoryNames);
         for (String categoryName : listDataHeader) {
@@ -177,7 +187,60 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                     categoryName));
         }
         expandableListAdapter.notifyDataSetChanged();
+        if (listDataHeader.size() > 0) {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
     }
+
+    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList,int groupPosition, int childPosition) {
+        ArrayList<DownloadLanguageSelection> list = new ArrayList<>();
+        for (LanguageDetail languageDetail : languageDetailsList) {
+            DownloadLanguageSelection downloadLanguageSelection = new DownloadLanguageSelection();
+            downloadLanguageSelection.setLanguage(languageDetail.getLanguage());
+            list.add(downloadLanguageSelection);
+        }
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        final View customLayout = getLayoutInflater().inflate(R.layout.content_language_selection_layout, null);
+        alertDialog.setView(customLayout);
+        alertDialog.setCancelable(false);
+
+        TextView title = customLayout.findViewById(R.id.tv_dialog_title);
+        title.setText(getActivity().getString(R.string.title_select_content_language));
+
+        TextView subtitle = customLayout.findViewById(R.id.tv_dialog_subtext);
+        subtitle.setText(getActivity().getString(R.string.msg_content_download_languages));
+
+        ContentLanguageSelectionAdapter contentLanguageSelectionAdapter = new
+                ContentLanguageSelectionAdapter(this, list);
+        RecyclerView rvLanguageSelection = customLayout.findViewById(R.id.rv_language_selection);
+        rvLanguageSelection.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvLanguageSelection.setAdapter(contentLanguageSelectionAdapter);
+
+        AlertDialog dialog = alertDialog.create();
+
+        Button button = customLayout.findViewById(R.id.btn_dialog);
+        button.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        button.setTextColor(getActivity().getResources().getColor(R.color.white));
+        button.setOnClickListener(v -> {
+            if (downloadPosition > -1) {
+                beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                dialog.dismiss();
+            } else {
+                Util.showToast(getActivity(), "Please select language.");
+            }
+        });
+
+        Button button1 = customLayout.findViewById(R.id.btn_dialog_1);
+        button1.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
 
     public boolean beginDownload(String url,int groupCount, int chidCount) {
         boolean isRunning = false;

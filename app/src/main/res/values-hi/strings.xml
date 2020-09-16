@@ -577,5 +577,7 @@
     <string name="user_meet_status">User status in meet</string>
     <string name="user_verification_status">User verification status</string>
     <string name="meet_select_subordinates">Select team members</string>
+    <string name="msg_content_download_languages">Please select language in which you want file to be downloaded.</string>
+    <string name="title_select_content_language">Select language</string>
 
 </resources>
