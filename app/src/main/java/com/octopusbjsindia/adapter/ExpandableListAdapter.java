@@ -203,25 +203,41 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
+
+        View view = LayoutInflater.from(context).inflate(R.layout.list_group,
+                parent, false);
+
         String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+        ((TextView) view.findViewById(R.id.txtName)).setText(headerTitle);
+
+        ImageView v = view.findViewById(R.id.imgGroup);
+        if (isExpanded) {
+            Util.rotateImage(180f, v);
+        } else {
+            Util.rotateImage(0f, v);
         }
-        if (convertView != null) {
-            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
-            if (isExpanded) {
-                Util.rotateImage(180f, imgGroup);
-                //imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
-            } else {
-                Util.rotateImage(0f, imgGroup);
-                //imgGroup.setImageResource(R.drawable.ic_right_arrow_grey);
-            }
-            TextView txtName = convertView.findViewById(R.id.txtName);
-            txtName.setText(headerTitle);
-        }
-        return convertView;
+
+        return view;
+
+//        String headerTitle = (String) getGroup(groupPosition);
+//        if (convertView == null) {
+//            LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
+//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = infalInflater.inflate(R.layout.list_group, null);
+//        }
+//        if (convertView != null) {
+//            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+//            if (isExpanded) {
+//                Util.rotateImage(180f, imgGroup);
+//                //imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
+//            } else {
+//                Util.rotateImage(0f, imgGroup);
+//                //imgGroup.setImageResource(R.drawable.ic_right_arrow_grey);
+//            }
+//            TextView txtName = convertView.findViewById(R.id.txtName);
+//            txtName.setText(headerTitle);
+//        }
+//        return convertView;
     }
 
     @Override
