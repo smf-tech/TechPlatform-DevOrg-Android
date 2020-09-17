@@ -9,7 +9,10 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +47,8 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
 
     RecyclerView recyclerView;
     Context context;
+    public RelativeLayout ly_no_data;
+    TextView toolbar_title;
     private String path= Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private StoredContentListAdapter downloadListAdapter;
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
@@ -96,10 +101,12 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
         }
     }
     private void setUpRecycleView() {
-
+        ly_no_data.setVisibility(View.GONE);
         if(contentDownloadedList!=null&&contentDownloadedList.size()>0){
             downloadListAdapter=new StoredContentListAdapter(context,contentDownloadedList,this::onListTitleClick);
             recyclerView.setAdapter(downloadListAdapter);
+        }else {
+            ly_no_data.setVisibility(View.VISIBLE);
         }
 
     }
@@ -107,9 +114,17 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
     private void initViews() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Content Management");
 
+        toolbar_title = findViewById(R.id.toolbar_title_content);
+        toolbar_title.setText("Downloaded Content");
+        toolbar.setNavigationIcon(R.drawable.ic_back_white);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        ly_no_data = findViewById(R.id.ly_no_data);
         recyclerView=findViewById(R.id.list_download);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
@@ -201,5 +216,8 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
             mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
         }
         return mime;
+    }
+    public void showNoData() {
+        ly_no_data.setVisibility(View.VISIBLE);
     }
 }

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
+import com.octopusbjsindia.view.activities.StoredContentActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -121,6 +122,9 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
                 contentDownloadedList.remove(pos);
                 notifyItemRemoved(pos);
                 notifyDataSetChanged();
+                if (contentDownloadedList.size()==0){
+                    ((StoredContentActivity)context).showNoData();
+                }
             } else {
 
             }
