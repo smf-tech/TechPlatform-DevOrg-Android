@@ -307,15 +307,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //               Uri outputUri = FileProvider.getUriForFile(this,
 //                       this.getPackageName() + ".fileprovider", epubFile);
 
-               Intent intentEpub = new Intent();
-               intentEpub.setAction(Intent.ACTION_VIEW);
-               intentEpub.setDataAndType(uri, "application/epub+zip");
-               intentEpub.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-               intentEpub.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//               Intent intentEpub = new Intent();
+//               intentEpub.setAction(Intent.ACTION_VIEW);
+//               intentEpub.setDataAndType(uri, "application/epub+zip");
+//               intentEpub.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//               intentEpub.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                PackageManager packageManager = context.getPackageManager();
                if (intent.resolveActivity(packageManager) != null) {
-                   context.startActivity(intent);
+                   intent.setDataAndType(uri, "application/epub+zip");
+                   //context.startActivity(intent);
                } else {
                    showDialog("Alert", "No Application available to open Ebook " +
                            "file, Do you want to install?", "Yes", "No");
