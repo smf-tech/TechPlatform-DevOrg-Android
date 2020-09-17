@@ -125,8 +125,9 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
                     + Environment.DIRECTORY_DOWNLOADS;
             File myFile = new File(storagePath + "/" + name);
             if (myFile.exists()) {
-                myFile.delete();
-                Toast.makeText(context, "Delete Success", Toast.LENGTH_SHORT).show();
+                boolean isdeleted = myFile.delete();
+                //Toast.makeText(context, "Delete Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "check if deleted" + isdeleted, Toast.LENGTH_SHORT).show();
                 contentDownloadedList.remove(pos);
                 notifyItemRemoved(pos);
                 notifyDataSetChanged();
