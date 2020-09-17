@@ -1,12 +1,19 @@
 package com.octopusbjsindia.view.adapters;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -19,10 +26,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
+import com.octopusbjsindia.models.forms.FormResult;
+import com.octopusbjsindia.view.activities.StoredContentActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContentListAdapter.ViewHolder>{
 
@@ -76,9 +86,8 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
         holder.download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-               deleteFileFromPath("",contentDownloadedList.get(position).getDownloadedFileName(),position);
-
+               //deleteFileFromPath("",contentDownloadedList.get(position).getDownloadedFileName(),position);
+                showFormDeletePopUp(position);
             }
         });
 
@@ -116,11 +125,15 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
                     + Environment.DIRECTORY_DOWNLOADS;
             File myFile = new File(storagePath + "/" + name);
             if (myFile.exists()) {
-                myFile.delete();
-                Toast.makeText(context, "Delete Success", Toast.LENGTH_SHORT).show();
+                boolean isdeleted = myFile.delete();
+                //Toast.makeText(context, "Delete Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "check if deleted" + isdeleted, Toast.LENGTH_SHORT).show();
                 contentDownloadedList.remove(pos);
                 notifyItemRemoved(pos);
                 notifyDataSetChanged();
+                if (contentDownloadedList.size()==0){
+                    ((StoredContentActivity)context).showNoData();
+                }
             } else {
 
             }
@@ -145,5 +158,58 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
     }
 public interface OnListTitleClick{
      public void onListTitleClick(int pos);
+    }
+
+    private void showFormDeletePopUp(int pos) {
+
+        showDialog(context, "Alert",
+                " Do you really want to delete Downloaded content?",
+                "Yes", "No", pos, 1);
+    }
+
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String, int position, int flag) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_alert_dialog);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+                deleteFileFromPath("",contentDownloadedList.get(position).getDownloadedFileName(),position);
+
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 }

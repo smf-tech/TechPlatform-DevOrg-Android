@@ -19,7 +19,20 @@
         app:contentInsetStart="0dp"
         app:contentInsetRight="0dp"
         app:contentInsetEnd="0dp"
-        />
+        >
+
+        <TextView
+            android:id="@+id/toolbar_title_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/opensans"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18"
+            android:textStyle="bold" />
+
+
+    </androidx.appcompat.widget.Toolbar>
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/list_download"
     android:layout_below="@+id/toolbar"
@@ -27,5 +40,26 @@
     android:layout_height="wrap_content">
 
 </androidx.recyclerview.widget.RecyclerView>
+
+
+    <RelativeLayout
+        android:id="@+id/ly_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="@dimen/standard_240"
+            android:layout_height="@dimen/standard_240"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_data"/>
+        <TextView
+            android:layout_below="@+id/iv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="No Data"/>
+    </RelativeLayout>
 
 </RelativeLayout>
