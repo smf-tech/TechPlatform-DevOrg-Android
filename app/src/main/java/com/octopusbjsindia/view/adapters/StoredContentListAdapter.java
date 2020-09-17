@@ -1,6 +1,5 @@
 package com.octopusbjsindia.view.adapters;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,33 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
-import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.view.activities.StoredContentActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContentListAdapter.ViewHolder>{
 
     Context context;
-    /*ArrayList<String> fileName;
-    ArrayList<String>itemsFiltered;
-    String path;
-    public fileFilterListener filterListener;*/
     public OnListTitleClick clickListener;
     ArrayList<ContentData> contentDownloadedList;
 
@@ -74,9 +64,7 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
         View listItem= layoutInflater.inflate(R.layout.row_storedcontent_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
         return viewHolder;
-
     }
-
 
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -126,8 +114,6 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
             File myFile = new File(storagePath + "/" + name);
             if (myFile.exists()) {
                 boolean isdeleted = myFile.delete();
-                //Toast.makeText(context, "Delete Success", Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "check if deleted" + isdeleted, Toast.LENGTH_SHORT).show();
                 contentDownloadedList.remove(pos);
                 notifyItemRemoved(pos);
                 notifyDataSetChanged();
@@ -163,7 +149,7 @@ public interface OnListTitleClick{
     private void showFormDeletePopUp(int pos) {
 
         showDialog(context, "Alert",
-                " Do you really want to delete Downloaded content?",
+                " Do you really want to delete this content file?",
                 "Yes", "No", pos, 1);
     }
 

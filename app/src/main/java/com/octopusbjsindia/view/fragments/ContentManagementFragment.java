@@ -167,19 +167,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 return false;
             }
         });
-
-//        expListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                if (dy < -5 && fbSelect.getVisibility() != View.VISIBLE) {
-//                    fbSelect.setVisibility(View.VISIBLE);
-//                } else if (dy > 5 && fbSelect.getVisibility() == View.VISIBLE) {
-//                    fbSelect.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -245,7 +232,11 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         button.setTextColor(getActivity().getResources().getColor(R.color.white));
         button.setOnClickListener(v -> {
             if (downloadPosition > -1) {
-                beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                if (Util.isConnected(getContext())) {
+                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
                 dialog.dismiss();
             } else {
                 Util.showToast(getActivity(), "Please select language.");
@@ -413,12 +404,12 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fb_select) {
-            if (Util.isConnected(getActivity())) {
+//            if (Util.isConnected(getActivity())) {
                 Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
                 startActivity(storedContentIntent);
-            }else {
-                Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-            }
+//            }else {
+//                Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+//            }
         }
     }
 }

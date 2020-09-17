@@ -13,8 +13,8 @@ import java.util.List;
 @Dao
 public interface ContentDataDao {
 
-    @Query("SELECT * FROM ContentData")
-    List<ContentData> getContentData();
+    @Query("SELECT * FROM ContentData where project_id = :projectId")
+    List<ContentData> getContentData(String projectId);
 
     @Query("SELECT DISTINCT category_name FROM ContentData where project_id = :projectId")
     List<String> getDistinctCategories(String projectId);

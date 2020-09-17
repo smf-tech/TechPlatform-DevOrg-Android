@@ -1,18 +1,23 @@
 package com.octopusbjsindia.adapter;
 
-import android.app.AlertDialog;
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,6 +40,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
@@ -218,26 +224,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         return view;
-
-//        String headerTitle = (String) getGroup(groupPosition);
-//        if (convertView == null) {
-//            LayoutInflater infalInflater = (LayoutInflater) contentManagementFragment.getActivity()
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = infalInflater.inflate(R.layout.list_group, null);
-//        }
-//        if (convertView != null) {
-//            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
-//            if (isExpanded) {
-//                Util.rotateImage(180f, imgGroup);
-//                //imgGroup.setImageResource(R.drawable.ic_shape_down_arrow);
-//            } else {
-//                Util.rotateImage(0f, imgGroup);
-//                //imgGroup.setImageResource(R.drawable.ic_right_arrow_grey);
-//            }
-//            TextView txtName = convertView.findViewById(R.id.txtName);
-//            txtName.setText(headerTitle);
-//        }
-//        return convertView;
     }
 
     @Override
@@ -331,7 +317,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                if (intent.resolveActivity(packageManager) != null) {
                    context.startActivity(intent);
                } else {
-                   showDialog();
+                   showDialog("Alert", "No Application available to open Ebook " +
+                           "file, Do you want to install?", "Yes", "No");
                }
            }else {
                 //if you want you can also define the intent type for any other file
@@ -356,26 +343,55 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return mime;
     }
 
-    public void showDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle(context.getResources().getString(R.string.alert));
-        alertDialog.setMessage("No Application available to open Ebook file, Do you want to install?");
-        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+    public void showDialog(String dialogTitle, String message, String btn1String, String btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            button.setTextColor(context.getResources().getColor(R.color.white));
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
                 final String appPackageName = context.getPackageName();
                 try {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
                 } catch (android.content.ActivityNotFoundException anfe) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
                 }
-            }
-        });
-        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
+                //Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
     private void shareFile(File contentFile) {

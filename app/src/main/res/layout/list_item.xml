@@ -86,8 +86,8 @@
 
             <ProgressBar
                 android:id="@+id/pbDownloading"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:visibility="gone" />
 
         </FrameLayout>
