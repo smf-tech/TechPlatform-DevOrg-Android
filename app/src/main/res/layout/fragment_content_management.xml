@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/frag_act_back"
     tools:context="com.octopusbjsindia.view.fragments.ContentManagementFragment">
 
     <RelativeLayout
@@ -15,8 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:groupIndicator="@null" />
-
+            android:groupIndicator="@null"
+            android:divider="#00000000"
+            />
         <RelativeLayout
             android:id="@+id/ly_no_data"
             android:layout_width="match_parent"
