@@ -87,6 +87,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         RelativeLayout rlContent = convertView.findViewById(R.id.rl_content);
         ImageView imgDownload = convertView.findViewById(R.id.img_download);
         ImageView imgShare = convertView.findViewById(R.id.img_share);
+        ImageView imgView = convertView.findViewById(R.id.img_view);
         ProgressBar pbDownloading = convertView.findViewById(R.id.pbDownloading);
         TextView txtTitle = convertView.findViewById(R.id.txt_name);
         TextView txtSize = convertView.findViewById(R.id.txt_size);
@@ -110,10 +111,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         if(contentData.getFileType().equalsIgnoreCase("youtube")){
+            imgView.setVisibility(View.VISIBLE);
             imgShare.setVisibility(View.GONE);
             imgDownload.setVisibility(View.GONE);
             pbDownloading.setVisibility(View.GONE);
-        } else if (isFileDownloaded) {
+        } else if (isFileDownloaded && !contentData.isDawnloadSatrted()) {
+            imgView.setVisibility(View.VISIBLE);
             imgShare.setVisibility(View.VISIBLE);
             imgDownload.setVisibility(View.GONE);
             pbDownloading.setVisibility(View.GONE);
@@ -122,9 +125,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 pbDownloading.setVisibility(View.VISIBLE);
                 imgDownload.setVisibility(View.GONE);
                 imgShare.setVisibility(View.GONE);
+                imgView.setVisibility(View.GONE);
             } else {
                 imgDownload.setVisibility(View.VISIBLE);
                 imgShare.setVisibility(View.GONE);
+                imgView.setVisibility(View.GONE);
                 pbDownloading.setVisibility(View.GONE);
             }
         }

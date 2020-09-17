@@ -70,7 +70,7 @@ public class ContentFragmentPresenter implements APIPresenterListener {
                     if (allContent.getStatus() == 200) {
                         fragmentWeakReference.get().saveContentData(allContent.getData());
                     } else {
-                        fragmentWeakReference.get().showResponse(allContent.getMessage());
+                        fragmentWeakReference.get().showEmptyResponse(allContent.getMessage());
                     }
                 }
             }
