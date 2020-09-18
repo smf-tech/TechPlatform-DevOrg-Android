@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/center_view"
                         android:paddingStart="@dimen/dimen_16dp"
-                        android:text="Captain"
+                        android:text=""
                         android:textColor="@color/dark_grey"
                         android:textSize="@dimen/text_size_description_12"
                         android:textStyle="normal" />
