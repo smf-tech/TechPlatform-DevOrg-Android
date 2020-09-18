@@ -83,6 +83,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     ContentDataDao contentDataDao;
     private int downloadPosition = -1;
     private int groupPosition = -1, childPosition = -1;
+    private int lastExpandedPosition = -1;
 
     public void setDownloadPosition(int downloadPosition) {
         this.downloadPosition = downloadPosition;
@@ -138,35 +139,39 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
 
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                return false;
-
-            }
-        });
+//        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//            @Override
+//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+//                return false;
+//
+//            }
+//        });
 
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {
-
+                if (lastExpandedPosition != -1
+                        && i != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
             }
         });
 
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
-        });
-
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                return false;
-            }
-        });
+//        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+//
+//            @Override
+//            public void onGroupCollapse(int groupPosition) {
+//            }
+//        });
+//
+//        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v,
+//                                        int groupPosition, int childPosition, long id) {
+//                return false;
+//            }
+//        });
     }
 
     @Override
