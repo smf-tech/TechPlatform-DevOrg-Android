@@ -1,25 +1,25 @@
 package com.octopusbjsindia.view.activities;
 
-import android.app.AlertDialog;
-import android.app.SearchManager;
+import android.app.ActionBar;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.adapter.DownloadListAdapter;
 import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.content.ContentData;
@@ -42,9 +41,11 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class StoredContentActivity extends AppCompatActivity implements StoredContentListAdapter.OnListTitleClick {
 
@@ -52,7 +53,7 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
     Context context;
     public RelativeLayout ly_no_data;
     TextView toolbar_title;
-    private String path= Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
     private StoredContentListAdapter downloadListAdapter;
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
     private ArrayList<ContentData> contentDownloadedList = new ArrayList<>();
@@ -66,14 +67,12 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_downloaded);
-        context= StoredContentActivity.this;
+        context = StoredContentActivity.this;
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         initViews();
-        contentDataList.addAll(contentDataDao.getContentData());
+        contentDataList.addAll(contentDataDao.getContentData(getUserObjectFromPref().getProjectIds().get(0).getId()));
         getAllDownlodedfiles();
         setUpRecycleView();
-
-
     }
 
     private void getAllDownlodedfiles() {
@@ -93,6 +92,7 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
             }
         }
     }
+
     private boolean isFileAvailable(String fileName) {
         String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                 + Environment.DIRECTORY_DOWNLOADS;
@@ -103,21 +103,19 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
             return false;
         }
     }
+
     private void setUpRecycleView() {
         ly_no_data.setVisibility(View.GONE);
-        if(contentDownloadedList!=null&&contentDownloadedList.size()>0){
-            downloadListAdapter=new StoredContentListAdapter(context,contentDownloadedList,this::onListTitleClick);
+        if (contentDownloadedList != null && contentDownloadedList.size() > 0) {
+            downloadListAdapter = new StoredContentListAdapter(context, contentDownloadedList, this::onListTitleClick);
             recyclerView.setAdapter(downloadListAdapter);
-        }else {
+        } else {
             ly_no_data.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void initViews() {
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         toolbar_title = findViewById(R.id.toolbar_title_content);
         toolbar_title.setText("Downloaded Content");
         toolbar.setNavigationIcon(R.drawable.ic_back_white);
@@ -128,18 +126,17 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
             }
         });
         ly_no_data = findViewById(R.id.ly_no_data);
-        recyclerView=findViewById(R.id.list_download);
+        recyclerView = findViewById(R.id.list_download);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
     }
 
-
     @Override
     public void onListTitleClick(int pos) {
-        if(contentDownloadedList.get(pos).getFileType().equalsIgnoreCase("youtube")){
+        if (contentDownloadedList.get(pos).getFileType().equalsIgnoreCase("youtube")) {
             context.startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
-        }else if (contentDownloadedList.get(pos).getDownloadedFileName() != null && contentDownloadedList.get(pos).getDownloadedFileName() != "") {
+        } else if (contentDownloadedList.get(pos).getDownloadedFileName() != null && contentDownloadedList.get(pos).getDownloadedFileName() != "") {
             String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                     + Environment.DIRECTORY_DOWNLOADS;
             File contentFile = new File(storagePath + "/" + contentDownloadedList.get(pos).getDownloadedFileName());
@@ -149,14 +146,12 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
                     findViewById(android.R.id.content), "Please download file and then view.", Snackbar.LENGTH_LONG);
         }
     }
+
     private void openFile(File contentFile) {
         try {
             // Create URI
-
             Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".file_provider", contentFile);
-
             grantUriPermission(getPackageName(), uri, FLAG_GRANT_READ_URI_PERMISSION);
-
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -202,26 +197,28 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
                     contentFile.toString().contains(".mp4") || contentFile.toString().contains(".avi")) {
                 // Video files
                 intent.setDataAndType(uri, "video/*");
-            }  else if (contentFile.toString().contains(".epub")) {
+            } else if (contentFile.toString().contains(".epub")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                         + "/MV/Zip/" + contentFile.getName() + ".epub";
 //               File epubFile = new File(filePath);
 //               Uri outputUri = FileProvider.getUriForFile(this,
 //                       this.getPackageName() + ".fileprovider", epubFile);
 
-                Intent intentEpub = new Intent();
-                intentEpub.setAction(Intent.ACTION_VIEW);
-                intentEpub.setDataAndType(uri, "application/epub+zip");
-                intentEpub.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intentEpub.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                Intent intentEpub = new Intent();
+//                intentEpub.setAction(Intent.ACTION_VIEW);
+//                intentEpub.setDataAndType(uri, "application/epub+zip");
+//                intentEpub.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intentEpub.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                 PackageManager packageManager = context.getPackageManager();
                 if (intent.resolveActivity(packageManager) != null) {
-                    context.startActivity(intent);
+                    intent.setDataAndType(uri, "application/epub+zip");
+                    //context.startActivity(intent);
                 } else {
-                    showDialog();
+                    showDialog("Alert", "No Application available to open Ebook " +
+                            "file, Do you want to install?", "Yes", "No");
                 }
-            }else {
+            } else {
                 //if you want you can also define the intent type for any other file
                 //additionally use else clause below, to manage other unknown extensions
                 //in this case, Android will show all applications installed on the device
@@ -235,26 +232,55 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
         }
     }
 
-    public void showDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle(context.getResources().getString(R.string.alert));
-        alertDialog.setMessage("No Application available to open Ebook file, Do you want to install?");
-        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+    public void showDialog(String dialogTitle, String message, String btn1String, String btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            button.setTextColor(context.getResources().getColor(R.color.white));
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
                 final String appPackageName = context.getPackageName();
                 try {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
                 } catch (android.content.ActivityNotFoundException anfe) {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
                 }
-            }
-        });
-        alertDialog.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
+                //Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                //Close dialog
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
 
@@ -331,6 +357,7 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
         }
         return mime;
     }
+
     public void showNoData() {
         ly_no_data.setVisibility(View.VISIBLE);
     }

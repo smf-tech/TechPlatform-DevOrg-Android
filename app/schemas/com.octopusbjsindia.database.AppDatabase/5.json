@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "d23bb8d4dc8bc236e79191b86a0066ac",
+    "identityHash": "6d969213e24b5a3374930a0567522894",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -1122,7 +1122,7 @@
       },
       {
         "tableName": "ContentData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`contentId` TEXT NOT NULL, `category_id` TEXT, `category_name` TEXT, `content_title` TEXT, `downloadedFileName` TEXT, `file_type` TEXT, `file_size` TEXT, `languageDetailsString` TEXT, PRIMARY KEY(`contentId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`contentId` TEXT NOT NULL, `category_id` TEXT, `project_id` TEXT, `category_name` TEXT, `content_title` TEXT, `downloadedFileName` TEXT, `file_type` TEXT, `file_size` TEXT, `languageDetailsString` TEXT, PRIMARY KEY(`contentId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1133,6 +1133,12 @@
           {
             "fieldPath": "categoryId",
             "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "project_id",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1218,7 +1224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd23bb8d4dc8bc236e79191b86a0066ac')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6d969213e24b5a3374930a0567522894')"
     ]
   }
 }
