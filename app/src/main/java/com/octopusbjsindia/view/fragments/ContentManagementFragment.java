@@ -410,12 +410,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fb_select) {
-//            if (Util.isConnected(getActivity())) {
                 Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
                 startActivity(storedContentIntent);
-//            }else {
-//                Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-//            }
         }
     }
 }
