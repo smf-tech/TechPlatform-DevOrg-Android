@@ -242,6 +242,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
+                downloadPosition = -1;
                 dialog.dismiss();
             } else {
                 Util.showToast(getActivity(), "Please select language.");
