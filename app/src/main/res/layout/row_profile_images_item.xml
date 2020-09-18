@@ -100,7 +100,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_below="@+id/tv_title"
                             android:layout_marginBottom="@dimen/dimen_05dp"
-                            android:text="Captain"
+                            android:text=""
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_12"

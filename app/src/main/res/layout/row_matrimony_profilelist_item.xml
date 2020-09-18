@@ -164,7 +164,7 @@
                             android:fontFamily="@font/opensans"
                             android:layout_gravity="center_horizontal"
                             android:layout_below="@+id/tv_title"
-                            android:text="Captain"
+                            android:text=""
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_description_12"

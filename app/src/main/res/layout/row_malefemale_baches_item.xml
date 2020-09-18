@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_title"
                         android:paddingStart="@dimen/dimen_08dp"
-                        android:text="Captain"
+                        android:text=""
                         android:textColor="@color/dark_grey"
                         android:textSize="@dimen/text_size_12"
                         android:textStyle="normal" />
