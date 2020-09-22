@@ -34,6 +34,7 @@ import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.LanguageDetail;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.StoredContentListAdapter;
 
@@ -107,7 +108,7 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
     private void setUpRecycleView() {
         ly_no_data.setVisibility(View.GONE);
         if (contentDownloadedList != null && contentDownloadedList.size() > 0) {
-            downloadListAdapter = new StoredContentListAdapter(context, contentDownloadedList, this::onListTitleClick);
+            downloadListAdapter = new StoredContentListAdapter(StoredContentActivity.this,context, contentDownloadedList, this::onListTitleClick);
             recyclerView.setAdapter(downloadListAdapter);
         } else {
             ly_no_data.setVisibility(View.VISIBLE);
@@ -133,17 +134,19 @@ public class StoredContentActivity extends AppCompatActivity implements StoredCo
 
     @Override
     public void onListTitleClick(int pos) {
-        if (contentDownloadedList.get(pos).getFileType().equalsIgnoreCase("youtube")) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
-        } else if (contentDownloadedList.get(pos).getDownloadedFileName() != null && contentDownloadedList.get(pos).getDownloadedFileName() != "") {
-            String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
-                    + Environment.DIRECTORY_DOWNLOADS;
-            File contentFile = new File(storagePath + "/" + contentDownloadedList.get(pos).getDownloadedFileName());
-            openFile(contentFile);
-        } else {
-            Util.snackBarToShowMsg(getWindow().getDecorView().
-                    findViewById(android.R.id.content), "Please download file and then view.", Snackbar.LENGTH_LONG);
+        if (Permissions.isWriteExternalStoragePermission(this, this)) {
+            if (contentDownloadedList.get(pos).getFileType().equalsIgnoreCase("youtube")) {
+                context.startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+            } else if (contentDownloadedList.get(pos).getDownloadedFileName() != null && contentDownloadedList.get(pos).getDownloadedFileName() != "") {
+                String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                        + Environment.DIRECTORY_DOWNLOADS;
+                File contentFile = new File(storagePath + "/" + contentDownloadedList.get(pos).getDownloadedFileName());
+                openFile(contentFile);
+            } else {
+                Util.snackBarToShowMsg(getWindow().getDecorView().
+                        findViewById(android.R.id.content), "Please download file and then view.", Snackbar.LENGTH_LONG);
+            }
         }
     }
 

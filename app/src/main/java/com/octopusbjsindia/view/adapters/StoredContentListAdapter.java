@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.content.ContentData;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.view.activities.StoredContentActivity;
 
 import java.io.File;
@@ -31,10 +33,12 @@ import java.util.Objects;
 public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContentListAdapter.ViewHolder>{
 
     Context context;
+    Activity activity;
     public OnListTitleClick clickListener;
     ArrayList<ContentData> contentDownloadedList;
 
-    public StoredContentListAdapter(Context context, ArrayList<ContentData> contentDownloadedList,final OnListTitleClick clickListener) {
+    public StoredContentListAdapter(StoredContentActivity storedContentActivity, Context context, ArrayList<ContentData> contentDownloadedList, final OnListTitleClick clickListener) {
+        this.activity = storedContentActivity;
         this.context=context;
         this.contentDownloadedList = contentDownloadedList;
         this.clickListener = clickListener;
@@ -75,7 +79,9 @@ public class StoredContentListAdapter extends RecyclerView.Adapter<StoredContent
             @Override
             public void onClick(View view) {
                //deleteFileFromPath("",contentDownloadedList.get(position).getDownloadedFileName(),position);
+                if (Permissions.isWriteExternalStoragePermission(activity, context)) {
                 showFormDeletePopUp(position);
+                }
             }
         });
 
