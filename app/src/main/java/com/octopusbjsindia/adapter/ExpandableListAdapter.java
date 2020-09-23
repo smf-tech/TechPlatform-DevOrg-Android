@@ -144,8 +144,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 if(contentData.getFileType().equalsIgnoreCase("youtube")){
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+                    if (Util.isConnected(context)) {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+                    } else {
+                        Util.showToast(context.getString(R.string.msg_no_network), context);
+                    }
                 } else if (contentData.getDownloadedFileName() != null && contentData.getDownloadedFileName() != "") {
                     String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
                             + Environment.DIRECTORY_DOWNLOADS;

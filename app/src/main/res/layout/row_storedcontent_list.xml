@@ -35,7 +35,8 @@
             android:layout_marginTop="@dimen/dimen_07dp"
             android:layout_below="@+id/txt_file_name"
             android:fontFamily="@font/opensans_regular"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_12" />
         <ImageView
             android:id="@+id/img_download"
             android:layout_width="wrap_content"
