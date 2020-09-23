@@ -24,11 +24,17 @@ public class UserLocation {
     @SerializedName("cluster")
     private List<JurisdictionType> clusterIds;
 
+    @SerializedName("gram_panchayat")
+    private List<JurisdictionType> granpanchayatIds;
+
     @SerializedName("village")
     private List<JurisdictionType> villageIds;
 
     @SerializedName("school")
     private List<JurisdictionType> schoolIds;
+
+    @SerializedName("learning_center")
+    private List<JurisdictionType> learningCenterIds;
 
     public List<JurisdictionType> getCountryId() {
         return countryId;
@@ -92,5 +98,21 @@ public class UserLocation {
 
     public void setSchoolIds(List<JurisdictionType> schoolIds) {
         this.schoolIds = schoolIds;
+    }
+
+    public List<JurisdictionType> getGranpanchayatIds() {
+        return granpanchayatIds;
+    }
+
+    public void setGranpanchayatIds(List<JurisdictionType> granpanchayatIds) {
+        this.granpanchayatIds = granpanchayatIds;
+    }
+
+    public List<JurisdictionType> getLearningCenterIds() {
+        return learningCenterIds;
+    }
+
+    public void setLearningCenterIds(List<JurisdictionType> learningCenterIds) {
+        this.learningCenterIds = learningCenterIds;
     }
 }

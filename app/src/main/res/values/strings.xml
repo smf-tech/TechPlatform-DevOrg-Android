@@ -797,5 +797,9 @@
     <string name="meet_select_subordinates">Select team members</string>
     <string name="msg_content_download_languages">Please select language in which you want file to be downloaded.</string>
     <string name="title_select_content_language">Select language</string>
+    <string name="msg_select_panchyt">Please select Gram Panchayat</string>
+    <string name="mandatory_panchayat">Gram Panchayat *</string>
+    <string name="mandatory_center">Learning Center *</string>
+    <string name="msg_select_center">Please select Learning Center</string>
 
 </resources>

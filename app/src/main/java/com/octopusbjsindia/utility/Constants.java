@@ -156,8 +156,10 @@ public class Constants {
         public static final String CITY_LEVEL = "City";
         public static final String TALUKA_LEVEL = "Taluka";
         public static final String CLUSTER_LEVEL = "Cluster";
+        public static final String GRAM_PANCHAYAT = "Gram_Panchayat";
         public static final String VILLAGE_LEVEL = "Village";
         public static final String SCHOOL_LEVEL = "School";
+        public static final String LEARNING_CENTER = "Learning_Center";
     }
 
     public static class Home {

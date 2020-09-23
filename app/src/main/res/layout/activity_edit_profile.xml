@@ -452,6 +452,26 @@
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!--Grampanchayt-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_grampanchayt"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etGrampanchayt"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_panchayat"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!--Village-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_village"
@@ -491,6 +511,27 @@
                     android:focusableInTouchMode="false"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Learning Center -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_user_center"
+                style="@style/textinputstyle"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etUserCenter"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/mandatory_center"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </ScrollView>
 
