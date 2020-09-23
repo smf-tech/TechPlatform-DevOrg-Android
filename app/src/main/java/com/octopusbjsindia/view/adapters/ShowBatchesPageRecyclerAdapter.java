@@ -52,8 +52,10 @@ public class ShowBatchesPageRecyclerAdapter extends RecyclerView.Adapter<ShowBat
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.tv_title);
             txtValue = (TextView) itemView.findViewById(R.id.tv_value);
-            itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition(),
-                    dataList.get(getAdapterPosition()).getTitle().get(0) + " " + dataList.get(getAdapterPosition()).getTitleUnit().get(0)));
+            itemView.setOnClickListener(v -> {
+                clickListener.onItemClicked(getAdapterPosition(),
+                        dataList.get(getAdapterPosition()).getTitle().get(0) + " " + dataList.get(getAdapterPosition()).getTitleUnit().get(0));
+            });
         }
     }
 

@@ -93,7 +93,7 @@
                                     android:fontFamily="@font/opensans_regular"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_marginBottom="@dimen/dimen_05dp"
-                                    android:text="Captain"
+                                    android:text=""
                                     android:gravity="center"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/text_size_12"

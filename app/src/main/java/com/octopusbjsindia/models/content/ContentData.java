@@ -24,6 +24,10 @@ public class ContentData {
     @SerializedName("category_id")
     @Expose
     private String categoryId;
+    @ColumnInfo(name = "project_id")
+    @SerializedName("project_id")
+    @Expose
+    private String projectId;
     @ColumnInfo(name = "category_name")
     @SerializedName("category_name")
     @Expose
@@ -69,6 +73,14 @@ public class ContentData {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     public String getCategoryName() {

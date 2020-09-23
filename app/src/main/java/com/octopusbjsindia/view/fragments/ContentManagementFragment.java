@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,6 +51,7 @@ import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.StoredContentActivity;
 import com.octopusbjsindia.view.adapters.ContentLanguageSelectionAdapter;
 
 import java.io.File;
@@ -58,10 +60,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class ContentManagementFragment extends Fragment implements APIDataListener {
+public class ContentManagementFragment extends Fragment implements APIDataListener, View.OnClickListener {
 
     private View contentFragmentview;
+    private FloatingActionButton fbSelect;
     private ExpandableListView expListView;
     private List<String> listDataHeader = new ArrayList<>();
     private HashMap<String, List<ContentData>> listDataChild = new HashMap<>();
@@ -78,6 +82,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private ArrayList<ContentData> contentDataList = new ArrayList<>();
     ContentDataDao contentDataDao;
     private int downloadPosition = -1;
+    private int groupPosition = -1, childPosition = -1;
+    private int lastExpandedPosition = -1;
 
     public void setDownloadPosition(int downloadPosition) {
         this.downloadPosition = downloadPosition;
@@ -125,41 +131,47 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         progressBarLayout = contentFragmentview.findViewById(R.id.profile_act_progress_bar);
         progressBar = contentFragmentview.findViewById(R.id.pb_profile_act);
         //txt_noData = contentFragmentview.findViewById(R.id.textNoData);
+        fbSelect = contentFragmentview.findViewById(R.id.fb_select);
+        fbSelect.setOnClickListener(this);
         contentDataDao = DatabaseManager.getDBInstance(Platform.getInstance()).getContentDataDao();
         expListView = contentFragmentview.findViewById(R.id.lvExp);
         expandableListAdapter = new ExpandableListAdapter(ContentManagementFragment.this,
                 listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
 
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                return false;
-
-            }
-        });
+//        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//            @Override
+//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+//                return false;
+//
+//            }
+//        });
 
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {
-
+                if (lastExpandedPosition != -1
+                        && i != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
             }
         });
 
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
-        });
-
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                return false;
-            }
-        });
+//        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+//
+//            @Override
+//            public void onGroupCollapse(int groupPosition) {
+//            }
+//        });
+//
+//        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v,
+//                                        int groupPosition, int childPosition, long id) {
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -180,11 +192,11 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     private void updateListView() {
         listDataHeader.clear();
         listDataChild.clear();
-        List<String> categoryNames = contentDataDao.getDistinctCategories();
+        List<String> categoryNames = contentDataDao.getDistinctCategories(getUserObjectFromPref().getProjectIds().get(0).getId());
         listDataHeader.addAll(categoryNames);
         for (String categoryName : listDataHeader) {
             listDataChild.put(categoryName, contentDataDao.getCategoryContent(
-                    categoryName));
+                    categoryName, getUserObjectFromPref().getProjectIds().get(0).getId()));
         }
         expandableListAdapter.notifyDataSetChanged();
         if (listDataHeader.size() > 0) {
@@ -225,7 +237,12 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         button.setTextColor(getActivity().getResources().getColor(R.color.white));
         button.setOnClickListener(v -> {
             if (downloadPosition > -1) {
-                beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                if (Util.isConnected(getContext())) {
+                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                } else {
+                    Util.showToast(getString(R.string.msg_no_network), this);
+                }
+                downloadPosition = -1;
                 dialog.dismiss();
             } else {
                 Util.showToast(getActivity(), "Please select language.");
@@ -242,9 +259,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
 
-    public boolean beginDownload(String url,int groupCount, int chidCount) {
-        boolean isRunning = false;
-        listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
+    public void beginDownload(String url, int groupCount, int childCount) {
+        groupPosition = groupCount;
+        childPosition = childCount;
+        listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
         downloadmanager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -267,20 +285,18 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
             if (status == DownloadManager.STATUS_FAILED) {
                 // do something when failed
-                isRunning = false;
-                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(false);
+                listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(false);
             } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
                 // do something pending or paused
+                listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                 // do something when successful
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
-                isRunning = true;
-                listDataChild.get(listDataHeader.get(groupCount)).get(chidCount).setDawnloadSatrted(true);
+                listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
             }
         }
         expandableListAdapter.notifyDataSetChanged();
-        return isRunning;
     }
 
     @Override
@@ -299,7 +315,12 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             Intent data = intent;
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                Toast.makeText(getContext(), "Download completed.", Toast.LENGTH_LONG).show();
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
+                }
+                if (groupPosition != -1 && childPosition != -1) {
+                    listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDawnloadSatrted(false);
+                }
                 expandableListAdapter.notifyDataSetChanged();
             }
         }
@@ -314,12 +335,12 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        showResponse(getResources().getString(R.string.msg_something_went_wrong));
+        showEmptyResponse(getResources().getString(R.string.msg_something_went_wrong));
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        showResponse(getResources().getString(R.string.msg_something_went_wrong));
+        showEmptyResponse(getResources().getString(R.string.msg_something_went_wrong));
     }
 
     @Override
@@ -353,7 +374,11 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         }
     }
 
-    public void showResponse(String responseStatus) {
+    public void showEmptyResponse(String responseStatus) {
+        listDataHeader.clear();
+        listDataChild.clear();
+        expandableListAdapter.notifyDataSetChanged();
+        contentFragmentview.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
@@ -380,5 +405,13 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void closeCurrentActivity() {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.fb_select) {
+                Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
+                startActivity(storedContentIntent);
+        }
     }
 }
