@@ -144,6 +144,8 @@ public class Constants {
         public static final String VILLAGE = "village";
         public static final String CLUSTER = "cluster";
         public static final String SCHOOL = "school";
+        public static final String GRAM_PANCHAYAT = "gram_panchayat";
+        public static final String LEARNING_CENTER = "learning_center";
         public static final String LATITUDE = "lat";
         public static final String LONGITUDE = "long";
     }

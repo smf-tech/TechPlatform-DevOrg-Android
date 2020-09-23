@@ -349,6 +349,22 @@ public class ProfileRequestCall {
                     locationObj.add(Constants.Location.SCHOOL, locationArray);
                 }
 
+                locationArray = new JsonArray();
+                if (userLocation.getSchoolIds() != null) {
+                    for (JurisdictionType panchayat : userLocation.getGranpanchayatIds()) {
+                        locationArray.add(panchayat.getId());
+                    }
+                    locationObj.add(Constants.Location.GRAM_PANCHAYAT, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getSchoolIds() != null) {
+                    for (JurisdictionType centers : userLocation.getLearningCenterIds()) {
+                        locationArray.add(centers.getId());
+                    }
+                    locationObj.add(Constants.Location.LEARNING_CENTER, locationArray);
+                }
+
                 body.add(Constants.Login.USER_LOCATION, locationObj);
 
                 PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
