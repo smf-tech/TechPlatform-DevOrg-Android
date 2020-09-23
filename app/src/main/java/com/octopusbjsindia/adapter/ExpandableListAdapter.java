@@ -168,6 +168,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if (Permissions.isWriteExternalStoragePermission(contentManagementFragment.getActivity(), contentManagementFragment)) {
 //                    for (LanguageDetail languageDetail : languageDetailsList) {
 //                        if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
+                    contentManagementFragment.setDownloadPosition(-1);
                     contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition, childPosition);
                     //contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
                     //break;
