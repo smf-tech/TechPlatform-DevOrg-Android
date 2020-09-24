@@ -107,6 +107,12 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.GRAM_PANCHAYAT, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.LEARNING_CENTER)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.LEARNING_CENTER, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
@@ -145,8 +151,14 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
             requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
                     new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.GRAM_PANCHAYAT,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
             requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.LEARNING_CENTER)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.LEARNING_CENTER,
                     new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
         }
     }

@@ -88,7 +88,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private EditText etUserRole;
     private EditText etUserCountry;
     private EditText etUserState;
-    private EditText etUserDistrict, etUserCity, etUserTaluka, etUserCluster, etUserVillage, etUserSchool;
+    private EditText etUserDistrict, etUserCity, etUserTaluka, etUserCluster, etGrampanchayt,
+            etUserVillage, etUserSchool, etUserCenter;
     private ImageView imgUserProfilePic;
     RadioGroup radioGroup;
     private ImageView backButton;
@@ -104,7 +105,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ArrayList<CustomSpinnerObject> customSpinnerTalukas = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> customSpinnerVillages = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> customSpinnerClusters = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerPanchayt = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> customSpinnerSchools = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerCenter = new ArrayList<>();
 
     private List<Organization> organizations = new ArrayList<>();
     private List<OrganizationProject> projects = new ArrayList<>();
@@ -119,8 +122,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ArrayList<JurisdictionType> selectedCities = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedTalukas = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedClusters = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedPanchayat = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedVillages = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedSchools = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedCenter = new ArrayList<>();
     private Uri outputUri;
     private Uri finalUri;
     private EditProfileActivityPresenter profilePresenter;
@@ -258,8 +263,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserCity = findViewById(R.id.etUserCity);
         etUserTaluka = findViewById(R.id.etUserTaluka);
         etUserCluster = findViewById(R.id.etUserCluster);
+        etGrampanchayt = findViewById(R.id.etGrampanchayt);
         etUserVillage = findViewById(R.id.etUserVillage);
         etUserSchool = findViewById(R.id.etUserSchool);
+        etUserCenter = findViewById(R.id.etUserCenter);
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
 
@@ -310,8 +317,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserCity.setOnClickListener(this);
         etUserTaluka.setOnClickListener(this);
         etUserCluster.setOnClickListener(this);
+        etGrampanchayt.setOnClickListener(this);
         etUserVillage.setOnClickListener(this);
         etUserSchool.setOnClickListener(this);
+        etUserCenter.setOnClickListener(this);
     }
 
     private void setEditModeUserData() {
@@ -517,6 +526,25 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         }
 
+        if (userLocation.getGranpanchayatIds() != null && userLocation.getGranpanchayatIds().size() > 0) {
+            etGrampanchayt.setVisibility(View.VISIBLE);
+            selectedClusters.clear();
+            String panchaytNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getGranpanchayatIds() != null
+                    && userInfo.getUserLocation().getGranpanchayatIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getGranpanchayatIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getGranpanchayatIds().get(i);
+                    selectedClusters.add(j);
+                    if (i == 0) {
+                        panchaytNames = j.getName();
+                    } else {
+                        panchaytNames = panchaytNames + "," + j.getName();
+                    }
+                }
+                etGrampanchayt.setText(panchaytNames);
+            }
+        }
+
         if (userLocation.getSchoolIds() != null && userLocation.getSchoolIds().size() > 0) {
             etUserSchool.setVisibility(View.VISIBLE);
             selectedSchools.clear();
@@ -533,6 +561,25 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                 }
                 etUserSchool.setText(schoolNames);
+            }
+        }
+
+        if (userLocation.getLearningCenterIds() != null && userLocation.getLearningCenterIds().size() > 0) {
+            etUserCenter.setVisibility(View.VISIBLE);
+            selectedCenter.clear();
+            String schoolNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getLearningCenterIds() != null
+                    && userInfo.getUserLocation().getLearningCenterIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getLearningCenterIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getLearningCenterIds().get(i);
+                    selectedCenter.add(j);
+                    if (i == 0) {
+                        schoolNames = j.getName();
+                    } else {
+                        schoolNames = schoolNames + "," + j.getName();
+                    }
+                }
+                etUserCenter.setText(schoolNames);
             }
         }
 
@@ -870,7 +917,26 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         } else {
                             Toast.makeText(this, getString(R.string.msg_select_cluster), Toast.LENGTH_LONG).show();
                         }
-                    } else {
+                    } else if (etGrampanchayt.getVisibility() == View.VISIBLE) {
+                        if (selectedPanchayat != null && selectedPanchayat.size() > 0 &&
+                                !TextUtils.isEmpty(selectedPanchayat.get(0).getId())) {
+                            String selectedPanchayatIds = "";
+                            for (int i = 0; i < selectedPanchayat.size(); i++) {
+                                JurisdictionType j = selectedPanchayat.get(i);
+                                if (i == 0) {
+                                    selectedPanchayatIds = j.getId();
+                                } else {
+                                    selectedPanchayatIds = selectedPanchayatIds + "," + j.getId();
+                                }
+                            }
+                            profilePresenter.getProfileLocationData(selectedPanchayatIds,
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_panchyt), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (etUserTaluka.getVisibility() == View.VISIBLE) {
                         if (selectedTalukas != null && selectedTalukas.size() > 0 &&
                                 !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                             String selectedTalukaIds = "";
@@ -935,6 +1001,49 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                 }
                 break;
+            case R.id.etGrampanchayt:
+                if (customSpinnerPanchayt.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Gram-Panchayat", customSpinnerPanchayt,
+                                true);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Gram-Panchayat", customSpinnerPanchayt,
+                                false);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedTalukas != null && selectedTalukas.size() > 0 &&
+                            !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
+                        String selectedTalukaIds = "";
+                        for (int i = 0; i < selectedTalukas.size(); i++) {
+                            JurisdictionType j = selectedTalukas.get(i);
+                            if (i == 0) {
+                                selectedTalukaIds = j.getId();
+                            } else {
+                                selectedTalukaIds = selectedTalukaIds + "," + j.getId();
+                            }
+                        }
+                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
             case R.id.etUserSchool:
                 if (customSpinnerSchools.size() > 0) {
                     if (isRoleSelected) {
@@ -972,6 +1081,49 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         profilePresenter.getProfileLocationData(selectedVillageIds,
                                 jurisdictionId,
                                 Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserCenter:
+                if (customSpinnerCenter.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select Learning Center", customSpinnerCenter,
+                                true);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select Learning Center", customSpinnerCenter,
+                                false);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedSchools != null && selectedSchools.size() > 0 &&
+                            !TextUtils.isEmpty(selectedSchools.get(0).getId())) {
+                        String selectedSchoolIds = "";
+                        for (int i = 0; i < selectedSchools.size(); i++) {
+                            JurisdictionType j = selectedSchools.get(i);
+                            if (i == 0) {
+                                selectedSchoolIds = j.getId();
+                            } else {
+                                selectedSchoolIds = selectedSchoolIds + "," + j.getId();
+                            }
+                        }
+                        profilePresenter.getProfileLocationData(selectedSchoolIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
                         Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
@@ -1123,6 +1275,17 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 userLocation.setClusterIds(s);
             }
 
+            if (selectedPanchayat.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType cluster : selectedPanchayat) {
+                    JurisdictionType clusterObj = new JurisdictionType();
+                    clusterObj.setId(cluster.getId());
+                    clusterObj.setName(cluster.getName());
+                    s.add(clusterObj);
+                }
+                userLocation.setGranpanchayatIds(s);
+            }
+
             if (selectedVillages.size() > 0) {
                 s = new ArrayList<>();
                 for (JurisdictionType village : selectedVillages) {
@@ -1143,6 +1306,17 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     s.add(schoolObj);
                 }
                 userLocation.setSchoolIds(s);
+            }
+
+            if (selectedCenter.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType center : selectedCenter) {
+                    JurisdictionType centerObj = new JurisdictionType();
+                    centerObj.setId(center.getId());
+                    centerObj.setName(center.getName());
+                    s.add(centerObj);
+                }
+                userLocation.setLearningCenterIds(s);
             }
 
             userInfo.setUserLocation(userLocation);
@@ -1191,12 +1365,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } else if ((etUserCluster.getVisibility() == View.VISIBLE) &&
                 (selectedClusters == null || selectedClusters.size() == 0)) {
             msg = getString(R.string.msg_select_cluster);
+        } else if ((etGrampanchayt.getVisibility() == View.VISIBLE) &&
+                (selectedPanchayat == null || selectedPanchayat.size() == 0)) {
+            msg = getString(R.string.msg_select_panchyt);
         } else if ((etUserVillage.getVisibility() == View.VISIBLE) &&
                 (selectedVillages == null || selectedVillages.size() == 0)) {
             msg = getString(R.string.msg_select_village);
         } else if ((etUserSchool.getVisibility() == View.VISIBLE) &&
                 (selectedSchools == null || selectedSchools.size() == 0)) {
             msg = getString(R.string.msg_select_school);
+        } else if ((etUserCenter.getVisibility() == View.VISIBLE) &&
+                (etUserCenter == null || selectedCenter.size() == 0)) {
+            msg = getString(R.string.msg_select_center);
         }
 
         if (TextUtils.isEmpty(msg)) {
@@ -1373,11 +1553,17 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserCluster.setVisibility(View.GONE);
         selectedClusters.clear();
 
+        etGrampanchayt.setVisibility(View.GONE);
+        selectedPanchayat.clear();
+
         etUserVillage.setVisibility(View.GONE);
         selectedVillages.clear();
 
         etUserSchool.setVisibility(View.GONE);
         selectedSchools.clear();
+
+        etUserCenter.setVisibility(View.GONE);
+        selectedCenter.clear();
     }
 
     private boolean isContainsValue(ArrayList<JurisdictionType> projects, String value) {
@@ -1530,9 +1716,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 selectedClusters.clear();
                 break;
 
+            case Constants.JurisdictionLevelName.GRAM_PANCHAYAT:
+                etGrampanchayt.setVisibility(View.VISIBLE);
+                selectedPanchayat.clear();
+                break;
+
             case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
                 etUserSchool.setVisibility(View.VISIBLE);
                 selectedSchools.clear();
+                break;
+            case Constants.JurisdictionLevelName.LEARNING_CENTER:
+                etUserCenter.setVisibility(View.VISIBLE);
+                selectedCenter.clear();
                 break;
         }
     }
@@ -1645,6 +1840,20 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                 }
                 break;
+            case Constants.JurisdictionLevelName.GRAM_PANCHAYAT:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    List<String> panchayats = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        panchayats.add(location.getName());
+                        CustomSpinnerObject panchayat = new CustomSpinnerObject();
+                        panchayat.set_id(location.getId());
+                        panchayat.setName(location.getName());
+                        panchayat.setSelected(false);
+                        this.customSpinnerPanchayt.add(panchayat);
+                    }
+                }
+                break;
             case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> schools = new ArrayList<>();
@@ -1656,6 +1865,20 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         school.setName(location.getName());
                         school.setSelected(false);
                         this.customSpinnerSchools.add(school);
+                    }
+                }
+                break;
+            case Constants.JurisdictionLevelName.LEARNING_CENTER:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    List<String> centers = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        centers.add(location.getName());
+                        CustomSpinnerObject center = new CustomSpinnerObject();
+                        center.set_id(location.getId());
+                        center.setName(location.getName());
+                        center.setSelected(false);
+                        this.customSpinnerCenter.add(center);
                     }
                 }
                 break;
@@ -1707,6 +1930,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedClusters.clear();
         customSpinnerClusters.clear();
         etUserCluster.setText("");
+        selectedPanchayat.clear();
+        customSpinnerPanchayt.clear();
+        etGrampanchayt.setText("");
         selectedTalukas.clear();
         customSpinnerTalukas.clear();
         etUserTaluka.setText("");
@@ -1716,6 +1942,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedSchools.clear();
         customSpinnerSchools.clear();
         etUserSchool.setText("");
+        selectedCenter.clear();
+        customSpinnerCenter.clear();
+        etUserCenter.setText("");
 
         if (filterOrgList.get(selectedPosition) != null
                 && !TextUtils.isEmpty(filterOrgList.get(selectedPosition).get_id())) {
@@ -1755,6 +1984,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedClusters.clear();
         customSpinnerClusters.clear();
         etUserCluster.setText("");
+        selectedPanchayat.clear();
+        customSpinnerPanchayt.clear();
+        etGrampanchayt.setText("");
         selectedTalukas.clear();
         customSpinnerTalukas.clear();
         etUserTaluka.setText("");
@@ -1764,6 +1996,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         selectedSchools.clear();
         customSpinnerSchools.clear();
         etUserSchool.setText("");
+        selectedCenter.clear();
+        customSpinnerCenter.clear();
+        etUserCenter.setText("");
         // clear other dependent fields
         if (Util.isConnected(this)) {
             selectedProjects.clear();
@@ -1808,6 +2043,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedTalukas.clear();
             customSpinnerTalukas.clear();
             etUserTaluka.setText("");
@@ -1817,6 +2055,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
             if (Util.isConnected(this)) {
                 selectedRoles.clear();
                 if (roles != null && !roles.isEmpty() && roles.get(selectedPosition) != null
@@ -1866,6 +2107,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedTalukas.clear();
             customSpinnerTalukas.clear();
             etUserTaluka.setText("");
@@ -1875,6 +2119,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedCountryIds = "";
             String selectedCountryNames = "";
@@ -1920,6 +2167,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedTalukas.clear();
             customSpinnerTalukas.clear();
             etUserTaluka.setText("");
@@ -1929,6 +2179,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedStateIds = "";
             String selectedStateNames = "";
@@ -1976,6 +2229,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedTalukas.clear();
             customSpinnerTalukas.clear();
             etUserTaluka.setText("");
@@ -1985,6 +2241,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedCityIds = "";
             String selectedCityNames = "";
@@ -2024,6 +2283,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedTalukas.clear();
             customSpinnerTalukas.clear();
             etUserTaluka.setText("");
@@ -2033,6 +2295,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedDistrictIds = "";
             String selectedDistrictNames = "";
@@ -2072,12 +2337,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedClusters.clear();
             customSpinnerClusters.clear();
             etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
             selectedVillages.clear();
             customSpinnerVillages.clear();
             etUserVillage.setText("");
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedTalukaIds = "";
             String selectedTalukaNames = "";
@@ -2099,6 +2370,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         profilePresenter.getProfileLocationData(selectedTalukaIds,
                                 jurisdictionId,
                                 Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else if (etGrampanchayt.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else if (etUserVillage.getVisibility() == View.VISIBLE) {
                         profilePresenter.getProfileLocationData(selectedTalukaIds,
@@ -2125,6 +2401,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedClusterIds = "";
             String selectedClusterNames = "";
@@ -2150,6 +2429,51 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     }
                 }
             }
+        } else if (type.equals("Select Gram-Panchayat")) {
+            selectedPanchayat.clear();
+            for (CustomSpinnerObject panchayt : customSpinnerPanchayt) {
+                if (panchayt.isSelected()) {
+                    JurisdictionType selectedCluster = new JurisdictionType();
+                    selectedCluster.setName(panchayt.getName());
+                    selectedCluster.setId(panchayt.get_id());
+                    selectedPanchayat.add(selectedCluster);
+                }
+            }
+            // clear other dependent fields
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedPanchayatIds = "";
+            String selectedPanchayatNames = "";
+            for (int i = 0; i < selectedPanchayat.size(); i++) {
+                JurisdictionType j = selectedPanchayat.get(i);
+                if (i == 0) {
+                    selectedPanchayatIds = j.getId();
+                    selectedPanchayatNames = j.getName();
+                } else {
+                    selectedPanchayatIds = selectedPanchayatIds + "," + j.getId();
+                    selectedPanchayatNames = selectedPanchayatNames + "," + j.getName();
+                }
+            }
+            etGrampanchayt.setText(selectedPanchayatNames);
+
+            if (selectedPanchayat != null && selectedPanchayat.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (etUserVillage.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getProfileLocationData(selectedPanchayatIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
         } else if (type.equals("Select Village")) {
             selectedVillages.clear();
             for (CustomSpinnerObject cluster : customSpinnerVillages) {
@@ -2164,6 +2488,9 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             selectedSchools.clear();
             customSpinnerSchools.clear();
             etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
 
             String selectedVillageIds = "";
             String selectedVillageNames = "";
@@ -2214,6 +2541,43 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
             }
             etUserSchool.setText(selectedSchoolNames);
+
+            if (selectedCenter != null && selectedCenter.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (etUserCenter.getVisibility() == View.VISIBLE) {
+                        profilePresenter.getProfileLocationData(selectedSchoolIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+
+        } else if (type.equals("Select Learning Center")) {
+            selectedCenter.clear();
+            for (CustomSpinnerObject center : customSpinnerCenter) {
+                if (center.isSelected()) {
+                    JurisdictionType selectedSchool = new JurisdictionType();
+                    selectedSchool.setName(center.getName());
+                    selectedSchool.setId(center.get_id());
+                    selectedCenter.add(selectedSchool);
+                }
+            }
+            String selectedCenterIds = "";
+            String selectedCenterNames = "";
+            if (selectedCenter != null && selectedCenter.size() > 0) {
+                for (int i = 0; i < selectedCenter.size(); i++) {
+                    JurisdictionType j = selectedCenter.get(i);
+                    if (i == 0) {
+                        selectedCenterIds = j.getId();
+                        selectedCenterNames = j.getName();
+                    } else {
+                        selectedCenterIds = selectedCenterIds + "," + j.getId();
+                        selectedCenterNames = selectedCenterNames + "," + j.getName();
+                    }
+                }
+            }
+            etUserCenter.setText(selectedCenterNames);
         }
     }
 
@@ -2224,22 +2588,22 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private void filterOrg(String searchText) {
         searchText = searchText.toLowerCase(Locale.getDefault());
 
-            filterOrgList.clear();
-            for (CustomSpinnerObject org : selectionOrgList) {
-                if (org.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
-                    filterOrgList.add(org);
-                }
+        filterOrgList.clear();
+        for (CustomSpinnerObject org : selectionOrgList) {
+            if (org.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
+                filterOrgList.add(org);
             }
+        }
         if (selectionOrgList.size() > 0 && filterOrgList.size() == 0) {
-                Util.snackBarToShowMsg(getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "No organization found with given text.",
-                        Snackbar.LENGTH_LONG);
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No organization found with given text.",
+                    Snackbar.LENGTH_LONG);
             selectedOrg = null;
             selectedOrgName = "";
             selectionProjectList.clear();
-            }
-            rvOrg.setVisibility(View.VISIBLE);
-            orgDropDownAdapter.notifyDataSetChanged();
+        }
+        rvOrg.setVisibility(View.VISIBLE);
+        orgDropDownAdapter.notifyDataSetChanged();
     }
 
     private void filterProject(String searchText) {
