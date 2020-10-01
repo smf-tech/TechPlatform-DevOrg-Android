@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_10dp"
+    android:layout_marginEnd="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_05dp"
+    app:cardCornerRadius="@dimen/dimen_05dp">
+
+    <RelativeLayout
+        android:id="@+id/lyMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp">
+
+        <ImageView
+            android:id="@+id/ivUserPic"
+            android:layout_width="@dimen/dimen_45dp"
+            android:layout_height="@dimen/dimen_45dp"
+            android:layout_below="@+id/line1"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_user_avatar" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_toEndOf="@+id/ivUserPic"
+            android:fontFamily="@font/opensans_semibold"
+            android:text="BJS user"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ivUserPic"
+            android:layout_below="@+id/tvUserName"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:fontFamily="@font/opensans_bold"
+            android:textColor="@color/colorPrimary"
+            android:text="Comment text"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_toEndOf="@+id/ivUserPic"
+            android:fontFamily="@font/opensans_regular"
+            android:text="02 Aug 2019"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tvStatusLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTime"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_toEndOf="@+id/ivUserPic"
+            android:fontFamily="@font/opensans_regular"
+            android:text="Status: "
+            android:textSize="@dimen/text_size_12" />
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTime"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_toEndOf="@+id/tvStatusLbl"
+            android:fontFamily="@font/opensans_bold"
+            android:text="Open"
+            android:textSize="@dimen/text_size_12" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
