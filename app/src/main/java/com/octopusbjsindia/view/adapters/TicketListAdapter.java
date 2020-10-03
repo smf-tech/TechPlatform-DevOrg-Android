@@ -49,24 +49,21 @@ public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull TicketListAdapter.ViewHolder holder, int position) {
-//        if (commentList.get(position).getUserDetails()!= null
-//                && commentList.get(position).getUserDetails().getProfileImage() != null
-//                && commentList.get(position).getUserDetails().getProfileImage().size()>0
-//                && !commentList.get(position).getUserDetails().getProfileImage().get(0).equals("")) {
-//            Glide.with(mContext)
-//                    .applyDefaultRequestOptions(requestOptions)
-//                    .load(commentList.get(position).getUserDetails().getProfileImage().get(0))
-//                    .into(holder.ivProfilePic);
-//        } else {
-//            holder.ivProfilePic.setImageResource(R.drawable.ic_user_avatar);
-//        }
-//        if (list.get(position).get() != null
-//                && commentList.get(position).getUserDetails().getName() != null
-//                && !commentList.get(position).getUserDetails().getName().equals("")) {
-//            holder.tvUserName.setText(commentList.get(position).getUserDetails().getName());
-//        } else {
+        if (list.get(position).getUser_profile_pic() != null
+                && !list.get(position).getUser_profile_pic().equals("")) {
+            Glide.with(mContext)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(list.get(position).getUser_profile_pic())
+                    .into(holder.ivUserPic);
+        } else {
+            holder.ivUserPic.setImageResource(R.drawable.ic_user_avatar);
+        }
+        if (list.get(position).getUser_name() != null
+                && !list.get(position).getUser_name().equals("")) {
+            holder.tvUserName.setText(list.get(position).getUser_name() );
+        } else {
             holder.tvUserName.setText("BJS User");
-//        }
+        }
         holder.tvTitle.setText(list.get(position).getTicketTitle());
         holder.tvTime.setText(list.get(position).getCreatedDatetime());
         holder.tvStatus.setText(list.get(position).getStatus());

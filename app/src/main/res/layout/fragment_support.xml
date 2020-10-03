@@ -18,5 +18,6 @@
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
+        android:visibility="gone"
         app:tint="@color/white" />
 </RelativeLayout>

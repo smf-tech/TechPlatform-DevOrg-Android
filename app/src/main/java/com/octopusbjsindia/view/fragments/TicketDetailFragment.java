@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     private TextView tvAssignedTo,tvChangeStatus;
     private TicketData data;
     private RelativeLayout lyProgressBar;
+    private EditText etComment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,14 +86,15 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
         ImageView ivUserPic = view.findViewById(R.id.ivUserPic);
         ImageView ivAttached = view.findViewById(R.id.ivAttached);
 
-//        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
-//        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-//        Glide.with(this)
-//                .applyDefaultRequestOptions(requestOptions)
-//                .load()
-//                .into(ivUserPic);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+        Glide.with(this)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(data.getUser_profile_pic())
+                .into(ivUserPic);
 
-        ((TextView) view.findViewById(R.id.tvUserName)).setText(data.getUserId());
+        etComment = view.findViewById(R.id.etComment);
+        ((TextView) view.findViewById(R.id.tvUserName)).setText(data.getUser_name());
         ((TextView) view.findViewById(R.id.tvTitle)).setText(data.getTicketTitle());
         ((TextView) view.findViewById(R.id.tvTime)).setText(data.getCreatedDatetime());
         ((TextView) view.findViewById(R.id.tvStatus)).setText(data.getStatus());
@@ -184,7 +187,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
             request.setTicketTitle(data.getTicketTitle());
             request.setTicketDesc(data.getTicketDesc());
             request.setTicketAttachment(data.getTicketAttachment());
-            request.setComment(data.getId());
+            request.setComment(etComment.getText().toString().trim());
             request.setRoleName(selectedRoleName);
             request.setRoleId(selectedRoleId);
 

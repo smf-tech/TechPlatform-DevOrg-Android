@@ -23,8 +23,8 @@
             android:layout_width="@dimen/dimen_45dp"
             android:layout_height="@dimen/dimen_45dp"
             android:layout_below="@+id/line1"
+            android:layout_centerVertical="true"
             android:layout_margin="@dimen/dimen_05dp"
-            android:visibility="gone"
             android:src="@drawable/ic_user_avatar" />
 
         <TextView
@@ -48,6 +48,7 @@
             android:fontFamily="@font/opensans_bold"
             android:textColor="@color/colorPrimary"
             android:text="Comment text"
+            android:maxLines="1"
             android:textSize="@dimen/text_size_16" />
 
         <TextView

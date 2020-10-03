@@ -169,7 +169,8 @@ public class DashboardFragment extends Fragment {
                     adapter.addFragment(new SmartGirlDashboardFragment());
                     break;
                 case Constants.Home.SUPPORT:
-                    adapter.addFragment(new SupportFragment());
+//                    adapter.addFragment(new SupportFragment());
+                    adapter.addFragment(new TicketListFragment());
                     break;
                 default:
                     adapter.addFragment(new DefaultFragment());

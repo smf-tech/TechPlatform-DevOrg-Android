@@ -58,6 +58,12 @@ public class TicketData implements Serializable {
     @SerializedName("ticket_attachment")
     @Expose
     private String ticketAttachment;
+    @SerializedName("user_name")
+    @Expose
+    private String user_name;
+    @SerializedName("user_profile_pic")
+    @Expose
+    private String user_profile_pic;
 
     public String getId() {
         return id;
@@ -193,5 +199,21 @@ public class TicketData implements Serializable {
 
     public void setTicketAttachment(String ticketAttachment) {
         this.ticketAttachment = ticketAttachment;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getUser_profile_pic() {
+        return user_profile_pic;
+    }
+
+    public void setUser_profile_pic(String user_profile_pic) {
+        this.user_profile_pic = user_profile_pic;
     }
 }
