@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +40,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<CustomSpinnerObject>();
     private TextView tvAssignedTo,tvChangeStatus;
     private TicketData data;
+    private RelativeLayout lyProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        lyProgressBar = view.findViewById(R.id.lyProgressBar);
         data = new TicketData();
         data = (TicketData) getArguments().getSerializable("data");
 
@@ -140,17 +143,17 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
 
     @Override
     public void showMessage(String requestID, String message, int code) {
-
+        Util.showToast(getActivity(),message);
     }
 
     @Override
     public void showProgressBar() {
-
+        lyProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        lyProgressBar.setVisibility(View.GONE);
     }
 
     public void setRoles(List<OrganizationRole> data) {
@@ -186,7 +189,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
             request.setRoleId(selectedRoleId);
 
             presenter.assinged(request);
-            tvAssignedTo.setText(selectedRoleName);
+
         } else if (type.equals("Select Status")) {
             String selectedStatusName = "";
             for (CustomSpinnerObject customSpinnerObject : rolesList) {
@@ -197,5 +200,9 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
             }
             tvChangeStatus.setText(selectedStatusName);
         }
+    }
+
+    public void setAssinegdSuccess(String roleName) {
+        tvAssignedTo.setText(roleName);
     }
 }

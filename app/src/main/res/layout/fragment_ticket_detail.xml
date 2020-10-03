@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvTime"
                 android:layout_marginStart="@dimen/dimen_05dp"
-                android:layout_toEndOf="@+id/ivUserPic"
+                android:layout_toEndOf="@+id/tvStatus"
                 android:fontFamily="@font/opensans_regular"
                 android:text="Type: "
                 android:textSize="@dimen/text_size_12" />
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvTime"
                 android:layout_marginStart="@dimen/dimen_05dp"
-                android:layout_toEndOf="@+id/tvStatusLbl"
+                android:layout_toEndOf="@+id/tvTypeLbl"
                 android:fontFamily="@font/opensans_bold"
                 android:text="Open"
                 android:textSize="@dimen/text_size_12" />
@@ -201,5 +201,23 @@
         </RelativeLayout>
     </ScrollView>
 
+    <RelativeLayout
+        android:id="@+id/lyProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -6,7 +6,9 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
+import com.octopusbjsindia.models.stories.CommentResponse;
 import com.octopusbjsindia.models.support.TicketAssingnRequest;
 import com.octopusbjsindia.models.support.TicketResponse;
 import com.octopusbjsindia.request.APIRequestCall;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 public class TicketDetailFragmentPresenter implements APIPresenterListener {
 
     TicketDetailFragment mContext;
+    String roleName;
 
     public TicketDetailFragmentPresenter(TicketDetailFragment mContext) {
         this.mContext = mContext;
@@ -48,12 +51,10 @@ public class TicketDetailFragmentPresenter implements APIPresenterListener {
                 mContext.setRoles(orgRolesResponse.getData());
             }
         } else  if(requestID.equalsIgnoreCase("ASSIGN_TICKETS")){
-            OrganizationRolesResponse orgRolesResponse
-                    = new Gson().fromJson(response, OrganizationRolesResponse.class);
-
-            if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
-                    !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
-                mContext.setRoles(orgRolesResponse.getData());
+            CommonResponse respons = new Gson().fromJson(response, CommonResponse.class);
+            mContext.showMessage(requestID,respons.getMessage(),respons.getStatus());
+            if (respons.getStatus() == 200) {
+                mContext.setAssinegdSuccess(roleName);
             }
         }
     }
@@ -68,6 +69,7 @@ public class TicketDetailFragmentPresenter implements APIPresenterListener {
     }
 
     public void assinged(TicketAssingnRequest request) {
+        roleName = request.getRoleName();
         mContext.showProgressBar();
         final String url = BuildConfig.BASE_URL+Urls.Support.ASSIGN_TICKETS;
 

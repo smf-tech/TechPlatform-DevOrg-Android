@@ -60,12 +60,12 @@ public class TicketListFragment extends Fragment implements APIListener {
 
     @Override
     public void showProgressBar() {
-
+        view.findViewById(R.id.lyProgressBar).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        view.findViewById(R.id.lyProgressBar).setVisibility(View.GONE);
     }
 
     public void setTicket(List<TicketData> data) {

@@ -24,16 +24,17 @@ public class TicketListFragmentPresenter implements APIPresenterListener {
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        mContext.showMessage(requestID,message,100);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        mContext.showMessage(requestID,error.getMessage(),100);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
+        mContext.hideProgressBar();
         TicketResponse respons = PlatformGson.getPlatformGsonInstance().fromJson(response, TicketResponse.class);
         if (respons.getCode() == 200) {
             mContext.setTicket(respons.getData());
