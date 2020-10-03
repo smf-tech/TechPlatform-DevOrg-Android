@@ -6,8 +6,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,6 +58,7 @@ import com.octopusbjsindia.view.activities.TransactionDetailsActivity;
 import com.octopusbjsindia.view.adapters.MeetAnalyticsAdapter;
 import com.octopusbjsindia.view.adapters.MeetContactsListAdapter;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -78,13 +81,15 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private RelativeLayout progressBarLayout;
     private MatrimonyMeetDetailFragmentPresenter presenter;
     private ViewPager meetViewPager;
-    private Button btnPublishMeet,btn_copy_referral;
+    private Button btnPublishMeet;
+    private ImageView btn_copy_referral;
     private int currentPosition;
     private static MatrimonyMeetDetailFragment instance = null;
     private RelativeLayout rlNoMeet, rl_meetLayout;
     private final String TAG = this.getClass().getSimpleName();
     private Activity activity;
     private PopupMenu popup;
+    TextView ivIconPublished;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -174,7 +179,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         rvMeetContacts.setLayoutManager(mContactsLayoutManager);
         rvMeetContacts.setAdapter(meetContactsListAdapter);
 
-        TextView ivIconPublished = view.findViewById(R.id.iv_icon_published);
+        ivIconPublished = view.findViewById(R.id.iv_icon_published);
         if (meetData.getIs_published()) {
             ivIconPublished.setText("Published");//(getResources().getDrawable(R.drawable.ic_icon_publish));
         } else {
@@ -402,26 +407,39 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 Gson configDataGson = new Gson();
                 AppConfigResponse appConfigData = configDataGson.fromJson(configDataString, AppConfigResponse.class);*/
 
-                String message = "Please find the referral link to BJS Connect app" + "\n" +
-                                meetData.getMeetReferralLink();
+                String message = "You have been invited to participate in the matrimonial meet-up organised by BJS.Click on the URL to join " + "\n" +
+                        meetData.getMeetReferralLink();
 
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, message);
                 getActivity().startActivity(Intent.createChooser(share, "Share Referral"));
 
+                //--
+/*                PackageManager packageManager = getActivity().getPackageManager();
+                Intent i = new Intent(Intent.ACTION_VIEW);
 
+                try {
+                    String url = "https://api.whatsapp.com/send?phone="+ "919850978021" +"&text=" + URLEncoder.encode(message, "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(url));
+                    if (i.resolveActivity(packageManager) != null) {
+                        getActivity().startActivity(i);
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }*/
 
                 break;
             case R.id.btn_copy_referral:
 
-                String message1 = "Please find the referral link to BJS Connect app" + "\n" +
+                String message1 = "You have been invited to participate in the matrimonial meet-up organised by BJS.Click on the URL to join " + "\n" +
                         meetData.getMeetReferralLink();
 
                 ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("referal text",message1);
                 clipboardManager.setPrimaryClip(clipData);
-
+                Util.showToast(getActivity(),"Link has been copied.");
                 break;
 
         }
@@ -460,14 +478,29 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     }
 
 
-    public void showResponse(String responseStatus, int status) {
+    public void showResponse(String responseStatus, int status, String referralLink) {
         Util.snackBarToShowMsg(activity.getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
         if (status == 200) {
             meetData.setIs_published(true);
-
+            meetData.setMeetReferralLink(referralLink);
+            if (meetData.getMeetReferralLink() != null && meetData.getMeetReferralLink().trim().length() > 0) {
+                view.findViewById(R.id.tv_referallink_label).setVisibility(View.VISIBLE);
+                btn_copy_referral.setVisibility(View.VISIBLE);
+                tv_referallink.setVisibility(View.VISIBLE);
+                tv_referallink.setText(meetData.getMeetReferralLink());
+            } else {
+                view.findViewById(R.id.tv_referallink_label).setVisibility(View.GONE);
+                btn_copy_referral.setVisibility(View.GONE);
+                tv_referallink.setVisibility(View.GONE);
+            }
             btnPublishMeet.setVisibility(View.GONE);
+            if (meetData.getIs_published()) {
+                ivIconPublished.setText("Published");//(getResources().getDrawable(R.drawable.ic_icon_publish));
+            } else {
+                ivIconPublished.setText(" Saved");//ivIconPublished.setImageDrawable(getResources().getDrawable(R.drawable.ic_meet_saved_label));
+            }
         }
     }
 

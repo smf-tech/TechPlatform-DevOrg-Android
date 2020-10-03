@@ -17,6 +17,8 @@ import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.MatrimonyMeetDetailFragment;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -193,8 +195,20 @@ public class MatrimonyMeetDetailFragmentPresenter implements APIPresenterListene
                     }
                 } else if (requestID.equalsIgnoreCase(MatrimonyMeetDetailFragmentPresenter.PUBLISH_SAVED_MEET)) {
                     try {
+                        String ReferralLink = "";
                         CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus());
+                        JSONObject obj = new JSONObject(response);
+
+                        try {
+                            Log.d("Referal link", obj.getString("short_url"));
+                            ReferralLink = obj.getString("short_url");
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(), responseOBJ.getStatus(),ReferralLink);
                     } catch (Exception e) {
                         Log.e("TAG", "Exception");
                     }
@@ -243,8 +257,8 @@ public class MatrimonyMeetDetailFragmentPresenter implements APIPresenterListene
 
             }
         } catch (Exception e) {
-                fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
-            }
+            fragmentWeakReference.get().onFailureListener(requestID,e.getMessage());
+        }
     }
 
     public void meetArchiveDelete(String meetId, String type) {

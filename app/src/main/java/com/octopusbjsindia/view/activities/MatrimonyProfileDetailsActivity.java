@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,16 +41,20 @@ import com.octopusbjsindia.matrimonyregistration.RegistrationActivity;
 import com.octopusbjsindia.matrimonyregistration.model.MatrimonialProfile;
 import com.octopusbjsindia.matrimonyregistration.model.ProfileDetailData;
 import com.octopusbjsindia.matrimonyregistration.model.ProfileDetailResponse;
+import com.octopusbjsindia.models.Matrimony.MatrimonyMeet;
 import com.octopusbjsindia.models.Matrimony.UserProfileList;
 import com.octopusbjsindia.presenter.MatrimonyProfilesDetailsActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ProfileImagesPagerAdapter;
+import com.octopusbjsindia.widgets.MeetListBottomSheet;
+import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -57,7 +62,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener,
-        PopupMenu.OnMenuItemClickListener, APIDataListener {
+        PopupMenu.OnMenuItemClickListener, APIDataListener,MeetListBottomSheet.MultiSpinnerListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
     private final String PROFILE_ID = "profileId";
@@ -94,6 +99,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private RelativeLayout progressBar, ly_myproof;
     private boolean isBlock;
     private CardView cv_meetlist_details;
+    private MeetListBottomSheet bottomSheetDialogFragment;
+    private List<MatrimonyMeet> meetListReceived;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1015,15 +1022,20 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 showDialog("Alert", "Are you sure, Do you want to call user?",
                         "YES", "NO", 4);//flag 4 for call primary number
                 break;
+            case R.id.action_register_user:
+
+                showDialog("Alert", "Are you sure, Do you want to register user in meet?",
+                        "YES", "NO", 7);//flag 7 for registering user to meet list.
+                break;
             case R.id.action_edit_profile:
                 if (Util.isConnected(this)) {
-                Intent editIntent = new Intent(this, RegistrationActivity.class);
-                if (userProfileList.getMatrimonial_profile() != null) {
-                    editIntent.putExtra("matrimonialProfile", userProfileList.getMatrimonial_profile());
-                    editIntent.putExtra(PROFILE_ID, userProfileList.get_id());
-                }
-                editIntent.putExtra("Flag", 1);//for matrimonial
-                startActivity(editIntent);
+                    Intent editIntent = new Intent(this, RegistrationActivity.class);
+                    if (userProfileList.getMatrimonial_profile() != null) {
+                        editIntent.putExtra("matrimonialProfile", userProfileList.getMatrimonial_profile());
+                        editIntent.putExtra(PROFILE_ID, userProfileList.get_id());
+                    }
+                    editIntent.putExtra("Flag", 1);//for matrimonial
+                    startActivity(editIntent);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
@@ -1335,7 +1347,10 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     }
                 } else if (flag == 3) {
                     verifyDocument(3, true);
+                } else if (flag == 7) {
+                    presenter.getMatrimonyMeets();
                 }
+
             });
         }
 
@@ -1387,5 +1402,31 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 //        returnIntent.putExtra(Constants.Planner.MEMBER_LIST_COUNT, receivedPos);
 //        setResult(Constants.MatrimonyModule.FLAG_UPDATE_RESULT, returnIntent);
         finish();
+    }
+
+    private void showMultiSelectBottomsheet(String Title, String selectedOption, List<MatrimonyMeet> meetList) {
+
+        bottomSheetDialogFragment = new MeetListBottomSheet(this, selectedOption, meetList, this::onValuesSelected);
+        bottomSheetDialogFragment.show();
+        bottomSheetDialogFragment.toolbarTitle.setText(Title);
+        bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
+        Log.e("onMeetSelected","selected meet number is-"+selectedPosition);
+        presenter.RegisterUserInMeet(profileResponse.getData().getMatrimonialProfile().getResidentialDetails().getPrimaryPhone(),profileResponse.getData().getId(),meetListReceived.get(selectedPosition).getId());
+    }
+
+    public void setMatrimonyMeets(List<MatrimonyMeet> data, String earliestMeetId) {
+        meetListReceived = data;
+        showMultiSelectBottomsheet("Select Meet","usermeetregistration",data);
+    }
+
+    public void showResponseRegisterUser(String message, int status) {
+        Util.snackBarToShowMsg(getWindow().getDecorView()
+                        .findViewById(android.R.id.content), message,
+                Snackbar.LENGTH_LONG);
     }
 }
