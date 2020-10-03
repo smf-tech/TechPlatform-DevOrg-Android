@@ -176,8 +176,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
     private int currentState = 0;
     private RequestOptions requestOptions,requestOptionsjcb;
-private Toolbar toolbar;
-private ImageView toolbar_edit_action,toolbar_action;
+    private Toolbar toolbar;
+    private ImageView toolbar_edit_action,toolbar_action;
     private void updateStatusAndProceed(int currentStateReceived) {
         Log.e("currentstate--3", "----"+currentState);
         currentState  =currentStateReceived;
@@ -199,7 +199,7 @@ private ImageView toolbar_edit_action,toolbar_action;
             Util.showToast("Machine started Working.",this);
             tv_machine_state.setText(state_start_string);
             currentState =state_start;
-             cancelAlarm();
+            cancelAlarm();
         } else if (currentState == state_pause) {
             //editor.putInt("State", state_start);
             buttonPauseService.setVisibility(View.VISIBLE);
@@ -284,7 +284,7 @@ private ImageView toolbar_edit_action,toolbar_action;
     //  new
     private void setAlarm()
     {
-        
+
         Log.e("alarm Difference",String.valueOf(getDifferencebetweenAlarms()));
         Gson gson = new Gson();
         PendingIntent sender;
@@ -327,9 +327,9 @@ private ImageView toolbar_edit_action,toolbar_action;
                 editor.commit();
             }
         }else {
-           // setDailyAlarm();
+            // setDailyAlarm();
 
-            }
+        }
 
 
 
@@ -340,7 +340,7 @@ private ImageView toolbar_edit_action,toolbar_action;
 // constants--in this case, AlarmManager.INTERVAL_DAY.
 
 
-            //-------
+        //-------
 
             /*alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                     Calendar.getInstance().getTimeInMillis() +
@@ -351,14 +351,14 @@ private ImageView toolbar_edit_action,toolbar_action;
             alarmRequests.add(alarmRequest);*/
 
 
-            String receivedStringArray = preferences.getString("alarmRequestsArray","");
-            TypeToken<List<AlarmRequest>> token = new TypeToken<List<AlarmRequest>>() {};
-            List<AlarmRequest> AlarmRequestList = gson.fromJson(receivedStringArray, token.getType());
-            Log.e("alarm list","alarm list"+AlarmRequestList.size());
-            Log.e("alarm list","alarm list"+AlarmRequestList.get(0).AlarmName);
+        String receivedStringArray = preferences.getString("alarmRequestsArray","");
+        TypeToken<List<AlarmRequest>> token = new TypeToken<List<AlarmRequest>>() {};
+        List<AlarmRequest> AlarmRequestList = gson.fromJson(receivedStringArray, token.getType());
+        Log.e("alarm list","alarm list"+AlarmRequestList.size());
+        Log.e("alarm list","alarm list"+AlarmRequestList.get(0).AlarmName);
 
 
-        }
+    }
 
     private int getDifferencebetweenAlarms() {
         Calendar calendar = Calendar.getInstance();
@@ -384,11 +384,11 @@ private ImageView toolbar_edit_action,toolbar_action;
             TypeToken<List<AlarmRequest>> token = new TypeToken<List<AlarmRequest>>() {};
             List<AlarmRequest> AlarmRequestList = gson.fromJson(receivedStringArray, token.getType());
             int Requestcode = AlarmRequestList.get(0).alarmid;
-        PendingIntent sender;
-        Intent intent;
-        intent = new Intent(this, AlarmReceiver.class);
-        sender = PendingIntent.getBroadcast(this,Requestcode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmMgr.cancel(sender);
+            PendingIntent sender;
+            Intent intent;
+            intent = new Intent(this, AlarmReceiver.class);
+            sender = PendingIntent.getBroadcast(this,Requestcode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmMgr.cancel(sender);
             mRingtone.stop();
             AlarmRequestList.remove(0);
             String stringValue = gson.toJson(AlarmRequestList);
@@ -396,7 +396,7 @@ private ImageView toolbar_edit_action,toolbar_action;
             editor.commit();
             Log.e("alarm Canceled","alarm Canceled");
             Log.e("alarm Canceled","alarm Requestcode was"+Requestcode);
-          //  setDailyAlarm();
+            //  setDailyAlarm();
         }
 
     }
@@ -472,7 +472,7 @@ private ImageView toolbar_edit_action,toolbar_action;
         requestOptionsjcb = requestOptions.apply(RequestOptions.noTransformation());
 
         gpsTracker = new GPSTracker(OperatorMeterReadingActivity.this);
-       // SyncAdapterUtils.periodicSyncRequest();
+        // SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
         if (Permissions.isCameraPermissionGranted(this, this)) {
@@ -681,7 +681,7 @@ private ImageView toolbar_edit_action,toolbar_action;
         btnStartService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if (!preferences.getBoolean("isMachineRemoved",false)){
+                if (!preferences.getBoolean("isMachineRemoved",false)){
 
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 5000) {
                         Log.e("clickTime retuned", "" + "Return");
@@ -770,9 +770,9 @@ private ImageView toolbar_edit_action,toolbar_action;
                         currentHours = intent.getIntExtra("CURRENT_HOURS", 0);
                         hours = currentHours;
                         if (!TextUtils.isEmpty(timestr)) {
-                         //   Log.e("current Time", timestr);
-                           // Log.e("Total_hours", "" + totalHours);
-                          //  Log.e("current_hours", "" + currentHours);
+                            //   Log.e("current Time", timestr);
+                            // Log.e("Total_hours", "" + totalHours);
+                            //  Log.e("current_hours", "" + currentHours);
                         }
 
                     }
@@ -793,7 +793,7 @@ private ImageView toolbar_edit_action,toolbar_action;
             e.printStackTrace();
         }
 
-      //  setDailyAlarm();
+        //  setDailyAlarm();
     }
 
 
@@ -807,10 +807,10 @@ private ImageView toolbar_edit_action,toolbar_action;
                 showReadingDialog(this,1);
             } else if (flag) {
                 if (Permissions.isCameraPermissionGranted(this, this)) {
-                //openCameraIntent();
+                    //openCameraIntent();
                     openCamera();
-                flag = false;
-                isStartImage = true;
+                    flag = false;
+                    isStartImage = true;
                 }
             } else {
                 editor.putInt("systemClockTime", 0);
@@ -818,7 +818,7 @@ private ImageView toolbar_edit_action,toolbar_action;
                 editor.putInt("State", state_start);
                 editor.apply();
                 currentState = state_start;
-                        updateStatusAndProceed(state_start);
+                updateStatusAndProceed(state_start);
                 flag = true;
                 btnStopService.setBackgroundTintList(getResources().getColorStateList(R.color.red));
                 btnStartService.setEnabled(false);
@@ -832,7 +832,7 @@ private ImageView toolbar_edit_action,toolbar_action;
     private void callStopButtonClick() {
         if (TextUtils.isEmpty(et_emeter_read.getText())) {
             Util.showToast("Please enter meter reading", OperatorMeterReadingActivity.this);
-           // et_emeter_read.requestFocus();
+            // et_emeter_read.requestFocus();
             //takePhotoFromCamera();
             showReadingDialog(this,2);
         } else if (flag) {
@@ -853,7 +853,7 @@ private ImageView toolbar_edit_action,toolbar_action;
             image = "";
             clearDataOnStop();
             //clearReadingImages();
-           // et_smeter_read.requestFocus();
+            // et_smeter_read.requestFocus();
             btnStopService.setBackgroundTintList(getResources().getColorStateList(R.color.button_gray_color));
 
             btnStopService.setEnabled(false);
@@ -869,26 +869,26 @@ private ImageView toolbar_edit_action,toolbar_action;
     public void startService() {
         if(!isMyServiceRunning(ForegroundService.class)){
 
-        Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Operator meter reading");
-        ContextCompat.startForegroundService(this, serviceIntent);
+            Intent serviceIntent = new Intent(this, ForegroundService.class);
+            serviceIntent.putExtra("inputExtra", "Operator meter reading");
+            ContextCompat.startForegroundService(this, serviceIntent);
 
         /*editor.putInt("State", state_start);
         editor.apply();*/
-        //buttonPauseService.setVisibility(View.VISIBLE);
+            //buttonPauseService.setVisibility(View.VISIBLE);
         }
     }
 
     private boolean  isMyServiceRunning(Class<ForegroundService> foregroundServiceClass) {
 
-            ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (foregroundServiceClass.getName().equals(service.service.getClassName())) {
-                    return true;
-                }
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (foregroundServiceClass.getName().equals(service.service.getClassName())) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
     public void stopService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
@@ -1031,8 +1031,8 @@ private ImageView toolbar_edit_action,toolbar_action;
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
 
-               /* try {
-                    *//*String imageFilePath = getImageName();
+                /* try {
+                 *//*String imageFilePath = getImageName();
                     if (imageFilePath == null) {
                         return;
                     }*//*
@@ -1046,7 +1046,7 @@ private ImageView toolbar_edit_action,toolbar_action;
                     Log.e(TAG, e.getMessage());
                 }*/
 
-               // Uri uri = Uri.parse(currentPhotoPath);
+                // Uri uri = Uri.parse(currentPhotoPath);
                 Uri uri=Uri.fromFile(new File(currentPhotoPath));
                 openCropActivity(uri, uri);
             } catch (Exception e) {
@@ -1325,53 +1325,53 @@ private ImageView toolbar_edit_action,toolbar_action;
     }
 
 
-// input reading dialog
-public String showReadingDialog(final Activity context, int pos){
-    Dialog dialog;
-    Button btnSubmit,btn_cancel;
-    EditText edt_reason;
-    Activity activity =context;
+    // input reading dialog
+    public String showReadingDialog(final Activity context, int pos){
+        Dialog dialog;
+        Button btnSubmit,btn_cancel;
+        EditText edt_reason;
+        Activity activity =context;
 
-    dialog = new Dialog(context);
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    dialog.setContentView(R.layout.dialog_meter_reading_input_layout);
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_meter_reading_input_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-    edt_reason = dialog.findViewById(R.id.edt_reason);
-    btn_cancel = dialog.findViewById(R.id.btn_cancel);
-    btnSubmit = dialog.findViewById(R.id.btn_submit);
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_cancel = dialog.findViewById(R.id.btn_cancel);
+        btnSubmit = dialog.findViewById(R.id.btn_submit);
 
-    btn_cancel.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            dialog.dismiss();
-        }
-    });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
-    btnSubmit.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                    /*Intent loginIntent = new Intent(context, LoginActivity.class);
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                    context.startActivity(loginIntent);*/
-            String strReason  = edt_reason.getText().toString();
+                String strReason  = edt_reason.getText().toString();
 
 
-            if (strReason.trim().length() < 1 ) {
-                String msg = "Please enter the valid meter reading";//getResources().getString(R.string.msg_enter_name);
-                //et_primary_mobile.requestFocus();
-                Util.showToast(msg,OperatorMeterReadingActivity.this);
-            }else {
+                if (strReason.trim().length() < 1 ) {
+                    String msg = "Please enter the valid meter reading";//getResources().getString(R.string.msg_enter_name);
+                    //et_primary_mobile.requestFocus();
+                    Util.showToast(msg,OperatorMeterReadingActivity.this);
+                }else {
 
-                //-----------------------
-                if (TextUtils.isEmpty(strReason)) {
-                    Util.logger("Empty Reading", "Reading Can not be blank");
-                    Util.snackBarToShowMsg(activity.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Reading Can not be blank",
-                            Snackbar.LENGTH_LONG);
-                } else {
+                    //-----------------------
+                    if (TextUtils.isEmpty(strReason)) {
+                        Util.logger("Empty Reading", "Reading Can not be blank");
+                        Util.snackBarToShowMsg(activity.getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "Reading Can not be blank",
+                                Snackbar.LENGTH_LONG);
+                    } else {
                     /*if (fragment instanceof TMUserLeavesApprovalFragment) {
                         ((TMUserLeavesApprovalFragment) fragment).onReceiveReason(strReason, pos);
                     }
@@ -1384,17 +1384,17 @@ public String showReadingDialog(final Activity context, int pos){
                     if (fragment instanceof TMUserFormsApprovalFragment) {
                         ((TMUserFormsApprovalFragment) fragment).onReceiveReason(strReason, pos);
                     }*/
-                    onReceiveReason(strReason, pos);
-                    dialog.dismiss();
+                        onReceiveReason(strReason, pos);
+                        dialog.dismiss();
+                    }
                 }
             }
-        }
-    });
-    dialog.show();
+        });
+        dialog.show();
 
 
-    return "";
-}
+        return "";
+    }
 
     public void onReceiveReason(String strReason, int pos) {
         //callRejectAPI(strReason,pos);
@@ -1498,7 +1498,7 @@ public String showReadingDialog(final Activity context, int pos){
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         editor.apply();
 
-      //  setDailyAlarm();
+        //  setDailyAlarm();
     }
 
 
@@ -1514,10 +1514,10 @@ public String showReadingDialog(final Activity context, int pos){
             Util.logger("Date difference", "-day-" + days);
             if (days>=1){
                 if (preferences.getInt("State", 0) != state_stop) {
-                et_emeter_read.setText("00");
-                flag = false;
-                image ="";
-                callStopButtonClick();
+                    et_emeter_read.setText("00");
+                    flag = false;
+                    image ="";
+                    callStopButtonClick();
                 }
                 setTodaysDate();
                 //clear data here
@@ -1576,20 +1576,20 @@ public String showReadingDialog(final Activity context, int pos){
 
 
 
-// connectivity broadcast--
-private void initConnectivityReceiver() {
+    // connectivity broadcast--
+    private void initConnectivityReceiver() {
     /*connectionReceiver = new ConnectivityReceiver();
     IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
     Platform.getInstance().registerReceiver(connectionReceiver, filter);*/
 
-    connectionReceiver = new ConnectivityReceiver();
-    IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-    IntentFilter intentFilter = new IntentFilter();
-    intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-    registerReceiver(new ConnectivityReceiver(), intentFilter);
-    connectivityReceiverListener =this::onNetworkConnectionChanged;
-}
+        connectionReceiver = new ConnectivityReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new ConnectivityReceiver(), intentFilter);
+        connectivityReceiverListener =this::onNetworkConnectionChanged;
+    }
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
@@ -1619,8 +1619,8 @@ private void initConnectivityReceiver() {
 
     @Override
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
-       String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
-       Gson gson = new Gson();
+        String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+        Gson gson = new Gson();
         OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
         if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
             strReasonId = operatorMachineData.getNonutilisationTypeData().getMr().get(selectedPosition).get_id();
@@ -1631,7 +1631,6 @@ private void initConnectivityReceiver() {
         }
         updateStatusAndProceed(state_halt);
         clearReadingImages();
-
     }
 
     private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
@@ -1688,8 +1687,8 @@ private void initConnectivityReceiver() {
         if (Calendar.getInstance().after(calendar)) {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-       // sender = PendingIntent.getBroadcast(this, 1002, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-       // alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        // sender = PendingIntent.getBroadcast(this, 1002, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, sender);
 
@@ -1708,7 +1707,7 @@ private void initConnectivityReceiver() {
         editor.commit();
     }
 
-//Alarm dismiss dialog
+    //Alarm dismiss dialog
     public String showAlarmDialog(final Activity context, int pos){
 
         Button btnSubmit,btn_cancel;
@@ -1728,7 +1727,7 @@ private void initConnectivityReceiver() {
             @Override
             public void onClick(View v) {
 
-                        cancelAlarm();
+                cancelAlarm();
                 alarmDialog.dismiss();
 
             }

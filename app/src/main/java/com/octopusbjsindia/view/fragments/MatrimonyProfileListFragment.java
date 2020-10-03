@@ -114,7 +114,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.BLOCKED_USER_SECTION);
         } else if (toOpen.equals("BangUsers")) {
-            titleStr = "Banged Users";
+            titleStr = "Banned Users";
             ((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().
                     setSection_type(Constants.MatrimonyModule.BANGED_USER_SECTION);
         }
