@@ -252,5 +252,6 @@ public class Urls {
     public class Support {
         public static final String GET_TICKETS = "api/getTicketList";
         public static final String ASSIGN_TICKETS = "api/assignTicket";
+        public static final String CHANGE_STATUS = "api/changeStatus";
     }
 }

@@ -95,25 +95,44 @@
                 android:textSize="@dimen/text_size_12" />
 
             <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="match_parent"
+                android:id="@+id/tvTitleLbl"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivUserPic"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:fontFamily="@font/opensans_bold"
-                android:text="Comment text"
-                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Title: "
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitleLbl"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Title"
                 android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/tvDescriptionLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Description: "
+                android:textSize="@dimen/text_size_12" />
 
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTitle"
+                android:layout_below="@+id/tvDescriptionLbl"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:fontFamily="@font/opensans_semibold"
                 android:text="Description"
-                android:textSize="@dimen/text_size_16" />
+                android:textSize="@dimen/text_size_14" />
 
             <ImageView
                 android:id="@+id/ivAttached"
@@ -141,12 +160,59 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputAssigned"
+                style="@style/textinputstyle"
+                android:layout_below="@+id/inputComment"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etAssigned"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Assign to"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputChangeStatus"
+                style="@style/textinputstyle"
+                android:layout_below="@+id/inputAssigned"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etChangeStatus"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Status"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputChangeStatus"
+                android:layout_centerHorizontal="true"
+                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:text="Submit"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/inputComment"
+                android:layout_below="@+id/inputChangeStatus"
                 android:weightSum="2"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:id="@+id/lyAssignedTo"

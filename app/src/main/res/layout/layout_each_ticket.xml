@@ -48,7 +48,6 @@
             android:fontFamily="@font/opensans_bold"
             android:textColor="@color/colorPrimary"
             android:text="Comment text"
-            android:maxLines="1"
             android:textSize="@dimen/text_size_16" />
 
         <TextView

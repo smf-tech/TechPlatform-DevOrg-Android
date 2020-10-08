@@ -27,6 +27,7 @@ import java.util.List;
 public class TicketListFragment extends Fragment implements APIListener {
 
     View view;
+    TicketListFragmentPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,12 @@ public class TicketListFragment extends Fragment implements APIListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        TicketListFragmentPresenter presenter = new TicketListFragmentPresenter(this);
+        presenter = new TicketListFragmentPresenter(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         presenter.getTickets();
     }
 

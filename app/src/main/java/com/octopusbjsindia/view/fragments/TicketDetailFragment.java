@@ -42,7 +42,8 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     private TextView tvAssignedTo,tvChangeStatus;
     private TicketData data;
     private RelativeLayout lyProgressBar;
-    private EditText etComment;
+    private EditText etComment,etAssigned, etChangeStatus;
+    private String selectedRoleName = "", selectedRoleId = "",selectedStatusName = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,18 +87,21 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
         ImageView ivUserPic = view.findViewById(R.id.ivUserPic);
         ImageView ivAttached = view.findViewById(R.id.ivAttached);
 
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
-        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_image_holder);
+        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
         Glide.with(this)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(data.getUser_profile_pic())
                 .into(ivUserPic);
 
         etComment = view.findViewById(R.id.etComment);
+        etAssigned = view.findViewById(R.id.etAssigned);
+        etChangeStatus = view.findViewById(R.id.etChangeStatus);
+        etChangeStatus.setText(data.getStatus());
+        etAssigned.setText(data.getAssignTo());
         ((TextView) view.findViewById(R.id.tvUserName)).setText(data.getUser_name());
         ((TextView) view.findViewById(R.id.tvTitle)).setText(data.getTicketTitle());
         ((TextView) view.findViewById(R.id.tvTime)).setText(data.getCreatedDatetime());
-        ((TextView) view.findViewById(R.id.tvStatus)).setText(data.getStatus());
         ((TextView) view.findViewById(R.id.tvType)).setText(data.getTicketType());
         ((TextView) view.findViewById(R.id.tvDescription)).setText(data.getTicketDesc());
         tvAssignedTo = view.findViewById(R.id.tvAssignedTo);
@@ -111,14 +115,15 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                     .into(ivAttached);
         }
 
-        view.findViewById(R.id.lyAssignedTo).setOnClickListener(this);
-        view.findViewById(R.id.lyChangeStatus).setOnClickListener(this);
+        etChangeStatus.setOnClickListener(this);
+        etAssigned.setOnClickListener(this);
+        view.findViewById(R.id.btSubmit).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.lyAssignedTo:
+            case R.id.etAssigned:
                 if (rolesList.size() > 0) {
                     CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(getActivity(),
                             TicketDetailFragment.this, "Select Role", rolesList, false);
@@ -127,7 +132,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 }
                 break;
-            case R.id.lyChangeStatus:
+            case R.id.etChangeStatus:
                 if (rolesList.size() > 0) {
                     CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(getActivity(),
                             TicketDetailFragment.this, "Select Status", statusList, false);
@@ -135,6 +140,25 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                     cddProject.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 }
+                break;
+            case R.id.btSubmit:
+                if(!TextUtils.isEmpty(selectedRoleId)){
+                    TicketAssingnRequest request = new TicketAssingnRequest();
+                    request.setTicketId(data.getId());
+                    request.setTicketType(data.getTicketType());
+                    request.setTicketTitle(data.getTicketTitle());
+                    request.setTicketDesc(data.getTicketDesc());
+                    request.setTicketAttachment(data.getTicketAttachment());
+                    request.setComment(etComment.getText().toString().trim());
+                    request.setRoleName(selectedRoleName);
+                    request.setRoleId(selectedRoleId);
+                    presenter.assinged(request);
+                }
+
+                if(!TextUtils.isEmpty(selectedStatusName)){
+                    presenter.changeStatus(data.getId(),selectedStatusName,etComment.getText().toString().trim());
+                }
+
                 break;
         }
     }
@@ -173,7 +197,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     @Override
     public void onCustomSpinnerSelection(String type) {
         if (type.equals("Select Role")) {
-            String selectedRoleName = "", selectedRoleId = "";
+
             for (CustomSpinnerObject customSpinnerObject : rolesList) {
                 if (customSpinnerObject.isSelected()) {
                     selectedRoleName = customSpinnerObject.getName();
@@ -181,31 +205,25 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                     break;
                 }
             }
-            TicketAssingnRequest request = new TicketAssingnRequest();
-            request.setTicketId(data.getId());
-            request.setTicketType(data.getTicketType());
-            request.setTicketTitle(data.getTicketTitle());
-            request.setTicketDesc(data.getTicketDesc());
-            request.setTicketAttachment(data.getTicketAttachment());
-            request.setComment(etComment.getText().toString().trim());
-            request.setRoleName(selectedRoleName);
-            request.setRoleId(selectedRoleId);
-
-            presenter.assinged(request);
-
+            etAssigned.setText(selectedRoleName);
         } else if (type.equals("Select Status")) {
-            String selectedStatusName = "";
-            for (CustomSpinnerObject customSpinnerObject : rolesList) {
+
+            for (CustomSpinnerObject customSpinnerObject : statusList) {
                 if (customSpinnerObject.isSelected()) {
                     selectedStatusName = customSpinnerObject.getName();
                     break;
                 }
             }
-            tvChangeStatus.setText(selectedStatusName);
+            etChangeStatus.setText(selectedStatusName);
+
         }
     }
 
     public void setAssinegdSuccess(String roleName) {
-        tvAssignedTo.setText(roleName);
+
+    }
+
+    public void setChangeStatus(String tamp) {
+
     }
 }
