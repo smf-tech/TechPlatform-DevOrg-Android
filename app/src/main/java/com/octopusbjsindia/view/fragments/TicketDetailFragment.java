@@ -39,11 +39,11 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     private TicketDetailFragmentPresenter presenter;
     private ArrayList<CustomSpinnerObject> rolesList = new ArrayList<CustomSpinnerObject>();
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<CustomSpinnerObject>();
-    private TextView tvAssignedTo,tvChangeStatus;
+    private TextView tvAssignedTo, tvChangeStatus;
     private TicketData data;
     private RelativeLayout lyProgressBar;
-    private EditText etComment,etAssigned, etChangeStatus;
-    private String selectedRoleName = "", selectedRoleId = "",selectedStatusName = "";
+    private EditText etComment, etAssigned, etChangeStatus;
+    private String selectedRoleName = "", selectedRoleId = "", selectedStatusName = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,19 +53,19 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        CustomSpinnerObject status1= new CustomSpinnerObject();
+        CustomSpinnerObject status1 = new CustomSpinnerObject();
         status1.set_id("1");
         status1.setName("Open");
         statusList.add(status1);
-        CustomSpinnerObject status2= new CustomSpinnerObject();
+        CustomSpinnerObject status2 = new CustomSpinnerObject();
         status2.set_id("2");
         status2.setName("Resolved");
         statusList.add(status2);
-        CustomSpinnerObject status3= new CustomSpinnerObject();
+        CustomSpinnerObject status3 = new CustomSpinnerObject();
         status3.set_id("3");
         status3.setName("Assigned");
         statusList.add(status3);
-        CustomSpinnerObject status4= new CustomSpinnerObject();
+        CustomSpinnerObject status4 = new CustomSpinnerObject();
         status4.set_id("4");
         status4.setName("Close");
         statusList.add(status4);
@@ -82,7 +82,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
         data = (TicketData) getArguments().getSerializable("data");
 
         presenter = new TicketDetailFragmentPresenter(this);
-        presenter.getRoles(Util.getUserObjectFromPref().getOrgId(),Util.getUserObjectFromPref().getProjectIds().get(0).getId());
+        presenter.getRoles(Util.getUserObjectFromPref().getOrgId(), Util.getUserObjectFromPref().getProjectIds().get(0).getId());
 
         ImageView ivUserPic = view.findViewById(R.id.ivUserPic);
         ImageView ivAttached = view.findViewById(R.id.ivAttached);
@@ -102,11 +102,11 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
         ((TextView) view.findViewById(R.id.tvUserName)).setText(data.getUser_name());
         ((TextView) view.findViewById(R.id.tvTitle)).setText(data.getTicketTitle());
         ((TextView) view.findViewById(R.id.tvTime)).setText(data.getCreatedDatetime());
-        ((TextView) view.findViewById(R.id.tvType)).setText(data.getTicketType());
+        ((TextView) view.findViewById(R.id.tvType)).setText(data.getTicketTypes().getTitle());
         ((TextView) view.findViewById(R.id.tvDescription)).setText(data.getTicketDesc());
         tvAssignedTo = view.findViewById(R.id.tvAssignedTo);
         tvChangeStatus = view.findViewById(R.id.tvChangeStatus);
-        if(TextUtils.isEmpty(data.getTicketAttachment())){
+        if (TextUtils.isEmpty(data.getTicketAttachment())) {
             ivAttached.setVisibility(View.INVISIBLE);
         } else {
             ivAttached.setVisibility(View.VISIBLE);
@@ -122,7 +122,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.etAssigned:
                 if (rolesList.size() > 0) {
                     CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(getActivity(),
@@ -142,7 +142,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                 }
                 break;
             case R.id.btSubmit:
-                if(!TextUtils.isEmpty(selectedRoleId)){
+                if (!TextUtils.isEmpty(selectedRoleId)) {
                     TicketAssingnRequest request = new TicketAssingnRequest();
                     request.setTicketId(data.getId());
                     request.setTicketType(data.getTicketType());
@@ -155,8 +155,8 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
                     presenter.assinged(request);
                 }
 
-                if(!TextUtils.isEmpty(selectedStatusName)){
-                    presenter.changeStatus(data.getId(),selectedStatusName,etComment.getText().toString().trim());
+                if (!TextUtils.isEmpty(selectedStatusName)) {
+                    presenter.changeStatus(data.getId(), selectedStatusName, etComment.getText().toString().trim());
                 }
 
                 break;
@@ -170,7 +170,7 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
 
     @Override
     public void showMessage(String requestID, String message, int code) {
-        Util.showToast(getActivity(),message);
+        Util.showToast(getActivity(), message);
     }
 
     @Override
@@ -220,10 +220,12 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
     }
 
     public void setAssinegdSuccess(String roleName) {
-
+        if (getActivity() != null)
+            getActivity().finish();
     }
 
     public void setChangeStatus(String tamp) {
-
+        if (getActivity() != null)
+            getActivity().finish();
     }
 }
