@@ -52,7 +52,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<ContentData>> _listDataChild;
     public ContentManagementFragment contentManagementFragment;
-    private ArrayList<LanguageDetail> languageDetailsList = new ArrayList<>();
+    //private ArrayList<LanguageDetail> languageDetailsList = new ArrayList<>();
+    private List<ArrayList<LanguageDetail>> languageDetailsListNew = new ArrayList<>();
     Gson gson = new Gson();
     Type type = new TypeToken<List<LanguageDetail>>() {
     }.getType();
@@ -87,8 +88,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
-        languageDetailsList.clear();
-        languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
+        //languageDetailsList.clear();
+        ArrayList<LanguageDetail> languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
 
         RelativeLayout rlContent = convertView.findViewById(R.id.rl_content);
         ImageView imgDownload = convertView.findViewById(R.id.img_download);
@@ -143,6 +144,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         rlContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
+//                ArrayList<LanguageDetail> languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
+
                 if(contentData.getFileType().equalsIgnoreCase("youtube")){
                     if (Util.isConnected(context)) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW,
@@ -169,6 +173,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //                    for (LanguageDetail languageDetail : languageDetailsList) {
 //                        if (languageDetail.getLanguageId().equalsIgnoreCase(Util.getLocaleLanguageCode())) {
                     contentManagementFragment.setDownloadPosition(-1);
+//                    ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
+//                    ArrayList<LanguageDetail> languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
                     contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition, childPosition);
                     //contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
                     //break;

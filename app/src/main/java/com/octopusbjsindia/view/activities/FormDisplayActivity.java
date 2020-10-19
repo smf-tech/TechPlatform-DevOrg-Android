@@ -425,7 +425,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     tvTitle.setText((vpFormElements.getCurrentItem() + (i + 1)) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() + i));
                 } else {
@@ -454,7 +454,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     isConditionMatched = true;
                     break;
                 }
@@ -487,7 +487,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     isConditionMatched = true;
                 } else {
                     isConditionMatched = false;
@@ -529,7 +529,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     tvTitle.setText((vpFormElements.getCurrentItem() - (i + 1)) + "/" + formDataArrayList.size());
                     vpFormElements.setCurrentItem((vpFormElements.getCurrentItem() - i));
                 } else {
@@ -546,7 +546,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     isConditionMatched = true;
                     break;
                 }
@@ -567,7 +567,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             for (VisibleIfListObject object : conditionsList) {
                 String question = object.getQuestionKey();
                 String answer = object.getAnswer();
-                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).equalsIgnoreCase(answer)) {
+                if (formAnswersMap.containsKey(question) && formAnswersMap.get(question).contains(answer)) {
                     isConditionMatched = true;
                 } else {
                     isConditionMatched = false;

@@ -579,5 +579,9 @@
     <string name="meet_select_subordinates">Select team members</string>
     <string name="msg_content_download_languages">Content available in below languages for download. Please select language.</string>
     <string name="title_select_content_language">Select language</string>
+    <string name="msg_select_panchyt">कृपया ग्रामपंचायत का चयन करें</string>
+    <string name="mandatory_panchayat">ग्रामपंचायत *</string>
+    <string name="mandatory_center">शिक्षण केंद्र *</string>
+    <string name="msg_select_center">कृपया लर्निंग सेंटर का चयन करें</string>
 
 </resources>
