@@ -109,6 +109,7 @@ public class Urls {
         public static final String USER_APPROVAL_API = "api/userApproval";
         public static final String MARK_ATTENDANCE_INTERVIEW_API = "api/markAttendance_interview";
         public static final String MATRIMONY_MEETS = "api/getMeet";
+        public static final String MATRIMONY_MEETS_UPCOMING = "api/getUpcomingMeet";
         public static final String MATRIMONY_MEET_TYPES = "api/meet_types";
         //public static final String MATRIMONY_USERS_LIST = "api/getMatrimonyRoleUsers";
         public static final String SUBMIT_MEET = "api/insertMeet";
@@ -248,4 +249,9 @@ public class Urls {
 
     }
 
+    public class Support {
+        public static final String GET_TICKETS = "api/getTicketList";
+        public static final String ASSIGN_TICKETS = "api/assignTicket";
+        public static final String CHANGE_STATUS = "api/changeStatus";
+    }
 }

@@ -350,7 +350,7 @@ public class ProfileRequestCall {
                 }
 
                 locationArray = new JsonArray();
-                if (userLocation.getSchoolIds() != null) {
+                if (userLocation.getGranpanchayatIds() != null) {
                     for (JurisdictionType panchayat : userLocation.getGranpanchayatIds()) {
                         locationArray.add(panchayat.getId());
                     }
@@ -358,7 +358,7 @@ public class ProfileRequestCall {
                 }
 
                 locationArray = new JsonArray();
-                if (userLocation.getSchoolIds() != null) {
+                if (userLocation.getLearningCenterIds() != null) {
                     for (JurisdictionType centers : userLocation.getLearningCenterIds()) {
                         locationArray.add(centers.getId());
                     }

@@ -33,6 +33,7 @@ import com.octopusbjsindia.utility.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -108,6 +109,13 @@ public class WebmoduleFragment extends Fragment {
             String userId = Util.getUserObjectFromPref().getId();
             return userId;
         }
+
+        @JavascriptInterface
+        public String getAppLang() {
+            String lang = Locale.getDefault().getLanguage();
+            return lang;
+        }
+
     }
 
     private class MyWebViewClient extends WebViewClient {
