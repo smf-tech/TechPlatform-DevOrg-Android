@@ -70,7 +70,9 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM)||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL)) {
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT)) {
+
                         //do nothing
                     } else {
                         tabNames.remove(i);
@@ -166,7 +168,10 @@ public class DashboardFragment extends Fragment {
                 case Constants.Home.SMARTGIRL:
                     adapter.addFragment(new SmartGirlDashboardFragment());
                     break;
-
+                case Constants.Home.SUPPORT:
+//                    adapter.addFragment(new SupportFragment());
+                    adapter.addFragment(new TicketListFragment());
+                    break;
                 default:
                     adapter.addFragment(new DefaultFragment());
                     break;

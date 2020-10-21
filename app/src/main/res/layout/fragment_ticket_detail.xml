@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.TicketDetailFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/lyMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_05dp">
+
+            <ImageView
+                android:id="@+id/ivUserPic"
+                android:layout_width="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_45dp"
+                android:layout_below="@+id/line1"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:src="@drawable/ic_user_avatar" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/ivUserPic"
+                android:fontFamily="@font/opensans_semibold"
+                android:text="BJS user"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvUserName"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/ivUserPic"
+                android:fontFamily="@font/opensans_regular"
+                android:text="02 Aug 2019"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvStatusLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTime"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/ivUserPic"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Status: "
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTime"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/tvStatusLbl"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Open"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvTypeLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTime"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/tvStatus"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Type: "
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTime"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_toEndOf="@+id/tvTypeLbl"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Open"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvTitleLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivUserPic"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Title: "
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitleLbl"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Title"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/tvDescriptionLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Description: "
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDescriptionLbl"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:text="Description"
+                android:textSize="@dimen/text_size_14" />
+
+            <ImageView
+                android:id="@+id/ivAttached"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDescription"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:visibility="invisible"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputComment"
+                style="@style/textinputstyle"
+                android:layout_below="@+id/ivAttached"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etComment"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Comment"
+                    android:inputType="textMultiLine"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputAssigned"
+                style="@style/textinputstyle"
+                android:layout_below="@+id/inputComment"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etAssigned"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Assign to"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputChangeStatus"
+                style="@style/textinputstyle"
+                android:layout_below="@+id/inputAssigned"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <EditText
+                    android:id="@+id/etChangeStatus"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Status"
+                    android:inputType="text|textCapWords"
+                    android:focusableInTouchMode="false"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputChangeStatus"
+                android:layout_centerHorizontal="true"
+                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:text="Submit"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputChangeStatus"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/lyAssignedTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_border_primary"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:padding="@dimen/dimen_05dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/tvAssignedToLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Assigned To:"/>
+                    <TextView
+                        android:id="@+id/tvAssignedTo"
+                        android:layout_below="@+id/tvAssignedToLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="TC"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/lyChangeStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_border_primary"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:padding="@dimen/dimen_05dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/tvChangeStatusLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Change Status:"/>
+                    <TextView
+                        android:id="@+id/tvChangeStatus"
+                        android:layout_below="@+id/tvChangeStatusLbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="Open"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/lyProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
