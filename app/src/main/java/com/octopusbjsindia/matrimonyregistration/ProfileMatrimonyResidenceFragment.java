@@ -145,11 +145,15 @@ public class ProfileMatrimonyResidenceFragment extends Fragment implements View.
                 }
                 break;
             case R.id.et_qualification_degree:
-                for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("qualification_degree")) {
-                        showMultiSelectBottomsheet("Qualification degree", "et_qualification_degree", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
-                        break;
+                if (!TextUtils.isEmpty(et_education.getText())) {
+                    for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                        if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase(et_education.getText().toString())) {
+                            showMultiSelectBottomsheet("Qualification degree", "et_qualification_degree", (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
+                            break;
+                        }
                     }
+                }else {
+                    Toast.makeText(getActivity(), "Please Select Education level first", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.et_occupation_type:
@@ -267,9 +271,9 @@ public class ProfileMatrimonyResidenceFragment extends Fragment implements View.
     private boolean isAllInputsValid() {
         String msg = "";
 
-        /*if (et_education.getText().toString().trim().length() == 0) {
+        if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter education";//getResources().getString(R.string.msg_enter_name);
-        } else*/
+        } else
         if (et_qualification_degree.getText().toString().trim().length() == 0) {
             msg = "Please enter qualification degree";//getResources().getString(R.string.msg_enter_name);
         } else if (et_occupation_type.getText().toString().trim().length() == 0) {

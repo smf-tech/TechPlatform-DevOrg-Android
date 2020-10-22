@@ -919,13 +919,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dimen_05dp"
                                     android:layout_marginEnd="@dimen/dimen_05dp"
-                                    android:visibility="gone"
+                                    android:visibility="visible"
                                     android:layout_weight="1">
 
                                     <TextView
                                         android:id="@+id/tv_education_lable"
                                         style="@style/StyleTextViewLable"
-                                        android:text="Education" />
+                                        android:text="Education Level" />
 
                                     <TextView
                                         android:id="@+id/tv_education"
