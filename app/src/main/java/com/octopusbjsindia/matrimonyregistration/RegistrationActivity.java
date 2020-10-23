@@ -136,11 +136,6 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
             case 1://matrimonial
                 b.putBoolean("SHOW_ALL", false);
 
-                /*ProfilePhotosUploadFragment profilePhotosUploadFragment = new ProfilePhotosUploadFragment();
-                matrimonyViewPagerAdapter.addFragment(profilePhotosUploadFragment);*/
-                ProfileMatrimonyResidenceFragment profileMatrimonyResidenceFragment = new ProfileMatrimonyResidenceFragment();
-                matrimonyViewPagerAdapter.addFragment(profileMatrimonyResidenceFragment);
-
                 ProfileMatrimonyFragmentOne profileMatrimonyFragmentOne = new ProfileMatrimonyFragmentOne();
                 profileMatrimonyFragmentOne.setArguments(b);
                 matrimonyViewPagerAdapter.addFragment(profileMatrimonyFragmentOne);
@@ -148,8 +143,8 @@ public class RegistrationActivity extends AppCompatActivity implements APIListen
                 ProfileMatrimonyFamilyFragment profileMatrimonyFamilyFragment = new ProfileMatrimonyFamilyFragment();
                 matrimonyViewPagerAdapter.addFragment(profileMatrimonyFamilyFragment);
 
-                /*ProfileMatrimonyResidenceFragment profileMatrimonyResidenceFragment = new ProfileMatrimonyResidenceFragment();
-                matrimonyViewPagerAdapter.addFragment(profileMatrimonyResidenceFragment);*/
+                ProfileMatrimonyResidenceFragment profileMatrimonyResidenceFragment = new ProfileMatrimonyResidenceFragment();
+                matrimonyViewPagerAdapter.addFragment(profileMatrimonyResidenceFragment);
 
                 ProfileMatrimonyAboutmeFragment profileMatrimonyAboutmeFragment = new ProfileMatrimonyAboutmeFragment();
                 matrimonyViewPagerAdapter.addFragment(profileMatrimonyAboutmeFragment);

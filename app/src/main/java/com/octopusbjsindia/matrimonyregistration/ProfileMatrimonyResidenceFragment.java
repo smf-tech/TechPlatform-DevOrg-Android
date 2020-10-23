@@ -247,6 +247,7 @@ public class ProfileMatrimonyResidenceFragment extends Fragment implements View.
         switch (spinnerName) {
             case "et_education":
                 et_education.setText(selectedValues);
+                et_qualification_degree.setText("");
                 break;
             case "et_qualification_degree":
                 et_qualification_degree.setText(selectedValues);
