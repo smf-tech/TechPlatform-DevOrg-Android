@@ -675,7 +675,7 @@ public class Util {
     }
 
     public static String getDateTimeFromTimestamp(long date) {
-        if (date > 0) {
+        {
             try {
                 int length = (int) (Math.log10(date) + 1);
                 if (length == 10) {
