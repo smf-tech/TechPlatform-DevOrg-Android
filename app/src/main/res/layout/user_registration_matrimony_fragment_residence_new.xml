@@ -124,7 +124,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -135,13 +135,14 @@
                             android:focusable="false"
                             android:longClickable="false"
                             android:id="@+id/et_education"
-                            android:hint="Education Category/Qualifications*" />
+                            android:hint="Education Level*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/RegistrationEditTextLayout"
