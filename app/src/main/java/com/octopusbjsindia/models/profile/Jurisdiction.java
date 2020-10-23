@@ -1,28 +1,19 @@
 package com.octopusbjsindia.models.profile;
 
-import com.google.gson.annotations.SerializedName;
-
 @SuppressWarnings("unused")
 public class Jurisdiction {
-    @SerializedName("_id")
     private String id;
 
-    @SerializedName("state_id")
     private String stateId;
 
-    @SerializedName("jurisdiction_id")
     private String jurisdictionId;
 
-    @SerializedName("level")
     private int level;
 
-    @SerializedName("levelName")
     private String levelName;
 
-    @SerializedName("updatedDateTime")
     private Long updatedAt;
 
-    @SerializedName("createdDateTime")
     private Long createdAt;
 
     public String getStateId() {

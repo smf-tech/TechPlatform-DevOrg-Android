@@ -1,15 +1,11 @@
 package com.octopusbjsindia.models.profile;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class JurisdictionLevelData {
-    @SerializedName("levelName")
     private String levelName;
 
-    @SerializedName("list")
     private List<JurisdictionLevel> jurisdictionLevelList;
 
     public String getLevelName() {

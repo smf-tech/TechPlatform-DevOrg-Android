@@ -596,7 +596,8 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         }
 
         if (isForSmartGirl){
-            showDialog(this, "Alert", "Do you want to discard the form?", "Save", "Discard", true);
+            showDialog(this, "Alert", "Do you want to discard the form?",
+                    "Save", "Discard", true);
         }else if (isEditable) {
             showDialog(this, "Alert", "Do you want to save the form?",
                     "Save", "Discard", true);

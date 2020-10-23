@@ -1,18 +1,13 @@
 package com.octopusbjsindia.models.profile;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class OrganizationProjectsResponse {
-    @SerializedName("status")
     private String status;
 
-    @SerializedName("data")
     private List<OrganizationProject> data;
 
-    @SerializedName("message")
     private String message;
 
     public String getStatus() {

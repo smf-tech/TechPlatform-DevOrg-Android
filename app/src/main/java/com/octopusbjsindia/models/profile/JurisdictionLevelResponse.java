@@ -1,19 +1,15 @@
 package com.octopusbjsindia.models.profile;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class JurisdictionLevelResponse {
-    @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("data")
     @Expose
     private List<JurisdictionLocation> data = null;
-    @SerializedName("message")
     @Expose
     private String message;
 
