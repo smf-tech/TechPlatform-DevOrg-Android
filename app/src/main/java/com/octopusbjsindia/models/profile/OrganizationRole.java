@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
 public class OrganizationRole {
+
     @SerializedName("_id")
     @Expose
     private String id;

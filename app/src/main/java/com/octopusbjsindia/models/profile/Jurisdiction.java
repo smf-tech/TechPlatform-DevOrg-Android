@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
 public class Jurisdiction {
+
     @SerializedName("_id")
     private String id;
 

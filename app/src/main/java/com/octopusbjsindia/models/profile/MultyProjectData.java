@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MultyProjectData {
+
     @SerializedName("org_id")
     @Expose
     private String orgId;

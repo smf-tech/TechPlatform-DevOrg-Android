@@ -7,6 +7,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class JurisdictionLevelResponse {
+
     @SerializedName("status")
     @Expose
     private String status;

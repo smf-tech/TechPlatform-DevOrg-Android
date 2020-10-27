@@ -6,6 +6,8 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class UserLocation {
+
+
     @SerializedName("country")
     private List<JurisdictionType> countryId;
 

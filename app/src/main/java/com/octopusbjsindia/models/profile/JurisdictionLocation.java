@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class JurisdictionLocation {
 
+
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
