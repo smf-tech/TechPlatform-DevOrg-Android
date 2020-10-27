@@ -1,12 +1,15 @@
 package com.octopusbjsindia.view.activities;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,11 +43,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private ImageView toolbar_back_action, ivClearFilter;
     private TextView toolbar_title;
     private RelativeLayout pbLayout;
+    private LinearLayout llFilter;
     private Button btnApply;
     private TextView txtMinAge, txtMaxAge;
     private MatrimonyUsersFilterActivityPresenter presenter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
-    private EditText etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification, etMaritalStatus, etPaidOrFree;
+    private EditText etMobile, etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedState, selectedQualification, selectedGender, selectedSect,
             selectedMaritalStatus, selectedPaidOrFree;
     private SimpleRangeView rangeView;
@@ -80,6 +84,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         toolbar_back_action.setOnClickListener(this);
         ivClearFilter = view.findViewById(R.id.iv_clear_filter);
         ivClearFilter.setOnClickListener(this);
+        etMobile = view.findViewById(R.id.et_mobile);
         etName = view.findViewById(R.id.et_name);
         etMeetStatus = view.findViewById(R.id.et_meet_status);
         etVerificationStatus = view.findViewById(R.id.et_verification_status);
@@ -89,6 +94,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         etQualification = view.findViewById(R.id.et_qualification);
         etMaritalStatus = view.findViewById(R.id.et_marital_status);
         etPaidOrFree = view.findViewById(R.id.et_paid_free);
+        llFilter = view.findViewById(R.id.ll_filter);
         if (((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().getSection_type().
                 equalsIgnoreCase(Constants.MatrimonyModule.MEET_USERS_SECTION)) {
             etMeetStatus.setVisibility(View.VISIBLE);
@@ -105,7 +111,6 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 etVerificationStatus.setOnClickListener(this);
             }
         }
-        etName.setOnClickListener(this);
         etState.setOnClickListener(this);
         etGender.setOnClickListener(this);
         etSect.setOnClickListener(this);
@@ -144,11 +149,35 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             presenter.getFilterMasterData(BuildConfig.BASE_URL + String.format
                     (Urls.Matrimony.GET_FILTER_MASTER_DATA));
         }
+
+        etMobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int count, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
+                if (charSequence.length() == 1) {
+                    llFilter.setVisibility(View.GONE);
+                } else if (charSequence.length() == 0) {
+                    llFilter.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void setFilterData() {
         matrimonyUserFilterData = ((MatrimonyProfileListActivity) getActivity()).
                 getMatrimonyUserFilterData();
+        if (matrimonyUserFilterData.getMobile_number() != null) {
+            etMobile.setText(matrimonyUserFilterData.getMobile_number());
+        }
         if (matrimonyUserFilterData.getUser_name() != null) {
             etName.setText(matrimonyUserFilterData.getUser_name());
         }
@@ -390,36 +419,47 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
-                if (etName.getText().toString().trim().length() > 0) {
-                    matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
-                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                if (etMobile.getText().toString().trim().length() > 0) {
+                    if (etMobile.getText().toString().trim().length() == 10) {
+                        matrimonyUserFilterData.setMobile_number(etMobile.getText().toString().trim());
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    } else {
+                        Util.showToast("Please enter valid mobile number", this);
+                        return;
+                    }
                 } else {
-                    matrimonyUserFilterData.setUser_name(null);
-                }
-                if (etMeetStatus.getText().toString().trim().length() > 0) {
-                    matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
-                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                } else {
-                    matrimonyUserFilterData.setUser_meet_status(null);
-                }
-                if (Integer.parseInt(txtMinAge.getText().toString()) > Integer.parseInt(((MatrimonyProfileListActivity)
-                        getActivity()).getMinAge()) || Integer.parseInt(txtMaxAge.getText().toString()) <
-                        Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge())) {
-                    matrimonyUserFilterData.setAge_ranges(txtMinAge.
-                            getText().toString() + "," + txtMaxAge.getText().toString());
-                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                } else {
-                    matrimonyUserFilterData.setAge_ranges(null);
-                }
-                if (matrimonyUserFilterData.getUser_verification_status() != null
-                        || matrimonyUserFilterData.getUser_meet_status() != null
-                        || matrimonyUserFilterData.getState_names() != null
-                        || matrimonyUserFilterData.getUser_sect() != null
-                        || matrimonyUserFilterData.getQualification_degrees() != null
-                        || matrimonyUserFilterData.getGender() != null
-                        || matrimonyUserFilterData.getMarital_status() != null
-                        || matrimonyUserFilterData.getUser_paid_free() != null) {
-                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    matrimonyUserFilterData.setMobile_number(null);
+                    if (etName.getText().toString().trim().length() > 0) {
+                        matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    } else {
+                        matrimonyUserFilterData.setUser_name(null);
+                    }
+                    if (etMeetStatus.getText().toString().trim().length() > 0) {
+                        matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    } else {
+                        matrimonyUserFilterData.setUser_meet_status(null);
+                    }
+                    if (Integer.parseInt(txtMinAge.getText().toString()) > Integer.parseInt(((MatrimonyProfileListActivity)
+                            getActivity()).getMinAge()) || Integer.parseInt(txtMaxAge.getText().toString()) <
+                            Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge())) {
+                        matrimonyUserFilterData.setAge_ranges(txtMinAge.
+                                getText().toString() + "," + txtMaxAge.getText().toString());
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    } else {
+                        matrimonyUserFilterData.setAge_ranges(null);
+                    }
+                    if (matrimonyUserFilterData.getUser_verification_status() != null
+                            || matrimonyUserFilterData.getUser_meet_status() != null
+                            || matrimonyUserFilterData.getState_names() != null
+                            || matrimonyUserFilterData.getUser_sect() != null
+                            || matrimonyUserFilterData.getQualification_degrees() != null
+                            || matrimonyUserFilterData.getGender() != null
+                            || matrimonyUserFilterData.getMarital_status() != null
+                            || matrimonyUserFilterData.getUser_paid_free() != null) {
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    }
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
                 ((MatrimonyProfileListActivity) getActivity()).openFragment("profile_list_fragment");
@@ -431,6 +471,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
+                etMobile.setText("");
                 etName.setText("");
                 etMeetStatus.setText("");
                 etVerificationStatus.setText("");
@@ -446,6 +487,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 txtMinAge.setText(String.valueOf(rangeView.getStart() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
                 txtMaxAge.setText(String.valueOf(rangeView.getEnd() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
 
+                matrimonyUserFilterData.setMobile_number(null);
                 matrimonyUserFilterData.setUser_name(null);
                 matrimonyUserFilterData.setUser_meet_status(null);
                 matrimonyUserFilterData.setUser_verification_status(null);

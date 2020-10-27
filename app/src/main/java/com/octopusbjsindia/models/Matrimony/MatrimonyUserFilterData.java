@@ -1,6 +1,7 @@
 package com.octopusbjsindia.models.Matrimony;
 
 public class MatrimonyUserFilterData {
+    private String mobile;
     private String name;
     private String meet_status;
     private String verification_status;
@@ -13,6 +14,14 @@ public class MatrimonyUserFilterData {
     private String user_paid_free;
     private String meet_id;
     private String section_type;
+
+    public String getMobile_number() {
+        return mobile;
+    }
+
+    public void setMobile_number(String mobile_number) {
+        this.mobile = mobile_number;
+    }
 
     public String getUser_name() {
         return name;
