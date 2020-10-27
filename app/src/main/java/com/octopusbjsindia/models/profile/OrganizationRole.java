@@ -1,20 +1,28 @@
 package com.octopusbjsindia.models.profile;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
 public class OrganizationRole {
+
+    @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("display_name")
     @Expose
     private String displayName;
+    @SerializedName("jurisdictionLevel")
     @Expose
     private JurisdictionLevel jurisdictionLevel;
+    @SerializedName("project")
     @Expose
     private Project project;
 
+    @SerializedName("name")
     private String orgName;
 
+    @SerializedName("org_id")
     private String orgId;
 
     public String getId() {

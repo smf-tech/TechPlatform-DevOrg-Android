@@ -1,13 +1,19 @@
 package com.octopusbjsindia.models.profile;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class State {
+
+    @SerializedName("_id")
     private String id;
 
+    @SerializedName("Name")
     private String orgName;
 
+    @SerializedName("jurisdictions")
     private List<Jurisdiction> jurisdictions;
 
     public List<Jurisdiction> getJurisdictions() {

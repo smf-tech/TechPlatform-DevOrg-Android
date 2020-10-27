@@ -1,18 +1,24 @@
 package com.octopusbjsindia.models.profile;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class Project {
 
+
+    @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("jurisdiction_type_id")
     @Expose
     private String jurisdictionTypeId;
+    @SerializedName("jurisdictions")
     @Expose
     private List<Jurisdiction> jurisdictions = null;
 

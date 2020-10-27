@@ -2,22 +2,31 @@ package com.octopusbjsindia.models.profile;
 
 import android.text.TextUtils;
 
+import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.utility.Constants;
 
 @SuppressWarnings("unused")
 public class Organization {
+
+    @SerializedName("_id")
     private String id;
 
+    @SerializedName("name")
     private String orgName;
 
+    @SerializedName("service")
     private String serviceType;
 
+    @SerializedName("updatedDateTime")
     private Long updatedAt;
 
+    @SerializedName("createdDateTime")
     private Long createdAt;
 
+    @SerializedName("type")
     private String type;
 
+    @SerializedName("associateOrgId")
     private String associateOrgId;
 
     public String getId() {

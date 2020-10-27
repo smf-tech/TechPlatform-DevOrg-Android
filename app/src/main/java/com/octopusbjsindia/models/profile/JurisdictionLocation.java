@@ -11,6 +11,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 public class JurisdictionLocation {
 
+
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")

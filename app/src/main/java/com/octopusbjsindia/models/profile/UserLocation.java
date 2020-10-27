@@ -1,28 +1,41 @@
 package com.octopusbjsindia.models.profile;
 
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class UserLocation {
+
+
+    @SerializedName("country")
     private List<JurisdictionType> countryId;
 
+    @SerializedName("state")
     private List<JurisdictionType> stateId;
 
+    @SerializedName("district")
     private List<JurisdictionType> districtIds;
 
+    @SerializedName("city")
     private List<JurisdictionType> cityIds;
 
+    @SerializedName("taluka")
     private List<JurisdictionType> talukaIds;
 
+    @SerializedName("cluster")
     private List<JurisdictionType> clusterIds;
 
+    @SerializedName("gram_panchayat")
     private List<JurisdictionType> granpanchayatIds;
 
+    @SerializedName("village")
     private List<JurisdictionType> villageIds;
 
+    @SerializedName("school")
     private List<JurisdictionType> schoolIds;
 
+    @SerializedName("learning_center")
     private List<JurisdictionType> learningCenterIds;
 
     public List<JurisdictionType> getCountryId() {
