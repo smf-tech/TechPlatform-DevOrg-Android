@@ -1,22 +1,31 @@
 package com.octopusbjsindia.models.profile;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class MultyProjectData {
+    @SerializedName("org_id")
     @Expose
     private String orgId;
+    @SerializedName("org_title")
     @Expose
     private String orgTitle;
+    @SerializedName("project_id")
     @Expose
     private String projectId;
+    @SerializedName("project_title")
     @Expose
     private String projectTitle;
+    @SerializedName("role_id")
     @Expose
     private String roleId;
+    @SerializedName("role_title")
     @Expose
     private String roleTitle;
+    @SerializedName("address")
     @Expose
     private String address;
+    @SerializedName("leave_type")
     @Expose
     private String leaveType;
 //    @SerializedName("location")
