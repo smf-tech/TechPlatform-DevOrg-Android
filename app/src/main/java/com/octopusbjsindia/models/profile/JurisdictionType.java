@@ -1,12 +1,15 @@
 package com.octopusbjsindia.models.profile;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
 public class JurisdictionType {
 
+    @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("name")
     @Expose
     private String name;
 
