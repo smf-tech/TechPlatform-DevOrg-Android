@@ -68,6 +68,27 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(levelName, new JSONObject(map).toString(), getLocationUrl);
     }
 
+    public void getLocationData3(String stateId, String districtId, String talukaId, String clusterId,
+                                 String villageId, String jurisdictionTypeId, String levelName) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("state_id", stateId);
+        map.put("district_id", districtId);
+        map.put("taluka_id", talukaId);
+        map.put("cluster_id", clusterId);
+        map.put("village_id", villageId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        mContext.showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA3);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        mContext.showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(levelName, new JSONObject(map).toString(), getLocationUrl);
+    }
+
     public void getAllLocationData(String selectedId, String jurisdictionTypeId, String levelName) {
         HashMap<String, String> map = new HashMap<>();
         map.put(KEY_SELECTED_ID, selectedId);
@@ -77,6 +98,26 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         mContext.showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_ALL_LOCATION_DATA);
+        mContext.showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall("AllLocation", new JSONObject(map).toString(), getLocationUrl);
+    }
+
+    public void getAllLocationDataV2(String stateId, String districtId, String talukaId, String clusterId,
+                                     String villageId, String jurisdictionTypeId, String levelName) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("state_id", stateId);
+        map.put("district_id", districtId);
+        map.put("taluka_id", talukaId);
+        map.put("cluster_id", clusterId);
+        map.put("village_id", villageId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        mContext.showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_ALL_LOCATION_DATA_V2);
         mContext.showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);

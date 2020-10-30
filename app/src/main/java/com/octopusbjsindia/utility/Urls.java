@@ -16,9 +16,11 @@ public class Urls {
         public static final String GET_ORGANIZATION_ROLES = "api/roles/%1$s/%2$s";
         public static final String GET_JURISDICTION_LEVEL_DATA = "api/location/level/%1$s/%2$s/%3$s";
         public static final String GET_LOCATION_DATA = "api/locationV2/level";
+        public static final String GET_LOCATION_DATA3 = "api/locationV3/level";
         public static final String UPLOAD_IMAGE = "api/upload-image";
         public static final String GET_MULTIPAL_PROFILE = "api/getUserProfileDetails";
         public static final String GET_ALL_LOCATION_DATA = "api/selectedLocationData/level";
+        public static final String GET_ALL_LOCATION_DATA_V2 = "api/selectedLocationData/levelV2";
     }
 
     public class Home {

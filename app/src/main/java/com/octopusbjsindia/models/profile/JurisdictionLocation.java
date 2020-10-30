@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("unused")
 @Entity
@@ -16,13 +17,16 @@ public class JurisdictionLocation {
     @NonNull
     @ColumnInfo(name = "id")
     @Expose
+    @SerializedName("_id")
     private String id;
 
     @ColumnInfo(name = "name")
+    @SerializedName("name")
     @Expose
     private String name;
 
     @ColumnInfo(name = "parent_id")
+    @SerializedName("parent_id")
     @Expose
     private String parentLocationId;
 

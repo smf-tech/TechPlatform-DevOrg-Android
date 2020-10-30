@@ -393,7 +393,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
     void getLocation(String selectedId, String JurisdictionLevel) {
 
         if (Util.isConnected(getActivity())) {
-            presenter.getLocationData(selectedId
+//            presenter.getLocationData(selectedId
+//                    , Util.getUserObjectFromPref().getJurisdictionTypeId()
+//                    , JurisdictionLevel);
+            presenter.getLocationData3(selectedStateId, selectedDistrictId, selectedTalukaId, selectedClusterId, selectedVillageId
                     , Util.getUserObjectFromPref().getJurisdictionTypeId()
                     , JurisdictionLevel);
         } else {
@@ -787,8 +790,11 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedTaluka);
             hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id", selectedTalukaId);
             if (Util.isConnected(getActivity())) {
-                presenter.getAllLocationData(selectedTalukaId
-                        , Util.getUserObjectFromPref().getJurisdictionTypeId()
+//                presenter.getAllLocationData(selectedTalukaId
+//                        , Util.getUserObjectFromPref().getJurisdictionTypeId()
+//                        , Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                presenter.getAllLocationDataV2(selectedStateId, selectedDistrictId, selectedTalukaId,
+                        selectedClusterId, selectedVillageId, Util.getUserObjectFromPref().getJurisdictionTypeId()
                         , Constants.JurisdictionLevelName.TALUKA_LEVEL);
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -914,7 +920,8 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case "AllLocation":
                 if (data != null && !data.isEmpty()) {
                     clusterList.clear();
-
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                            .deleteAccessibleLocationData();
                     for (int i = 0; i < data.size(); i++) {
                         JurisdictionLocation location = data.get(i);
                         DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
