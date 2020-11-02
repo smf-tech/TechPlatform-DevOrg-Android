@@ -163,6 +163,59 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         }
     }
 
+    public void getProfileLocationDataV3(String stateId, String districtId, String talukaId, String clusterId,
+                                         String villageId, String jurisdictionTypeId, String levelName, String orgId,
+                                         String projectId, String roleId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("state_id", stateId);
+        map.put("district_id", districtId);
+        map.put("taluka_id", talukaId);
+        map.put("cluster_id", clusterId);
+        map.put("village_id", villageId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        profileActivity.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA3);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        profileActivity.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+
+        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.COUNTRY_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.STATE_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.DISTRICT_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CITY_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.TALUKA_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.GRAM_PANCHAYAT,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.LEARNING_CENTER)) {
+            requestCall.postDataCustomizeHeaderApiCall(Constants.JurisdictionLevelName.LEARNING_CENTER,
+                    new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     public void uploadProfileImage(File file, String type) {
         ImageRequestCall requestCall = new ImageRequestCall();
@@ -198,7 +251,7 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
-        profileActivity.get().getdynamicLogo();
+        //profileActivity.get().getdynamicLogo();
     }
 
     @Override
