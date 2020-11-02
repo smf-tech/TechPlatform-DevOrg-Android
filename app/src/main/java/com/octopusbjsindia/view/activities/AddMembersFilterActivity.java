@@ -135,7 +135,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if(selectedRolesJurisdictionTypeId.size()!=0) {
-                        addMemberFilerPresenter.getLocationData("",
+//                        addMemberFilerPresenter.getLocationData("",
+//                                selectedRolesJurisdictionTypeId.get(0),
+//                                Constants.JurisdictionLevelName.STATE_LEVEL);
+                        addMemberFilerPresenter.getLocationDataV3("",
+                                "", "",
                                 selectedRolesJurisdictionTypeId.get(0),
                                 Constants.JurisdictionLevelName.STATE_LEVEL);
                     }
@@ -153,7 +157,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                     if (selectedStates != null && selectedStates.size() > 0 &&
                             !TextUtils.isEmpty(selectedStates.get(0).getId())) {
                             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                                addMemberFilerPresenter.getLocationData(selectedStates.get(0).getId(),
+//                                addMemberFilerPresenter.getLocationData(selectedStates.get(0).getId(),
+//                                        selectedRolesJurisdictionTypeId.get(0),
+//                                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                                addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(),
+                                        "", "",
                                         selectedRolesJurisdictionTypeId.get(0),
                                         Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                             }
@@ -175,7 +183,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                                 !TextUtils.isEmpty(selectedDistricts.get(0).getId())) {
                             if (etUserTaluka.getVisibility() == View.VISIBLE) {
                                 if(selectedRolesJurisdictionTypeId.size()!=0) {
-                                    addMemberFilerPresenter.getLocationData(selectedDistricts.get(0).getId(),
+//                                    addMemberFilerPresenter.getLocationData(selectedDistricts.get(0).getId(),
+//                                            selectedRolesJurisdictionTypeId.get(0),
+//                                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                                    addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(),
+                                            selectedDistricts.get(0).getId(), "",
                                             selectedRolesJurisdictionTypeId.get(0),
                                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
                                 }
@@ -198,7 +210,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
                             !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                         if (etUserVillage.getVisibility() == View.VISIBLE) {
                             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                                addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
+//                                addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
+//                                        selectedRolesJurisdictionTypeId.get(0),
+//                                        Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                                addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(),
+                                        selectedDistricts.get(0).getId(), selectedTalukas.get(0).getId(),
                                         selectedRolesJurisdictionTypeId.get(0),
                                         Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                             }
@@ -430,7 +446,10 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             }
             etUserRole.setText(selectedRoleName);
             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                addMemberFilerPresenter.getLocationData("",
+//                addMemberFilerPresenter.getLocationData("",
+//                        selectedRolesJurisdictionTypeId.get(0),
+//                        Constants.JurisdictionLevelName.STATE_LEVEL);
+                addMemberFilerPresenter.getLocationDataV3("", "", "",
                         selectedRolesJurisdictionTypeId.get(0),
                         Constants.JurisdictionLevelName.STATE_LEVEL);
             }
@@ -455,8 +474,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             customSpinnerVillages.clear();
             etUserVillage.setText("");
             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                addMemberFilerPresenter.getLocationData(selectedStates.get(0).getId(),
-                        selectedRolesJurisdictionTypeId.get(0),
+//                addMemberFilerPresenter.getLocationData(selectedStates.get(0).getId(),
+//                        selectedRolesJurisdictionTypeId.get(0),
+//                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(), "",
+                        "", selectedRolesJurisdictionTypeId.get(0),
                         Constants.JurisdictionLevelName.DISTRICT_LEVEL);
             }
         } else if(type.equals("Select District")) {
@@ -477,7 +499,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             customSpinnerVillages.clear();
             etUserVillage.setText("");
             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                addMemberFilerPresenter.getLocationData(selectedDistricts.get(0).getId(),
+//                addMemberFilerPresenter.getLocationData(selectedDistricts.get(0).getId(),
+//                        selectedRolesJurisdictionTypeId.get(0),
+//                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(),
+                        selectedDistricts.get(0).getId(), "",
                         selectedRolesJurisdictionTypeId.get(0),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
@@ -496,7 +522,11 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             customSpinnerVillages.clear();
             etUserVillage.setText("");
             if(selectedRolesJurisdictionTypeId.size()!=0) {
-                addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
+//                addMemberFilerPresenter.getLocationData(selectedTalukas.get(0).getId(),
+//                        selectedRolesJurisdictionTypeId.get(0),
+//                        Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                addMemberFilerPresenter.getLocationDataV3(selectedStates.get(0).getId(),
+                        selectedDistricts.get(0).getId(), selectedTalukas.get(0).getId(),
                         selectedRolesJurisdictionTypeId.get(0),
                         Constants.JurisdictionLevelName.VILLAGE_LEVEL);
             }

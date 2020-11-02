@@ -75,13 +75,43 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
         requestCall.setApiPresenterListener(this);
         if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.STATE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.DISTRICT_LEVEL, new JSONObject(map).toString(), getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.TALUKA_LEVEL, new JSONObject(map).toString(), getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
-        } else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)){
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        }
+    }
+
+    public void getLocationDataV3(String stateId, String districtId, String talukaId, String jurisdictionTypeId, String levelName) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("state_id", stateId);
+        map.put("district_id", districtId);
+        map.put("taluka_id", talukaId);
+        map.put("cluster_id", "");
+        map.put("village_id", "");
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
+        addMemberFilterActivity.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Profile.GET_LOCATION_DATA3);
+        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        addMemberFilterActivity.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.STATE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.DISTRICT_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.TALUKA_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+            requestCall.postDataApiCall(Constants.JurisdictionLevelName.VILLAGE_LEVEL, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL, new JSONObject(map).toString(), getLocationUrl);
         }
     }
