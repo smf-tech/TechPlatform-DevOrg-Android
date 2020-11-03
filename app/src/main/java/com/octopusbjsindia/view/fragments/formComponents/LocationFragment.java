@@ -746,8 +746,20 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
+            districtList.clear();
+            cityList.clear();
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedDistrictId = "";
+            selectedCityId = "";
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select City")) {
-            for (CustomSpinnerObject mState : districtList) {
+            for (CustomSpinnerObject mState : cityList) {
                 if (mState.isSelected()) {
                     selectedCity = mState.getName();
                     selectedCityId = mState.get_id();
@@ -757,7 +769,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText(selectedState);
             hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL, selectedCity);
             hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id", selectedCityId);
-
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select District")) {
             for (CustomSpinnerObject mState : districtList) {
                 if (mState.isSelected()) {
@@ -778,6 +797,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select Taluka")) {
             for (CustomSpinnerObject mState : talukaList) {
                 if (mState.isSelected()) {
