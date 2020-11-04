@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments.formComponents;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -821,7 +822,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 //                        , Util.getUserObjectFromPref().getJurisdictionTypeId()
 //                        , Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 presenter.getAllLocationDataV2(selectedStateId, selectedDistrictId, selectedTalukaId,
-                        selectedClusterId, selectedVillageId, Util.getUserObjectFromPref().getJurisdictionTypeId()
+                        "", "", Util.getUserObjectFromPref().getJurisdictionTypeId()
                         , Constants.JurisdictionLevelName.TALUKA_LEVEL);
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -945,17 +946,24 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case "AllLocation":
-                if (data != null && !data.isEmpty()) {
-                    clusterList.clear();
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                            .deleteAccessibleLocationData();
-                    for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                try {
+                    if (data != null && !data.isEmpty()) {
+                        clusterList.clear();
                         DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                                .insert(location);
-                    }
+                                .deleteAccessibleLocationData();
 
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                .insertAll(data);
+//                        for (int i = 0; i < data.size(); i++) {
+//                            JurisdictionLocation location = data.get(i);
+//                            DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+//                                    .insertAll(location);
+//                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error");
                 }
+
                 break;
 
         }
