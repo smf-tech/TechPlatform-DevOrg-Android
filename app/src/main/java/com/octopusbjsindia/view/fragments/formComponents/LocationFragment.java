@@ -24,7 +24,7 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.LocationFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -556,14 +556,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case R.id.etCluster:
                 if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedTalukaId)) {
-                        ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>)
+                        ArrayList<JurisdictionLocationV3> clusterData = (ArrayList<JurisdictionLocationV3>)
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
                                         .getAccessibleLocationData(selectedTalukaId);
 
                         if (clusterData != null && !clusterData.isEmpty()) {
                             clusterList.clear();
                             for (int i = 0; i < clusterData.size(); i++) {
-                                JurisdictionLocation location = clusterData.get(i);
+                                JurisdictionLocationV3 location = clusterData.get(i);
                                 CustomSpinnerObject obj = new CustomSpinnerObject();
                                 obj.set_id(location.getId());
                                 obj.setName(location.getName());
@@ -585,10 +585,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
                 break;
             case R.id.etVillage:
-                ArrayList<JurisdictionLocation> villageData = new ArrayList<>();
+                ArrayList<JurisdictionLocationV3> villageData = new ArrayList<>();
                 if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedClusterId)) {
-                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                        villageData = (ArrayList<JurisdictionLocationV3>) DatabaseManager.getDBInstance(Platform.getInstance())
                                 .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
                     } else {
                         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -597,7 +597,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     }
                 } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedTalukaId)) {
-                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                        villageData = (ArrayList<JurisdictionLocationV3>) DatabaseManager.getDBInstance(Platform.getInstance())
                                 .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
                     } else {
                         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -617,7 +617,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (!villageData.isEmpty()) {
                     villageList.clear();
                     for (int i = 0; i < villageData.size(); i++) {
-                        JurisdictionLocation location = villageData.get(i);
+                        JurisdictionLocationV3 location = villageData.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -636,14 +636,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case R.id.etSchool:
                 if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedVillageId)) {
-                        ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>)
+                        ArrayList<JurisdictionLocationV3> SchoolData = (ArrayList<JurisdictionLocationV3>)
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
                                         .getAccessibleLocationData(selectedVillageId);
 
                         if (SchoolData != null && !SchoolData.isEmpty()) {
                             schoolList.clear();
                             for (int i = 0; i < SchoolData.size(); i++) {
-                                JurisdictionLocation location = SchoolData.get(i);
+                                JurisdictionLocationV3 location = SchoolData.get(i);
                                 CustomSpinnerObject obj = new CustomSpinnerObject();
                                 obj.set_id(location.getId());
                                 obj.setName(location.getName());
@@ -877,13 +877,13 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> data, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (data != null && !data.isEmpty()) {
                     stateList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -896,7 +896,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     districtList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -909,7 +909,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     talukaList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -922,7 +922,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     clusterList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -936,7 +936,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     villageList.clear();
 
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());

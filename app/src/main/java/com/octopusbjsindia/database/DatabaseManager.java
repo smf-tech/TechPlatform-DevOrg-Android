@@ -48,6 +48,8 @@ public class DatabaseManager {
                     .addMigrations(MIGRATION_2_TO_3)
                     .addMigrations(MIGRATION_3_TO_4)
                     .addMigrations(MIGRATION_4_TO_5)
+                    .addMigrations(MIGRATION_5_TO_6)
+//                    .addMigrations(MIGRATION_6_TO_7)
                     .build();
         }
 
@@ -107,6 +109,15 @@ public class DatabaseManager {
             database.execSQL("ALTER TABLE FormResult ADD COLUMN rejection_reason TEXT");
 
             database.execSQL("CREATE TABLE IF NOT EXISTS ContentData (contentId TEXT PRIMARY KEY NOT NULL, category_id TEXT, category_name TEXT,content_title TEXT,file_type TEXT,file_size TEXT,downloadedFileName TEXT,languageDetailsString TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_5_TO_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("DROP TABLE JurisdictionLocation");
+            database.execSQL("CREATE TABLE IF NOT EXISTS JurisdictionLocationV3 (autoId INTEGER PRIMARY KEY autoincrement NOT NULL, id TEXT, name TEXT,parent_id TEXT)");
         }
     };
 

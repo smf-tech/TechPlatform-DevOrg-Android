@@ -36,7 +36,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.MachineDeployStructureListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -277,7 +277,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         getActivity().finish();
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -285,9 +285,9 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                            CustomSpinnerObject talukaList = new CustomSpinnerObject();
-                            talukaList.set_id(location.getId());
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject talukaList = new CustomSpinnerObject();
+                        talukaList.set_id(location.getId());
                             talukaList.setName(location.getName());
                             talukaList.setSelected(false);
                             structureTalukaList.add(talukaList);
@@ -307,8 +307,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
 //                            compareTo(j2.getDistrict().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                            CustomSpinnerObject districtList = new CustomSpinnerObject();
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject districtList = new CustomSpinnerObject();
                             districtList.set_id(location.getId());
                             districtList.setName(location.getName());
                             districtList.setSelected(false);

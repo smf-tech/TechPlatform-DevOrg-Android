@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -29,12 +28,10 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
-import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.smartgirl.AdditionalTrainerListResponseModel;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
 import com.octopusbjsindia.models.smartgirl.WorkshopBachList;
-import com.octopusbjsindia.presenter.CreateTrainerWorkshopPresenter;
 import com.octopusbjsindia.presenter.CreateWorkshopSmartgirlPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -361,7 +358,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         });
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> data, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (data != null && !data.isEmpty()) {
@@ -371,7 +368,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
                     for (int i = 0; i < data.size(); i++) {
 //                        if (Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId()
 //                                .equalsIgnoreCase(data.get(i).getStateId())) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());
@@ -405,7 +402,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
 
                     for (int i = 0; i < data.size(); i++) {
                         //if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());

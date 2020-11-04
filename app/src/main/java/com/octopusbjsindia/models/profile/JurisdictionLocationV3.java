@@ -8,11 +8,16 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 @Entity
-public class JurisdictionLocation {
+public class JurisdictionLocationV3 {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "autoId")
     @NonNull
+    @Expose
+    private int autoId;
+
     @ColumnInfo(name = "id")
     @Expose
     @SerializedName("_id")
@@ -27,6 +32,14 @@ public class JurisdictionLocation {
     @SerializedName("parent_id")
     @Expose
     private String parentLocationId;
+
+    public int getAutoId() {
+        return autoId;
+    }
+
+    public void setAutoId(int autoId) {
+        this.autoId = autoId;
+    }
 
     public String getId() {
         return id;

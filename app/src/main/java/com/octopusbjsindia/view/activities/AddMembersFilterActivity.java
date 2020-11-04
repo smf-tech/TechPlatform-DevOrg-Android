@@ -21,7 +21,7 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.ParametersFilterMember;
 import com.octopusbjsindia.models.events.Participant;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.profile.Organization;
 import com.octopusbjsindia.models.profile.OrganizationProject;
@@ -265,13 +265,13 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
     }
 
     @Override
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     customSpinnerStates.clear();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject state = new CustomSpinnerObject();
                         state.set_id(location.getId());
                         state.setName(location.getName());
@@ -284,7 +284,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject district = new CustomSpinnerObject();
                         district.set_id(location.getId());
                         district.setName(location.getName());
@@ -297,7 +297,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject taluka = new CustomSpinnerObject();
                         taluka.set_id(location.getId());
                         taluka.setName(location.getName());
@@ -310,7 +310,7 @@ public class AddMembersFilterActivity extends BaseActivity implements AddMemberL
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject village = new CustomSpinnerObject();
                         village.set_id(location.getId());
                         village.setName(location.getName());

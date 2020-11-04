@@ -34,14 +34,14 @@ import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.models.pm.ProcessData;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.reports.ReportData;
 
 @Database(entities = {SavedForm.class, FormData.class, Modules.class, ReportData.class, FormResult.class,
-        ProcessData.class,AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
+        ProcessData.class, AttendaceData.class, AttendaceCheckOut.class, NotificationData.class, OperatorRequestResponseModel.class, SSMasterDatabase.class,
         StructureData.class, StructureVisitMonitoringData.class, StructurePripretionData.class, StructureBoundaryData.class, ContentData.class,
-        JurisdictionLocation.class},
-        version = 5)
+        JurisdictionLocationV3.class},
+        version = 6)
 
 public abstract class AppDatabase extends RoomDatabase {
 

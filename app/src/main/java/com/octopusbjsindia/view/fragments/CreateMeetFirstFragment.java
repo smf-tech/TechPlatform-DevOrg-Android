@@ -43,7 +43,7 @@ import com.octopusbjsindia.models.Matrimony.MeetSchedule;
 import com.octopusbjsindia.models.Matrimony.MeetType;
 import com.octopusbjsindia.models.Matrimony.RegistrationSchedule;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.CreateMeetFirstFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -234,7 +234,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
@@ -242,7 +242,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());
@@ -258,7 +258,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetState = new CustomSpinnerObject();
                         meetState.set_id(location.getId());
                         meetState.setName(location.getName());
@@ -275,7 +275,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCity = new CustomSpinnerObject();
                         meetCity.set_id(location.getId());
                         meetCity.setName(location.getName());
