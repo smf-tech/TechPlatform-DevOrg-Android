@@ -31,7 +31,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.CreateStructureActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -854,7 +854,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         }
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> data, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (data != null && !data.isEmpty()) {
@@ -864,7 +864,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     for (int i = 0; i < data.size(); i++) {
 //                        if (Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId()
 //                                .equalsIgnoreCase(data.get(i).getStateId())) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());
@@ -886,7 +886,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
                     for (int i = 0; i < data.size(); i++) {
                         //if (selectedDistrict.equalsIgnoreCase(data.get(i).getDistrict().getName())) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());
@@ -910,7 +910,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     for (int i = 0; i < data.size(); i++) {
                         //if (selectedTaluka.equalsIgnoreCase(data.get(i).getTaluka().getName())) {
 
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
                         meetCountry.set_id(location.getId());
                         meetCountry.setName(location.getName());

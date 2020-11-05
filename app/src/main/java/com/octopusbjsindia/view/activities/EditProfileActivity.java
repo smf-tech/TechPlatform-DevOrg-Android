@@ -46,7 +46,7 @@ import com.octopusbjsindia.listeners.ProfileTaskListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.models.profile.Jurisdiction;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.profile.Organization;
 import com.octopusbjsindia.models.profile.OrganizationProject;
@@ -1814,14 +1814,14 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     customSpinnerCountries.clear();
                     List<String> countryNames = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         countryNames.add(location.getName());
                         CustomSpinnerObject country = new CustomSpinnerObject();
                         country.set_id(location.getId());
@@ -1836,7 +1836,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     customSpinnerStates.clear();
                     List<String> stateNames = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         stateNames.add(location.getName());
                         CustomSpinnerObject state = new CustomSpinnerObject();
                         state.set_id(location.getId());
@@ -1851,7 +1851,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> districts = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         districts.add(location.getName());
                         CustomSpinnerObject district = new CustomSpinnerObject();
                         district.set_id(location.getId());
@@ -1866,7 +1866,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> cities = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         cities.add(location.getName());
                         CustomSpinnerObject city = new CustomSpinnerObject();
                         city.set_id(location.getId());
@@ -1881,7 +1881,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> talukas = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         talukas.add(location.getName());
                         CustomSpinnerObject taluka = new CustomSpinnerObject();
                         taluka.set_id(location.getId());
@@ -1896,7 +1896,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> villages = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         villages.add(location.getName());
                         CustomSpinnerObject village = new CustomSpinnerObject();
                         village.set_id(location.getId());
@@ -1911,7 +1911,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> clusters = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         clusters.add(location.getName());
                         CustomSpinnerObject cluster = new CustomSpinnerObject();
                         cluster.set_id(location.getId());
@@ -1925,7 +1925,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> panchayats = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         panchayats.add(location.getName());
                         CustomSpinnerObject panchayat = new CustomSpinnerObject();
                         panchayat.set_id(location.getId());
@@ -1939,7 +1939,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> schools = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         schools.add(location.getName());
                         CustomSpinnerObject school = new CustomSpinnerObject();
                         school.set_id(location.getId());
@@ -1953,7 +1953,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     List<String> centers = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         centers.add(location.getName());
                         CustomSpinnerObject center = new CustomSpinnerObject();
                         center.set_id(location.getId());

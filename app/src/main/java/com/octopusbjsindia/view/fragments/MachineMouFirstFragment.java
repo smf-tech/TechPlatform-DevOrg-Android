@@ -34,7 +34,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -815,13 +815,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         }
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineDistrictList.clear();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject district = new CustomSpinnerObject();
                         district.set_id(location.getId());
                         district.setName(location.getName());
@@ -841,7 +841,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject talukaList = new CustomSpinnerObject();
                         talukaList.set_id(location.getId());
                         talukaList.setName(location.getName());

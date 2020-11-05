@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments.formComponents;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.LocationFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -555,14 +556,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case R.id.etCluster:
                 if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedTalukaId)) {
-                        ArrayList<JurisdictionLocation> clusterData = (ArrayList<JurisdictionLocation>)
+                        ArrayList<JurisdictionLocationV3> clusterData = (ArrayList<JurisdictionLocationV3>)
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
                                         .getAccessibleLocationData(selectedTalukaId);
 
                         if (clusterData != null && !clusterData.isEmpty()) {
                             clusterList.clear();
                             for (int i = 0; i < clusterData.size(); i++) {
-                                JurisdictionLocation location = clusterData.get(i);
+                                JurisdictionLocationV3 location = clusterData.get(i);
                                 CustomSpinnerObject obj = new CustomSpinnerObject();
                                 obj.set_id(location.getId());
                                 obj.setName(location.getName());
@@ -584,10 +585,10 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 
                 break;
             case R.id.etVillage:
-                ArrayList<JurisdictionLocation> villageData = new ArrayList<>();
+                ArrayList<JurisdictionLocationV3> villageData = new ArrayList<>();
                 if (view.findViewById(R.id.ly_cluster).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedClusterId)) {
-                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                        villageData = (ArrayList<JurisdictionLocationV3>) DatabaseManager.getDBInstance(Platform.getInstance())
                                 .getAccessibleLocationData().getAccessibleLocationData(selectedClusterId);
                     } else {
                         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -596,7 +597,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     }
                 } else if (view.findViewById(R.id.ly_taluka).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedTalukaId)) {
-                        villageData = (ArrayList<JurisdictionLocation>) DatabaseManager.getDBInstance(Platform.getInstance())
+                        villageData = (ArrayList<JurisdictionLocationV3>) DatabaseManager.getDBInstance(Platform.getInstance())
                                 .getAccessibleLocationData().getAccessibleLocationData(selectedTalukaId);
                     } else {
                         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -616,7 +617,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (!villageData.isEmpty()) {
                     villageList.clear();
                     for (int i = 0; i < villageData.size(); i++) {
-                        JurisdictionLocation location = villageData.get(i);
+                        JurisdictionLocationV3 location = villageData.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -635,14 +636,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             case R.id.etSchool:
                 if (view.findViewById(R.id.ly_village).getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(selectedVillageId)) {
-                        ArrayList<JurisdictionLocation> SchoolData = (ArrayList<JurisdictionLocation>)
+                        ArrayList<JurisdictionLocationV3> SchoolData = (ArrayList<JurisdictionLocationV3>)
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
                                         .getAccessibleLocationData(selectedVillageId);
 
                         if (SchoolData != null && !SchoolData.isEmpty()) {
                             schoolList.clear();
                             for (int i = 0; i < SchoolData.size(); i++) {
-                                JurisdictionLocation location = SchoolData.get(i);
+                                JurisdictionLocationV3 location = SchoolData.get(i);
                                 CustomSpinnerObject obj = new CustomSpinnerObject();
                                 obj.set_id(location.getId());
                                 obj.setName(location.getName());
@@ -746,8 +747,20 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
+            districtList.clear();
+            cityList.clear();
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedDistrictId = "";
+            selectedCityId = "";
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select City")) {
-            for (CustomSpinnerObject mState : districtList) {
+            for (CustomSpinnerObject mState : cityList) {
                 if (mState.isSelected()) {
                     selectedCity = mState.getName();
                     selectedCityId = mState.get_id();
@@ -757,7 +770,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText(selectedState);
             hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL, selectedCity);
             hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id", selectedCityId);
-
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select District")) {
             for (CustomSpinnerObject mState : districtList) {
                 if (mState.isSelected()) {
@@ -778,6 +798,14 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             tv.setText("");
             tv = view.findViewById(R.id.etSchool);
             tv.setText("");
+            talukaList.clear();
+            clusterList.clear();
+            villageList.clear();
+            schoolList.clear();
+            selectedTalukaId = "";
+            selectedClusterId = "";
+            selectedVillageId = "";
+            selectedSchoolId = "";
         } else if (type.equals("Select Taluka")) {
             for (CustomSpinnerObject mState : talukaList) {
                 if (mState.isSelected()) {
@@ -794,7 +822,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
 //                        , Util.getUserObjectFromPref().getJurisdictionTypeId()
 //                        , Constants.JurisdictionLevelName.TALUKA_LEVEL);
                 presenter.getAllLocationDataV2(selectedStateId, selectedDistrictId, selectedTalukaId,
-                        selectedClusterId, selectedVillageId, Util.getUserObjectFromPref().getJurisdictionTypeId()
+                        "", "", Util.getUserObjectFromPref().getJurisdictionTypeId()
                         , Constants.JurisdictionLevelName.TALUKA_LEVEL);
             } else {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -849,13 +877,13 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void showJurisdictionLevel(List<JurisdictionLocation> data, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> data, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (data != null && !data.isEmpty()) {
                     stateList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -868,7 +896,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     districtList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -881,7 +909,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     talukaList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -894,7 +922,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 if (data != null && !data.isEmpty()) {
                     clusterList.clear();
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -908,7 +936,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     villageList.clear();
 
                     for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                        JurisdictionLocationV3 location = data.get(i);
                         CustomSpinnerObject obj = new CustomSpinnerObject();
                         obj.set_id(location.getId());
                         obj.setName(location.getName());
@@ -918,17 +946,24 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                 }
                 break;
             case "AllLocation":
-                if (data != null && !data.isEmpty()) {
-                    clusterList.clear();
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                            .deleteAccessibleLocationData();
-                    for (int i = 0; i < data.size(); i++) {
-                        JurisdictionLocation location = data.get(i);
+                try {
+                    if (data != null && !data.isEmpty()) {
+                        clusterList.clear();
                         DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
-                                .insert(location);
-                    }
+                                .deleteAccessibleLocationData();
 
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+                                .insertAll(data);
+//                        for (int i = 0; i < data.size(); i++) {
+//                            JurisdictionLocation location = data.get(i);
+//                            DatabaseManager.getDBInstance(Platform.getInstance()).getAccessibleLocationData()
+//                                    .insertAll(location);
+//                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", "Error");
                 }
+
                 break;
 
         }

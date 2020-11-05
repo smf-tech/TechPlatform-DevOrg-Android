@@ -1,6 +1,6 @@
 package com.octopusbjsindia.listeners;
 
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.Organization;
 import com.octopusbjsindia.models.profile.OrganizationProject;
 import com.octopusbjsindia.models.profile.OrganizationRole;
@@ -16,5 +16,5 @@ public interface ProfileTaskListener extends PlatformTaskListener {
 
     void showOrganizationRoles(List<OrganizationRole> organizationRoles);
 
-    void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName);
+    void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName);
 }
