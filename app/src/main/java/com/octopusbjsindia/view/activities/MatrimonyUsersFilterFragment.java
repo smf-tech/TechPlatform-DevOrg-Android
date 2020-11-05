@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +50,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private TextView txtMinAge, txtMaxAge;
     private MatrimonyUsersFilterActivityPresenter presenter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
-    private EditText etMobile, etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification, etMaritalStatus, etPaidOrFree;
+    private EditText etMobile, etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification,et_education_level, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedState, selectedQualification, selectedGender, selectedSect,
             selectedMaritalStatus, selectedPaidOrFree;
     private SimpleRangeView rangeView;
@@ -91,6 +93,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         etState = view.findViewById(R.id.et_state);
         etGender = view.findViewById(R.id.et_gender);
         etSect = view.findViewById(R.id.et_sect);
+        et_education_level = view.findViewById(R.id.et_education_level);
         etQualification = view.findViewById(R.id.et_qualification);
         etMaritalStatus = view.findViewById(R.id.et_marital_status);
         etPaidOrFree = view.findViewById(R.id.et_paid_free);
@@ -114,6 +117,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         etState.setOnClickListener(this);
         etGender.setOnClickListener(this);
         etSect.setOnClickListener(this);
+        et_education_level.setOnClickListener(this);
         etQualification.setOnClickListener(this);
         etMaritalStatus.setOnClickListener(this);
         etPaidOrFree.setOnClickListener(this);
@@ -229,8 +233,10 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     }
 
     public void setMasterData(List<MatrimonyMasterRequestModel.DataList.Master_data> data) {
+        String selectedEducationLevel = "";
         masterDataArrayList.clear();
         masterDataArrayList = data;
+        ((MatrimonyProfileListActivity) getActivity()).setMasterDataArrayList(masterDataArrayList);
         for (MatrimonyMasterRequestModel.DataList.Master_data masterData : masterDataArrayList) {
             switch (masterData.getKey()) {
                 case "meet_status":
@@ -313,10 +319,37 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                     ((MatrimonyProfileListActivity) getActivity()).setQualificationList(tempQualificationList);
                     break;
+                case "education_level":
+                    ((MatrimonyProfileListActivity) getActivity()).getQualificationList().clear();
+                    ArrayList<CustomSpinnerObject> tempEducationList = new ArrayList<>();
+                    for (String qualification : masterData.getValues()) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(qualification);
+                        tempEducationList.add(customSpinnerObject);
+                    }
+                    ((MatrimonyProfileListActivity) getActivity()).setEducationList(tempEducationList);
+                    break;
+
+
                 case "age":
                     ((MatrimonyProfileListActivity) getActivity()).setMinAge(masterData.getValues().get(0));
                     ((MatrimonyProfileListActivity) getActivity()).setMaxAge(masterData.getValues().get(1));
                     setRangeView();
+                    break;
+            }
+        }
+    }
+    public void updateQualificationDegree() {
+        for (MatrimonyMasterRequestModel.DataList.Master_data masterData : ((MatrimonyProfileListActivity) getActivity()).getMasterDataArrayList()) {
+            if (et_education_level.getText().toString().equalsIgnoreCase(masterData.getKey())){
+                    ((MatrimonyProfileListActivity) getActivity()).getQualificationList().clear();
+                    ArrayList<CustomSpinnerObject> tempQualificationList = new ArrayList<>();
+                    for (String qualification : masterData.getValues()) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(qualification);
+                        tempQualificationList.add(customSpinnerObject);
+                    }
+                    ((MatrimonyProfileListActivity) getActivity()).setQualificationList(tempQualificationList);
                     break;
             }
         }
@@ -380,12 +413,26 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+
+            case R.id.et_education_level:
+                CustomSpinnerDialogClass csdEducationLevel = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Education Level", ((MatrimonyProfileListActivity) getActivity()).getEducationList(), false);
+                csdEducationLevel.show();
+                csdEducationLevel.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+
             case R.id.et_qualification:
+                if (!TextUtils.isEmpty(et_education_level.getText())) {
+                    updateQualificationDegree();
                 CustomSpinnerDialogClass csdEducation = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select Qualification Degree", ((MatrimonyProfileListActivity) getActivity()).getQualificationList(), true);
                 csdEducation.show();
                 csdEducation.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+                }else {
+                    Toast.makeText(getActivity(), "Please Select Education level first", Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.et_gender:
                 CustomSpinnerDialogClass csdIncome = new CustomSpinnerDialogClass(getActivity(), this,
@@ -611,6 +658,20 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 }
                 etQualification.setText(selectedQualification);
                 matrimonyUserFilterData.setQualification_degrees(selectedQualification);
+                break;
+            case "Select Education Level":
+                selectedQualification = null;
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getEducationList()) {
+                    if (obj.isSelected()) {
+                        if (selectedQualification != null && selectedQualification != "") {
+                            selectedQualification = selectedQualification + "," + obj.getName();
+                        } else {
+                            selectedQualification = obj.getName();
+                        }
+                    }
+                }
+                et_education_level.setText(selectedQualification);
+                matrimonyUserFilterData.setEducation_level(selectedQualification);
                 break;
             case "Select Gender":
                 selectedGender = null;

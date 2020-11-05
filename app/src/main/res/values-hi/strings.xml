@@ -584,5 +584,6 @@
     <string name="mandatory_center">शिक्षण केंद्र *</string>
     <string name="msg_select_center">कृपया लर्निंग सेंटर का चयन करें</string>
     <string name="find_by_mobile">Find by mobile number</string>
+    <string name="education_level">Education Level</string>
 
 </resources>
