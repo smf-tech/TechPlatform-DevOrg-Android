@@ -229,6 +229,9 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                 case Constants.SmartGirlModule.ACCESS_CODE_PARENTS_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_parent_feedback).setVisible(true);
                                     break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_WORKSHOP_SUPPORT:
+                                    popup.getMenu().findItem(R.id.action_workshop_supportdoc).setVisible(true);
+                                    break;
 
 
 
@@ -356,6 +359,13 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                     case R.id.action_edit_batch:
                                         if (Util.isConnected(mContext)) {
                                             ((SmartGirlWorkshopListActivity)mContext).EditWorkshopRequest(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_workshop_supportdoc:
+                                        if (Util.isConnected(mContext)) {
+                                            ((SmartGirlWorkshopListActivity)mContext).addWorkshopSupportDocFragment(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }

@@ -182,6 +182,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Util.showToast("clicked",mContext);
                     popup = new PopupMenu((mContext), v);
                     popup.inflate(R.menu.sg_batchlist_menu);
 
@@ -230,6 +231,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_ORGANIZER_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_organizer_feedback).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_BATCH_SUPPORT:
+                                    popup.getMenu().findItem(R.id.action_batch_supportdoc).setVisible(true);
                                     break;
 
                             }
@@ -357,7 +361,13 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }
                                         break;
-
+                                    case R.id.action_batch_supportdoc:
+                                        if (Util.isConnected(mContext)) {
+                                            ((TrainerBatchListActivity)mContext).addBatchSupportDocFragment(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
 
 
                                 }

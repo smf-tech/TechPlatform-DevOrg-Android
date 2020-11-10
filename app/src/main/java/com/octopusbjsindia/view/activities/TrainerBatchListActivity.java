@@ -368,6 +368,16 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
 
+
+    public void addBatchSupportDocFragment(int adapterPosition){
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.BATCH_SUPPORT_DOC_FORM);
+        String batchId = trainerBachListResponseModel.getTrainerBachListdata().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"organizerFeedBackStatus");
+        mContext.startActivity(intent);
+    }
+
     public void addOrganiserFeedbackFragment(int adapterPosition){
         Intent intent = new Intent(mContext, FormDisplayActivity.class);
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.ORGANISER_FEEDBACK_FORM);

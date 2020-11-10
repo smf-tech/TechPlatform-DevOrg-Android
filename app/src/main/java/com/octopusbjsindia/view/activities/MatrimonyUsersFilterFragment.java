@@ -151,7 +151,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             setFilterData();
         } else {
             presenter.getFilterMasterData(BuildConfig.BASE_URL + String.format
-                    (Urls.Matrimony.GET_FILTER_MASTER_DATA));
+                    (Urls.Matrimony.GET_FILTER_MASTER_DATA_V2));
         }
 
         etMobile.addTextChangedListener(new TextWatcher() {

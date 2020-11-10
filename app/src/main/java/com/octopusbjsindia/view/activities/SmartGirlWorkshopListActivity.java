@@ -351,6 +351,17 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         }
     }
 
+
+    public void addWorkshopSupportDocFragment(int adapterPosition){
+        Intent intent = new Intent(mContext, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.WORKSHOP_SUPPORT_DOC_FORM);
+        String batchId = trainerBachListResponseModel.getWorkshopBachLists().get(adapterPosition).get_id();
+        intent.putExtra(Constants.SmartGirlModule.BATCH_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.WORKSHOP_ID,batchId);
+        intent.putExtra(Constants.SmartGirlModule.FORM_STATUS,"organizerFeedBackStatus");
+        mContext.startActivity(intent);
+    }
+
     public void addOrganiserFeedbackFragment(int adapterPosition){
         Intent intent = new Intent(mContext, FormDisplayActivity.class);
         intent.putExtra(Constants.PM.FORM_ID,Constants.SmartGirlModule.ORGANISER_FEEDBACK_FORM);

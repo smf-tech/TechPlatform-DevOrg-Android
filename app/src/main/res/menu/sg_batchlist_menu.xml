@@ -74,5 +74,12 @@
         android:id="@+id/action_take_mocktest"
         android:title="Take Mocktest"
         android:visible="false"/>
-
+    <item
+        android:id="@+id/action_batch_supportdoc"
+        android:title="Add Support Doc"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_workshop_supportdoc"
+        android:title="Add Support Doc"
+        android:visible="false"/>
 </menu>
