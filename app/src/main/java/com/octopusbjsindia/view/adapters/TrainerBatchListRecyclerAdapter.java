@@ -182,7 +182,6 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Util.showToast("clicked",mContext);
                     popup = new PopupMenu((mContext), v);
                     popup.inflate(R.menu.sg_batchlist_menu);
 
