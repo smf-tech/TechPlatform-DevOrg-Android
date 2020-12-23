@@ -69,9 +69,10 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM)||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT)) {
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MV_SEL)) {
 
                         //do nothing
                     } else {
@@ -159,15 +160,20 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.MATRIMONY:
                     adapter.addFragment(new MatrimonyFragment());
-//                    adapter.addFragment(new MatrimonyMeetDetailFragment());
                     break;
 
                 case Constants.Home.SUJALAM_SUPHALAM:
                     adapter.addFragment(new SujalamSufalamFragment());
                     break;
+
                 case Constants.Home.SMARTGIRL:
                     adapter.addFragment(new SmartGirlDashboardFragment());
                     break;
+
+                case Constants.Home.MV_SEL:
+                    adapter.addFragment(new SELFragment());
+                    break;
+
                 case Constants.Home.SUPPORT:
 //                    adapter.addFragment(new SupportFragment());
                     adapter.addFragment(new TicketListFragment());
@@ -255,6 +261,7 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.SUJALAM_SUPHALAM:
                     break;
+
                 default:
                     break;
             }

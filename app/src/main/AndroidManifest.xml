@@ -40,7 +40,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.SupportActivity"></activity>
+        <activity android:name=".view.activities.SELTrainingVideoActivity"></activity>
+        <activity android:name=".view.activities.SupportActivity" />
         <activity android:name=".view.activities.TransactionDetailsActivity" />
         <activity android:name=".view.activities.AddMemberActivity" />
         <activity android:name=".view.activities.MyTeamActivity" />
