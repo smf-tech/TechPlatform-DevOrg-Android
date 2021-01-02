@@ -8,7 +8,6 @@ public class SELVideoContent implements Serializable {
     private String video_url;
     private String thumbnail_url;
     private String form_Id;
-    private final static long serialVersionUID = 7967564747878830017L;
 
     public String getId() {
         return _id;

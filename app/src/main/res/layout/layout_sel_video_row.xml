@@ -1,39 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ly_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lighter_grey"
-    android:gravity="center"
-    tools:ignore="RtlSymmetry">
+    android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_250dp"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_05dp"
+        android:layout_marginEnd="@dimen/dimen_05dp"
+        android:layout_marginTop="@dimen/dimen_05dp"
+        android:layout_marginBottom="@dimen/dimen_05dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/img_thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_200dp"
-                android:layout_marginTop="@dimen/dimen_10dp" />
-
-            <TextView
-                android:id="@+id/tv_form"
+            <RelativeLayout
+                android:id="@+id/ly_thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dimen_30dp"
-                android:layout_below="@+id/img_thumbnail"
-                android:layout_marginTop="@dimen/dimen_05dp"></TextView>
+                android:layout_height="wrap_content"
+                android:layout_weight="6">
+
+                <ImageView
+                    android:id="@+id/iv_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_video_thumbnail" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_60dp"
+                    android:layout_height="@dimen/dimen_60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_video_play" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_video_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ly_thumbnail"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_15dp">
+
+                <TextView
+                    android:id="@+id/tv_form"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textSize="@dimen/text_size_16" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

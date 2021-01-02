@@ -258,5 +258,6 @@ public class Urls {
 
     public class SEL {
         public static final String GET_SEL_CONTENT = "api/get_training_videos";
+        public static final String SEND_VIDEO_STATUS = "api/send_video_status";
     }
 }

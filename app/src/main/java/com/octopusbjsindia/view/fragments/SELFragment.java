@@ -53,7 +53,7 @@ public class SELFragment extends Fragment implements APIDataListener {
         presenter = new SELFragmentPresenter(this);
         RecyclerView rvSelContent = view.findViewById(R.id.rv_sel_content);
         presenter.getSelContentData();
-        selFragmentAdapter = new SELFragmentAdapter(getActivity(), selContentList);
+        selFragmentAdapter = new SELFragmentAdapter(this, selContentList);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
     }
