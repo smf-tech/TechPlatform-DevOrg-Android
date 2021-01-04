@@ -30,6 +30,7 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
     private String videoId;
+    private boolean isVideoCompleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                isVideoCompleted = true;
                 presenter.sendVideoStatus(videoId, "completed", videoView.getCurrentPosition());
             }
         });
@@ -100,7 +102,9 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.sendVideoStatus(videoId, "resume", videoView.getCurrentPosition());
+        if (!isVideoCompleted) {
+            presenter.sendVideoStatus(videoId, "resume", stopPosition);
+        }
     }
 
     @Override
