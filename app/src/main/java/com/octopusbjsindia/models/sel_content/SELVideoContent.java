@@ -1,20 +1,38 @@
 package com.octopusbjsindia.models.sel_content;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SELVideoContent implements Serializable {
-    private String _id;
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("title")
+    @Expose
     private String title;
-    private String video_url;
-    private String thumbnail_url;
-    private String form_Id;
+    @SerializedName("video_url")
+    @Expose
+    private String videoUrl;
+    @SerializedName("thumbnail_url")
+    @Expose
+    private String thumbnailUrl;
+    @SerializedName("form_Id")
+    @Expose
+    private List<SELAssignmentData> assignmentList = new ArrayList<SELAssignmentData>();
+    @SerializedName("content")
+    @Expose
+    private List<SELReadingData> readingDataList = new ArrayList<SELReadingData>();
 
     public String getId() {
-        return _id;
+        return id;
     }
 
     public void setId(String id) {
-        this._id = id;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -26,26 +44,26 @@ public class SELVideoContent implements Serializable {
     }
 
     public String getVideoUrl() {
-        return video_url;
+        return videoUrl;
     }
 
     public void setVideoUrl(String videoUrl) {
-        this.video_url = videoUrl;
+        this.videoUrl = videoUrl;
     }
 
     public String getThumbnailUrl() {
-        return thumbnail_url;
+        return thumbnailUrl;
     }
 
     public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnail_url = thumbnailUrl;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getFormId() {
-        return form_Id;
+    public List<SELAssignmentData> getAssignmentList() {
+        return assignmentList;
     }
 
-    public void setFormId(String formId) {
-        this.form_Id = formId;
+    public List<SELReadingData> getReadingDataList() {
+        return readingDataList;
     }
 }

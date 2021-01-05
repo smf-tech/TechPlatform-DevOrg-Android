@@ -1,13 +1,14 @@
 package com.octopusbjsindia.models.sel_content;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoContentAPIResponse implements Serializable {
     private Integer status;
     private String message;
-    private List<SELVideoContent> data = null;
-    private final static long serialVersionUID = -6962406116611068768L;
+    private List<SELVideoContent> data = new ArrayList<SELVideoContent>();
+    ;
 
     public Integer getStatus() {
         return status;

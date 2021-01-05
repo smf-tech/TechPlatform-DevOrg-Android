@@ -24,30 +24,31 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
 
     private VideoView videoView;
     private ProgressDialog pDialog;
-    private int stopPosition;
-    private SELTrainingVideoActivityPresenter presenter;
-    private SELTrainingVideoActivity mContext;
     private RelativeLayout progressBarLayout;
     private ProgressBar progressBar;
-    private String videoId;
+    private String videoUrl, videoId;
     private boolean isVideoCompleted = false;
+    private int stopPosition;
+    private SELTrainingVideoActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sel_training_video);
+        setContentView(R.layout.activity_s_e_l_training_video);
+
         presenter = new SELTrainingVideoActivityPresenter(this);
+
+        videoUrl = getIntent().getStringExtra("videoUrl");
+        videoId = getIntent().getStringExtra("videoId");
+
+        videoView = findViewById(R.id.video_view);
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
-        videoView = findViewById(R.id.video_view);
         pDialog = new ProgressDialog(this);
         pDialog.setTitle("Video Stream");
         pDialog.setMessage("Buffering...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
-        String videoUrl = getIntent().getStringExtra("videoUrl");
-        videoId = getIntent().getStringExtra("videoId");
-        //String vidAddress = "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
 
         try {
             MediaController vidControl = new MediaController(this, false);

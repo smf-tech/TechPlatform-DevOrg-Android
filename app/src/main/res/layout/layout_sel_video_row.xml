@@ -19,45 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/ly_thumbnail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="6">
-
-                <ImageView
-                    android:id="@+id/iv_thumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_video_thumbnail" />
-
-                <ImageView
-                    android:layout_width="@dimen/dimen_60dp"
-                    android:layout_height="@dimen/dimen_60dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_video_play" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rl_video_form"
+            <TextView
+                android:id="@+id/tv_training"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_thumbnail"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_15dp">
-
-                <TextView
-                    android:id="@+id/tv_form"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/opensans_semibold"
-                    android:textSize="@dimen/text_size_16" />
-
-            </RelativeLayout>
+                android:text="Training Part 1"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensans_semibold"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:textStyle="bold"></TextView>
 
         </RelativeLayout>
 
