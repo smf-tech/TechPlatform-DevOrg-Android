@@ -62,7 +62,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_reading_content"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_below="@+id/tv_reading_label" />
 
@@ -80,9 +80,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_form_assignment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_below="@+id/tv_reading_label" />
+            android:layout_below="@+id/tv_assignment_label" />
 
     </RelativeLayout>
 

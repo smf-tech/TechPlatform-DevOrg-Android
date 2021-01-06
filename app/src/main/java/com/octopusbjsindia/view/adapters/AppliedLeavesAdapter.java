@@ -64,7 +64,6 @@ public class AppliedLeavesAdapter extends RecyclerView.Adapter<AppliedLeavesAdap
         viewHolder.tvLeaveReason.setText(leavesList.get(position).getReason());
         viewHolder.tvType.setText("("+leavesList.get(position).getFullHalfDay()+")");
 
-
         viewHolder.leaveTitleLayout.setOnClickListener(v ->
                 leavesListener.editLeaves(leavesList.get(position)));
         if(leavesList.get(position).getStatus().equalsIgnoreCase(Constants.Leave.PENDING_STATUS)){
