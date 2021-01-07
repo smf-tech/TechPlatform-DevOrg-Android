@@ -3,46 +3,42 @@ package com.octopusbjsindia.view.adapters;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.sel_content.SELAssignmentData;
 import com.octopusbjsindia.models.sel_content.SELReadingData;
-import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.octopusbjsindia.view.activities.SELTrainingActivity;
 
 import java.io.File;
 import java.util.List;
 
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+
 public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.ViewHolder> {
 
     private List<SELReadingData> SELReadingDataList;
-    private List<SELAssignmentData> SELAssignmentData;
     private SELTrainingActivity mContext;
-    private int type = 0;
 
-    public SELTrainingAdapter(SELTrainingActivity context, final List<SELReadingData> SELReadingDataList, int type) {
+    public SELTrainingAdapter(SELTrainingActivity context, final List<SELReadingData> SELReadingDataList) {
         mContext = context;
         this.SELReadingDataList = SELReadingDataList;
-        this.type = type;
     }
-
-//    public SELTrainingAdapter(SELTrainingActivity context, final List<SELAssignmentData> SELAssignmentData) {
-//        mContext = context;
-//        this.SELAssignmentData = SELAssignmentData;
-//    }
 
     @NonNull
     @Override
@@ -54,18 +50,14 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SELTrainingAdapter.ViewHolder holder, int position) {
-        //if(type == 1) {
         holder.tvTitle.setText(SELReadingDataList.get(position).getContentName());
-//        } else {
-//            holder.tvTitle.setText(SELAssignmentData.get(position).getFormName());
-//        }
         boolean isFileDownloaded = false;
         Uri uri = Uri.parse(SELReadingDataList.get(position).getContentUrl());
         File file = new File(uri.getPath());
         String fileName = file.getName();
         if (isFileAvailable(fileName)) {
             isFileDownloaded = true;
-            //contentData.setDownloadedFileName(fileName);
+            SELReadingDataList.get(position).setDownloadedFileName(fileName);
         }
 
         if (isFileDownloaded && !SELReadingDataList.get(position).isDownloadStarted()) {
@@ -89,6 +81,7 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
         TextView tvTitle;
         ImageView imgDownload, imgView;
         ProgressBar pbDownloading;
+        RelativeLayout rlTraining;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,25 +90,7 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
             imgDownload = itemView.findViewById(R.id.img_download);
             imgView = itemView.findViewById(R.id.img_view);
             pbDownloading = itemView.findViewById(R.id.pbDownloading);
-
-            tvTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getId() == R.id.tv_title) {
-                        if (SELAssignmentData.get(getAdapterPosition()).getFormId() != null &&
-                                !TextUtils.isEmpty(SELAssignmentData.get(getAdapterPosition()).getFormId())) {
-                            Intent intent = new Intent(mContext, FormDisplayActivity.class);
-                            intent.putExtra(Constants.PM.FORM_ID, SELAssignmentData.get(getAdapterPosition()).getFormId());
-                            mContext.startActivity(intent);
-                        } else {
-                            Util.showToast(mContext, "Something went wrong. Please try again later.");
-                        }
-                    }
-//                    Intent intent = new Intent(mContext, SELTrainingActivity.class);
-//                    intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
-//                    mContext.startActivity(intent);
-                }
-            });
+            rlTraining = itemView.findViewById(R.id.rl_training);
 
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,7 +101,62 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
                     }
                 }
             });
+
+            rlTraining.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (SELReadingDataList.get(getAdapterPosition()).getDownloadedFileName() != null &&
+                            SELReadingDataList.get(getAdapterPosition()).getDownloadedFileName() != "") {
+                        String storagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                                + Environment.DIRECTORY_DOWNLOADS;
+                        File contentFile = new File(storagePath + "/" +
+                                SELReadingDataList.get(getAdapterPosition()).getDownloadedFileName());
+                        openFile(contentFile);
+                    } else {
+                        Util.snackBarToShowMsg(mContext.getWindow().getDecorView().
+                                findViewById(android.R.id.content), "Please download file and then view.", Snackbar.LENGTH_LONG);
+                    }
+                }
+            });
         }
+    }
+
+    private void openFile(File contentFile) {
+        try {
+            // Create URI
+            Uri uri = FileProvider.getUriForFile(mContext,
+                    mContext.getPackageName() + ".file_provider", contentFile);
+            mContext.grantUriPermission
+                    (mContext.getPackageName(), uri, FLAG_GRANT_READ_URI_PERMISSION);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION | FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.setData(uri);
+            intent.setType(get_mime_type(uri.toString()));
+            if (contentFile.toString().contains(".pdf")) {
+                // PDF file
+                intent.setDataAndType(uri, get_mime_type(uri.toString()));
+            } else {
+                //if you want you can also define the intent type for any other file
+                //additionally use else clause below, to manage other unknown extensions
+                //in this case, Android will show all applications installed on the device
+                //so you can choose which application to use
+                intent.setDataAndType(uri, "*/*");
+            }
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            Log.i("FileView", "222" + e.toString());
+        }
+    }
+
+    public String get_mime_type(String url) {
+        String ext = MimeTypeMap.getFileExtensionFromUrl(url);
+        String mime = null;
+        if (ext != null) {
+            mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
+        }
+        return mime;
     }
 
     private boolean isFileAvailable(String fileName) {
@@ -142,10 +172,6 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
 
     @Override
     public int getItemCount() {
-        if (type == 1) {
             return SELReadingDataList.size();
-        } else {
-            return SELAssignmentData.size();
-        }
     }
 }

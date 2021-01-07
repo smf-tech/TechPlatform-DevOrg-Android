@@ -13,6 +13,7 @@ public class SELReadingData implements Serializable {
     @Expose
     private String contentUrl;
     private boolean isDownloadStarted = false;
+    private String downloadedFileName;
 
     public String getContentName() {
         return contentName;
@@ -36,6 +37,14 @@ public class SELReadingData implements Serializable {
 
     public void setDownloadStarted(boolean downloadStarted) {
         isDownloadStarted = downloadStarted;
+    }
+
+    public String getDownloadedFileName() {
+        return downloadedFileName;
+    }
+
+    public void setDownloadedFileName(String downloadedFileName) {
+        this.downloadedFileName = downloadedFileName;
     }
 
 }
