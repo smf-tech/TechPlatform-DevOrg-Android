@@ -19,6 +19,7 @@
             android:text="Video Tutorial"
             android:textSize="@dimen/text_size_16"
             android:layout_marginTop="@dimen/dimen_05dp"
+            android:textColor="@color/black"
             android:fontFamily="@font/opensans_semibold"
             android:layout_marginStart="@dimen/dimen_10dp"></TextView>
 
@@ -49,14 +50,14 @@
             android:fontFamily="@font/opensans_semibold"
             android:layout_below="@+id/ly_thumbnail"
             android:textSize="@dimen/text_size_16"
-            android:layout_margin="@dimen/dimen_10dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
             android:text="Reading Content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_reading_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_below="@+id/tv_reading_label" />
 
         <TextView
@@ -67,14 +68,14 @@
             android:fontFamily="@font/opensans_semibold"
             android:layout_below="@+id/rv_reading_content"
             android:textSize="@dimen/text_size_16"
-            android:layout_margin="@dimen/dimen_10dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
             android:text="Assignment" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_form_assignment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_below="@+id/tv_assignment_label" />
 
     </RelativeLayout>

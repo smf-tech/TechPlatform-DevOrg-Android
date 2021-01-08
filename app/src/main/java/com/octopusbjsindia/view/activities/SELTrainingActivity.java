@@ -93,7 +93,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.ly_thumbnail) {
+        if (v.getId() == R.id.iv_thumbnail) {
             if (trainingObject.getVideoUrl() != null &&
                     !TextUtils.isEmpty(trainingObject.getVideoUrl())) {
                 Intent intent = new Intent(this, SELTrainingVideoActivity.class);

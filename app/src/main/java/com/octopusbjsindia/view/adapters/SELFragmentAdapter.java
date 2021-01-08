@@ -20,13 +20,10 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
 
     private List<SELVideoContent> selContentList;
     private SELFragment mContext;
-    //private RequestOptions requestOptions;
 
     public SELFragmentAdapter(SELFragment context, final List<SELVideoContent> selContentList) {
         mContext = context;
         this.selContentList = selContentList;
-//        requestOptions = new RequestOptions().placeholder(R.drawable.ic_no_image);
-//        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
     }
 
     @NonNull
@@ -47,7 +44,6 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvTraining = itemView.findViewById(R.id.tv_training);
             tvTraining.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,7 +51,6 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
                     Intent intent = new Intent(mContext.getActivity(), SELTrainingActivity.class);
                     intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
-
                 }
             });
         }

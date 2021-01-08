@@ -94,6 +94,7 @@ public class SELFragment extends Fragment implements APIDataListener {
     public void populateData(VideoContentAPIResponse videoContentAPIResponse) {
         List<SELVideoContent> selVideoContentList = videoContentAPIResponse.getData();
         if (selVideoContentList.size() > 0) {
+            selContentList.clear();
             selContentList.addAll(selVideoContentList);
             selFragmentAdapter.notifyDataSetChanged();
         } else {
