@@ -96,10 +96,14 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         if (v.getId() == R.id.iv_thumbnail) {
             if (trainingObject.getVideoUrl() != null &&
                     !TextUtils.isEmpty(trainingObject.getVideoUrl())) {
-                Intent intent = new Intent(this, SELTrainingVideoActivity.class);
-                intent.putExtra("videoId", trainingObject.getId());
-                intent.putExtra("videoUrl", trainingObject.getVideoUrl());
-                startActivity(intent);
+                if (Util.isConnected(this)) {
+                    Intent intent = new Intent(this, SELTrainingVideoActivity.class);
+                    intent.putExtra("videoId", trainingObject.getId());
+                    intent.putExtra("videoUrl", trainingObject.getVideoUrl());
+                    startActivity(intent);
+                } else {
+                    Util.showToast(this, getString(R.string.msg_no_network));
+                }
             } else {
                 Util.showToast(this, "Something went wrong. Please try again later.");
             }

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="@dimen/dimen_03dp"
@@ -11,9 +11,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sel_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp" />
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
@@ -35,5 +34,12 @@
             android:visibility="gone" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/iv_no_data"
+        android:layout_width="@dimen/dimen_300dp"
+        android:layout_height="@dimen/dimen_300dp"
+        android:src="@drawable/ic_no_data"
+        android:layout_centerInParent="true"></ImageView>
 
-</LinearLayout>
+
+</RelativeLayout>

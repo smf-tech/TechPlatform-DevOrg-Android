@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -52,10 +53,23 @@ public class SELFragment extends Fragment implements APIDataListener {
         progressBar = view.findViewById(R.id.pb_profile_act);
         presenter = new SELFragmentPresenter(this);
         RecyclerView rvSelContent = view.findViewById(R.id.rv_sel_content);
-        presenter.getSelContentData();
+        ImageView ivNoData = view.findViewById(R.id.iv_no_data);
         selFragmentAdapter = new SELFragmentAdapter(this, selContentList);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
+        if (Util.isConnected(getActivity())) {
+            presenter.getSelContentData();
+            ivNoData.setVisibility(View.GONE);
+        } else {
+//            selContentList.clear();
+//            selFragmentAdapter.notifyDataSetChanged();
+            if (selContentList.size() == 0) {
+                Util.showToast(getString(R.string.msg_no_network), getContext());
+                ivNoData.setVisibility(View.VISIBLE);
+            } else {
+                ivNoData.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -97,8 +111,6 @@ public class SELFragment extends Fragment implements APIDataListener {
             selContentList.clear();
             selContentList.addAll(selVideoContentList);
             selFragmentAdapter.notifyDataSetChanged();
-        } else {
-
         }
     }
 

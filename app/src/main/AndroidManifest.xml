@@ -40,8 +40,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.SELTrainingVideoActivity"></activity>
-        <activity android:name=".view.activities.SELTrainingActivity" />
+        <activity
+            android:name=".view.activities.SELTrainingVideoActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".view.activities.SELTrainingActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activities.SupportActivity" />
         <activity android:name=".view.activities.TransactionDetailsActivity" />
         <activity android:name=".view.activities.AddMemberActivity" />
