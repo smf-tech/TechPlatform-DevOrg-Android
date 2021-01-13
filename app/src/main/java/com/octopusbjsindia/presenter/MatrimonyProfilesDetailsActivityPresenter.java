@@ -125,8 +125,7 @@ public class MatrimonyProfilesDetailsActivityPresenter implements ProfileDetailR
         String url = BuildConfig.BASE_URL + Urls.Matrimony.USER_DOC_VERIFY_API;
         if (type ==3){
             requestCall.postDataApiCall("VERIFY_PROFILE", paramjson, url);
-        }
-        else if (type==1) {
+        } else if (type==1) {
             requestCall.postDataApiCall("APPROVE_REJECT_ID", paramjson, url);
         }else {
             requestCall.postDataApiCall("APPROVE_REJECT_EDU", paramjson, url);

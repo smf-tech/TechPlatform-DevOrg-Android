@@ -69,7 +69,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     private BroadcastReceiver mMessageReceiver;
-    int position=0;
+    int position = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,24 +125,30 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         mMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                boolean isBanned = intent.getBooleanExtra("isBanned",false);
-                if(!isBanned && toOpen.equals("BangUsers")) {
-                    if(position<userProfileListsFiltered.size()){
+                boolean isBanned = intent.getBooleanExtra("isBanned", false);
+                if (!isBanned && toOpen.equals("BangUsers")) {
+                    if (position < userProfileListsFiltered.size()) {
                         userProfileListsFiltered.remove(position);
                     }
-                    if(position<userProfileLists.size()){
+                    if (position < userProfileLists.size()) {
                         userProfileLists.remove(position);
                     }
-                    matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
-                } else if(isBanned && !toOpen.equals("BangUsers")) {
-                    if(position<userProfileListsFiltered.size()){
+                } else if (isBanned && !toOpen.equals("BangUsers")) {
+                    if (position < userProfileListsFiltered.size()) {
                         userProfileListsFiltered.remove(position);
                     }
-                    if(position<userProfileLists.size()){
+                    if (position < userProfileLists.size()) {
                         userProfileLists.remove(position);
                     }
-                    matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+
                 }
+                String approvalType = intent.getStringExtra("approvalType");
+                userProfileListsFiltered.get(position).setIsApproved(approvalType);
+                userProfileListsFiltered.get(position).setUserMeetStatus(approvalType);
+                boolean setVerified = intent.getBooleanExtra("setVerified",false);
+                userProfileListsFiltered.get(position).getMatrimonial_profile().setVerified(setVerified);
+                matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
+
             }
         };
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
@@ -185,8 +191,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                     pastVisiblesItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
 
                     if (loading) {
+
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
+//                            getData();
                             if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
                                 presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity())
                                         .getMatrimonyUserFilterData(), nextPageUrl);
@@ -234,6 +242,27 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
             matrimonyProfileListRecyclerAdapter.updateList(userProfileLists);
         }
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        getData();
+//    }
+//
+//    public void getData() {
+////        if (loading) {
+////        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+////            loading = false;
+//            if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
+//                presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity())
+//                        .getMatrimonyUserFilterData(), nextPageUrl);
+//            } else {
+//                presenter.getAllUserList(((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData(),
+//                        BuildConfig.BASE_URL + String.format(Urls.Matrimony.ALL_FILTER_USERS));
+//            }
+////        }
+////        }
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -307,14 +336,15 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         loading = true;
         nextPageUrl = userResponse.getNextPageUrl();
         if (userResponse.getData().size() > 0) {
-            if (toOpen.equals("BlockedUsers") || toOpen.equals("BangUsers")) {
-                toolbarFilter.setVisibility(View.INVISIBLE);
-            } else {
-                toolbarFilter.setVisibility(View.VISIBLE);
-            }
+//            if (toOpen.equals("BlockedUsers") || toOpen.equals("BangUsers")) {
+//                toolbarFilter.setVisibility(View.INVISIBLE);
+//            } else {
+//                toolbarFilter.setVisibility(View.VISIBLE);
+//            }
             ivNoData.setVisibility(View.GONE);
             tvNoData.setVisibility(View.GONE);
             //userProfileListsFiltered = (ArrayList<UserProfileList>) userResponse.getData();
+//            userProfileListsFiltered.clear();
             userProfileListsFiltered.addAll((ArrayList<UserProfileList>) userResponse.getData());
             userProfileLists.clear();
             userProfileLists.addAll(userProfileListsFiltered);

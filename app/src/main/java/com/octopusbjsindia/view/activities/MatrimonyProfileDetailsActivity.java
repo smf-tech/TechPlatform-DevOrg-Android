@@ -155,14 +155,15 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     private void initView() {
 
+//        approvalType = matrimonialProfile.getIsApproved();
         //for(int i=0;i<IMAGES.length;i++)
-        {
+//        {
             if (matrimonialProfile.getOtherMaritalInformation().getProfileImage() != null
                     && matrimonialProfile.getOtherMaritalInformation().getProfileImage().size() > 0) {
                 ProfileImageList.clear();
                 ProfileImageList.addAll(matrimonialProfile.getOtherMaritalInformation().getProfileImage());
             }
-        }
+//        }
 
         TextView title = findViewById(R.id.toolbar_title);
         title.setText("Profile Details");
@@ -253,6 +254,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
         setApprovelFlag();
 
+        approvalType = userProfileList.getIsApproved();
+
         TextView txtTitle = findViewById(R.id.tv_title);
         TextView txtValue = findViewById(R.id.tv_value);
         txtTitle.setText(matrimonialProfile.getPersonalDetails().getFirstName()
@@ -261,267 +264,6 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 .append(matrimonialProfile.getEducationalDetails().getQualificationDegree() + ", ")
                 .append(matrimonialProfile.getPersonalDetails().getMaritalStatus() + ", ")
                 .append(matrimonialProfile.getPersonalDetails().getSect()).toString();
-        txtValue.setText(s);
-
-        userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
-        tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
-                + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
-        tv_gender.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getGender());
-        tv_birth_date.setText(Util.getDateFromTimestamp(userProfileList.getMatrimonial_profile().getPersonal_details().getBirthDate(), Constants.EVENT_DATE_FORMAT));
-        tv_birth_time.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_time());
-        tv_age.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getAge());
-        tv_birth_place.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBirth_city());
-        tv_blood_group.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getBlood_group());
-        tv_marital_status.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status());
-
-        if (!userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
-            LinearLayout lyChildrenInfo = findViewById(R.id.ly_children_info);
-            lyChildrenInfo.setVisibility(View.VISIBLE);
-            RelativeLayout rlChildrenCount = findViewById(R.id.rl_children_count);
-            rlChildrenCount.setVisibility(View.VISIBLE);
-            TextView tvChildrenCount = findViewById(R.id.tv_children_count);
-            if (userProfileList.getMatrimonial_profile().getPersonal_details().getHaveChildren() != null) {
-                if (userProfileList.getMatrimonial_profile().getPersonal_details().getHaveChildren().equalsIgnoreCase("Yes")) {
-                    tvChildrenCount.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getChildrenCount());
-                } else {
-                    tvChildrenCount.setText("No");
-                }
-            } else {
-                tvChildrenCount.setText("Not mentioned");
-            }
-            if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Divorcee")) {
-                RelativeLayout rlLegallyDivorce = findViewById(R.id.rl_legally_divorce);
-                rlLegallyDivorce.setVisibility(View.VISIBLE);
-                TextView tvLegalDivorce = findViewById(R.id.tv_legal_divorce);
-                tvLegalDivorce.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getIsDivorcedLegal());
-            }
-        }
-
-
-        tv_height.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getHeight());
-        tv_weight_tile.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getWeight());
-        tv_skin_tone.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getComplexion());
-        tv_manglik.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getIs_manglik());
-        tv_tv_sampraday.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getSect());
-        tv_disability.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getSpecial_case());
-        tv_smoke.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getSmoke());
-        tv_drink.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getDrink());
-
-        //educational and Family Details
-
-        tv_education = findViewById(R.id.tv_education);
-        tv_occupation = findViewById(R.id.tv_occupation);
-        tv_company = findViewById(R.id.tv_company);
-        tv_business_job = findViewById(R.id.tv_business_job);
-        tv_annual_income = findViewById(R.id.tv_annual_income);
-        tv_degree = findViewById(R.id.tv_degree);
-        tv_family_type = findViewById(R.id.tv_family_type);
-        tv_sakha_gotra_1 = findViewById(R.id.tv_sakha_gotra_1);
-        tv_sakha_gotra_2 = findViewById(R.id.tv_sakha_gotra_2);
-        tv_sakha_gotra_3 = findViewById(R.id.tv_sakha_gotra_3);
-        tv_sakha_gotra_4 = findViewById(R.id.tv_sakha_gotra_4);
-        tv_father_fullname = findViewById(R.id.tv_father_fullname);
-        tv_father_occupation = findViewById(R.id.tv_father_occupation);
-        tv_mother_fullname = findViewById(R.id.tv_mother_fullname);
-        tv_mother_occupation = findViewById(R.id.tv_mother_occupation);
-        tv_family_income = findViewById(R.id.tv_family_income);
-        tv_brothers_fullname = findViewById(R.id.tv_brothers_fullname);
-        tv_sisters = findViewById(R.id.tv_sisters);
-
-        tv_education.setText(userProfileList.getMatrimonial_profile().getEducational_details().getEducation_level());
-        tv_occupation.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getOccupation());
-        tv_company.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getEmployer_company());
-        tv_business_job.setText(userProfileList.getMatrimonial_profile().getOccupational_details().getBusiness_description());
-        tv_annual_income.setText(userProfileList.getMatrimonial_profile().getEducational_details().getIncome());
-        if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree())) {
-            tv_degree.setText(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree());
-        }
-        tv_family_type.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_type());
-        tv_sakha_gotra_1.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getSelf_gotra());
-        tv_sakha_gotra_2.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getMama_gotra());
-        tv_sakha_gotra_3.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getDada_gotra());
-        tv_sakha_gotra_4.setText(userProfileList.getMatrimonial_profile().getFamily_details().getGotra().getNana_gotra());
-        tv_father_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_name());
-        tv_father_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFather_occupation());
-        tv_mother_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getMother_name());
-        tv_mother_occupation.setText(userProfileList.getMatrimonial_profile().getFamily_details().getMother_occupation());
-        tv_family_income.setText(userProfileList.getMatrimonial_profile().getFamily_details().getFamily_income());
-        tv_brothers_fullname.setText(userProfileList.getMatrimonial_profile().getFamily_details().getBrother_count());
-        tv_sisters.setText(userProfileList.getMatrimonial_profile().getFamily_details().getSister_count());
-
-
-        //Residence deatails
-        tv_address = findViewById(R.id.tv_address);
-        tv_town_city = findViewById(R.id.tv_town_city);
-        tv_state = findViewById(R.id.tv_state);
-        tv_country = findViewById(R.id.tv_country);
-        tv_primary_mobile = findViewById(R.id.tv_primary_mobile);
-        tv_secondary_mobile = findViewById(R.id.tv_secondary_mobile);
-        tv_primary_email = findViewById(R.id.tv_primary_email);
-
-        tv_address.setText(userProfileList.getMatrimonial_profile().getResidential_details().getAddress());
-        tv_town_city.setText(userProfileList.getMatrimonial_profile().getResidential_details().getCity());
-        tv_state.setText(userProfileList.getMatrimonial_profile().getResidential_details().getState());
-        tv_country.setText(userProfileList.getMatrimonial_profile().getResidential_details().getCountry());
-        tv_primary_mobile.setText(userProfileList.getMatrimonial_profile().getResidential_details().getPrimary_phone());
-        tv_secondary_mobile.setText(userProfileList.getMatrimonial_profile().getResidential_details().getSecondary_phone());
-        tv_primary_email.setText(userProfileList.getMatrimonial_profile().getResidential_details().getPrimary_email_address());
-
-        //other
-        tv_about_me = findViewById(R.id.tv_about_me);
-        tv_expectations = findViewById(R.id.tv_expectations);
-        tv_activity_chievements = findViewById(R.id.tv_activity_chievements);
-        tv_other = findViewById(R.id.tv_other);
-
-        tv_about_me.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getAbout_me());
-        tv_expectations.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getExpectation_from_life_partner());
-        tv_activity_chievements.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getActivity_achievements());
-        tv_other.setText(userProfileList.getMatrimonial_profile().getOther_marital_information().getOther_remarks());
-
-        //images
-
-        iv_myproof_certificate = findViewById(R.id.iv_myproof_certificate);
-        ly_myproof = findViewById(R.id.ly_myproof);
-
-
-        iv_myproof_certificate.setOnClickListener(this);
-        tv_myproof_title = findViewById(R.id.tv_myproof_title);
-        tv_myproof_title.setOnClickListener(this);
-
-        iv_aadhar = findViewById(R.id.iv_aadhar);
-        iv_education_certificates = findViewById(R.id.iv_education_certificates);
-        iv_aadhar.setOnClickListener(this);
-        iv_education_certificates.setOnClickListener(this);
-        if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())) {
-            Glide.with(this)
-                    .applyDefaultRequestOptions(docRequestOptions)
-                    .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getAadhar_url())
-                    .into(iv_aadhar);
-        }
-        if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())) {
-            Glide.with(this)
-                    .applyDefaultRequestOptions(certificateRequestOptions)
-                    .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getEducational_url())
-                    .into(iv_education_certificates);
-        }
-        if (userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc() != null) {
-            if (!TextUtils.isEmpty(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())) {
-                ly_myproof.setVisibility(View.VISIBLE);
-                tv_myproof_title.setVisibility(View.VISIBLE);
-                if (userProfileList.getMatrimonial_profile().getPersonal_details().
-                        getMarital_status().equalsIgnoreCase("Divorcee")) {
-                    tv_myproof_title.setText("Legal seperation certificate");
-                } else {
-                    tv_myproof_title.setText("Partner's death certificate");
-                }
-                Glide.with(this)
-                        .applyDefaultRequestOptions(certificateRequestOptions)
-                        .load(userProfileList.getMatrimonial_profile().getOther_marital_information().getSupport_doc())
-                        .into(iv_myproof_certificate);
-
-
-            }else {
-                if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
-                    tv_myproof_title.setVisibility(View.GONE);
-                    ly_myproof.setVisibility(View.GONE);
-                }
-            }
-
-        }
-
-        tv_primary_mobile.setOnClickListener(this);
-        tv_secondary_mobile.setOnClickListener(this);
-        tv_primary_email.setOnClickListener(this);
-
-    }
-
-    private void initViewOLD() {
-        presenter = new MatrimonyProfilesDetailsActivityPresenter(this);
-        //for(int i=0;i<IMAGES.length;i++)
-        {
-            if (userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image() != null
-                    && userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image().size() > 0) {
-                ProfileImageList.addAll(userProfileList.getMatrimonial_profile().getOther_marital_information().getProfile_image());
-            }
-        }
-
-        TextView title = findViewById(R.id.toolbar_title);
-        title.setText("Profile Details");
-
-        ImageView img_back = findViewById(R.id.toolbar_back_action);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-        //vpProfileImage = findViewById(R.id.vp_profile_images);
-        vpProfileImage = (ViewPager) findViewById(R.id.viewpager);
-        indicator = (CircleIndicator) findViewById(R.id.circle_indicator);
-
-        setupMeetsViewPager();
-
-        findViewById(R.id.iv_arrow_personal).setOnClickListener(this);
-        findViewById(R.id.iv_arrow_education_occupation).setOnClickListener(this);
-        findViewById(R.id.iv_arrow_family).setOnClickListener(this);
-        findViewById(R.id.iv_arrow_residential).setOnClickListener(this);
-        findViewById(R.id.iv_arrow_other).setOnClickListener(this);
-        findViewById(R.id.iv_arrow_meetlist_details).setOnClickListener(this);
-        findViewById(R.id.btn_mark_attendance).setOnClickListener(this);
-        findViewById(R.id.btn_interview_done).setOnClickListener(this);
-        findViewById(R.id.btn_reject).setOnClickListener(this);
-        findViewById(R.id.btn_approve).setOnClickListener(this);
-        findViewById(R.id.btn_verify_profile).setOnClickListener(this);
-        findViewById(R.id.btn_verify_ids).setOnClickListener(this);
-        findViewById(R.id.btn_verify_edu).setOnClickListener(this);
-        ImageView popupMenu = findViewById(R.id.toolbar_edit_action);
-        popupMenu.setVisibility(View.VISIBLE);
-        popupMenu.setImageResource(R.drawable.ic_popup_menu);
-        popupMenu.setOnClickListener(this);
-
-        btn_interview_done = findViewById(R.id.btn_interview_done);
-        btn_mark_attendance = findViewById(R.id.btn_mark_attendance);
-        btn_verify_ids = findViewById(R.id.btn_verify_ids);
-        btn_verify_edu = findViewById(R.id.btn_verify_edu);
-        //Personal details -
-        tv_name = findViewById(R.id.tv_name);
-        tv_gender = findViewById(R.id.tv_gender);
-        tv_birth_date = findViewById(R.id.tv_birth_date);
-        tv_birth_time = findViewById(R.id.tv_birth_time);
-        tv_age = findViewById(R.id.tv_age);
-        tv_birth_place = findViewById(R.id.tv_birth_place);
-        tv_blood_group = findViewById(R.id.tv_blood_group);
-        tv_marital_status = findViewById(R.id.tv_marital_status);
-        tv_height = findViewById(R.id.tv_height);
-        tv_weight_tile = findViewById(R.id.tv_weight_tile);
-        tv_skin_tone = findViewById(R.id.tv_skin_tone);
-        tv_manglik = findViewById(R.id.tv_manglik);
-        tv_tv_sampraday = findViewById(R.id.tv_tv_sampraday);
-        tv_disability = findViewById(R.id.tv_disability);
-        tv_smoke = findViewById(R.id.tv_smoke);
-        tv_drink = findViewById(R.id.tv_drink);
-        //tv_approval_status = findViewById(R.id.tv_approval_status);
-        tv_premium = findViewById(R.id.tv_premium);
-//        if (userProfileList.isIsPremium()) {
-//            tv_premium.setVisibility(View.VISIBLE);
-//            findViewById(R.id.ly_premium).setVisibility(View.INVISIBLE);
-//        }
-
-        if (userProfileList.isPaid()) {
-            findViewById(R.id.ly_premium).setVisibility(View.VISIBLE);
-            findViewById(R.id.ly_premium).setOnClickListener(this);
-        } else {
-            findViewById(R.id.ly_premium).setVisibility(View.GONE);
-            //findViewById(R.id.ly_premium).setOnClickListener(this);
-        }
-
-        setApprovelFlag();
-
-        TextView txtTitle = findViewById(R.id.tv_title);
-        TextView txtValue = findViewById(R.id.tv_value);
-        txtTitle.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name()
-                + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());
-        String s = new StringBuffer().append(String.valueOf(userProfileList.getMatrimonial_profile().
-                getPersonal_details().getAge() + " years, "))
-                .append(userProfileList.getMatrimonial_profile().getEducational_details().getQualification_degree() + ", ")
-                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status() + ", ")
-                .append(userProfileList.getMatrimonial_profile().getPersonal_details().getSect()).toString();
         txtValue.setText(s);
 
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
@@ -814,6 +556,9 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         //Updating the flags of perticler profile from all profile list.
         Intent updateInfo = new Intent("PROFILE_UPDATE");
         updateInfo.putExtra("isBanned", isBlock);
+        updateInfo.putExtra("approvalType", approvalType);
+        updateInfo.putExtra("setVerified", userProfileList.getMatrimonial_profile().isVerified());
+
         LocalBroadcastManager.getInstance(this).sendBroadcast(updateInfo);
 
     }
@@ -1164,8 +909,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             userProfileList.setIsApproved(Constants.REJECT);
             userProfileList.setUserMeetStatus(Constants.REJECT);
             setApprovelFlag();
-        }
-        if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
+        } else if (Constants.APPROVE.equalsIgnoreCase(approvalType)) {
             userProfileList.setIsApproved(Constants.APPROVE);
             userProfileList.setUserMeetStatus(Constants.APPROVE);
             userProfileList.getMatrimonial_profile().setVerified(true);
