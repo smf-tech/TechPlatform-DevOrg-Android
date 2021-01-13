@@ -40,10 +40,11 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
+        <activity android:name=".view.activities.YouTubeVideoActivity"></activity>
         <activity
             android:name=".view.activities.SELTrainingVideoActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".view.activities.SELTrainingActivity"
             android:screenOrientation="portrait" />
