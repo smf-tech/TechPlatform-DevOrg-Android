@@ -45,7 +45,7 @@ public class YouTubeVideoActivity extends YouTubeBaseActivity implements YouTube
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST) {
-            getYouTubePlayerProvider().initialize(API_KEY, this);
+            getYouTubePlayerProvider().initialize(getString(R.string.youtube_api_key), this);
         }
     }
 
