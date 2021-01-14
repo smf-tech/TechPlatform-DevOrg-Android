@@ -13,7 +13,6 @@ import com.octopusbjsindia.R;
 
 public class YouTubeVideoActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
-    final String API_KEY = "AIzaSyDc6rySe4b9YOnOWISrcsCZzakSJTFKxeo";
     private static final int RECOVERY_REQUEST = 1;
     String TAG = "VideoActivity";
     private YouTubePlayerView youTubePlayerView;
