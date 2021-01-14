@@ -39,6 +39,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
+import com.octopusbjsindia.view.activities.SmartGirlDashboardListActivity;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.adapters.smartGirlAdapters.SmartGirlAnalyticsAdapter;
@@ -77,6 +78,7 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
 
     private boolean isFilterApplied;
     private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
+    private String dashboardResponseString;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +124,7 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
         tvStructureView.setOnClickListener(this);
         tvMachineView.setOnClickListener(this);
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
-        btnSsView.setVisibility(View.VISIBLE);
+        btnSsView.setVisibility(View.GONE);
         btnSsView.setOnClickListener(this);
         btnSsView.setOnLongClickListener(this);
         tvStateFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_state_filter);
@@ -402,10 +404,10 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
         if (isMachineView) {
-            btnSsView.setVisibility(View.VISIBLE);
+        //    btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Machine View");
         } else {
-            btnSsView.setVisibility(View.VISIBLE);
+          //  btnSsView.setVisibility(View.VISIBLE);
         }
         manageUI();
     }
@@ -420,10 +422,10 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
         if (isStructureView) {
-            btnSsView.setVisibility(View.VISIBLE);
+            //btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Structure View");
         } else {
-            btnSsView.setVisibility(View.VISIBLE);
+            //btnSsView.setVisibility(View.VISIBLE);
         }
         manageUI();
     }
@@ -458,6 +460,7 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
     }
 
     public void populateDashboardData(String requestCode, String response) {
+        dashboardResponseString = response;
         SgDashboardResponseModel dashboardResponseModel = PlatformGson.getPlatformGsonInstance().fromJson(response, SgDashboardResponseModel.class);
         //sgDashboardResponseModellist = dashboardResponseModel.getSgDashboardResponseModellist();
         if (dashboardResponseModel != null) {
@@ -632,26 +635,47 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
         Intent intent;
         if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("trainer")){
 
-            intent = new Intent(getActivity(), TrainerBatchListActivity.class);
+            intent = new Intent(getActivity(), SmartGirlDashboardListActivity.class);
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-            intent.putExtra("viewType", viewTypeTrainerList);
+            intent.putExtra("viewType", sgDashboardResponseModellist.get(pos).getSubModule());
             intent.putExtra("title", "");
-            //getActivity().startActivity(intent);
+            intent.putExtra("dashboardresponse",dashboardResponseString);
+            getActivity().startActivity(intent);
         }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("masterTrainer")){
 
-            intent = new Intent(getActivity(), TrainerBatchListActivity.class);
+            intent = new Intent(getActivity(), SmartGirlDashboardListActivity.class);
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-            intent.putExtra("viewType", viewTypeMasterTrainerList);
+            intent.putExtra("viewType", sgDashboardResponseModellist.get(pos).getSubModule());
             intent.putExtra("title", "");
-            //getActivity().startActivity(intent);
+            intent.putExtra("dashboardresponse",dashboardResponseString);
+            getActivity().startActivity(intent);
 
         }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("beneficiary")){
 
+            intent = new Intent(getActivity(), SmartGirlDashboardListActivity.class);
+            intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+            intent.putExtra("viewType", sgDashboardResponseModellist.get(pos).getSubModule());
+            intent.putExtra("title", "");
+            intent.putExtra("dashboardresponse",dashboardResponseString);
+            getActivity().startActivity(intent);
+        }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("Batch")){
+            //Batch
             intent = new Intent(getActivity(), TrainerBatchListActivity.class);
             intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-            intent.putExtra("viewType", viewTypeBeneficiaryList);
+            intent.putExtra("viewTypeint", 1);
+            intent.putExtra("viewType", sgDashboardResponseModellist.get(pos).getSubModule());
             intent.putExtra("title", "");
-            //getActivity().startActivity(intent);
+            intent.putExtra("dashboardresponse",dashboardResponseString);
+            getActivity().startActivity(intent);
+        }else if (sgDashboardResponseModellist.get(pos).getSubModule().equalsIgnoreCase("Workshop")){
+            //Workshop
+            intent = new Intent(getActivity(), SmartGirlWorkshopListActivity.class);
+            intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+            intent.putExtra("viewTypeint", 2);
+            intent.putExtra("viewType", sgDashboardResponseModellist.get(pos).getSubModule());
+            intent.putExtra("title", "");
+            intent.putExtra("dashboardresponse",dashboardResponseString);
+            getActivity().startActivity(intent);
         }
     }
 }

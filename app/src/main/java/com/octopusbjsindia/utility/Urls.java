@@ -238,6 +238,8 @@ public class Urls {
         public static final String EDIT_WORKSHOP_API = "api/editWorkshop";
         public static final String CREATE_WORKSHOP_LIST_API = "api/workshopList";
 
+        public static final String GET_DAHSBOARDS_LIST_API = "api/masterTrainerDashboardList";
+
         public static final String REGISTER_TO_WORKSHOP = "api/registerToWorkshop";
         public static final String ADD_BENEFICIARY_TO_WORKSHOP = "api/addBeneficiaryToWorkshop";
 

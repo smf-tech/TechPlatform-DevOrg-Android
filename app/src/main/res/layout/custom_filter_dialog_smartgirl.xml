@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:id="@+id/linear_dynamic_filterheight"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="visible">
+        <include
+            android:id="@+id/profile_toolbar"
+            layout="@layout/bottomsheet_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_select_category"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/text_size_16"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_marginEnd="@dimen/dimen_03dp"
+                android:background="@drawable/bg_blue_box"
+                android:drawableEnd="@drawable/ic_dropdown_arrow"
+                android:fontFamily="@font/opensans"
+                android:gravity="center_vertical"
+                android:hint="Select Category"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/medium_grey" />
+
+            <TextView
+                android:id="@+id/tv_state_filter"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/text_size_16"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_marginEnd="@dimen/dimen_03dp"
+                android:background="@drawable/bg_blue_box"
+                android:drawableEnd="@drawable/ic_dropdown_arrow"
+                android:fontFamily="@font/opensans"
+                android:gravity="center_vertical"
+                android:hint="@string/state"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/medium_grey" />
+
+            <TextView
+                android:id="@+id/tv_district_filter"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/text_size_16"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_marginEnd="@dimen/dimen_03dp"
+                android:background="@drawable/bg_blue_box"
+                android:drawableEnd="@drawable/ic_dropdown_arrow"
+                android:fontFamily="@font/opensans"
+                android:gravity="center_vertical"
+                android:hint="@string/district"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/medium_grey" />
+
+            <TextView
+                android:id="@+id/tv_taluka_filter"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/text_size_16"
+                android:layout_height="@dimen/dimen_40dp"
+                android:layout_marginEnd="@dimen/dimen_03dp"
+                android:background="@drawable/bg_blue_box"
+                android:drawableEnd="@drawable/ic_dropdown_arrow"
+                android:fontFamily="@font/opensans"
+                android:gravity="center_vertical"
+                android:hint="@string/taluka"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:singleLine="true"
+                android:textColorHint="@color/medium_grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_date_selection_linear"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_date"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tly_title"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/tv_startdate"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/task_start_date"
+                        android:inputType="date"
+                        android:longClickable="false"/>
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_date"
+                    style="@style/textinputstyle"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tly_title"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                    <EditText
+                        android:id="@+id/tv_enddate"
+                        style="@style/RegistrationEditTextLayout"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:focusable="false"
+                        android:hint="@string/task_end_date"
+                        android:inputType="date"
+                        android:longClickable="false"/>
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_custom_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_apply"
+                style="@style/AppStyleBorderButton"
+                android:layout_width="wrap_content"
+                android:text="Apply"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible"
+                android:layout_margin="@dimen/dimen_40dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

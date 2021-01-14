@@ -40,6 +40,9 @@ public class TrainerBachList {
     @SerializedName("venue")
     @Expose
     private String venue;
+    @SerializedName("zoomlink")
+    @Expose
+    private String zoomlink;
     @SerializedName("total_praticipants")
     @Expose
     private String total_praticipants;
@@ -80,6 +83,19 @@ public class TrainerBachList {
     @SerializedName("category")
     @Expose
     private Category category;
+
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
+    @SerializedName("sequence")
+    @Expose
+    private String sequence;
 
     public List<TrainerList> getTrainerList() {
         return trainerList;
@@ -256,5 +272,13 @@ public class TrainerBachList {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getZoomlink() {
+        return zoomlink;
+    }
+
+    public void setZoomlink(String zoomlink) {
+        this.zoomlink = zoomlink;
     }
 }

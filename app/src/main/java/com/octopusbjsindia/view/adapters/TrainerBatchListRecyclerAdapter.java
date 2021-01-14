@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -69,6 +71,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         if (dataList.get(position).getTitle()!=null) {
             holder.tv_title_batch.setText(dataList.get(position).getTitle());
         }
+        holder.tv_batch_number.setText(dataList.get(position).getSequence());
         holder.tv_main_trainer_name.setText(Util.getBatchCreatedDate(dataList.get(position).getCreated_at(),DAY_MONTH_YEAR));
         holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
@@ -84,10 +87,11 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         }
 
         holder.tv_city_value.setText(dataList.get(position).getCity());
+        //removing total participant count
         if (dataList.get(position).getTrainerList()!=null) {
-            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getTrainerList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getTrainerList().size()));//holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getTrainerList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
         }else {
-            holder.tv_attendence_value.setText("0"+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+            holder.tv_attendence_value.setText("0");//dataList.get(position).getTotal_praticipants());
         }
         holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getStartDate(),DAY_MONTH_YEAR));
         holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getBatchschedule().getEndDate(),DAY_MONTH_YEAR));
@@ -104,6 +108,27 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
             holder.tv_additional_trainer_two_phone.setText(dataList.get(position).getAdditional_master_trainer().getUser_phone());
+        }else {
+            holder.layout_trainer_two.setVisibility(View.GONE);
+        }
+
+        if (dataList.get(position).getCurrentUserBatchData()!=null) {
+            if (!dataList.get(position).getCurrentUserBatchData().get(0).getPostFeedBackStatus()) {
+                holder.tv_feedback_status.setText("Feedback Pending");
+                holder.tv_feedback_status.setVisibility(View.VISIBLE);
+            }
+        }else {
+            holder.tv_feedback_status.setText("Feedback Pending");
+            holder.tv_feedback_status.setVisibility(View.VISIBLE);
+        }
+        if (dataList.get(position).getZoomlink()!=null && !TextUtils.isEmpty(dataList.get(position).getZoomlink())) {
+            holder.layout_zoomlink.setVisibility(View.VISIBLE);
+            holder.tv_zoom_link.setVisibility(View.VISIBLE);
+            holder.tv_zoom_link.setText(""+dataList.get(position).getZoomlink().toString());
+
+        }else {
+            holder.tv_zoom_link.setVisibility(View.GONE);
+            holder.layout_zoomlink.setVisibility(View.GONE);
         }
 
         //holder.tv_startdate_value.setText(String.valueOf(dataList.get(position).getBatchschedule().getStartDate()));
@@ -124,11 +149,14 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
         TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_venue_value,tv_title_batch,
                 tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_main_trainer_name,tv_register_lable
-        ,tv_additional_trainer_phone,tv_additional_trainer_two_phone;
+        ,tv_additional_trainer_phone,tv_additional_trainer_two_phone,tv_zoom_link,
+        tv_feedback_status,tv_batch_number;
 
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
+        LinearLayout layout_zoomlink;
+        RelativeLayout layout_trainer_two;
 
 
         EmployeeViewHolder(View itemView) {
@@ -137,6 +165,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             tv_additional_trainer_two_phone = itemView.findViewById(R.id.tv_additional_trainer_two_phone);
             tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
+            tv_batch_number = itemView.findViewById(R.id.tv_batch_number);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
@@ -149,6 +178,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             tv_enddate_value = itemView.findViewById(R.id.tv_enddate_value);
             tv_additional_trainer_value = itemView.findViewById(R.id.tv_additional_trainer_value);
             tv_additional_trainer_tow_value = itemView.findViewById(R.id.tv_additional_trainer_tow_value);
+            tv_zoom_link = itemView.findViewById(R.id.tv_zoom_link);
+            layout_zoomlink = itemView.findViewById(R.id.layout_zoomlink);
+            layout_trainer_two = itemView.findViewById(R.id.layout_trainer_two);
+            tv_feedback_status = itemView.findViewById(R.id.tv_feedback_status);
 
             tv_main_trainer_name = itemView.findViewById(R.id.tv_main_trainer_name);
             //btn_approve = itemView.findViewById(R.id.btn_approve);

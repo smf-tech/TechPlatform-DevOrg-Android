@@ -11,6 +11,9 @@ public class SgDashboardResponseModelList {
     @SerializedName("count")
     @Expose
     private Integer count;
+    @SerializedName("jurisdictions")
+    @Expose
+    private Jurisdictions jurisdictions;
 
     public String getSubModule() {
         return subModule;
@@ -26,5 +29,13 @@ public class SgDashboardResponseModelList {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Jurisdictions getJurisdictions() {
+        return jurisdictions;
+    }
+
+    public void setJurisdictions(Jurisdictions jurisdictions) {
+        this.jurisdictions = jurisdictions;
     }
 }
