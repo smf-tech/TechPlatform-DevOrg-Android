@@ -700,10 +700,11 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             map.put("taluka_id", userTalukaIds);
         }
 
-        //if(!TextUtils.isEmpty(categoryId))
+        /*if(!TextUtils.isEmpty(categoryId))
         {
             map.put("category_id", categoryId);
-        }
+        }*/
+        map.put("category_id", categoryId);
         if(!TextUtils.isEmpty(StringListType)){
             map.put("type", StringListType);
         }else {
@@ -816,10 +817,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             Gson gson = new GsonBuilder().create();
             map = gson.fromJson(type,HashMap.class);
 
-            //if(!TextUtils.isEmpty(categoryId))
-            {
-                        map.put("category_id", categoryId);
-                }
+
             if(!TextUtils.isEmpty(StringListType)){
                 map.put("type", StringListType);
             }

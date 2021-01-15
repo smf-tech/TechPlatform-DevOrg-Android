@@ -300,12 +300,16 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 {
                         map.put("taluka_id", selectedTalukaId);
                 }
-                if(!TextUtils.isEmpty("startdate")){
-                        map.put("startdate", "");
-                }
-                if(!TextUtils.isEmpty("enddate")){
-                        map.put("enddate", "");
-                }
+                /*if(!TextUtils.isEmpty("startdate"))
+                {
+                        map.put("startdate",""+Util.getDateInepoch(tv_startdate.getText().toString()));
+                }*/
+                map.put("startdate",""+Util.getDateInepoch(tv_startdate.getText().toString()));
+                /*//if(!TextUtils.isEmpty("enddate"))
+                {
+                        map.put("enddate",""+Util.getDateInepoch(tv_enddate.getText().toString()));
+                }*/
+                map.put("enddate",""+Util.getDateInepoch(tv_enddate.getText().toString()));
                 /*if(!TextUtils.isEmpty(taluka_id)){
                         map.put("category_id", categoryId);
                 }
