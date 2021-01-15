@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activities.SmartGirlDashboardListActivity">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar"/>
+    <LinearLayout
+        android:id="@+id/ly_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tv_state_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_03dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/state"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <TextView
+            android:id="@+id/tv_district_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginEnd="@dimen/dimen_03dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_10dp"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/district"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <TextView
+            android:id="@+id/tv_taluka_filter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_weight="3.2"
+            android:background="@drawable/bg_blue_box"
+            android:drawableEnd="@drawable/ic_dropdown_arrow"
+            android:drawablePadding="@dimen/dimen_03dp"
+            android:fontFamily="@font/opensans"
+            android:gravity="center_vertical"
+            android:hint="@string/taluka"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/medium_grey" />
+
+        <ImageView
+            android:id="@+id/btn_filter_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_weight="0.4"
+            android:padding="@dimen/dimen_03dp"
+            android:src="@drawable/ic_cancel_filter"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/ly_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/iv_no_data"
+                android:layout_width="@dimen/standard_240"
+                android:layout_height="@dimen/standard_240"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_no_data"/>
+            <TextView
+                android:layout_below="@+id/iv_no_data"
+                android:id="@+id/tv_no_data_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="No Data Available"/>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/rv_dashboard_listview"
+            android:layout_weight="1"
+
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_05dp" />
+    </RelativeLayout>
+
+</LinearLayout>

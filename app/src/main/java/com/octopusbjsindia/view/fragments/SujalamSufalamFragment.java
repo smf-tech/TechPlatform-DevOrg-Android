@@ -504,6 +504,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                     }
                 }
                 //if (!isTalukaApiFirstCall) {
+
                 CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
                         this, "Select Taluka", machineTalukaList,
                         true);

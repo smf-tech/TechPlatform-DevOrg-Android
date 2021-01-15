@@ -17,6 +17,18 @@ public class WorkshopBachList {
     @SerializedName("title")
     @Expose
     private String title;
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
+    @SerializedName("sequence")
+    @Expose
+    private String sequence;
     @SerializedName("state_id")
     @Expose
     private String state_id;
@@ -29,6 +41,11 @@ public class WorkshopBachList {
     @SerializedName("venue")
     @Expose
     private String venue;
+    @SerializedName("zoomlink")
+    @Expose
+    private String zoomlink;
+
+
     @SerializedName("total_praticipants")
     @Expose
     private String total_praticipants;
@@ -249,5 +266,13 @@ public class WorkshopBachList {
 
     public void setCurrentUserWorkShopData(List<BeneficiariesList> currentUserWorkShopData) {
         this.currentUserWorkShopData = currentUserWorkShopData;
+    }
+
+    public String getZoomlink() {
+        return zoomlink;
+    }
+
+    public void setZoomlink(String zoomlink) {
+        this.zoomlink = zoomlink;
     }
 }

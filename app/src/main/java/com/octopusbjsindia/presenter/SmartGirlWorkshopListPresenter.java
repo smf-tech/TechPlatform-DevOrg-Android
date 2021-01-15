@@ -7,12 +7,10 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
-import com.octopusbjsindia.models.smartgirl.TrainerBachListResponseModel;
 import com.octopusbjsindia.models.smartgirl.WorkshopBachListResponseModel;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
-import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -99,6 +97,23 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_CATEGORY, getRoleAccessUrl);
+    }
+
+    //new api to get workshop list
+    public void getBatchList(String requestJson, String apiUrl){
+        //old
+        /*final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.CREATE_WORKSHOP_LIST_API);*/
+        //new dec 2020
+        /*final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);*/
+
+        Log.d("TAG", "getwoskshoplist: url" + apiUrl);
+        Log.d("TAG", "requestjson" + requestJson);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_CATEGORY,requestJson,apiUrl);
+
     }
 
   /*  public void createBatch(String requestJson) {

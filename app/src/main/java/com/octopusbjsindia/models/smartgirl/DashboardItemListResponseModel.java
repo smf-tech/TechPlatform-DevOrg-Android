@@ -3,10 +3,7 @@ package com.octopusbjsindia.models.smartgirl;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class WorkshopBachListResponseModel {
-
+public class DashboardItemListResponseModel {
     @SerializedName("status")
     @Expose
     private String status;
@@ -15,7 +12,7 @@ public class WorkshopBachListResponseModel {
     private String message;
     @SerializedName("data")
     @Expose
-    private WorkshopBachListResponse workshopBachListResponse;
+    private DashboardItemListResponse dashboardItemListResponse;
 
     public String getStatus() {
         return status;
@@ -33,12 +30,11 @@ public class WorkshopBachListResponseModel {
         this.message = message;
     }
 
-
-    public WorkshopBachListResponse getWorkshopBachListResponse() {
-        return workshopBachListResponse;
+    public DashboardItemListResponse getDashboardItemListResponse() {
+        return dashboardItemListResponse;
     }
 
-    public void setWorkshopBachListResponse(WorkshopBachListResponse workshopBachListResponse) {
-        this.workshopBachListResponse = workshopBachListResponse;
+    public void setDashboardItemListResponse(DashboardItemListResponse dashboardItemListResponse) {
+        this.dashboardItemListResponse = dashboardItemListResponse;
     }
 }

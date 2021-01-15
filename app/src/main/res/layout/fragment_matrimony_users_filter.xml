@@ -223,6 +223,20 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/et_education_level"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/education_level"
+                        android:editable="false"
+                        android:longClickable="false"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
                         android:id="@+id/et_qualification"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/qualification"

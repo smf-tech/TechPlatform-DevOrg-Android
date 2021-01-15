@@ -445,6 +445,7 @@ public class Constants {
         public static final String APP_CONFIG_RESPONSE = "appconfigresponse";
     }
     public static class SmartGirlModule {
+        public static final int CODE_IS_DATE_NEEDED = 303;
 
         public static final String BENEFICIARY_ID = "beneficiary_id";
         public static final String TRAINER_ID = "trainer_id";
@@ -480,10 +481,13 @@ public class Constants {
         public static final int ACCESS_CODE_CANCEL_BATCH = 152;
         public static final int ACCESS_CODE_CANCEL_WORKSHOP = 153;
 
+        // TODO
+        public static final int ACCESS_CODE_WORKSHOP_SUPPORT = 158;
+        public static final int ACCESS_CODE_BATCH_SUPPORT = 157;
 
 //prod
 
-        public static final String MOCK_TEST_FORM = "5f33e9da9f8b7d2ba4493e93";
+        /*public static final String MOCK_TEST_FORM = "5f33e9da9f8b7d2ba4493e93";
         public static final String PRE_TEST_FORM = "5f33e8f69f8b7d2ba4493e92";
 
         public static final String ORGANISER_FEEDBACK_FORM = "5f33e4c75b5f3a3fb534e224";
@@ -498,8 +502,12 @@ public class Constants {
         public static final String PRE_FEEDBACK_WORKSHOP_FORM = "5f33e971da9b5736bf1d1fb4";
         public static final String POST_FEEDBACK_WORKSHOP_FORM = "5f33eafb9f8b7d2ba4493e94";
 
+
+        public static final String BATCH_SUPPORT_DOC_FORM = "5faa228906398b0e09183e44";
+        public static final String WORKSHOP_SUPPORT_DOC_FORM = "5faa222e244ba177f315802a";*/
+
 //stage
-    /*    public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
+        public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
         public static final String PRE_TEST_FORM = "5ea6a6b385046668f74b7f97";
 
         public static final String ORGANISER_FEEDBACK_FORM = "5ea7cb4849c5d7695b51203f";
@@ -513,7 +521,9 @@ public class Constants {
 
         public static final String PRE_FEEDBACK_WORKSHOP_FORM = "5ea7bf66ba182a798b313c48";
         public static final String POST_FEEDBACK_WORKSHOP_FORM = "5ea7c6ad49c5d7695b51203e";
-        */
+
+        public static final String BATCH_SUPPORT_DOC_FORM = "5fa64c482d366d1445425ff3";
+        public static final String WORKSHOP_SUPPORT_DOC_FORM = "5fa6468e2d366d1445425ff2";
 
 
     }

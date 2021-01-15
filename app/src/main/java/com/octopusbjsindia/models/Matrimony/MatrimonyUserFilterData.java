@@ -10,6 +10,7 @@ public class MatrimonyUserFilterData {
     private String gender;
     private String user_sect;
     private String qualification_degrees;
+    private String education_level;
     private String marital_status;
     private String user_paid_free;
     private String meet_id;
@@ -119,4 +120,11 @@ public class MatrimonyUserFilterData {
         this.user_sect = user_sect;
     }
 
+    public String getEducation_level() {
+        return education_level;
+    }
+
+    public void setEducation_level(String education_level) {
+        this.education_level = education_level;
+    }
 }

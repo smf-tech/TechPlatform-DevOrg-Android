@@ -56,8 +56,8 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
     //------
     public EditText tv_startdate, tv_enddate;
     public EditText et_select_state_trainer, et_select_district_trainer,et_title_workshop;
-    public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries;
-    public String et_select_program_str = "", et_workshop_category_str = "", et_select_state_str = "", et_select_district_str = "", et_select_city_str = "", et_select_venue_str = "", et_traner_name_str = "", et_traner_additional_id = "", et_total_beneficiaries__str = "";
+    public EditText et_select_program, et_workshop_category, et_select_state, et_select_district, et_select_city, et_select_venue, et_traner_name, et_traner_additional, et_total_beneficiaries,et_zoomlink;
+    public String et_select_program_str = "", et_workshop_category_str = "", et_select_state_str = "", et_select_district_str = "", et_select_city_str = "", et_select_venue_str = "", et_traner_name_str = "", et_traner_additional_id = "", et_total_beneficiaries__str = "",et_zoomlink_str = "";
     public String et_select_state_str_trainer, et_select_district_str_trainer;
     public CreateWorkshopSmartgirlPresenter presenter;
     private Button btn_create_batch, btn_cancel;
@@ -92,6 +92,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         tv_startdate.setText(Util.getCurrentDate());
         tv_enddate.setText(Util.getCurrentDate());
         et_total_beneficiaries = findViewById(R.id.et_total_beneficiaries);
+        et_zoomlink = findViewById(R.id.et_zoomlink);
         et_select_program = findViewById(R.id.et_select_program);
 
         et_workshop_category = findViewById(R.id.et_workshop_category);
@@ -598,6 +599,7 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
         requestObject.addProperty("startDate", Util.getDateInepoch(tv_startdate.getText().toString()));
         requestObject.addProperty("endDate", Util.getDateInepoch(tv_enddate.getText().toString()));
         requestObject.addProperty("total_praticipants", et_total_beneficiaries.getText().toString());
+        requestObject.addProperty("zoomlink", et_zoomlink.getText().toString());
         JsonObject trainerObject = new JsonObject();
         /*trainerObject.addProperty("state_id", "5e2eb9b6385c23393400741a");
         trainerObject.addProperty("district_id", "5e2eb9e6385c23393400741d");
@@ -648,9 +650,11 @@ public class CreateWorkshopSmartgirlActivity extends AppCompatActivity implement
             msg = "Please select the end date.";//getResources().getString(R.string.msg_enter_proper_date);
         } else if (et_total_beneficiaries.getText().toString().trim().length() == 0) {
             msg = "Please enter total beneficiaries.";//getResources().getString(R.string.msg_enter_proper_date);
-        } else if (et_traner_additional.getText().toString().trim().length() == 0) {
-            msg = "Please Select additional trainer.";//getResources().getString(R.string.msg_enter_proper_date);
         }
+        //optional from 7 jan as per smartgirl team request
+        /* else if (et_traner_additional.getText().toString().trim().length() == 0) {
+            msg = "Please Select additional trainer.";//getResources().getString(R.string.msg_enter_proper_date);
+        }*/
         /*else if (et_education.getText().toString().trim().length() == 0) {
             msg = "Please enter the qualification.";//getResources().getString(R.string.msg_enter_proper_date);
         }*/

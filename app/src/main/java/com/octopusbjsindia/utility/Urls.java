@@ -120,6 +120,9 @@ public class Urls {
         public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
         public static final String ALL_FILTER_USERS ="api/getAllFilterUsers";
         public static final String GET_FILTER_MASTER_DATA = "api/matrimonyUserFilterMasterData";
+        //added new filter education level in master data
+        public static final String GET_FILTER_MASTER_DATA_V2 = "api/matrimonyUserFilterMasterDataV2";
+
         public static final String USER_DOC_VERIFY_API = "api/documentVerificaton";
         public static final String CRITERIA_MASTER_DATA = "api/masterDataMeetCriteria";
         public static final String BANNED_USERS = "api/bannedUsers";
@@ -234,6 +237,8 @@ public class Urls {
         public static final String CREATE_WORKSHOP_API = "api/createWorkshop";
         public static final String EDIT_WORKSHOP_API = "api/editWorkshop";
         public static final String CREATE_WORKSHOP_LIST_API = "api/workshopList";
+
+        public static final String GET_DAHSBOARDS_LIST_API = "api/masterTrainerDashboardList";
 
         public static final String REGISTER_TO_WORKSHOP = "api/registerToWorkshop";
         public static final String ADD_BENEFICIARY_TO_WORKSHOP = "api/addBeneficiaryToWorkshop";

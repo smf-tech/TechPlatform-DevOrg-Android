@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -66,6 +68,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         if (dataList.get(position).getTitle()!=null) {
             holder.tv_title_batch.setText(dataList.get(position).getTitle());
         }
+        holder.tv_batch_number.setText(dataList.get(position).getSequence());
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_main_trainer_name.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }
@@ -85,10 +88,11 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         }
 
         holder.tv_city_value.setText(dataList.get(position).getCity());
+        //removing total count from 7jan
         if (dataList.get(position).getBeneficiariesList()!=null) {
-            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getBeneficiariesList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+            holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getBeneficiariesList().size()));//holder.tv_attendence_value.setText(String.valueOf(dataList.get(position).getBeneficiariesList().size())+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
         }else {
-            holder.tv_attendence_value.setText("0"+"/"+dataList.get(position).getTotal_praticipants());//dataList.get(position).getTotal_praticipants());
+            holder.tv_attendence_value.setText("0");//dataList.get(position).getTotal_praticipants());
         }
         holder.tv_startdate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getStartDate(),DAY_MONTH_YEAR));
         holder.tv_enddate_value.setText(Util.getDateFromTimestamp(dataList.get(position).getWorkShopSchedule().getEndDate(),DAY_MONTH_YEAR));
@@ -105,8 +109,31 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_additional_trainer_tow_value.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
             holder.tv_additional_trainer_two_phone.setText(dataList.get(position).getAdditional_master_trainer().getUser_phone());
+        }else {
+            holder.layout_trainer_two.setVisibility(View.GONE);
         }
 
+
+        if (dataList.get(position).getCurrentUserWorkShopData()!=null) {
+            if (!dataList.get(position).getCurrentUserWorkShopData().get(0).getPostFeedBackStatus()) {
+                holder.tv_feedback_status.setText("Feedback Pending");
+                holder.tv_feedback_status.setVisibility(View.VISIBLE);
+            }
+        }else {
+            holder.tv_feedback_status.setText("Feedback Pending");
+            holder.tv_feedback_status.setVisibility(View.VISIBLE);
+        }
+
+
+        if (dataList.get(position).getZoomlink()!=null && !TextUtils.isEmpty(dataList.get(position).getZoomlink())) {
+            holder.layout_zoomlink.setVisibility(View.VISIBLE);
+            holder.tv_zoom_link.setVisibility(View.VISIBLE);
+            holder.tv_zoom_link.setText(""+dataList.get(position).getZoomlink().toString());
+
+        }else {
+            holder.layout_zoomlink.setVisibility(View.GONE);
+            holder.tv_zoom_link.setVisibility(View.GONE);
+        }
 
         //holder.tv_startdate_value.setText(String.valueOf(dataList.get(position).getBatchschedule().getStartDate()));
         //holder.tv_enddate_value.setText(String.valueOf(dataList.get(position).getBatchschedule().getStartDate()));
@@ -126,11 +153,13 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
 
         TextView tv_state_value, tv_district_value, tv_program_value, tv_category_value, tv_city_value,tv_main_trainer_name,tv_venue_value,tv_title_batch,
                 tv_attendence_value, tv_startdate_value, tv_enddate_value, tv_additional_trainer_value,tv_additional_trainer_tow_value,tv_register_lable
-        ,tv_additional_trainer_phone,tv_additional_trainer_two_phone;
+        ,tv_additional_trainer_phone,tv_additional_trainer_two_phone,tv_zoom_link,
+                tv_feedback_status,tv_batch_number;
         ImageView btnPopupMenu;
         PopupMenu popup;
         Button btn_view_members;
-
+        LinearLayout layout_zoomlink;
+        RelativeLayout layout_trainer_two;
 
         EmployeeViewHolder(View itemView) {
             super(itemView);
@@ -140,6 +169,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
             tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
+            tv_batch_number = itemView.findViewById(R.id.tv_batch_number);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
             tv_main_trainer_name = itemView.findViewById(R.id.tv_main_trainer_name);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
@@ -152,6 +182,11 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
             tv_enddate_value = itemView.findViewById(R.id.tv_enddate_value);
             tv_additional_trainer_value = itemView.findViewById(R.id.tv_additional_trainer_value);
             tv_additional_trainer_tow_value = itemView.findViewById(R.id.tv_additional_trainer_tow_value);
+
+            tv_zoom_link = itemView.findViewById(R.id.tv_zoom_link);
+            layout_zoomlink = itemView.findViewById(R.id.layout_zoomlink);
+            layout_trainer_two = itemView.findViewById(R.id.layout_trainer_two);
+            tv_feedback_status = itemView.findViewById(R.id.tv_feedback_status);
 
             //btn_approve = itemView.findViewById(R.id.btn_approve);
             //btn_reject = itemView.findViewById(R.id.btn_reject);
@@ -228,6 +263,9 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                     break;
                                 case Constants.SmartGirlModule.ACCESS_CODE_PARENTS_FEEDBACK:
                                     popup.getMenu().findItem(R.id.action_parent_feedback).setVisible(true);
+                                    break;
+                                case Constants.SmartGirlModule.ACCESS_CODE_WORKSHOP_SUPPORT:
+                                    popup.getMenu().findItem(R.id.action_workshop_supportdoc).setVisible(true);
                                     break;
 
 
@@ -356,6 +394,13 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                                     case R.id.action_edit_batch:
                                         if (Util.isConnected(mContext)) {
                                             ((SmartGirlWorkshopListActivity)mContext).EditWorkshopRequest(getAdapterPosition());
+                                        } else {
+                                            Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
+                                        }
+                                        break;
+                                    case R.id.action_workshop_supportdoc:
+                                        if (Util.isConnected(mContext)) {
+                                            ((SmartGirlWorkshopListActivity)mContext).addWorkshopSupportDocFragment(getAdapterPosition());
                                         } else {
                                             Util.showToast(mContext.getString(R.string.msg_no_network), mContext);
                                         }

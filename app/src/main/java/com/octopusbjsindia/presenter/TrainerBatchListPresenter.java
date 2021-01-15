@@ -118,6 +118,23 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(GET_CATEGORY, getRoleAccessUrl);
     }
 
+    //new api to get batch list
+    public void getBatchList(String requestJson, String apiUrl){
+        //old
+        /*final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.CREATE_WORKSHOP_LIST_API);*/
+        //new dec 2020
+        /*final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);*/
+
+        Log.d("TAG", "getwoskshoplist: url" + apiUrl);
+        Log.d("TAG", "requestjson" + requestJson);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_CATEGORY,requestJson,apiUrl);
+
+    }
+
     //Get All Trainer list-
     public void getAllTrainerList() {
         final String getRoleAccessUrl = BuildConfig.BASE_URL

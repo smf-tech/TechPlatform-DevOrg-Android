@@ -802,5 +802,6 @@
     <string name="mandatory_center">Learning Center *</string>
     <string name="msg_select_center">Please select Learning Center</string>
     <string name="find_by_mobile">Find by mobile number</string>
+    <string name="education_level">Education Level</string>
 
 </resources>

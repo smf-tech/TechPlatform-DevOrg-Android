@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.volley.VolleyError;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.Matrimony.MatrimonyMasterRequestModel;
 import com.octopusbjsindia.models.Matrimony.MatrimonyUserFilterData;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
@@ -55,9 +56,19 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         this.verificationStatusList = verificationStatusList;
     }
 
+    public List<MatrimonyMasterRequestModel.DataList.Master_data> getMasterDataArrayList() {
+        return masterDataArrayList;
+    }
+
+    public void setMasterDataArrayList(List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList) {
+        this.masterDataArrayList = masterDataArrayList;
+    }
+
+    public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetStatusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> verificationStatusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> qualificationList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> educationList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> genderList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> sectList = new ArrayList<>();
 
@@ -170,6 +181,13 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         this.stateList = stateList;
     }
 
+    public ArrayList<CustomSpinnerObject> getEducationList() {
+        return educationList;
+    }
+
+    public void setEducationList(ArrayList<CustomSpinnerObject> educationList) {
+        this.educationList = educationList;
+    }
     public ArrayList<CustomSpinnerObject> getQualificationList() {
         return qualificationList;
     }
