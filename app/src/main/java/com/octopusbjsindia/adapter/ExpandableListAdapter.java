@@ -33,6 +33,7 @@ import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.LanguageDetail;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.YouTubeVideoActivity;
 import com.octopusbjsindia.view.fragments.ContentManagementFragment;
 
 import java.io.File;
@@ -149,8 +150,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
                 if(contentData.getFileType().equalsIgnoreCase("youtube")){
                     if (Util.isConnected(context)) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+//                        context.startActivity(new Intent(Intent.ACTION_VIEW,
+//                                Uri.parse(languageDetailsList.get(0).getDownloadUrl())));
+                        Intent intent = new Intent(contentManagementFragment.getActivity(), YouTubeVideoActivity.class);
+                        intent.putExtra("videoId", languageDetailsList.get(0).getDownloadUrl());
+                        context.startActivity(intent);
                     } else {
                         Util.showToast(context.getString(R.string.msg_no_network), context);
                     }

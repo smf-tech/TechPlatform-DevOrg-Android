@@ -49,7 +49,6 @@ import java.util.Locale;
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
     private EventTask eventTask;
-
     private ImageView backButton;
     private ImageView editButton;
     private ImageView toolbarAction;
@@ -74,7 +73,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-
         initView();
     }
 
@@ -321,7 +319,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 snackbar.dismiss();
                 break;
             case R.id.event_pic:
-
                 showEnlargeImage(eventTask.getThumbnailImage());
                 break;
         }

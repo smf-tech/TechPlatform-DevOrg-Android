@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/ly_toolbar"
+        layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ly_toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ly_toolbar">
+
+            <TextView
+                android:id="@+id/tv_video_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Video Tutorial"
+                android:textSize="@dimen/text_size_16"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensans_semibold"
+                android:layout_marginStart="@dimen/dimen_10dp"></TextView>
+
+            <RelativeLayout
+                android:id="@+id/ly_thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_video_label">
+
+                <ImageView
+                    android:id="@+id/iv_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_300dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"></ImageView>
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_60dp"
+                    android:layout_height="@dimen/dimen_60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_video_play" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_reading_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensans_semibold"
+                android:layout_below="@+id/ly_thumbnail"
+                android:textSize="@dimen/text_size_16"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:text="Reading Content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_reading_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_reading_label" />
+
+            <TextView
+                android:id="@+id/tv_assignment_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensans_semibold"
+                android:layout_below="@+id/rv_reading_content"
+                android:textSize="@dimen/text_size_16"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:text="Assignment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_form_assignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_assignment_label" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

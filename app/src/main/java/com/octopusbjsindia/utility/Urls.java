@@ -208,7 +208,6 @@ public class Urls {
 
     public class SmartGirl{
         public static final String GET_MASTER_TRAINER_DASHBOARD = "api/masterTrainerDashboard";
-
         public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
         public static final String CREATE_BATCH_API = "api/createBatch";
         public static final String EDIT_BATCH_API = "api/editBatch";
@@ -260,5 +259,10 @@ public class Urls {
         public static final String GET_TICKETS = "api/getTicketList";
         public static final String ASSIGN_TICKETS = "api/assignTicket";
         public static final String CHANGE_STATUS = "api/changeStatus";
+    }
+
+    public class SEL {
+        public static final String GET_SEL_CONTENT = "api/get_training_videos";
+        public static final String SEND_VIDEO_STATUS = "api/send_video_status";
     }
 }

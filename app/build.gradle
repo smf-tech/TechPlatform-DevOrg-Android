@@ -134,6 +134,7 @@ dependencies {
     implementation 'com.budiyev.android:circular-progress-bar:1.2.2'
     //age selection range view library
     implementation 'me.bendik.simplerangeview:simplerangeview:0.2.0'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

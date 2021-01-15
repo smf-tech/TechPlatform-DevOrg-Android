@@ -75,14 +75,13 @@ public class TaskFormsListAdapter extends RecyclerView.Adapter<TaskFormsListAdap
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    taskFormsList.get(getAdapterPosition()).getId();
+                    //taskFormsList.get(getAdapterPosition()).getId();
                     //Intent intent = new Intent(mContext, FormActivity.class);
                     Intent intent = new Intent(mContext, FormDisplayActivity.class);
                     intent.putExtra(Constants.PM.FORM_ID, taskFormsList.get(getAdapterPosition()).getId());
 //                    intent.putExtra(Constants.PM.PROCESS_ID, taskFormsList.get(getAdapterPosition()).getId());
 //                    intent.putExtra(Constants.PM.EDIT_MODE, true);
 //                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
-
                     mContext.startActivity(intent);
                 }
             });
