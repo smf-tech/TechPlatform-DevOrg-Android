@@ -265,7 +265,7 @@
     <string name="task_end_time">End Time</string>
     <string name="task_repeat">Repeat</string>
     <string name="task_description">Description</string>
-    <string name="task_address">Address</string>
+    <string name="task_address">Address or Training link</string>
     <string name="task_add_members">Members list</string>
     <string name="add_members">Add Members</string>
     <string name="my_events">Created by me</string>
@@ -409,7 +409,7 @@
     <string name="msg_enter_end_date">Please enter the end date.</string>
     <string name="msg_enter_ned_date">Please enter the end time.</string>
     <string name="msg_enter_start_time">Please enter the start time.</string>
-    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_address">Please enter the address or training link.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
     <string name="msg_title_length">Title length can not be greater than 50 characters.</string>

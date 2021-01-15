@@ -156,26 +156,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                         }
                     }
 
-//                    if (element.isRequired()) {
-//                        if (isImageSelected) {
-//                            hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
-//                                    get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
-//
-//                            hashMap.put(element.getName() + "Uri", finalUri.toString());
-//                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
-//                        } else {
-//                            Util.showToast("Please select image.", this);
-//                        }
-//                    } else {
-//                        if (isImageSelected) {
-//                            hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
-//                                    get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
-//
-//                            hashMap.put(element.getName() + "Uri", finalUri.toString());
-//                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
-//                        }
-//                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
-//                    }
                 }
                 break;
         }
