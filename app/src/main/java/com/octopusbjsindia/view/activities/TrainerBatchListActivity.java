@@ -116,7 +116,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         toolbar_back_action = findViewById(R.id.toolbar_back_action);
         toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         toolbar_action  = findViewById(R.id.toolbar_action);
-        toolbar_edit_action.setVisibility(View.INVISIBLE);
+        toolbar_edit_action.setVisibility(View.GONE);
         toolbar_edit_action.setImageResource(R.drawable.ic_plus);
         toolbar_action.setVisibility(View.VISIBLE);
         toolbar_action.setImageResource(R.drawable.ic_filter_white);
@@ -676,6 +676,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                 try {
                     fManager.popBackStackImmediate();
                     rv_trainerbactchlistview.setVisibility(View.VISIBLE);
+                    dataList.clear();
                     callWorkshopListApi(useDefaultRequest(),"");
                 } catch (IllegalStateException e) {
                     Log.e("TAG", e.getMessage());
@@ -824,9 +825,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT && data != null)
+        //if (requestCode == Constants.SmartGirlModule.BATCH_WORKSHOP_RESULT && data != null)
         {
             dataList.clear();
+            trainerBatchListRecyclerAdapter.notifyDataSetChanged();
             callWorkshopListApi(useDefaultRequest(),"");
         }
     }
@@ -839,20 +841,26 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     private String useDefaultRequest(){
         Gson gson = new GsonBuilder().create();
         HashMap<String,String> map=new HashMap<>();
-        map.put("state_id", userStateIds);
-        //if(!TextUtils.isEmpty(userDistrictIds))
+
+        /*map.put("state_id", userStateIds);
+        if(!TextUtils.isEmpty(userDistrictIds))
         {
             map.put("district_id", "");//userDistrictIds
         }
-        //if(!TextUtils.isEmpty(selectedTalukaId))
+        if(!TextUtils.isEmpty(selectedTalukaId))
         {
             map.put("taluka_id", userTalukaIds);
         }
 
-        //if(!TextUtils.isEmpty(categoryId))
+        if(!TextUtils.isEmpty(categoryId))
         {
             map.put("category_id", categoryId);
-        }
+        }*/
+
+        map.put("state_id","");
+        map.put("district_id", "");
+        map.put("taluka_id", "");
+        map.put("category_id", "");
         if(!TextUtils.isEmpty(StringListType)){
             map.put("type", StringListType);
         }else {

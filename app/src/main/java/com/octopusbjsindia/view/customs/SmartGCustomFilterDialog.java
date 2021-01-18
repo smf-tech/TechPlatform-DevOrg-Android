@@ -69,7 +69,7 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 userTalukas = "", userTalukaIds = "";
         private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "",selectedCategoryId = "";
         private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter,tv_select_category;
-        private boolean isDateNeeded = false;
+        private boolean isDateNeeded = false,isCategoryNeeded = false;
         private LinearLayout ly_date_selection_linear;
         private String dashboardresponse;
         SgDashboardResponseModel dashboardResponseModel;
@@ -77,6 +77,8 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
         public void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 isDateNeeded = getArguments().getBoolean("isDatefilter",false);
+                isCategoryNeeded = getArguments().getBoolean("isCategoryfilter",false);
+
 
                 dashboardresponse = getArguments().getString("dashboardresponse","");
 
@@ -128,12 +130,15 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
 
                 tv_startdate.setOnClickListener(this);
                 tv_enddate.setOnClickListener(this);
-                tv_startdate.setText(Util.getCurrentDate());
-                tv_enddate.setText(Util.getCurrentDate());
+                //tv_startdate.setText(Util.getCurrentDate());
+                //tv_enddate.setText(Util.getCurrentDate());
 
                 smartGCustomFilterPresenter = new SmartGCustomFilterPresenter(this);
-                if (isDateNeeded){
-                        ly_date_selection_linear.setVisibility(View.VISIBLE);
+                if (!isDateNeeded){
+                        ly_date_selection_linear.setVisibility(View.GONE);
+                }
+                if (!isCategoryNeeded){
+                        tv_select_category.setVisibility(View.GONE);
                 }
                 // jurisdiction
                 smartGCustomFilterPresenter.getBatchCategory();
@@ -194,9 +199,13 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                                 selectStartDate(tv_enddate);
                                 break;
                         case R.id.btn_apply:
+                                if(checkSelectionCheck()){
                                 String requestMap = getRequestMap();
                                 mListener.onCustomSpinnerSelection(requestMap);
                                 dismiss();
+                                }else {
+                                        Util.showToast(getActivity(),"Please select date range for filter.");
+                                }
                                 break;
                         case R.id.tv_select_category:
 
@@ -263,6 +272,21 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 }
         }
 
+        private boolean checkSelectionCheck() {
+                boolean flag =false;
+
+                if(TextUtils.isEmpty(tv_startdate.getText().toString()) && TextUtils.isEmpty(tv_enddate.getText().toString()))
+                {
+                        flag = true;
+                }else if(!TextUtils.isEmpty(tv_startdate.getText().toString()) && !TextUtils.isEmpty(tv_enddate.getText().toString()))
+                {
+                        flag = true;
+                }else {
+                        flag = false;
+                }
+                return  flag;
+        }
+
         private void selectStartDate(TextView textview) {
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
@@ -289,33 +313,33 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
         }
 
         private String getRequestMap() {
+                boolean isValidData = false;
                 HashMap<String,String> map=new HashMap<>();
                 map.put("state_id", selectedStateId);
                 map.put("category_id", selectedCategoryId);
-                //if(!TextUtils.isEmpty(userDistrictIds))
                 {
                         map.put("district_id", selectedDistrictId);
                 }
-                //if(!TextUtils.isEmpty(selectedTalukaId))
                 {
                         map.put("taluka_id", selectedTalukaId);
                 }
-                /*if(!TextUtils.isEmpty("startdate"))
+
+                if(!TextUtils.isEmpty(tv_startdate.getText().toString()))
                 {
                         map.put("startdate",""+Util.getDateInepoch(tv_startdate.getText().toString()));
-                }*/
-                map.put("startdate",""+Util.getDateInepoch(tv_startdate.getText().toString()));
-                /*//if(!TextUtils.isEmpty("enddate"))
+                }else {
+                        map.put("startdate","");
+                }
+
+
+                if(!TextUtils.isEmpty(tv_enddate.getText().toString()))
                 {
                         map.put("enddate",""+Util.getDateInepoch(tv_enddate.getText().toString()));
-                }*/
-                map.put("enddate",""+Util.getDateInepoch(tv_enddate.getText().toString()));
-                /*if(!TextUtils.isEmpty(taluka_id)){
-                        map.put("category_id", categoryId);
+                }else {
+                        map.put("enddate","");
                 }
-                if(!TextUtils.isEmpty(taluka_id)){
-                        map.put("type", type);
-                }*/
+
+
                 Gson gson = new GsonBuilder().create();
                 String paramjson = gson.toJson(map);
                 return paramjson;

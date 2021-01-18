@@ -40,7 +40,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.SmartGirlDashboardListActivity"/>
+        <activity android:name=".view.activities.SmartGirlDashboardListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.SupportActivity" />
         <activity android:name=".view.activities.YouTubeVideoActivity"/>
         <activity
@@ -74,10 +75,12 @@
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activities.SmartGirlWorkshopListActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.fragments.smartgirlfragment.WebActivityTest"

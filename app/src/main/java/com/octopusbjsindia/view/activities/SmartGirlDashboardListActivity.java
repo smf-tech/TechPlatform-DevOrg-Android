@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -49,7 +50,9 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
     private boolean isTalukaApiFirstCall;
-    private boolean loading = true;
+
+    private String paramjsonString;
+    private boolean loading = true,isCategoryfilterneeded =false;
     private String nextPageUrl = "";
     private SmartGirlDashboardListAdapter smartGirlDashboardListAdapter;
     private SmartGirlDashboardsListPresenter smartGirlDashboardsListPresenter;
@@ -65,7 +68,7 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
             userTalukas = "", userTalukaIds = "";
     private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
-    String categoryId = "5e33f2ea8607c02ac0ba434d";
+    String categoryId = "";
     String StringListType,dashboardresponse;
 
     @Override
@@ -98,6 +101,19 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
         //
         StringListType  = getIntent().getExtras().getString("viewType");
         dashboardresponse = getIntent().getExtras().getString("dashboardresponse");
+
+        if (StringListType.equalsIgnoreCase("trainer")){
+
+        }else if (StringListType.equalsIgnoreCase("masterTrainer")){
+
+
+        }else if (StringListType.equalsIgnoreCase("beneficiary")){
+            toolbar_edit_action.setVisibility(View.GONE);
+        }
+
+
+
+
         SgDashboardResponseModel dashboardResponseModel = PlatformGson.getPlatformGsonInstance().fromJson(dashboardresponse, SgDashboardResponseModel.class);
         smartGirlDashboardsListPresenter = new SmartGirlDashboardsListPresenter(this);
         /*final String getRoleAccessUrl = BuildConfig.BASE_URL
@@ -130,6 +146,11 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
                             loading = false;
                             if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
                                 //smartGirlDashboardsListPresenter.getRequestedList(nextPageUrl);
+                                if (TextUtils.isEmpty(paramjsonString)) {
+                                    callGetDataList(useDefaultRequest(), nextPageUrl);
+                                }else {
+                                    callGetDataList(paramjsonString, nextPageUrl);
+                                }
                             }
                         }
                     }
@@ -137,13 +158,15 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
             }
         });
         useDefaultRequest();
+        callGetDataList(useDefaultRequest(),"");
     }
 
     private void callfilterDialog() {
 
         SmartGCustomFilterDialog smartGCustomFilterDialog = new SmartGCustomFilterDialog();
         Bundle args = new Bundle();
-        args.putBoolean("isDatefilter",true);
+        args.putBoolean("isDatefilter",false);
+        args.putBoolean("isCategoryfilter",false);
         args.putString("dashboardresponse",dashboardresponse);
         smartGCustomFilterDialog.setArguments(args);
         smartGCustomFilterDialog.show(getSupportFragmentManager(), "search_dialog");
@@ -384,37 +407,28 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
                         map.put("type", StringListType);
                 }
 
-            String paramjson = gson.toJson(map);
+            //String paramjson = gson.toJson(map);
+            paramjsonString = gson.toJson(map);
                 DataList.clear();
             smartGirlDashboardListAdapter.notifyDataSetChanged();
-            callGetDataList(paramjson);
+            callGetDataList(paramjsonString,"");
         }
     }
 
 
-private void useDefaultRequest(){
+private String useDefaultRequest(){
     Gson gson = new GsonBuilder().create();
     HashMap<String,String> map=new HashMap<>();
-    map.put("state_id", userStateIds);
-    //if(!TextUtils.isEmpty(userDistrictIds))
-    {
-        //map.put("district_id", userDistrictIds);
-        map.put("district_id", "");
-    }
-    //if(!TextUtils.isEmpty(selectedTalukaId))
-    {
-        map.put("taluka_id", userTalukaIds);
-    }
-
-    if(!TextUtils.isEmpty(categoryId)){
-        map.put("category_id", categoryId);
-    }
+    map.put("state_id", "");
+    map.put("district_id", "");
+    map.put("taluka_id", "");
+    map.put("category_id", "");
     if(!TextUtils.isEmpty(StringListType)){
         map.put("type", StringListType);
     }
 
     String paramjson = gson.toJson(map);
-    callGetDataList(paramjson);
+    return  paramjson;
 
 }
 
@@ -488,13 +502,18 @@ private void useDefaultRequest(){
         }
     }
 
-private void callGetDataList(String paramjson){
+private void callGetDataList(String paramjson,String url){
     //get filtered data list
     //(String state_id, String district_id, String taluka_id,String type,String categoryId)
     /*HashMap<String,String> map=new HashMap<>();
     Gson gson = new GsonBuilder().create();
     String paramjson = gson.toJson(map);*/
-    smartGirlDashboardsListPresenter.getRequestedDataList(paramjson);
+
+    if (TextUtils.isEmpty(url)) {
+        url = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);
+    }else {}
+    smartGirlDashboardsListPresenter.getRequestedDataList(paramjson, url);
 }
 
 }

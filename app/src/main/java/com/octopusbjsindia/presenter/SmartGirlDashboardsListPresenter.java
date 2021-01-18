@@ -200,7 +200,7 @@ public class SmartGirlDashboardsListPresenter implements APIPresenterListener {
 
 
     //get  list data
-    public void getRequestedDataList(String paramsJson){
+    public void getRequestedDataList(String paramjson, String getDashbaordListUrl){
         Gson gson = new GsonBuilder().create();
         mContext.get().showProgressBar();
 /*
@@ -223,12 +223,12 @@ public class SmartGirlDashboardsListPresenter implements APIPresenterListener {
         }
 
         String paramjson = gson.toJson(map);*/
-        final String getStructuresListUrl = BuildConfig.BASE_URL
+        /*final String getStructuresListUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);
-        Log.d(TAG, "getworkshoplistUrl: url" + getStructuresListUrl);
+        Log.d(TAG, "getworkshoplistUrl: url" + getStructuresListUrl);*/
         mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_DATA_LIST, paramsJson, getStructuresListUrl);
+        requestCall.postDataApiCall(GET_DATA_LIST, paramjson, getDashbaordListUrl);
     }
 }
