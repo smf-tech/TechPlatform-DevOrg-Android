@@ -109,7 +109,7 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
 
         if(eventTask.getAddress().contains("https://")){
             tvAddress.setOnClickListener(this);
-            tvAddress.setTextColor(getResources().getColor(R.color.light_blue));
+            tvAddress.setTextColor(getResources().getColor(R.color.color_db_tab_select));
         }
         tvTitle.setText(eventTask.getTitle());
         tvDescription.setText(eventTask.getDescription());
