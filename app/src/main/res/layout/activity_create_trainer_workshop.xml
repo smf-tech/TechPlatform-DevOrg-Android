@@ -308,7 +308,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/et_total_beneficiaries"
-                                android:maxLength="2"
+                                android:maxLength="3"
                                 android:inputType="number"
                                 android:hint="Total Beneficiaries"/>
                         </com.google.android.material.textfield.TextInputLayout>
