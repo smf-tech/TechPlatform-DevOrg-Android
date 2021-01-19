@@ -71,7 +71,8 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
         if (dataList.get(position).getTitle()!=null) {
             holder.tv_title_batch.setText(dataList.get(position).getTitle());
         }
-        holder.tv_batch_number.setText(dataList.get(position).getSequence());
+        if (dataList.get(position).getSequence() != null) {
+        holder.tv_batch_number.setText(dataList.get(position).getSequence());}
         holder.tv_main_trainer_name.setText(Util.getBatchCreatedDate(dataList.get(position).getCreated_at(),DAY_MONTH_YEAR));
         holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());

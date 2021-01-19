@@ -68,7 +68,9 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
         if (dataList.get(position).getTitle()!=null) {
             holder.tv_title_batch.setText(dataList.get(position).getTitle());
         }
-        holder.tv_batch_number.setText(dataList.get(position).getSequence());
+        if (dataList.get(position).getSequence() != null) {
+            holder.tv_batch_number.setText(dataList.get(position).getSequence());
+        }
         if (dataList.get(position).getAdditional_master_trainer()!=null) {
             holder.tv_main_trainer_name.setText(dataList.get(position).getAdditional_master_trainer().getUser_name());
         }
