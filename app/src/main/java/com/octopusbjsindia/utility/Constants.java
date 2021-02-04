@@ -181,8 +181,8 @@ public class Constants {
         public static final Integer NEVIGET_TO= 001;
         public static final String MATRIMONY="Matrimony";
         public static final String SUPPORT="Support";
-        public static final String SUJALAM_SUPHALAM="SujalamSuphalam";
-        public static final String SUJALAM_SUPHALAM_GP="GP Module";
+        public static final String SUJALAM_SUPHALAM = "SujalamSuphalam";
+        public static final String SUJALAM_SUPHALAM_GP = "SS_GP_MODULE";
         public static final String SMARTGIRL = "Smart Girl";
         public static final String MV_SEL = "MVSel";
 
