@@ -25,6 +25,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
 import com.octopusbjsindia.view.customs.CustomViewPager;
+import com.octopusbjsindia.view.fragments.ssgp.SujalamSufalamGPFragment;
 
 import java.util.ArrayList;
 import java.util.List;

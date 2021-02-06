@@ -1,4 +1,4 @@
-package com.octopusbjsindia.presenter;
+package com.octopusbjsindia.presenter.ssgp;
 
 import android.util.Log;
 
@@ -9,12 +9,12 @@ import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
+import com.octopusbjsindia.presenter.StructureMachineListFragmentPresenter;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
-import com.octopusbjsindia.view.fragments.SujalamSufalamFragment;
-import com.octopusbjsindia.view.fragments.SujalamSufalamGPFragment;
+import com.octopusbjsindia.view.fragments.ssgp.SujalamSufalamGPFragment;
 
 import org.json.JSONObject;
 

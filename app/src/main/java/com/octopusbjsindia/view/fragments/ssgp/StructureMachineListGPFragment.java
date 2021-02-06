@@ -1,4 +1,4 @@
-package com.octopusbjsindia.view.fragments;
+package com.octopusbjsindia.view.fragments.ssgp;
 
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -48,6 +48,7 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.StructureMachineListFragmentPresenter;
+import com.octopusbjsindia.presenter.ssgp.StructureMachineListGPFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
@@ -56,6 +57,7 @@ import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.adapters.MutiselectDialogAdapter;
 import com.octopusbjsindia.view.adapters.SSMachineListAdapter;
 import com.octopusbjsindia.view.adapters.SSStructureListAdapter;
+import com.octopusbjsindia.view.adapters.ssgp.GPMachineListAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -74,11 +76,11 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     private final ArrayList<StructureData> filteredStructureListData = new ArrayList<>();
     private final ArrayList<StructureData> tempStructureListData = new ArrayList<>();
 
-    private SSMachineListAdapter ssMachineListAdapter;
+    private GPMachineListAdapter gpMachineListAdapter;
     private SSStructureListAdapter ssStructureListAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private StructureMachineListFragmentPresenter structureMachineListFragmentPresenter;
+    private StructureMachineListGPFragmentPresenter presenter;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
     private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
@@ -210,11 +212,11 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ssMachineListAdapter = new SSMachineListAdapter(getActivity(), this, filteredMachineListData);
-        rvDataList.setAdapter(ssMachineListAdapter);
+        gpMachineListAdapter = new GPMachineListAdapter(getActivity(), this, filteredMachineListData);
+        rvDataList.setAdapter(gpMachineListAdapter);
         ssStructureListAdapter = new SSStructureListAdapter(getActivity(), filteredStructureListData, true);
         rvDataList.setAdapter(ssStructureListAdapter);
-        structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
+        presenter = new StructureMachineListGPFragmentPresenter(this);
 
         if (isStateFilter) {
             tvStateFilter.setOnClickListener(this);
@@ -273,7 +275,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         if (isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
-                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
+                presenter.getLocationData(userDistrictIds,
                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
@@ -412,7 +414,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
+            presenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
                     filteredMachineListData.get(position).getMachineCode(),
                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
             dialog.dismiss();
@@ -449,7 +451,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.releaceOperator(filteredMachineListData.get(position).getOperatorId());
+            presenter.releaceOperator(filteredMachineListData.get(position).getOperatorId());
             dialog.dismiss();
         });
 
@@ -503,7 +505,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                         intent.putExtra("machine", filteredMachineListData.get(position));
                         getActivity().startActivity(intent);
                     } else if (shiftAction == 2) {
-                        structureMachineListFragmentPresenter.updateMachineStatusToAvailable
+                        presenter.updateMachineStatusToAvailable
                                 (filteredMachineListData.get(position).getId(),
                                         filteredMachineListData.get(position).getDeployedStrutureId(),
                                         Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE);
@@ -540,7 +542,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
+            presenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
             dialog.dismiss();
         });
 
@@ -625,7 +627,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                         }
                     }
                     if (selectedDeployTalukaId != null && selectedDeployTalukaId != "") {
-                        structureMachineListFragmentPresenter.terminateSubmitMou(
+                        presenter.terminateSubmitMou(
                                 filteredMachineListData.get(position).getId(),
                                 filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
@@ -637,7 +639,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                     }
                 } else if (mouAction == 2) {
                     if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
-                        structureMachineListFragmentPresenter.terminateSubmitMou(
+                        presenter.terminateSubmitMou(
                                 filteredMachineListData.get(position).getId(),
                                 filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
@@ -668,12 +670,12 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         closeFABMenu();
         if (Util.isConnected(getActivity())) {
             if (viewType == 1) {
-                structureMachineListFragmentPresenter.getStrucuresList(
+                presenter.getStrucuresList(
                         (userStateIds != "") ? userStateIds : "",
                         (userDistrictIds != "") ? userDistrictIds : "",
                         (userTalukaIds != "") ? userTalukaIds : "");
             } else {
-                structureMachineListFragmentPresenter.getTalukaMachinesList(
+                presenter.getTalukaMachinesList(
                         (userStateIds != "") ? userStateIds : "",
                         (userDistrictIds != "") ? userDistrictIds : "",
                         (userTalukaIds != "") ? userTalukaIds : "");
@@ -691,9 +693,9 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     @Override
     public void onDetach() {
         super.onDetach();
-        if (structureMachineListFragmentPresenter != null) {
-            structureMachineListFragmentPresenter.clearData();
-            structureMachineListFragmentPresenter = null;
+        if (presenter != null) {
+            presenter.clearData();
+            presenter = null;
         }
     }
 
@@ -744,7 +746,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         ssMachineListData.clear();
         filteredMachineListData.clear();
         if (machineListData != null) {
-            if (requestID.equals(StructureMachineListFragmentPresenter.GET_MACHINE_LIST)) {
+            if (requestID.equals(presenter.GET_MACHINE_LIST)) {
                 ssMachineListData.addAll(machineListData.getData());
                 if (selectedStatus != 0) {
                     for (MachineData machineData : ssMachineListData) {
@@ -755,8 +757,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 } else {
                     filteredMachineListData.addAll(ssMachineListData);
                 }
-                rvDataList.setAdapter(ssMachineListAdapter);
-                ssMachineListAdapter.notifyDataSetChanged();
+                rvDataList.setAdapter(gpMachineListAdapter);
+                gpMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
             }
         }
@@ -873,7 +875,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
 
-        structureMachineListFragmentPresenter.getTalukaMachinesList(
+        presenter.getTalukaMachinesList(
                 (userStateIds != "") ? userStateIds : "",
                 (userDistrictIds != "") ? userDistrictIds : "",
                 (userTalukaIds != "") ? userTalukaIds : "");
@@ -926,7 +928,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 //            } else {
                 if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                     isTalukaApiFirstCall = false;
-                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                    presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
                                     ? selectedDistrictId : userDistrictIds,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);
@@ -946,7 +948,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //            } else {
                 if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
-                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                    presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
                                     ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 } else {
@@ -965,8 +967,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
             } else {
                 filteredMachineListData.clear();
                 filteredMachineListData.addAll(ssMachineListData);
-                rvDataList.setAdapter(ssMachineListAdapter);
-                ssMachineListAdapter.notifyDataSetChanged();
+                rvDataList.setAdapter(gpMachineListAdapter);
+                gpMachineListAdapter.notifyDataSetChanged();
                 ((SSActionsActivity) context).setActivityTitle("Machine List(" + filteredMachineListData.size() + ")");
             }
             tvStateFilter.setText("");
@@ -1109,8 +1111,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    rvDataList.setAdapter(ssMachineListAdapter);
-                    ssMachineListAdapter.notifyDataSetChanged();
+                    rvDataList.setAdapter(gpMachineListAdapter);
+                    gpMachineListAdapter.notifyDataSetChanged();
                     ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);
@@ -1172,8 +1174,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    rvDataList.setAdapter(ssMachineListAdapter);
-                    ssMachineListAdapter.notifyDataSetChanged();
+                    rvDataList.setAdapter(gpMachineListAdapter);
+                    gpMachineListAdapter.notifyDataSetChanged();
                     ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);
@@ -1232,8 +1234,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    rvDataList.setAdapter(ssMachineListAdapter);
-                    ssMachineListAdapter.notifyDataSetChanged();
+                    rvDataList.setAdapter(gpMachineListAdapter);
+                    gpMachineListAdapter.notifyDataSetChanged();
                     ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);

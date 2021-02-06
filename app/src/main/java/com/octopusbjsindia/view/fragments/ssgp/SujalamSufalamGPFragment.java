@@ -1,4 +1,4 @@
-package com.octopusbjsindia.view.fragments;
+package com.octopusbjsindia.view.fragments.ssgp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,12 +40,13 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
-import com.octopusbjsindia.presenter.SujalamSuphalamGPPresenter;
+import com.octopusbjsindia.presenter.ssgp.SujalamSuphalamGPPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
+import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 import com.octopusbjsindia.view.adapters.SSAnalyticsAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
@@ -304,7 +305,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
                 break;
             case R.id.btn_ss_view:
                 btnSsView.setEnabled(false);
-                intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent = new Intent(getActivity(), GPActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if (viewType == 1) {
                     intent.putExtra("viewType", 1);
