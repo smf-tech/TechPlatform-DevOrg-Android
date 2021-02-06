@@ -154,7 +154,21 @@
         android:background="@drawable/bg_button"
         android:textAllCaps="false"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_vdf_form"
+        android:layout_width="wrap_content"
+        style="@style/AppStyleButton"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:background="@drawable/bg_button"
+        android:textAllCaps="false"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:textColor="@android:color/white"
+        android:text="VDF Form" />
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

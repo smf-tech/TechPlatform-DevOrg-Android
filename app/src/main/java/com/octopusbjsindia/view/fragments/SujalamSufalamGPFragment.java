@@ -40,7 +40,6 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
-import com.octopusbjsindia.presenter.SujalamSuphalamFragmentPresenter;
 import com.octopusbjsindia.presenter.SujalamSuphalamGPPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
@@ -62,7 +61,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private TextView tvStructureView, tvMachineView, tvToggle;
-    private Button btnSsView;
+    private Button btnSsView, btnVdfForm;
     private RecyclerView rvSSAnalytics;
     private int viewType = 1;
     private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
@@ -127,6 +126,8 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
         btnSsView.setOnLongClickListener(this);
+        btnVdfForm = sujalamSufalamFragmentView.findViewById(R.id.btn_vdf_form);
+        btnVdfForm.setOnClickListener(this);
         tvStateFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -135,8 +136,8 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),structureAnalyticsDataList,1, "Structure List");
-        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),machineAnalyticsDataList,2,"Machine List");
+        structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), structureAnalyticsDataList, 1, "Structure List");
+        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), machineAnalyticsDataList, 2, "Machine List");
 
         setUserLocation();
 
@@ -276,6 +277,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         super.onResume();
         setUserLocation();
         btnSsView.setEnabled(true);
+        btnVdfForm.setEnabled(true);
         isFilterApplied = false;
         btnFilter.setImageResource(R.drawable.ic_filter);
         presenter = new SujalamSuphalamGPPresenter(this);
@@ -302,6 +304,19 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
                 break;
             case R.id.btn_ss_view:
                 btnSsView.setEnabled(false);
+                intent = new Intent(getActivity(), SSActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                if (viewType == 1) {
+                    intent.putExtra("viewType", 1);
+                    intent.putExtra("title", "Structure List");
+                } else {
+                    intent.putExtra("viewType", 2);
+                    intent.putExtra("title", "Machine List");
+                }
+                getActivity().startActivity(intent);
+                break;
+            case R.id.btn_vdf_form:
+                btnVdfForm.setEnabled(false);
                 intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if (viewType == 1) {
