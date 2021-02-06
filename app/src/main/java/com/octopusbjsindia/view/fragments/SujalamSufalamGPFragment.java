@@ -318,14 +318,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
             case R.id.btn_vdf_form:
                 btnVdfForm.setEnabled(false);
                 intent = new Intent(getActivity(), SSActionsActivity.class);
-                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-                if (viewType == 1) {
-                    intent.putExtra("viewType", 1);
-                    intent.putExtra("title", "Structure List");
-                } else {
-                    intent.putExtra("viewType", 2);
-                    intent.putExtra("title", "Machine List");
-                }
+                intent.putExtra("SwitchToFragment", "VDFFormFragment");
                 getActivity().startActivity(intent);
                 break;
             case R.id.tv_state_filter:
