@@ -14,17 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.view.fragments.CreateOpeartorFragment;
-import com.octopusbjsindia.view.fragments.MachineDeployStructureListFragment;
-import com.octopusbjsindia.view.fragments.MachineDieselRecordFragment;
-import com.octopusbjsindia.view.fragments.MachineNonUtilizationFragment;
-import com.octopusbjsindia.view.fragments.MachineShiftingFormFragment;
-import com.octopusbjsindia.view.fragments.MachineVisitValidationFragment;
-import com.octopusbjsindia.view.fragments.MouUploadFragment;
-import com.octopusbjsindia.view.fragments.OperatorListFragment;
-import com.octopusbjsindia.view.fragments.SavedStructureListFragment;
-import com.octopusbjsindia.view.fragments.SiltTransportationRecordFragment;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
 
 public class GPActionsActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
@@ -61,53 +52,8 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
                             findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
                         }
                         break;
-                    case "MachineDeployStructureListFragment":
-                        fragment = new MachineDeployStructureListFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "MachineShiftingFormFragment":
-                        fragment = new MachineShiftingFormFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "MachineVisitValidationFragment":
-                        fragment = new MachineVisitValidationFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "MachineDieselRecordFragment":
-                        fragment = new MachineDieselRecordFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "MachineNonUtilizationFragment":
-                        fragment = new MachineNonUtilizationFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "SiltTransportationRecordFragment":
-                        fragment = new SiltTransportationRecordFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "SavedStructureListFragment":
-                        fragment = new SavedStructureListFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "MouUploadFragment":
-                        fragment = new MouUploadFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "OperatorList":
-                        fragment = new OperatorListFragment();
-                        fragment.setArguments(data);
-                        openFragment();
-                        break;
-                    case "CreateOperatorFragment":
-                        fragment = new CreateOpeartorFragment();
+                    case "VDFFormFragment":
+                        fragment = new VDFFormFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;
