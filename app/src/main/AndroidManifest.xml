@@ -40,10 +40,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.SmartGirlDashboardListActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.ssgp.GPActionActivity"></activity>
+        <activity
+            android:name=".view.activities.SmartGirlDashboardListActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activities.SupportActivity" />
-        <activity android:name=".view.activities.YouTubeVideoActivity"/>
+        <activity android:name=".view.activities.YouTubeVideoActivity" />
         <activity
             android:name=".view.activities.SELTrainingVideoActivity"
             android:screenOrientation="landscape"
@@ -74,13 +76,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activities.TrainerBatchListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.activities.SmartGirlWorkshopListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.fragments.smartgirlfragment.WebActivityTest"
