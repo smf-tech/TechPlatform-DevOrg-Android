@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.ssgp.CreateStructureFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:orientation="vertical">
+
+            <!--state-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/state"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--district-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_district"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/district"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--taluka-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_taluka"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/taluka"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--host village-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_host_village"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/host_village"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Structure Name-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_structure_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+                    android:hint="@string/structure_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Intervention-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_intervention"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Select Intervention"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Structure Category / Type-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_structure_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Structure Category / Type"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Structure Work Type-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_structure_work_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Structure Work Type"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Approximate Estimate Quantity (CuM)-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_approximate_estimate_quantity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Approximate Estimate Quantity (CuM)"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="5" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Approximate Working Hours-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_approximate_working_hours"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Approximate Working Hours"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="5" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Approximate Diesel Consumption in Liters-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_approximate_diesel_liters"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Approximate Diesel Consumption in Liters"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="5" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Approximate Working days Required-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_approximate_diesel_consumption_amount"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Approximate Diesel Consumption in Rs"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="7" />
+            </com.google.android.material.textfield.TextInputLayout>
+           <!--Remark-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_03dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_remark"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+                    android:hint="Remark"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:singleLine="false" />
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:text="@string/submit" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/ly_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
