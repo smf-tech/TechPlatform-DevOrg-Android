@@ -25,6 +25,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
 import com.octopusbjsindia.view.customs.CustomViewPager;
+import com.octopusbjsindia.view.fragments.ssgp.SujalamSufalamGPFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,7 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM_GP) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MV_SEL)) {
@@ -166,6 +168,10 @@ public class DashboardFragment extends Fragment {
                     adapter.addFragment(new SujalamSufalamFragment());
                     break;
 
+                case Constants.Home.SUJALAM_SUPHALAM_GP:
+                    adapter.addFragment(new SujalamSufalamGPFragment());
+                    break;
+
                 case Constants.Home.SMARTGIRL:
                     adapter.addFragment(new SmartGirlDashboardFragment());
                     break;
@@ -239,28 +245,21 @@ public class DashboardFragment extends Fragment {
                 case Constants.Home.FORMS:
                     pendingActionCount = getFormsPendingActionCount();
                     break;
-
-                case Constants.Home.PLANNER:
-                    break;
-
                 case Constants.Home.APPROVALS:
                     pendingActionCount = getApprovalCount();
                     break;
-
-                case Constants.Home.REPORTS:
-                    break;
-
-                case Constants.Home.WEBMODULE_NAME:
-                    break;
-
-                case Constants.Home.CONTENT:
-                    break;
-
-                case Constants.Home.MATRIMONY:
-                    break;
-
-                case Constants.Home.SUJALAM_SUPHALAM:
-                    break;
+//                case Constants.Home.PLANNER:
+//                    break;
+//                case Constants.Home.REPORTS:
+//                    break;
+//                case Constants.Home.WEBMODULE_NAME:
+//                    break;
+//                case Constants.Home.CONTENT:
+//                    break;
+//                case Constants.Home.MATRIMONY:
+//                    break;
+//                case Constants.Home.SUJALAM_SUPHALAM:
+//                    break;
 
                 default:
                     break;
