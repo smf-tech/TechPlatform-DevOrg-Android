@@ -45,7 +45,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private View vdfFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private EditText etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
+    private EditText etState,etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
             etStructCount2, etStructureType3, etStructCount3, etStructureType4, etStructCount4,
             etStructureType5, etStructCount5, etHours, etMachineType, etMachineCount, etNodalName,
             etNodalContact, etMachineTransport, etFeasibility, etReason, etFutureWorkTime,
@@ -63,7 +63,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private String userTalukaIds = "";
     private String userVillageIds = "";
     private boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
-    private String selectedDistrictId, selectedTalukaId, selectedVillageId;
+    private String selectedDistrictId="", selectedTalukaId, selectedVillageId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         ((GPActionsActivity) getActivity()).setTitle("VDF Form");
         progressBarLayout = vdfFormFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = vdfFormFragmentView.findViewById(R.id.pb_profile_act);
-        //presenter = new VDFFormFragmentPresenter(this);
+        presenter = new VDFFormFragmentPresenter(this);
         etDistrict = vdfFormFragmentView.findViewById(R.id.et_district);
         etTaluka = vdfFormFragmentView.findViewById(R.id.et_taluka);
         etVillage = vdfFormFragmentView.findViewById(R.id.et_village);

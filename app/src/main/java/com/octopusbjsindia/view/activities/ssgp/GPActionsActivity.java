@@ -15,6 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCBDFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCCMFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCSMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
 
 public class GPActionsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,6 +58,26 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case "VDFFormFragment":
                         fragment = new VDFFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCSMFormFragment":
+                        fragment = new VDCSMFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCDPRFormFragment":
+                        fragment = new VDCDPRFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCCMFormFragment":
+                        fragment = new VDCCMFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCBDFormFragment":
+                        fragment = new VDCBDFormFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;

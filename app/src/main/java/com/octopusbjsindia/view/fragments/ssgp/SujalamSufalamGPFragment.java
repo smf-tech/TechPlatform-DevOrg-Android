@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -62,6 +64,11 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
     private RelativeLayout progressBarLayout;
     private TextView tvStructureView, tvMachineView, tvToggle;
     private Button btnSsView, btnVdfForm;
+
+    private FloatingActionButton fbSelect;
+    private ExtendedFloatingActionButton fb_form_one, fb_form_two, fb_form_three, fb_form_four, fb_form_five;
+    private boolean isFABOpen = false;
+
     private RecyclerView rvSSAnalytics;
     private int viewType = 1;
     private SSAnalyticsAdapter structureAnalyticsAdapter, machineAnalyticsAdapter;
@@ -128,6 +135,21 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         btnSsView.setOnLongClickListener(this);
         btnVdfForm = sujalamSufalamFragmentView.findViewById(R.id.btn_vdf_form);
         btnVdfForm.setOnClickListener(this);
+
+
+        fbSelect = sujalamSufalamFragmentView.findViewById(R.id.fb_select);
+        fbSelect.setOnClickListener(this);
+        fb_form_one = sujalamSufalamFragmentView.findViewById(R.id.fb_form_one);
+        fb_form_one.setOnClickListener(this);
+        fb_form_two = sujalamSufalamFragmentView.findViewById(R.id.fb_form_two);
+        fb_form_two.setOnClickListener(this);
+        fb_form_three = sujalamSufalamFragmentView.findViewById(R.id.fb_form_three);
+        fb_form_three.setOnClickListener(this);
+        fb_form_four = sujalamSufalamFragmentView.findViewById(R.id.fb_form_four);
+        fb_form_four.setOnClickListener(this);
+        fb_form_five = sujalamSufalamFragmentView.findViewById(R.id.fb_form_five);
+        fb_form_five.setOnClickListener(this);
+
         tvStateFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = sujalamSufalamFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -296,6 +318,38 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.fb_select:
+                if (!isFABOpen) {
+                    showFabMenu();
+                } else {
+                    closeFABMenu();
+                }
+                break;
+            case R.id.fb_form_one:
+                intent = new Intent(getActivity(), GPActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "VDFFormFragment");
+                getActivity().startActivity(intent);
+                break;
+            case R.id.fb_form_two:
+                intent = new Intent(getActivity(), GPActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "VDCSMFormFragment");
+                getActivity().startActivity(intent);
+                break;
+            case R.id.fb_form_three:
+                intent = new Intent(getActivity(), GPActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
+                getActivity().startActivity(intent);
+                break;
+            case R.id.fb_form_four:
+                intent = new Intent(getActivity(), GPActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "VDCCMFormFragment");
+                getActivity().startActivity(intent);
+                break;
+            case R.id.fb_form_five:
+                intent = new Intent(getActivity(), GPActionsActivity.class);
+                intent.putExtra("SwitchToFragment", "VDCBDFormFragment");
+                getActivity().startActivity(intent);
+                break;
             case R.id.tv_structure_view:
                 setStructureView();
                 break;
@@ -318,8 +372,13 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
             case R.id.btn_vdf_form:
                 btnVdfForm.setEnabled(false);
                 intent = new Intent(getActivity(), GPActionsActivity.class);
-                intent.putExtra("SwitchToFragment", "VDFFormFragment");
+                intent.putExtra("SwitchToFragment", "VDCSMFormFragment");
                 getActivity().startActivity(intent);
+                //VDFFormFragment
+                //VDCSMFormFragment
+                //VDCDPRFormFragment
+                //VDCCMFormFragment
+                //VDCBDFormFragment
                 break;
             case R.id.tv_state_filter:
                 CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
@@ -687,5 +746,57 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
                 btnFilter.setImageResource(R.drawable.ic_filter);
             }
         }
+    }
+
+
+    private void showFabMenu() {
+        fb_form_one.show();
+        fb_form_one.setEnabled(true);
+        fb_form_one.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+        fb_form_two.show();
+        fb_form_two.setEnabled(true);
+        fb_form_two.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        fb_form_three.show();
+        fb_form_three.setEnabled(true);
+        fb_form_three.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
+        fb_form_four.show();
+        fb_form_four.setEnabled(true);
+        fb_form_four.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        fb_form_five.show();
+        fb_form_five.setEnabled(true);
+        fb_form_five.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        /*if(visibleCreatMeet) {
+            fbCreatMeet.show();
+            fbCreatMeet.setEnabled(true);
+            fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        }
+        if(visibleMyTeam) {
+            fbMyTeam.show();
+            fbMyTeam.setEnabled(true);
+            fbMyTeam.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
+        }*/
+        fbSelect.setRotation(45);
+        isFABOpen = true;
+    }
+
+    private void closeFABMenu() {
+        fb_form_one.animate().translationY(0);
+        fb_form_one.hide();
+        fb_form_one.setEnabled(false);
+        fb_form_two.animate().translationY(0);
+        fb_form_two.hide();
+        fb_form_two.setEnabled(false);
+        fb_form_three.animate().translationY(0);
+        fb_form_three.hide();
+        fb_form_three.setEnabled(false);
+        fb_form_four.animate().translationY(0);
+        fb_form_four.hide();
+        fb_form_four.setEnabled(false);
+        fb_form_five.animate().translationY(0);
+        fb_form_five.hide();
+        fb_form_five.setEnabled(false);
+
+        fbSelect.setRotation(0);
+        isFABOpen = false;
     }
 }
