@@ -806,5 +806,12 @@
     <string name="structure_type">Structure type</string>
     <string name="structure_count">Structure count</string>
     <string name="machine_hours_required">Machine hours required</string>
+    <string name="msg_select_struct_code">Please select structure code.</string>
+    <string name="select_stuct_type">Please select structure type.</string>
+    <string name="msg_irrigation_source">Please enter irrigation source.</string>
+    <string name="msg_enter_gat_no">Please enter gat number.</string>
+    <string name="msg_annual_income">Please enter annual income</string>
+    <string name="msg_numberof_crops">Please enter number of crops taken in year.</string>
+    <string name="msg_enter_remark">Please enter remark.</string>
 
 </resources>

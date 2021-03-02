@@ -34,6 +34,8 @@
                     <EditText
                         android:id="@+id/et_state"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/state" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,6 +55,8 @@
                         <EditText
                             android:id="@+id/et_district"
                             style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="@string/district" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +70,8 @@
                         <EditText
                             android:id="@+id/et_taluka"
                             style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:longClickable="false"
                             android:hint="@string/taluka" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +85,8 @@
                     <EditText
                         android:id="@+id/et_village"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/village" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +99,7 @@
                         android:id="@+id/et_struct_code"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Structure code"
-                        android:inputType="numberDecimal" />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -102,6 +110,7 @@
                     <EditText
                         android:id="@+id/et_structure_type"
                         style="@style/RegistrationEditTextLayout"
+                        android:inputType="text"
                         android:hint="@string/structure_type" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +123,7 @@
                         android:id="@+id/et_beneficiary_name"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -163,8 +172,8 @@
                         android:id="@+id/et_gat_no"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Gat number"
-                        android:inputType="textPersonName"
-                        android:maxLength="50" />
+                        android:inputType="text"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -173,7 +182,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_Annual_income"
+                        android:id="@+id/et_annual_income"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Annual income"
                         android:inputType="numberDecimal" />
