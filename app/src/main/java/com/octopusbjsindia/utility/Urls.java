@@ -91,13 +91,13 @@ public class Urls {
         public static final String LEAVE_BALANCE= "api/getUserLeaveBalance";
     }
 
-    public class Attendance
-    {
+    public class Attendance {
         public static final String GET_ALL_MONTH="api/getuserattendance/";
         public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
         public static final String GET_TEAM_ATTENDANCE="api/getTeamAttendance";
         public static final String GET_TEAM_USER_ATTENDANCE = "api/getTeamUserAttendance";
     }
+
     public class ContentManagement{
         public static final String GET_CONTENT_DATA = "api/contentDashboard/%1$s";
     }
@@ -264,5 +264,9 @@ public class Urls {
     public class SEL {
         public static final String GET_SEL_CONTENT = "api/get_training_videos";
         public static final String SEND_VIDEO_STATUS = "api/send_video_status";
+    }
+
+    public class SSGP{
+        public static final String CREATE_STRUCTURE = "api/createGPStructure";
     }
 }

@@ -1,604 +1,610 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
-    android:background="@color/base_background_color">
+    android:background="@color/base_background_color"
+    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/state"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp">
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/dimen_05dp">
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_weight="1">
 
                     <EditText
-                        android:id="@+id/et_state"
+                        android:id="@+id/et_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/state" />
+                        android:focusable="false"
+                        android:hint="@string/district"
+                        android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
-                <LinearLayout
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    >
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_district"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/district" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_taluka"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/taluka" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_weight="1">
 
                     <EditText
-                        android:id="@+id/et_village"
+                        android:id="@+id/et_taluka"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/village" />
+                        android:focusable="false"
+                        android:hint="@string/taluka"
+                        android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_structure_name"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_name" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_type_of_beneficiary"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/type_of_beneficiary"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_type_intervention"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Type of Intervention" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_structure_type"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_scope_of_work"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Scope of work in Cu. meter"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_working_hours"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Working hours"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_diesel_quantity"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Approximate diesel required"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_approximate_working_days"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Approximate working days required"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_neighbor_farmer_consent"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Consent of neighbor farmer for transport"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_silt_transported"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Is Silt Transported?"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_ff_name"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="FF name if available"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_ff_mobile"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="FF mobile number"
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_structure_length"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Structure length" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_structure_Width"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Structure width" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_structure_depth"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Structure depth" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--indigivual beneficiary-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_irrigation"
-                        style="@style/RegistrationEditTextLayout"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                        android:hint="Current irrigation source" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_gat_no"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Gat number"
-                        android:inputType="textPersonName"
-                        android:maxLength="50" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_Annual_income"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Annual income"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_numberof_crops"
-                        style="@style/RegistrationEditTextLayout"
-                        android:inputType="number"
-                        android:hint="Number of crops in year" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_type_of_crops"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Crop type" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--group beneficiary-->
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name1"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact1"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category1"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name2"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact2"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category2"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name3"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact3"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category3"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name4"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact4"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category4"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_name5"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_contact5"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary Contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_beneficiary_category5"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary category" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_responsible_person_name"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Responsible person name"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_responsible_person_contact"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Responsible person contact"
-                        android:inputType="phone|number"
-                        android:digits="0123456789+"
-                        android:maxLength="10" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_ho_remark"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Ho Remark" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btn_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppStyleButton"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:text="@string/meet_next_label"
-                    android:layout_below="@+id/card_create_meet"
-                    android:textColor="@android:color/white" />
 
             </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_village"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/village"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_structure_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_type_of_beneficiary"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/type_of_beneficiary"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:inputType="text"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_type_intervention"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="Type of Intervention" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_structure_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="@string/structure_type" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_scope_of_work"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Scope of work in Cu. meter"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_working_hours"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Working hours" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_diesel_quantity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Approximate diesel required"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_approximate_working_days"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Approximate working days required" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_neighbor_farmer_consent"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Consent of neighbor farmer for transport"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_silt_transported"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Is Silt Transported?"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_ff_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="FF name if available" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_ff_mobile"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="FF mobile number"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_structure_length"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Structure length" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_structure_Width"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Structure width" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_structure_depth"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Structure depth" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--indigivual beneficiary-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_irrigation"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                    android:hint="Current irrigation source" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_gat_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Gat number"
+                    android:inputType="textPersonName"
+                    android:maxLength="50" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_Annual_income"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Annual income"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_numberof_crops"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Number of crops in year"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_type_of_crops"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Crop type" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--group beneficiary-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name4"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact4"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category4"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_name5"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_contact5"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Beneficiary Contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_beneficiary_category5"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary category" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_responsible_person_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Responsible person name"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_responsible_person_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="0123456789+"
+                    android:hint="Responsible person contact"
+                    android:inputType="phone|number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_ho_remark"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Ho Remark" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/AppStyleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_create_meet"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:text="@string/submit"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
-        android:id="@+id/profile_act_progress_bar"
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -613,7 +619,6 @@
             android:layout_centerInParent="true"
             android:clickable="true"
             android:focusable="true"
-            android:indeterminateOnly="true"
-            android:visibility="gone" />
+            android:indeterminateOnly="true" />
     </RelativeLayout>
 </RelativeLayout>
