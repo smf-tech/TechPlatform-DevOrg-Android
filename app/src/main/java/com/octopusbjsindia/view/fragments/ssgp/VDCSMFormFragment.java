@@ -282,7 +282,15 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.btn_submit:
-                if (TextUtils.isEmpty(et_structure_name.getText())) {
+                if (TextUtils.isEmpty(selectedStateId)) {
+                    Util.showToast(getActivity(), "Please selected state");
+                } else if (TextUtils.isEmpty(selectedDistrictId)) {
+                    Util.showToast(getActivity(), "Please selected district");
+                } else if (TextUtils.isEmpty(selectedTalukaId)) {
+                    Util.showToast(getActivity(), "Please selected taluka");
+                } else if (TextUtils.isEmpty(selectedVillageId)) {
+                    Util.showToast(getActivity(), "Please selected village");
+                } else if (TextUtils.isEmpty(et_structure_name.getText())) {
                     Util.showToast(getActivity(), "Please enter structure name");
                 } else {
                     VACStructureMasterRequest request = new VACStructureMasterRequest();
@@ -315,6 +323,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                     request.setCropType(et_type_of_crops.getText().toString().trim());
                     request.setResponsiblePersonName(et_responsible_person_name.getText().toString().trim());
                     request.setResponsiblePersonNumber(et_responsible_person_contact.getText().toString().trim());
+                    request.setComment(et_ho_remark.getText().toString().trim());
 
                     ArrayList<BeneficiaryDetail> beneficiaryDetails = new ArrayList<BeneficiaryDetail>();
                     BeneficiaryDetail beneficiary1 = new BeneficiaryDetail();

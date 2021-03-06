@@ -30,6 +30,9 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
+import com.octopusbjsindia.models.ssgp.StructureWorkType;
+import com.octopusbjsindia.models.ssgp.VACStructureMasterRequest;
+import com.octopusbjsindia.models.ssgp.VDFFRequest;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -45,11 +48,11 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private View vdfFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private EditText etState,etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
+    private EditText etState, etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
             etStructCount2, etStructureType3, etStructCount3, etStructureType4, etStructCount4,
             etStructureType5, etStructCount5, etHours, etMachineType, etMachineCount, etNodalName,
             etNodalContact, etMachineTransport, etFeasibility, etReason, etFutureWorkTime,
-            etWorkableStructCount, etRemark, etHoRemark;
+            etWorkableStructCount, etRemark, etHoRemark, selectedEt;
     private Button btnSubmit;
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
@@ -63,7 +66,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private String userTalukaIds = "";
     private String userVillageIds = "";
     private boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
-    private String selectedDistrictId="", selectedTalukaId, selectedVillageId;
+    private String selectedDistrictId, selectedTalukaId, selectedVillageId, selectedStructureType1, selectedStructureTypeId1,
+            selectedStructureType2, selectedStructureTypeId2, selectedStructureType3, selectedStructureTypeId3,
+            selectedStructureType4, selectedStructureTypeId4, selectedStructureType5, selectedStructureTypeId5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,188 +120,53 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etRemark = vdfFormFragmentView.findViewById(R.id.et_remark);
         etHoRemark = vdfFormFragmentView.findViewById(R.id.et_ho_remark);
 
-        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
-        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        if (roleAccessList != null) {
-            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
-                    isStateFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
-                    isDistrictFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
-                    isTalukaFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
-                    isVillageFilter = true;
-                    continue;
-                }
-            }
-        }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
-                if (i == 0) {
-                    userDistrictIds = j.getId();
-                } else {
-                    userDistrictIds = userDistrictIds + "," + j.getId();
-                }
-            }
-        }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
-                if (i == 0) {
-                    userTalukaIds = j.getId();
-                } else {
-                    userTalukaIds = userTalukaIds + "," + j.getId();
-                }
-            }
-        }
-
-        if (Util.getUserObjectFromPref().getUserLocation().getVillageIds() != null) {
-            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
-                JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i);
-                if (i == 0) {
-                    userVillageIds = j.getId();
-                } else {
-                    userVillageIds = userVillageIds + "," + j.getId();
-                }
-            }
-        }
-
-        etDistrict.setFocusable(false);
-        etDistrict.setLongClickable(false);
-        etTaluka.setFocusable(false);
-        etTaluka.setLongClickable(false);
-        etVillage.setFocusable(false);
-        etVillage.setLongClickable(false);
-        etStructureType1.setFocusable(false);
-        etStructureType1.setLongClickable(false);
-        etStructCount1.setFocusable(false);
-        etStructCount1.setLongClickable(false);
-        etStructCount2.setFocusable(false);
-        etStructCount2.setLongClickable(false);
-        etStructCount3.setFocusable(false);
-        etStructCount3.setLongClickable(false);
-        etStructCount4.setFocusable(false);
-        etStructCount4.setLongClickable(false);
-        etStructCount5.setFocusable(false);
-        etStructCount5.setLongClickable(false);
-        etHours.setFocusable(false);
-        etHours.setLongClickable(false);
-        etMachineType.setFocusable(false);
-        etMachineType.setLongClickable(false);
-        etMachineCount.setFocusable(false);
-        etMachineCount.setLongClickable(false);
-        etNodalName.setFocusable(false);
-        etNodalName.setLongClickable(false);
-        etNodalContact.setFocusable(false);
-        etNodalContact.setLongClickable(false);
-        etMachineTransport.setFocusable(false);
-        etMachineTransport.setLongClickable(false);
-        etFeasibility.setLongClickable(false);
-        etFeasibility.setFocusable(false);
-        etReason.setLongClickable(false);
-        etReason.setFocusable(false);
-        etFutureWorkTime.setLongClickable(false);
-        etFutureWorkTime.setFocusable(false);
-        etWorkableStructCount.setLongClickable(false);
-        etWorkableStructCount.setFocusable(false);
-        etRemark.setLongClickable(false);
-        etRemark.setLongClickable(false);
-        etHoRemark.setLongClickable(false);
-        etHoRemark.setFocusable(false);
-
-        etDistrict.setOnClickListener(this);
-        etTaluka.setOnClickListener(this);
-        etVillage.setOnClickListener(this);
         etStructureType1.setOnClickListener(this);
-        etStructCount1.setOnClickListener(this);
         etStructureType2.setOnClickListener(this);
-        etStructCount2.setOnClickListener(this);
         etStructureType3.setOnClickListener(this);
-        etStructCount3.setOnClickListener(this);
         etStructureType4.setOnClickListener(this);
-        etStructCount4.setOnClickListener(this);
         etStructureType5.setOnClickListener(this);
-        etStructCount5.setOnClickListener(this);
-        etHours.setOnClickListener(this);
-        etMachineType.setOnClickListener(this);
-        etMachineCount.setOnClickListener(this);
-        etNodalName.setOnClickListener(this);
-        etNodalContact.setOnClickListener(this);
-        etMachineTransport.setOnClickListener(this);
-        etFeasibility.setOnClickListener(this);
-        etReason.setOnClickListener(this);
-        etFutureWorkTime.setOnClickListener(this);
-        etWorkableStructCount.setOnClickListener(this);
-        etRemark.setOnClickListener(this);
-        etHoRemark.setOnClickListener(this);
+
+//        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+//        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+//        if (roleAccessList != null) {
+//            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+//            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+//                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
+//                    isStateFilter = true;
+//                    continue;
+//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
+//                    isDistrictFilter = true;
+//                    continue;
+//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
+//                    isTalukaFilter = true;
+//                    continue;
+//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
+//                    isVillageFilter = true;
+//                    continue;
+//                }
+//            }
+//        }
 
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
             etDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
             selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+        } else {
+            etDistrict.setOnClickListener(this);
         }
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
+        } else {
+            etTaluka.setOnClickListener(this);
         }
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
             etVillage.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
             selectedVillageId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-        }
-
-        if (isDistrictFilter) {
-            etDistrict.setOnClickListener(this);
         } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
-                etDistrict.setOnClickListener(this);
-                districtList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
-                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
-                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
-                    districtList.add(customDistrict);
-                }
-            }
-        }
-
-        if (isTalukaFilter) {
-            etTaluka.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
-                etTaluka.setOnClickListener(this);
-                talukaList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
-                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
-                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
-                    talukaList.add(customTaluka);
-                }
-            }
-        }
-
-        if (isVillageFilter) {
             etVillage.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getVillageIds().size() > 1) {
-                etVillage.setOnClickListener(this);
-                villageList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
-                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
-                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getId());
-                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getName());
-                    villageList.add(customTaluka);
-                }
-            }
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -309,17 +179,17 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (int i = 0; i < masterDataList.size(); i++) {
-            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
-                    getField().equals("machineType")) {
-                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
-                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
-                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
-                    customSpinnerObject.setSelected(false);
-                    machineTypeList.add(customSpinnerObject);
-                }
-            }
-            if (masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
+//            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+//                    getField().equals("machineType")) {
+//                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
+//                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+//                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+//                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+//                    customSpinnerObject.setSelected(false);
+//                    machineTypeList.add(customSpinnerObject);
+//                }
+//            }
+            if (masterDataList.get(i).getForm().equals("structure_create") && masterDataList.get(i).
                     getField().equals("structureType")) {
                 for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
@@ -327,21 +197,10 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
                     customSpinnerObject.setSelected(false);
                     structureTypeList.add(customSpinnerObject);
+                    break;
                 }
             }
         }
-
-        CustomSpinnerObject workingYes = new CustomSpinnerObject();
-        workingYes.setName("Yes");
-        workingYes.set_id("1");
-        workingYes.setSelected(false);
-        transportAgreeOptionsList.add(workingYes);
-
-        CustomSpinnerObject workingNo = new CustomSpinnerObject();
-        workingNo.setName("No");
-        workingNo.set_id("2");
-        workingNo.setSelected(false);
-        transportAgreeOptionsList.add(workingNo);
 
         if (!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -390,17 +249,100 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 } else {
                     if (Util.isConnected(getActivity())) {
                         if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
-//                            machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
-//                                            ? selectedTalukaId : userTalukaIds,
-//                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
+                                            ? selectedTalukaId : userTalukaIds,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                     }
                 }
                 break;
+            case R.id.et_structure_type1:
+                selectedEt = etStructureType1;
+                selectStructureType();
+                break;
+            case R.id.et_structure_type2:
+                selectedEt = etStructureType2;
+                selectStructureType();
+                break;
+            case R.id.et_structure_type3:
+                selectedEt = etStructureType3;
+                selectStructureType();
+                break;
+            case R.id.et_structure_type4:
+                selectedEt = etStructureType4;
+                selectStructureType();
+                break;
+            case R.id.et_structure_type5:
+                selectedEt = etStructureType5;
+                selectStructureType();
+                break;
+            case R.id.btn_submit:
+                if (TextUtils.isEmpty(selectedDistrictId)) {
+                    Util.showToast(getActivity(), "Please selected district");
+                } else if (TextUtils.isEmpty(selectedTalukaId)) {
+                    Util.showToast(getActivity(), "Please selected taluka");
+                } else if (TextUtils.isEmpty(selectedVillageId)) {
+                    Util.showToast(getActivity(), "Please selected village");
+                } else {
+                    VDFFRequest request = new VDFFRequest();
+                    request.setDistrictId(selectedDistrictId);
+                    request.setTalukaId(selectedTalukaId);
+                    request.setVillageId(selectedVillageId);
+
+                    List<StructureWorkType> structureWorkTypeList = new ArrayList<StructureWorkType>();
+                    StructureWorkType structure1 = new StructureWorkType();
+                    structure1.setStructureType(etStructureType1.getText().toString().trim());
+                    structure1.setNumberStructureType(etStructCount1.getText().toString().trim());
+                    structureWorkTypeList.add(structure1);
+
+                    StructureWorkType structure2 = new StructureWorkType();
+                    structure2.setStructureType(etStructureType2.getText().toString().trim());
+                    structure2.setNumberStructureType(etStructCount2.getText().toString().trim());
+                    structureWorkTypeList.add(structure2);
+
+                    StructureWorkType structure3 = new StructureWorkType();
+                    structure3.setStructureType(etStructureType3.getText().toString().trim());
+                    structure3.setNumberStructureType(etStructCount3.getText().toString().trim());
+                    structureWorkTypeList.add(structure3);
+
+                    StructureWorkType structure4 = new StructureWorkType();
+                    structure4.setStructureType(etStructureType4.getText().toString().trim());
+                    structure4.setNumberStructureType(etStructCount4.getText().toString().trim());
+                    structureWorkTypeList.add(structure4);
+
+                    StructureWorkType structure5 = new StructureWorkType();
+                    structure5.setStructureType(etStructureType5.getText().toString().trim());
+                    structure5.setNumberStructureType(etStructCount5.getText().toString().trim());
+                    structureWorkTypeList.add(structure5);
+
+                    request.setTypeNWorkStructure(structureWorkTypeList);
+                    request.setMachineDemandHr(etHours.getText().toString().trim());
+                    request.setMachineDemandType(etMachineType.getText().toString().trim());
+                    request.setMachineDemandNumbers(etMachineCount.getText().toString().trim());
+                    request.setNodalPersonName(etNodalName.getText().toString().trim());
+                    request.setNodalPersonNumber(etNodalContact.getText().toString().trim());
+                    request.setMachineTransportation(etMachineTransport.getText().toString().trim());
+                    request.setIsStartWorkImmediately(etFeasibility.getText().toString().trim());
+                    request.setReasonNotStart(etReason.getText().toString().trim());
+                    request.setFutureDate(etFutureWorkTime.getText().toString().trim());
+//                    request.set(etWorkableStructCount.getText().toString().trim()); // TODO not shure
+                    request.setComment(etRemark.getText().toString().trim()); //TODO not shure
+                    request.setComment(etHoRemark.getText().toString().trim());
+                    presenter.submitVDFF(request);
+                }
+                break;
         }
+    }
+
+    private void selectStructureType() {
+        CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(getActivity(), this,
+                "Select Structure Type", structureTypeList, false);
+        csdStructerType.show();
+        csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
@@ -508,6 +450,76 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onCustomSpinnerSelection(String type) {
+        switch (type) {
+            case "Select District":
+                for (CustomSpinnerObject state : districtList) {
+                    if (state.isSelected()) {
+                        etDistrict.setText(state.getName());
+                        selectedDistrictId = state.get_id();
+                        break;
+                    }
+                }
+                etTaluka.setText("");
+                selectedTalukaId = "";
+                etVillage.setText("");
+                selectedVillageId = "";
+                break;
+            case "Select Taluka":
+                for (CustomSpinnerObject state : talukaList) {
+                    if (state.isSelected()) {
+                        etTaluka.setText(state.getName());
+                        selectedTalukaId = state.get_id();
+                        break;
+                    }
+                }
+                etVillage.setText("");
+                selectedVillageId = "";
+                break;
+            case "Select Village":
+                for (CustomSpinnerObject state : districtList) {
+                    if (state.isSelected()) {
+                        etVillage.setText(state.getName());
+                        selectedVillageId = state.get_id();
+                        break;
+                    }
+                }
 
+                break;
+            case "Select Structure Type":
+                for (CustomSpinnerObject obj : structureTypeList) {
+                    if (obj.isSelected()) {
+                        switch (selectedEt.getId()) {
+                            case R.id.et_structure_type1:
+                                selectedStructureType1 = obj.getName();
+                                selectedStructureTypeId1 = obj.get_id();
+                                selectedEt.setText(selectedStructureType1);
+                                break;
+                            case R.id.et_structure_type2:
+                                selectedStructureType2 = obj.getName();
+                                selectedStructureTypeId2 = obj.get_id();
+                                selectedEt.setText(selectedStructureType2);
+                                break;
+                            case R.id.et_structure_type3:
+                                selectedStructureType3 = obj.getName();
+                                selectedStructureTypeId3 = obj.get_id();
+                                selectedEt.setText(selectedStructureType3);
+                                break;
+                            case R.id.et_structure_type4:
+                                selectedStructureType4 = obj.getName();
+                                selectedStructureTypeId4 = obj.get_id();
+                                selectedEt.setText(selectedStructureType4);
+                                break;
+                            case R.id.et_structure_type5:
+                                selectedStructureType5 = obj.getName();
+                                selectedStructureTypeId5 = obj.get_id();
+                                selectedEt.setText(selectedStructureType5);
+                                break;
+                        }
+
+                        break;
+                    }
+                }
+                break;
+        }
     }
 }

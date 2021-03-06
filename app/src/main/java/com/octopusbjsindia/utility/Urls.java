@@ -268,5 +268,6 @@ public class Urls {
 
     public class SSGP{
         public static final String CREATE_STRUCTURE = "api/createGPStructure";
+        public static final String SUBMIT_VILLAGE_DEMND = "api/villageDemndForm";
     }
 }
