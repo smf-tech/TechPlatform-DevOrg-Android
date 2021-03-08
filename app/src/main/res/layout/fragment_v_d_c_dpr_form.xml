@@ -97,6 +97,8 @@
                     <EditText
                         android:id="@+id/et_date"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,9 +207,9 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_structure_type"
+                        android:id="@+id/et_structure_status"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint="@string/structure_status" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView

@@ -20,8 +20,11 @@ import com.android.volley.VolleyError;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
+import com.octopusbjsindia.models.ssgp.VdcBdRequestModel;
+import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
 import com.octopusbjsindia.presenter.ssgp.VDCBDFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -35,9 +38,18 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     private View vdcbdFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
+
+    String selectedStructureTypeId, selectedStructureType, selectedIntervention, selectedInterventionId,
+            selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
+            selectedTaluka = "", selectedTalukaId = "", selectedVillage = "", selectedVillageId = "",
+            selectedBeneficiaryType, selectedBeneficiaryTypeId;
+
     private VDCBDFormFragmentPresenter presenter;
     private EditText etState, etDistrict, etTaluka, etVillage;
     private EditText et_struct_code, et_structure_type, et_beneficiary_name, et_beneficiary_contact,
@@ -63,6 +75,13 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     }
 
     private void init() {
+        for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+            CustomSpinnerObject customState = new CustomSpinnerObject();
+            customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+            customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+            stateList.add(customState);
+        }
+
         ((GPActionsActivity) getActivity()).setTitle("Beneficiary detail form");
         progressBarLayout = vdcbdFormFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = vdcbdFormFragmentView.findViewById(R.id.pb_profile_act);
@@ -139,11 +158,101 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_submit:
-                if (isAllInputsValid()){
-                    Util.showToast(getActivity(),"data is valid call API here");
+            case R.id.et_state:
+                CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select State",
+                        stateList,
+                        false);
+                cdd6.show();
+                cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_district:
+                if (districtList.size() > 0) {
+                    CustomSpinnerDialogClass cdd7 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select District",
+                            districtList,
+                            false);
+                    cdd7.show();
+                    cdd7.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(getActivity())) {
+                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                            ? selectedStateId : selectedStateId, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
                 }
                 break;
+            case R.id.et_taluka:
+                if (talukaList.size() > 0) {
+                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Taluka", talukaList, false);
+                    cdd1.show();
+                    cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(getActivity())) {
+                        if (etDistrict.getText() != null && etDistrict.getText().toString().length() > 0) {
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                            ? selectedDistrictId : selectedDistrictId,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
+                }
+                break;
+            case R.id.et_village:
+                if (villageList.size() > 0) {
+                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Village", villageList, false);
+                    cdd1.show();
+                    cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(getActivity())) {
+                        if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
+                                            ? selectedTalukaId : selectedTalukaId,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
+                }
+                break;
+
+            case R.id.btn_submit:
+                //   if (isAllInputsValid())
+            {
+                //Util.showToast(getActivity(),"data is valid call API here");
+                VdcBdRequestModel vdcBdRequestModel = new VdcBdRequestModel();
+                vdcBdRequestModel.setStateId("test");
+                vdcBdRequestModel.setDistrictId("test");
+                vdcBdRequestModel.setTalukaId("test");
+                vdcBdRequestModel.setVillageId("test");
+                vdcBdRequestModel.setStructureId("asdj32");
+                vdcBdRequestModel.setStructureType("skjdha");
+                vdcBdRequestModel.setBeneficiaryName("dgashd");
+                vdcBdRequestModel.setBeneficiaryNumber("1211231231");
+                vdcBdRequestModel.setCategoryBeneficiaryFarmer("individual");
+                vdcBdRequestModel.setArrigationSurWater("rain");
+                vdcBdRequestModel.setGatNumber("23kjkjk");
+                vdcBdRequestModel.setAnnualIncome("2300000");
+                vdcBdRequestModel.setCropNumberTime("3");
+                vdcBdRequestModel.setTypeOfCrop("Rabbi");
+                vdcBdRequestModel.setComment("good");
+
+                presenter.submitBdData(vdcBdRequestModel);
+            }
+            break;
         }
     }
 
@@ -253,7 +362,78 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onCustomSpinnerSelection(String type) {
+        switch (type) {
+            case "Select State":
+                for (CustomSpinnerObject state : stateList) {
+                    if (state.isSelected()) {
+                        selectedState = state.getName();
+                        selectedStateId = state.get_id();
+                        break;
+                    }
+                }
+                etState.setText(selectedState);
+                etDistrict.setText("");
+                selectedDistrict = "";
+                selectedDistrictId = "";
+                etTaluka.setText("");
+                selectedTaluka = "";
+                selectedTalukaId = "";
+                etVillage.setText("");
+                selectedVillage = "";
+                selectedVillageId = "";
+                break;
+            case "Select District":
+                for (CustomSpinnerObject state : districtList) {
+                    if (state.isSelected()) {
+                        selectedDistrict = state.getName();
+                        selectedDistrictId = state.get_id();
+                        break;
+                    }
+                }
+                etDistrict.setText(selectedDistrict);
+                etTaluka.setText("");
+                selectedTaluka = "";
+                selectedTalukaId = "";
+                etVillage.setText("");
+                selectedVillage = "";
+                selectedVillageId = "";
+                break;
+            case "Select Taluka":
+                for (CustomSpinnerObject state : talukaList) {
+                    if (state.isSelected()) {
+                        selectedTaluka = state.getName();
+                        selectedTalukaId = state.get_id();
+                        break;
+                    }
+                }
+                etTaluka.setText(selectedTaluka);
+                etVillage.setText("");
+                selectedVillage = "";
+                selectedVillageId = "";
+                break;
+            case "Select Village":
+                for (CustomSpinnerObject state : villageList) {
+                    if (state.isSelected()) {
+                        selectedVillage = state.getName();
+                        selectedVillageId = state.get_id();
+                        break;
+                    }
+                }
+                etVillage.setText(selectedVillage);
+                break;
 
+            /*case "Select Structure Type":
+                for (CustomSpinnerObject obj : structureTypeList) {
+                    if (obj.isSelected()) {
+                        selectedStructureType = obj.getName();
+                        selectedStructureTypeId = obj.get_id();
+                    }
+                }
+                et_structure_type.setText(selectedStructureType);
+                break;*/
+
+
+        }
     }
 
 }

@@ -268,5 +268,10 @@ public class Urls {
 
     public class SSGP{
         public static final String CREATE_STRUCTURE = "api/createGPStructure";
+        public static final String DAILY_PROGRESS_REPORT = "api/dailyProgessReport";
+        public static final String COMMUNITY_MOBILIZATION_REPORT = "api/GPCommunityMobilisation";
+        public static final String BENEFICIARY_DETAILS_REPORT = "api/GPbeneficiaryform";
+
+
     }
 }
