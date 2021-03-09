@@ -247,11 +247,11 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
             {
                 //Util.showToast(getActivity(),"data is valid call API here");
                 VdcCmRequestModel vdcCmRequestModel = new VdcCmRequestModel();
-                vdcCmRequestModel.setStateId("test");
-                vdcCmRequestModel.setDistrictId("test");
-                vdcCmRequestModel.setTalukaId("test");
-                vdcCmRequestModel.setVillageId("test");
-                vdcCmRequestModel.setDate(122313213);
+                vdcCmRequestModel.setStateId(selectedStateId);
+                vdcCmRequestModel.setDistrictId(selectedDistrictId);
+                vdcCmRequestModel.setTalukaId(selectedTalukaId);
+                vdcCmRequestModel.setVillageId(selectedVillageId);
+                vdcCmRequestModel.setDate(Util.getDateInepoch(et_date.getText().toString()));
                 vdcCmRequestModel.setActivityType("test");
                 vdcCmRequestModel.setActivityPurpose("test");
                 vdcCmRequestModel.setParticipantKey1("sadas");

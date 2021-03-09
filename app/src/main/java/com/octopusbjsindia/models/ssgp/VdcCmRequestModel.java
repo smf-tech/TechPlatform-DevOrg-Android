@@ -18,7 +18,7 @@ public class VdcCmRequestModel {
     private String villageId;
     @SerializedName("date")
     @Expose
-    private Integer date;
+    private long date;
     @SerializedName("activity_type")
     @Expose
     private String activityType;
@@ -85,11 +85,11 @@ public class VdcCmRequestModel {
         this.villageId = villageId;
     }
 
-    public Integer getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

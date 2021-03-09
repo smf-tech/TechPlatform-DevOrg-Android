@@ -231,7 +231,7 @@ private String selectedImageType ="";
             case R.id.iv_end_meter:
                 if (Util.isConnected(getActivity())) {
                     onAddImageClick();
-                    selectedImageType = IMAGE_START_READING;
+                    selectedImageType = IMAGE_END_READING;
                 } else {
                     Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
                 }
@@ -258,12 +258,12 @@ private String selectedImageType ="";
                     vdcDprRequestModel.setMachineId(et_machine_code.getText().toString());
                     vdcDprRequestModel.setMachineStatus(et_machine_status.getText().toString());
                     vdcDprRequestModel.setStartMeterReading(et_start_meter_reading.getText().toString());
-                    vdcDprRequestModel.setStartMeterReadingImage("");
+                    vdcDprRequestModel.setStartMeterReadingImage(UrlStartMeterPhoto);
                     vdcDprRequestModel.setEndMeterReading(et_end_meter_reading.getText().toString());
-                    vdcDprRequestModel.setEndMeterReadingImage("");
+                    vdcDprRequestModel.setEndMeterReadingImage(UrlEndMeterPhoto);
                     vdcDprRequestModel.setStructureStatus(et_structure_status.getText().toString());
                     vdcDprRequestModel.setStructureId(et_struct_code.getText().toString());
-                    vdcDprRequestModel.setStructureImage("adhajkdhakj");
+                    vdcDprRequestModel.setStructureImage(UrlStructurePhoto);
                     vdcDprRequestModel.setComment(et_remark.getText().toString());
 
                     presenter.submitDPR(vdcDprRequestModel);
