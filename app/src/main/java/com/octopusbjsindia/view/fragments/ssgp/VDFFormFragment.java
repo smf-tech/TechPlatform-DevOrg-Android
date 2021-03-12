@@ -54,6 +54,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
             etNodalContact, etMachineTransport, etFeasibility, etReason, etFutureWorkTime,
             etWorkableStructCount, etRemark, etHoRemark, selectedEt;
     private Button btnSubmit;
+    private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
@@ -62,11 +63,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private ArrayList<CustomSpinnerObject> transportAgreeOptionsList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> workImmediateOptionsList = new ArrayList<>();
     private VDFFormFragmentPresenter presenter;
-    private String userDistrictIds = "";
-    private String userTalukaIds = "";
-    private String userVillageIds = "";
-    private boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
-    private String selectedDistrictId, selectedTalukaId, selectedVillageId, selectedStructureType1, selectedStructureTypeId1,
+    private String selectedStateId, selectedDistrictId, selectedTalukaId, selectedVillageId, selectedStructureType1, selectedStructureTypeId1,
             selectedStructureType2, selectedStructureTypeId2, selectedStructureType3, selectedStructureTypeId3,
             selectedStructureType4, selectedStructureTypeId4, selectedStructureType5, selectedStructureTypeId5;
 
@@ -94,6 +91,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         progressBarLayout = vdfFormFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = vdfFormFragmentView.findViewById(R.id.pb_profile_act);
         presenter = new VDFFormFragmentPresenter(this);
+        etState = vdfFormFragmentView.findViewById(R.id.et_state);
         etDistrict = vdfFormFragmentView.findViewById(R.id.et_district);
         etTaluka = vdfFormFragmentView.findViewById(R.id.et_taluka);
         etVillage = vdfFormFragmentView.findViewById(R.id.et_village);
@@ -125,6 +123,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etStructureType3.setOnClickListener(this);
         etStructureType4.setOnClickListener(this);
         etStructureType5.setOnClickListener(this);
+        vdfFormFragmentView.findViewById(R.id.btn_submit).setOnClickListener(this);
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
 //        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -146,6 +145,14 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 //                }
 //            }
 //        }
+
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            etState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
+        } else {
+            etState.setOnClickListener(this);
+        }
 
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
@@ -210,14 +217,35 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.et_district:
-                CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select District",
-                        districtList,
+            case R.id.et_state:
+                CustomSpinnerDialogClass cdd0 = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select State",
+                        stateList,
                         false);
-                cdd6.show();
-                cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                cdd0.show();
+                cdd0.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_district:
+                if (districtList.size() > 0) {
+                    CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select District",
+                            districtList,
+                            false);
+                    cdd6.show();
+                    cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(getActivity())) {
+                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
+                            presenter.getLocationData(selectedStateId,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                    }
+                }
                 break;
             case R.id.et_taluka:
                 if (talukaList.size() > 0) {
@@ -229,8 +257,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 } else {
                     if (Util.isConnected(getActivity())) {
                         if (etDistrict.getText() != null && etDistrict.getText().toString().length() > 0) {
-                            presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                            ? selectedDistrictId : userDistrictIds,
+                            presenter.getLocationData(selectedDistrictId,
                                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL);
                         }
@@ -249,8 +276,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 } else {
                     if (Util.isConnected(getActivity())) {
                         if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
-                            presenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
-                                            ? selectedTalukaId : userTalukaIds,
+                            presenter.getLocationData(selectedTalukaId,
                                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
@@ -328,7 +354,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     request.setIsStartWorkImmediately(etFeasibility.getText().toString().trim());
                     request.setReasonNotStart(etReason.getText().toString().trim());
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
-//                    request.set(etWorkableStructCount.getText().toString().trim()); // TODO not shure
+                    request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
                     request.setComment(etRemark.getText().toString().trim()); //TODO not shure
                     request.setComment(etHoRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
@@ -476,7 +502,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 selectedVillageId = "";
                 break;
             case "Select Village":
-                for (CustomSpinnerObject state : districtList) {
+                for (CustomSpinnerObject state : villageList) {
                     if (state.isSelected()) {
                         etVillage.setText(state.getName());
                         selectedVillageId = state.get_id();

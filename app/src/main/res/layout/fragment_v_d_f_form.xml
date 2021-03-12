@@ -18,6 +18,20 @@
             android:layout_marginEnd="@dimen/dimen_10dp"
             android:orientation="vertical">
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/state"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
@@ -93,7 +107,9 @@
                 <EditText
                     android:id="@+id/et_structure_type2"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/structure_type" />
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -116,7 +132,9 @@
                 <EditText
                     android:id="@+id/et_structure_type3"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/structure_type" />
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +157,9 @@
                 <EditText
                     android:id="@+id/et_structure_type4"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/structure_type" />
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -162,7 +182,9 @@
                 <EditText
                     android:id="@+id/et_structure_type5"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/structure_type" />
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
