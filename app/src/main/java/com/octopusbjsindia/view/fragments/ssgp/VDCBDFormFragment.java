@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
@@ -25,6 +26,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.ssgp.VdcBdRequestModel;
 import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
+import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDCBDFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -129,7 +131,7 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
             msg = getString(R.string.select_stuct_type);
         } else if (et_beneficiary_name.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_name);
-        } else if (et_beneficiary_contact.getText().toString().trim().length() == 10) {
+        } else if (et_beneficiary_contact.getText().toString().trim().length() != 10 ) {
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (et_beneficiary_category.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.type_of_beneficiary);
@@ -230,25 +232,25 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
                 break;
 
             case R.id.btn_submit:
-                //   if (isAllInputsValid())
+                if (isAllInputsValid())
             {
                 //Util.showToast(getActivity(),"data is valid call API here");
                 VdcBdRequestModel vdcBdRequestModel = new VdcBdRequestModel();
-                vdcBdRequestModel.setStateId("test");
-                vdcBdRequestModel.setDistrictId("test");
-                vdcBdRequestModel.setTalukaId("test");
-                vdcBdRequestModel.setVillageId("test");
-                vdcBdRequestModel.setStructureId("asdj32");
-                vdcBdRequestModel.setStructureType("skjdha");
-                vdcBdRequestModel.setBeneficiaryName("dgashd");
-                vdcBdRequestModel.setBeneficiaryNumber("1211231231");
-                vdcBdRequestModel.setCategoryBeneficiaryFarmer("individual");
-                vdcBdRequestModel.setArrigationSurWater("rain");
-                vdcBdRequestModel.setGatNumber("23kjkjk");
-                vdcBdRequestModel.setAnnualIncome("2300000");
-                vdcBdRequestModel.setCropNumberTime("3");
-                vdcBdRequestModel.setTypeOfCrop("Rabbi");
-                vdcBdRequestModel.setComment("good");
+                vdcBdRequestModel.setStateId(selectedStateId);
+                vdcBdRequestModel.setDistrictId(selectedDistrictId);
+                vdcBdRequestModel.setTalukaId(selectedTalukaId);
+                vdcBdRequestModel.setVillageId(selectedVillageId);
+                vdcBdRequestModel.setStructureId(et_struct_code.getText().toString());
+                vdcBdRequestModel.setStructureType(et_structure_type.getText().toString());
+                vdcBdRequestModel.setBeneficiaryName(et_beneficiary_name.getText().toString());
+                vdcBdRequestModel.setBeneficiaryNumber(et_beneficiary_contact.getText().toString());
+                vdcBdRequestModel.setCategoryBeneficiaryFarmer(et_beneficiary_category.getText().toString());
+                vdcBdRequestModel.setArrigationSurWater(et_irrigation.getText().toString());
+                vdcBdRequestModel.setGatNumber(et_gat_no.getText().toString());
+                vdcBdRequestModel.setAnnualIncome(et_annual_income.getText().toString());
+                vdcBdRequestModel.setCropNumberTime(et_numberof_crops.getText().toString());
+                vdcBdRequestModel.setTypeOfCrop(et_type_of_crops.getText().toString());
+                vdcBdRequestModel.setComment(et_remark.getText().toString());
 
                 presenter.submitBdData(vdcBdRequestModel);
             }
@@ -436,4 +438,16 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+
+    public void showResponse(String responseMessage, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseMessage,
+                Snackbar.LENGTH_LONG);
+
+        if (requestId.equals(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
+            if (status == 200) {
+                getActivity().finish();
+            }
+        }
+    }
 }

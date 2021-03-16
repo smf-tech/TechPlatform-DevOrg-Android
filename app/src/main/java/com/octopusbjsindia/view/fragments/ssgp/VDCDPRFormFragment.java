@@ -58,7 +58,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     private View vdcdprFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-private String selectedImageType ="";
+    private String selectedImageType ="";
     public static final String IMAGE_START_READING = "startMeterReading";
     public static final String IMAGE_END_READING = "endMeterReading";
     public static final String IMAGE_STRUCTURE_IMAGE = "structureImage";

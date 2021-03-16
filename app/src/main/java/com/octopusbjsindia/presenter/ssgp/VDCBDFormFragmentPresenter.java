@@ -93,8 +93,8 @@ public class VDCBDFormFragmentPresenter implements APIPresenterListener {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-//                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-//                            MachineShiftingFormFragmentPresenter.SUBMIT_MACHINE_SHIFTING_FORM, responseOBJ.getStatus());
+                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                            VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT, responseOBJ.getStatus());
                 } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS) || requestID.equalsIgnoreCase(GET_VILLAGES)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
