@@ -183,6 +183,8 @@ public class Urls {
         public static final String ASSIGN_OPERATORS = "api/assignOperator";
         public static final String RELEASE_OPERATORS = "api/releaseOperator";
         public static final String CREATE_OPERATOR = "api/createOperator";
+        public static final String GET_GP_STRUCTURE_ANALYTICS = "api/GPStructureAnalyst";
+        public static final String GET_GP_MACHINE_ANALYTICS = "api/GPMachineAnalytics";
     }
 
     public class OperatorApi {

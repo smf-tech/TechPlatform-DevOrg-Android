@@ -60,13 +60,13 @@ public class SujalamSuphalamGPPresenter implements APIPresenterListener {
 
         if(type.equals(GET_STRUCTURE_ANALYTICS)) {
             getSSAnalyticsUrl = BuildConfig.BASE_URL
-                    + String.format(Urls.SSModule.GET_SS_STRUCTURE_ANALYTICS);
+                    + String.format(Urls.SSModule.GET_GP_STRUCTURE_ANALYTICS);
             Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getSSAnalyticsUrl);
             requestCall.postDataApiCall(GET_STRUCTURE_ANALYTICS, new JSONObject(map).toString(), getSSAnalyticsUrl);
         }
         if(type.equals(GET_MACHINE_ANALYTICS)){
             getSSAnalyticsUrl = BuildConfig.BASE_URL
-                    + String.format(Urls.SSModule.GET_SS_MACHINE_ANALYTICS);
+                    + String.format(Urls.SSModule.GET_GP_MACHINE_ANALYTICS);
             Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getSSAnalyticsUrl);
             requestCall.postDataApiCall(GET_MACHINE_ANALYTICS, new JSONObject(map).toString(), getSSAnalyticsUrl);
         }
