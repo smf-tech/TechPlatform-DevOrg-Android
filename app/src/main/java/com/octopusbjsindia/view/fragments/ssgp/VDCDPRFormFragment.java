@@ -26,13 +26,19 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
+import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
+import com.octopusbjsindia.models.ssgp.GpStructureListModel;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
 import com.octopusbjsindia.presenter.ssgp.VDCDPRFormFragmentPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
@@ -66,6 +72,9 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     private Uri finalUri;
 
     private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineStatusList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineHaltReasonList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject>  gpMachineLists = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
@@ -75,7 +84,9 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     String selectedStructureTypeId, selectedStructureType, selectedIntervention, selectedInterventionId,
             selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedVillage = "", selectedVillageId = "",
-            selectedBeneficiaryType, selectedBeneficiaryTypeId;
+            selectedBeneficiaryType, selectedBeneficiaryTypeId,selectedMachineStatus, selectedMachineStatusId,
+    selectedMachinecodename,selectedMachineId,selectedMachinehaltreason,selectedMachinehaltreasonId;
+
 
     private VDCDPRFormFragmentPresenter presenter;
     private EditText etState,etDistrict, etTaluka, etVillage,et_remark,
@@ -102,6 +113,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     }
 
     private void init() {
+        setMasterData();
 
         for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
             CustomSpinnerObject customState = new CustomSpinnerObject();
@@ -138,21 +150,87 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         etDistrict.setOnClickListener(this);
         etTaluka.setOnClickListener(this);
         etVillage.setOnClickListener(this);
-        et_date.setOnClickListener(this::onClick);
-
+        et_date.setOnClickListener(this);
+        et_machine_code.setOnClickListener(this);
         et_machine_status.setOnClickListener(this);
         et_reason.setOnClickListener(this);
-        iv_start_meter.setOnClickListener(this::onClick);
-        iv_end_meter.setOnClickListener(this::onClick);
-        iv_structure_photo.setOnClickListener(this::onClick);
+        iv_start_meter.setOnClickListener(this);
+        iv_end_meter.setOnClickListener(this);
+        iv_structure_photo.setOnClickListener(this);
 
+
+        presenter.GetGpMachineList();
+
+    }
+
+    //set master data list
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData("GP");
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
+            /*if (obj.getForm().equalsIgnoreCase("structure_create") ||
+                    obj.getForm().equalsIgnoreCase("structure_preparation"))*/
+            {
+                masterDataLists.add(obj);
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.et_machine_code:
+                CustomSpinnerDialogClass csdStructerCode = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Machine",
+                        gpMachineLists,
+                        false);
+                csdStructerCode.show();
+                csdStructerCode.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case R.id.et_machine_status:
-
+                machineStatusList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("machineStatus"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            machineStatusList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Machine Status", machineStatusList, false);
+                csdStructerType.show();
+                csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_reason:
+                machineHaltReasonList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("machineHaltedReason"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            machineHaltReasonList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdMachineIdleReason = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Machine halt reason", machineHaltReasonList, false);
+                csdMachineIdleReason.show();
+                csdMachineIdleReason.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_state:
                 CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -253,7 +331,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btn_submit:
-             //   if (isAllInputsValid())
+                if (isAllInputsValid())
                 {
                     //Util.showToast(getActivity(),"data is valid call API here");
                     VdcDprRequestModel vdcDprRequestModel = new VdcDprRequestModel();
@@ -262,8 +340,8 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                     vdcDprRequestModel.setTalukaId(selectedTalukaId);
                     vdcDprRequestModel.setVillageId(selectedVillageId);
                     vdcDprRequestModel.setReportDate(Util.getDateInepoch(et_date.getText().toString()));
-                    vdcDprRequestModel.setMachineId(et_machine_code.getText().toString());
-                    vdcDprRequestModel.setMachineStatus(et_machine_status.getText().toString());
+                    vdcDprRequestModel.setMachineId(selectedMachineId);
+                    vdcDprRequestModel.setMachineStatus(selectedMachineStatusId);
                     vdcDprRequestModel.setStartMeterReading(et_start_meter_reading.getText().toString());
                     vdcDprRequestModel.setStartMeterReadingImage(UrlStartMeterPhoto);
                     vdcDprRequestModel.setEndMeterReading(et_end_meter_reading.getText().toString());
@@ -532,15 +610,35 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 etVillage.setText(selectedVillage);
                 break;
 
-            /*case "Select Structure Type":
-                for (CustomSpinnerObject obj : structureTypeList) {
+            case "Select Machine Status":
+                for (CustomSpinnerObject obj : machineStatusList) {
                     if (obj.isSelected()) {
-                        selectedStructureType = obj.getName();
-                        selectedStructureTypeId = obj.get_id();
+                        selectedMachineStatus = obj.getName();
+                        selectedMachineStatusId = obj.get_id();
                     }
                 }
-                et_structure_type.setText(selectedStructureType);
-                break;*/
+                et_machine_status.setText(selectedMachineStatus);
+                break;
+            case "Select Machine":
+                for (CustomSpinnerObject obj : gpMachineLists) {
+                    if (obj.isSelected()) {
+                        selectedMachinecodename = obj.getName();
+                        selectedMachineId = obj.get_id();
+                    }
+                }
+                et_machine_code.setText(selectedMachinecodename);
+                break;
+            case "Select Machine halt reason":
+                for (CustomSpinnerObject obj : machineHaltReasonList) {
+                    if (obj.isSelected()) {
+                        selectedMachinehaltreason = obj.getName();
+                        selectedMachinehaltreasonId = obj.get_id();
+                    }
+                }
+                et_reason.setText(selectedMachinehaltreason);
+                break;
+
+
 
 
         }
@@ -638,6 +736,24 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                             .into(iv_structure_photo);
                 }
             });
+        }
+    }
+
+
+    public void setMachinelist(String response) {
+        Util.logger("GPMachineList",response);
+        GpStructureListModel gpStructureListModel = new Gson().fromJson(response,GpStructureListModel.class);
+        if (gpStructureListModel!=null && gpStructureListModel.getGpStructureList().size()>0){
+
+            for (int i = 0; i <gpStructureListModel.getGpStructureList().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(gpStructureListModel.getGpStructureList().get(i).getId());
+                customState.setName(gpStructureListModel.getGpStructureList().get(i).getCode());
+                gpMachineLists.add(customState);
+            }
+
+        }else {
+            Util.showToast(getActivity(),"structure not available." );
         }
     }
 }

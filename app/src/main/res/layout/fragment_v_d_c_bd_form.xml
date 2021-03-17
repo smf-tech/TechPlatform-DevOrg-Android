@@ -153,6 +153,8 @@
                     <EditText
                         android:id="@+id/et_beneficiary_category"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Beneficiary category" />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -78,6 +78,8 @@
                     <EditText
                         android:id="@+id/et_village"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/village" />
                 </com.google.android.material.textfield.TextInputLayout>
 

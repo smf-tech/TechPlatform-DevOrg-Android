@@ -78,7 +78,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
     private EditText et_date,et_activity_type,et_activity_purpose,et_participant1,et_participant2,et_participant3,et_total_participant,et_discussion,
     et_meeting_feedback,et_remark;
     private ImageView iv_activity_photo,iv_meeting_photo,iv_attendace_sheet_photo;
-    private String UrlActivityPhoto,UrlMeetingPhoto,UrlAttendacesheetPhoto;
+    private String UrlActivityPhoto = "",UrlMeetingPhoto= "",UrlAttendacesheetPhoto = "";
     private Button btn_submit;
     private View vdccmFormFragmentView;
     @Override
@@ -243,7 +243,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                 }
                 break;
             case R.id.btn_submit:
-                //   if (isAllInputsValid())
+                  if (isAllInputsValid())
             {
                 //Util.showToast(getActivity(),"data is valid call API here");
                 VdcCmRequestModel vdcCmRequestModel = new VdcCmRequestModel();
@@ -252,17 +252,17 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                 vdcCmRequestModel.setTalukaId(selectedTalukaId);
                 vdcCmRequestModel.setVillageId(selectedVillageId);
                 vdcCmRequestModel.setDate(Util.getDateInepoch(et_date.getText().toString()));
-                vdcCmRequestModel.setActivityType("test");
-                vdcCmRequestModel.setActivityPurpose("test");
-                vdcCmRequestModel.setParticipantKey1("sadas");
-                vdcCmRequestModel.setParticipantKey2("sdfs");
-                vdcCmRequestModel.setParticipantKey3("sdfsd");
-                vdcCmRequestModel.setTotalParticipantNo("dfsdf");
-                vdcCmRequestModel.setActivityDiscussion("sdfsd");
-                vdcCmRequestModel.setActivityPhoto("sdfs");  //UrlActivityPhoto
-                vdcCmRequestModel.setMeetingPhoto("lkjdadlakdj"); //UrlMeetingPhoto
-                vdcCmRequestModel.setAttendanceMeetingPhoto("adashdjkahd");  //UrlAttendacesheetPhoto
-                vdcCmRequestModel.setComment("kdjhaskdhakjd");
+                vdcCmRequestModel.setActivityType(et_activity_type.getText().toString());
+                vdcCmRequestModel.setActivityPurpose(et_activity_purpose.getText().toString());
+                vdcCmRequestModel.setParticipantKey1(et_participant1.getText().toString());
+                vdcCmRequestModel.setParticipantKey2(et_participant2.getText().toString());
+                vdcCmRequestModel.setParticipantKey3(et_participant3.getText().toString());
+                vdcCmRequestModel.setTotalParticipantNo(et_total_participant.getText().toString());
+                vdcCmRequestModel.setActivityDiscussion(et_discussion.getText().toString());
+                vdcCmRequestModel.setActivityPhoto(UrlActivityPhoto);  //UrlActivityPhoto
+                vdcCmRequestModel.setMeetingPhoto(UrlMeetingPhoto); //UrlMeetingPhoto
+                vdcCmRequestModel.setAttendanceMeetingPhoto(UrlAttendacesheetPhoto);  //UrlAttendacesheetPhoto
+                vdcCmRequestModel.setComment(et_remark.getText().toString());
 
                 presenter.submitCMData(vdcCmRequestModel);
             }
@@ -337,13 +337,13 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
             msg = getResources().getString(R.string.select_district);
         } else if (etTaluka.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_select_taluka);
-        } else if (et_activity_type.getText().toString().trim().length() == 0) {
+        }/* else if (et_activity_type.getText().toString().trim().length() == 0) {
             msg =getString(R.string.msg_select_struct_code);
         } else if (et_activity_purpose.getText().toString().trim().length() == 0) {
             msg = getString(R.string.select_stuct_type);
         } else if (et_participant1.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_name);
-        } else if (UrlActivityPhoto.trim().length() == 0) {
+        }*/ else if (UrlActivityPhoto.trim().length() == 0) {
             msg = "Please upload Activity photo";
         } else if (UrlMeetingPhoto.trim().length() == 0) {
             msg = "Please upload Meeting photo";
