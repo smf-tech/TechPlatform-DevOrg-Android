@@ -12,8 +12,8 @@ import java.util.List;
 
 @Dao
 public interface SSMasterDatabaseDao {
-    @Query("SELECT * FROM SSMasterDatabase")
-    List<SSMasterDatabase> getSSMasterData();
+    @Query("SELECT * FROM SSMasterDatabase where type = :type")
+    List<SSMasterDatabase> getSSMasterData(String type);
 
     @Query("DELETE FROM SSMasterDatabase")
     void deleteSSMasterData();

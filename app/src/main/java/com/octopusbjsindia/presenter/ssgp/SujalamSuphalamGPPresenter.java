@@ -28,6 +28,7 @@ public class SujalamSuphalamGPPresenter implements APIPresenterListener {
     public static final String GET_STRUCTURE_ANALYTICS ="getStructureAnalytics";
     public static final String GET_MACHINE_ANALYTICS = "getMachineAnalytics";
     public static final String GET_SS_MASTER_DATA = "getSSMasterData";
+    public static final String GET_GP_MASTER_DATA = "getGPMasterData";
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
@@ -80,6 +81,15 @@ public class SujalamSuphalamGPPresenter implements APIPresenterListener {
                     + String.format(Urls.SSModule.GET_SS_MASTER_DATA);
         Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
         requestCall.getDataApiCall(GET_SS_MASTER_DATA, getSSMasterDaraUrl);
+    }
+    public void getGPMasterData(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSModule.GET_GP_MASTER_DATA);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_GP_MASTER_DATA, getSSMasterDaraUrl);
     }
 
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
@@ -139,7 +149,11 @@ public class SujalamSuphalamGPPresenter implements APIPresenterListener {
                 } else if (requestID.equals(SujalamSuphalamGPPresenter.GET_SS_MASTER_DATA)) {
                     MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
                     fragmentWeakReference.get().setMasterData(masterDataResponse);
-                } else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_DISTRICT)) {
+                } else if (requestID.equals(SujalamSuphalamGPPresenter.GET_GP_MASTER_DATA)) {
+                    MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
+                    fragmentWeakReference.get().setMasterData(masterDataResponse);
+                }
+                else if (requestID.equalsIgnoreCase(StructureMachineListFragmentPresenter.GET_DISTRICT)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null

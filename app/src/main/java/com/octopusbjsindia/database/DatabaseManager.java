@@ -49,7 +49,7 @@ public class DatabaseManager {
                     .addMigrations(MIGRATION_3_TO_4)
                     .addMigrations(MIGRATION_4_TO_5)
                     .addMigrations(MIGRATION_5_TO_6)
-//                    .addMigrations(MIGRATION_6_TO_7)
+                    .addMigrations(MIGRATION_6_TO_7)
                     .build();
         }
 
@@ -118,6 +118,14 @@ public class DatabaseManager {
 
             database.execSQL("DROP TABLE JurisdictionLocation");
             database.execSQL("CREATE TABLE IF NOT EXISTS JurisdictionLocationV3 (autoId INTEGER PRIMARY KEY autoincrement NOT NULL, id TEXT, name TEXT,parent_id TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_6_TO_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE SSMasterDatabase ADD COLUMN type TEXT");
         }
     };
 

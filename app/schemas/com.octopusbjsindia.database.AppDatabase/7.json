@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "441469a96e0ad4259e01d2cd2fac42e4",
+    "identityHash": "ad69fa429bfc9e22abbd8b4395776ed0",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -746,7 +746,7 @@
       },
       {
         "tableName": "SSMasterDatabase",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `data` TEXT, `dateTime` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `data` TEXT, `type` TEXT, `dateTime` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -757,6 +757,12 @@
           {
             "fieldPath": "data",
             "columnName": "data",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1230,7 +1236,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '441469a96e0ad4259e01d2cd2fac42e4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad69fa429bfc9e22abbd8b4395776ed0')"
     ]
   }
 }

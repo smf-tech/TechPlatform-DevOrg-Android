@@ -825,7 +825,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     public void setMasterData() {
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("SS");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();

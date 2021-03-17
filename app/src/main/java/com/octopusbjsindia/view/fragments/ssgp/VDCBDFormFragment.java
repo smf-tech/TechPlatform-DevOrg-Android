@@ -18,12 +18,20 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
+import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
+import com.octopusbjsindia.models.ssgp.GpStructureList;
+import com.octopusbjsindia.models.ssgp.GpStructureListModel;
 import com.octopusbjsindia.models.ssgp.VdcBdRequestModel;
 import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
 import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
@@ -42,15 +50,17 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     private RelativeLayout progressBarLayout;
     private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> beneficiaryTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject>  gpStructureLists = new ArrayList<>();
 
     String selectedStructureTypeId, selectedStructureType, selectedIntervention, selectedInterventionId,
             selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedVillage = "", selectedVillageId = "",
-            selectedBeneficiaryType, selectedBeneficiaryTypeId;
+            selectedBeneficiaryType, selectedBeneficiaryTypeId,selectedStructurecodename, selectedStructureId;
 
     private VDCBDFormFragmentPresenter presenter;
     private EditText etState, etDistrict, etTaluka, etVillage;
@@ -77,6 +87,8 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     }
 
     private void init() {
+        setMasterData();
+
         for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
             CustomSpinnerObject customState = new CustomSpinnerObject();
             customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
@@ -110,7 +122,12 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
         etDistrict.setOnClickListener(this);
         etTaluka.setOnClickListener(this);
         etVillage.setOnClickListener(this);
+        et_beneficiary_category.setOnClickListener(this);
+        et_structure_type.setOnClickListener(this);
+        et_struct_code.setOnClickListener(this);
 
+
+        presenter.GetGpStrucureList();
     }
 
 
@@ -160,6 +177,54 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.et_struct_code:
+                CustomSpinnerDialogClass csdStructerCode = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Structure",
+                        gpStructureLists,
+                        false);
+                csdStructerCode.show();
+                csdStructerCode.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_structure_type:
+                structureTypeList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            structureTypeList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Structure Type", structureTypeList, false);
+                csdStructerType.show();
+                csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_beneficiary_category:
+                beneficiaryTypeList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureBeneficiary"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setTypeCode(obj.getTypeCode());
+                            temp.setSelected(false);
+                            beneficiaryTypeList.add(temp);
+                        }
+                }
+                CustomSpinnerDialogClass csdBeneficiary = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Type of Beneficiary", beneficiaryTypeList, false);
+                csdBeneficiary.show();
+                csdBeneficiary.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+
+
             case R.id.et_state:
                 CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State",
@@ -240,11 +305,11 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
                 vdcBdRequestModel.setDistrictId(selectedDistrictId);
                 vdcBdRequestModel.setTalukaId(selectedTalukaId);
                 vdcBdRequestModel.setVillageId(selectedVillageId);
-                vdcBdRequestModel.setStructureId(et_struct_code.getText().toString());
-                vdcBdRequestModel.setStructureType(et_structure_type.getText().toString());
+                vdcBdRequestModel.setStructureId(selectedStructureId);
+                vdcBdRequestModel.setStructureType(selectedStructureTypeId);
                 vdcBdRequestModel.setBeneficiaryName(et_beneficiary_name.getText().toString());
                 vdcBdRequestModel.setBeneficiaryNumber(et_beneficiary_contact.getText().toString());
-                vdcBdRequestModel.setCategoryBeneficiaryFarmer(et_beneficiary_category.getText().toString());
+                vdcBdRequestModel.setCategoryBeneficiaryFarmer(selectedBeneficiaryTypeId);
                 vdcBdRequestModel.setArrigationSurWater(et_irrigation.getText().toString());
                 vdcBdRequestModel.setGatNumber(et_gat_no.getText().toString());
                 vdcBdRequestModel.setAnnualIncome(et_annual_income.getText().toString());
@@ -424,7 +489,7 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
                 etVillage.setText(selectedVillage);
                 break;
 
-            /*case "Select Structure Type":
+            case "Select Structure Type":
                 for (CustomSpinnerObject obj : structureTypeList) {
                     if (obj.isSelected()) {
                         selectedStructureType = obj.getName();
@@ -432,7 +497,26 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
                     }
                 }
                 et_structure_type.setText(selectedStructureType);
-                break;*/
+                break;
+            case "Select Type of Beneficiary":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        selectedBeneficiaryType = obj.getName();
+                        selectedBeneficiaryTypeId = obj.get_id();
+                    }
+                }
+                et_beneficiary_category.setText(selectedBeneficiaryType);
+                break;
+            case "Select Structure":
+                for (CustomSpinnerObject obj : gpStructureLists) {
+                    if (obj.isSelected()) {
+                        selectedStructurecodename = obj.getName();
+                        selectedStructureId = obj.get_id();
+                    }
+                }
+                et_struct_code.setText(selectedStructurecodename);
+                break;
+
 
 
         }
@@ -448,6 +532,45 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
             if (status == 200) {
                 getActivity().finish();
             }
+        }
+    }
+
+    //set master data list
+    public void setMasterData() {
+
+        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getSSMasterDatabaseDao().getSSMasterData("GP");
+        String masterDbString = list.get(0).getData();
+
+        Gson gson = new Gson();
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
+        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+
+        for (MasterDataList obj : masterDataList) {
+            /*if (obj.getForm().equalsIgnoreCase("structure_create") ||
+                    obj.getForm().equalsIgnoreCase("structure_preparation"))*/
+            {
+                masterDataLists.add(obj);
+            }
+        }
+    }
+
+
+    public void setStructurelist(String response) {
+        Util.logger("GPStructureList",response);
+        GpStructureListModel gpStructureListModel = new Gson().fromJson(response,GpStructureListModel.class);
+        if (gpStructureListModel!=null && gpStructureListModel.getGpStructureList().size()>0){
+
+            for (int i = 0; i <gpStructureListModel.getGpStructureList().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(gpStructureListModel.getGpStructureList().get(i).getId());
+                customState.setName(gpStructureListModel.getGpStructureList().get(i).getCode());
+                gpStructureLists.add(customState);
+            }
+
+        }else {
+            Util.showToast(getActivity(),"structure not available." );
         }
     }
 }

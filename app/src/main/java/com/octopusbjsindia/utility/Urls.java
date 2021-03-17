@@ -154,6 +154,7 @@ public class Urls {
         public static final String GET_SS_STRUCTURE_ANALYTICS = "api/getStructureAnalystV2";
         public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalyticsV2";
         public static final String GET_SS_MASTER_DATA = "api/masterDataList";
+        public static final String GET_GP_MASTER_DATA = "api/gpMasterdata";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
         public static final String CREATE_MACHINE = "api/createMachine";
@@ -273,6 +274,10 @@ public class Urls {
         public static final String DAILY_PROGRESS_REPORT = "api/dailyProgessReport";
         public static final String COMMUNITY_MOBILIZATION_REPORT = "api/GPCommunityMobilisation";
         public static final String BENEFICIARY_DETAILS_REPORT = "api/GPbeneficiaryform";
+        public static final String GET_GP_MACHINE_LIST = "api/GPMachineCodeList";
+        public static final String GET_GP_STRUCURE_LIST = "api/GPStructureCodeList";
+
+
 
 
     }

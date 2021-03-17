@@ -110,6 +110,8 @@
                     <EditText
                         android:id="@+id/et_machine_code"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Machine code" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,7 +200,9 @@
                         android:id="@+id/et_struct_code"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Structure code"
-                        android:inputType="numberDecimal" />
+                        android:focusable="false"
+                        android:longClickable="false"
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

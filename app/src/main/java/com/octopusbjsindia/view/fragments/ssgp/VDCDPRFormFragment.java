@@ -139,14 +139,21 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         etTaluka.setOnClickListener(this);
         etVillage.setOnClickListener(this);
         et_date.setOnClickListener(this::onClick);
+
+        et_machine_status.setOnClickListener(this);
+        et_reason.setOnClickListener(this);
         iv_start_meter.setOnClickListener(this::onClick);
         iv_end_meter.setOnClickListener(this::onClick);
         iv_structure_photo.setOnClickListener(this::onClick);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.et_machine_status:
+
+                break;
             case R.id.et_state:
                 CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State",

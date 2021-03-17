@@ -34,6 +34,8 @@ public class VDCBDFormFragmentPresenter implements APIPresenterListener {
     public static final String GET_DISTRICTS = "getDistricts";
     public static final String GET_VILLAGES = "getVillages";
     public static final String BENEFICIARY_DETAIL_REPORT = "beneficiarydetailreport";
+    public static final String GET_GP_STRUCURE_LIST = "GETGPMACHINELIST";
+
 
     public VDCBDFormFragmentPresenter(VDCBDFormFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -91,7 +93,10 @@ public class VDCBDFormFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
+
+                if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.GET_GP_STRUCURE_LIST)) {
+                    fragmentWeakReference.get().setStructurelist(response);
+                } else if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
                             VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT, responseOBJ.getStatus());
@@ -128,5 +133,15 @@ public class VDCBDFormFragmentPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(BENEFICIARY_DETAIL_REPORT, paramjson, url);
+    }
+
+    public void GetGpStrucureList(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSGP.GET_GP_STRUCURE_LIST);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_GP_STRUCURE_LIST, getSSMasterDaraUrl);
     }
 }

@@ -99,6 +99,8 @@
                         android:id="@+id/et_struct_code"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Structure code"
+                        android:focusable="false"
+                        android:longClickable="false"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,6 +113,8 @@
                         android:id="@+id/et_structure_type"
                         style="@style/RegistrationEditTextLayout"
                         android:inputType="text"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/structure_type" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +127,7 @@
                         android:id="@+id/et_beneficiary_name"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Beneficiary name"
+                        android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -197,6 +202,7 @@
                         android:id="@+id/et_numberof_crops"
                         style="@style/RegistrationEditTextLayout"
                         android:inputType="number"
+                        android:maxLength="2"
                         android:hint="Number of crops in year" />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -271,7 +271,8 @@
                     android:id="@+id/et_beneficiary_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -370,7 +371,8 @@
                     android:id="@+id/et_beneficiary_name1"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -408,7 +410,8 @@
                     android:id="@+id/et_beneficiary_name2"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -446,7 +449,8 @@
                     android:id="@+id/et_beneficiary_name3"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -484,7 +488,8 @@
                     android:id="@+id/et_beneficiary_name4"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -522,7 +527,8 @@
                     android:id="@+id/et_beneficiary_name5"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="numberDecimal" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
