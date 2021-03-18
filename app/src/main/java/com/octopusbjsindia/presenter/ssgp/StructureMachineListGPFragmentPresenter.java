@@ -78,7 +78,7 @@ public class StructureMachineListGPFragmentPresenter implements APIPresenterList
 
         String paramjson = gson.toJson(map);
         final String getStructuresListUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_SS_STRUCTURE_LIST);
+                + Urls.SSGP.GET_GP_STRUCTURE_ANALYTICS;
         Log.d(TAG, "getMatrimonyMeetTypesUrl: url" + getStructuresListUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
