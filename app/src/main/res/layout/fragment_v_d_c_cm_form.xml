@@ -254,7 +254,7 @@
                     android:layout_below="@+id/card_create_meet"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:text="@string/meet_next_label"
+                    android:text="@string/submit"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

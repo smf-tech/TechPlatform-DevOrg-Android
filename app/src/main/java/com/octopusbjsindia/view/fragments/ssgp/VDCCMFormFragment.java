@@ -87,6 +87,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
         super.onCreate(savedInstanceState);
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -338,22 +339,26 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
             msg = getResources().getString(R.string.select_district);
         } else if (etTaluka.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_select_taluka);
+        } else if (etVillage.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_select_village);
+        } else if (et_date.getText().toString().trim().length() == 0) {
+            msg = "Please select date.";
         } else if (et_activity_type.getText().toString().trim().length() == 0) {
-            msg =getString(R.string.msg_select_struct_code);
+            msg = "Please enter type of activity.";
         }
          /*else if (et_activity_purpose.getText().toString().trim().length() == 0) {
             msg = getString(R.string.select_stuct_type);
-        } else if (et_participant1.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_name);
-        }*/ else if (UrlActivityPhoto.trim().length() == 0) {
+        }*/ else if (et_participant1.getText().toString().trim().length() == 0) {
+            msg = "Please enter participant name";
+        } else if (UrlActivityPhoto.trim().length() == 0) {
             msg = "Please upload Activity photo";
         } else if (UrlMeetingPhoto.trim().length() == 0) {
             msg = "Please upload Meeting photo";
         } else if (UrlAttendacesheetPhoto.trim().length() == 0) {
             msg = "Please upload Attendance sheet photo";
-        } else if (et_remark.getText().toString().trim().length() == 0) {
+        }/* else if (et_remark.getText().toString().trim().length() == 0) {
             msg = getString(R.string.msg_enter_remark);
-        }
+        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
