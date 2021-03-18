@@ -25,13 +25,8 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
-import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
-import com.octopusbjsindia.models.home.RoleAccessList;
-import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
-import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.ssgp.StructureWorkType;
-import com.octopusbjsindia.models.ssgp.VACStructureMasterRequest;
 import com.octopusbjsindia.models.ssgp.VDFFRequest;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -182,7 +177,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("GP");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
