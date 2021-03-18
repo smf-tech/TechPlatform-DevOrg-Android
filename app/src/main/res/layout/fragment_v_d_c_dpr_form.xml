@@ -123,6 +123,8 @@
                     <EditText
                         android:id="@+id/et_machine_status"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Machine Status" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,6 +136,7 @@
                     <EditText
                         android:id="@+id/et_start_meter_reading"
                         style="@style/RegistrationEditTextLayout"
+                        android:inputType="numberDecimal"
                         android:hint="@string/enter_start_meter_reading" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,6 +161,7 @@
                     <EditText
                         android:id="@+id/et_end_meter_reading"
                         style="@style/RegistrationEditTextLayout"
+                        android:inputType="numberDecimal"
                         android:hint="Enter end meter reading" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,6 +191,8 @@
                     <EditText
                         android:id="@+id/et_reason"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Machine idle reason" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,6 +219,8 @@
                     <EditText
                         android:id="@+id/et_structure_status"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/structure_status" />
                 </com.google.android.material.textfield.TextInputLayout>
 

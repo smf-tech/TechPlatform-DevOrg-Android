@@ -40,6 +40,7 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
     public static final String GET_VILLAGES = "getVillages";
     public static final String DAILY_PROGRESS_REPORT = "dailyProgressReport";
     public static final String GET_GP_MACHINE_LIST = "GETGPMACHINELIST";
+    public static final String GET_GP_STRUCURE_LIST = "GETGPSTRUCTURELIST";
 
 
 
@@ -99,6 +100,9 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
+                if (requestID.equalsIgnoreCase(GET_GP_STRUCURE_LIST)) {
+                    fragmentWeakReference.get().setStructurelist(response);
+                }else
                 if (requestID.equalsIgnoreCase(GET_GP_MACHINE_LIST)){
                     fragmentWeakReference.get().setMachinelist(response);
                 } else if (requestID.equalsIgnoreCase(DAILY_PROGRESS_REPORT)) {
@@ -195,5 +199,15 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
                 + String.format(Urls.SSGP.GET_GP_MACHINE_LIST);
         Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
         requestCall.getDataApiCall(GET_GP_MACHINE_LIST, getSSMasterDaraUrl);
+    }
+
+    public void GetGpStrucureList(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSGP.GET_GP_STRUCURE_LIST);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_GP_STRUCURE_LIST, getSSMasterDaraUrl);
     }
 }
