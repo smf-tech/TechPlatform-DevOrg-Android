@@ -10,6 +10,7 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
@@ -39,6 +40,9 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
     public static final String GET_DISTRICTS = "getDistricts";
     public static final String GET_VILLAGES = "getVillages";
     public static final String DAILY_PROGRESS_REPORT = "dailyProgressReport";
+    public static final String GET_GP_MACHINE_LIST = "GETGPMACHINELIST";
+    public static final String GET_GP_STRUCURE_LIST = "GETGPSTRUCTURELIST";
+
 
 
     public VDCDPRFormFragmentPresenter(VDCDPRFormFragment tmFragment) {
@@ -97,12 +101,17 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                if (requestID.equalsIgnoreCase(DAILY_PROGRESS_REPORT)) {
-                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-                    Util.logger("response_dpr",response);
-//                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-//                            MachineShiftingFormFragmentPresenter.SUBMIT_MACHINE_SHIFTING_FORM, responseOBJ.getStatus());
-                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
+                if (requestID.equalsIgnoreCase(GET_GP_STRUCURE_LIST)) {
+                    fragmentWeakReference.get().setStructurelist(response);
+                }else
+                if (requestID.equalsIgnoreCase(GET_GP_MACHINE_LIST)){
+                    fragmentWeakReference.get().setMachinelist(response);
+                } else if (requestID.equalsIgnoreCase(DAILY_PROGRESS_REPORT)) {
+                        CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                DAILY_PROGRESS_REPORT, responseOBJ.getCode());
+
+                    } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)|| requestID.equalsIgnoreCase(GET_VILLAGES)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
@@ -179,5 +188,27 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
     @Override
     public void onFailureListener(String error) {
 
+    }
+
+
+    //get GP machine id list
+    public void GetGpMachineList(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSGP.GET_GP_MACHINE_LIST);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_GP_MACHINE_LIST, getSSMasterDaraUrl);
+    }
+
+    public void GetGpStrucureList(){
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getSSMasterDaraUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SSGP.GET_GP_STRUCURE_LIST);
+        Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
+        requestCall.getDataApiCall(GET_GP_STRUCURE_LIST, getSSMasterDaraUrl);
     }
 }

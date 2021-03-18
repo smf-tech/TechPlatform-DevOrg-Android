@@ -228,7 +228,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
             case R.id.et_type_intervention:
                 interventionList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("intervention"))
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("interventionType"))
                         for (MasterDataValue obj : masterDataLists.get(i).getData()) {
                             CustomSpinnerObject temp = new CustomSpinnerObject();
                             temp.set_id(obj.getId());
@@ -245,17 +245,17 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.et_structure_type:
-//                structureTypeList.clear();
-//                for (int i = 0; i < masterDataLists.size(); i++) {
-//                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
-//                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-//                            CustomSpinnerObject temp = new CustomSpinnerObject();
-//                            temp.set_id(obj.getId());
-//                            temp.setName(obj.getValue());
-//                            temp.setSelected(false);
-//                            structureTypeList.add(temp);
-//                        }
-//                }
+                structureTypeList.clear();
+                for (int i = 0; i < masterDataLists.size(); i++) {
+                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType"))
+                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                            CustomSpinnerObject temp = new CustomSpinnerObject();
+                            temp.set_id(obj.getId());
+                            temp.setName(obj.getValue());
+                            temp.setSelected(false);
+                            structureTypeList.add(temp);
+                        }
+                }
                 CustomSpinnerDialogClass csdStructerType = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select Structure Type", structureTypeList, false);
                 csdStructerType.show();
@@ -392,7 +392,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
     public void setMasterData() {
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("GP");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
@@ -401,8 +401,9 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
-            if (obj.getForm().equalsIgnoreCase("structure_create") ||
-                    obj.getForm().equalsIgnoreCase("structure_preparation")) {
+            /*if (obj.getForm().equalsIgnoreCase("structure_create") ||
+                    obj.getForm().equalsIgnoreCase("structure_preparation"))*/
+            {
                 masterDataLists.add(obj);
             }
         }
@@ -528,7 +529,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                 selectedVillageId = "";
                 break;
             case "Select Village":
-                for (CustomSpinnerObject state : districtList) {
+                for (CustomSpinnerObject state : villageList) {
                     if (state.isSelected()) {
                         selectedVillage = state.getName();
                         selectedVillageId = state.get_id();
@@ -548,7 +549,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                 }
                 selectedStructureType = "";
                 selectedStructureTypeId = "";
-                et_structure_type.setText("");
+            /*    et_structure_type.setText("");
                 structureTypeList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType")
@@ -563,7 +564,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                         break;
                     }
 
-                }
+                }*/
                 et_type_intervention.setText(selectedIntervention);
                 break;
             case "Select Structure Type":
@@ -582,7 +583,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                         selectedBeneficiaryTypeId = obj.get_id();
                     }
                 }
-                et_structure_type.setText(selectedBeneficiaryType);
+                et_type_of_beneficiary.setText(selectedBeneficiaryType);
                 break;
 
         }

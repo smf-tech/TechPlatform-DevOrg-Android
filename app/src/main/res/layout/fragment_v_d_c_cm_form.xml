@@ -85,6 +85,8 @@
                     <EditText
                         android:id="@+id/et_village"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="@string/village" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,6 +98,8 @@
                     <EditText
                         android:id="@+id/et_date"
                         style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:hint="Date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +112,7 @@
                         android:id="@+id/et_activity_type"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Type of activity"
-                        android:inputType="numberDecimal" />
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -131,7 +135,7 @@
                         android:id="@+id/et_participant1"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Name of key participant 1"
-                        android:inputType="numberDecimal" />
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -164,6 +168,7 @@
                     <EditText
                         android:id="@+id/et_total_participant"
                         style="@style/RegistrationEditTextLayout"
+                        android:inputType="number"
                         android:hint="Total participant" />
                 </com.google.android.material.textfield.TextInputLayout>
 

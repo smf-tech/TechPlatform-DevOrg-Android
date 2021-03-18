@@ -308,7 +308,8 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
                     "", "", "");
             presenter.getAnalyticsData(presenter.GET_MACHINE_ANALYTICS,
                     "", "", "");
-            presenter.getSSMasterData();
+          //  presenter.getSSMasterData();
+            presenter.getGPMasterData();
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
@@ -552,6 +553,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
             String strDate = Util.getDateFromTimestamp(date.getTime(), Constants.FORM_DATE_FORMAT);
             SSMasterDatabase ssMasterDatabase = new SSMasterDatabase();
             ssMasterDatabase.setDateTime(strDate);
+            ssMasterDatabase.setType("GP");
             ssMasterDatabase.setData(ssMasterDataList);
             DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().insert(ssMasterDatabase);
         }

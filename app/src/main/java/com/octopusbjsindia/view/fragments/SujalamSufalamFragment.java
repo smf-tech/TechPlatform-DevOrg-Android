@@ -484,6 +484,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             String strDate = Util.getDateFromTimestamp(date.getTime(), Constants.FORM_DATE_FORMAT);
             SSMasterDatabase ssMasterDatabase = new SSMasterDatabase();
             ssMasterDatabase.setDateTime(strDate);
+            ssMasterDatabase.setType("SS");
             ssMasterDatabase.setData(ssMasterDataList);
             DatabaseManager.getDBInstance(Platform.getInstance()).getSSMasterDatabaseDao().insert(ssMasterDatabase);
         }
