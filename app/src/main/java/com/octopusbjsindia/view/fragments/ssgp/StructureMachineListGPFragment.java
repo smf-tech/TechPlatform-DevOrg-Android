@@ -47,6 +47,8 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
+import com.octopusbjsindia.models.ssgp.StructureListData;
+import com.octopusbjsindia.models.ssgp.StructureListRasponce;
 import com.octopusbjsindia.presenter.ssgp.StructureMachineListGPFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
@@ -54,6 +56,7 @@ import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 import com.octopusbjsindia.view.adapters.MutiselectDialogAdapter;
 import com.octopusbjsindia.view.adapters.SSStructureListAdapter;
 import com.octopusbjsindia.view.adapters.ssgp.GPMachineListAdapter;
+import com.octopusbjsindia.view.adapters.ssgp.GPStructureListAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
@@ -68,12 +71,12 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
     private final ArrayList<MachineData> filteredMachineListData = new ArrayList<>();
     private final ArrayList<MachineData> tempMachineListData = new ArrayList<>();
-    private final ArrayList<StructureData> ssStructureListData = new ArrayList<>();
-    private final ArrayList<StructureData> filteredStructureListData = new ArrayList<>();
-    private final ArrayList<StructureData> tempStructureListData = new ArrayList<>();
+    private final ArrayList<StructureListData> ssStructureListData = new ArrayList<>();
+    private final ArrayList<StructureListData> filteredStructureListData = new ArrayList<>();
+    private final ArrayList<StructureListData> tempStructureListData = new ArrayList<>();
 
     private GPMachineListAdapter gpMachineListAdapter;
-    private SSStructureListAdapter ssStructureListAdapter;
+    private GPStructureListAdapter gpStructureListAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private StructureMachineListGPFragmentPresenter presenter;
@@ -203,8 +206,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
         gpMachineListAdapter = new GPMachineListAdapter(getActivity(), this, filteredMachineListData);
         rvDataList.setAdapter(gpMachineListAdapter);
-        ssStructureListAdapter = new SSStructureListAdapter(getActivity(), filteredStructureListData, true);
-        rvDataList.setAdapter(ssStructureListAdapter);
+        gpStructureListAdapter = new GPStructureListAdapter(getActivity(), filteredStructureListData);
+        rvDataList.setAdapter(gpStructureListAdapter);
         presenter = new StructureMachineListGPFragmentPresenter(this);
 
         if (isStateFilter) {
@@ -756,41 +759,39 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     }
 
 
-    public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
+    public void populateStructureData(String requestID, StructureListRasponce structureListData) {
 
-        if (structureListData != null) {
-            ssStructureListData.clear();
-            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
-            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
-
-            filteredStructureListData.clear();
-            for (StructureData structureData : structureListData.getData()) {
-                boolean flag = false;
-                for (StructureData obj : offlineStructureListData) {
-                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (flag) {
-                    structureData.setSavedOffine(true);
-                    ssStructureListData.add(structureData);
-                } else {
-                    ssStructureListData.add(structureData);
-                }
-            }
-            if (selectedStatus != 0) {
-                for (StructureData structureData : ssStructureListData) {
-                    if (structureData.getStructureStatusCode() == selectedStatus) {
-                        filteredStructureListData.add(structureData);
-                    }
-                }
-            } else {
-                filteredStructureListData.addAll(ssStructureListData);
-            }
-            ssStructureListAdapter.notifyDataSetChanged();
-            ((GPActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
-        }
+//        if (structureListData != null) {
+//            ssStructureListData.clear();
+//            ArrayList<StructureListData> offlineStructureListData = new ArrayList<StructureListData>();
+////            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
+//
+//            filteredStructureListData.clear();
+//            for (StructureListData structureData : structureListData.getData()) {
+//                boolean flag = false;
+//                for (StructureListData obj : offlineStructureListData) {
+//                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//            }
+//            if (selectedStatus != 0) {
+//                for (StructureListData structureData : ssStructureListData) {
+//                    if (structureData.getStructureStatusCode() == selectedStatus) {
+//                        filteredStructureListData.add(structureListData.getData());
+//                    }
+//                }
+//            } else {
+//                filteredStructureListData.addAll(ssStructureListData);
+//            }
+//            gpStructureListAdapter.notifyDataSetChanged();
+//            ((GPActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
+//        }
+        filteredStructureListData.addAll(structureListData.getData());
+        ssStructureListData.addAll(structureListData.getData());
+        gpStructureListAdapter.notifyDataSetChanged();
+        ((GPActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
         showNoDataMessage();
     }
 
@@ -884,7 +885,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
             }
-        } else */if (view.getId() == R.id.tv_state_filter) {
+        } else */
+        if (view.getId() == R.id.tv_state_filter) {
             CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                     "Select State",
                     machineStateList,
@@ -901,18 +903,18 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 //                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //            } else {
-                if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                    isTalukaApiFirstCall = false;
-                    presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : userDistrictIds,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                isTalukaApiFirstCall = false;
+                presenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                ? selectedDistrictId : userDistrictIds,
+                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
 
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please select District first.",
-                            Snackbar.LENGTH_LONG);
-                }
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please select District first.",
+                        Snackbar.LENGTH_LONG);
+            }
             //}
         } else if (view.getId() == R.id.tv_district_filter) {
 //            if (machineDistrictList.size() > 0) {
@@ -922,22 +924,22 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 //                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //            } else {
-                if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
-                    presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                    "Please update your profile.",
-                            Snackbar.LENGTH_LONG);
-                }
+            if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
+                presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                "Please update your profile.",
+                        Snackbar.LENGTH_LONG);
+            }
             //}
         } else if (view.getId() == R.id.btn_filter_clear) {
             if (viewType == 1) {
                 filteredStructureListData.clear();
                 filteredStructureListData.addAll(ssStructureListData);
-                ssStructureListAdapter.notifyDataSetChanged();
+                gpStructureListAdapter.notifyDataSetChanged();
                 ((GPActionsActivity) context).setActivityTitle("Structure List(" + filteredStructureListData.size() + ")");
             } else {
                 filteredMachineListData.clear();
@@ -995,7 +997,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 tvStateFilter.setText(selectedState);
                 if (viewType == 1) {
                     filteredStructureListData.clear();
-                    for (StructureData data : ssStructureListData) {
+                    for (StructureListData data : ssStructureListData) {
                         for (String stateId : filterStateIds) {
                             if (data.getStateId().equalsIgnoreCase(stateId)) {
                                 if (selectedStatus != 0) {
@@ -1009,7 +1011,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    ssStructureListAdapter.notifyDataSetChanged();
+                    gpStructureListAdapter.notifyDataSetChanged();
                     ((GPActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();
@@ -1058,7 +1060,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 tvDistrictFilter.setText(selectedDistrict);
                 if (viewType == 1) {
                     filteredStructureListData.clear();
-                    for (StructureData data : ssStructureListData) {
+                    for (StructureListData data : ssStructureListData) {
                         for (String districtId : filterDistrictIds) {
                             if (data.getDistrictId().equalsIgnoreCase(districtId)) {
                                 if (selectedStatus != 0) {
@@ -1072,7 +1074,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    ssStructureListAdapter.notifyDataSetChanged();
+                    gpStructureListAdapter.notifyDataSetChanged();
                     ((GPActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();
@@ -1118,7 +1120,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 tvTalukaFilter.setText(selectedTaluka);
                 if (viewType == 1) {
                     filteredStructureListData.clear();
-                    for (StructureData data : ssStructureListData) {
+                    for (StructureListData data : ssStructureListData) {
                         for (String talukaId : filterTalukaIds) {
                             if (data.getTalukaId().equalsIgnoreCase(talukaId)) {
                                 if (selectedStatus != 0) {
@@ -1132,7 +1134,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                             }
                         }
                     }
-                    ssStructureListAdapter.notifyDataSetChanged();
+                    gpStructureListAdapter.notifyDataSetChanged();
                     ((GPActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();

@@ -282,7 +282,6 @@ public class Urls {
 
         public static final String SUBMIT_VILLAGE_DEMND = "api/villageDemndForm";
         public static final String GET_GP_STRUCTURE_ANALYTICS = "api/getGPStructureList";
-        public static final String GET_GP_MACHINE_ANALYTICS = "api/getGPMachineAnalyticsV2";
-
+        public static final String GET_GP_MACHINE_ANALYTICS = "api/GPmachineList";
     }
 }

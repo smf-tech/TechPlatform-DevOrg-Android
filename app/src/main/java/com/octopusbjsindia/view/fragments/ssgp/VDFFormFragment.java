@@ -196,15 +196,13 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 //                    machineTypeList.add(customSpinnerObject);
 //                }
 //            }
-            if (masterDataList.get(i).getForm().equals("structure_create") && masterDataList.get(i).
-                    getField().equals("structureType")) {
+            if (masterDataList.get(i).getField().equals("structureType")) {
                 for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
                     customSpinnerObject.setSelected(false);
                     structureTypeList.add(customSpinnerObject);
-                    break;
                 }
             }
         }

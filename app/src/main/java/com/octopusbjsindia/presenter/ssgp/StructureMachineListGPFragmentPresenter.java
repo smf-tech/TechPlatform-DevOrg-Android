@@ -13,6 +13,7 @@ import com.octopusbjsindia.models.SujalamSuphalam.MachineListAPIResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureListAPIResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
+import com.octopusbjsindia.models.ssgp.StructureListRasponce;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
@@ -95,57 +96,12 @@ public class StructureMachineListGPFragmentPresenter implements APIPresenterList
         fragmentWeakReference.get().showProgressBar();
         //String paramjson = gson.toJson(getSSDataJson(stateId,districtId,talukaId));
         final String getMachinesListUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
+                + String.format(Urls.SSGP.GET_GP_MACHINE_ANALYTICS);
         Log.d(TAG, "getMachineListUrl: url" + getMachinesListUrl);
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
-    }
-
-    public void getDistrictMachinesList(String stateId, String districtId){
-        HashMap<String,String> map=new HashMap<>();
-        map.put(KEY_STATE_ID, stateId);
-        map.put(KEY_DISTRICT_ID, districtId);
-
-        fragmentWeakReference.get().showProgressBar();
-        final String getMachinesListUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
-        Log.d(TAG, "getDistrictMachineListUrl: url" + getMachinesListUrl);
-        fragmentWeakReference.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
-    }
-
-    public void getStateMachinesList(String stateId){
-        HashMap<String,String> map=new HashMap<>();
-        map.put(KEY_STATE_ID, stateId);
-
-        fragmentWeakReference.get().showProgressBar();
-        final String getMachinesListUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
-        Log.d(TAG, "getStateMachineListUrl: url" + getMachinesListUrl);
-        fragmentWeakReference.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
-    }
-
-    public void getJurisdictionLevelData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        fragmentWeakReference.get().showProgressBar();
-        final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, selectedLocationId, jurisdictionTypeId, levelName);
-        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
-        fragmentWeakReference.get().showProgressBar();
-
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)){
-            requestCall.getDataApiCall(GET_DISTRICT, getLocationUrl);
-        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
-            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
-        }
     }
 
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
@@ -349,7 +305,7 @@ public class StructureMachineListGPFragmentPresenter implements APIPresenterList
 //                }
                 if (requestID.equalsIgnoreCase(StructureMachineListGPFragmentPresenter.GET_STRUCTURE_LIST)) {
 
-                    StructureListAPIResponse structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListAPIResponse.class);
+                    StructureListRasponce structureListData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureListRasponce.class);
                     if (structureListData.getCode() == 200) {
                         fragmentWeakReference.get().populateStructureData(requestID, structureListData);
                     } else if(structureListData.getCode() == 400){

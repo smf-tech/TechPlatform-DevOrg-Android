@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    tools:ignore="RtlSymmetry">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:id="@+id/rl_machine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--<TextView-->
+            <!--android:id="@+id/tv_status"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="@dimen/text_size_11"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:paddingStart="@dimen/dimen_10dp"-->
+            <!--android:paddingEnd="@dimen/dimen_10dp"-->
+            <!--android:fontFamily="@font/opensans_semibold"/>-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_last_updated_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@+id/tv_status"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:layout_marginStart="@dimen/dimen_20dp"-->
+            <!--android:fontFamily="@font/opensans"-->
+            <!--android:textSize="@dimen/dimen_10dp"-->
+            <!--android:visibility="visible"/>-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/btn_popmenu"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="@dimen/dimen_10dp"-->
+            <!--android:background="@drawable/ic_options_icon"/>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_code_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Machine Code"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_machine_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_code_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_machine_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Machine Model"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_machine_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_machine_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                    <ImageView
+                        android:id="@+id/btn_popmenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:background="@drawable/ic_options_icon" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_location_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Taluka"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_location_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_updated_time_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Updated Time"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_last_updated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_updated_time_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_status_lebal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Machine Status"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_status_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_13"/>
+
+                    <ImageView
+                        android:id="@+id/iv_signoff"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="@dimen/dimen_20dp"
+                        android:layout_toRightOf="@+id/tv_status_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_signoff"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
