@@ -1,344 +1,357 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
-    android:background="@color/base_background_color">
+    android:background="@color/base_background_color"
+    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment">
 
-    <androidx.cardview.widget.CardView
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/dimen_05dp">
+                <EditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/state"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/et_district"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/district" />
-                    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="@dimen/dimen_05dp">
+                <EditText
+                    android:id="@+id/et_district"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/district"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/et_taluka"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/taluka" />
-                    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/et_taluka"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/taluka"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_village"
-                        style="@style/RegistrationEditTextLayout"
-                        android:focusable="false"
-                        android:longClickable="false"
-                        android:hint="@string/village" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_village"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/village"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_structure_type1"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_structure_type1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_struct_count1"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_count"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_struct_count1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_count"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_structure_type2"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_structure_type2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_struct_count2"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_count"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_struct_count2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_count"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_structure_type3"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_structure_type3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_struct_count3"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_count"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_struct_count3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_count"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_structure_type4"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_structure_type4"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_struct_count4"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_count"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_struct_count4"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_count"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_structure_type5"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_structure_type5"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/structure_type"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_struct_count5"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_count"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_struct_count5"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/structure_count"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_hours"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/machine_hours_required"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_hours"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/machine_hours_required"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_machine_type"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/machine_type" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_machine_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/machine_type" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_machine_count"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Machine count required"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_machine_count"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Machine count required"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_nodal_name"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Nodal person name"
-                        android:maxLength="50"
-                        android:inputType="textPersonName"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz " />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_nodal_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                    android:hint="Nodal person name"
+                    android:inputType="textPersonName"
+                    android:maxLength="50" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_nodal_contact"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Nodal person contact number"
-                        android:maxLength="50"
-                        android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_nodal_contact"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Nodal person contact number"
+                    android:inputType="phone"
+                    android:maxLength="50" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_machine_transport"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Machine transport by GP" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_machine_transport"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Machine transport by GP" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_feasibility"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Can we start work immediately" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_feasibility"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Can we start work immediately" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_reason"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Reason to start immediately" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_reason"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Reason to start immediately" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_future_work_time"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="When can we start work in future" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_future_work_time"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="When can we start work in future" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_workable_struct_count"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="How many structure we can work on"
-                        android:inputType="numberDecimal" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_workable_struct_count"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="How many structure we can work on"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_remark"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Remark" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_remark"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Remark" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/et_ho_remark"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Ho Remark" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/et_ho_remark"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Ho Remark" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btn_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/AppStyleButton"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:text="@string/meet_next_label"
-                    android:layout_below="@+id/card_create_meet"
-                    android:textColor="@android:color/white" />
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/AppStyleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_create_meet"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:text="@string/meet_next_label"
+                android:textColor="@android:color/white" />
 
-            </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

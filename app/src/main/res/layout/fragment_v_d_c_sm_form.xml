@@ -28,7 +28,7 @@
                     android:id="@+id/et_state"
                     style="@style/RegistrationEditTextLayout"
                     android:focusable="false"
-                    android:hint="@string/state"
+                    android:hint="@string/mandatory_state"
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +49,7 @@
                         android:id="@+id/et_district"
                         style="@style/RegistrationEditTextLayout"
                         android:focusable="false"
-                        android:hint="@string/district"
+                        android:hint="@string/mandatory_district"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +64,7 @@
                         android:id="@+id/et_taluka"
                         style="@style/RegistrationEditTextLayout"
                         android:focusable="false"
-                        android:hint="@string/taluka"
+                        android:hint="@string/mandatory_taluka"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +79,7 @@
                     android:id="@+id/et_village"
                     style="@style/RegistrationEditTextLayout"
                     android:focusable="false"
-                    android:hint="@string/village"
+                    android:hint="@string/mandatory_village"
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,7 +155,8 @@
                 <EditText
                     android:id="@+id/et_working_hours"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Working hours" />
+                    android:hint="Working hours"
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -167,7 +168,7 @@
                     android:id="@+id/et_diesel_quantity"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Approximate diesel required"
-                    android:inputType="text" />
+                    android:inputType="numberDecimal"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -178,7 +179,8 @@
                 <EditText
                     android:id="@+id/et_approximate_working_days"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Approximate working days required" />
+                    android:hint="Approximate working days required"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -202,7 +204,7 @@
                     android:id="@+id/et_silt_transported"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Is Silt Transported?"
-                    android:inputType="numberDecimal" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -213,7 +215,8 @@
                 <EditText
                     android:id="@+id/et_ff_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="FF name if available" />
+                    android:hint="FF name if available"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -225,7 +228,7 @@
                     android:id="@+id/et_ff_mobile"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="FF mobile number"
-                    android:inputType="text" />
+                    android:inputType="phone|number"  />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -236,7 +239,8 @@
                 <EditText
                     android:id="@+id/et_structure_length"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Structure length" />
+                    android:hint="Structure length"
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -247,7 +251,8 @@
                 <EditText
                     android:id="@+id/et_structure_Width"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Structure width" />
+                    android:hint="Structure width"
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -258,7 +263,8 @@
                 <EditText
                     android:id="@+id/et_structure_depth"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Structure depth" />
+                    android:hint="Structure depth"
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--indigivual beneficiary-->
@@ -271,8 +277,7 @@
                     android:id="@+id/et_beneficiary_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -297,7 +302,8 @@
                 <EditText
                     android:id="@+id/et_beneficiary_category"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Beneficiary category" />
+                    android:hint="Beneficiary category"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -308,8 +314,8 @@
                 <EditText
                     android:id="@+id/et_irrigation"
                     style="@style/RegistrationEditTextLayout"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                    android:hint="Current irrigation source" />
+                    android:hint="Current irrigation source"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -321,8 +327,7 @@
                     android:id="@+id/et_gat_no"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Gat number"
-                    android:inputType="textPersonName"
-                    android:maxLength="50" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -357,7 +362,8 @@
                 <EditText
                     android:id="@+id/et_type_of_crops"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Crop type" />
+                    android:hint="Crop type"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--group beneficiary-->
@@ -371,8 +377,7 @@
                     android:id="@+id/et_beneficiary_name1"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -397,7 +402,8 @@
                 <EditText
                     android:id="@+id/et_beneficiary_category1"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Beneficiary category" />
+                    android:hint="Beneficiary category"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -410,8 +416,7 @@
                     android:id="@+id/et_beneficiary_name2"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -436,7 +441,8 @@
                 <EditText
                     android:id="@+id/et_beneficiary_category2"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Beneficiary category" />
+                    android:hint="Beneficiary category"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -449,8 +455,7 @@
                     android:id="@+id/et_beneficiary_name3"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -488,8 +493,7 @@
                     android:id="@+id/et_beneficiary_name4"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -527,8 +531,7 @@
                     android:id="@+id/et_beneficiary_name5"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:inputType="text"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -566,7 +569,7 @@
                     android:id="@+id/et_responsible_person_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Responsible person name"
-                    android:inputType="numberDecimal" />
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

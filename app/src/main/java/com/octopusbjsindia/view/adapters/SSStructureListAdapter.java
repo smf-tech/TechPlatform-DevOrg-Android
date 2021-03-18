@@ -120,15 +120,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
         holder.tvVillage.setText(ssDataList.get(position).getVillage());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
-        if (isSave) {
-            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
-                holder.tvMachinCount.setText("None");
-            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
-                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
-            } else {
-                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
-            }
-        }
+//        if (isSave) {
+//            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
+//                holder.tvMachinCount.setText("None");
+//            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
+//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
+//            } else {
+//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
+//            }
+//        }
         if (!isSaveOfflineStructure) {
             holder.btSave.setVisibility(View.INVISIBLE);
         } else {

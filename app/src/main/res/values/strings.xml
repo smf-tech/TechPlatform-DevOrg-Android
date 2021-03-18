@@ -655,7 +655,7 @@
     <string name="gat_no">Gat No.</string>
     <string name="water_shed">Water Shed No.</string>
     <string name="area">Area</string>
-    <string name="structure_name">Structure Name</string>
+    <string name="structure_name">Structure Name *</string>
     <string name="structure_owner_dep">Structure owner department</string>
     <string name="enter_proper_gst_no">Enter proper GST number value.</string>
     <string name="enter_proper_provider_contact">Enter proper value for provider\'s contact number</string>
