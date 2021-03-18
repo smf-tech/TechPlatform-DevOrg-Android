@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VdcBdRequestModel;
 import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
@@ -97,9 +98,9 @@ public class VDCBDFormFragmentPresenter implements APIPresenterListener {
                 if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.GET_GP_STRUCURE_LIST)) {
                     fragmentWeakReference.get().setStructurelist(response);
                 } else if (requestID.equalsIgnoreCase(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
-                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                    CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-                            VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT, responseOBJ.getStatus());
+                            VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT, responseOBJ.getCode());
                 } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS) || requestID.equalsIgnoreCase(GET_VILLAGES)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
