@@ -258,7 +258,7 @@
                         android:id="@+id/et_nodal_contact"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Nodal person contact number"
-                        android:maxLength="50"
+                        android:maxLength="10"
                         android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -292,7 +292,7 @@
                     <EditText
                         android:id="@+id/et_reason"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Reason to start immediately" />
+                        android:hint="Reason not to start immediately" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.Platform;
@@ -95,6 +96,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etDistrict = vdfFormFragmentView.findViewById(R.id.et_district);
         etTaluka = vdfFormFragmentView.findViewById(R.id.et_taluka);
         etVillage = vdfFormFragmentView.findViewById(R.id.et_village);
+        etState.setFocusable(false);
+        etDistrict.setFocusable(false);
+        etTaluka.setFocusable(false);
         etStructureType1 = vdfFormFragmentView.findViewById(R.id.et_structure_type1);
         etStructCount1 = vdfFormFragmentView.findViewById(R.id.et_struct_count1);
         etStructureType2 = vdfFormFragmentView.findViewById(R.id.et_structure_type2);
@@ -119,10 +123,15 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etHoRemark = vdfFormFragmentView.findViewById(R.id.et_ho_remark);
 
         etStructureType1.setOnClickListener(this);
+        etStructureType1.setFocusable(false);
         etStructureType2.setOnClickListener(this);
+        etStructureType2.setFocusable(false);
         etStructureType3.setOnClickListener(this);
+        etStructureType3.setFocusable(false);
         etStructureType4.setOnClickListener(this);
+        etStructureType4.setFocusable(false);
         etStructureType5.setOnClickListener(this);
+        etStructureType5.setFocusable(false);
         vdfFormFragmentView.findViewById(R.id.btn_submit).setOnClickListener(this);
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
@@ -334,6 +343,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     Util.showToast(getActivity(), "Please selected village");
                 } else {
                     VDFFRequest request = new VDFFRequest();
+                    request.setStateId(selectedStateId);
                     request.setDistrictId(selectedDistrictId);
                     request.setTalukaId(selectedTalukaId);
                     request.setVillageId(selectedVillageId);
@@ -376,7 +386,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
                     request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
                     request.setComment(etRemark.getText().toString().trim()); //TODO not shure
-                    request.setComment(etHoRemark.getText().toString().trim());
+                    request.setHoRemark(etHoRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
                 }
                 break;
@@ -424,6 +434,22 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void showResponse(String responseStatus, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if (requestId.equals(VDFFormFragmentPresenter.SUBMIT_VDF_FORM)) {
+            if (status == 200) {
+                getActivity().finish();
+//                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+//                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+//                intent.putExtra("viewType", 2);
+//                intent.putExtra("title", "Machine List");
+//                getActivity().startActivity(intent);
+            }
+        }
     }
 
     public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {

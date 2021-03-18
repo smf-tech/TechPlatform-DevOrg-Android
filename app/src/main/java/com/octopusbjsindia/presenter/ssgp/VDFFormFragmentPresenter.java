@@ -7,10 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
-import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VDFFRequest;
-import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
@@ -90,9 +89,9 @@ public class VDFFormFragmentPresenter implements APIPresenterListener {
         try {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(VDFFormFragmentPresenter.SUBMIT_VDF_FORM)) {
-                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-//                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-//                            MachineShiftingFormFragmentPresenter.SUBMIT_MACHINE_SHIFTING_FORM, responseOBJ.getStatus());
+                    CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                            SUBMIT_VDF_FORM, responseOBJ.getCode());
                 } else if (requestID.equalsIgnoreCase(GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(GET_DISTRICTS)  ||
                         requestID.equalsIgnoreCase(GET_VILLAGES)) {
@@ -127,6 +126,6 @@ public class VDFFormFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall("VILLAGE_DEMND", paramjson, url);
+        requestCall.postDataApiCall(SUBMIT_VDF_FORM, paramjson, url);
     }
 }
