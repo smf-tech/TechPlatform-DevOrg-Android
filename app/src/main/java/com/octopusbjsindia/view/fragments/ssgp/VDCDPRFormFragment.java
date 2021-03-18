@@ -95,7 +95,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     private EditText etState,etDistrict, etTaluka, etVillage,et_remark,
             et_date,et_machine_code,et_machine_status,et_start_meter_reading,et_end_meter_reading,et_reason,et_struct_code,et_structure_status;
     private ImageView iv_start_meter,iv_end_meter,iv_structure_photo;
-    private String UrlStartMeterPhoto,UrlEndMeterPhoto,UrlStructurePhoto;
+    private String UrlStartMeterPhoto ="",UrlEndMeterPhoto="",UrlStructurePhoto="";
     private Button btn_submit;
 
     @Override
