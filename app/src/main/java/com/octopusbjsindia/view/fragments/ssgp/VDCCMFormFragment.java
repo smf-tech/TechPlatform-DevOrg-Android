@@ -338,9 +338,10 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
             msg = getResources().getString(R.string.select_district);
         } else if (etTaluka.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_select_taluka);
-        }/* else if (et_activity_type.getText().toString().trim().length() == 0) {
+        } else if (et_activity_type.getText().toString().trim().length() == 0) {
             msg =getString(R.string.msg_select_struct_code);
-        } else if (et_activity_purpose.getText().toString().trim().length() == 0) {
+        }
+         /*else if (et_activity_purpose.getText().toString().trim().length() == 0) {
             msg = getString(R.string.select_stuct_type);
         } else if (et_participant1.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_name);
