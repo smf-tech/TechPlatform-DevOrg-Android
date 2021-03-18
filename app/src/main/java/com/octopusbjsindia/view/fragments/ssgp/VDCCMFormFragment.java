@@ -34,6 +34,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
+import com.octopusbjsindia.presenter.ssgp.VDCBDFormFragmentPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDCCMFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
@@ -605,7 +606,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
     }
 
     public void onImageUploaded(String imagetype, String imageUrl) {
-        if (imagetype.equalsIgnoreCase(selectedImageType)){
+        if (imagetype.equalsIgnoreCase(IMAGE_ACTIVITY)){
             UrlActivityPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -617,7 +618,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                 }
             });
 
-        }else if (imagetype.equalsIgnoreCase("endReading")){
+        }else if (imagetype.equalsIgnoreCase(IMAGE_MEETING)){
             UrlMeetingPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -628,7 +629,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                             .into(iv_meeting_photo);
                 }
             });
-        }else {
+        }else if (imagetype.equalsIgnoreCase(IMAGE_ATTENDANCE)){
             UrlAttendacesheetPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -639,6 +640,16 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                             .into(iv_attendace_sheet_photo);
                 }
             });
+        }
+    }
+
+    public void showResponse(String message, String requestId, int code) {
+        Util.showToast(getActivity(),message);
+
+        if (requestId.equals(VDCCMFormFragmentPresenter.COMMUNITY_MOBILIZATION_REPORT)) {
+            if (code == 200) {
+                getActivity().finish();
+            }
         }
     }
 

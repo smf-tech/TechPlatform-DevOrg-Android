@@ -40,6 +40,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.ssgp.GpStructureListModel;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
+import com.octopusbjsindia.presenter.ssgp.VDCCMFormFragmentPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDCDPRFormFragmentPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -139,7 +140,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         et_reason = vdcdprFormFragmentView.findViewById(R.id.et_reason);
         et_struct_code = vdcdprFormFragmentView.findViewById(R.id.et_struct_code);
         et_structure_status = vdcdprFormFragmentView.findViewById(R.id.et_structure_status);
-
+        et_remark = vdcdprFormFragmentView.findViewById(R.id.et_remark);
 
         et_start_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
         et_end_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_end_meter_reading);
@@ -379,7 +380,6 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                     vdcDprRequestModel.setStartMeterReadingImage(UrlStartMeterPhoto);
                     vdcDprRequestModel.setEndMeterReading(et_end_meter_reading.getText().toString());
                     vdcDprRequestModel.setEndMeterReadingImage(UrlEndMeterPhoto);
-                    vdcDprRequestModel.setStructureStatus(selectedStructureStatusId);
                     vdcDprRequestModel.setStructureId(selectedStructureId);
                     vdcDprRequestModel.setStructureImage(UrlStructurePhoto);
                     vdcDprRequestModel.setComment(et_remark.getText().toString());
@@ -755,7 +755,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     }
 
     public void onImageUploaded(String imagetype, String imageUrl) {
-        if (imagetype.equalsIgnoreCase(selectedImageType)){
+        if (imagetype.equalsIgnoreCase(IMAGE_START_READING)){
             UrlStartMeterPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -767,7 +767,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 }
             });
 
-        }else if (imagetype.equalsIgnoreCase("endReading")){
+        }else if (imagetype.equalsIgnoreCase(IMAGE_END_READING)){
             UrlEndMeterPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -778,7 +778,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                             .into(iv_end_meter);
                 }
             });
-        }else {
+        }else  if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
             UrlStructurePhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -824,6 +824,16 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
 
         }else {
             Util.showToast(getActivity(),"structure not available." );
+        }
+    }
+
+    public void showResponse(String message, String requestId, int code) {
+        Util.showToast(getActivity(),message);
+
+        if (requestId.equals(VDCDPRFormFragmentPresenter.DAILY_PROGRESS_REPORT)) {
+            if (code == 200) {
+                getActivity().finish();
+            }
         }
     }
 }

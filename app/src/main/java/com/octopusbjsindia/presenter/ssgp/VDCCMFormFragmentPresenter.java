@@ -10,6 +10,7 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VdcCmRequestModel;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
@@ -97,9 +98,10 @@ public class VDCCMFormFragmentPresenter implements APIPresenterListener , ImageR
         try {
             if (response != null) {
                 if (requestID.equalsIgnoreCase(VDCCMFormFragmentPresenter.COMMUNITY_MOBILIZATION_REPORT)) {
-                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
-//                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-//                            MachineShiftingFormFragmentPresenter.SUBMIT_MACHINE_SHIFTING_FORM, responseOBJ.getStatus());
+                        CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+                        fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
+                                COMMUNITY_MOBILIZATION_REPORT, responseOBJ.getCode());
+
                 } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)|| requestID.equalsIgnoreCase(GET_VILLAGES)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse

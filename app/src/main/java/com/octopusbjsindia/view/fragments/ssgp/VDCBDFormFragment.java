@@ -524,9 +524,10 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
 
 
     public void showResponse(String responseMessage, String requestId, int status) {
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+        /*Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseMessage,
-                Snackbar.LENGTH_LONG);
+                Snackbar.LENGTH_LONG);*/
+        Util.showToast(getActivity(),responseMessage);
 
         if (requestId.equals(VDCBDFormFragmentPresenter.BENEFICIARY_DETAIL_REPORT)) {
             if (status == 200) {
