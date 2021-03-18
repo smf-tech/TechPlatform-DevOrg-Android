@@ -595,5 +595,6 @@
     <string name="msg_annual_income">Please enter annual income</string>
     <string name="msg_numberof_crops">Please enter number of crops taken in year.</string>
     <string name="msg_enter_remark">Please enter remark.</string>
+    <string name="structure_status">Structure status</string>
 
 </resources>

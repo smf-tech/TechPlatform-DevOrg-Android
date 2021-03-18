@@ -154,6 +154,7 @@ public class Urls {
         public static final String GET_SS_STRUCTURE_ANALYTICS = "api/getStructureAnalystV2";
         public static final String GET_SS_MACHINE_ANALYTICS = "api/getMachineAnalyticsV2";
         public static final String GET_SS_MASTER_DATA = "api/masterDataList";
+        public static final String GET_GP_MASTER_DATA = "api/gpMasterdata";
         public static final String GET_SS_STRUCTURE_LIST = "api/structureList";
         public static final String GET_SS_MACHINE_LIST = "api/machineList";
         public static final String CREATE_MACHINE = "api/createMachine";
@@ -183,6 +184,8 @@ public class Urls {
         public static final String ASSIGN_OPERATORS = "api/assignOperator";
         public static final String RELEASE_OPERATORS = "api/releaseOperator";
         public static final String CREATE_OPERATOR = "api/createOperator";
+        public static final String GET_GP_STRUCTURE_ANALYTICS = "api/GPStructureAnalyst";
+        public static final String GET_GP_MACHINE_ANALYTICS = "api/GPMachineAnalytics";
     }
 
     public class OperatorApi {
@@ -268,9 +271,14 @@ public class Urls {
 
     public class SSGP{
         public static final String CREATE_STRUCTURE = "api/createGPStructure";
-        public static final String SUBMIT_VILLAGE_DEMND = "api/villageDemndForm";
-        public static final String GET_GP_STRUCTURE_ANALYTICS = "api/getGPStructureList";
-        public static final String GET_GP_MACHINE_ANALYTICS = "api/getGPMachineAnalyticsV2";
+        public static final String DAILY_PROGRESS_REPORT = "api/dailyProgessReport";
+        public static final String COMMUNITY_MOBILIZATION_REPORT = "api/GPCommunityMobilisation";
+        public static final String BENEFICIARY_DETAILS_REPORT = "api/GPbeneficiaryform";
+        public static final String GET_GP_MACHINE_LIST = "api/GPMachineCodeList";
+        public static final String GET_GP_STRUCURE_LIST = "api/GPStructureCodeList";
+
+
+
 
     }
 }

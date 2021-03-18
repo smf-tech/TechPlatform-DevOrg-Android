@@ -101,7 +101,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         btnSubmit.setOnClickListener(this);
         gpsTracker = new GPSTracker(getActivity());
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("SS");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();

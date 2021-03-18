@@ -177,7 +177,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("GP");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
