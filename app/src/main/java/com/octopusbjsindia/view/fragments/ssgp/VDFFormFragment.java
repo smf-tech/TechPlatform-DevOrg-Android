@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.Platform;
@@ -25,13 +26,8 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
-import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
-import com.octopusbjsindia.models.home.RoleAccessList;
-import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
-import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.ssgp.StructureWorkType;
-import com.octopusbjsindia.models.ssgp.VACStructureMasterRequest;
 import com.octopusbjsindia.models.ssgp.VDFFRequest;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -63,9 +59,14 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private ArrayList<CustomSpinnerObject> transportAgreeOptionsList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> workImmediateOptionsList = new ArrayList<>();
     private VDFFormFragmentPresenter presenter;
-    private String selectedStateId, selectedDistrictId, selectedTalukaId, selectedVillageId, selectedStructureType1, selectedStructureTypeId1,
+    private String selectedStateId, selectedStructureType1, selectedStructureTypeId1,
             selectedStructureType2, selectedStructureTypeId2, selectedStructureType3, selectedStructureTypeId3,
             selectedStructureType4, selectedStructureTypeId4, selectedStructureType5, selectedStructureTypeId5;
+    private String userDistrictIds = "";
+    private String userTalukaIds = "";
+    private String userVillageIds = "";
+    private boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
+    private String selectedDistrictId = "", selectedTalukaId, selectedVillageId, selectedTaluka, selectedVillage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etDistrict = vdfFormFragmentView.findViewById(R.id.et_district);
         etTaluka = vdfFormFragmentView.findViewById(R.id.et_taluka);
         etVillage = vdfFormFragmentView.findViewById(R.id.et_village);
+        etState.setFocusable(false);
+        etDistrict.setFocusable(false);
+        etTaluka.setFocusable(false);
         etStructureType1 = vdfFormFragmentView.findViewById(R.id.et_structure_type1);
         etStructCount1 = vdfFormFragmentView.findViewById(R.id.et_struct_count1);
         etStructureType2 = vdfFormFragmentView.findViewById(R.id.et_structure_type2);
@@ -119,10 +123,15 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etHoRemark = vdfFormFragmentView.findViewById(R.id.et_ho_remark);
 
         etStructureType1.setOnClickListener(this);
+        etStructureType1.setFocusable(false);
         etStructureType2.setOnClickListener(this);
+        etStructureType2.setFocusable(false);
         etStructureType3.setOnClickListener(this);
+        etStructureType3.setFocusable(false);
         etStructureType4.setOnClickListener(this);
+        etStructureType4.setFocusable(false);
         etStructureType5.setOnClickListener(this);
+        etStructureType5.setFocusable(false);
         vdfFormFragmentView.findViewById(R.id.btn_submit).setOnClickListener(this);
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
@@ -245,6 +254,27 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     }
                 }
                 break;
+//            case R.id.et_district:
+//                if(districtList.size()>0) {
+//                    CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
+//                            "Select District",
+//                            districtList,
+//                            false);
+//                    cdd6.show();
+//                    cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.MATCH_PARENT);
+//                } else {
+////                    if (Util.isConnected(getActivity())) {
+////                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
+////                            presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+////                                            ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+////                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+////                        }
+////                    } else {
+////                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+////                    }
+//                }
+//                break;
             case R.id.et_taluka:
                 if (talukaList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -274,7 +304,8 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 } else {
                     if (Util.isConnected(getActivity())) {
                         if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
-                            presenter.getLocationData(selectedTalukaId,
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
+                                            ? selectedTalukaId : userTalukaIds,
                                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
@@ -312,6 +343,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     Util.showToast(getActivity(), "Please selected village");
                 } else {
                     VDFFRequest request = new VDFFRequest();
+                    request.setStateId(selectedStateId);
                     request.setDistrictId(selectedDistrictId);
                     request.setTalukaId(selectedTalukaId);
                     request.setVillageId(selectedVillageId);
@@ -354,7 +386,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
                     request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
                     request.setComment(etRemark.getText().toString().trim()); //TODO not shure
-                    request.setComment(etHoRemark.getText().toString().trim());
+                    request.setHoRemark(etHoRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
                 }
                 break;
@@ -402,6 +434,22 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 progressBarLayout.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void showResponse(String responseStatus, String requestId, int status) {
+        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                        .findViewById(android.R.id.content), responseStatus,
+                Snackbar.LENGTH_LONG);
+        if (requestId.equals(VDFFormFragmentPresenter.SUBMIT_VDF_FORM)) {
+            if (status == 200) {
+                getActivity().finish();
+//                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+//                intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+//                intent.putExtra("viewType", 2);
+//                intent.putExtra("title", "Machine List");
+//                getActivity().startActivity(intent);
+            }
+        }
     }
 
     public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
@@ -474,6 +522,28 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onCustomSpinnerSelection(String type) {
+        switch (type) {
+            case "Select Taluka":
+                for (CustomSpinnerObject taluka : talukaList) {
+                    if (taluka.isSelected()) {
+                        selectedTaluka = taluka.getName();
+                        selectedTalukaId = taluka.get_id();
+                        break;
+                    }
+                }
+                etTaluka.setText(selectedTaluka);
+                break;
+            case "Select Village":
+                for (CustomSpinnerObject village : talukaList) {
+                    if (village.isSelected()) {
+                        selectedVillage = village.getName();
+                        selectedVillageId = village.get_id();
+                        break;
+                    }
+                }
+                etVillage.setText(selectedVillage);
+                break;
+        }
         switch (type) {
             case "Select District":
                 for (CustomSpinnerObject state : districtList) {

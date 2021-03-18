@@ -61,6 +61,18 @@ public class VDFFRequest {
     @Expose
     private String comment;
 
+    public String getHoRemark() {
+        return hoRemark;
+    }
+
+    public void setHoRemark(String hoRemark) {
+        this.hoRemark = hoRemark;
+    }
+
+    @SerializedName("ho_remark")
+    @Expose
+    private String hoRemark;
+
     public String getStateId() {
         return stateId;
     }
