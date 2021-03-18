@@ -228,7 +228,8 @@
                     android:id="@+id/et_ff_mobile"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="FF mobile number"
-                    android:inputType="phone|number"  />
+                    android:inputType="phone|number"
+                    android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
