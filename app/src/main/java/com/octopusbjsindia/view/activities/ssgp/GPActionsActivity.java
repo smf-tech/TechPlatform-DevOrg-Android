@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
+import com.octopusbjsindia.view.fragments.ssgp.StructureMachineListGPFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCBDFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCCMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
@@ -47,7 +48,7 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
             if (!TextUtils.isEmpty(switchToFragment)) {
                 switch (switchToFragment) {
                     case "StructureMachineListFragment":
-                        fragment = new StructureMachineListFragment();
+                        fragment = new StructureMachineListGPFragment();
                         fragment.setArguments(data);
                         openFragment();
                         if (data.getInt("viewType", 0) == 1) {
