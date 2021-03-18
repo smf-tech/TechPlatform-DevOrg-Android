@@ -91,7 +91,9 @@
                     <EditText
                         android:id="@+id/et_structure_type1"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint="@string/structure_type"
+                        android:longClickable="false"
+                        android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
