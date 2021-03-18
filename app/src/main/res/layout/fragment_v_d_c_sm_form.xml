@@ -277,7 +277,8 @@
                     android:id="@+id/et_beneficiary_name"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="text" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -377,7 +378,8 @@
                     android:id="@+id/et_beneficiary_name1"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary name"
-                    android:inputType="text" />
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
