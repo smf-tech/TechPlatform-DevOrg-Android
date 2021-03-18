@@ -63,7 +63,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private String userTalukaIds = "";
     private String userVillageIds = "";
     private boolean isStateFilter, isDistrictFilter, isTalukaFilter, isVillageFilter;
-    private String selectedDistrictId="", selectedTalukaId, selectedVillageId;
+    private String selectedDistrictId = "", selectedTalukaId, selectedVillageId, selectedTaluka, selectedVillage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -351,15 +351,27 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.et_district:
-                CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select District",
-                        districtList,
-                        false);
-                cdd6.show();
-                cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_district:
+//                if(districtList.size()>0) {
+//                    CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
+//                            "Select District",
+//                            districtList,
+//                            false);
+//                    cdd6.show();
+//                    cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.MATCH_PARENT);
+//                } else {
+////                    if (Util.isConnected(getActivity())) {
+////                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
+////                            presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+////                                            ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+////                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+////                        }
+////                    } else {
+////                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+////                    }
+//                }
+//                break;
             case R.id.et_taluka:
                 if (talukaList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -390,10 +402,10 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                 } else {
                     if (Util.isConnected(getActivity())) {
                         if (etTaluka.getText() != null && etTaluka.getText().toString().length() > 0) {
-//                            machineMouFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
-//                                            ? selectedTalukaId : userTalukaIds,
-//                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+                            presenter.getLocationData((!TextUtils.isEmpty(selectedTalukaId))
+                                            ? selectedTalukaId : userTalukaIds,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -508,6 +520,27 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-
+        switch (type) {
+            case "Select Taluka":
+                for (CustomSpinnerObject taluka : talukaList) {
+                    if (taluka.isSelected()) {
+                        selectedTaluka = taluka.getName();
+                        selectedTalukaId = taluka.get_id();
+                        break;
+                    }
+                }
+                etTaluka.setText(selectedTaluka);
+                break;
+            case "Select Village":
+                for (CustomSpinnerObject village : talukaList) {
+                    if (village.isSelected()) {
+                        selectedVillage = village.getName();
+                        selectedVillageId = village.get_id();
+                        break;
+                    }
+                }
+                etVillage.setText(selectedVillage);
+                break;
+        }
     }
 }

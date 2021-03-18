@@ -8,7 +8,6 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
-import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
@@ -91,8 +90,9 @@ public class VDFFormFragmentPresenter implements APIPresenterListener {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
 //                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
 //                            MachineShiftingFormFragmentPresenter.SUBMIT_MACHINE_SHIFTING_FORM, responseOBJ.getStatus());
-                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
-                        requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)) {
+                } else if (requestID.equalsIgnoreCase(GET_TALUKAS) ||
+                        requestID.equalsIgnoreCase(GET_DISTRICTS) ||
+                        requestID.equalsIgnoreCase(GET_VILLAGES)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
