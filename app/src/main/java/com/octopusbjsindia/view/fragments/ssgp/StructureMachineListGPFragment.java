@@ -874,18 +874,17 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 
     @Override
     public void onClick(View view) {
-        /*if (view.getId() == R.id.fb_create) {
+        if (view.getId() == R.id.fb_create) {
             if (viewType == 1) {
                 if (Util.isConnected(getActivity())) {
                     Intent intent = new Intent(getActivity(), GPActionsActivity.class);
-                    intent.putExtra("SwitchToFragment", "CreateStructure");
-                    intent.putExtra("title", "Create Structure");
+                    intent.putExtra("SwitchToFragment", "VDCSMFormFragment");
                     getActivity().startActivity(intent);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
             }
-        } else */
+        } else
         if (view.getId() == R.id.tv_state_filter) {
             CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                     "Select State",
