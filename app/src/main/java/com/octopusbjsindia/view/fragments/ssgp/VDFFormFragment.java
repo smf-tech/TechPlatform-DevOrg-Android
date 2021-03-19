@@ -202,19 +202,27 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         } else {
             etDistrict.setOnClickListener(this);
         }
+
+        etTaluka.setOnClickListener(this);
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-        } else {
-            etTaluka.setOnClickListener(this);
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                talukaList.add(customState);
+            }
         }
+
+        etVillage.setOnClickListener(this);
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etVillage.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            selectedVillageId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-        } else {
-            etVillage.setOnClickListener(this);
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getName());
+                villageList.add(customState);
+            }
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -453,7 +461,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(getActivity(),message);
     }
 
     @Override
@@ -462,8 +470,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     }
 
     @Override
-    public void onSuccessListener(String requestID, String response) {
-
+    public void onSuccessListener(String requestID, String message) {
+        getActivity().finish();
+        Util.showToast(getActivity(),message);
     }
 
     @Override
