@@ -463,8 +463,6 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
             msg = "Select structure code";
         } else if (et_structure_status.getText().toString().trim().length() == 0) {
             msg = "Select structure status";
-        }else if (UrlStructurePhoto.trim().length() == 0) {
-            msg = "Please upload structure photo";
         }
 
         /* else if (et_remark.getText().toString().trim().length() == 0) {
