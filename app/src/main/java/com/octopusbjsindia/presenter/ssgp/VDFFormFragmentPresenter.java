@@ -1,5 +1,6 @@
 package com.octopusbjsindia.presenter.ssgp;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -7,20 +8,24 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
+import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VDFFRequest;
 import com.octopusbjsindia.request.APIRequestCall;
+import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
-public class VDFFormFragmentPresenter implements APIPresenterListener {
+public class VDFFormFragmentPresenter implements APIPresenterListener, ImageRequestCallListener {
 
     private WeakReference<VDFFormFragment> fragmentWeakReference;
     private final String TAG = VDFFormFragmentPresenter.class.getName();
@@ -127,5 +132,46 @@ public class VDFFormFragmentPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(SUBMIT_VDF_FORM, paramjson, url);
+    }
+
+    public void uploadImage(File file, String type, final String formName) {
+        ImageRequestCall requestCall = new ImageRequestCall();
+        requestCall.setListener(this);
+        fragmentWeakReference.get().showProgressBar();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(final Void... voids) {
+                requestCall.uploadImageUsingHttpURLEncoded(file, type, formName, null, null);
+                return null;
+            }
+        }.execute();
+
+    }
+    @Override
+    public void onImageUploadedListener(String response, String formName) {
+        Log.e(TAG, "onImageUploadedListener:\n" + response);
+
+        fragmentWeakReference.get().hideProgressBar();
+
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                String url = (String) data.get("url");
+                Log.e(TAG, "onPostExecute: Url: " + url);
+                Map<String, String> mUploadedImageUrlList = new HashMap<>();
+                mUploadedImageUrlList.put(formName, url);
+
+                fragmentWeakReference.get().onImageUploaded(formName,url);
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public void onFailureListener(String error) {
+
     }
 }

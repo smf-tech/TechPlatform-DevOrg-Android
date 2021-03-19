@@ -231,9 +231,22 @@
                     <EditText
                         android:id="@+id/et_machine_count"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Machine count required"
+                        android:hint="Number of machine required."
                         android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Photo of GP board"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv_gpboard_photo"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="@dimen/dimen_100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_img" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
@@ -272,6 +285,20 @@
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Machine transport by GP" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Photo of demand letter"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv_demandletter_photo"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="@dimen/dimen_100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_img" />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
