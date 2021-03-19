@@ -135,7 +135,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), structureAnalyticsDataList, 1, "Structure List", "SS");
-        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), machineAnalyticsDataList, 2, "Machine List", "GP");
+        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), machineAnalyticsDataList, 2, "Machine List", "SS");
 
         setUserLocation();
 
