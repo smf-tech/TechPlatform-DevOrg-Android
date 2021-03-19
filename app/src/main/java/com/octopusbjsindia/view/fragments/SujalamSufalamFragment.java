@@ -134,14 +134,14 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         rvSSAnalytics = sujalamSufalamFragmentView.findViewById(R.id.rv_ss_analytics);
         rvSSAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),structureAnalyticsDataList,1, "Structure List");
-        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(),machineAnalyticsDataList,2,"Machine List");
+        structureAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), structureAnalyticsDataList, 1, "Structure List", "SS");
+        machineAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), machineAnalyticsDataList, 2, "Machine List", "SS");
 
         setUserLocation();
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        if(roleAccessList != null) {
+        if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                 if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
