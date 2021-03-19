@@ -367,7 +367,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(getActivity(),message);
     }
 
     @Override
@@ -376,8 +376,9 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
     }
 
     @Override
-    public void onSuccessListener(String requestID, String response) {
-
+    public void onSuccessListener(String requestID, String message) {
+        getActivity().finish();
+        Util.showToast(getActivity(),message);
     }
 
     @Override
