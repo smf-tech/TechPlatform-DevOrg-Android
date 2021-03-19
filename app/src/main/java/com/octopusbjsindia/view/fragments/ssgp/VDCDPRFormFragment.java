@@ -372,7 +372,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                     vdcDprRequestModel.setDistrictId(selectedDistrictId);
                     vdcDprRequestModel.setTalukaId(selectedTalukaId);
                     vdcDprRequestModel.setVillageId(selectedVillageId);
-                    vdcDprRequestModel.setReportDate(Util.getDateInepoch(et_date.getText().toString()));
+                    vdcDprRequestModel.setReportDate(Util.getDateInLong(et_date.getText().toString()));
                     vdcDprRequestModel.setMachineId(selectedMachineId);
                     vdcDprRequestModel.setMachineStatus(selectedMachineStatusId);
                     vdcDprRequestModel.setStructureStatus(selectedStructureStatusId);
@@ -452,21 +452,33 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             msg = getResources().getString(R.string.select_district);
         } else if (etTaluka.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_select_taluka);
+        } else if (etVillage.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_select_village);
+        } else if (et_date.getText().toString().trim().length() == 0) {
+            msg = "Please select date.";
         } else if (et_machine_code.getText().toString().trim().length() == 0) {
-            msg =getString(R.string.msg_select_struct_code);
+            msg = "Select machine code";
         } else if (et_machine_status.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.select_stuct_type);
-        } else if (et_struct_code.getText().toString().trim().length() == 0) {
-            msg = getResources().getString(R.string.msg_enter_name);
+            msg = "Select machine status";
+        } else if (et_start_meter_reading.getText().toString().trim().length() == 0) {
+            msg = "Enter start meter reading.";
+        }  else if (et_end_meter_reading.getText().toString().trim().length() == 0) {
+            msg = "Enter end meter reading.";
         } else if (UrlStartMeterPhoto.trim().length() == 0) {
             msg = "Please upload start meter reading photo";
         } else if (UrlEndMeterPhoto.trim().length() == 0) {
             msg = "Please upload end meter reading photo";
-        } else if (UrlStructurePhoto.trim().length() == 0) {
+        } else if (et_struct_code.getText().toString().trim().length() == 0) {
+            msg = "Select structure code";
+        } else if (et_structure_status.getText().toString().trim().length() == 0) {
+            msg = "Select structure status";
+        }else if (UrlStructurePhoto.trim().length() == 0) {
             msg = "Please upload structure photo";
-        } else if (et_remark.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.msg_enter_remark);
         }
+
+        /* else if (et_remark.getText().toString().trim().length() == 0) {
+            msg = getString(R.string.msg_enter_remark);
+        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
@@ -806,7 +818,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             }
 
         }else {
-            Util.showToast(getActivity(),"structure not available." );
+            Util.showToast(getActivity(),"Machine not available." );
         }
     }
 

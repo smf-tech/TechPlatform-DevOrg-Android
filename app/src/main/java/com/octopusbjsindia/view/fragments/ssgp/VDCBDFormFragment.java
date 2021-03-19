@@ -142,6 +142,8 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
             msg = getResources().getString(R.string.select_district);
         } else if (etTaluka.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_select_taluka);
+        } else if (etVillage.getText().toString().trim().length() == 0) {
+            msg = getResources().getString(R.string.msg_select_village);
         } else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg =getString(R.string.msg_select_struct_code);
         } else if (et_structure_type.getText().toString().trim().length() == 0) {
@@ -162,9 +164,9 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
             msg = getString(R.string.msg_numberof_crops);
         }else if (et_type_of_crops.getText().toString().trim().length() == 0) {
             msg = "Please enter type of crops taken";
-        }else if (et_remark.getText().toString().trim().length() == 0) {
+        }/*else if (et_remark.getText().toString().trim().length() == 0) {
             msg = getString(R.string.msg_enter_remark);
-        }
+        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
