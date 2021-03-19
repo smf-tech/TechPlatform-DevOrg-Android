@@ -19,6 +19,7 @@ import com.octopusbjsindia.view.fragments.ssgp.StructureMachineListGPFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCBDFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCCMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRValidationFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCSMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
 
@@ -65,6 +66,11 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case "VDCDPRFormFragment":
                         fragment = new VDCDPRFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCDPRValidationFormFragment":
+                        fragment = new VDCDPRValidationFormFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;

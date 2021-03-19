@@ -1,0 +1,311 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
+    android:background="@color/base_background_color">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/et_state"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="@string/state" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_district"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:longClickable="false"
+                            android:hint="@string/district" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_taluka"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:longClickable="false"
+                            android:hint="@string/taluka" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_village"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="@string/village" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="Date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_machine_code"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="Machine code" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_machine_status"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="Machine Status" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_working_hours"
+                        style="@style/RegistrationEditTextLayout"
+                        android:inputType="numberDecimal"
+                        android:visibility="visible"
+                        android:hint="Working hours" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_start_meter_reading"
+                        style="@style/RegistrationEditTextLayout"
+                        android:inputType="numberDecimal"
+                        android:visibility="gone"
+                        android:hint="@string/enter_start_meter_reading" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Photo of start reading"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv_start_meter"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="@dimen/dimen_100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_img" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_end_meter_reading"
+                        style="@style/RegistrationEditTextLayout"
+                        android:inputType="numberDecimal"
+                        android:visibility="gone"
+                        android:hint="Enter end meter reading" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Photo of end reading"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv_end_meter"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="@dimen/dimen_100dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_img" />
+
+
+
+
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_reason"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="Machine idle reason" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_struct_code"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Structure code"
+                        android:focusable="false"
+                        android:longClickable="false"
+                         />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_structure_status"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:hint="@string/structure_status" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Photo of Structure"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv_structure_photo"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="@dimen/dimen_100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_img" />
+
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_remark"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Remark" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppStyleButton"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:text="@string/submit"
+                    android:layout_below="@+id/card_create_meet"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

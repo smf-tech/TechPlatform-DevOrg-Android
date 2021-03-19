@@ -667,7 +667,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                         (userDistrictIds != "") ? userDistrictIds : "",
                         (userTalukaIds != "") ? userTalukaIds : "");
             } else {
-                fbCreate.setVisibility(View.GONE);
+                fbCreate.setVisibility(View.VISIBLE);
                 presenter.getTalukaMachinesList(
                         (userStateIds != "") ? userStateIds : "",
                         (userDistrictIds != "") ? userDistrictIds : "",
@@ -881,6 +881,14 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 if (Util.isConnected(getActivity())) {
                     Intent intent = new Intent(getActivity(), GPActionsActivity.class);
                     intent.putExtra("SwitchToFragment", "VDCSMFormFragment");
+                    getActivity().startActivity(intent);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+            }else {
+                if (Util.isConnected(getActivity())) {
+                    Intent intent = new Intent(getActivity(), GPActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "VDCDPRValidationFormFragment");
                     getActivity().startActivity(intent);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
