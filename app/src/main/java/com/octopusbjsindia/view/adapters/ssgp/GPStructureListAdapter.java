@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +48,9 @@ import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
 import com.octopusbjsindia.view.activities.StructureVisitMonitoringActivity;
+import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 import com.octopusbjsindia.view.adapters.DeployedMachineListAdapter;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +145,7 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
 
         TextView tvStatus, tvStructureCode, tvStructureType, tvInterventionType,
                 tvMachinCount, tvTaluka, tvVillage, tvMachineCount;
-//        ImageView btnPopupMenu tvStructureName,;
+        ImageView btnPopupMenu;
         LinearLayout lyStartData;
         PopupMenu popup;
 
@@ -159,29 +162,14 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
             tvVillage = itemView.findViewById(R.id.tv_village);
             tvMachineCount = itemView.findViewById(R.id.tv_machine_count);
 
-//            btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
-//            btnPopupMenu.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    popup = new PopupMenu((activity), v);
-//                    popup.inflate(R.menu.structure_popup_menu);
-//                    popup.show();
-//
-//                    if (isCommunityMobilization) {
-//                        if (isSave) {
-//                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(true);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_mobilization).setVisible(false);
-//                    }
-//                    if (isStructureBoundary) {
-//                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(true);
-////                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_structure_boundary).setVisible(false);
-//                    }
+            btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
+            btnPopupMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popup = new PopupMenu((activity), v);
+                    popup.inflate(R.menu.gp_structure_popup_menu);
+                    popup.show();
+
 //                    if (isStructurePreparation) {
 //                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
 //                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_NON_COMPLIANT
@@ -193,7 +181,7 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
 //                    } else {
 //                        popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
 //                    }
-//
+
 //                    if (isVisitMonitoring) {
 //                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
 //                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
@@ -205,131 +193,29 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
 //                    } else {
 //                        popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
 //                    }
-//                    if (isStructureComplete) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PREPARED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_CLOSED) {
-//                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
-//                        } else {
-//                            if (isSave) {
-//                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
-//                            } else {
-//                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
-//                            }
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
-//                    }
-//
-//                    if (isStructureClose) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
-//                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(true);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
-//                    }
-//
-//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item) {
-//                            Intent intent;
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Intent intent;
 //                            switch (item.getItemId()) {
-//                                case R.id.action_preparation:
-//                                    showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
-//                                            "Yes", "No", getAdapterPosition(), 1);
-//                                    break;
-//                                case R.id.action_mobilization:
-//                                    if (Util.isConnected(activity)) {
-//                                        intent = new Intent(activity, CommunityMobilizationActivity.class);
-//                                        intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-//                                        activity.startActivity(intent);
-//                                    } else {
-//                                        Util.showToast(activity.getString(R.string.msg_no_network), activity);
-//                                    }
-//                                    break;
-//                                case R.id.action_visit_monitoring:
-////                                    if(ssDataList.get(getAdapterPosition()).getStructureStatus().equalsIgnoreCase("Approved")){
-//                                    intent = new Intent(activity, StructureVisitMonitoringActivity.class);
-//                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-//                                    activity.startActivity(intent);
-////                                    }
-//                                    break;
-//                                case R.id.action_structure_completion:
-//                                    if (ssDataList.get(getAdapterPosition()).isStructureComplete()) {
-//                                        showDialog(activity, "Alert", "Are you sure, want to Complete Structure?",
-//                                                "Yes", "No", getAdapterPosition(), 2);
-//                                    } else {
-//                                        Util.showToast("Please release all the machine from Structure", activity);
-//                                    }
-//                                    break;
-//                                case R.id.action_structure_close:
-//                                    showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
-//                                            "Yes", "No", getAdapterPosition(), 2);
-//                                    break;
-//                                case R.id.action_structure_boundary:
-//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                                        //noinspection MissingPermission
-//                                        if (activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                                                && activity.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                                            ActivityCompat.requestPermissions(activity,
-//                                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-//                                                            Manifest.permission.ACCESS_FINE_LOCATION},
-//                                                    Constants.GPS_REQUEST);
-//                                        } else {
-//                                            LocationManager lm = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-//                                            boolean gps_enabled = false;
-//
-//                                            try {
-//                                                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//                                            } catch (Exception ex) {
-//                                            }
-//                                            if (gps_enabled) {
-//                                                if (ssDataList.get(getAdapterPosition()).isStructureBoundary()) {
-//                                                    showDialog(activity, "Alert",
-//                                                            "Structure boundary already recorded, do you want record?",
-//                                                            "Yes",
-//                                                            "No",
-//                                                            getAdapterPosition(), 3);
-//                                                } else {
-//                                                    intent = new Intent(activity, StructureBoundaryActivity.class);
-//                                                    intent.putExtra(STRUCTURE_DATA, ssDataList.get(getAdapterPosition()));
-//                                                    activity.startActivity(intent);
-//                                                }
-//                                            } else {
-//                                                new AlertDialog.Builder(activity)
-//                                                        .setTitle("Alert")
-//                                                        .setMessage("Your GPS Location is OFF, Please turn it ON")
-//                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                                            @Override
-//                                                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-//                                                                activity.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//                                                            }
-//                                                        })
-//                                                        .setNegativeButton("Cancel", null)
-//                                                        .show();
-//                                            }
-//                                        }
-//                                    }
+//                                case R.id.action_dpr:
+                            intent = new Intent(activity, GPActionsActivity.class);
+                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
+                            activity.startActivity(intent);
 //                                    break;
 //                            }
-//                            return false;
-//                        }
-//                    });
-//
-////                    Menu menu = popup.getMenu();
-////                    for(int i = 0; i<menu.size();i++) {
-////                        MenuItem mi = menu.getItem(i);
-////                        applyFontToMenuItem(mi);
-////                    }
-//                }
-//            });
+                            return false;
+                        }
+                    });
+
+//                    Menu menu = popup.getMenu();
+//                    for(int i = 0; i<menu.size();i++) {
+//                        MenuItem mi = menu.getItem(i);
+//                        applyFontToMenuItem(mi);
+//                    }
+                }
+            });
 
 
 //            lyStructure = itemView.findViewById(R.id.rl_machine);

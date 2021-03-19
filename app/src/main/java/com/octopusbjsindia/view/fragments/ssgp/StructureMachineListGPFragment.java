@@ -788,6 +788,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 //            gpStructureListAdapter.notifyDataSetChanged();
 //            ((GPActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
 //        }
+        filteredStructureListData.clear();
+        ssStructureListData.clear();
         filteredStructureListData.addAll(structureListData.getData());
         ssStructureListData.addAll(structureListData.getData());
         gpStructureListAdapter.notifyDataSetChanged();

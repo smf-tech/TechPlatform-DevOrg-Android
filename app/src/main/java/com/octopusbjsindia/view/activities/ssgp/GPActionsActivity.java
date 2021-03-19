@@ -51,11 +51,7 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
                         fragment = new StructureMachineListGPFragment();
                         fragment.setArguments(data);
                         openFragment();
-                        if (data.getInt("viewType", 0) == 1) {
-                            findViewById(R.id.toolbar_edit_action).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
-                        }
+                        findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
                         break;
                     case "VDFFormFragment":
                         fragment = new VDFFormFragment();
@@ -105,9 +101,11 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
     public void setActivityTitle(String title) {
         toolbar_title.setText(title);
     }
+
     public void hideToolbar() {
         findViewById(R.id.toolbar).setVisibility(View.GONE);
     }
+
     public void showToolbar() {
         findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
     }
