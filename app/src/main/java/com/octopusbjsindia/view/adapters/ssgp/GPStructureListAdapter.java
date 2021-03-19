@@ -200,9 +200,9 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
                             Intent intent;
 //                            switch (item.getItemId()) {
 //                                case R.id.action_dpr:
-                                    intent = new Intent(activity, GPActionsActivity.class);
-                                    intent.putExtra("SwitchToFragment", "VDCCMFormFragment");
-                                    activity.startActivity(intent);
+                            intent = new Intent(activity, GPActionsActivity.class);
+                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
+                            activity.startActivity(intent);
 //                                    break;
 //                            }
                             return false;
