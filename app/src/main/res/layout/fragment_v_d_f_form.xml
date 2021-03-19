@@ -91,7 +91,7 @@
                     <EditText
                         android:id="@+id/et_structure_type1"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type"
+                        android:hint="Structure type 1"
                         android:longClickable="false"
                         android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -116,7 +116,7 @@
                     <EditText
                         android:id="@+id/et_structure_type2"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint="Structure type 2" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +139,7 @@
                     <EditText
                         android:id="@+id/et_structure_type3"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint="Structure type 3" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -162,7 +162,7 @@
                     <EditText
                         android:id="@+id/et_structure_type4"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint= "Structure type 4" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -185,7 +185,7 @@
                     <EditText
                         android:id="@+id/et_structure_type5"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/structure_type" />
+                        android:hint= "Structure type 5"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
