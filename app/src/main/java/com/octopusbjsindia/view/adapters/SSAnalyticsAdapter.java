@@ -15,6 +15,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsData;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
+import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 
 import java.util.ArrayList;
 
@@ -24,12 +25,15 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
     int viewType;
     String title;
     Context mContext;
+    private String project;
 
-    public SSAnalyticsAdapter(Context mContext, ArrayList<SSAnalyticsData> ssAnalyticsDataList, int viewType, String title){
+    public SSAnalyticsAdapter(Context mContext, ArrayList<SSAnalyticsData> ssAnalyticsDataList,
+                              int viewType, String title, String project) {
         this.ssAnalyticsDataList = ssAnalyticsDataList;
         this.viewType = viewType;
         this.title = title;
         this.mContext = mContext;
+        this.project = project;
     }
 
     @NonNull
@@ -72,13 +76,17 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, SSActionsActivity.class);
+                    Intent intent;
+                    if (project.equalsIgnoreCase("SS")) {
+                        intent = new Intent(mContext, SSActionsActivity.class);
+                    } else {
+                        intent = new Intent(mContext, GPActionsActivity.class);
+                    }
                     intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                     intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
 //                    intent.putExtra("selectedStatus",108);
                     intent.putExtra("viewType", viewType);
                     intent.putExtra("title", title);
-
                     mContext.startActivity(intent);
                 }
             });
