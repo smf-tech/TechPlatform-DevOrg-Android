@@ -6,13 +6,6 @@
     tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
     android:background="@color/base_background_color">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -374,13 +367,12 @@
                     style="@style/AppStyleButton"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:text="@string/meet_next_label"
+                    android:text="@string/submit"
                     android:layout_below="@+id/card_create_meet"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
         </ScrollView>
-    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

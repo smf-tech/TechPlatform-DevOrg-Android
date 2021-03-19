@@ -95,8 +95,11 @@ public class VDFFormFragmentPresenter implements APIPresenterListener, ImageRequ
             if (response != null) {
                 if (requestID.equalsIgnoreCase(VDFFormFragmentPresenter.SUBMIT_VDF_FORM)) {
                     CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-                    fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
-                            SUBMIT_VDF_FORM, responseOBJ.getCode());
+                    if(responseOBJ.getCode()==200){
+                        fragmentWeakReference.get().onSuccessListener("StructureMaster",responseOBJ.getMessage());
+                    } else {
+                        fragmentWeakReference.get().onFailureListener("StructureMaster",responseOBJ.getMessage());
+                    }
                 } else if (requestID.equalsIgnoreCase(GET_TALUKAS) ||
                         requestID.equalsIgnoreCase(GET_DISTRICTS)  ||
                         requestID.equalsIgnoreCase(GET_VILLAGES)) {
