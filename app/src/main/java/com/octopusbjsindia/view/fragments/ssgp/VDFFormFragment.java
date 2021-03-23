@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -62,20 +65,22 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
 
-    private String selectedImageType ="";
-    public static final String IMAGE_DEMAND_LETTER = "imageofdemandletter";
+    private String selectedImageType = "";
+    public static final String IMAGE_DEMAND_LETTER1 = "imageofdemandletter1";
+    public static final String IMAGE_DEMAND_LETTER2 = "imageofdemandletter2";
+    public static final String IMAGE_DEMAND_LETTER3 = "imageofdemandletter3";
     public static final String IMAGE_GP_BOARD = "imageofgpboard";
 
     private Uri outputUri;
     private Uri finalUri;
-    private ImageView iv_gpboard_photo,iv_demandletter_photo;
-    private String UrlDemandLetterPhoto = "",UrlGPBoardPhoto= "";
+    private ImageView iv_gpboard_photo, iv_demandletter_photo1,iv_demandletter_photo2,iv_demandletter_photo3;
+    private String UrlDemandLetterPhoto1,UrlDemandLetterPhoto2,UrlDemandLetterPhoto3, UrlGPBoardPhoto = "", startWork = "Yes";
 
     private EditText etState, etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
             etStructCount2, etStructureType3, etStructCount3, etStructureType4, etStructCount4,
-            etStructureType5, etStructCount5, etHours, etMachineType, etMachineCount, etNodalName,
-            etNodalContact, etMachineTransport, etFeasibility, etReason, etFutureWorkTime,
-            etWorkableStructCount, etRemark, etHoRemark, selectedEt;
+            etStructureType5, etStructCount5, etHours, etBackhoeCount, etExcavatorsCount, etNodalName,
+            etNodalContact, etMachineTransport, etReason, etFutureWorkTime,
+            etWorkableStructCount, etRemark, selectedEt;
     private Button btnSubmit;
 
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -138,19 +143,66 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etStructureType5 = vdfFormFragmentView.findViewById(R.id.et_structure_type5);
         etStructCount5 = vdfFormFragmentView.findViewById(R.id.et_struct_count5);
         etHours = vdfFormFragmentView.findViewById(R.id.et_hours);
-        etMachineType = vdfFormFragmentView.findViewById(R.id.et_machine_type);
-        etMachineCount = vdfFormFragmentView.findViewById(R.id.et_machine_count);
+        etBackhoeCount = vdfFormFragmentView.findViewById(R.id.etBackhoeCount);
+        etExcavatorsCount = vdfFormFragmentView.findViewById(R.id.etExcavatorsCount);
         etNodalName = vdfFormFragmentView.findViewById(R.id.et_nodal_name);
         etNodalContact = vdfFormFragmentView.findViewById(R.id.et_nodal_contact);
         etMachineTransport = vdfFormFragmentView.findViewById(R.id.et_machine_transport);
-        etFeasibility = vdfFormFragmentView.findViewById(R.id.et_feasibility);
         etReason = vdfFormFragmentView.findViewById(R.id.et_reason);
         etFutureWorkTime = vdfFormFragmentView.findViewById(R.id.et_future_work_time);
         etWorkableStructCount = vdfFormFragmentView.findViewById(R.id.et_workable_struct_count);
         etRemark = vdfFormFragmentView.findViewById(R.id.et_remark);
-        etHoRemark = vdfFormFragmentView.findViewById(R.id.et_ho_remark);
-        iv_demandletter_photo = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo);
+        iv_demandletter_photo1 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo1);
+        iv_demandletter_photo2 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo2);
+        iv_demandletter_photo3 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo3);
         iv_gpboard_photo = vdfFormFragmentView.findViewById(R.id.iv_gpboard_photo);
+        CheckBox cbBackhoe = vdfFormFragmentView.findViewById(R.id.cbBackhoe);
+        cbBackhoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    vdfFormFragmentView.findViewById(R.id.etBackhoeCount).setEnabled(true);
+                } else {
+                    vdfFormFragmentView.findViewById(R.id.etBackhoeCount).setEnabled(false);
+                    etBackhoeCount.setText("");
+                }
+            }
+        });
+
+        CheckBox cbExcavators = vdfFormFragmentView.findViewById(R.id.cbExcavators);
+        cbExcavators.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    vdfFormFragmentView.findViewById(R.id.etExcavatorsCount).setEnabled(true);
+                } else {
+                    vdfFormFragmentView.findViewById(R.id.etExcavatorsCount).setEnabled(false);
+                    etExcavatorsCount.setText("");
+                }
+            }
+        });
+        RadioGroup rb = vdfFormFragmentView.findViewById(R.id.rgStartWork);
+        rb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbYes:
+                        startWork = "Yes";
+                        vdfFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.GONE);
+                        vdfFormFragmentView.findViewById(R.id.tly_future_work_time).setVisibility(View.GONE);
+                        vdfFormFragmentView.findViewById(R.id.tly_workable_struct_count).setVisibility(View.GONE);
+                        break;
+                    case R.id.rbNo:
+                        startWork = "No";
+                        vdfFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rbPartially:
+                        startWork = "Partially";
+                        vdfFormFragmentView.findViewById(R.id.tly_future_work_time).setVisibility(View.VISIBLE);
+                        vdfFormFragmentView.findViewById(R.id.tly_workable_struct_count).setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
 
         etStructureType1.setOnClickListener(this);
         etStructureType1.setFocusable(false);
@@ -163,7 +215,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etStructureType5.setOnClickListener(this);
         etStructureType5.setFocusable(false);
         vdfFormFragmentView.findViewById(R.id.btn_submit).setOnClickListener(this);
-        iv_demandletter_photo.setOnClickListener(this);
+        iv_demandletter_photo1.setOnClickListener(this);
+        iv_demandletter_photo2.setOnClickListener(this);
+        iv_demandletter_photo3.setOnClickListener(this);
         iv_gpboard_photo.setOnClickListener(this);
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
@@ -235,16 +289,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (int i = 0; i < masterDataList.size(); i++) {
-//            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
-//                    getField().equals("machineType")) {
-//                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
-//                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-//                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
-//                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
-//                    customSpinnerObject.setSelected(false);
-//                    machineTypeList.add(customSpinnerObject);
-//                }
-//            }
             if (masterDataList.get(i).getField().equals("structureType")) {
                 for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
@@ -264,12 +308,28 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_demandletter_photo:
+            case R.id.iv_demandletter_photo1:
                 if (Util.isConnected(getActivity())) {
                     onAddImageClick();
-                    selectedImageType = IMAGE_DEMAND_LETTER;
+                    selectedImageType = IMAGE_DEMAND_LETTER1;
                 } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
+            case R.id.iv_demandletter_photo2:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_DEMAND_LETTER2;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
+            case R.id.iv_demandletter_photo3:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_DEMAND_LETTER3;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
                 }
                 break;
             case R.id.iv_gpboard_photo:
@@ -277,7 +337,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     onAddImageClick();
                     selectedImageType = IMAGE_GP_BOARD;
                 } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
                 }
                 break;
             case R.id.et_state:
@@ -310,27 +370,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     }
                 }
                 break;
-//            case R.id.et_district:
-//                if(districtList.size()>0) {
-//                    CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
-//                            "Select District",
-//                            districtList,
-//                            false);
-//                    cdd6.show();
-//                    cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                            ViewGroup.LayoutParams.MATCH_PARENT);
-//                } else {
-////                    if (Util.isConnected(getActivity())) {
-////                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
-////                            presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
-////                                            ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
-////                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-////                        }
-////                    } else {
-////                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-////                    }
-//                }
-//                break;
             case R.id.et_taluka:
                 if (talukaList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -430,21 +469,30 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     structure5.setNumberStructureType(etStructCount5.getText().toString().trim());
                     structureWorkTypeList.add(structure5);
 
-                    request.setDemandLetterImage(UrlDemandLetterPhoto);
+                    ArrayList<String> demandLetterList = new ArrayList<String>();
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto1)){
+                        demandLetterList.add(UrlDemandLetterPhoto1);
+                    }
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto2)){
+                        demandLetterList.add(UrlDemandLetterPhoto2);
+                    }
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto3)){
+                        demandLetterList.add(UrlDemandLetterPhoto3);
+                    }
+                    request.setDemandLetterImage(demandLetterList);
                     request.setGpImage(UrlGPBoardPhoto);
                     request.setTypeNWorkStructure(structureWorkTypeList);
                     request.setMachineDemandHr(etHours.getText().toString().trim());
-                    request.setMachineDemandType(etMachineType.getText().toString().trim());
-                    request.setMachineDemandNumbers(etMachineCount.getText().toString().trim());
+                    request.setBackhoeCount(etBackhoeCount.getText().toString().trim());
+                    request.setExcavatorsCount(etExcavatorsCount.getText().toString().trim());
                     request.setNodalPersonName(etNodalName.getText().toString().trim());
                     request.setNodalPersonNumber(etNodalContact.getText().toString().trim());
                     request.setMachineTransportation(etMachineTransport.getText().toString().trim());
-                    request.setIsStartWorkImmediately(etFeasibility.getText().toString().trim());
+                    request.setIsStartWorkImmediately(startWork);
                     request.setReasonNotStart(etReason.getText().toString().trim());
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
                     request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
                     request.setComment(etRemark.getText().toString().trim()); //TODO not shure
-                    request.setHoRemark(etHoRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
                 }
                 break;
@@ -461,7 +509,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        Util.showToast(getActivity(),message);
+        Util.showToast(getActivity(), message);
     }
 
     @Override
@@ -472,7 +520,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onSuccessListener(String requestID, String message) {
         getActivity().finish();
-        Util.showToast(getActivity(),message);
+        Util.showToast(getActivity(), message);
     }
 
     @Override
@@ -682,6 +730,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
             showPictureDialog();
         }
     }
+
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.title_choose_picture));
@@ -789,19 +838,43 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     }
 
     public void onImageUploaded(String imagetype, String imageUrl) {
-        if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER)){
-            UrlDemandLetterPhoto = imageUrl;
+        if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER1)) {
+            UrlDemandLetterPhoto1 = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Glide.with(getActivity())
                             //.applyDefaultRequestOptions(requestOptions)
                             .load(imageUrl)
-                            .into(iv_demandletter_photo);
+                            .into(iv_demandletter_photo1);
                 }
             });
 
-        }else if (imagetype.equalsIgnoreCase(IMAGE_GP_BOARD)){
+        } else if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER2)) {
+            UrlDemandLetterPhoto2 = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_demandletter_photo2);
+                }
+            });
+
+        } else if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER3)) {
+            UrlDemandLetterPhoto3 = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_demandletter_photo3);
+                }
+            });
+
+        } else if (imagetype.equalsIgnoreCase(IMAGE_GP_BOARD)) {
             UrlGPBoardPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override

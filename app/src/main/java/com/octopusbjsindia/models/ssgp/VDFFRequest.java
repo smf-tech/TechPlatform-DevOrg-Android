@@ -3,6 +3,7 @@ package com.octopusbjsindia.models.ssgp;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VDFFRequest {
@@ -24,21 +25,27 @@ public class VDFFRequest {
     @SerializedName("machine_demand_hr")
     @Expose
     private String machineDemandHr;
-    @SerializedName("machine_demand_type")
-    @Expose
-    private String machineDemandType;
-    @SerializedName("machine_demand_numbers")
-    @Expose
-    private String machineDemandNumbers;
-    @SerializedName("demand_letter_image")
-    @Expose
-    private String demandLetterImage;
-    @SerializedName("nodal_person_name")
+    //    @SerializedName("machine_demand_type")     //TODO Removed
+//    @Expose
+//    private String machineDemandType;
+//    @SerializedName("machine_demand_numbers")
+//    @Expose
+//    private String machineDemandNumbers;
+    @SerializedName("machineDemand")
     @Expose
     private String nodalPersonName;
     @SerializedName("nodal_person_number")
     @Expose
     private String nodalPersonNumber;
+    @SerializedName("demand_letter_image")
+    @Expose
+    private ArrayList<String> demandLetterImage; //TODO changed String to ArrayList<String>
+    @SerializedName("backhoe_count")             //TODO new added
+    @Expose
+    private String backhoeCount;
+    @SerializedName("excavators_count")          //TODO new added
+    @Expose
+    private String excavatorsCount;
     @SerializedName("machine_transportation")
     @Expose
     private String machineTransportation;
@@ -61,17 +68,18 @@ public class VDFFRequest {
     @Expose
     private String comment;
 
-    public String getHoRemark() {
-        return hoRemark;
-    }
-
-    public void setHoRemark(String hoRemark) {
-        this.hoRemark = hoRemark;
-    }
-
-    @SerializedName("ho_remark")
-    @Expose
-    private String hoRemark;
+//    @SerializedName("ho_remark")                           //TODO Removed
+//    @Expose
+//    private String hoRemark;
+//
+//
+//    public String getHoRemark() {
+//        return hoRemark;
+//    }
+//
+//    public void setHoRemark(String hoRemark) {
+//        this.hoRemark = hoRemark;
+//    }
 
     public String getStateId() {
         return stateId;
@@ -121,27 +129,27 @@ public class VDFFRequest {
         this.machineDemandHr = machineDemandHr;
     }
 
-    public String getMachineDemandType() {
-        return machineDemandType;
+    public String getBackhoeCount() {
+        return backhoeCount;
     }
 
-    public void setMachineDemandType(String machineDemandType) {
-        this.machineDemandType = machineDemandType;
+    public void setBackhoeCount(String  backhoeCount) {
+        this.backhoeCount = backhoeCount;
     }
 
-    public String getMachineDemandNumbers() {
-        return machineDemandNumbers;
+    public String getExcavatorsCount() {
+        return excavatorsCount;
     }
 
-    public void setMachineDemandNumbers(String machineDemandNumbers) {
-        this.machineDemandNumbers = machineDemandNumbers;
+    public void setExcavatorsCount(String excavatorsCount) {
+        this.excavatorsCount = excavatorsCount;
     }
 
-    public String getDemandLetterImage() {
+    public ArrayList<String> getDemandLetterImage() {
         return demandLetterImage;
     }
 
-    public void setDemandLetterImage(String demandLetterImage) {
+    public void setDemandLetterImage(ArrayList<String> demandLetterImage) {
         this.demandLetterImage = demandLetterImage;
     }
 
