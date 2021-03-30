@@ -491,8 +491,8 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     request.setIsStartWorkImmediately(startWork);
                     request.setReasonNotStart(etReason.getText().toString().trim());
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
-                    request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
-                    request.setComment(etRemark.getText().toString().trim()); //TODO not shure
+                    request.setNoStructureWork(etWorkableStructCount.getText().toString().trim());
+                    request.setComment(etRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
                 }
                 break;

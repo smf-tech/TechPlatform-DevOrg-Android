@@ -25,12 +25,6 @@ public class VDFFRequest {
     @SerializedName("machine_demand_hr")
     @Expose
     private String machineDemandHr;
-    //    @SerializedName("machine_demand_type")     //TODO Removed
-//    @Expose
-//    private String machineDemandType;
-//    @SerializedName("machine_demand_numbers")
-//    @Expose
-//    private String machineDemandNumbers;
     @SerializedName("machineDemand")
     @Expose
     private String nodalPersonName;
@@ -39,11 +33,11 @@ public class VDFFRequest {
     private String nodalPersonNumber;
     @SerializedName("demand_letter_image")
     @Expose
-    private ArrayList<String> demandLetterImage; //TODO changed String to ArrayList<String>
-    @SerializedName("backhoe_count")             //TODO new added
+    private ArrayList<String> demandLetterImage;
+    @SerializedName("backhoe_count")
     @Expose
     private String backhoeCount;
-    @SerializedName("excavators_count")          //TODO new added
+    @SerializedName("excavators_count")
     @Expose
     private String excavatorsCount;
     @SerializedName("machine_transportation")
@@ -67,19 +61,6 @@ public class VDFFRequest {
     @SerializedName("comment")
     @Expose
     private String comment;
-
-//    @SerializedName("ho_remark")                           //TODO Removed
-//    @Expose
-//    private String hoRemark;
-//
-//
-//    public String getHoRemark() {
-//        return hoRemark;
-//    }
-//
-//    public void setHoRemark(String hoRemark) {
-//        this.hoRemark = hoRemark;
-//    }
 
     public String getStateId() {
         return stateId;

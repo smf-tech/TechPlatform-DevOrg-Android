@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.utils.Utils;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -92,10 +95,10 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
 
 
     private VDCDPRFormFragmentPresenter presenter;
-    private EditText etState,etDistrict, etTaluka, etVillage,et_remark,
-            et_date,et_machine_code,et_machine_status,et_start_meter_reading,et_end_meter_reading,et_reason,et_struct_code,et_structure_status;
-    private ImageView iv_start_meter,iv_end_meter,iv_structure_photo;
-    private String UrlStartMeterPhoto ="",UrlEndMeterPhoto="",UrlStructurePhoto="";
+    private EditText etState,etDistrict, etTaluka, etVillage,et_remark, et_date, et_machine_code, et_machine_status,
+            et_start_meter_reading, et_end_meter_reading, et_total_meter_reading, et_reason, et_struct_code, et_structure_status;
+    private ImageView iv_structure_photo;//iv_start_meter,iv_end_meter,
+    private String UrlStructurePhoto="";// UrlStartMeterPhoto ="",UrlEndMeterPhoto="",
     private Button btn_submit;
 
     @Override
@@ -137,15 +140,46 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         et_machine_status = vdcdprFormFragmentView.findViewById(R.id.et_machine_status);
         et_start_meter_reading = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
         et_end_meter_reading = vdcdprFormFragmentView.findViewById(R.id.et_end_meter_reading);
+        et_total_meter_reading = vdcdprFormFragmentView.findViewById(R.id.et_total_meter_reading);
         et_reason = vdcdprFormFragmentView.findViewById(R.id.et_reason);
         et_struct_code = vdcdprFormFragmentView.findViewById(R.id.et_struct_code);
         et_structure_status = vdcdprFormFragmentView.findViewById(R.id.et_structure_status);
         et_remark = vdcdprFormFragmentView.findViewById(R.id.et_remark);
+        et_start_meter_reading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                    - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
+                    et_total_meter_reading.setText(""+result);
+                }
+            }
+        });
 
-        et_start_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
-        et_end_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_end_meter_reading);
-        iv_start_meter = vdcdprFormFragmentView.findViewById(R.id.iv_start_meter);
-        iv_end_meter = vdcdprFormFragmentView.findViewById(R.id.iv_end_meter);
+        et_end_meter_reading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                            - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
+                    et_total_meter_reading.setText(""+result);
+                }
+            }
+        });
+//        iv_start_meter = vdcdprFormFragmentView.findViewById(R.id.iv_start_meter);
+//        iv_end_meter = vdcdprFormFragmentView.findViewById(R.id.iv_end_meter);
         iv_structure_photo = vdcdprFormFragmentView.findViewById(R.id.iv_structure_photo);
         btn_submit = vdcdprFormFragmentView.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
@@ -157,8 +191,8 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         et_machine_code.setOnClickListener(this);
         et_machine_status.setOnClickListener(this);
         et_reason.setOnClickListener(this);
-        iv_start_meter.setOnClickListener(this);
-        iv_end_meter.setOnClickListener(this);
+//        iv_start_meter.setOnClickListener(this);
+//        iv_end_meter.setOnClickListener(this);
         iv_structure_photo.setOnClickListener(this);
         et_structure_status.setOnClickListener(this);
         et_struct_code.setOnClickListener(this);
@@ -338,22 +372,22 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             case R.id.et_date:
                 Util.showDateDialog(getActivity(), et_date);
                 break;
-            case R.id.iv_start_meter:
-                if (Util.isConnected(getActivity())) {
-                    onAddImageClick();
-                    selectedImageType = IMAGE_START_READING;
-                } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-                }
-                break;
-            case R.id.iv_end_meter:
-                if (Util.isConnected(getActivity())) {
-                    onAddImageClick();
-                    selectedImageType = IMAGE_END_READING;
-                } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-                }
-                break;
+//            case R.id.iv_start_meter:
+//                if (Util.isConnected(getActivity())) {
+//                    onAddImageClick();
+//                    selectedImageType = IMAGE_START_READING;
+//                } else {
+//                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+//                }
+//                break;
+//            case R.id.iv_end_meter:
+//                if (Util.isConnected(getActivity())) {
+//                    onAddImageClick();
+//                    selectedImageType = IMAGE_END_READING;
+//                } else {
+//                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+//                }
+//                break;
             case R.id.iv_structure_photo:
                 if (Util.isConnected(getActivity())) {
                     onAddImageClick();
@@ -377,9 +411,10 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                     vdcDprRequestModel.setMachineStatus(selectedMachineStatusId);
                     vdcDprRequestModel.setStructureStatus(selectedStructureStatusId);
                     vdcDprRequestModel.setStartMeterReading(et_start_meter_reading.getText().toString());
-                    vdcDprRequestModel.setStartMeterReadingImage(UrlStartMeterPhoto);
+//                    vdcDprRequestModel.setStartMeterReadingImage(UrlStartMeterPhoto);
                     vdcDprRequestModel.setEndMeterReading(et_end_meter_reading.getText().toString());
-                    vdcDprRequestModel.setEndMeterReadingImage(UrlEndMeterPhoto);
+//                    vdcDprRequestModel.setEndMeterReadingImage(UrlEndMeterPhoto);
+                    vdcDprRequestModel.setTotalMeterReading(et_total_meter_reading.getText().toString());
                     vdcDprRequestModel.setStructureId(selectedStructureId);
                     vdcDprRequestModel.setStructureImage(UrlStructurePhoto);
                     vdcDprRequestModel.setComment(et_remark.getText().toString());
@@ -464,11 +499,13 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             msg = "Enter start meter reading.";
         }  else if (et_end_meter_reading.getText().toString().trim().length() == 0) {
             msg = "Enter end meter reading.";
-        } else if (UrlStartMeterPhoto.trim().length() == 0) {
+        }  else if (Integer.parseInt(et_total_meter_reading.getText().toString().trim()) < 24 ) {
+            msg = "Total meter reading should be less than 24 hrs.";
+        }/*else if (UrlStartMeterPhoto.trim().length() == 0) {
             msg = "Please upload start meter reading photo";
         } else if (UrlEndMeterPhoto.trim().length() == 0) {
             msg = "Please upload end meter reading photo";
-        } else if (et_struct_code.getText().toString().trim().length() == 0) {
+        }*/ else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg = "Select structure code";
         } else if (et_structure_status.getText().toString().trim().length() == 0) {
             msg = "Select structure status";
@@ -767,7 +804,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     }
 
     public void onImageUploaded(String imagetype, String imageUrl) {
-        if (imagetype.equalsIgnoreCase(IMAGE_START_READING)){
+        /*if (imagetype.equalsIgnoreCase(IMAGE_START_READING)){
             UrlStartMeterPhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -790,7 +827,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                             .into(iv_end_meter);
                 }
             });
-        }else  if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
+        }else  */if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
             UrlStructurePhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override

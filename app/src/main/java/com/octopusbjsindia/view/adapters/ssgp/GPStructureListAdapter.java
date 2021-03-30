@@ -166,82 +166,28 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    popup = new PopupMenu((activity), v);
-                    popup.inflate(R.menu.gp_structure_popup_menu);
-                    popup.show();
-
-//                    if (isStructurePreparation) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_NON_COMPLIANT
-//                                && isVisitMonitoring) {
-//                            popup.getMenu().findItem(R.id.action_preparation).setVisible(true);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
-//                    }
-
-//                    if (isVisitMonitoring) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED) {
-//                            popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
-//                    }
-
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            Intent intent;
+//                    popup = new PopupMenu((activity), v);
+//                    popup.inflate(R.menu.gp_structure_popup_menu);
+//                    popup.show();
+//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                        @Override
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            Intent intent;
 //                            switch (item.getItemId()) {
 //                                case R.id.action_dpr:
-                            intent = new Intent(activity, GPActionsActivity.class);
-                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
-                            activity.startActivity(intent);
+//                            intent = new Intent(activity, GPActionsActivity.class);
+//                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
+//                            activity.startActivity(intent);
 //                                    break;
 //                            }
-                            return false;
-                        }
-                    });
-
-//                    Menu menu = popup.getMenu();
-//                    for(int i = 0; i<menu.size();i++) {
-//                        MenuItem mi = menu.getItem(i);
-//                        applyFontToMenuItem(mi);
-//                    }
+//                            return false;
+//                        }
+//                    });
                 }
             });
 
-
-//            lyStructure = itemView.findViewById(R.id.rl_machine);
-//            lyStructure.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                }
-//            });
-
-//            tvMachinCount.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().size() > 0)
-//                        dialogMachinList(getAdapterPosition());
-//                }
-//            });
         }
     }
-
-//    private void applyFontToMenuItem(MenuItem mi) {
-//        Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/YOUR_FONT.ttf");
-//        SpannableString mNewTitle = new SpannableString(mi.getTitle());
-//        mNewTitle.setSpan(new CustomTypeFaceSpan("", font,Color.WHITE), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-//        mi.setTitle(mNewTitle);
-//    }
-
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
             btn2String, int adapterPosition, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
