@@ -68,9 +68,9 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     private View vdcdprFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private String selectedImageType ="";
-    public static final String IMAGE_START_READING = "startMeterReading";
-    public static final String IMAGE_END_READING = "endMeterReading";
+    private String selectedImageType = "";
+
+
     public static final String IMAGE_STRUCTURE_IMAGE = "structureImage";
     private Uri outputUri;
     private Uri finalUri;
@@ -79,26 +79,25 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
     private ArrayList<CustomSpinnerObject> machineStatusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureStatusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineHaltReasonList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject>  gpMachineLists = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> gpMachineLists = new ArrayList<>();
+
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject>  gpStructureLists = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> gpStructureLists = new ArrayList<>();
 
-    String selectedStructureTypeId, selectedStructureType, selectedIntervention, selectedInterventionId,
-            selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
+    String selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedVillage = "", selectedVillageId = "",
-            selectedBeneficiaryType, selectedBeneficiaryTypeId,selectedMachineStatus, selectedMachineStatusId,selectedStructureStatus, selectedStructureStatusId,
-    selectedMachinecodename,selectedMachineId,selectedStructureCodename,selectedStructureId,selectedMachinehaltreason,selectedMachinehaltreasonId;
+            selectedMachineStatus, selectedMachineStatusId, selectedStructureStatus, selectedStructureStatusId,
+            selectedMachinecodename, selectedMachineId, selectedStructureCodename, selectedStructureId, selectedMachinehaltreason, selectedMachinehaltreasonId;
 
 
     private VDCDPRFormFragmentPresenter presenter;
-    private EditText etState,etDistrict, etTaluka, etVillage,et_remark, et_date, et_machine_code, et_machine_status,
+    private EditText etState, etDistrict, etTaluka, etVillage, et_remark, et_date, et_machine_code, et_machine_status,
             et_start_meter_reading, et_end_meter_reading, et_total_meter_reading, et_reason, et_struct_code, et_structure_status;
     private ImageView iv_structure_photo;//iv_start_meter,iv_end_meter,
-    private String UrlStructurePhoto="";// UrlStartMeterPhoto ="",UrlEndMeterPhoto="",
+    private String UrlStructurePhoto = "";// UrlStartMeterPhoto ="",UrlEndMeterPhoto="",
     private Button btn_submit;
 
     @Override
@@ -112,6 +111,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         vdcdprFormFragmentView = inflater.inflate(R.layout.fragment_v_d_c_dpr_form, container, false);
         return vdcdprFormFragmentView;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -135,7 +135,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         etDistrict = vdcdprFormFragmentView.findViewById(R.id.et_district);
         etTaluka = vdcdprFormFragmentView.findViewById(R.id.et_taluka);
         etVillage = vdcdprFormFragmentView.findViewById(R.id.et_village);
-        et_date  = vdcdprFormFragmentView.findViewById(R.id.et_date);
+        et_date = vdcdprFormFragmentView.findViewById(R.id.et_date);
         et_machine_code = vdcdprFormFragmentView.findViewById(R.id.et_machine_code);
         et_machine_status = vdcdprFormFragmentView.findViewById(R.id.et_machine_status);
         et_start_meter_reading = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
@@ -147,34 +147,40 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         et_remark = vdcdprFormFragmentView.findViewById(R.id.et_remark);
         et_start_meter_reading.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
-                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                if (!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())) {
                     int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
-                    - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
-                    et_total_meter_reading.setText(""+result);
+                            - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
+                    et_total_meter_reading.setText("" + result);
                 }
             }
         });
 
         et_end_meter_reading.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
-                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                if (!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())) {
                     int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
                             - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
-                    et_total_meter_reading.setText(""+result);
+                    et_total_meter_reading.setText("" + result);
                 }
             }
         });
@@ -225,7 +231,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.et_struct_code:
                 CustomSpinnerDialogClass csdStructerCode = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select Structure",
@@ -372,34 +378,16 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             case R.id.et_date:
                 Util.showDateDialog(getActivity(), et_date);
                 break;
-//            case R.id.iv_start_meter:
-//                if (Util.isConnected(getActivity())) {
-//                    onAddImageClick();
-//                    selectedImageType = IMAGE_START_READING;
-//                } else {
-//                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-//                }
-//                break;
-//            case R.id.iv_end_meter:
-//                if (Util.isConnected(getActivity())) {
-//                    onAddImageClick();
-//                    selectedImageType = IMAGE_END_READING;
-//                } else {
-//                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-//                }
-//                break;
             case R.id.iv_structure_photo:
                 if (Util.isConnected(getActivity())) {
                     onAddImageClick();
                     selectedImageType = IMAGE_STRUCTURE_IMAGE;
                 } else {
-                    Util.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
                 }
                 break;
-
             case R.id.btn_submit:
-                if (isAllInputsValid())
-                {
+                if (isAllInputsValid()) {
                     //Util.showToast(getActivity(),"data is valid call API here");
                     VdcDprRequestModel vdcDprRequestModel = new VdcDprRequestModel();
                     vdcDprRequestModel.setStateId(selectedStateId);
@@ -430,6 +418,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             showPictureDialog();
         }
     }
+
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.title_choose_picture));
@@ -478,6 +467,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             Util.showToast(getString(R.string.msg_take_photo_error), this);
         }
     }
+
     private boolean isAllInputsValid() {
         String msg = "";
 
@@ -497,25 +487,18 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             msg = "Select machine status";
         } else if (et_start_meter_reading.getText().toString().trim().length() == 0) {
             msg = "Enter start meter reading.";
-        }  else if (et_end_meter_reading.getText().toString().trim().length() == 0) {
+        } else if (et_end_meter_reading.getText().toString().trim().length() == 0) {
             msg = "Enter end meter reading.";
-        }  else if (Integer.parseInt(et_total_meter_reading.getText().toString().trim()) < 24 ) {
+        } else if (Integer.parseInt(et_total_meter_reading.getText().toString().trim()) < 0
+                || Integer.parseInt(et_total_meter_reading.getText().toString().trim()) > 24) {
             msg = "Total meter reading should be less than 24 hrs.";
-        }/*else if (UrlStartMeterPhoto.trim().length() == 0) {
-            msg = "Please upload start meter reading photo";
-        } else if (UrlEndMeterPhoto.trim().length() == 0) {
-            msg = "Please upload end meter reading photo";
-        }*/ else if (et_struct_code.getText().toString().trim().length() == 0) {
+        } else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg = "Select structure code";
         } else if (et_structure_status.getText().toString().trim().length() == 0) {
             msg = "Select structure status";
-        }else if (UrlStructurePhoto.trim().length() == 0) {
+        } else if (UrlStructurePhoto.trim().length() == 0) {
             msg = "Please upload structure photo";
         }
-
-        /* else if (et_remark.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.msg_enter_remark);
-        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
@@ -524,7 +507,6 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
         return false;
     }
-
 
 
     @Override
@@ -620,8 +602,6 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            default:
-                break;
         }
     }
 
@@ -691,7 +671,6 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 }
                 etVillage.setText(selectedVillage);
                 break;
-
             case "Select Machine Status":
                 for (CustomSpinnerObject obj : machineStatusList) {
                     if (obj.isSelected()) {
@@ -700,18 +679,23 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                     }
                 }
                 et_machine_status.setText(selectedMachineStatus);
+                if (selectedMachineStatus.equals("Working")) {
+                    vdcdprFormFragmentView.findViewById(R.id.ly_meter).setVisibility(View.VISIBLE);
+                    vdcdprFormFragmentView.findViewById(R.id.tly_et_reason).setVisibility(View.GONE);
+                } else {
+                    vdcdprFormFragmentView.findViewById(R.id.ly_meter).setVisibility(View.GONE);
+                    vdcdprFormFragmentView.findViewById(R.id.tly_et_reason).setVisibility(View.VISIBLE);
+                }
                 break;
             case "Select Structure Status":
                 for (CustomSpinnerObject obj : structureStatusList) {
                     if (obj.isSelected()) {
-                         selectedStructureStatus = obj.getName();
+                        selectedStructureStatus = obj.getName();
                         selectedStructureStatusId = obj.get_id();
                     }
                 }
                 et_structure_status.setText(selectedStructureStatus);
                 break;
-
-
             case "Select Machine":
                 for (CustomSpinnerObject obj : gpMachineLists) {
                     if (obj.isSelected()) {
@@ -739,10 +723,6 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                 }
                 et_reason.setText(selectedMachinehaltreason);
                 break;
-
-
-
-
         }
     }
 
@@ -827,7 +807,8 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
                             .into(iv_end_meter);
                 }
             });
-        }else  */if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
+        }else  */
+        if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)) {
             UrlStructurePhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -843,41 +824,41 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
 
 
     public void setMachinelist(String response) {
-        Util.logger("GPMachineList",response);
-        GpStructureListModel gpStructureListModel = new Gson().fromJson(response,GpStructureListModel.class);
-        if (gpStructureListModel!=null && gpStructureListModel.getGpStructureList().size()>0){
+        Util.logger("GPMachineList", response);
+        GpStructureListModel gpStructureListModel = new Gson().fromJson(response, GpStructureListModel.class);
+        if (gpStructureListModel != null && gpStructureListModel.getGpStructureList().size() > 0) {
 
-            for (int i = 0; i <gpStructureListModel.getGpStructureList().size(); i++) {
+            for (int i = 0; i < gpStructureListModel.getGpStructureList().size(); i++) {
                 CustomSpinnerObject customState = new CustomSpinnerObject();
                 customState.set_id(gpStructureListModel.getGpStructureList().get(i).getId());
                 customState.setName(gpStructureListModel.getGpStructureList().get(i).getCode());
                 gpMachineLists.add(customState);
             }
 
-        }else {
-            Util.showToast(getActivity(),"Machine not available." );
+        } else {
+            Util.showToast(getActivity(), "Machine not available.");
         }
     }
 
     public void setStructurelist(String response) {
-        Util.logger("GPStructureList",response);
-        GpStructureListModel gpStructureListModel = new Gson().fromJson(response,GpStructureListModel.class);
-        if (gpStructureListModel!=null && gpStructureListModel.getGpStructureList().size()>0){
+        Util.logger("GPStructureList", response);
+        GpStructureListModel gpStructureListModel = new Gson().fromJson(response, GpStructureListModel.class);
+        if (gpStructureListModel != null && gpStructureListModel.getGpStructureList().size() > 0) {
 
-            for (int i = 0; i <gpStructureListModel.getGpStructureList().size(); i++) {
+            for (int i = 0; i < gpStructureListModel.getGpStructureList().size(); i++) {
                 CustomSpinnerObject customState = new CustomSpinnerObject();
                 customState.set_id(gpStructureListModel.getGpStructureList().get(i).getId());
                 customState.setName(gpStructureListModel.getGpStructureList().get(i).getCode());
                 gpStructureLists.add(customState);
             }
 
-        }else {
-            Util.showToast(getActivity(),"structure not available." );
+        } else {
+            Util.showToast(getActivity(), "structure not available.");
         }
     }
 
     public void showResponse(String message, String requestId, int code) {
-        Util.showToast(getActivity(),message);
+        Util.showToast(getActivity(), message);
 
         if (requestId.equals(VDCDPRFormFragmentPresenter.DAILY_PROGRESS_REPORT)) {
             if (code == 200) {
