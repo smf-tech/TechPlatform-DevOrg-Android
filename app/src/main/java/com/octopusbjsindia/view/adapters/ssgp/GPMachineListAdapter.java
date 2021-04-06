@@ -25,6 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.SujalamSuphalam.MachineData;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
@@ -36,11 +39,13 @@ import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
 import com.octopusbjsindia.view.fragments.ssgp.StructureMachineListGPFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GPMachineListAdapter extends RecyclerView.Adapter<GPMachineListAdapter.ViewHolder> {
     private ArrayList<MachineData> ssDataList;
     private Activity activity;
+    private boolean isDallyProgress=false;
     private StructureMachineListGPFragment fragment;
 
     public GPMachineListAdapter(Activity activity, StructureMachineListGPFragment fragment,
@@ -48,6 +53,18 @@ public class GPMachineListAdapter extends RecyclerView.Adapter<GPMachineListAdap
         this.ssDataList = ssDataList;
         this.activity = activity;
         this.fragment = fragment;
+
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DALLY_PROGRESS )) {
+                    isDallyProgress = true;
+                }
+            }
+        }
     }
 
     @NonNull
@@ -71,7 +88,6 @@ public class GPMachineListAdapter extends RecyclerView.Adapter<GPMachineListAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvMachineCode, tvMachineModel, tvLastUpdatedTime, tvLocation;
-//        tvTcName, tvContact, tvStructureCode, tvReason
         Button btAction;
         ImageView btnPopupMenu, ivSignoff;
         LinearLayout rlMachine;
@@ -91,28 +107,31 @@ public class GPMachineListAdapter extends RecyclerView.Adapter<GPMachineListAdap
             ivSignoff = itemView.findViewById(R.id.iv_signoff);
             tvLastUpdatedTime = itemView.findViewById(R.id.tv_last_updated_time);
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
-            btnPopupMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popup = new PopupMenu((activity), v);
-                    popup.inflate(R.menu.gp_structure_popup_menu);
-                    popup.show();
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            Intent intent;
+            if(isDallyProgress){
+                btnPopupMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popup = new PopupMenu((activity), v);
+                        popup.inflate(R.menu.gp_structure_popup_menu);
+                        popup.show();
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                Intent intent;
 //                            switch (item.getItemId()) {
 //                                case R.id.action_dpr:
-                            intent = new Intent(activity, GPActionsActivity.class);
-                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
-                            activity.startActivity(intent);
+                                intent = new Intent(activity, GPActionsActivity.class);
+                                intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
+                                activity.startActivity(intent);
 //                                    break;
 //                            }
-                            return false;
-                        }
-                    });
-                }
-            });
+                                return false;
+                            }
+                        });
+                    }
+                });
+            }
+
         }
 
         private void showPublishApiDialog(String dialogTitle, String message, String btn1String, String

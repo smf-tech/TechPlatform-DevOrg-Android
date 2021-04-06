@@ -76,7 +76,7 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
     private ArrayList<SSAnalyticsData> machineAnalyticsDataList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataList = new ArrayList<>();
     private SujalamSuphalamGPPresenter presenter;
-    private boolean isStructureView, isMachineView, isStateFilter, isDistrictFilter, isTalukaFilter;
+    private boolean isBeneficiary, isCommunityMobilization, isVillageDemand;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
     private ImageView btnFilter;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
@@ -141,7 +141,6 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         fbSelect.setOnClickListener(this);
         fb_form_one = sujalamSufalamFragmentView.findViewById(R.id.fb_form_one);
         fb_form_one.setOnClickListener(this);
-
         fb_form_four = sujalamSufalamFragmentView.findViewById(R.id.fb_form_four);
         fb_form_four.setOnClickListener(this);
         fb_form_five = sujalamSufalamFragmentView.findViewById(R.id.fb_form_five);
@@ -165,69 +164,50 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
-                    isStructureView = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
-                    isMachineView = true;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
-                    isStateFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
-                    isDistrictFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
-                    isTalukaFilter = true;
-                    continue;
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_BENEFICIARY_DETAILS)) {
+                    isBeneficiary = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_COMMUNITY_MOBILIZATION)) {
+                    isCommunityMobilization = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE_DEMAND)) {
+                    isVillageDemand = true;
                 }
             }
         }
 
-        if (isStateFilter) {
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
             tvStateFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
-                tvStateFilter.setOnClickListener(this);
-                machineStateList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
-                    CustomSpinnerObject customState = new CustomSpinnerObject();
-                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
-                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
-                    machineStateList.add(customState);
-                }
+            machineStateList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                machineStateList.add(customState);
             }
         }
-        if (isDistrictFilter) {
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
             tvDistrictFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
-                tvDistrictFilter.setOnClickListener(this);
-                machineDistrictList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
-                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
-                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
-                    machineDistrictList.add(customDistrict);
-                }
+            machineDistrictList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                CustomSpinnerObject customDistrict = new CustomSpinnerObject();
+                customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                machineDistrictList.add(customDistrict);
             }
         }
-        if (isTalukaFilter) {
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
             tvTalukaFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
-                tvTalukaFilter.setOnClickListener(this);
-                machineTalukaList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
-                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
-                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
-                    machineTalukaList.add(customTaluka);
-                }
+            machineTalukaList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                CustomSpinnerObject customTaluka = new CustomSpinnerObject();
+                customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                machineTalukaList.add(customTaluka);
             }
         }
+
         setStructureView();
     }
 
@@ -452,12 +432,12 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
         rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
         machineAnalyticsAdapter.notifyDataSetChanged();
-        if (isMachineView) {
+//        if (isMachineView) {
             btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Machine View");
-        } else {
-            btnSsView.setVisibility(View.INVISIBLE);
-        }
+//        } else {
+//            btnSsView.setVisibility(View.INVISIBLE);
+//        }
         manageUI();
     }
 
@@ -470,12 +450,12 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
         tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
-        if (isStructureView) {
+//        if (isStructureView) {
             btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Structure View");
-        } else {
-            btnSsView.setVisibility(View.INVISIBLE);
-        }
+//        } else {
+//            btnSsView.setVisibility(View.INVISIBLE);
+//        }
         manageUI();
     }
 
@@ -740,25 +720,21 @@ public class SujalamSufalamGPFragment extends Fragment implements View.OnClickLi
 
 
     private void showFabMenu() {
-        fb_form_one.show();
-        fb_form_one.setEnabled(true);
-        fb_form_one.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
-        fb_form_four.show();
-        fb_form_four.setEnabled(true);
-        fb_form_four.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
-        fb_form_five.show();
-        fb_form_five.setEnabled(true);
-        fb_form_five.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
-        /*if(visibleCreatMeet) {
-            fbCreatMeet.show();
-            fbCreatMeet.setEnabled(true);
-            fbCreatMeet.animate().translationY(-getResources().getDimension(R.dimen.standard_240));
+        if(isBeneficiary){
+            fb_form_one.show();
+            fb_form_one.setEnabled(true);
+            fb_form_one.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
         }
-        if(visibleMyTeam) {
-            fbMyTeam.show();
-            fbMyTeam.setEnabled(true);
-            fbMyTeam.animate().translationY(-getResources().getDimension(R.dimen.standard_300));
-        }*/
+        if(isCommunityMobilization){
+            fb_form_four.show();
+            fb_form_four.setEnabled(true);
+            fb_form_four.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+        }
+        if(isVillageDemand){
+            fb_form_five.show();
+            fb_form_five.setEnabled(true);
+            fb_form_five.animate().translationY(-getResources().getDimension(R.dimen.standard_180));
+        }
         fbSelect.setRotation(45);
         isFABOpen = true;
     }
