@@ -155,7 +155,7 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
 
         ImageView btnPopupMenu;
         PopupMenu popup;
-        Button btn_view_members;
+        Button btn_view_members,btn_view_prefeedback,btn_view_postfeedback;
         LinearLayout layout_zoomlink;
         RelativeLayout layout_trainer_two;
 
@@ -168,6 +168,8 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             tv_batch_number = itemView.findViewById(R.id.tv_batch_number);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
+            btn_view_prefeedback = itemView.findViewById(R.id.btn_view_prefeedback);
+            btn_view_postfeedback  = itemView.findViewById(R.id.btn_view_postfeedback);
             tv_state_value = itemView.findViewById(R.id.tv_state_value);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
             tv_district_value = itemView.findViewById(R.id.tv_district_value);
@@ -212,6 +214,36 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                     }
                 }
             });
+
+            btn_view_prefeedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //show pre feedback member list fragment
+                    Util.showToast("show pre feedback Members list here.",mContext);
+                    // TODO   //show pre feedback member list fragment
+                    if (dataList.get(getAdapterPosition()).getTrainerList()!=null) {
+                        ((TrainerBatchListActivity) mContext).addMemberListFragment(getAdapterPosition());
+                    }else {
+                        Util.showToast("Trainers not added yet.",mContext);
+                    }
+
+                }
+            });
+            btn_view_postfeedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Util.showToast("show post feedback Members list here.",mContext);
+                    // TODO   //show post feedback member list fragment
+                    if (dataList.get(getAdapterPosition()).getTrainerList()!=null) {
+                        ((TrainerBatchListActivity) mContext).addMemberListFragment(getAdapterPosition());
+                    }else {
+                        Util.showToast("Trainers not added yet.",mContext);
+                    }
+
+                }
+            });
+
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -419,11 +451,12 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                 List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
                 for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                     if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_VIEW_PROFILE){
-                        btn_view_members.setVisibility(View.VISIBLE);
+                        btn_view_members.setVisibility(View.GONE);
                     }else {
-                        btn_view_members.setVisibility(View.VISIBLE);
+                        btn_view_members.setVisibility(View.GONE);
                     }
                 }
+                // TODO: hiding the button as per requirement //should we keep check for new buttons?
             }
         }
     }

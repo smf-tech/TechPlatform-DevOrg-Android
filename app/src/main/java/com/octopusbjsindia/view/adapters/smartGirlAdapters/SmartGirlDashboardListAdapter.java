@@ -52,7 +52,14 @@ public class SmartGirlDashboardListAdapter extends RecyclerView.Adapter<SmartGir
         }else {
             holder.tv_member_email.setVisibility(View.INVISIBLE);
         }
-
+        //todo -add value from response when available
+        if (dataList.get(position).getEmail()!=null && !dataList.get(position).getEmail().equalsIgnoreCase("")) {
+            holder.tv_workshops_conducted.setVisibility(View.VISIBLE);
+            holder.tv_workshops_conducted.setText("Number of workshop " + "10");
+        }else {
+            holder.tv_workshops_conducted.setText("");
+            holder.tv_workshops_conducted.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -62,7 +69,7 @@ public class SmartGirlDashboardListAdapter extends RecyclerView.Adapter<SmartGir
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_member_phone,tv_member_name,tv_member_email;
+        TextView tv_member_phone,tv_member_name,tv_member_email,tv_workshops_conducted;
         ImageView btnPopupMenu;
         PopupMenu popup;
 
@@ -72,6 +79,7 @@ public class SmartGirlDashboardListAdapter extends RecyclerView.Adapter<SmartGir
             tv_member_phone = itemView.findViewById(R.id.tv_member_phone);
             tv_member_name = itemView.findViewById(R.id.tv_member_name);
             tv_member_email = itemView.findViewById(R.id.tv_member_email);
+            tv_workshops_conducted = itemView.findViewById(R.id.tv_workshops_conducted);
 
             //btn_approve = itemView.findViewById(R.id.btn_approve);
             //btn_reject = itemView.findViewById(R.id.btn_reject);

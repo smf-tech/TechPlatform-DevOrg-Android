@@ -81,6 +81,20 @@
                     android:text="sjaksjdjkas"
                     android:textSize="@dimen/text_size_title_14"
                     />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_workshops_conducted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_regular"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="10"
+                    android:textSize="@dimen/text_size_title_14"
+                    />
+                </LinearLayout>
 
             </LinearLayout>
 
