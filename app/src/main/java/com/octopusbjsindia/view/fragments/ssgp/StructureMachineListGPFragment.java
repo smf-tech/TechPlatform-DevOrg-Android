@@ -154,7 +154,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         presenter = new StructureMachineListGPFragmentPresenter(this);
 
 
-        if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
             tvStateFilter.setOnClickListener(this);
             machineStateList.clear();
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
@@ -166,7 +167,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         }
 
 
-        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
             tvDistrictFilter.setOnClickListener(this);
             machineDistrictList.clear();
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
@@ -177,7 +179,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
             }
         }
 
-        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
             tvTalukaFilter.setOnClickListener(this);
             machineTalukaList.clear();
             for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
@@ -276,7 +279,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         if (Util.isConnected(getActivity())) {
 
             if (viewType == 1) {
-                if(isDallyProgressValidation){
+                if(isStructureMaster){
                     fbCreate.setVisibility(View.VISIBLE);
                 } else {
                     fbCreate.setVisibility(View.GONE);
@@ -286,7 +289,7 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                         (userDistrictIds != "") ? userDistrictIds : "",
                         (userTalukaIds != "") ? userTalukaIds : "");
             } else {
-                if(isStructureMaster){
+                if(isDallyProgressValidation){
                     fbCreate.setVisibility(View.VISIBLE);
                 } else {
                     fbCreate.setVisibility(View.GONE);

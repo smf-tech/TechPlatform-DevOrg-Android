@@ -439,7 +439,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_VILLAGE_DEMAND = 158;
         public static final Integer ACCESS_CODE_DALLY_PROGRESS = 159;
         public static final Integer ACCESS_CODE_DALLY_PROGRESS_VALIDATION = 160;
-        public static final Integer ACCESS_CODE_STRUCTURE_MASTER_GP = 160;
+        public static final Integer ACCESS_CODE_STRUCTURE_MASTER_GP = 161;
     }
 
     public static class OperatorModule {
