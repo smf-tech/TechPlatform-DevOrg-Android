@@ -392,7 +392,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
             case R.id.et_village:
                 if (villageList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
-                            "Select village", villageList, false);
+                            "Select Village", villageList, false);
                     cdd1.show();
                     cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -629,28 +629,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-        switch (type) {
-            case "Select Taluka":
-                for (CustomSpinnerObject taluka : talukaList) {
-                    if (taluka.isSelected()) {
-                        selectedTaluka = taluka.getName();
-                        selectedTalukaId = taluka.get_id();
-                        break;
-                    }
-                }
-                etTaluka.setText(selectedTaluka);
-                break;
-            case "Select Village":
-                for (CustomSpinnerObject village : talukaList) {
-                    if (village.isSelected()) {
-                        selectedVillage = village.getName();
-                        selectedVillageId = village.get_id();
-                        break;
-                    }
-                }
-                etVillage.setText(selectedVillage);
-                break;
-        }
         switch (type) {
             case "Select District":
                 for (CustomSpinnerObject state : districtList) {

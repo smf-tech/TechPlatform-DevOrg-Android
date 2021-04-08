@@ -158,7 +158,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
                         && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())) {
-                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                    double result = Double.parseDouble(et_end_meter_reading.getText().toString().trim())
                             - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
                     et_total_meter_reading.setText("" + result);
                 }
@@ -178,7 +178,7 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
                         && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())) {
-                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                    double result = Double.parseDouble(et_end_meter_reading.getText().toString().trim())
                             - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
                     et_total_meter_reading.setText("" + result);
                 }
@@ -485,13 +485,15 @@ public class VDCDPRFormFragment extends Fragment implements View.OnClickListener
             msg = "Select machine code";
         } else if (et_machine_status.getText().toString().trim().length() == 0) {
             msg = "Select machine status";
-        } else if (et_start_meter_reading.getText().toString().trim().length() == 0) {
+        } else if (selectedMachineStatus.equals("Working") &&
+                et_start_meter_reading.getText().toString().trim().length() == 0) {
             msg = "Enter start meter reading.";
-        } else if (et_end_meter_reading.getText().toString().trim().length() == 0) {
+        } else if (selectedMachineStatus.equals("Working") &&
+                et_end_meter_reading.getText().toString().trim().length() == 0) {
             msg = "Enter end meter reading.";
-        } else if (Integer.parseInt(et_total_meter_reading.getText().toString().trim()) < 0
-                || Integer.parseInt(et_total_meter_reading.getText().toString().trim()) > 24) {
-            msg = "Total meter reading should be less than 24 hrs.";
+        } else if (selectedMachineStatus.equals("Working") && (Double.parseDouble(et_total_meter_reading.getText().toString().trim()) < 0
+                || Double.parseDouble(et_total_meter_reading.getText().toString().trim()) > 24)) {
+            msg = "Total meter reading should be between 0-24 hrs.";
         } else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg = "Select structure code";
         } else if (et_structure_status.getText().toString().trim().length() == 0) {

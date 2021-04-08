@@ -576,4 +576,5 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
             Util.showToast(getActivity(),"structure not available." );
         }
     }
+
 }
