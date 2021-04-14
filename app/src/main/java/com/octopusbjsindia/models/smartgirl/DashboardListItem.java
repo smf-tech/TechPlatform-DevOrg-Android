@@ -20,6 +20,18 @@ public class DashboardListItem {
     @Expose
     private Long dob;
 
+
+    @SerializedName("batchCount")
+    @Expose
+    private String batchCount;
+
+    @SerializedName("workshopCount")
+    @Expose
+    private String workshopCount;
+
+
+
+
     public String getEmail() {
         return email;
     }
@@ -75,5 +87,21 @@ public class DashboardListItem {
 
     public void setDob(Long dob) {
         this.dob = dob;
+    }
+
+    public String getWorkshopCount() {
+        return workshopCount;
+    }
+
+    public void setWorkshopCount(String workshopCount) {
+        this.workshopCount = workshopCount;
+    }
+
+    public String getBatchCount() {
+        return batchCount;
+    }
+
+    public void setBatchCount(String batchCount) {
+        this.batchCount = batchCount;
     }
 }

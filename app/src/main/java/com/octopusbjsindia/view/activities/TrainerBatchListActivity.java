@@ -1007,6 +1007,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         SmartGCustomFilterDialog smartGCustomFilterDialog = new SmartGCustomFilterDialog();
         Bundle args = new Bundle();
         args.putBoolean("isDatefilter",true);
+        args.putBoolean("istrainerfilter",true);
         args.putString("dashboardresponse",dashboardresponse);
         smartGCustomFilterDialog.setArguments(args);
         smartGCustomFilterDialog.show(getSupportFragmentManager(), "search_dialog");

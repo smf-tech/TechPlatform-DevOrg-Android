@@ -81,7 +81,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
                     mContext.get().refreshData();
                 }else if (requestID.equalsIgnoreCase(SEND_WORKSHOP_DATA_EMAIL)){
                     CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
-                    Util.showToast(commonResponse.getMessage(), mContext);
+                    mContext.get().showToastMessage(commonResponse.getMessage());
                 }
             }
 
@@ -186,7 +186,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
 
     public void sendWorkshopDataEmail(String requestJson){
         final String url  = BuildConfig.BASE_URL
-                + String.format(Urls.SmartGirl.SEND_FEEDBACK_EMAIL);
+                + String.format(Urls.SmartGirl.SEND_WORKSHOP_DATA_EMAIL);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(SEND_WORKSHOP_DATA_EMAIL,requestJson,url);

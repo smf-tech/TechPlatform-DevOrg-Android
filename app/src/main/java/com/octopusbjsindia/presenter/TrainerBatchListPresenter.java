@@ -242,7 +242,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
 
     public void sendBatchDataEmail(String emailDataReqJson) {
         final String url  = BuildConfig.BASE_URL
-                + String.format(Urls.SmartGirl.SEND_FEEDBACK_EMAIL);
+                + String.format(Urls.SmartGirl.SEND_WORKSHOP_DATA_EMAIL);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(SEND_BATCH_DATA_EMAIL,emailDataReqJson,url);

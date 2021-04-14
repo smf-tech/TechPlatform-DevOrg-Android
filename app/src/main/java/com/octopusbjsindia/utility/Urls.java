@@ -258,7 +258,7 @@ public class Urls {
 
         public static final String SEND_FEEDBACK_EMAIL = "api/sendFormData";
         public static final String GET_FILTER_TRAINER_LIST = "api/getFilterTrainerList";
-
+        public static final String SEND_WORKSHOP_DATA_EMAIL = "api/downloadSMDashboard";
     }
 
     public class Support {
