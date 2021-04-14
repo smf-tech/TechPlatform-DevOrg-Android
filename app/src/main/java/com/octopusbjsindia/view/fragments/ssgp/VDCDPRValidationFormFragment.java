@@ -492,7 +492,7 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
             msg = "Select machine code";
         } else if (et_machine_status.getText().toString().trim().length() == 0) {
             msg = "Select machine status";
-        } else if (et_working_hours.getText().toString().trim().length() == 0) {
+        } else if (selectedMachineStatus.equals("Working") && et_working_hours.getText().toString().trim().length() == 0) {
             msg = "Please enter working hours.";
         } else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg = "Select structure code";
@@ -683,6 +683,13 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
                     }
                 }
                 et_machine_status.setText(selectedMachineStatus);
+                if (selectedMachineStatus.equals("Working")) {
+                    vdcdprFormFragmentView.findViewById(R.id.tlyHours).setVisibility(View.VISIBLE);
+                    vdcdprFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.GONE);
+                } else {
+                    vdcdprFormFragmentView.findViewById(R.id.tlyHours).setVisibility(View.GONE);
+                    vdcdprFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.VISIBLE);
+                }
                 break;
             case "Select Structure Status":
                 for (CustomSpinnerObject obj : structureStatusList) {
