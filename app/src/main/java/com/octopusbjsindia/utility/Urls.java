@@ -256,6 +256,9 @@ public class Urls {
         public static final String GET_MASTER_TRAINERS_API = "api/getMasterTrainers";
         public static final String GET_USER_PROJECT_PROFILE_API = "api/getUserProjectProfile";
 
+        public static final String SEND_FEEDBACK_EMAIL = "api/sendFormData";
+        public static final String GET_FILTER_TRAINER_LIST = "api/getFilterTrainerList";
+
     }
 
     public class Support {

@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.fragments.smartgirlfragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.smartgirl.BeneficiariesList;
 import com.octopusbjsindia.models.smartgirl.TrainerList;
+import com.octopusbjsindia.presenter.MemberListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
@@ -30,10 +35,16 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
     public MemberListRecyclerAdapter memberListRecyclerAdapter;
     public BeneficiaryListRecyclerAdapter BeneficiaryListRecyclerAdapter;
     View view;
+    String requestType ="" ,requestTypeId = "",requestDataType="",requestEmailId= "";
     String batchId, memberListStr, listType;
     RecyclerView rv_member_listview;
     private List<TrainerList> trainerLists;
+    private List<TrainerList> trainerListsforprepost;
     private List<BeneficiariesList> beneficiariesLists;
+    private List<BeneficiariesList> beneficiariesListsforpreorpost;
+    private FloatingActionButton fb_email_data;
+    private MemberListFragmentPresenter memberListFragmentPresenter;
+    private MemberListFragment fragment = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +60,10 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         rv_member_listview.setLayoutManager(layoutManager);
-
+        fb_email_data  = view.findViewById(R.id.fb_email);
+        fb_email_data.setOnClickListener(this);
+        memberListFragmentPresenter = new MemberListFragmentPresenter(this);
+        fragment = this;
         return view;
     }
 
@@ -59,6 +73,7 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
         if (getArguments() != null) {
             batchId = getArguments().getString("batch_id");
             Log.d("batch_id received", "-> " + batchId);
+            requestTypeId = batchId;
             memberListStr = getArguments().getString("memberList");
             listType =  getArguments().getString("listType");
             /*bundle.putString("memberList", jsonInString);
@@ -66,7 +81,7 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
 
         }
         if (listType.equalsIgnoreCase(Constants.SmartGirlModule.TRAINER_lIST)) {
-
+            requestType = "batch";
             trainerLists = new Gson().fromJson(memberListStr, new TypeToken<List<TrainerList>>() {
             }.getType());
 
@@ -75,9 +90,14 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
             rv_member_listview.setAdapter(memberListRecyclerAdapter);
             Log.d("listSize", String.valueOf(trainerLists.size()));
         } else if (listType.equalsIgnoreCase(Constants.SmartGirlModule.BENEFICIARY_lIST)) {
-
+            requestType = "workshop";
             beneficiariesLists = new Gson().fromJson(memberListStr, new TypeToken<List<BeneficiariesList>>() {
             }.getType());
+
+            /*for (int i = 0; i < beneficiariesLists.size(); i++) {
+                beneficiariesListsforpreorpost.add(beneficiariesLists.get(i));
+            }*/
+
             BeneficiaryListRecyclerAdapter = new BeneficiaryListRecyclerAdapter(getActivity(), beneficiariesLists,
                     this);
             rv_member_listview.setAdapter(BeneficiaryListRecyclerAdapter);
@@ -89,10 +109,13 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_next:
+            case R.id.fb_email:
                 /*if (isAllInputsValid()) {
                     ((TrainerBatchListActivity) getActivity()).submitFeedbsckToBatch(0, 1, new Gson().toJson(getFeedbackReqJson(0)));
                 }*/
+
+                Util.showEnterEmailDialog(getActivity(),-1,fragment);
+
                 break;
             case R.id.tv_startdate:
 
@@ -101,6 +124,22 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
 
                 break;
         }
+    }
+
+    public JsonObject getFeedbackReqJson() {
+        JsonObject requestObject = new JsonObject();
+        requestObject.addProperty("type", requestType);
+        requestObject.addProperty("typeId", requestTypeId);
+        requestObject.addProperty("dataType", requestDataType);
+        requestObject.addProperty("emailid", requestEmailId);
+
+
+        /*"type": "workshop",  //"batch"
+                "typeId": "5ffd85bb5c9e305733574ed3",
+                "dataType": "pre", // "post"
+                "emailid":"rbisen@bjsindia.org"*/
+
+        return requestObject;
     }
 
     @Override
@@ -137,5 +176,24 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
             ((TrainerBatchListActivity) getActivity()).changeTitle("Member List");
 
         }
+    }
+
+    public void showToastMessage(String message) {
+        Util.showToast(message, getActivity());
+    }
+
+    public void onReceiveEmailId(String strEmailId, int feebackType) {
+        if (feebackType ==1){
+            requestDataType = "pre";
+        }else {
+            requestDataType = "post";
+        }
+        if (TextUtils.isEmpty(strEmailId)){
+            showToastMessage("Please enter valid email");
+        }else {
+            requestEmailId = strEmailId;
+            memberListFragmentPresenter.sendFeedbackEmail(new Gson().toJson(getFeedbackReqJson()));
+        }
+
     }
 }

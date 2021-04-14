@@ -29,6 +29,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.RotateAnimation;
@@ -69,6 +70,8 @@ import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
+import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
 import com.octopusbjsindia.view.fragments.ReportsFragment;
@@ -76,6 +79,7 @@ import com.octopusbjsindia.view.fragments.TMUserAttendanceApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserProfileApprovalFragment;
+import com.octopusbjsindia.view.fragments.smartgirlfragment.MemberListFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1863,5 +1867,95 @@ public class Util {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public static String showEnterEmailDialog(final Activity context, int pos, Fragment fragment) {
+        Dialog dialog;
+        Button btn_post_feedback, btn_pre_feedback,btn_submit;
+        EditText edt_reason;
+        Activity activity = context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_enter_email_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+
+        btn_pre_feedback = dialog.findViewById(R.id.btn_pre_feedback);
+        btn_post_feedback = dialog.findViewById(R.id.btn_post_feedback);
+        btn_submit = dialog.findViewById(R.id.btn_submit);
+
+        if (pos == 1){
+            btn_submit.setVisibility(View.VISIBLE);
+            btn_pre_feedback.setVisibility(View.GONE);
+            btn_post_feedback.setVisibility(View.GONE);
+        }else {
+            btn_submit.setVisibility(View.GONE);
+            btn_pre_feedback.setVisibility(View.VISIBLE);
+            btn_post_feedback.setVisibility(View.VISIBLE);
+        }
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    showToast(context,"Please enter valid email.");
+                } else {
+                    if (context instanceof SmartGirlWorkshopListActivity){
+                        ((SmartGirlWorkshopListActivity) context).onReceiveEmailId(strEmailId, pos);
+                    }
+                    if (context instanceof TrainerBatchListActivity){
+                        ((TrainerBatchListActivity) context).onReceiveEmailId(strEmailId, pos);
+                    }
+
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        btn_pre_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    showToast(context,"Please enter valid email.");
+                } else {
+                    if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
+                    }else if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
+                    }
+
+                    dialog.dismiss();
+                }
+            }
+
+        });
+
+        btn_post_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    showToast(context,"Please enter valid email.");
+                }  else {
+                    if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
+                    }else if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
+                    }
+
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+
+        return "";
     }
 }

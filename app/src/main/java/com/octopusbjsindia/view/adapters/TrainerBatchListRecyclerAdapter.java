@@ -451,9 +451,9 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                 List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
                 for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                     if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_VIEW_PROFILE){
-                        btn_view_members.setVisibility(View.GONE);
+                        btn_view_members.setVisibility(View.VISIBLE);
                     }else {
-                        btn_view_members.setVisibility(View.GONE);
+                        btn_view_members.setVisibility(View.VISIBLE);
                     }
                 }
                 // TODO: hiding the button as per requirement //should we keep check for new buttons?

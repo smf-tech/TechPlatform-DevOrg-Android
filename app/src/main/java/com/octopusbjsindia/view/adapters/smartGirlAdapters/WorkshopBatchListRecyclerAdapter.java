@@ -453,9 +453,9 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                 List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
                 for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                     if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_VIEW_PROFILE){
-                        btn_view_members.setVisibility(View.GONE);
+                        btn_view_members.setVisibility(View.VISIBLE);
                     }else {
-                        btn_view_members.setVisibility(View.GONE);
+                        btn_view_members.setVisibility(View.VISIBLE);
                     }
                 }
             }

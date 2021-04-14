@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.smartgirl.SGTrainersListResponseModel;
 import com.octopusbjsindia.models.smartgirl.TrainerBachListResponseModel;
 import com.octopusbjsindia.request.APIRequestCall;
@@ -27,6 +28,7 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
     private final String GET_PROJECT_USER_PROFILE = "GETUSERPROFILE";
     private final String ADD_PRETEST_BATCH = "PRETESTFORBACTH";
     private final String ADD_POSTFEEDACK_TO_BATCH = "POSTFEEDBACK";
+    private final String SEND_BATCH_DATA_EMAIL = "BATCHDATAEMAIL";
 
     private final String TAG = TrainerBatchListPresenter.class.getName();
 
@@ -94,6 +96,9 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
                     /*CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());*/
                     mContext.get().showReceivedUserProfile(response);
+                }else if (requestID.equalsIgnoreCase(SEND_BATCH_DATA_EMAIL)){
+                    CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
+                    Util.showToast(commonResponse.getMessage(), mContext);
                 }
 
             }
@@ -233,6 +238,14 @@ public class TrainerBatchListPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(ADD_POSTFEEDACK_TO_BATCH,requestJson,url);
 
+    }
+
+    public void sendBatchDataEmail(String emailDataReqJson) {
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.SEND_FEEDBACK_EMAIL);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(SEND_BATCH_DATA_EMAIL,emailDataReqJson,url);
     }
 
 }

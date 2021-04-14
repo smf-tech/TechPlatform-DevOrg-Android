@@ -137,6 +137,28 @@
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:textStyle="bold" />
             </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_prefeedback_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:text=""
+                android:fontFamily="@font/opensans_regular"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="normal"/>
+            <TextView
+                android:id="@+id/tv_postfeedback_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_05dp"
+                android:layout_margin="@dimen/dimen_05dp"
+                android:text=""
+                android:fontFamily="@font/opensans_regular"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="normal"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

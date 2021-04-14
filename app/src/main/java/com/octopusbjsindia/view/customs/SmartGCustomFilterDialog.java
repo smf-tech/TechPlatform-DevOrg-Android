@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -35,6 +36,7 @@ import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.smartgirl.SgDashboardResponseModel;
 import com.octopusbjsindia.models.smartgirl.SmartGirlCategoryResponseModel;
+import com.octopusbjsindia.models.smartgirl.TrainerListFilterResponeModel;
 import com.octopusbjsindia.presenter.SmartGCustomFilterPresenter;
 import com.octopusbjsindia.presenter.SmartGirlDashboardsListPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -65,11 +67,12 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
         private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
         private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
         private ArrayList<CustomSpinnerObject> categoryList = new ArrayList<>();
+        private ArrayList<CustomSpinnerObject> trainerList = new ArrayList<>();
         private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
                 userTalukas = "", userTalukaIds = "";
-        private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "",selectedCategoryId = "";
-        private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter,tv_select_category;
-        private boolean isDateNeeded = false,isCategoryNeeded = false;
+        private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "",selectedCategoryId = "",selectedTrainerId = "";
+        private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter,tv_select_category,tv_trainer_filter;
+        private boolean isDateNeeded = false,isCategoryNeeded = false,isTrainerNeeded = false;
         private LinearLayout ly_date_selection_linear;
         private String dashboardresponse;
         SgDashboardResponseModel dashboardResponseModel;
@@ -78,7 +81,7 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 super.onCreate(savedInstanceState);
                 isDateNeeded = getArguments().getBoolean("isDatefilter",false);
                 isCategoryNeeded = getArguments().getBoolean("isCategoryfilter",false);
-
+                isTrainerNeeded = getArguments().getBoolean("istrainerfilter",false);
 
                 dashboardresponse = getArguments().getString("dashboardresponse","");
 
@@ -114,12 +117,13 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 toolbarTitle =view.findViewById(R.id.toolbar_title);
                 toolbarTitle.setText("Apply Filter");
 
-
+                tv_trainer_filter = view.findViewById(R.id.tv_trainer_filter);
                 tvStateFilter = view.findViewById(R.id.tv_state_filter);
                 tvDistrictFilter = view.findViewById(R.id.tv_district_filter);
                 tvTalukaFilter = view.findViewById(R.id.tv_taluka_filter);
                 tv_select_category = view.findViewById(R.id.tv_select_category);
                 ly_date_selection_linear = view.findViewById(R.id.ly_date_selection_linear);
+                tv_trainer_filter.setOnClickListener(this);
                 tvStateFilter.setOnClickListener(this);
                 tvDistrictFilter.setOnClickListener(this);
                 tvTalukaFilter.setOnClickListener(this);
@@ -139,6 +143,9 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 }
                 if (!isCategoryNeeded){
                         tv_select_category.setVisibility(View.GONE);
+                }
+                if (!isTrainerNeeded){
+                        tv_trainer_filter.setVisibility(View.GONE);
                 }
                 // jurisdiction
                 smartGCustomFilterPresenter.getBatchCategory();
@@ -226,6 +233,14 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                         case R.id.toolbar_edit_action:
                                 dismiss();
                                 break;
+                        case R.id.tv_trainer_filter:
+                                if (TextUtils.isEmpty(selectedStateId)){
+                                        Util.showToast("Please select state.", this);
+                                }else {
+                                        smartGCustomFilterPresenter.getTrainerListData(selectedStateId, selectedDistrictId);
+                                }
+                                break;
+
                         case R.id.tv_state_filter:
                                 /*CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                                         "Select State",
@@ -316,6 +331,9 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                 boolean isValidData = false;
                 HashMap<String,String> map=new HashMap<>();
                 map.put("state_id", selectedStateId);
+                if(!TextUtils.isEmpty(selectedTrainerId)){
+                map.put("trainer_id", selectedTrainerId);
+                }
                 map.put("category_id", selectedCategoryId);
                 {
                         map.put("district_id", selectedDistrictId);
@@ -445,6 +463,29 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                         }
                         if (!TextUtils.isEmpty(selectedCategoryId)) {
                                 tv_select_category.setText(selectedTaluka);
+
+                                //btnFilterClear.setVisibility(View.VISIBLE);
+                        }
+                } else if (type.equals("Select Trainer")){
+                        ArrayList<String> filterTalukaIds = new ArrayList<>();
+                        String selectedTaluka = "";
+                        for (CustomSpinnerObject mTaluka : trainerList) {
+                                if (mTaluka.isSelected()) {
+                                        if (selectedTaluka.equals("")) {
+                                                selectedTaluka = mTaluka.getName();
+                                        } else {
+                                                selectedTaluka = selectedTaluka + "," + mTaluka.getName();
+                                        }
+                                        if (selectedTrainerId.length() > 0) {
+                                                selectedTrainerId = selectedTrainerId + "," + mTaluka.get_id();
+                                        } else {
+                                                selectedTrainerId = mTaluka.get_id();
+                                        }
+                                        filterTalukaIds.add(mTaluka.get_id());
+                                }
+                        }
+                        if (!TextUtils.isEmpty(selectedTrainerId)) {
+                                tv_trainer_filter.setText(selectedTaluka);
 
                                 //btnFilterClear.setVisibility(View.VISIBLE);
                         }
@@ -661,6 +702,25 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                         meetCountry.setName(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
                         meetCountry.setSelected(false);
                         categoryList.add(meetCountry);
+                }
+        }
+        public void showReceivedTrainerList(String strtrainerlist) {
+                TrainerListFilterResponeModel jurisdictionLevelResponse
+                        = new Gson().fromJson(strtrainerlist, TrainerListFilterResponeModel.class);
+                for (int i = 0; i < jurisdictionLevelResponse.getTrainerListFilterResponeList().size(); i++) {
+                        // categoryList.add(jurisdictionLevelResponse.getData().get(i).getName().getDefault());
+                        CustomSpinnerObject meetCountry = new CustomSpinnerObject();
+                        meetCountry.set_id(jurisdictionLevelResponse.getTrainerListFilterResponeList().get(i).getId());
+                        meetCountry.setName(jurisdictionLevelResponse.getTrainerListFilterResponeList().get(i).getName());
+                        meetCountry.setSelected(false);
+                        trainerList.add(meetCountry);
+                }
+                {
+                        CustomSpinnerDialogClass csdCategory = new CustomSpinnerDialogClass(getActivity(),this,
+                                "Select Trainer", trainerList, false);
+                        csdCategory.show();
+                        csdCategory.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
                 }
         }
 }

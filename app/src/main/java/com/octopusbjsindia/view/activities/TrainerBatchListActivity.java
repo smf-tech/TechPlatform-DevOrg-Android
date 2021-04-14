@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -60,15 +61,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class TrainerBatchListActivity extends AppCompatActivity implements TrainerBatchListRecyclerAdapter.OnRequestItemClicked, TrainerBatchListRecyclerAdapter.OnApproveRejectClicked, SearchView.OnQueryTextListener,
-        CustomSpinnerListener {
+        CustomSpinnerListener, View.OnClickListener {
 
     //--Constant
     int viewType = 0;
     int viewTypeTrainerList = 102,viewTypeMasterTrainerList=101,viewTypeBeneficiaryList=103;
     //------
+    private FloatingActionButton fb_email_data;
     private boolean loading = true;
-    private String nextPageUrl = "";
+    private String nextPageUrl = "",requestEmailId= "";
     private String paramjsonString = "";
+    private String filterDataString;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     public EditText tv_startdate, tv_enddate;
     public TrainerBatchListPresenter presenter;
@@ -123,6 +126,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
         editSearch = findViewById(R.id.search_view1);
         editSearch.setOnQueryTextListener(this);
+
+        fb_email_data  = findViewById(R.id.fb_email_data);
+        fb_email_data.setOnClickListener(this);
         presenter = new TrainerBatchListPresenter(this);
         //setMasterData();
         setUserLocation();
@@ -541,6 +547,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
+        fb_email_data.setVisibility(View.GONE);
     }
 
 
@@ -672,6 +679,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                     hideFilter();
                 }
             }else {
+                fb_email_data.setVisibility(View.VISIBLE);
                 toolbar_action.setVisibility(View.VISIBLE);
                 try {
                     fManager.popBackStackImmediate();
@@ -871,6 +879,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
 
         String paramjson = gson.toJson(map);
+        filterDataString = paramjson;
         /*final String url  = BuildConfig.BASE_URL
                 + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);
         presenter.getBatchList(paramjson,url);*/
@@ -1018,9 +1027,47 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
             }
 
             paramjsonString = gson.toJson(map);
+            filterDataString = paramjsonString;
             dataList.clear();
             trainerBatchListRecyclerAdapter.notifyDataSetChanged();
                 callWorkshopListApi(paramjsonString,"");
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fb_email_data:
+                Util.showEnterEmailDialog(this,1,null);
+                break;
+
+        }
+    }
+    public void onReceiveEmailId(String strEmailId, int feebackType) {
+
+        if (TextUtils.isEmpty(strEmailId)){
+            showToastMessage("Please enter valid email");
+        }else {
+            requestEmailId = strEmailId;
+            presenter.sendBatchDataEmail(getEmailDataReqJson());
+        }
+
+    }
+    public String getEmailDataReqJson() {
+
+        HashMap<String,String> map=new HashMap<>();
+        Gson gson = new GsonBuilder().create();
+        map = gson.fromJson(filterDataString,HashMap.class);
+        map.put("emailid",requestEmailId);
+
+        paramjsonString = gson.toJson(map);
+
+
+        /*"type": "workshop",  //"batch"
+                "typeId": "5ffd85bb5c9e305733574ed3",
+                "dataType": "pre", // "post"
+                "emailid":"rbisen@bjsindia.org"*/
+
+        return paramjsonString;
     }
 }
