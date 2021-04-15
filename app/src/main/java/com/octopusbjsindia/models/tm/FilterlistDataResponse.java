@@ -4,13 +4,24 @@ package com.octopusbjsindia.models.tm;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class FilterlistDataResponse {
+public class FilterlistDataResponse implements Serializable {
 
     @SerializedName("id")
     @Expose
     private int id;
+    @SerializedName("approvalType")
+    @Expose
+    private String approvalType;
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("filterSet")
+    @Expose
+    private ArrayList<FilterSet> filterSet = null;
 
     public String getApprovalType() {
         return approvalType;
@@ -19,17 +30,6 @@ public class FilterlistDataResponse {
     public void setApprovalType(String approvalType) {
         this.approvalType = approvalType;
     }
-
-    @SerializedName("approvalType")
-    @Expose
-    private String approvalType;
-
-    @SerializedName("type")
-    @Expose
-    private String type;
-    @SerializedName("filterSet")
-    @Expose
-    private List<FilterSet> filterSet = null;
 
     public int getId() {
         return id;
@@ -47,11 +47,11 @@ public class FilterlistDataResponse {
         this.type = type;
     }
 
-    public List<FilterSet> getFilterSet() {
+    public ArrayList<FilterSet> getFilterSet() {
         return filterSet;
     }
 
-    public void setFilterSet(List<FilterSet> filterSet) {
+    public void setFilterSet(ArrayList<FilterSet> filterSet) {
         this.filterSet = filterSet;
     }
 
