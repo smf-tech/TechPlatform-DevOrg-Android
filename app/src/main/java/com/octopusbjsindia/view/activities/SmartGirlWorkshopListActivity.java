@@ -28,8 +28,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
@@ -62,13 +64,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class SmartGirlWorkshopListActivity extends AppCompatActivity implements WorkshopBatchListRecyclerAdapter.OnRequestItemClicked, WorkshopBatchListRecyclerAdapter.OnApproveRejectClicked,
-        CustomSpinnerListener {
+        CustomSpinnerListener, View.OnClickListener {
     //--Constant
 
     //------
+    private FloatingActionButton fb_email_data;
     private String paramjsonString;
+    private String filterDataString;
     private boolean loading = true;
-    private String nextPageUrl = "";
+    private String nextPageUrl = "",requestEmailId= "";
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     public EditText tv_startdate, tv_enddate;
     public SmartGirlWorkshopListPresenter presenter;
@@ -119,7 +123,8 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         toolbar_action.setVisibility(View.VISIBLE);
         toolbar_action.setImageResource(R.drawable.ic_filter_white);
         toolbar_action.setVisibility(View.VISIBLE);
-
+        fb_email_data  = findViewById(R.id.fb_email_data);
+        fb_email_data.setOnClickListener(this);
         presenter = new SmartGirlWorkshopListPresenter(this);
         //setMasterData();
         setUserLocation();
@@ -419,6 +424,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         } catch (Exception e) {
             Log.e("addFragment", "Exception :: FormActivity : addFragment");
         }
+        fb_email_data.setVisibility(View.GONE);
     }
 
 
@@ -581,6 +587,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 }
             } else {
                 toolbar_action.setVisibility(View.VISIBLE);
+                fb_email_data.setVisibility(View.VISIBLE);
                 try {
                     tvTitle.setText("Workshop List");
                     if (dataList != null) {
@@ -708,6 +715,8 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
 
 
         String paramjson = gson.toJson(map);
+
+        filterDataString = paramjson;
         /*final String url  = BuildConfig.BASE_URL
                 + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API);
         presenter.getBatchList(paramjson,url);*/
@@ -798,6 +807,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         SmartGCustomFilterDialog smartGCustomFilterDialog = new SmartGCustomFilterDialog();
         Bundle args = new Bundle();
         args.putBoolean("isDatefilter",true);
+        args.putBoolean("istrainerfilter",true);
         args.putString("dashboardresponse",dashboardresponse);
         smartGCustomFilterDialog.setArguments(args);
         smartGCustomFilterDialog.show(getSupportFragmentManager(), "search_dialog");
@@ -816,9 +826,49 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             }
 
             paramjsonString = gson.toJson(map);
+            filterDataString = paramjsonString;
             dataList.clear();
             trainerBatchListRecyclerAdapter.notifyDataSetChanged();
             callWorkshopListApi(paramjsonString,"");
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fb_email_data:
+                Util.showEnterEmailDialog(this,1,null);
+                break;
+
+        }
+    }
+
+    public void onReceiveEmailId(String strEmailId, int feebackType) {
+
+        if (TextUtils.isEmpty(strEmailId)){
+            showToastMessage("Please enter valid email");
+        }else {
+            requestEmailId = strEmailId;
+            presenter.sendWorkshopDataEmail(getEmailDataReqJson());
+        }
+
+    }
+
+    public String getEmailDataReqJson() {
+
+            HashMap<String,String> map=new HashMap<>();
+            Gson gson = new GsonBuilder().create();
+            map = gson.fromJson(filterDataString,HashMap.class);
+            map.put("emailid",requestEmailId);
+
+        paramjsonString = gson.toJson(map);
+
+
+        /*"type": "workshop",  //"batch"
+                "typeId": "5ffd85bb5c9e305733574ed3",
+                "dataType": "pre", // "post"
+                "emailid":"rbisen@bjsindia.org"*/
+
+        return paramjsonString;
     }
 }

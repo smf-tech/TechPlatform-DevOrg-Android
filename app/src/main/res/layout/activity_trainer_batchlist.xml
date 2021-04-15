@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/userregistrationmatrimony"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,11 +43,7 @@
             android:padding="10dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dimen_05dp" />
-        <FrameLayout
-            android:id="@+id/feedback_form_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+
 
         <RelativeLayout
             android:id="@+id/ly_progress_bar"
@@ -66,5 +63,22 @@
                 android:focusable="true"
                 android:indeterminateOnly="true" />
         </RelativeLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_email_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:src="@android:drawable/ic_dialog_email"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:tint="@color/white" />
+        <FrameLayout
+            android:id="@+id/feedback_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
     </RelativeLayout>
 </LinearLayout>

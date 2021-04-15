@@ -78,9 +78,34 @@
                     android:fontFamily="@font/opensans_regular"
                     android:layout_marginStart="@dimen/dimen_05dp"
                     android:layout_marginTop="@dimen/dimen_05dp"
-                    android:text="sjaksjdjkas"
+                    android:text="email"
                     android:textSize="@dimen/text_size_title_14"
                     />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_workshops_conducted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_regular"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="Number of workshop 0"
+                    android:textSize="@dimen/text_size_title_14"
+                    />
+                    <TextView
+                        android:id="@+id/tv_batches_attended"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_regular"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
+                        android:text="Number of batches 0"
+                        android:textSize="@dimen/text_size_title_14"
+                        />
+                </LinearLayout>
 
             </LinearLayout>
 

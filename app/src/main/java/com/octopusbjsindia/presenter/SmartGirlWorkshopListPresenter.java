@@ -7,9 +7,11 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.smartgirl.WorkshopBachListResponseModel;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 
 import java.lang.ref.WeakReference;
@@ -23,6 +25,7 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
     private final String ADD_TRAINERS_TO_BATCH = "addtrainertobatch";
     private final String ADD_PRETEST_BATCH = "PRETESTFORBACTH";
     private final String ADD_POSTFEEDACK_TO_BATCH = "POSTFEEDBACK";
+    private final String SEND_WORKSHOP_DATA_EMAIL = "WORKSHOPDATAEMAIL";
 
     private final String TAG = SmartGirlWorkshopListPresenter.class.getName();
 
@@ -76,6 +79,9 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
                     mContext.get().showToastMessage(commonResponse.getMessage());
                     mContext.get().refreshData();
+                }else if (requestID.equalsIgnoreCase(SEND_WORKSHOP_DATA_EMAIL)){
+                    CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
+                    mContext.get().showToastMessage(commonResponse.getMessage());
                 }
             }
 
@@ -178,6 +184,14 @@ public class SmartGirlWorkshopListPresenter implements APIPresenterListener {
 
     }
 
+    public void sendWorkshopDataEmail(String requestJson){
+        final String url  = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.SEND_WORKSHOP_DATA_EMAIL);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(SEND_WORKSHOP_DATA_EMAIL,requestJson,url);
+
+    }
 
 
 }

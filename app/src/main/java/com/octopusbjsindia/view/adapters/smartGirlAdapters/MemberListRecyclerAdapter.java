@@ -88,6 +88,18 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
 
 
         }
+
+        if (dataList.get(position).getPreFeedBackStatus()) {
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"submitted");
+        }else {
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"Pending");
+        }
+        if (dataList.get(position).getPostFeedBackStatus()) {
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"submitted");
+        }else {
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"Pending");
+        }
+
         /*holder.tv_state_value.setText(dataList.get(position).getState().getName());
         holder.tv_district_value.setText(dataList.get(position).getDistrict().getName());
 
@@ -121,7 +133,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_member_phone,tv_member_name,tv_mock_test;
+        TextView tv_member_phone,tv_member_name,tv_mock_test,tv_prefeedback_status,tv_postfeedback_status;
         ImageView btnPopupMenu;
         ImageView user_profile_pic;
         PopupMenu popup;
@@ -134,6 +146,9 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
             tv_member_name = itemView.findViewById(R.id.tv_member_name);
             tv_mock_test = itemView.findViewById(R.id.tv_mock_test);
             user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
+            tv_postfeedback_status = itemView.findViewById(R.id.tv_postfeedback_status);
+            tv_prefeedback_status = itemView.findViewById(R.id.tv_prefeedback_status);
+
 
             btn_view_profile = itemView.findViewById(R.id.btn_view_profile);
             btn_view_profile.setVisibility(View.VISIBLE);

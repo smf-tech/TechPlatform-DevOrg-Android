@@ -67,8 +67,16 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
                     .applyDefaultRequestOptions(requestOptions)
                     .load(dataList.get(position).getProfilePic())
                     .into(holder.user_profile_pic);
-
-
+        }
+        if (dataList.get(position).getPreFeedBackStatus()) {
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"submitted");
+        }else {
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"Pending");
+        }
+        if (dataList.get(position).getPostFeedBackStatus()) {
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"submitted");
+        }else {
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"Pending");
         }
     }
 
@@ -79,7 +87,7 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
 
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_member_phone,tv_member_name;
+        TextView tv_member_phone,tv_member_name,tv_postfeedback_status,tv_prefeedback_status;
         ImageView btnPopupMenu,user_profile_pic;
         PopupMenu popup;
 
@@ -89,6 +97,9 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
             tv_member_phone = itemView.findViewById(R.id.tv_member_phone);
             tv_member_name = itemView.findViewById(R.id.tv_member_name);
             user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
+            tv_postfeedback_status = itemView.findViewById(R.id.tv_postfeedback_status);
+            tv_prefeedback_status = itemView.findViewById(R.id.tv_prefeedback_status);
+
 
             itemView.setOnClickListener(v -> {
               //  clickListener.onItemClicked(getAdapterPosition());

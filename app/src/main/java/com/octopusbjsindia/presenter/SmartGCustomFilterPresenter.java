@@ -28,7 +28,7 @@ public class SmartGCustomFilterPresenter implements APIPresenterListener {
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
-
+    public static final String GET_TRAINER_LIST = "gettrainerlist";
 
     private final String TAG = SmartGirlDashboardsListPresenter.class.getName();
 
@@ -81,6 +81,9 @@ public class SmartGCustomFilterPresenter implements APIPresenterListener {
             SmartGirlCategoryResponseModel jurisdictionLevelResponse
                     = new Gson().fromJson(response, SmartGirlCategoryResponseModel.class);
             mContext.get().showReceivedCategories(jurisdictionLevelResponse);
+        }else if (requestID.equalsIgnoreCase(GET_TRAINER_LIST)){
+            Log.d(TAG, "TrainerList" + response);
+            mContext.get().showReceivedTrainerList(response);
         }
     }
 
@@ -104,6 +107,22 @@ public class SmartGCustomFilterPresenter implements APIPresenterListener {
         }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)){
             requestCall.postDataApiCall(GET_STATES, new JSONObject(map).toString(), getLocationUrl);
         }
+    }
+
+    public void getTrainerListData(String selectedStateId, String selectedDistrictId) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put("state_id", selectedStateId);
+        map.put("district_id", selectedDistrictId);
+
+
+        //mContext.get().showProgressBar();
+        final String getLocationUrl = BuildConfig.BASE_URL
+                + String.format(Urls.SmartGirl.GET_FILTER_TRAINER_LIST);
+        Log.d(TAG, "gettrainerUrl: url" + getLocationUrl);
+        //mContext.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_TRAINER_LIST, new JSONObject(map).toString(), getLocationUrl);
     }
 
     public void getBatchCategory() {

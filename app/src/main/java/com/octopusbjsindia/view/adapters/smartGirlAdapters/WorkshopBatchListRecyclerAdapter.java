@@ -159,7 +159,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                 tv_feedback_status,tv_batch_number;
         ImageView btnPopupMenu;
         PopupMenu popup;
-        Button btn_view_members;
+        Button btn_view_members,btn_view_prefeedback,btn_view_postfeedback;
         LinearLayout layout_zoomlink;
         RelativeLayout layout_trainer_two;
 
@@ -170,6 +170,8 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
             tv_additional_trainer_two_phone = itemView.findViewById(R.id.tv_additional_trainer_two_phone);
             tv_register_lable = itemView.findViewById(R.id.tv_register_lable);
             btn_view_members = itemView.findViewById(R.id.btn_view_members);
+            btn_view_prefeedback = itemView.findViewById(R.id.btn_view_prefeedback);
+            btn_view_postfeedback  = itemView.findViewById(R.id.btn_view_postfeedback);
             tv_title_batch = itemView.findViewById(R.id.tv_title_batch);
             tv_batch_number = itemView.findViewById(R.id.tv_batch_number);
             tv_venue_value = itemView.findViewById(R.id.tv_venue_value);
@@ -214,6 +216,34 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
                     }else {
                         Util.showToast("Members not found.",mContext);
                     }
+                }
+            });
+            btn_view_prefeedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //show pre feedback member list fragment
+                        Util.showToast("show pre feedback Members list here.",mContext);
+                    // TODO   //show pre feedback member list fragment
+                    if (dataList.get(getAdapterPosition()).getBeneficiariesList()!=null) {
+                        ((SmartGirlWorkshopListActivity) mContext).addMemberListFragment(getAdapterPosition());
+                    }else {
+                        Util.showToast("Members not found.",mContext);
+                    }
+
+                }
+            });
+            btn_view_postfeedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Util.showToast("show post feedback Members list here.",mContext);
+                    // TODO   //show post feedback member list fragment
+                    if (dataList.get(getAdapterPosition()).getBeneficiariesList()!=null) {
+                        ((SmartGirlWorkshopListActivity) mContext).addMemberListFragment(getAdapterPosition());
+                    }else {
+                        Util.showToast("Members not found.",mContext);
+                    }
+
                 }
             });
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);

@@ -175,7 +175,7 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClicked(int pos) {
-
+        // todo take to webview for workshop list data if needed
     }
 
     public void showNoData() {

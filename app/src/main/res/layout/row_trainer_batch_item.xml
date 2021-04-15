@@ -382,6 +382,30 @@
                         android:layout_height="wrap_content" />
                 </RelativeLayout>
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_view_prefeedback"
+                    android:text="View Pre Feedback"
+                    android:textSize="@dimen/text_size_10"
+                    android:visibility="gone"
+                    style="@style/AppStyleBorderButton"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_view_postfeedback"
+                    android:text="View post feedback"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="@dimen/text_size_10"
+                    android:visibility="gone"
+                    style="@style/AppStyleBorderButton"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -389,6 +413,7 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/btn_view_members"
                 android:text="View member list"
+                android:visibility="gone"
                 style="@style/AppStyleBorderButton"
                 android:layout_height="wrap_content"/>
 
