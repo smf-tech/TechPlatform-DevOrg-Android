@@ -6,11 +6,15 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.SubFilterset;
 import com.octopusbjsindia.models.tm.TMFilterlistRequestsResponse;
+import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.TMFiltersListRequestCall;
+import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.TMFiltersListActivity;
 
@@ -20,6 +24,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @SuppressWarnings("CanBeFinal")
 public class TMFilterListActivityPresenter implements TMFilterListRequestCallListener {
@@ -96,7 +101,13 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
     }
 
     //create request object according to filters
-    public JSONObject createBodyParams(String type, String startDate, String endDate, ArrayList<SubFilterset> subFiltersets, String approval_type) {
+    public JSONObject createBodyParams(String type,
+                                       String startDate,
+                                       String endDate,
+                                       ArrayList<SubFilterset> subFiltersets,
+                                       String name,
+                                       String stateID,
+                                       String approval_type) {
         JSONObject requestObject = new JSONObject();
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson("");
@@ -105,6 +116,10 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
         try {
             requestObject.put("type", type);
             requestObject.put("approval_type", approval_type);
+            if(!TextUtils.isEmpty(name))
+                requestObject.put("user_name", name);
+            if(!TextUtils.isEmpty(stateID))
+                requestObject.put("state_id", stateID);
             requestObject.put("filterSet", getFilterObject(subFiltersets, startDate, endDate));  // new JSONArray().put(getFilterObject()));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,11 +139,6 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
 
             requestObject.put("start_date", "" + Util.getDateInepoch(startDate));
             requestObject.put("end_date", "" + Util.getDateInepoch(endDate));
-            //requestObject.put("start_date","1558959956");//""+ Util.getDateInepoch(startDate)); //1558959956
-            // requestObject.put("end_date","1560924451");//""+Util.getDateInepoch(endDate));//1558960046
-
-            //requestObject.put("start_date","1556792226");//""+ Util.getDateInepoch(startDate)); //1558959956
-            //requestObject.put("end_date","1557051426");//""+Util.getDateInepoch(endDate));//1558960046
 
             requestObject.put("filterType", "");
             requestObject.put("id", "");
@@ -162,4 +172,22 @@ public class TMFilterListActivityPresenter implements TMFilterListRequestCallLis
         }
         return requestObject;
     }
+
+//    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put(KEY_SELECTED_ID, selectedLocationId);
+//        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+//        map.put(KEY_LEVEL, levelName);
+//
+//        // mContext.get().showProgressBar();
+//        final String getLocationUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_LOCATION_DATA);
+//        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+//        //mContext.get().showProgressBar();
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+//            requestCall.postDataApiCall(GET_STATE, new JSONObject(map).toString(), getLocationUrl);
+//        }
+//    }
 }

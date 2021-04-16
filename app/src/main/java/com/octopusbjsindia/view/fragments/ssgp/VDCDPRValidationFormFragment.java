@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,10 +93,11 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
 
 
     private VDCDPRValidationFormFragmentPresenter presenter;
-    private EditText etState,etDistrict, etTaluka, etVillage,et_remark,et_working_hours,
-            et_date,et_machine_code,et_machine_status,et_start_meter_reading,et_end_meter_reading,et_reason,et_struct_code,et_structure_status;
-    private ImageView iv_start_meter,iv_end_meter,iv_structure_photo;
-    private String UrlStartMeterPhoto ="",UrlEndMeterPhoto="",UrlStructurePhoto="";
+    private EditText etState,etDistrict, etTaluka, etVillage,et_remark,et_working_hours, et_date,et_machine_code,
+            et_machine_status,et_start_meter_reading,et_end_meter_reading,et_total_meter_reading,et_reason,
+            et_struct_code,et_structure_status;
+    private ImageView iv_structure_photo;//iv_start_meter,iv_end_meter,
+    private String UrlStructurePhoto="";//UrlStartMeterPhoto ="",UrlEndMeterPhoto="",
     private Button btn_submit;
 
     @Override
@@ -143,10 +146,44 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
         et_working_hours  = vdcdprFormFragmentView.findViewById(R.id.et_working_hours);
         et_start_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
         et_end_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_end_meter_reading);
-        iv_start_meter = vdcdprFormFragmentView.findViewById(R.id.iv_start_meter);
-        iv_end_meter = vdcdprFormFragmentView.findViewById(R.id.iv_end_meter);
+        et_total_meter_reading = vdcdprFormFragmentView.findViewById(R.id.et_total_meter_reading);
         iv_structure_photo = vdcdprFormFragmentView.findViewById(R.id.iv_structure_photo);
         btn_submit = vdcdprFormFragmentView.findViewById(R.id.btn_submit);
+
+        et_start_meter_reading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                            - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
+                    et_total_meter_reading.setText(""+result);
+                }
+            }
+        });
+
+        et_end_meter_reading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(et_start_meter_reading.getText().toString().trim())
+                        && !TextUtils.isEmpty(et_end_meter_reading.getText().toString().trim())){
+                    int result = Integer.parseInt(et_end_meter_reading.getText().toString().trim())
+                            - Integer.parseInt(et_start_meter_reading.getText().toString().trim());
+                    et_total_meter_reading.setText(""+result);
+                }
+            }
+        });
+
         btn_submit.setOnClickListener(this);
         etState.setOnClickListener(this);
         etDistrict.setOnClickListener(this);
@@ -156,8 +193,6 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
         et_machine_code.setOnClickListener(this);
         et_machine_status.setOnClickListener(this);
         et_reason.setOnClickListener(this);
-        iv_start_meter.setOnClickListener(this);
-        iv_end_meter.setOnClickListener(this);
         iv_structure_photo.setOnClickListener(this);
         et_structure_status.setOnClickListener(this);
         et_struct_code.setOnClickListener(this);
@@ -457,17 +492,13 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
             msg = "Select machine code";
         } else if (et_machine_status.getText().toString().trim().length() == 0) {
             msg = "Select machine status";
-        } else if (et_working_hours.getText().toString().trim().length() == 0) {
+        } else if (selectedMachineStatus.equals("Working") && et_working_hours.getText().toString().trim().length() == 0) {
             msg = "Please enter working hours.";
         } else if (et_struct_code.getText().toString().trim().length() == 0) {
             msg = "Select structure code";
         } else if (et_structure_status.getText().toString().trim().length() == 0) {
             msg = "Select structure status";
         }
-
-        /* else if (et_remark.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.msg_enter_remark);
-        }*/
 
         if (TextUtils.isEmpty(msg)) {
             return true;
@@ -652,6 +683,13 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
                     }
                 }
                 et_machine_status.setText(selectedMachineStatus);
+                if (selectedMachineStatus.equals("Working")) {
+                    vdcdprFormFragmentView.findViewById(R.id.tlyHours).setVisibility(View.VISIBLE);
+                    vdcdprFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.GONE);
+                } else {
+                    vdcdprFormFragmentView.findViewById(R.id.tlyHours).setVisibility(View.GONE);
+                    vdcdprFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.VISIBLE);
+                }
                 break;
             case "Select Structure Status":
                 for (CustomSpinnerObject obj : structureStatusList) {
@@ -756,30 +794,7 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
     }
 
     public void onImageUploaded(String imagetype, String imageUrl) {
-        if (imagetype.equalsIgnoreCase(IMAGE_START_READING)){
-            UrlStartMeterPhoto = imageUrl;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Glide.with(getActivity())
-                            //.applyDefaultRequestOptions(requestOptions)
-                            .load(imageUrl)
-                            .into(iv_start_meter);
-                }
-            });
-
-        }else if (imagetype.equalsIgnoreCase(IMAGE_END_READING)){
-            UrlEndMeterPhoto = imageUrl;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Glide.with(getActivity())
-                            //.applyDefaultRequestOptions(requestOptions)
-                            .load(imageUrl)
-                            .into(iv_end_meter);
-                }
-            });
-        }else  if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
+       if (imagetype.equalsIgnoreCase(IMAGE_STRUCTURE_IMAGE)){
             UrlStructurePhoto = imageUrl;
             getActivity().runOnUiThread(new Runnable() {
                 @Override

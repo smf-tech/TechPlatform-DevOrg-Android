@@ -70,36 +70,7 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
         this.ssDataList = ssStructureListData;
         this.activity = activity;
 
-        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
-        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
 
-//        if (roleAccessList != null) {
-//            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-//            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-//                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SAVE_OFFLINE_STRUCTURE)) {
-//                    isSaveOfflineStructure = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_PREPARED_STRUCTURE)) {
-//                    isStructurePreparation = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_COMMUNITY_MOBILISATION)) {
-//                    isCommunityMobilization = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VISIT_MONITORTNG)) {
-//                    isVisitMonitoring = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_COMPLETE)) {
-//                    isStructureComplete = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
-//                    isStructureClose = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
-//                    isStructureBoundary = true;
-//                    continue;
-//                }
-//            }
-//        }
     }
 
     @NonNull
@@ -121,19 +92,7 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
         holder.tvMachineCount.setText(""+ssDataList.get(position).getMachineCnt());
         holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
         holder.tvVillage.setText(ssDataList.get(position).getVillage());
-//        holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
-//        if (isSave) {
-//            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
-//                holder.tvMachinCount.setText("None");
-//            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
-//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
-//            } else {
-//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
-//            }
-//        }
 
-//        holder.tvReason.setVisibility(View.GONE);
-//        holder.tvContact.setText(ssDataList.get(position).get());
     }
 
     @Override
@@ -162,86 +121,8 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
             tvVillage = itemView.findViewById(R.id.tv_village);
             tvMachineCount = itemView.findViewById(R.id.tv_machine_count);
 
-            btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
-            btnPopupMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popup = new PopupMenu((activity), v);
-                    popup.inflate(R.menu.gp_structure_popup_menu);
-                    popup.show();
-
-//                    if (isStructurePreparation) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_APPROVED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_NON_COMPLIANT
-//                                && isVisitMonitoring) {
-//                            popup.getMenu().findItem(R.id.action_preparation).setVisible(true);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_preparation).setVisible(false);
-//                    }
-
-//                    if (isVisitMonitoring) {
-//                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_COMPLETED
-//                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_CLOSED) {
-//                            popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
-//                        } else {
-//                            popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(true);
-//                        }
-//                    } else {
-//                        popup.getMenu().findItem(R.id.action_visit_monitoring).setVisible(false);
-//                    }
-
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            Intent intent;
-//                            switch (item.getItemId()) {
-//                                case R.id.action_dpr:
-                            intent = new Intent(activity, GPActionsActivity.class);
-                            intent.putExtra("SwitchToFragment", "VDCDPRFormFragment");
-                            activity.startActivity(intent);
-//                                    break;
-//                            }
-                            return false;
-                        }
-                    });
-
-//                    Menu menu = popup.getMenu();
-//                    for(int i = 0; i<menu.size();i++) {
-//                        MenuItem mi = menu.getItem(i);
-//                        applyFontToMenuItem(mi);
-//                    }
-                }
-            });
-
-
-//            lyStructure = itemView.findViewById(R.id.rl_machine);
-//            lyStructure.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                }
-//            });
-
-//            tvMachinCount.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().size() > 0)
-//                        dialogMachinList(getAdapterPosition());
-//                }
-//            });
         }
     }
-
-//    private void applyFontToMenuItem(MenuItem mi) {
-//        Typeface font = Typeface.createFromAsset(mContext.getAssets(), "fonts/YOUR_FONT.ttf");
-//        SpannableString mNewTitle = new SpannableString(mi.getTitle());
-//        mNewTitle.setSpan(new CustomTypeFaceSpan("", font,Color.WHITE), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-//        mi.setTitle(mNewTitle);
-//    }
-
     public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
             btn2String, int adapterPosition, int flag) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
@@ -287,26 +168,4 @@ public class GPStructureListAdapter extends RecyclerView.Adapter<GPStructureList
         dialog.show();
     }
 
-//    void dialogMachinList(int adapterPosition) {
-//        final Dialog dialog = new Dialog(Objects.requireNonNull(activity));
-//        dialog.setContentView(R.layout.dialog_deployed_machine_list);
-//
-//        TextView title = dialog.findViewById(R.id.toolbar_title);
-//        title.setText("Deployed Machine List");
-//
-//        RecyclerView rvDeployedMachin = dialog.findViewById(R.id.rv_deployed_machin);
-//        rvDeployedMachin.setLayoutManager(new LinearLayoutManager(activity));
-//        DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
-//                ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity);
-//        rvDeployedMachin.setAdapter(adapter);
-//
-//        ImageView ivClose = dialog.findViewById(R.id.iv_close);
-//        ivClose.setOnClickListener(v -> {
-//            dialog.dismiss();
-//        });
-//
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-//        dialog.show();
-//    }
 }

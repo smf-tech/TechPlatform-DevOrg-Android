@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,11 +38,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.tm.FilterlistDataResponse;
 import com.octopusbjsindia.models.tm.SubFilterset;
 import com.octopusbjsindia.presenter.TMFilterListActivityPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
+import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.fragments.TMUserAprovedFragment;
 import com.octopusbjsindia.view.fragments.TMUserPendingFragment;
 import com.octopusbjsindia.view.fragments.TMUserRejectedFragment;
@@ -59,21 +65,23 @@ import java.util.List;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 
 @SuppressWarnings("CanBeFinal")
-public class TMFiltersListActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class TMFiltersListActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, CustomSpinnerListener {
 
-    private String selectedStartDate,getSelectedEndDate;
+    private String selectedStartDate, getSelectedEndDate;
     private TabLayout tabLayout;
-    private String filterTypeReceived="";
+    private String filterTypeReceived = "",filteNname = "", filterStateId = "", selectedState="";
     private ApprovalsViewPagerAdapter approvalsViewPagerAdapter;
     private ViewPager viewPager;
     private TMUserAprovedFragment tmUserAprovedFragment;
     private TMUserRejectedFragment tmUserRejectedFragment;
-    private TMUserPendingFragment  tmUserPendingFragment;
+    private TMUserPendingFragment tmUserPendingFragment;
     private OnFilterSelected clickListener;
     private JSONObject jsonObjectFilterRequest;
     private TMFilterListActivityPresenter tmFilterListActivityPresenter;
     private ArrayList<SubFilterset> subFiltersets = new ArrayList<>();
     private ArrayList<FilterlistDataResponse> filterlistDataResponses;
+    private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
+    EditText etState;
     private final int[] tabIcons = {
             R.drawable.selector_pending_tab,
             R.drawable.selector_approved_tab,
@@ -84,6 +92,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     private String[] mainFilterTypeDisplayname;
     private ArrayAdapter<String> adapter;
     private Spinner spin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +103,16 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                 getString(R.string.cat_rejected)};
         //receive intent data
         filterTypeReceived = getIntent().getStringExtra("filter_type");
+
+        CustomSpinnerObject o1 = new CustomSpinnerObject();
+        o1.set_id("1");
+        o1.setName("maha");
+        stateList.add(o1);
+        CustomSpinnerObject o2 = new CustomSpinnerObject();
+        o2.set_id("1");
+        o2.setName("maha");
+        stateList.add(o2);
+
         initViews();
     }
 
@@ -105,7 +124,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initViews() {
-         viewPager = findViewById(R.id.approval_cat_view_pager);
+        viewPager = findViewById(R.id.approval_cat_view_pager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
 
@@ -119,9 +138,11 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         img_filter_image.setOnClickListener(this);
         spin = findViewById(R.id.spinner1);
 
-         tmFilterListActivityPresenter = new TMFilterListActivityPresenter(this);
+        tmFilterListActivityPresenter = new TMFilterListActivityPresenter(this);
 
-
+//        tmFilterListActivityPresenter.getLocationData("",
+//                Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                Constants.JurisdictionLevelName.STATE_LEVEL);
 
         spin.setOnItemSelectedListener(this);
 
@@ -138,7 +159,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         approvalsViewPagerAdapter.addFragment(tmUserPendingFragment);
 
         //adapter.addFragment(new TMUserApprovedFragment());
-       tmUserAprovedFragment = new TMUserAprovedFragment();
+        tmUserAprovedFragment = new TMUserAprovedFragment();
         approvalsViewPagerAdapter.addFragment(tmUserAprovedFragment);
         viewPager.setAdapter(approvalsViewPagerAdapter);
         tmUserRejectedFragment = new TMUserRejectedFragment();
@@ -152,7 +173,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             TextView tabOne = (TextView) LayoutInflater.from(TMFiltersListActivity.this)
                     .inflate(R.layout.layout_approval_tab, tabLayout, false);
             tabOne.setText(tabNames[i]);
-          //  tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+            //  tabOne.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
 
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             if (tab != null) {
@@ -172,7 +193,16 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                 //onBackPressed();
                 break;
             case R.id.img_filter_image:
-                showFilterDialog();
+//                showFilterDialog();
+                Intent intent = new Intent(this, TMFilterActivity.class);
+                intent.putExtra("filterlistDataResponses",filterlistDataResponses);
+                intent.putExtra("filter_type",filterTypeReceived);
+                intent.putExtra("subFiltersets",subFiltersets);
+                intent.putExtra("name",filteNname);
+                intent.putExtra("stateId",subFiltersets);
+                intent.putExtra("state",selectedState);
+
+                startActivityForResult(intent, 1001);
                 break;
         }
     }
@@ -181,27 +211,81 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         subFiltersets.clear();
-        for (int i = 0; i <filterlistDataResponses.get(position).getFilterSet().size() ; i++) {
-            if(filterlistDataResponses.get(position).getFilterSet().get(i).getFilterset()!=null){
+        for (int i = 0; i < filterlistDataResponses.get(position).getFilterSet().size(); i++) {
+            if (filterlistDataResponses.get(position).getFilterSet().get(i).getFilterset() != null) {
                 //subFiltersets = (ArrayList<SubFilterset>) filterlistDataResponses.get(position).getFilterSet().get(i).getFilterset();
                 subFiltersets.addAll(filterlistDataResponses.get(position).getFilterSet().get(i).getFilterset());
             }
         }
         filterTypeReceived = getSelectedSpinnerItem(spin.getSelectedItemPosition());
-        /*CustomDialogClass cdd=new CustomDialogClass(TMFiltersListActivity.this);
-        cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        cdd.show();*/
-        //showFilterDialog();
 
         defaultFilterRequest();
-  //      (ArrayList<SubFilterset>) filterlistDataResponses.get(position).getFilterSet().get();
-//        subFiltersets = (ArrayList<SubFilterset>) filterlistDataResponses.get(position).getFilterSet().get(1).getFilterset();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        for (CustomSpinnerObject obj : stateList) {
+            if (obj.isSelected()) {
+                etState.setText(obj.getName());
+//                selectedState = obj.getName();
+//                selectedStateId = obj.get_id();
+//                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1001) {
+            if(resultCode == Activity.RESULT_OK){
+
+                String startdate=data.getStringExtra("startdate");
+                String enddate=data.getStringExtra("enddate");
+                filteNname=data.getStringExtra("name");
+                filterStateId =data.getStringExtra("stateId");
+                selectedState =data.getStringExtra("state");
+                ArrayList<SubFilterset> subFulterset=(ArrayList<SubFilterset>)data.getSerializableExtra("subFulterset");
+
+                jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                        getSelectedSpinnerItem(spin.getSelectedItemPosition()),
+                        startdate,
+                        enddate,
+                        subFulterset,
+                        filteNname,
+                        filterStateId,
+                        "pending");
+                tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+                jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                        getSelectedSpinnerItem(spin.getSelectedItemPosition()),
+                        startdate,
+                        enddate,
+                        subFulterset,
+                        filteNname,
+                        filterStateId,
+                        "approved");
+                tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+                jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                        getSelectedSpinnerItem(spin.getSelectedItemPosition()),
+                        startdate,
+                        enddate,
+                        subFulterset,
+                        filteNname,
+                        filterStateId,
+                        "rejected");
+                tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+
+            }
+        }
+    }//onActivityResult
 
     class ApprovalsViewPagerAdapter extends SmartFragmentStatePagerAdapter {
 
@@ -227,69 +311,27 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-
-    /*private void setActionbar(String title) {
-        if (title.contains("\n")) {
-            title = title.replace("\n", " ");
-        }
-
-        TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText(title);
-
-        ImageView img_back = findViewById(R.id.toolbar_back_action);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-    }
-*/
-
     public void showPendingApprovalRequests(List<FilterlistDataResponse> pendingRequestList) {
         if (!pendingRequestList.isEmpty()) {
             filterlistDataResponses = (ArrayList<FilterlistDataResponse>) pendingRequestList;
-           // subFiltersets = (ArrayList<SubFilterset>) filterlistDataResponses.get(1).getFilterSet().get(1).getFilterset();
-            mainFilterType =new String[pendingRequestList.size()];
-            mainFilterTypeDisplayname =new String[pendingRequestList.size()];
-            for (int i = 0; i <pendingRequestList.size() ; i++) {
-                mainFilterType[i]  =pendingRequestList.get(i).getType();
+            // subFiltersets = (ArrayList<SubFilterset>) filterlistDataResponses.get(1).getFilterSet().get(1).getFilterset();
+            mainFilterType = new String[pendingRequestList.size()];
+            mainFilterTypeDisplayname = new String[pendingRequestList.size()];
+            for (int i = 0; i < pendingRequestList.size(); i++) {
+                mainFilterType[i] = pendingRequestList.get(i).getType();
                 mainFilterTypeDisplayname[i] = pendingRequestList.get(i).getApprovalType();
             }
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mainFilterTypeDisplayname);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spin.setAdapter(adapter);
-            for (int i = 0; i <mainFilterType.length ; i++) {
-                if (filterTypeReceived.equalsIgnoreCase(mainFilterType[i]))
-                {
+            for (int i = 0; i < mainFilterType.length; i++) {
+                if (filterTypeReceived.equalsIgnoreCase(mainFilterType[i])) {
                     spin.setSelection(i);
                 }
             }
 
             adapter.notifyDataSetChanged();
 
-
-        /*    DashboardFragment.setApprovalCount(pendingRequestList.size());
-
-            txtNoData.setVisibility(View.GONE);
-            rvPendingRequests.setVisibility(View.VISIBLE);
-
-            this.pendingRequestList.clear();
-            this.pendingRequestList.addAll(pendingRequestList);
-
-
-
-            *//*mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
-                    pendingFragmentPresenter, this);*//*
-            mAdapter = new TMPendingApprovalPageRecyclerAdapter(getActivity(), pendingRequestList,
-                    this);
-            rvPendingRequests.setAdapter(mAdapter);*/
-        } else {
-        /*    DashboardFragment.setApprovalCount(0);
-            txtNoData.setVisibility(View.VISIBLE);
-            txtNoData.setText(getString(R.string.msg_no_pending_req));
-            rvPendingRequests.setVisibility(View.GONE);
-        }
-
-        if (getParentFragment() != null && getParentFragment() instanceof DashboardFragment) {
-            ((DashboardFragment) getParentFragment()).updateBadgeCount();
-        }*/
         }
     }
 
@@ -304,10 +346,11 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
         public RecyclerView rv_filterchoice;
         public Dialog d;
         public Button yes, no;
-        public EditText tv_startdate,tv_enddate;
+        public EditText tv_startdate, tv_enddate, etName;
         public ArrayList<String> filterChoiceList = new ArrayList<>();
         FilterChoicedapter adapter;
-        public CustomDialogClass(Activity a,String formTitle) {
+
+        public CustomDialogClass(Activity a, String formTitle) {
             super(a);
             // TODO Auto-generated constructor stub
             this.activity = a;
@@ -325,21 +368,23 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             //bottomSheetBehavior.setPeekHeight(500);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             linear_dynamic_filterheight = findViewById(R.id.linear_dynamic_filterheight);
-            if (subFiltersets!=null) {
-                if (subFiltersets.size()>0) {
-                    float pixels =  1 * activity.getResources().getDisplayMetrics().density;
+            if (subFiltersets != null) {
+                if (subFiltersets.size() > 0) {
+                    float pixels = 1 * activity.getResources().getDisplayMetrics().density;
 
-                    CoordinatorLayout.LayoutParams param = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(500 * pixels));
+                    CoordinatorLayout.LayoutParams param = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (500 * pixels));
                     linear_dynamic_filterheight.setLayoutParams(param);
                 }
             }
             tv_startdate = findViewById(R.id.tv_startdate);
-            tv_enddate= findViewById(R.id.tv_enddate);
+            tv_enddate = findViewById(R.id.tv_enddate);
+            etName = findViewById(R.id.etName);
+            etState = findViewById(R.id.etState);
             rv_filterchoice = findViewById(R.id.rv_filterchoice);
             yes = findViewById(R.id.btn_yes);
             no = findViewById(R.id.btn_no);
-            img_close =findViewById(R.id.toolbar_edit_action);
-            toolbarTitle =findViewById(R.id.toolbar_title);
+            img_close = findViewById(R.id.toolbar_edit_action);
+            toolbarTitle = findViewById(R.id.toolbar_title);
             toolbarTitle.setText(bottomSheetTitle);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
             rv_filterchoice.setLayoutManager(layoutManager);
@@ -351,101 +396,47 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             tv_enddate.setOnClickListener(this);
             tv_startdate.setText(Util.getCurrentDatePreviousMonth());
             tv_enddate.setText(Util.getCurrentDate());
+            etState.setOnClickListener(this);
             adapter = new FilterChoicedapter(TMFiltersListActivity.this, subFiltersets);
             rv_filterchoice.setAdapter(adapter);
         }
 
         @Override
         public void onClick(View v) {
-             switch (v.getId()) {
+            switch (v.getId()) {
                 case R.id.btn_yes:
-                    //activity.finish();
-                    //jsonObjectFilterRequest = createBodyParams(tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets);
-                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"pending");
-                    //clickListener.onFilterButtonClicked();
-
-                    // new implementation as per discussion with kishor
-                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"pending");
-                    tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
-
-                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"approved");
-                    tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
-
-                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets,"rejected");
-                    tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+//                    //activity.finish();
+//                    //jsonObjectFilterRequest = createBodyParams(tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets);
+//                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()), tv_startdate.getText().toString(), tv_enddate.getText().toString(), subFiltersets, "pending");
+//                    //clickListener.onFilterButtonClicked();
+//
+//                    // new implementation as per discussion with kishor
+//                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()), tv_startdate.getText().toString(), tv_enddate.getText().toString(), subFiltersets, "pending");
+//                    tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+//
+//                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()), tv_startdate.getText().toString(), tv_enddate.getText().toString(), subFiltersets, "approved");
+//                    tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
+//
+//                    jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()), tv_startdate.getText().toString(), tv_enddate.getText().toString(), subFiltersets, "rejected");
+//                    tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
                     dismiss();
                     break;
                 case R.id.toolbar_edit_action:
                     dismiss();
                     break;
-                 case R.id.tv_startdate:
-                     //selectStartDate(tv_startdate);
-                     selectStartDate(tv_startdate, 1);
-                     break;
-                 case R.id.tv_enddate:
-                     //selectStartDate(tv_enddate);
-                     selectStartDate(tv_enddate, 2);
-                     break;
+                case R.id.tv_startdate:
+                    //selectStartDate(tv_startdate);
+                    selectStartDate(tv_startdate, 1);
+                    break;
+                case R.id.tv_enddate:
+                    //selectStartDate(tv_enddate);
+                    selectStartDate(tv_enddate, 2);
+                    break;
                 default:
                     break;
             }
             //dismiss();
-        }
-
-        private JSONObject createBodyParams(String startDate,String endDate,ArrayList<SubFilterset> subFiltersets) {
-            JSONObject requestObject = new JSONObject();
-            Gson gson = new GsonBuilder().create();
-            String json = gson.toJson("");
-            Log.d("JsonObjRequestfilter", "SubmitRequest: " + json);
-
-            try {
-                requestObject.put("type",getSelectedSpinnerItem(spin.getSelectedItemPosition()));
-                requestObject.put("approval_type","pending");
-                requestObject.put("filterSet",getFilterObject(subFiltersets));  // new JSONArray().put(getFilterObject()));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                return requestObject;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private JSONObject getFilterObject(ArrayList<SubFilterset> subFiltersets) {
-            JSONObject requestObject =new JSONObject();
-
-            try {
-
-                requestObject.put("start_date","1558959956");
-                requestObject.put("end_date","1558960046");
-                if (subFiltersets!=null) {
-                    if (subFiltersets.size()>0) {
-                        requestObject.put("filterType", "category");
-                        requestObject.put("id", getidObject());  // "5c6bbf3dd503a3057867cf24");
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return requestObject;
-        }
-
-        private JSONArray getidObject() {
-            JSONArray requestObject =new JSONArray();
-
-            try {
-
-                requestObject.put("5c6bbf3dd503a3057867cf24");
-                requestObject.put("5c6bbf07d503a30a5e724eab");
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return requestObject;
         }
 
 
@@ -455,7 +446,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             private Context mContext;
             //private OnRequestItemClicked clickListener;
 
-            FilterChoicedapter(Context context, ArrayList<SubFilterset> dataList){//},final OnRequestItemClicked clickListener) {
+            FilterChoicedapter(Context context, ArrayList<SubFilterset> dataList) {//},final OnRequestItemClicked clickListener) {
                 mContext = context;
                 this.dataList = dataList;
                 //this.clickListener =clickListener;
@@ -472,7 +463,7 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
             public void onBindViewHolder(EmployeeViewHolder holder, int position) {
                 holder.txtTitle.setText(dataList.get(position).getName().getDefault());
                 holder.cb_select_filter.setChecked(dataList.get(position).isSelected());
-               // holder.txtValue.setText(dataList.get(position));
+                // holder.txtValue.setText(dataList.get(position));
 
             }
 
@@ -499,130 +490,128 @@ public class TMFiltersListActivity extends BaseActivity implements View.OnClickL
                         }
                     });
                     //txtValue = (TextView) itemView.findViewById(R.id.tv_value);
-                   // itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+                    // itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
                 }
             }
 
         }
 
-//select start date and end date for filter
-private void selectStartDate(TextView textview) {
-    final Calendar c = Calendar.getInstance();
-    mYear = c.get(Calendar.YEAR);
-    mMonth = c.get(Calendar.MONTH);
-    mDay = c.get(Calendar.DAY_OF_MONTH);
+        //select start date and end date for filter
+        private void selectStartDate(TextView textview) {
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-    DatePickerDialog datePickerDialog = new DatePickerDialog(activity,
-            new DatePickerDialog.OnDateSetListener() {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(activity,
+                    new DatePickerDialog.OnDateSetListener() {
 
-                @Override
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
 
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(year, monthOfYear, dayOfMonth);
-                    String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
-                    textview.setText(selectedDateString);
-                    //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                }
-            }, mYear, mMonth, mDay);
-    datePickerDialog.show();
-}
-//date validations
-private void selectStartDate(TextView textview, int flagDateStartEnd) {
-    final Calendar c = Calendar.getInstance();
-    mYear = c.get(Calendar.YEAR);
-    mMonth = c.get(Calendar.MONTH);
-    mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-    DatePickerDialog datePickerDialog = new DatePickerDialog(TMFiltersListActivity.this,
-            new DatePickerDialog.OnDateSetListener() {
-
-                @Override
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(year, monthOfYear, dayOfMonth);
-                    String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
-                    // textview.setText(selectedDateString);
-                    //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    //check for Date-->
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR);//new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                    Date startDate = null;
-                    Date endDate = null;
-
-                    if (flagDateStartEnd == 1) {
-                        try {
-                            startDate = formatter.parse(selectedDateString);
-                            endDate = formatter.parse(tv_enddate.getText().toString());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        if (startDate.getTime() > endDate.getTime()) {
-                            Toast.makeText(TMFiltersListActivity.this, "Start date should be less than end date.", Toast.LENGTH_LONG).show();
-                        } else {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
                             textview.setText(selectedDateString);
-                        }
-                    } else {
-                        try {
-                            startDate = formatter.parse(tv_startdate.getText().toString());
-                            endDate = formatter.parse(selectedDateString);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        if (startDate.getTime() > endDate.getTime()) {
-                            Toast.makeText(TMFiltersListActivity.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
-                        } else {
-                            textview.setText(selectedDateString);
-                        }
-                    }
+                            //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
-                    //-----
-                }
-            }, mYear, mMonth, mDay);
-    //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-    datePickerDialog.show();
-}
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        }
 
+        //date validations
+        private void selectStartDate(TextView textview, int flagDateStartEnd) {
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(TMFiltersListActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year, monthOfYear, dayOfMonth);
+                            String selectedDateString = new SimpleDateFormat(DAY_MONTH_YEAR).format(calendar.getTime());
+                            // textview.setText(selectedDateString);
+                            //textview.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            //check for Date-->
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR);//new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            Date startDate = null;
+                            Date endDate = null;
+
+                            if (flagDateStartEnd == 1) {
+                                try {
+                                    startDate = formatter.parse(selectedDateString);
+                                    endDate = formatter.parse(tv_enddate.getText().toString());
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if (startDate.getTime() > endDate.getTime()) {
+                                    Toast.makeText(TMFiltersListActivity.this, "Start date should be less than end date.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    textview.setText(selectedDateString);
+                                }
+                            } else {
+                                try {
+                                    startDate = formatter.parse(tv_startdate.getText().toString());
+                                    endDate = formatter.parse(selectedDateString);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if (startDate.getTime() > endDate.getTime()) {
+                                    Toast.makeText(TMFiltersListActivity.this, "End date should be greater than start date.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    textview.setText(selectedDateString);
+                                }
+                            }
+
+                            //-----
+                        }
+                    }, mYear, mMonth, mDay);
+            //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        }
 
 
     }
+
     public void setFilterClickListener(OnFilterSelected listener) {
         clickListener = listener;
     }
+
     public interface OnFilterSelected {
         void onFilterButtonClicked(JSONObject requestobject);
     }
-private void showFilterDialog(){
-    CustomDialogClass cdd=new CustomDialogClass(TMFiltersListActivity.this,"Select filters");
-    cdd.show();
-    cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT);
-}
-    private void defaultFilterRequest(){
-        //activity.finish();
-        //jsonObjectFilterRequest = createBodyParams(tv_startdate.getText().toString(),tv_enddate.getText().toString(),subFiltersets);
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),Util.getCurrentDate(),Util.getCurrentDate(),subFiltersets,"pending");
-        //clickListener.onFilterButtonClicked();
 
-        //new implemented
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"pending");
+
+    private void defaultFilterRequest() {
+       //new implemented
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                getSelectedSpinnerItem(spin.getSelectedItemPosition()), Util.getCurrentDatePreviousMonth(),
+                Util.getCurrentDate(), subFiltersets,filteNname, filterStateId, "pending");
         tmUserPendingFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"approved");
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                getSelectedSpinnerItem(spin.getSelectedItemPosition()), Util.getCurrentDatePreviousMonth(),
+                Util.getCurrentDate(), subFiltersets, filteNname, filterStateId,"approved");
         tmUserAprovedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
 
-        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(getSelectedSpinnerItem(spin.getSelectedItemPosition()),Util.getCurrentDatePreviousMonth(),Util.getCurrentDate(),subFiltersets,"rejected");
+        jsonObjectFilterRequest = tmFilterListActivityPresenter.createBodyParams(
+                getSelectedSpinnerItem(spin.getSelectedItemPosition()), Util.getCurrentDatePreviousMonth(),
+                Util.getCurrentDate(), subFiltersets, filteNname, filterStateId,"rejected");
         tmUserRejectedFragment.onFilterButtonClicked(jsonObjectFilterRequest);
     }
 
-    public String getSelectedSpinnerItem(int position)
-    {
+    public String getSelectedSpinnerItem(int position) {
         String selectedfiltertype = mainFilterType[position];
         return selectedfiltertype;
     }

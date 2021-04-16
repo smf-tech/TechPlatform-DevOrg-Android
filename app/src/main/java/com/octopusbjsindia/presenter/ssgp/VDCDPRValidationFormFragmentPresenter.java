@@ -208,6 +208,8 @@ public class VDCDPRValidationFormFragmentPresenter implements APIPresenterListen
         String getSSMasterDaraUrl = BuildConfig.BASE_URL
                 + String.format(Urls.SSGP.GET_GP_STRUCURE_LIST);
         Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
-        requestCall.getDataApiCall(GET_GP_STRUCURE_LIST, getSSMasterDaraUrl);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("type","DPR");
+        requestCall.postDataApiCall(GET_GP_STRUCURE_LIST, new JSONObject(map).toString(), getSSMasterDaraUrl);
     }
 }

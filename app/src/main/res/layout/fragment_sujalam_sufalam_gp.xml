@@ -183,44 +183,12 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="VDF Village Demand"
+        android:text="Village Demand"
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@color/white"
         android:visibility="gone" />
 
-    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fb_form_two"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="VDC Structure Master"
-        android:textSize="@dimen/text_size_10"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@color/white"
-        android:visibility="gone" />
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fb_form_three"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="VDC Daily Progress Report"
-        android:textSize="@dimen/text_size_10"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@color/white"
-        android:visibility="gone" />-->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_form_four"
         android:layout_width="wrap_content"
@@ -229,12 +197,10 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="VDC Community Mobilization"
+        android:text="Community Mobilization"
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@color/white"
         android:visibility="gone" />
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_form_five"
@@ -244,12 +210,10 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/dimen_05dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="VDC Beneficiary Details"
+        android:text="Beneficiary Details"
         android:textSize="@dimen/text_size_10"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_plus"
-        app:iconTint="@color/white"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
