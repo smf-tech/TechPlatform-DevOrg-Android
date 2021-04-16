@@ -110,7 +110,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
             btn_approve.setVisibility(View.VISIBLE);
             tv_leave_reason.setVisibility(View.GONE);
         } else {
-            btn_reject.setVisibility(View.GONE);
+            btn_reject.setVisibility(View.VISIBLE);
             btn_approve.setVisibility(View.GONE);
             tv_leave_reason.setVisibility(View.VISIBLE);
         }

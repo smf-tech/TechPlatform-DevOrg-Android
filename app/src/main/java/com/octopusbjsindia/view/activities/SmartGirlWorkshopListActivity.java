@@ -106,6 +106,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         super.onResume();
         //presenter.getBatchList();
       //  useDefaultRequest();
+        showEmailButton();
     }
 
     @Override
@@ -592,7 +593,8 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 }
             } else {
                 toolbar_action.setVisibility(View.VISIBLE);
-                fb_email_data.setVisibility(View.VISIBLE);
+                //fb_email_data.setVisibility(View.VISIBLE);
+                showEmailButton();
                 try {
                     tvTitle.setText("Workshop List");
                     if (dataList != null) {
@@ -880,5 +882,23 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 "emailid":"rbisen@bjsindia.org"*/
 
         return paramjsonString;
+    }
+
+
+
+    public void showEmailButton(){
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_DASHBOARD){
+                    fb_email_data.setVisibility(View.VISIBLE);
+                }else {
+                    fb_email_data.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }

@@ -20,6 +20,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.smartgirl.BeneficiariesList;
 import com.octopusbjsindia.models.smartgirl.TrainerList;
 import com.octopusbjsindia.presenter.MemberListFragmentPresenter;
@@ -176,6 +179,7 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
             ((TrainerBatchListActivity) getActivity()).changeTitle("Member List");
 
         }
+        showEmailButton();
     }
 
     public void showToastMessage(String message) {
@@ -196,4 +200,20 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
         }
 
     }
+    public void showEmailButton(){
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_FEEDBACK){
+                    fb_email_data.setVisibility(View.VISIBLE);
+                }else {
+                    fb_email_data.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
 }

@@ -262,19 +262,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                     });
                 }
             });
-            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
-            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-            if(roleAccessList != null) {
-                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-                btnPopupMenu.setVisibility(View.INVISIBLE);
-                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                    if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_MOCK_TEST){
-                        btnPopupMenu.setVisibility(View.VISIBLE);
-                    }else {
 
-                    }
-                }
-            }
         }
     }
 

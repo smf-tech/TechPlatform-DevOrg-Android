@@ -106,6 +106,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     protected void onResume() {
         super.onResume();
         //presenter.getBatchList();
+        showEmailButton();
     }
 
     @Override
@@ -684,7 +685,8 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                     hideFilter();
                 }
             }else {
-                fb_email_data.setVisibility(View.VISIBLE);
+                //fb_email_data.setVisibility(View.VISIBLE);
+                showEmailButton();
                 toolbar_action.setVisibility(View.VISIBLE);
                 try {
                     fManager.popBackStackImmediate();
@@ -1084,5 +1086,21 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
                 "emailid":"rbisen@bjsindia.org"*/
 
         return paramjsonString;
+    }
+
+    public void showEmailButton(){
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_DASHBOARD){
+                    fb_email_data.setVisibility(View.VISIBLE);
+                }else {
+                    fb_email_data.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }
