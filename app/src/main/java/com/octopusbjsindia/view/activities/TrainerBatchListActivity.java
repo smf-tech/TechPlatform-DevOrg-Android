@@ -79,7 +79,7 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     public TrainerBatchListRecyclerAdapter trainerBatchListRecyclerAdapter;
     private List<TrainerBachList> dataList = new ArrayList<>();
     PopupMenu popup;
-    private ImageView toolbar_back_action, toolbar_edit_action,toolbar_action;
+    private ImageView toolbar_back_action, toolbar_edit_action,toolbar_action,iv_refresh;
     private TextView tvTitle;
     private SearchView editSearch;
     private boolean isSearchVisible = false;
@@ -129,6 +129,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
 
         fb_email_data  = findViewById(R.id.fb_email_data);
         fb_email_data.setOnClickListener(this);
+        iv_refresh  = findViewById(R.id.iv_refresh);
+        iv_refresh.setOnClickListener(this);
+
         presenter = new TrainerBatchListPresenter(this);
         //setMasterData();
         setUserLocation();
@@ -321,7 +324,9 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         }
 
         if (trainerBachListResponseModel.getTrainerBachListResponse().getTrainerBachLists()!=null&&trainerBachListResponseModel.getTrainerBachListResponse().getTrainerBachLists().size()<1){
-            ly_no_data.setVisibility(View.VISIBLE);
+            if (dataList!=null&&dataList.size()<1) {
+                ly_no_data.setVisibility(View.VISIBLE);
+            }
         }
 
         /*trainerBatchListRecyclerAdapter = new TrainerBatchListRecyclerAdapter(this, trainerBachListResponseModel.getTrainerBachListdata(),
@@ -842,7 +847,12 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
     }
 
     public void showNoData() {
-        ly_no_data.setVisibility(View.VISIBLE);
+        if (dataList!=null&&dataList.size()<1) {
+            ly_no_data.setVisibility(View.VISIBLE);
+        }else {
+            ly_no_data.setVisibility(View.GONE);
+        }
+
     }
 
     // Add filter
@@ -1040,6 +1050,10 @@ public class TrainerBatchListActivity extends AppCompatActivity implements Train
         switch (v.getId()) {
             case R.id.fb_email_data:
                 Util.showEnterEmailDialog(this,1,null);
+                break;
+            case R.id.iv_refresh:
+                callWorkshopListApi(useDefaultRequest(),"");
+                ly_no_data.setVisibility(View.GONE);
                 break;
 
         }

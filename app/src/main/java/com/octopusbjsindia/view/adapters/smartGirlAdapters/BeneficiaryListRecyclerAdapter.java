@@ -69,12 +69,12 @@ public class BeneficiaryListRecyclerAdapter extends RecyclerView.Adapter<Benefic
                     .into(holder.user_profile_pic);
         }
         if (dataList.get(position).getPreFeedBackStatus()) {
-            holder.tv_prefeedback_status.setText("Pre Feedback -"+"submitted");
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"Submitted");
         }else {
             holder.tv_prefeedback_status.setText("Pre Feedback -"+"Pending");
         }
         if (dataList.get(position).getPostFeedBackStatus()) {
-            holder.tv_postfeedback_status.setText("Post Feedback -"+"submitted");
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"Submitted");
         }else {
             holder.tv_postfeedback_status.setText("Post Feedback -"+"Pending");
         }
