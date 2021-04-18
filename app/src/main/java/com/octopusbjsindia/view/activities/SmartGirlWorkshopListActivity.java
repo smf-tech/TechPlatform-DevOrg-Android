@@ -891,12 +891,10 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if(roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-
+            fb_email_data.setVisibility(View.GONE);
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                 if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_DASHBOARD){
                     fb_email_data.setVisibility(View.VISIBLE);
-                }else {
-                    fb_email_data.setVisibility(View.GONE);
                 }
             }
         }

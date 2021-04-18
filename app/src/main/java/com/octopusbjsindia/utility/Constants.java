@@ -492,6 +492,7 @@ public class Constants {
         public static final int ACCESS_CODE_BATCH_SUPPORT = 157;
         public static final int ACCESS_CODE_EMAIL_DASHBOARD = 162;
         public static final int ACCESS_CODE_EMAIL_FEEDBACK = 163;
+        public static final int ACCESS_CODE_EMAIL_BATCH_FEEDBACK = 164;
 
 
 //prod

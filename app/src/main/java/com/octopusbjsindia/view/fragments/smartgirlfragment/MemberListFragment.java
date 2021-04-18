@@ -205,12 +205,16 @@ public class MemberListFragment extends Fragment implements View.OnClickListener
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if(roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-
+            fb_email_data.setVisibility(View.GONE);
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_FEEDBACK){
-                    fb_email_data.setVisibility(View.VISIBLE);
+                if (listType.equalsIgnoreCase(Constants.SmartGirlModule.TRAINER_lIST)) {
+                    if (roleAccessObject.getActionCode() == Constants.SmartGirlModule.ACCESS_CODE_EMAIL_BATCH_FEEDBACK) {
+                        fb_email_data.setVisibility(View.VISIBLE);
+                    }
                 }else {
-                    fb_email_data.setVisibility(View.GONE);
+                    if (roleAccessObject.getActionCode() == Constants.SmartGirlModule.ACCESS_CODE_EMAIL_FEEDBACK) {
+                        fb_email_data.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }
