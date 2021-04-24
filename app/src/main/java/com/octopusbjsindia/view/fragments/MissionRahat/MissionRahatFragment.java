@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments.MissionRahat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,13 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
+
+import java.util.List;
 
 public class MissionRahatFragment extends Fragment implements APIDataListener, View.OnClickListener {
     private View machineRahatFragmentView;
@@ -45,11 +52,11 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     }
 
     private void init() {
-        isMachineCreate = true;
-        isHospitalCreate = true;
-        isRequirementForm = true;
-        isApprovalAllowed = true;
-        isDailyReportAllowed = true;
+//        isMachineCreate = true;
+//        isHospitalCreate = true;
+//        isRequirementForm = true;
+//        isApprovalAllowed = true;
+//        isDailyReportAllowed = true;
         fbSelect = machineRahatFragmentView.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
         fbMachine = machineRahatFragmentView.findViewById(R.id.fb_machine);
@@ -65,27 +72,27 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-//        if (roleAccessList != null) {
-//            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-//            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-//                if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_CRETAE)) {
-//                    isMachineCreate = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_HOSPTAL_CRETAE)) {
-//                    isHospitalCreate = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_REQUIREMENT_FORM)) {
-//                    isRequirementForm = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_REQUIREMENT_APPROVAL)) {
-//                    isApprovalAllowed = true;
-//                    continue;
-//                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_DAILY_REPORT)) {
-//                    isDailyReportAllowed = true;
-//                    continue;
-//                }
-//            }
-//        }
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_CREATE)) {
+                    isMachineCreate = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_HOSPTAL_CREATE)) {
+                    isHospitalCreate = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_REQUIREMENT_FORM)) {
+                    isRequirementForm = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_REQUIREMENT_APPROVAL)) {
+                    isApprovalAllowed = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_DAILY_REPORT)) {
+                    isDailyReportAllowed = true;
+                    continue;
+                }
+            }
+        }
     }
 
     @Override
@@ -110,8 +117,12 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 }
                 break;
             case R.id.fb_machine:
+                Intent i = new Intent(getActivity(), CreateMachineActivity.class);
+                getActivity().startActivity(i);
                 break;
             case R.id.fb_hospital:
+                Intent intent = new Intent(getActivity(), CreateHospitalActivity.class);
+                getActivity().startActivity(intent);
                 break;
             case R.id.fb_requirement_form:
                 break;
