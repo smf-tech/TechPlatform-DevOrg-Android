@@ -253,7 +253,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                 vdcCmRequestModel.setDistrictId(selectedDistrictId);
                 vdcCmRequestModel.setTalukaId(selectedTalukaId);
                 vdcCmRequestModel.setVillageId(selectedVillageId);
-                vdcCmRequestModel.setDate(Util.getDateInepoch(et_date.getText().toString()));
+                vdcCmRequestModel.setDate(Util.getDateInLong(et_date.getText().toString()));
                 vdcCmRequestModel.setActivityType(et_activity_type.getText().toString());
                 vdcCmRequestModel.setActivityPurpose(et_activity_purpose.getText().toString());
                 vdcCmRequestModel.setParticipantKey1(et_participant1.getText().toString());

@@ -40,6 +40,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
+        <activity android:name=".view.activities.TMFilterActivity"></activity>
         <activity android:name=".view.activities.MissionRahat.CreateHospitalActivity"></activity>
         <activity android:name=".view.activities.MissionRahat.CreateMachineActivity" />
         <activity

@@ -3,7 +3,7 @@ package com.octopusbjsindia.models.ssgp;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VdcDprRequestModel {
+public class VdcDprValidationRequestModel {
 
     @SerializedName("state_id")
     @Expose
@@ -26,30 +26,18 @@ public class VdcDprRequestModel {
     @SerializedName("machine_status")
     @Expose
     private String machineStatus;
-    @SerializedName("start_meter_reading")
-    @Expose
-    private String startMeterReading;
-    //    @SerializedName("start_meter_reading_image")
-//    @Expose
-//    private String startMeterReadingImage;
-    @SerializedName("end_meter_reading")
-    @Expose
-    private String endMeterReading;
-    //    @SerializedName("end_meter_reading_image")
-//    @Expose
-//    private String endMeterReadingImage;
-    @SerializedName("total_meter_reading")
-    @Expose
-    private String totalMeterReading;
     @SerializedName("structure_status")
     @Expose
     private String structureStatus;
     @SerializedName("structure_id")
     @Expose
     private String structureId;
-    @SerializedName("structure_image")
+    @SerializedName("working_hours")
     @Expose
-    private String structureImage;
+    private String workingHours;
+    @SerializedName("machine_halted_reason")
+    @Expose
+    private String machineHaltedReason;
     @SerializedName("comment")
     @Expose
     private String comment;
@@ -110,30 +98,6 @@ public class VdcDprRequestModel {
         this.machineStatus = machineStatus;
     }
 
-    public String getStartMeterReading() {
-        return startMeterReading;
-    }
-
-    public void setStartMeterReading(String startMeterReading) {
-        this.startMeterReading = startMeterReading;
-    }
-
-    public String getEndMeterReading() {
-        return endMeterReading;
-    }
-
-    public void setEndMeterReading(String endMeterReading) {
-        this.endMeterReading = endMeterReading;
-    }
-
-    public String getTotalMeterReading() {
-        return totalMeterReading;
-    }
-
-    public void setTotalMeterReading(String totalMeterReading) {
-        totalMeterReading = totalMeterReading;
-    }
-
     public String getStructureStatus() {
         return structureStatus;
     }
@@ -150,12 +114,20 @@ public class VdcDprRequestModel {
         this.structureId = structureId;
     }
 
-    public String getStructureImage() {
-        return structureImage;
+    public String getWorkingHours() {
+        return workingHours;
     }
 
-    public void setStructureImage(String structureImage) {
-        this.structureImage = structureImage;
+    public void setWorkingHours(String workingHours) {
+        this.workingHours = workingHours;
+    }
+
+    public String getMachineHaltedReason() {
+        return machineHaltedReason;
+    }
+
+    public void setMachineHaltedReason(String machineHaltedReason) {
+        this.machineHaltedReason = machineHaltedReason;
     }
 
     public String getComment() {

@@ -1,10 +1,16 @@
 package com.octopusbjsindia.view.activities.ssgp;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,19 +20,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
 import com.octopusbjsindia.view.fragments.ssgp.StructureMachineListGPFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCBDFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCCMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRValidationFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDCSMFormFragment;
 import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
+
+import java.util.Objects;
 
 public class GPActionsActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBackIcon;
     private FragmentManager fManager;
     private Fragment fragment;
     private TextView toolbar_title;
+    private String switchToFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +49,7 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
 
         if (data != null && data.containsKey("SwitchToFragment")) {
 
-            String switchToFragment = data.getString("SwitchToFragment") != null
+             switchToFragment = data.getString("SwitchToFragment") != null
                     ? data.getString("SwitchToFragment") : "null";
 
             String title = data.getString("title") != null
@@ -65,6 +76,11 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case "VDCDPRFormFragment":
                         fragment = new VDCDPRFormFragment();
+                        fragment.setArguments(data);
+                        openFragment();
+                        break;
+                    case "VDCDPRValidationFormFragment":
+                        fragment = new VDCDPRValidationFormFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;
@@ -114,7 +130,7 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
             case R.id.toolbar_edit_action:
                 Intent intent = new Intent(this, GPActionsActivity.class);
@@ -128,15 +144,43 @@ public class GPActionsActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        try {
-            fManager.popBackStackImmediate();
-        } catch (IllegalStateException e) {
-            Log.e("TAG", e.getMessage());
-        }
 
-        if (fManager.getBackStackEntryCount() == 0) {
+        if(!switchToFragment.equals("StructureMachineListFragment")){
+            final Dialog dialog = new Dialog(Objects.requireNonNull(this));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialogs_leave_layout);
+
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(getResources().getString(R.string.alert));
+            title.setVisibility(View.VISIBLE);
+
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText("Are you sure, want to discard");
+            text.setVisibility(View.VISIBLE);
+
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText("Yes");
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+                finish();
+                dialog.dismiss();
+            });
+
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText("No");
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                dialog.dismiss();
+            });
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        } else {
             finish();
         }
+
     }
 
 

@@ -435,8 +435,12 @@ public class Constants {
         public static final Integer ACCESS_CODE_OFFLINE_LOCATION_ALLOWED = 134;
         public static final Integer ACCESS_CODE_CREATE_MEET = 154;
         public static final Integer ACCESS_CODE_MY_SABORDINET = 155;
-
-
+        public static final Integer ACCESS_CODE_BENEFICIARY_DETAILS = 156;
+        public static final Integer ACCESS_CODE_COMMUNITY_MOBILIZATION = 157;
+        public static final Integer ACCESS_CODE_VILLAGE_DEMAND = 158;
+        public static final Integer ACCESS_CODE_DALLY_PROGRESS = 159;
+        public static final Integer ACCESS_CODE_DALLY_PROGRESS_VALIDATION = 160;
+        public static final Integer ACCESS_CODE_STRUCTURE_MASTER_GP = 161;
     }
 
     public static class OperatorModule {

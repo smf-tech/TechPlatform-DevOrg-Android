@@ -70,10 +70,8 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     private RecyclerView rvDataList;
     private final ArrayList<MachineData> ssMachineListData = new ArrayList<>();
     private final ArrayList<MachineData> filteredMachineListData = new ArrayList<>();
-    private final ArrayList<MachineData> tempMachineListData = new ArrayList<>();
     private final ArrayList<StructureListData> ssStructureListData = new ArrayList<>();
     private final ArrayList<StructureListData> filteredStructureListData = new ArrayList<>();
-    private final ArrayList<StructureListData> tempStructureListData = new ArrayList<>();
 
     private GPMachineListAdapter gpMachineListAdapter;
     private GPStructureListAdapter gpStructureListAdapter;
@@ -85,14 +83,9 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
     private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTalukaDeployList = new ArrayList<>();
-    private String selectedDeployTalukaId;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
-    public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isMachineDepoly, isMachineEligible, isMachineMou,
-            isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
-            isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd, isRealiseOperator, isAssignOperator;
+    public boolean isDallyProgress, isDallyProgressValidation, isStructureMaster;
     private FloatingActionButton fbCreate;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
@@ -141,67 +134,17 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_MACHINE)) {
-                    isMachineAdd = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
-                    isStructureAdd = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_TERMINATE)) {
-                    isMachineTerminate = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_AVAILABLE_MACHINE)) {
-                    isMachineAvailable = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DEPLOY_MACHINE)) {
-                    isMachineDepoly = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ELIGIBLE_MACHINE)) {
-                    isMachineEligible = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MOU_MACHINE)) {
-                    isMachineMou = true;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_VISIT_VALIDATION_FORM)) {
-                    isMachineVisitValidationForm = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
-                    isSiltTransportForm = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DIESEL_RECORD_FORM)) {
-                    isDieselRecordForm = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SHIFT_FORM)) {
-                    isMachineShiftForm = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_RELEASE)) {
-                    isMachineRelease = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_MOU_UPLOAD)) {
-                    isMouImagesUpload = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_MACHINE_SIGN_OFF)) {
-                    isMachineSignoff = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STATE)) {
-                    isStateFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DISTRICT)) {
-                    isDistrictFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_TALUKA)) {
-                    isTalukaFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VILLAGE)) {
-                    isVillageFilter = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_REALISE_OPERATOR)) {
-                    isRealiseOperator = true;
-                    continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
-                    isAssignOperator = true;
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DALLY_PROGRESS)) {
+                    isDallyProgress = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DALLY_PROGRESS_VALIDATION)) {
+                    isDallyProgressValidation = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_MASTER_GP)) {
+                    isStructureMaster = true;
                 }
+
             }
         }
+
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
         gpMachineListAdapter = new GPMachineListAdapter(getActivity(), this, filteredMachineListData);
@@ -210,48 +153,44 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         rvDataList.setAdapter(gpStructureListAdapter);
         presenter = new StructureMachineListGPFragmentPresenter(this);
 
-        if (isStateFilter) {
+
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
             tvStateFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 1) {
-                tvStateFilter.setOnClickListener(this);
-                machineStateList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
-                    CustomSpinnerObject customState = new CustomSpinnerObject();
-                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
-                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
-                    machineStateList.add(customState);
-                }
+            machineStateList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                machineStateList.add(customState);
             }
         }
-        if (isDistrictFilter) {
+
+
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
             tvDistrictFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 1) {
-                tvDistrictFilter.setOnClickListener(this);
-                machineDistrictList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
-                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
-                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
-                    machineDistrictList.add(customDistrict);
-                }
+            machineDistrictList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                CustomSpinnerObject customDistrict = new CustomSpinnerObject();
+                customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                machineDistrictList.add(customDistrict);
             }
         }
-        if (isTalukaFilter) {
+
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
             tvTalukaFilter.setOnClickListener(this);
-        } else {
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 1) {
-                tvTalukaFilter.setOnClickListener(this);
-                machineTalukaList.clear();
-                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
-                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
-                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
-                    machineTalukaList.add(customTaluka);
-                }
+            machineTalukaList.clear();
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                CustomSpinnerObject customTaluka = new CustomSpinnerObject();
+                customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                machineTalukaList.add(customTaluka);
             }
         }
+
 
         final SwipeRefreshLayout pullToRefresh = structureMachineListFragmentView.findViewById(R.id.pull_to_refresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -264,14 +203,13 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 
         //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
         // option in takeMOUAction function, this api call is needed.
-        if (isTalukaFilter) {
-            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                isTalukaApiFirstCall = true;
-                presenter.getLocationData(userDistrictIds,
-                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
-            }
+        if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+            isTalukaApiFirstCall = true;
+            presenter.getLocationData(userDistrictIds,
+                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
         }
+
 
     }
 
@@ -335,339 +273,27 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
         }
     }
 
-    public void takeMouDoneAction(int position) {
-        if (isMachineTerminate || isMachineAvailable) {
-            showMouActionPopup(position);
-        } else {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "You can not take any action on this machine.",
-                    Snackbar.LENGTH_LONG);
-        }
-    }
-
-    public void deployMachine(int position) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
-
-        TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
-        title.setVisibility(View.VISIBLE);
-
-        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-        text.setText(R.string.deploy_machine_alert_message);
-        text.setVisibility(View.VISIBLE);
-
-        Button button = dialog.findViewById(R.id.btn_dialog);
-        button.setText("Deploy");
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(v -> {
-            // Close dialog
-            Intent intent = new Intent(getActivity(), GPActionsActivity.class);
-            intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-            intent.putExtra("type", "deployMachine");
-            intent.putExtra("title", "Select Structure");
-//            intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-//            intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
-            intent.putExtra("machine", filteredMachineListData.get(position));
-            getActivity().startActivity(intent);
-
-            dialog.dismiss();
-        });
-
-        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-        button1.setText("Cancel");
-        button1.setVisibility(View.VISIBLE);
-        button1.setOnClickListener(v -> {
-            // Close dialog
-            dialog.dismiss();
-        });
-
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-    }
-
-    public void releaseMachine(int position) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
-
-        TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
-        title.setVisibility(View.VISIBLE);
-
-        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-        text.setText(R.string.release_machine_alert_message);
-        text.setVisibility(View.VISIBLE);
-
-        Button button = dialog.findViewById(R.id.btn_dialog);
-        button.setText("Release");
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(v -> {
-            // Close dialog
-            presenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
-                    filteredMachineListData.get(position).getMachineCode(),
-                    Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
-            dialog.dismiss();
-        });
-
-        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-        button1.setText("Cancel");
-        button1.setVisibility(View.VISIBLE);
-        button1.setOnClickListener(v -> {
-            // Close dialog
-            dialog.dismiss();
-        });
-
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-    }
-
-    public void releaseOperator(int position) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
-
-        TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText(R.string.alert);
-        title.setVisibility(View.VISIBLE);
-
-        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-        text.setText(R.string.release_opretor_alert_message);
-        text.setVisibility(View.VISIBLE);
-
-        Button button = dialog.findViewById(R.id.btn_dialog);
-        button.setText(R.string.ok);
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(v -> {
-            // Close dialog
-            presenter.releaceOperator(filteredMachineListData.get(position).getOperatorId());
-            dialog.dismiss();
-        });
-
-        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-        button1.setText(R.string.cancel);
-        button1.setVisibility(View.VISIBLE);
-        button1.setOnClickListener(v -> {
-            // Close dialog
-            dialog.dismiss();
-        });
-
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-    }
-
-    public void shiftMachine(int position) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_shift_machine_action_layout);
-        RadioGroup rgShiftAction = dialog.findViewById(R.id.rg_shift_action);
-        RadioButton rbShiftToStructure, rbShiftToIdeal;
-        rbShiftToStructure = dialog.findViewById(R.id.rb_shift_to_structure);
-        rbShiftToIdeal = dialog.findViewById(R.id.rb_shift_to_ideal);
-        Button btnSubmit = dialog.findViewById(R.id.btn_submit);
-        rgShiftAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_shift_to_structure:
-                        shiftAction = 1;
-                        break;
-                    case R.id.rb_shift_to_ideal:
-                        shiftAction = 2;
-                        break;
-                }
-            }
-        });
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (shiftAction != 0) {
-                    if (shiftAction == 1) {
-                        Intent intent = new Intent(getActivity(), GPActionsActivity.class);
-                        intent.putExtra("SwitchToFragment", "MachineDeployStructureListFragment");
-                        intent.putExtra("title", "Select Structure");
-                        intent.putExtra("type", "shiftMachine");
-//                        intent.putExtra("machineId", filteredMachineListData.get(position).getId());
-//                        intent.putExtra("machineCode", filteredMachineListData.get(position).getMachineCode());
-//                        intent.putExtra("currentStructureId", filteredMachineListData.get(position).getDeployedStrutureId());
-                        intent.putExtra("machine", filteredMachineListData.get(position));
-                        getActivity().startActivity(intent);
-                    } else if (shiftAction == 2) {
-                        presenter.updateMachineStatusToAvailable
-                                (filteredMachineListData.get(position).getId(),
-                                        filteredMachineListData.get(position).getDeployedStrutureId(),
-                                        Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE);
-                    }
-                    dialog.dismiss();
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please select action.",
-                            Snackbar.LENGTH_LONG);
-                }
-            }
-        });
-        dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-    }
-
-    public void sendMachineSignOff(int position) {
-        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogs_leave_layout);
-
-        TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
-        title.setVisibility(View.VISIBLE);
-
-        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-        text.setText(R.string.machine_signoff_alert_message);
-        text.setVisibility(View.VISIBLE);
-
-        Button button = dialog.findViewById(R.id.btn_dialog);
-        button.setText("Sign-off");
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(v -> {
-            // Close dialog
-            presenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
-            dialog.dismiss();
-        });
-
-        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-        button1.setText("Cancel");
-        button1.setVisibility(View.VISIBLE);
-        button1.setOnClickListener(v -> {
-            // Close dialog
-            dialog.dismiss();
-        });
-
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-    }
-
-    public void showMouActionPopup(int position) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_mou_action_layout);
-        TextInputLayout tlyTerminateReason = dialog.findViewById(R.id.tly_terminate_reason);
-        EditText editTerminateReason = dialog.findViewById(R.id.edit_terminate_reason);
-        RecyclerView rvTaluka = dialog.findViewById(R.id.rv_taluka);
-
-        RadioGroup rgMouAction = dialog.findViewById(R.id.rg_mou_action);
-        RadioButton rbTerminate, rbDeploy;
-        rbTerminate = dialog.findViewById(R.id.rb_terminate);
-        rbDeploy = dialog.findViewById(R.id.rb_deploy);
-        if (!isMachineAvailable) {
-            rbDeploy.setVisibility(View.GONE);
-        }
-        if (!isMachineTerminate) {
-            rbTerminate.setVisibility(View.GONE);
-        }
-        rgMouAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_terminate:
-                        mouAction = 2;
-                        rvTaluka.setVisibility(View.GONE);
-                        tlyTerminateReason.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.rb_deploy:
-                        mouAction = 1;
-                        machineTalukaDeployList.clear();
-                        machineTalukaDeployList.addAll(machineTalukaList);
-                        tlyTerminateReason.setVisibility(View.GONE);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                        rvTaluka.setLayoutManager(layoutManager);
-                        MutiselectDialogAdapter mutiselectDialogAdapter = new MutiselectDialogAdapter(getActivity(),
-                                machineTalukaDeployList, false);
-                        rvTaluka.setAdapter(mutiselectDialogAdapter);
-                        rvTaluka.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        });
-        TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setVisibility(View.VISIBLE);
-        TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
-        tvCancel.setOnClickListener(v -> {
-            for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
-                if (mDeployTaluka.isSelected()) {
-                    mDeployTaluka.setSelected(false);
-                    break;
-                }
-            }
-            selectedDeployTalukaId = "";
-            dialog.dismiss();
-        });
-        TextView tvSubmit = dialog.findViewById(R.id.tv_submit);
-        tvSubmit.setVisibility(View.VISIBLE);
-        tvSubmit.setOnClickListener(v -> {
-            if (mouAction != 0) {
-                if (mouAction == 1) {
-                    for (CustomSpinnerObject mDeployTaluka : machineTalukaDeployList) {
-                        if (mDeployTaluka.isSelected()) {
-                            //selectedDeployTaluka = mDeployTaluka.getName();
-                            selectedDeployTalukaId = mDeployTaluka.get_id();
-                            break;
-                        }
-                    }
-                    if (selectedDeployTalukaId != null && selectedDeployTalukaId != "") {
-                        presenter.terminateSubmitMou(
-                                filteredMachineListData.get(position).getId(),
-                                filteredMachineListData.get(position).getMachineCode(),
-                                Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
-                                selectedDeployTalukaId);
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Please select Taluka for machine deployment.",
-                                Snackbar.LENGTH_LONG);
-                    }
-                } else if (mouAction == 2) {
-                    if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
-                        presenter.terminateSubmitMou(
-                                filteredMachineListData.get(position).getId(),
-                                filteredMachineListData.get(position).getMachineCode(),
-                                Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
-                                editTerminateReason.getText().toString());
-                    } else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), "Please provide reason for machine Mou termination.",
-                                Snackbar.LENGTH_LONG);
-                    }
-                }
-                dialog.dismiss();
-            } else {
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please select action.",
-                        Snackbar.LENGTH_LONG);
-            }
-        });
-
-        dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getActivity())) {
+
             if (viewType == 1) {
-                fbCreate.setVisibility(View.VISIBLE);
+                if(isStructureMaster){
+                    fbCreate.setVisibility(View.VISIBLE);
+                } else {
+                    fbCreate.setVisibility(View.GONE);
+                }
                 presenter.getStrucuresList(
                         (userStateIds != "") ? userStateIds : "",
                         (userDistrictIds != "") ? userDistrictIds : "",
                         (userTalukaIds != "") ? userTalukaIds : "");
             } else {
-                fbCreate.setVisibility(View.GONE);
+                if(isDallyProgressValidation){
+                    fbCreate.setVisibility(View.VISIBLE);
+                } else {
+                    fbCreate.setVisibility(View.GONE);
+                }
                 presenter.getTalukaMachinesList(
                         (userStateIds != "") ? userStateIds : "",
                         (userDistrictIds != "") ? userDistrictIds : "",
@@ -761,33 +387,6 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 
     public void populateStructureData(String requestID, StructureListRasponce structureListData) {
 
-//        if (structureListData != null) {
-//            ssStructureListData.clear();
-//            ArrayList<StructureListData> offlineStructureListData = new ArrayList<StructureListData>();
-////            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
-//
-//            filteredStructureListData.clear();
-//            for (StructureListData structureData : structureListData.getData()) {
-//                boolean flag = false;
-//                for (StructureListData obj : offlineStructureListData) {
-//                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
-//                        flag = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            if (selectedStatus != 0) {
-//                for (StructureListData structureData : ssStructureListData) {
-//                    if (structureData.getStructureStatusCode() == selectedStatus) {
-//                        filteredStructureListData.add(structureListData.getData());
-//                    }
-//                }
-//            } else {
-//                filteredStructureListData.addAll(ssStructureListData);
-//            }
-//            gpStructureListAdapter.notifyDataSetChanged();
-//            ((GPActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
-//        }
         filteredStructureListData.clear();
         ssStructureListData.clear();
         filteredStructureListData.addAll(structureListData.getData());
@@ -856,9 +455,6 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
                 cddDistrict.show();
                 cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-
-                break;
-            default:
                 break;
         }
     }
@@ -876,19 +472,25 @@ public class StructureMachineListGPFragment extends Fragment implements APIDataL
 
     @Override
     public void onClick(View view) {
-        /*if (view.getId() == R.id.fb_create) {
+        if (view.getId() == R.id.fb_create) {
             if (viewType == 1) {
                 if (Util.isConnected(getActivity())) {
                     Intent intent = new Intent(getActivity(), GPActionsActivity.class);
-                    intent.putExtra("SwitchToFragment", "CreateStructure");
-                    intent.putExtra("title", "Create Structure");
+                    intent.putExtra("SwitchToFragment", "VDCSMFormFragment");
+                    getActivity().startActivity(intent);
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+                }
+            } else {
+                if (Util.isConnected(getActivity())) {
+                    Intent intent = new Intent(getActivity(), GPActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "VDCDPRValidationFormFragment");
                     getActivity().startActivity(intent);
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
             }
-        } else */
-        if (view.getId() == R.id.tv_state_filter) {
+        } else if (view.getId() == R.id.tv_state_filter) {
             CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                     "Select State",
                     machineStateList,

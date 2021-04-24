@@ -9,18 +9,17 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.listeners.ImageRequestCallListener;
-import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.models.ssgp.VdcDprRequestModel;
+import com.octopusbjsindia.models.ssgp.VdcDprValidationRequestModel;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
-import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.fragments.ssgp.VDCDPRFormFragment;
-import com.octopusbjsindia.view.fragments.ssgp.VDFFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRValidationFormFragment;
+import com.octopusbjsindia.view.fragments.ssgp.VDCDPRValidationFormFragment;
 
 import org.json.JSONObject;
 
@@ -29,10 +28,10 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VDCDPRFormFragmentPresenter implements APIPresenterListener , ImageRequestCallListener {
+public class VDCDPRValidationFormFragmentPresenter implements APIPresenterListener , ImageRequestCallListener {
 
-    private WeakReference<VDCDPRFormFragment> fragmentWeakReference;
-    private final String TAG = VDCDPRFormFragmentPresenter.class.getName();
+    private WeakReference<VDCDPRValidationFormFragment> fragmentWeakReference;
+    private final String TAG = VDCDPRValidationFormFragmentPresenter.class.getName();
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
     private static final String KEY_LEVEL = "jurisdictionLevel";
@@ -45,7 +44,7 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
 
 
 
-    public VDCDPRFormFragmentPresenter(VDCDPRFormFragment tmFragment) {
+    public VDCDPRValidationFormFragmentPresenter(VDCDPRValidationFormFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
@@ -136,11 +135,11 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
         }
     }
 
-    public void submitDPR(VdcDprRequestModel vdcDprRequestModel) {
+    public void submitDPR(VdcDprValidationRequestModel vdcDprRequestModel) {
         Gson gson = new GsonBuilder().create();
         fragmentWeakReference.get().showProgressBar();
         String paramjson = gson.toJson(vdcDprRequestModel);
-        final String url = BuildConfig.BASE_URL + Urls.SSGP.DAILY_PROGRESS_REPORT;
+        final String url = BuildConfig.BASE_URL + Urls.SSGP.DAILY_PROGRESS_REPORT_VALIDATION;
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
@@ -207,7 +206,7 @@ public class VDCDPRFormFragmentPresenter implements APIPresenterListener , Image
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         String getSSMasterDaraUrl = BuildConfig.BASE_URL
-                + Urls.SSGP.GET_GP_STRUCURE_LIST;
+                + String.format(Urls.SSGP.GET_GP_STRUCURE_LIST);
         Log.d(TAG, "getSSMasterDaraUrl: url" + getSSMasterDaraUrl);
         HashMap<String, String> map = new HashMap<>();
         map.put("type","DPR");

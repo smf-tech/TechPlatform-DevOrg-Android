@@ -292,7 +292,11 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                     Util.showToast(getActivity(), "Please selected village");
                 } else if (TextUtils.isEmpty(et_structure_name.getText())) {
                     Util.showToast(getActivity(), "Please enter structure name");
-                } else {
+                }  else if (TextUtils.isEmpty(selectedStructureTypeId)) {
+                    Util.showToast(getActivity(), "Please select structure type");
+                } else if (TextUtils.isEmpty(selectedInterventionId)) {
+                    Util.showToast(getActivity(), "Please select Intervention");
+                }  else {
                     VACStructureMasterRequest request = new VACStructureMasterRequest();
                     request.setStateId(selectedStateId);
                     request.setDistrictId(selectedDistrictId);

@@ -1,20 +1,33 @@
 package com.octopusbjsindia.view.fragments.ssgp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,25 +44,45 @@ import com.octopusbjsindia.models.ssgp.StructureWorkType;
 import com.octopusbjsindia.models.ssgp.VDFFRequest;
 import com.octopusbjsindia.presenter.ssgp.VDFFormFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.soundcloud.android.crop.Crop;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
+import static com.octopusbjsindia.utility.Util.getImageName;
 
 public class VDFFormFragment extends Fragment implements APIDataListener, CustomSpinnerListener,
         View.OnClickListener {
-
+    private static final String TAG = VDFFormFragment.class.getCanonicalName();
     private View vdfFormFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+
+    private String selectedImageType = "";
+    public static final String IMAGE_DEMAND_LETTER1 = "imageofdemandletter1";
+    public static final String IMAGE_DEMAND_LETTER2 = "imageofdemandletter2";
+    public static final String IMAGE_DEMAND_LETTER3 = "imageofdemandletter3";
+    public static final String IMAGE_GP_BOARD = "imageofgpboard";
+
+    private Uri outputUri;
+    private Uri finalUri;
+    private ImageView iv_gpboard_photo, iv_demandletter_photo1,iv_demandletter_photo2,iv_demandletter_photo3;
+    private String UrlDemandLetterPhoto1,UrlDemandLetterPhoto2,UrlDemandLetterPhoto3, UrlGPBoardPhoto = "", startWork = "Yes";
+
     private EditText etState, etDistrict, etTaluka, etVillage, etStructureType1, etStructCount1, etStructureType2,
             etStructCount2, etStructureType3, etStructCount3, etStructureType4, etStructCount4,
-            etStructureType5, etStructCount5, etHours, etMachineType, etMachineCount, etNodalName,
-            etNodalContact, etMachineTransport, etFeasibility, etReason, etFutureWorkTime,
-            etWorkableStructCount, etRemark, etHoRemark, selectedEt;
+            etStructureType5, etStructCount5, etHours, etBackhoeCount, etExcavatorsCount, etNodalName,
+            etNodalContact, etMachineTransport, etReason, etFutureWorkTime,
+            etWorkableStructCount, etRemark, selectedEt;
     private Button btnSubmit;
+
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
@@ -110,17 +143,66 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etStructureType5 = vdfFormFragmentView.findViewById(R.id.et_structure_type5);
         etStructCount5 = vdfFormFragmentView.findViewById(R.id.et_struct_count5);
         etHours = vdfFormFragmentView.findViewById(R.id.et_hours);
-        etMachineType = vdfFormFragmentView.findViewById(R.id.et_machine_type);
-        etMachineCount = vdfFormFragmentView.findViewById(R.id.et_machine_count);
+        etBackhoeCount = vdfFormFragmentView.findViewById(R.id.etBackhoeCount);
+        etExcavatorsCount = vdfFormFragmentView.findViewById(R.id.etExcavatorsCount);
         etNodalName = vdfFormFragmentView.findViewById(R.id.et_nodal_name);
         etNodalContact = vdfFormFragmentView.findViewById(R.id.et_nodal_contact);
         etMachineTransport = vdfFormFragmentView.findViewById(R.id.et_machine_transport);
-        etFeasibility = vdfFormFragmentView.findViewById(R.id.et_feasibility);
         etReason = vdfFormFragmentView.findViewById(R.id.et_reason);
         etFutureWorkTime = vdfFormFragmentView.findViewById(R.id.et_future_work_time);
         etWorkableStructCount = vdfFormFragmentView.findViewById(R.id.et_workable_struct_count);
         etRemark = vdfFormFragmentView.findViewById(R.id.et_remark);
-        etHoRemark = vdfFormFragmentView.findViewById(R.id.et_ho_remark);
+        iv_demandletter_photo1 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo1);
+        iv_demandletter_photo2 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo2);
+        iv_demandletter_photo3 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo3);
+        iv_gpboard_photo = vdfFormFragmentView.findViewById(R.id.iv_gpboard_photo);
+        CheckBox cbBackhoe = vdfFormFragmentView.findViewById(R.id.cbBackhoe);
+        cbBackhoe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    vdfFormFragmentView.findViewById(R.id.etBackhoeCount).setEnabled(true);
+                } else {
+                    vdfFormFragmentView.findViewById(R.id.etBackhoeCount).setEnabled(false);
+                    etBackhoeCount.setText("");
+                }
+            }
+        });
+
+        CheckBox cbExcavators = vdfFormFragmentView.findViewById(R.id.cbExcavators);
+        cbExcavators.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    vdfFormFragmentView.findViewById(R.id.etExcavatorsCount).setEnabled(true);
+                } else {
+                    vdfFormFragmentView.findViewById(R.id.etExcavatorsCount).setEnabled(false);
+                    etExcavatorsCount.setText("");
+                }
+            }
+        });
+        RadioGroup rb = vdfFormFragmentView.findViewById(R.id.rgStartWork);
+        rb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbYes:
+                        startWork = "Yes";
+                        vdfFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.GONE);
+                        vdfFormFragmentView.findViewById(R.id.tly_future_work_time).setVisibility(View.GONE);
+                        vdfFormFragmentView.findViewById(R.id.tly_workable_struct_count).setVisibility(View.GONE);
+                        break;
+                    case R.id.rbNo:
+                        startWork = "No";
+                        vdfFormFragmentView.findViewById(R.id.tlyReason).setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.rbPartially:
+                        startWork = "Partially";
+                        vdfFormFragmentView.findViewById(R.id.tly_future_work_time).setVisibility(View.VISIBLE);
+                        vdfFormFragmentView.findViewById(R.id.tly_workable_struct_count).setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
 
         etStructureType1.setOnClickListener(this);
         etStructureType1.setFocusable(false);
@@ -133,6 +215,10 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etStructureType5.setOnClickListener(this);
         etStructureType5.setFocusable(false);
         vdfFormFragmentView.findViewById(R.id.btn_submit).setOnClickListener(this);
+        iv_demandletter_photo1.setOnClickListener(this);
+        iv_demandletter_photo2.setOnClickListener(this);
+        iv_demandletter_photo3.setOnClickListener(this);
+        iv_gpboard_photo.setOnClickListener(this);
 
 //        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
 //        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -170,19 +256,27 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         } else {
             etDistrict.setOnClickListener(this);
         }
+
+        etTaluka.setOnClickListener(this);
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-        } else {
-            etTaluka.setOnClickListener(this);
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                talukaList.add(customState);
+            }
         }
+
+        etVillage.setOnClickListener(this);
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etVillage.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            selectedVillageId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
-        } else {
-            etVillage.setOnClickListener(this);
+            for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
+                CustomSpinnerObject customState = new CustomSpinnerObject();
+                customState.set_id(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getId());
+                customState.setName(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getName());
+                villageList.add(customState);
+            }
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -195,16 +289,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (int i = 0; i < masterDataList.size(); i++) {
-//            if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
-//                    getField().equals("machineType")) {
-//                for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
-//                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-//                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
-//                    customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
-//                    customSpinnerObject.setSelected(false);
-//                    machineTypeList.add(customSpinnerObject);
-//                }
-//            }
             if (masterDataList.get(i).getField().equals("structureType")) {
                 for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
@@ -224,6 +308,38 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_demandletter_photo1:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_DEMAND_LETTER1;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
+            case R.id.iv_demandletter_photo2:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_DEMAND_LETTER2;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
+            case R.id.iv_demandletter_photo3:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_DEMAND_LETTER3;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
+            case R.id.iv_gpboard_photo:
+                if (Util.isConnected(getActivity())) {
+                    onAddImageClick();
+                    selectedImageType = IMAGE_GP_BOARD;
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+                break;
             case R.id.et_state:
                 CustomSpinnerDialogClass cdd0 = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State",
@@ -254,27 +370,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     }
                 }
                 break;
-//            case R.id.et_district:
-//                if(districtList.size()>0) {
-//                    CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
-//                            "Select District",
-//                            districtList,
-//                            false);
-//                    cdd6.show();
-//                    cdd6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                            ViewGroup.LayoutParams.MATCH_PARENT);
-//                } else {
-////                    if (Util.isConnected(getActivity())) {
-////                        if (etState.getText() != null && etState.getText().toString().length() > 0) {
-////                            presenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
-////                                            ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
-////                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-////                        }
-////                    } else {
-////                        Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-////                    }
-//                }
-//                break;
             case R.id.et_taluka:
                 if (talukaList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
@@ -297,7 +392,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
             case R.id.et_village:
                 if (villageList.size() > 0) {
                     CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
-                            "Select village", villageList, false);
+                            "Select Village", villageList, false);
                     cdd1.show();
                     cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -374,19 +469,30 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     structure5.setNumberStructureType(etStructCount5.getText().toString().trim());
                     structureWorkTypeList.add(structure5);
 
+                    ArrayList<String> demandLetterList = new ArrayList<String>();
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto1)){
+                        demandLetterList.add(UrlDemandLetterPhoto1);
+                    }
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto2)){
+                        demandLetterList.add(UrlDemandLetterPhoto2);
+                    }
+                    if(!TextUtils.isEmpty(UrlDemandLetterPhoto3)){
+                        demandLetterList.add(UrlDemandLetterPhoto3);
+                    }
+                    request.setDemandLetterImage(demandLetterList);
+                    request.setGpImage(UrlGPBoardPhoto);
                     request.setTypeNWorkStructure(structureWorkTypeList);
                     request.setMachineDemandHr(etHours.getText().toString().trim());
-                    request.setMachineDemandType(etMachineType.getText().toString().trim());
-                    request.setMachineDemandNumbers(etMachineCount.getText().toString().trim());
+                    request.setBackhoeCount(etBackhoeCount.getText().toString().trim());
+                    request.setExcavatorsCount(etExcavatorsCount.getText().toString().trim());
                     request.setNodalPersonName(etNodalName.getText().toString().trim());
                     request.setNodalPersonNumber(etNodalContact.getText().toString().trim());
                     request.setMachineTransportation(etMachineTransport.getText().toString().trim());
-                    request.setIsStartWorkImmediately(etFeasibility.getText().toString().trim());
+                    request.setIsStartWorkImmediately(startWork);
                     request.setReasonNotStart(etReason.getText().toString().trim());
                     request.setFutureDate(etFutureWorkTime.getText().toString().trim());
-                    request.setNoStructureWork(etWorkableStructCount.getText().toString().trim()); // TODO not shure
-                    request.setComment(etRemark.getText().toString().trim()); //TODO not shure
-                    request.setHoRemark(etHoRemark.getText().toString().trim());
+                    request.setNoStructureWork(etWorkableStructCount.getText().toString().trim());
+                    request.setComment(etRemark.getText().toString().trim());
                     presenter.submitVDFF(request);
                 }
                 break;
@@ -403,7 +509,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(getActivity(), message);
     }
 
     @Override
@@ -412,8 +518,9 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     }
 
     @Override
-    public void onSuccessListener(String requestID, String response) {
-
+    public void onSuccessListener(String requestID, String message) {
+        getActivity().finish();
+        Util.showToast(getActivity(), message);
     }
 
     @Override
@@ -523,28 +630,6 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
-            case "Select Taluka":
-                for (CustomSpinnerObject taluka : talukaList) {
-                    if (taluka.isSelected()) {
-                        selectedTaluka = taluka.getName();
-                        selectedTalukaId = taluka.get_id();
-                        break;
-                    }
-                }
-                etTaluka.setText(selectedTaluka);
-                break;
-            case "Select Village":
-                for (CustomSpinnerObject village : talukaList) {
-                    if (village.isSelected()) {
-                        selectedVillage = village.getName();
-                        selectedVillageId = village.get_id();
-                        break;
-                    }
-                }
-                etVillage.setText(selectedVillage);
-                break;
-        }
-        switch (type) {
             case "Select District":
                 for (CustomSpinnerObject state : districtList) {
                     if (state.isSelected()) {
@@ -614,6 +699,170 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
                     }
                 }
                 break;
+        }
+    }
+
+    //image from camera and gallery
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+            showPictureDialog();
+        }
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_error_in_photo_gallery), this);
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            //use standard intent to capture an image
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/Octopus/Image/picture.jpg";
+
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()
+                    + ".file_provider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_image_capture_not_support), this);
+        } catch (SecurityException e) {
+            Util.showToast(getString(R.string.msg_take_photo_error), this);
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                String imageFilePath = getImageName();
+                if (imageFilePath == null) {
+                    return;
+                }
+                finalUri = Util.getUri(imageFilePath);
+                Crop.of(outputUri, finalUri).start(getContext(), this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    String imageFilePath = getImageName();
+                    if (imageFilePath == null) {
+                        return;
+                    }
+
+                    outputUri = data.getData();
+                    finalUri = Util.getUri(imageFilePath);
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                final File compressedImageFile = Util.compressFile(imageFile);
+                if (Util.isConnected(getContext())) {
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        uploadImage(compressedImageFile,
+                                Constants.Image.IMAGE_TYPE_FILE, selectedImageType);
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    //upload images
+    public void uploadImage(File file, String type, final String formName) {
+        presenter.uploadImage(file,
+                Constants.Image.IMAGE_TYPE_FILE, formName);
+    }
+
+    public void onImageUploaded(String imagetype, String imageUrl) {
+        if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER1)) {
+            UrlDemandLetterPhoto1 = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_demandletter_photo1);
+                }
+            });
+
+        } else if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER2)) {
+            UrlDemandLetterPhoto2 = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_demandletter_photo2);
+                }
+            });
+
+        } else if (imagetype.equalsIgnoreCase(IMAGE_DEMAND_LETTER3)) {
+            UrlDemandLetterPhoto3 = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_demandletter_photo3);
+                }
+            });
+
+        } else if (imagetype.equalsIgnoreCase(IMAGE_GP_BOARD)) {
+            UrlGPBoardPhoto = imageUrl;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(getActivity())
+                            //.applyDefaultRequestOptions(requestOptions)
+                            .load(imageUrl)
+                            .into(iv_gpboard_photo);
+                }
+            });
         }
     }
 }
