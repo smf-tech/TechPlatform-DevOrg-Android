@@ -6,10 +6,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +47,6 @@ import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.LoginActivity;
-import com.octopusbjsindia.view.activities.MatrimonyActivity;
 import com.octopusbjsindia.view.activities.MatrimonyBookletActivity;
 import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.activities.ShowMeetBatchesActivity;
@@ -58,7 +54,6 @@ import com.octopusbjsindia.view.activities.TransactionDetailsActivity;
 import com.octopusbjsindia.view.adapters.MeetAnalyticsAdapter;
 import com.octopusbjsindia.view.adapters.MeetContactsListAdapter;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -290,6 +285,14 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private void setCurrentMeetData() {
         contactsList.clear();
         meetAnalyticsData.clear();
+
+        if (meetData.getRegistrationSchedule().getRegStartDateTime() <= System.currentTimeMillis() &&
+                meetData.getRegistrationSchedule().getRegEndDateTime() >= System.currentTimeMillis()) {
+            btnRegisterProfile.setEnabled(true);
+        } else {
+            btnRegisterProfile.setEnabled(false);
+        }
+
         if (meetData.getIs_published()) {
             btnPublishMeet.setVisibility(View.GONE);
         } else {
@@ -317,7 +320,6 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             btn_copy_referral.setVisibility(View.GONE);
             tv_referallink.setVisibility(View.GONE);
         }
-
 
         if (meetData.getRegAmount() == 0) {
             tvRegAmt.setVisibility(View.GONE);
