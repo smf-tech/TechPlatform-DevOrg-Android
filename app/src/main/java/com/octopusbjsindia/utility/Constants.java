@@ -185,6 +185,7 @@ public class Constants {
         public static final String SUJALAM_SUPHALAM_GP = "SS_GP_MODULE";
         public static final String SMARTGIRL = "Smart Girl";
         public static final String MV_SEL = "MVSel";
+        public static final String MISSION_RAHAT = "MRahat";
 
 
         //public static final String PROGRAM_MANAGEMENT = "Program Management";
@@ -549,5 +550,13 @@ public class Constants {
         public static final String MALE = "male";
         public static final String FEMALE = "female";
         public static final String OTHER = "other";
+    }
+
+    public static class MissionRahat {
+        public static final int ACCESS_CODE_MACHINE_CRETAE = 159;
+        public static final int ACCESS_CODE_HOSPTAL_CRETAE = 160;
+        public static final int ACCESS_CODE_REQUIREMENT_FORM = 161;
+        public static final int ACCESS_CODE_REQUIREMENT_APPROVAL = 162;
+        public static final int ACCESS_CODE_DAILY_REPORT = 163;
     }
 }
