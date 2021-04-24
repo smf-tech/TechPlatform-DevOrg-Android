@@ -603,7 +603,7 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                                 }
                                 CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
                                         "Select District", machineDistrictList,
-                                        true);
+                                        false);
                                 cddDistrict.show();
                                 cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -624,7 +624,7 @@ public class SmartGCustomFilterDialog  extends BottomSheetDialogFragment impleme
                                 }
                                 CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this,
                                         "Select State", machineStateList,
-                                        true);
+                                        false);
                                 cddState.show();
                                 cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                                         ViewGroup.LayoutParams.MATCH_PARENT);
