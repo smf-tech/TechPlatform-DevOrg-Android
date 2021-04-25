@@ -15,7 +15,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.MachineModel;
-import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.presenter.MissionRahat.CreateMachineActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -115,42 +114,42 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                     }
                 }
                 break;
-            case R.id.et_machine_make_model:
-                machineModelList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setSelected(false);
-                            machineModelList.add(temp);
-                        }
-                }
-                CustomSpinnerDialogClass csdStructureDept = new CustomSpinnerDialogClass(this, this,
-                        "Select Structure owner department", machineModelList, false);
-                csdStructureDept.show();
-                csdStructureDept.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
-            case R.id.et_capacity:
-                capacityList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setSelected(false);
-                            capacityList.add(temp);
-                        }
-                }
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
-                        "Select Sub Structure owner department", capacityList, false);
-                cddCity.show();
-                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_machine_make_model:
+//                machineModelList.clear();
+//                for (int i = 0; i < masterDataLists.size(); i++) {
+//                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureDept"))
+//                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+//                            CustomSpinnerObject temp = new CustomSpinnerObject();
+//                            temp.set_id(obj.getId());
+//                            temp.setName(obj.getValue());
+//                            temp.setSelected(false);
+//                            machineModelList.add(temp);
+//                        }
+//                }
+//                CustomSpinnerDialogClass csdStructureDept = new CustomSpinnerDialogClass(this, this,
+//                        "Select Structure owner department", machineModelList, false);
+//                csdStructureDept.show();
+//                csdStructureDept.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
+//            case R.id.et_capacity:
+//                capacityList.clear();
+//                for (int i = 0; i < masterDataLists.size(); i++) {
+//                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
+//                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+//                            CustomSpinnerObject temp = new CustomSpinnerObject();
+//                            temp.set_id(obj.getId());
+//                            temp.setName(obj.getValue());
+//                            temp.setSelected(false);
+//                            capacityList.add(temp);
+//                        }
+//                }
+//                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
+//                        "Select Sub Structure owner department", capacityList, false);
+//                cddCity.show();
+//                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
 
         }
     }
