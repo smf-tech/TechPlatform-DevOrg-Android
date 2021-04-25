@@ -141,7 +141,13 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Read terms and conditions here"
+                    android:autoLink="web"
+                    style="@style/textinputstyle"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_height="wrap_content"/>
                 <CheckBox
                     android:id="@+id/conditions"
                     android:layout_width="wrap_content"
@@ -150,13 +156,7 @@
                     android:buttonTint="@color/medium_blue"
                     android:autoLink="web"
                     android:text="@string/text_terms_service" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Read terms and conditions here"
-                    android:autoLink="web"
-                    style="@style/textinputstyle"
-                    android:padding="@dimen/dimen_10dp"
-                    android:layout_height="wrap_content"/>
+
 
                 <Button
                     android:id="@+id/btn_submit"
