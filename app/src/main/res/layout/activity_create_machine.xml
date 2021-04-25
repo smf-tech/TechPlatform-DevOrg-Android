@@ -101,13 +101,14 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_doner"
+                    android:id="@+id/et_donor"
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Doner name"
                     android:imeOptions="actionNext"
-                    android:inputType="textPersonName" />
+                    android:focusable="false"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
