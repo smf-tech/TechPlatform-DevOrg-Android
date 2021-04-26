@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -69,6 +70,12 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         presenter.getLocationData("",
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.STATE_LEVEL);
+    }
+
+    public void setTitle(String title) {
+        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
     @Override
