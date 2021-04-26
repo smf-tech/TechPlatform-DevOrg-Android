@@ -129,7 +129,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
+                        android:layout_weight="1"
                         android:layout_width="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
                         android:layout_height="wrap_content"
                         >
 
@@ -137,7 +139,22 @@
                             android:id="@+id/et_start_date"
                             style="@style/RegistrationEditTextLayout"
                             android:focusable="false"
-                            android:hint="Select report date"
+                            android:hint="Select start date"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <EditText
+                            android:id="@+id/et_end_date"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:hint="Select end date"
                             android:longClickable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 

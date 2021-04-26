@@ -79,9 +79,17 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             @Override
             public void onClick(View v) {
                 //setStartDate();
-                Util.showDateDialog(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+                Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
             }
         });
+        dailyReportBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //setStartDate();
+                Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+            }
+        });
+
         dailyReportBinding.etSelectSlot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +120,12 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private String getMouRequestData() {
         DailyRecordRequestModel dailyReportRequestModel = new DailyRecordRequestModel();
         Gson gson = new GsonBuilder().create();
-        //dailyReportRequestModel.set
+        dailyReportRequestModel.setMachineId("60848b1c0163325bf33cd2e2");
+        dailyReportRequestModel.setSlotId(selectedSlotId);
+        dailyReportRequestModel.setBenefitedPatientNo(Integer.parseInt(dailyReportBinding.etNumberofPatients.getText().toString()));
+        dailyReportRequestModel.setHoursUsages(Integer.parseInt(dailyReportBinding.etMachineHours.getText().toString()));
+        dailyReportRequestModel.setStartDate(String.valueOf(Util.getDateInLong(dailyReportBinding.etStartDate.getText().toString())));
+        dailyReportRequestModel.setEndDate(String.valueOf(Util.getDateInLong(dailyReportBinding.etEndDate.getText().toString())));
         String paramjson = gson.toJson(dailyReportRequestModel);
         return paramjson;
     }
@@ -210,7 +223,11 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             return false;
         } else if (dailyReportBinding.etStartDate.getText().toString().trim().length() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please select date of report.", Snackbar.LENGTH_LONG);
+                    "Please select start date of report.", Snackbar.LENGTH_LONG);
+            return false;
+        }else if (dailyReportBinding.etEndDate.getText().toString().trim().length() == 0) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please select end date of report.", Snackbar.LENGTH_LONG);
             return false;
         } else {
 

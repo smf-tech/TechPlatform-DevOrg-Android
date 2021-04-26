@@ -40,7 +40,7 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
 
 
     public void submitDailyReportData(String paramjson) {
-        final String url = BuildConfig.BASE_URL + Urls.SSGP.BENEFICIARY_DETAILS_REPORT;
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.SEND_MACHINE_DAILY_REPORT;
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(KEY_SUBMIT_DAILY_REPORT, paramjson, url);

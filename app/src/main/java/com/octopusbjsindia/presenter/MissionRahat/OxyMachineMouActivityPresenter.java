@@ -38,7 +38,7 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
 
         mContext.get().showProgressBar();
 
-        final String url = BuildConfig.BASE_URL + Urls.SSGP.BENEFICIARY_DETAILS_REPORT;
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.SAVE_MACHINE_MOU;
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(KEY_SUBMIT_MOU, paramjson, url);

@@ -75,7 +75,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
                     //submitData();
                     if (isAllDataValid()) {
-                        showDialog(activity, "Alert", "Do you want to submit ?", "No", "Yes");
+                        showDialog(activity, "Alert", "Do you want to submit MOU?", "No", "Yes");
                     }
                 }else {
                     Util.showToast(OxyMachineMouActivity.this,"Please check terms and conditions before submit.");
@@ -113,7 +113,9 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private String getMouRequestData() {
         MouRequestModel mouRequestModel = new MouRequestModel();
         Gson gson = new GsonBuilder().create();
-        //mouRequestModel.set
+        mouRequestModel.setRequirementId("608588760bdd640b9538eab7");
+        mouRequestModel.setStartDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etStartDate.getText().toString())));
+        mouRequestModel.setEndDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etEndDate.getText().toString())));
         String paramjson = gson.toJson(mouRequestModel);
         return paramjson;
     }
@@ -231,11 +233,11 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private boolean isAllDataValid() {
         if (mouOxymachineBinding.etStartDate.getText().toString().trim().length() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please enter number of machine hours used.", Snackbar.LENGTH_LONG);
+                    "Please enter MOU start date.", Snackbar.LENGTH_LONG);
             return false;
         } else if (mouOxymachineBinding.etEndDate.getText().toString().trim().length() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please enter number of patients.", Snackbar.LENGTH_LONG);
+                    "Please enter MOU end date.", Snackbar.LENGTH_LONG);
             return false;
         } else {
 
