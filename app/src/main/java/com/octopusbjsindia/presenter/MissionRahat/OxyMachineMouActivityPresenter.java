@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.ssgp.VdcBdRequestModel;
 import com.octopusbjsindia.presenter.CreateStructureActivityPresenter;
 import com.octopusbjsindia.presenter.ssgp.VDCBDFormFragmentPresenter;
@@ -66,7 +67,7 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
     public void onSuccessListener(String requestID, String response) {
         if (response != null) {
             if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
-                mContext.get().showSuccessResponse(response);
+                mContext.get().onSuccessListener(requestID,response);
             }
         }
     }

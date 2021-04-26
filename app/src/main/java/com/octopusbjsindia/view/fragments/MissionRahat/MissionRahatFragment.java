@@ -129,7 +129,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             case R.id.fb_requirement_form:
                 break;
             case R.id.fb_approval:
-                Intent intent1 = new Intent(getActivity(), OxyMachineDailyReportActivity.class);
+                Intent intent1 = new Intent(getActivity(), OxyMachineMouActivity.class);
                 getActivity().startActivity(intent1);
                 break;
             case R.id.fb_machine_list:
