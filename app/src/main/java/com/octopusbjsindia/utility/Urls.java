@@ -280,12 +280,13 @@ public class Urls {
         public static final String BENEFICIARY_DETAILS_REPORT = "api/GPbeneficiaryform";
         public static final String GET_GP_MACHINE_LIST = "api/GPMachineCodeList";
         public static final String GET_GP_STRUCURE_LIST = "api/GPStructureCodeList";
-
-
-
-
         public static final String SUBMIT_VILLAGE_DEMND = "api/villageDemndForm";
         public static final String GET_GP_STRUCTURE_ANALYTICS = "api/getGPStructureList";
         public static final String GET_GP_MACHINE_ANALYTICS = "api/GPmachineList";
+    }
+
+    public class MissionRahat {
+        public static final String GET_CREATE_MACHINE_MASTER_DATA = "api/getMasterDataList";
+        public static final String CREATE_MACHINE = "api/insertMachine";
     }
 }

@@ -25,6 +25,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
 import com.octopusbjsindia.view.customs.CustomViewPager;
+import com.octopusbjsindia.view.fragments.MissionRahat.MissionRahatFragment;
 import com.octopusbjsindia.view.fragments.ssgp.SujalamSufalamGPFragment;
 
 import java.util.ArrayList;
@@ -74,7 +75,8 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM_GP) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.MV_SEL)) {
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MV_SEL) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MISSION_RAHAT)) {
 
                         //do nothing
                     } else {
@@ -184,6 +186,11 @@ public class DashboardFragment extends Fragment {
 //                    adapter.addFragment(new SupportFragment());
                     adapter.addFragment(new TicketListFragment());
                     break;
+
+                case Constants.Home.MISSION_RAHAT:
+                    adapter.addFragment(new MissionRahatFragment());
+                    break;
+
                 default:
                     adapter.addFragment(new DefaultFragment());
                     break;
