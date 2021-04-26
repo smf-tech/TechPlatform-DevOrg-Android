@@ -29,15 +29,15 @@ public class VdcDprRequestModel {
     @SerializedName("start_meter_reading")
     @Expose
     private String startMeterReading;
-    //    @SerializedName("start_meter_reading_image")
-//    @Expose
-//    private String startMeterReadingImage;
+    @SerializedName("start_meter_reading_image")
+    @Expose
+    private String startMeterReadingImage;
     @SerializedName("end_meter_reading")
     @Expose
     private String endMeterReading;
-    //    @SerializedName("end_meter_reading_image")
-//    @Expose
-//    private String endMeterReadingImage;
+    @SerializedName("end_meter_reading_image")
+    @Expose
+    private String endMeterReadingImage;
     @SerializedName("total_meter_reading")
     @Expose
     private String totalMeterReading;
@@ -118,12 +118,28 @@ public class VdcDprRequestModel {
         this.startMeterReading = startMeterReading;
     }
 
+    public String getStartMeterReadingImage() {
+        return startMeterReadingImage;
+    }
+
+    public void setStartMeterReadingImage(String startMeterReadingImage) {
+        this.startMeterReadingImage = startMeterReadingImage;
+    }
+
     public String getEndMeterReading() {
         return endMeterReading;
     }
 
     public void setEndMeterReading(String endMeterReading) {
         this.endMeterReading = endMeterReading;
+    }
+
+    public String getEndMeterReadingImage() {
+        return endMeterReadingImage;
+    }
+
+    public void setEndMeterReadingImage(String endMeterReadingImage) {
+        this.endMeterReadingImage = endMeterReadingImage;
     }
 
     public String getTotalMeterReading() {
