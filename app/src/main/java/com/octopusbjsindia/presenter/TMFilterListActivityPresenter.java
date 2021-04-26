@@ -6,15 +6,11 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.TMFilterListRequestCallListener;
 import com.octopusbjsindia.models.tm.PendingRequest;
 import com.octopusbjsindia.models.tm.SubFilterset;
 import com.octopusbjsindia.models.tm.TMFilterlistRequestsResponse;
-import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.TMFiltersListRequestCall;
-import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.TMFiltersListActivity;
 
@@ -24,7 +20,6 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @SuppressWarnings("CanBeFinal")
 public class TMFilterListActivityPresenter implements TMFilterListRequestCallListener {

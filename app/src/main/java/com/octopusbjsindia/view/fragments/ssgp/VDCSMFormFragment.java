@@ -2,10 +2,12 @@ package com.octopusbjsindia.view.fragments.ssgp;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -51,7 +54,9 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
     String selectedStructureTypeId, selectedStructureType, selectedIntervention, selectedInterventionId,
             selectedState = "", selectedStateId = "", selectedDistrict = "", selectedDistrictId = "",
             selectedTaluka = "", selectedTalukaId = "", selectedVillage = "", selectedVillageId = "",
-            selectedBeneficiaryType, selectedBeneficiaryTypeId;
+            selectedBeneficiaryType, selectedBeneficiaryTypeId, beneficiaryType="Individual", beneficiaryCategory,
+            beneficiaryCategory1, beneficiaryCategory2, beneficiaryCategory3, beneficiaryCategory4,
+            beneficiaryCategory5, selectedSTR;
     private VDCSMFormFragmentPresenter presenter;
     private EditText etState, etDistrict, etTaluka, etVillage, et_structure_name, et_type_of_beneficiary,
             et_type_intervention, et_structure_type, et_scope_of_work, et_working_hours, et_diesel_quantity,
@@ -62,7 +67,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
             et_beneficiary_contact2, et_beneficiary_category2, et_beneficiary_name3, et_beneficiary_contact3,
             et_beneficiary_category3, et_beneficiary_name4, et_beneficiary_contact4, et_beneficiary_category4,
             et_beneficiary_name5, et_beneficiary_contact5, et_beneficiary_category5, et_responsible_person_name,
-            et_responsible_person_contact, et_ho_remark;
+            et_responsible_person_contact, selectedET;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +96,24 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
             customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
             customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
             stateList.add(customState);
+        }
+        for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+            CustomSpinnerObject customState = new CustomSpinnerObject();
+            customState.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+            customState.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+            districtList.add(customState);
+        }
+        for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+            CustomSpinnerObject customState = new CustomSpinnerObject();
+            customState.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+            customState.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+            talukaList.add(customState);
+        }
+        for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
+            CustomSpinnerObject customState = new CustomSpinnerObject();
+            customState.set_id(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getId());
+            customState.setName(Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i).getName());
+            villageList.add(customState);
         }
 
         ((GPActionsActivity) getActivity()).setTitle("VDC SM Form");
@@ -140,16 +163,75 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
         et_beneficiary_category5 = view.findViewById(R.id.et_beneficiary_category5);
         et_responsible_person_name = view.findViewById(R.id.et_responsible_person_name);
         et_responsible_person_contact = view.findViewById(R.id.et_responsible_person_contact);
-        et_ho_remark = view.findViewById(R.id.et_ho_remark);
+//        et_ho_remark = view.findViewById(R.id.et_ho_remark);
+
+        RadioGroup rb = view.findViewById(R.id.rgBeneficiaryType);
+        rb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbIndividual:
+                        beneficiaryType = "Individual";
+                        view.findViewById(R.id.lyIndividual).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.lyGroup).setVisibility(View.GONE);
+                        view.findViewById(R.id.lyCommunity).setVisibility(View.GONE);
+                        break;
+                    case R.id.rbGroup:
+                        beneficiaryType = "Group";
+                        view.findViewById(R.id.lyIndividual).setVisibility(View.GONE);
+                        view.findViewById(R.id.lyGroup).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.lyCommunity).setVisibility(View.GONE);
+                        break;
+                    case R.id.rbCommunity:
+                        beneficiaryType = "Community";
+                        view.findViewById(R.id.lyIndividual).setVisibility(View.GONE);
+                        view.findViewById(R.id.lyGroup).setVisibility(View.GONE);
+                        view.findViewById(R.id.lyCommunity).setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
+
         view.findViewById(R.id.btn_submit).setOnClickListener(this);
-        etState.setOnClickListener(this);
-        etDistrict.setOnClickListener(this);
-        etTaluka.setOnClickListener(this);
-        etVillage.setOnClickListener(this);
+        if(stateList.size()==1){
+            selectedState = stateList.get(0).getName();
+            selectedStateId = stateList.get(0).get_id();
+            etState.setText(selectedState);
+        } else {
+            etState.setOnClickListener(this);
+        }
+        if(districtList.size()==1){
+            selectedDistrict = districtList.get(0).getName();
+            selectedDistrictId= districtList.get(0).get_id();
+            etDistrict.setText(selectedDistrict);
+        } else {
+            etDistrict.setOnClickListener(this);
+        }
+        if(talukaList.size()==1){
+            selectedTaluka = talukaList.get(0).getName();
+            selectedTalukaId = talukaList.get(0).get_id();
+            etTaluka.setText(selectedTaluka);
+        } else {
+            etTaluka.setOnClickListener(this);
+        }
+        if(villageList.size()==1){
+            selectedVillage = villageList.get(0).getName();
+            selectedVillageId = villageList.get(0).get_id();
+            etVillage.setText(selectedVillage);
+        } else {
+            etVillage.setOnClickListener(this);
+        }
+
+//        etDistrict.setOnClickListener(this);
+//        etTaluka.setOnClickListener(this);
+//        etVillage.setOnClickListener(this);
         et_type_intervention.setOnClickListener(this);
         et_structure_type.setOnClickListener(this);
-        et_type_of_beneficiary.setOnClickListener(this);
-
+        et_beneficiary_category.setOnClickListener(this);
+        et_beneficiary_category1.setOnClickListener(this);
+        et_beneficiary_category2.setOnClickListener(this);
+        et_beneficiary_category3.setOnClickListener(this);
+        et_beneficiary_category4.setOnClickListener(this);
+        et_beneficiary_category5.setOnClickListener(this);
     }
 
     @Override
@@ -262,24 +344,23 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                 csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.et_type_of_beneficiary:
-                beneficiaryTypeList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureBeneficiary"))
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setTypeCode(obj.getTypeCode());
-                            temp.setSelected(false);
-                            beneficiaryTypeList.add(temp);
-                        }
-                }
-                CustomSpinnerDialogClass csdBeneficiary = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Type of Beneficiary", beneficiaryTypeList, false);
-                csdBeneficiary.show();
-                csdBeneficiary.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+            case R.id.et_beneficiary_category:
+                callBeneficiaryCategory("Select category of beneficiary");
+                break;
+            case R.id.et_beneficiary_category1:
+                callBeneficiaryCategory("Select category of beneficiary 1");
+                break;
+            case R.id.et_beneficiary_category2:
+                callBeneficiaryCategory("Select category of beneficiary 2");
+                break;
+            case R.id.et_beneficiary_category3:
+                callBeneficiaryCategory("Select category of beneficiary 3");
+                break;
+            case R.id.et_beneficiary_category4:
+                callBeneficiaryCategory("Select category of beneficiary 4");
+                break;
+            case R.id.et_beneficiary_category5:
+                callBeneficiaryCategory("Select category of beneficiary 5");
                 break;
             case R.id.btn_submit:
                 if (TextUtils.isEmpty(selectedStateId)) {
@@ -303,7 +384,6 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                     request.setTalukaId(selectedTalukaId);
                     request.setVillageId(selectedVillageId);
                     request.setName(et_structure_name.getText().toString().trim());
-                    request.setBeneficiaryId(selectedBeneficiaryTypeId);
                     request.setInterventionId(selectedInterventionId);
                     request.setTypeId(selectedStructureTypeId);
                     request.setScopeOfWork(et_scope_of_work.getText().toString().trim());
@@ -317,56 +397,90 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                     request.setStructureLenght(et_structure_length.getText().toString().trim());
                     request.setStructureWidth(et_structure_Width.getText().toString().trim());
                     request.setStructureDepth(et_structure_depth.getText().toString().trim());
-                    request.setBeneficiaryName(et_beneficiary_name.getText().toString().trim());
-                    request.setBeneficiaryContactNumber(et_beneficiary_contact.getText().toString().trim());
-                    request.setCategoryBeneficiaryFarmer(et_beneficiary_category.getText().toString().trim());
-//                request.set(et_irrigation.getText().toString().trim());
-                    request.setGatNumber(et_gat_no.getText().toString().trim());
-                    request.setIncomeFormFarm(et_Annual_income.getText().toString().trim());
-                    request.setCropsYears(et_numberof_crops.getText().toString().trim());
-                    request.setCropType(et_type_of_crops.getText().toString().trim());
-                    request.setResponsiblePersonName(et_responsible_person_name.getText().toString().trim());
-                    request.setResponsiblePersonNumber(et_responsible_person_contact.getText().toString().trim());
-                    request.setComment(et_ho_remark.getText().toString().trim());
 
-                    ArrayList<BeneficiaryDetail> beneficiaryDetails = new ArrayList<BeneficiaryDetail>();
-                    BeneficiaryDetail beneficiary1 = new BeneficiaryDetail();
-                    beneficiary1.setName(et_beneficiary_name1.getText().toString().trim());
-                    beneficiary1.setNumber(et_beneficiary_contact1.getText().toString().trim());
-                    beneficiary1.setCategory(et_beneficiary_category1.getText().toString().trim());
-                    beneficiaryDetails.add(beneficiary1);
+                    request.setBeneficiaryId(selectedBeneficiaryTypeId);
 
-                    BeneficiaryDetail beneficiary2 = new BeneficiaryDetail();
-                    beneficiary2.setName(et_beneficiary_name2.getText().toString().trim());
-                    beneficiary2.setNumber(et_beneficiary_contact2.getText().toString().trim());
-                    beneficiary2.setCategory(et_beneficiary_category2.getText().toString().trim());
-                    beneficiaryDetails.add(beneficiary2);
+                    if(beneficiaryType.equals("Individual")){
+                        request.setBeneficiaryName(et_beneficiary_name.getText().toString().trim());
+                        request.setBeneficiaryContactNumber(et_beneficiary_contact.getText().toString().trim());
+//                        request.setCategoryBeneficiaryFarmer(et_beneficiary_category.getText().toString().trim());
+                        request.setCategoryBeneficiaryFarmer(beneficiaryCategory);
+                        request.setGatNumber(et_gat_no.getText().toString().trim());
+                        request.setIncomeFormFarm(et_Annual_income.getText().toString().trim());
+                        request.setCropsYears(et_numberof_crops.getText().toString().trim());
+                        request.setCropType(et_type_of_crops.getText().toString().trim());
+                    } else if(beneficiaryType.equals("Group")) {
+                        ArrayList<BeneficiaryDetail> beneficiaryDetails = new ArrayList<BeneficiaryDetail>();
+                        BeneficiaryDetail beneficiary1 = new BeneficiaryDetail();
+                        beneficiary1.setName(et_beneficiary_name1.getText().toString().trim());
+                        beneficiary1.setNumber(et_beneficiary_contact1.getText().toString().trim());
+//                        beneficiary1.setCategory(et_beneficiary_category1.getText().toString().trim());
+                        beneficiary1.setCategory(beneficiaryCategory1);
+                        beneficiaryDetails.add(beneficiary1);
 
-                    BeneficiaryDetail beneficiary3 = new BeneficiaryDetail();
-                    beneficiary3.setName(et_beneficiary_name3.getText().toString().trim());
-                    beneficiary3.setNumber(et_beneficiary_contact3.getText().toString().trim());
-                    beneficiary3.setCategory(et_beneficiary_category3.getText().toString().trim());
-                    beneficiaryDetails.add(beneficiary3);
+                        BeneficiaryDetail beneficiary2 = new BeneficiaryDetail();
+                        beneficiary2.setName(et_beneficiary_name2.getText().toString().trim());
+                        beneficiary2.setNumber(et_beneficiary_contact2.getText().toString().trim());
+//                        beneficiary2.setCategory(et_beneficiary_category2.getText().toString().trim());
+                        beneficiary2.setCategory(beneficiaryCategory2);
+                        beneficiaryDetails.add(beneficiary2);
 
-                    BeneficiaryDetail beneficiary4 = new BeneficiaryDetail();
-                    beneficiary4.setName(et_beneficiary_name4.getText().toString().trim());
-                    beneficiary4.setNumber(et_beneficiary_contact4.getText().toString().trim());
-                    beneficiary4.setCategory(et_beneficiary_category4.getText().toString().trim());
-                    beneficiaryDetails.add(beneficiary4);
+                        BeneficiaryDetail beneficiary3 = new BeneficiaryDetail();
+                        beneficiary3.setName(et_beneficiary_name3.getText().toString().trim());
+                        beneficiary3.setNumber(et_beneficiary_contact3.getText().toString().trim());
+//                        beneficiary3.setCategory(et_beneficiary_category3.getText().toString().trim());
+                        beneficiary3.setCategory(beneficiaryCategory3);
+                        beneficiaryDetails.add(beneficiary3);
 
-                    BeneficiaryDetail beneficiary5 = new BeneficiaryDetail();
-                    beneficiary5.setName(et_beneficiary_name5.getText().toString().trim());
-                    beneficiary5.setNumber(et_beneficiary_contact5.getText().toString().trim());
-                    beneficiary5.setCategory(et_beneficiary_category5.getText().toString().trim());
-                    beneficiaryDetails.add(beneficiary5);
+                        BeneficiaryDetail beneficiary4 = new BeneficiaryDetail();
+                        beneficiary4.setName(et_beneficiary_name4.getText().toString().trim());
+                        beneficiary4.setNumber(et_beneficiary_contact4.getText().toString().trim());
+//                        beneficiary4.setCategory(et_beneficiary_category4.getText().toString().trim());
+                        beneficiary4.setCategory(beneficiaryCategory4);
+                        beneficiaryDetails.add(beneficiary4);
 
-                    request.setBeneficiaryDetails(beneficiaryDetails);
+                        BeneficiaryDetail beneficiary5 = new BeneficiaryDetail();
+                        beneficiary5.setName(et_beneficiary_name5.getText().toString().trim());
+                        beneficiary5.setNumber(et_beneficiary_contact5.getText().toString().trim());
+//                        beneficiary5.setCategory(et_beneficiary_category5.getText().toString().trim());
+                        beneficiary5.setCategory(beneficiaryCategory5);
+                        beneficiaryDetails.add(beneficiary5);
 
-                    presenter.submitSM(request);
+                        request.setBeneficiaryDetails(beneficiaryDetails);
+
+                    } else {
+                        request.setResponsiblePersonName(et_responsible_person_name.getText().toString().trim());
+                        request.setResponsiblePersonNumber(et_responsible_person_contact.getText().toString().trim());
+                    }
+
+                    Gson gson = new GsonBuilder().create();
+                    String paramjson = gson.toJson(request);
+                    Log.e("requesss",paramjson);
+//                    presenter.submitSM(request);
 
                 }
                 break;
         }
+    }
+
+    void callBeneficiaryCategory(String title){
+        beneficiaryTypeList.clear();
+        for (int i = 0; i < masterDataLists.size(); i++) {
+            if (masterDataLists.get(i).getField().equalsIgnoreCase("structureBeneficiary"))
+                for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+                    CustomSpinnerObject temp = new CustomSpinnerObject();
+                    temp.set_id(obj.getId());
+                    temp.setName(obj.getValue());
+                    temp.setTypeCode(obj.getTypeCode());
+                    temp.setSelected(false);
+                    beneficiaryTypeList.add(temp);
+                }
+        }
+        CustomSpinnerDialogClass csdBeneficiary = new CustomSpinnerDialogClass(getActivity(), this,
+                title, beneficiaryTypeList, false);
+        csdBeneficiary.show();
+        csdBeneficiary.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
@@ -563,22 +677,7 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                 }
                 selectedStructureType = "";
                 selectedStructureTypeId = "";
-            /*    et_structure_type.setText("");
-                structureTypeList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureType")
-                            && masterDataLists.get(i).getStructureTypeCode() == selectedType) {
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setSelected(false);
-                            structureTypeList.add(temp);
-                        }
-                        break;
-                    }
-
-                }*/
+                et_structure_type.setText("");
                 et_type_intervention.setText(selectedIntervention);
                 break;
             case "Select Structure Type":
@@ -590,14 +689,53 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
                 }
                 et_structure_type.setText(selectedStructureType);
                 break;
-            case "Select Type of Beneficiary":
+            case "Select category of beneficiary":
                 for (CustomSpinnerObject obj : beneficiaryTypeList) {
                     if (obj.isSelected()) {
-                        selectedBeneficiaryType = obj.getName();
-                        selectedBeneficiaryTypeId = obj.get_id();
+                        et_beneficiary_category.setText(obj.getName());
+                        beneficiaryCategory = obj.get_id();
                     }
                 }
-                et_type_of_beneficiary.setText(selectedBeneficiaryType);
+                break;
+            case "Select category of beneficiary 1":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        et_beneficiary_category1.setText(obj.getName());
+                        beneficiaryCategory1 = obj.get_id();
+                    }
+                }
+                break;
+            case "Select category of beneficiary 2":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        et_beneficiary_category2.setText(obj.getName());
+                        beneficiaryCategory2 = obj.get_id();
+                    }
+                }
+                break;
+            case "Select category of beneficiary 3":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        et_beneficiary_category3.setText(obj.getName());
+                        beneficiaryCategory3 = obj.get_id();
+                    }
+                }
+                break;
+            case "Select category of beneficiary 4":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        et_beneficiary_category4.setText(obj.getName());
+                        beneficiaryCategory4 = obj.get_id();
+                    }
+                }
+                break;
+            case "Select category of beneficiary 5":
+                for (CustomSpinnerObject obj : beneficiaryTypeList) {
+                    if (obj.isSelected()) {
+                        et_beneficiary_category5.setText(obj.getName());
+                        beneficiaryCategory5 = obj.get_id();
+                    }
+                }
                 break;
 
         }
