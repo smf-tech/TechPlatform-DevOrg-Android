@@ -285,5 +285,6 @@ public class Urls {
     public class MissionRahat {
         public static final String GET_CREATE_MACHINE_MASTER_DATA = "api/getMasterDataList";
         public static final String CREATE_MACHINE = "api/insertMachine";
+        public static final String CREATE_HOSPITAL = "api/addHospital";
     }
 }

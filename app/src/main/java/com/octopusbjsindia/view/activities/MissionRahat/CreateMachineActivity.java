@@ -311,11 +311,11 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                     }
                 }
                 etState.setText(selectedState);
-//                    if (selectedState != "" && selectedState != "State") {
-//                        presenter.getLocationData(selectedStateId,
-//                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-//                    }
+                if (selectedState != "" && selectedState != "State") {
+                    presenter.getLocationData(selectedStateId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                }
                 break;
             case "Select District":
                 for (CustomSpinnerObject district : districtList) {

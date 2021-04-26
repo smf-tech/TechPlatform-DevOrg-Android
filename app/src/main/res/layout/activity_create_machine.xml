@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.octopusbjsindia.view.activities.CreateStructureActivity">
+    tools:context="com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity">
 
     <include
         android:id="@+id/toolbar"
