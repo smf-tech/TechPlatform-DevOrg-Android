@@ -7,6 +7,11 @@ import java.io.Serializable;
 import java.util.List;
 
 public class MasterDataResponse implements Serializable {
+
+    // Please note, here we have used same model class for data parsing as SS master data model class.
+    // So, dont do any change in model class for Mission Rahat project as it can affect to SS.
+    // If need change, create another model class for Mission Rahat.
+
     @SerializedName("code")
     @Expose
     private Integer code;
