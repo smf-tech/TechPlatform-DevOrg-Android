@@ -79,6 +79,9 @@ android {
         warningsAsErrors true
         abortOnError false
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

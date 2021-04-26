@@ -274,6 +274,8 @@
         <activity
             android:name=".view.activities.ssgp.GPActionsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.activities.MissionRahat.OxyMachineMouActivity" />
+        <activity android:name=".view.activities.MissionRahat.OxyMachineDailyReportActivity" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

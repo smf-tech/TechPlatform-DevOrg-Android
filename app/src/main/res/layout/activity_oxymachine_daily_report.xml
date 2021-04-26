@@ -46,24 +46,11 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_hospital_address"
-                        style="@style/RegistrationEditTextLayout"
-                        android:focusable="false"
-                        android:hint="Please enter address"
-                        android:longClickable="false" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_hospital_owner"
+                        android:id="@+id/et_hospital_incharge"
                         style="@style/RegistrationEditTextLayout"
                         android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:focusable="false"
-                        android:hint="Please enter name of owner "
+                        android:hint="Please enter name of incharge "
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,9 +74,35 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_machines_quantity"
+                        android:id="@+id/et_select_machines"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Number of machine allocated"
+                        android:hint="Select machine code"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_machine_hours"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Usage in hours"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_numberof_patients"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Usage in hours"
                         android:inputType="number"
                         android:maxLength="3" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -100,64 +113,33 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_machine_code_selection"
+                        android:id="@+id/et_select_slot"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Select machine codes"
-                        android:inputType="number"
-                        android:maxLength="3" />
+                        android:focusable="false"
+                        android:hint="Select hospital name"
+                        android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="2">
+                    >
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
+                        >
 
                         <EditText
                             android:id="@+id/et_start_date"
                             style="@style/RegistrationEditTextLayout"
                             android:focusable="false"
-                            android:hint="@string/start_date"
-                            android:longClickable="false" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/et_end_date"
-                            style="@style/RegistrationEditTextLayout"
-                            android:focusable="false"
-                            android:hint="@string/end_date"
+                            android:hint="Select report date"
                             android:longClickable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Read terms and conditions here"
-                    android:autoLink="web"
-                    style="@style/textinputstyle"
-                    android:padding="@dimen/dimen_10dp"
-                    android:layout_height="wrap_content"/>
-                <CheckBox
-                    android:id="@+id/check_box_terms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:text="@string/text_terms_service" />
-
 
                 <Button
                     android:id="@+id/btn_submit"
