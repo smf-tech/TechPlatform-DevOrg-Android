@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,6 +77,12 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                 Constants.JurisdictionLevelName.STATE_LEVEL);
 
         presenter.getMasterData();
+    }
+
+    public void setTitle(String title) {
+        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText(title);
+        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
     @Override
@@ -311,11 +318,11 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                     }
                 }
                 etState.setText(selectedState);
-//                    if (selectedState != "" && selectedState != "State") {
-//                        presenter.getLocationData(selectedStateId,
-//                                Util.getUserObjectFromPref().getJurisdictionTypeId(),
-//                                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-//                    }
+                if (selectedState != "" && selectedState != "State") {
+                    presenter.getLocationData(selectedStateId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                }
                 break;
             case "Select District":
                 for (CustomSpinnerObject district : districtList) {

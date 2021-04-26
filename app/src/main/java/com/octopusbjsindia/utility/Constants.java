@@ -558,5 +558,6 @@ public class Constants {
         public static final int ACCESS_CODE_REQUIREMENT_FORM = 170;
         public static final int ACCESS_CODE_REQUIREMENT_APPROVAL = 167;
         public static final int ACCESS_CODE_DAILY_REPORT = 171;
+        public static final int ACCESS_CODE_VIEW_MACHINE_LIST = 172;
     }
 }

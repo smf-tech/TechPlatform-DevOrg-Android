@@ -31,7 +31,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     private View machineRahatFragmentView;
     private FloatingActionButton fbSelect;
     private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList;
-    private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed, isDailyReportAllowed;
+    private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
+            isDailyReportAllowed, isMachineListAllowed;
     private boolean isFABOpen = false;
 
     @Override
@@ -54,11 +55,6 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     }
 
     private void init() {
-//        isMachineCreate = true;
-//        isHospitalCreate = true;
-//        isRequirementForm = true;
-//        isApprovalAllowed = true;
-//        isDailyReportAllowed = true;
         fbSelect = machineRahatFragmentView.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
         fbMachine = machineRahatFragmentView.findViewById(R.id.fb_machine);
@@ -89,8 +85,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_REQUIREMENT_APPROVAL)) {
                     isApprovalAllowed = true;
                     continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_DAILY_REPORT)) {
-                    isDailyReportAllowed = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_VIEW_MACHINE_LIST)) {
+                    isMachineListAllowed = true;
                     continue;
                 }
             }
@@ -160,7 +156,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbApproval.animate().translationY(-height);
             height = height + 140;
         }
-        if (isDailyReportAllowed) {
+        if (isMachineListAllowed) {
             fbMachineList.show();
             fbMachineList.animate().translationY(-height);
         }
@@ -185,7 +181,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbApproval.hide();
             fbApproval.animate().translationY(0);
         }
-        if (isDailyReportAllowed) {
+        if (isMachineListAllowed) {
             fbMachineList.hide();
             fbMachineList.animate().translationY(0);
         }
