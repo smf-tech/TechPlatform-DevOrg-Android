@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.adapter.OxyMachineListAdapter;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
@@ -23,6 +24,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineDailyReportActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 
 import java.util.List;
@@ -129,6 +131,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 getActivity().startActivity(intent1);
                 break;
             case R.id.fb_machine_list:
+                Intent intent2 = new Intent(getActivity(), OxyMachineListActivity.class);
+                getActivity().startActivity(intent2);
                 break;
         }
     }

@@ -291,6 +291,8 @@ public class Urls {
         public static final String CREATE_HOSPITAL = "api/addHospital";
         public static final String SAVE_MACHINE_MOU = "api/saveMachineMOU";
         public static final String SEND_MACHINE_DAILY_REPORT = "api/machineDailyReport";
+        public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
+
 
 
     }

@@ -276,6 +276,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.activities.MissionRahat.OxyMachineMouActivity" />
         <activity android:name=".view.activities.MissionRahat.OxyMachineDailyReportActivity" />
+        <activity android:name=".view.activities.MissionRahat.OxyMachineListActivity" />
 
         <receiver
             android:name=".receivers.SmsReceiver"
