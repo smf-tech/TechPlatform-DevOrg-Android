@@ -40,8 +40,11 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.TMFilterActivity"></activity>
-        <activity android:name=".view.activities.MissionRahat.CreateHospitalActivity"></activity>
+        <activity android:name=".view.activities.MissionRahat.RequirementsListActivity"></activity>
+        <activity android:name=".view.activities.MissionRahat.ConcentratorApprovalActivity" />
+        <activity android:name=".view.activities.MissionRahat.ConcentratorRequirementActivity" />
+        <activity android:name=".view.activities.TMFilterActivity" />
+        <activity android:name=".view.activities.MissionRahat.CreateHospitalActivity" />
         <activity android:name=".view.activities.MissionRahat.CreateMachineActivity" />
         <activity
             android:name=".view.activities.SmartGirlDashboardListActivity"
