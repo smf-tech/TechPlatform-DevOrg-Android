@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -146,6 +147,10 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
     @Override
     public void onItemClicked(int pos) {
-
+        Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);
+        Gson gson = new Gson();
+        String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+        intent1.putExtra("MachineDataString",machineDataString);
+        startActivity(intent1);
     }
 }

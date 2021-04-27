@@ -2,6 +2,7 @@ package com.octopusbjsindia.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -53,7 +54,15 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
 
         public OxyMachineViewHolder(@NonNull RowOxymachineListBinding itemView) {
             super(itemView.getRoot());
+            
             rowOxymachineListBinding = itemView;
+            rowOxymachineListBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRequestItemClicked.onItemClicked(getAdapterPosition());
+                }
+            });
+
         }
     }
 
