@@ -15,7 +15,7 @@ public class OxyMachineListActivityPresenter implements APIPresenterListener {
     private WeakReference<OxyMachineListActivity> mContext;
     private final String TAG = OxyMachineListActivityPresenter.class.getName();
 
-    private static final String GET_MACHINE_LIST = "machineList";
+    public static final String GET_MACHINE_LIST = "machineList";
 
     public OxyMachineListActivityPresenter(OxyMachineListActivity mContext) {
         this.mContext = new WeakReference<>(mContext);

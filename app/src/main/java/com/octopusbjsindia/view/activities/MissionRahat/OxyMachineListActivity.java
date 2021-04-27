@@ -147,7 +147,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             if (response != null) {
                 OxygenMachineListModel oxygenMachineListModel = new Gson().fromJson(response, OxygenMachineListModel.class);
                 if (oxygenMachineListModel.getCode() == 200) {
-                    if (requestID.equalsIgnoreCase("RequirementsList")) {
+                    if (requestID.equalsIgnoreCase(OxyMachineListActivityPresenter.GET_MACHINE_LIST)) {
                         nextPageUrl = oxygenMachineListModel.getNextPageUrl();
                         oxygenMachineLists.addAll(oxygenMachineListModel.getOxygenMachineLists());
                         oxyMachineListAdapter.notifyDataSetChanged();
