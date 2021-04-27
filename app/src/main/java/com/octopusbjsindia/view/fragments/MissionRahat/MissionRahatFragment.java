@@ -5,24 +5,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsAPIResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsData;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.presenter.MissionRahat.MissionRahatFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
+import com.octopusbjsindia.view.adapters.SSAnalyticsAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MissionRahatFragment extends Fragment implements APIDataListener, View.OnClickListener {
@@ -32,6 +41,12 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
             isDailyReportAllowed, isMachineListAllowed;
     private boolean isFABOpen = false;
+    private ProgressBar progressBar;
+    private RelativeLayout progressBarLayout;
+    private SSAnalyticsAdapter mrAnalyticsAdapter;
+    private ArrayList<SSAnalyticsData> mrAnalyticsDataList = new ArrayList<>();
+    private RecyclerView rvMRAnalytics;
+    private MissionRahatFragmentPresenter missionRahatFragmentPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +68,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     }
 
     private void init() {
+        progressBarLayout = machineRahatFragmentView.findViewById(R.id.profile_act_progress_bar);
+        progressBar = machineRahatFragmentView.findViewById(R.id.pb_profile_act);
         fbSelect = machineRahatFragmentView.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
         fbMachine = machineRahatFragmentView.findViewById(R.id.fb_machine);
@@ -65,6 +82,16 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         fbApproval.setOnClickListener(this);
         fbMachineList = machineRahatFragmentView.findViewById(R.id.fb_machine_list);
         fbMachineList.setOnClickListener(this);
+
+        rvMRAnalytics = machineRahatFragmentView.findViewById(R.id.rv_mr_analytics);
+        rvMRAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        mrAnalyticsAdapter = new SSAnalyticsAdapter(getActivity(), mrAnalyticsDataList, 1,
+                "MR DataList", "MR");
+        rvMRAnalytics.setAdapter(mrAnalyticsAdapter);
+        mrAnalyticsAdapter.notifyDataSetChanged();
+
+        missionRahatFragmentPresenter = new MissionRahatFragmentPresenter(this);
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
@@ -94,12 +121,26 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     @Override
     public void onResume() {
         super.onResume();
+        if (Util.isConnected(getActivity())) {
+            missionRahatFragmentPresenter.getMRAnalyticsData("", "");
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
+        if (mrAnalyticsDataList.size() > 0) {
+            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
         closeFABMenu();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        if (missionRahatFragmentPresenter != null) {
+            missionRahatFragmentPresenter.clearData();
+            missionRahatFragmentPresenter = null;
+        }
     }
 
     @Override
@@ -186,31 +227,62 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-
+        Util.showToast(response, this);
     }
 
     @Override
     public void showProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        getActivity().runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void closeCurrentActivity() {
-
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
+        }
     }
+
+    public void populateAnalyticsData(SSAnalyticsAPIResponse analyticsData) {
+        if (analyticsData != null) {
+            mrAnalyticsDataList.clear();
+            for (SSAnalyticsData data : analyticsData.getData()) {
+                if (data != null) {
+                    mrAnalyticsDataList.add(data);
+                }
+            }
+        }
+    }
+
+    public void emptyResponse() {
+        mrAnalyticsDataList.clear();
+        machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        rvMRAnalytics.setAdapter(mrAnalyticsAdapter);
+        mrAnalyticsAdapter.notifyDataSetChanged();
+    }
+
 }

@@ -286,5 +286,6 @@ public class Urls {
         public static final String GET_CREATE_MACHINE_MASTER_DATA = "api/getMasterDataList";
         public static final String CREATE_MACHINE = "api/insertMachine";
         public static final String CREATE_HOSPITAL = "api/addHospital";
+        public static final String GET_MR_ANALYTICS = "api/getMachineAnalyticsV2";
     }
 }

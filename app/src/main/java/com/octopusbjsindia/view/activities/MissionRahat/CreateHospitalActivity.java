@@ -48,7 +48,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateHospitalActivityPresenter(this);
         initView();
-        setTitle("Create Machine");
+        setTitle("Create Hospital");
     }
 
     private void initView() {
