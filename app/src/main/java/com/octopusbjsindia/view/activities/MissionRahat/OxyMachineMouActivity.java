@@ -27,8 +27,11 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.MissionRahat.HospitalDetailsRespone;
+import com.octopusbjsindia.models.MissionRahat.HospitalDetailsResponeModel;
 import com.octopusbjsindia.models.MissionRahat.MachineModel;
 import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
+import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
@@ -37,7 +40,10 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class OxyMachineMouActivity extends AppCompatActivity implements APIDataListener,
@@ -45,6 +51,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private OxyMachineMouActivityPresenter presenter;
     LayoutMouOxymachineBinding mouOxymachineBinding;
     private Activity activity;
+    private String requirmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +69,20 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
         setClickListners();
         mouOxymachineBinding.toolbar.toolbarTitle.setText("Machine MOU");
+        if (getIntent().getExtras() != null) {
+            requirmentId = getIntent().getExtras().getString("RequestId");
+            Log.d("requirment_Id---",requirmentId);
+            callRequirementInfo();
+        }
 
-
+    }
+    private void populateData(HospitalDetailsRespone hospitalDetailsRespone){
+        mouOxymachineBinding.etHospitalName.setText(hospitalDetailsRespone.getHospitalName());
+        mouOxymachineBinding.etHospitalAddress.setText(hospitalDetailsRespone.getAddress());
+        mouOxymachineBinding.etHospitalOwner.setText(hospitalDetailsRespone.getOwnerName());
+        mouOxymachineBinding.etHospitalContact.setText(hospitalDetailsRespone.getOwnerContactDetails());
+        mouOxymachineBinding.etMachinesQuantity.setText(String.valueOf(hospitalDetailsRespone.getApprovedMachineQuanity()));
+        mouOxymachineBinding.etMachineCodeSelection.setText(hospitalDetailsRespone.getMachineCodeList());
     }
 
     private void setClickListners() {
@@ -109,6 +128,16 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private void callSubmitMethod() {
         presenter.submitMouData(getMouRequestData());
     }
+    private void callRequirementInfo() {
+        presenter.getRequirementMouData(getRequirementRequestData());
+    }
+
+    private String getRequirementRequestData() {
+        HashMap<String,String> map=new HashMap<>();
+        map.put("requirmentId", requirmentId);
+        String paramjson = new JSONObject(map).toString();
+        return paramjson;
+    }
 
     private String getMouRequestData() {
         MouRequestModel mouRequestModel = new MouRequestModel();
@@ -138,9 +167,16 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-        Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+        if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.GET_REQUIREMENT_MOU)) {
+            HospitalDetailsResponeModel responseOBJ = new Gson().fromJson(response, HospitalDetailsResponeModel.class);
+            runOnUiThread(() -> {
+                populateData(responseOBJ.getHospitalDetailsRespone());
+            });
+        }else {
+            CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListData;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorApprovalActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.util.ArrayList;
@@ -79,6 +80,11 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                         mContext.startActivity(intent);
                     } else {
                         // Redirect To MOU
+                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
+                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+                            mContext.startActivity(intent);
+                        }
                     }
 
                 }

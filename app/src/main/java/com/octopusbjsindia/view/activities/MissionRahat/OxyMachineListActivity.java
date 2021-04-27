@@ -35,6 +35,7 @@ import com.octopusbjsindia.models.MissionRahat.OxygenMachineListModel;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineListActivityPresenter;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
@@ -147,10 +148,12 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
     @Override
     public void onItemClicked(int pos) {
-        Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);
-        Gson gson = new Gson();
-        String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
-        intent1.putExtra("MachineDataString",machineDataString);
-        startActivity(intent1);
+        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
+            Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);
+            Gson gson = new Gson();
+            String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+            intent1.putExtra("MachineDataString", machineDataString);
+            startActivity(intent1);
+        }
     }
 }

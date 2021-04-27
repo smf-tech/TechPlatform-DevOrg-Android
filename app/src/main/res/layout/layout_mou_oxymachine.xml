@@ -36,7 +36,7 @@
                         android:id="@+id/et_hospital_name"
                         style="@style/RegistrationEditTextLayout"
                         android:focusable="false"
-                        android:hint="Select hospital name"
+                        android:hint="Hospital name"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +49,7 @@
                         android:id="@+id/et_hospital_address"
                         style="@style/RegistrationEditTextLayout"
                         android:focusable="false"
-                        android:hint="Please enter address"
+                        android:hint="Address"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +63,7 @@
                         style="@style/RegistrationEditTextLayout"
                         android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:focusable="false"
-                        android:hint="Please enter name of owner "
+                        android:hint="Name of owner "
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,8 +90,7 @@
                         android:id="@+id/et_machines_quantity"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Number of machine allocated"
-                        android:inputType="number"
-                        android:maxLength="3" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -102,9 +101,8 @@
                     <EditText
                         android:id="@+id/et_machine_code_selection"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Select machine codes"
-                        android:inputType="number"
-                        android:maxLength="3" />
+                        android:hint="machine codes"
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout

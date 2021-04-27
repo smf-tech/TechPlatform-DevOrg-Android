@@ -46,6 +46,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private String selectedSlot="", selectedSlotId="";
     private ArrayList<CustomSpinnerObject> reportSlotList = new ArrayList<>();
     private Activity activity;
+    private OxygenMachineList receivedOxygenMachineData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     }
 
     private void populateMachineData(OxygenMachineList oxygenMachineList) {
+        receivedOxygenMachineData = oxygenMachineList;
         dailyReportBinding.etHospitalName.setText(oxygenMachineList.getHospitalName());
         dailyReportBinding.etHospitalIncharge.setText(oxygenMachineList.getInchargeName());
         dailyReportBinding.etHospitalContact.setText(oxygenMachineList.getInchargeMobileNumber());
@@ -135,7 +137,8 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private String getMouRequestData() {
         DailyRecordRequestModel dailyReportRequestModel = new DailyRecordRequestModel();
         Gson gson = new GsonBuilder().create();
-        dailyReportRequestModel.setMachineId("60848b1c0163325bf33cd2e2");
+        dailyReportRequestModel.setMachineId(receivedOxygenMachineData.getId());
+        dailyReportRequestModel.setMachineCode(receivedOxygenMachineData.getCode());
         dailyReportRequestModel.setSlotId(selectedSlotId);
         dailyReportRequestModel.setBenefitedPatientNo(Integer.parseInt(dailyReportBinding.etNumberofPatients.getText().toString()));
         dailyReportRequestModel.setHoursUsages(Integer.parseInt(dailyReportBinding.etMachineHours.getText().toString()));

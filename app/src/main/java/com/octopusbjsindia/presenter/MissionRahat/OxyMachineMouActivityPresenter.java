@@ -29,6 +29,7 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
     private final String TAG = OxyMachineMouActivityPresenter.class.getName();
 
     private static final String KEY_SUBMIT_MOU = "submitmoudata";
+    public static final String GET_REQUIREMENT_MOU = "getrequirementmou";
 
     public OxyMachineMouActivityPresenter(OxyMachineMouActivity mContext) {
         this.mContext = new WeakReference<>(mContext);
@@ -44,6 +45,15 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(KEY_SUBMIT_MOU, paramjson, url);
     }
 
+    public void getRequirementMouData(String paramjson) {
+
+        mContext.get().showProgressBar();
+
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_REQUIREMENT_MOU_DETAILS;
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.postDataApiCall(GET_REQUIREMENT_MOU, paramjson, url);
+    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
@@ -65,10 +75,16 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
 
     @Override
     public void onSuccessListener(String requestID, String response) {
+        if (mContext != null && mContext.get() != null) {
+            mContext.get().hideProgressBar();
+        }
         if (response != null) {
             if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
                 mContext.get().onSuccessListener(requestID,response);
+            }else if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.GET_REQUIREMENT_MOU)) {
+                mContext.get().onSuccessListener(requestID,response);
             }
+
         }
     }
 }

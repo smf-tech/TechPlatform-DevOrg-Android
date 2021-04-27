@@ -409,6 +409,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
         public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+        public static final Integer ROLE_CODE_MR_HOSPITAL_INCHARGE = 135;
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
         public static final Integer STRUCTURE_IN_PROGRESS =	117;

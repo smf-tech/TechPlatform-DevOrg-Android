@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DailyRecordRequestModel {
+    @SerializedName("Machine_code")
+    @Expose
+    private String MachineCode;
 
     @SerializedName("machine_id")
     @Expose
@@ -72,4 +75,11 @@ public class DailyRecordRequestModel {
         this.endDate = endDate;
     }
 
+    public String getMachineCode() {
+        return MachineCode;
+    }
+
+    public void setMachineCode(String machineCode) {
+        MachineCode = machineCode;
+    }
 }
