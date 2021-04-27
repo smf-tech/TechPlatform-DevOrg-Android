@@ -144,18 +144,21 @@
                 </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="Read terms and conditions here"
+                    android:id="@+id/tv_terms_codition"
+                    android:text="@string/text_terms_service"
                     android:autoLink="web"
                     style="@style/textinputstyle"
                     android:padding="@dimen/dimen_10dp"
                     android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <CheckBox
                     android:id="@+id/check_box_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:text="@string/text_terms_service" />
-
+                    android:text="I agrre." />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_submit"

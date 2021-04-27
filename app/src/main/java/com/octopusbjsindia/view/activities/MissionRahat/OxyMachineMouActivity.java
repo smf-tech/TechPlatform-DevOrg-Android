@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -36,6 +41,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
@@ -69,6 +75,15 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
         setClickListners();
         mouOxymachineBinding.toolbar.toolbarTitle.setText("Machine MOU");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
+                    "Terms of Service and Privacy Policy</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
+                    "Terms of Service and Privacy Policy</u></h7></p>"));
+        }
+
+
         if (getIntent().getExtras() != null) {
             requirmentId = getIntent().getExtras().getString("RequestId");
             Log.d("requirment_Id---",requirmentId);
@@ -121,6 +136,14 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        mouOxymachineBinding.tvTermsCodition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL + Urls.MissionRahat.TERMS_AND_CONDITIONS_MISSION_RAHAT));
+                startActivity(browserIntent);
             }
         });
     }
