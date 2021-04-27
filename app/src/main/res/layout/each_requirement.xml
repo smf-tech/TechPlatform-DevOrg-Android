@@ -166,9 +166,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvLbl"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/dimen_05dp"
                         android:textStyle="bold" />
+
                 </RelativeLayout>
 
                 <TextView
@@ -177,8 +176,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:padding="@dimen/dimen_05dp"
                     android:layout_marginStart="@dimen/dimen_05dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
                     android:text="View Details"/>

@@ -71,26 +71,26 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvContact = itemView.findViewById(R.id.tvContact);
             tvDistrict = itemView.findViewById(R.id.tvDistrict);
             tvInCharge = itemView.findViewById(R.id.tvInCharge);
-            tvViewDetails = itemView.findViewById(R.id.tvInCharge);
+            tvViewDetails = itemView.findViewById(R.id.tvViewDetails);
             lyMain = itemView.findViewById(R.id.lyMain);
-            lyMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
-                        Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
-                        intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
-                        mContext.startActivity(intent);
-                    } else {
-                        // Redirect To MOU
-                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
-                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
-                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-                            mContext.startActivity(intent);
-                        }
-                    }
-
-                }
-            });
+//            lyMain.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
+//                        Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
+//                        intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
+//                        mContext.startActivity(intent);
+//                    } else {
+//                        // Redirect To MOU
+//                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
+//                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+//                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+//                            mContext.startActivity(intent);
+//                        }
+//                    }
+//
+//                }
+//            });
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,8 +106,10 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                         Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
                         intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
                         mContext.startActivity(intent);
-                    } else {
-                        // Redirect To MOU
+                    } else if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
+                        Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+                        intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+                        mContext.startActivity(intent);
                     }
                 }
             });
