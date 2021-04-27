@@ -62,7 +62,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private void initView() {
 
         setClickListners();
-        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Oxygen usage report");
+        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Oxygen Usage Report");
         presenter.getMasterData();
         Gson gson = new Gson();
         if (getIntent().getExtras() != null) {

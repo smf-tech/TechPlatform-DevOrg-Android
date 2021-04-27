@@ -64,7 +64,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     private void initView() {
 
         setClickListners();
-        layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Machine MOU");
+        layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
