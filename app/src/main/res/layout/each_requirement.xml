@@ -31,20 +31,11 @@
                     android:id="@+id/tvHospitalName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:padding="@dimen/dimen_05dp"
                     android:text="Hospital Name"
                     android:textSize="@dimen/text_size_16"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="8"
-                    android:padding="@dimen/dimen_05dp"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -101,6 +92,8 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold" />
 
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,6 +113,7 @@
                         android:id="@+id/tvContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
                         android:textStyle="bold" />
 
                     <TextView
@@ -146,7 +140,49 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold" />
 
+
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dimen_05dp">
+                    <TextView
+                        android:id="@+id/tvLbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textSize="@dimen/text_size_12" />
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvLbl"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/dimen_05dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvViewDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dimen_05dp"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:text="View Details"/>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
