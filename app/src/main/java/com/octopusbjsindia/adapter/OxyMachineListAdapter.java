@@ -40,7 +40,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
     @Override
     public void onBindViewHolder(@NonNull OxyMachineViewHolder holder, int position) {
         holder.rowOxymachineListBinding.tvMachineCode.setText(oxygenMachineLists.get(position).getCode());
-        holder.rowOxymachineListBinding.tvStatus.setText(oxygenMachineLists.get(position).getStatus());
+        holder.rowOxymachineListBinding.txtStatus.setText(oxygenMachineLists.get(position).getStatus());
 
 
         holder.rowOxymachineListBinding.txtStateName.setText(oxygenMachineLists.get(position).getStateName());

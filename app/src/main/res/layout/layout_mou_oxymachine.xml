@@ -35,8 +35,8 @@
                     <EditText
                         android:id="@+id/et_hospital_name"
                         style="@style/RegistrationEditTextLayout"
-                        android:focusable="false"
                         android:hint="Hospital name"
+                        android:focusable="false"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,9 +48,10 @@
                     <EditText
                         android:id="@+id/et_hospital_address"
                         style="@style/RegistrationEditTextLayout"
-                        android:focusable="false"
                         android:hint="Address"
-                        android:longClickable="false" />
+                        android:focusable="false"
+                        android:longClickable="false"
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
