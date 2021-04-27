@@ -72,6 +72,7 @@
                     android:id="@+id/etContactNumber"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Contact details *"
+                    android:inputType="number"
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +100,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:enabled="false"
                     android:hint="Contact details *"
+                    android:inputType="number"
                     android:maxLines="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -2,10 +2,15 @@ package com.octopusbjsindia.view.activities.MissionRahat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ConcentratorApprovalActivity extends AppCompatActivity implements View.OnClickListener, CustomSpinnerListener, APIDataListener {
 
@@ -106,8 +112,11 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
                     Util.showToast(this, "Please select oxygen concentrator codes");
                 } else if (TextUtils.isEmpty(etDateMachineAllocation.getText().toString())) {
                     Util.showToast(this, "Please enter Approve quantity of oxygen concentrator");
+                } else if (Integer.parseInt(etNumberOfConcentratorApproved.getText().toString()) >
+                        Integer.parseInt(tvMachineRequired.getText().toString())) {
+                    Util.showToast(this, "Approve quantity should be less than Required quantity");
                 } else if (selectedMachineList.size() != Integer.parseInt(etNumberOfConcentratorApproved.getText().toString())) {
-                    Util.showToast(this, "Please enter Approve quantity of oxygen concentrator");
+                    Util.showToast(this, "Approve quantity and number of selected oxygen concentrator does not match");
                 } else {
                     HashMap request = new HashMap<String,Object>();
                     request.put("requirementId",requestId);
@@ -136,6 +145,42 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        final Dialog dialog = new Dialog(Objects.requireNonNull(this));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText(getResources().getString(R.string.alert));
+        title.setVisibility(View.VISIBLE);
+
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText("Are you sure, want to discard");
+        text.setVisibility(View.VISIBLE);
+
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Yes");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+            super.onBackPressed();
+        });
+
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("No");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            // Close dialog
+            dialog.dismiss();
+        });
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     @Override

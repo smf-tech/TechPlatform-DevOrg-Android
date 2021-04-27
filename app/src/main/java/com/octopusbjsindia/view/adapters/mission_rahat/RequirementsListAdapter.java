@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.adapters.mission_rahat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,8 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvHospitalName, tvStatus, tvOwner, tvState, tvMachineRequired, tvContact, tvDistrict, tvInCharge;
+        TextView tvHospitalName, tvStatus, tvOwner, tvState, tvMachineRequired, tvContact, tvDistrict,
+                tvInCharge, tvViewDetails;
         RelativeLayout lyMain;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,24 +71,46 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvContact = itemView.findViewById(R.id.tvContact);
             tvDistrict = itemView.findViewById(R.id.tvDistrict);
             tvInCharge = itemView.findViewById(R.id.tvInCharge);
-
+            tvViewDetails = itemView.findViewById(R.id.tvViewDetails);
             lyMain = itemView.findViewById(R.id.lyMain);
-            lyMain.setOnClickListener(new View.OnClickListener() {
+//            lyMain.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
+//                        Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
+//                        intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
+//                        mContext.startActivity(intent);
+//                    } else {
+//                        // Redirect To MOU
+//                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
+//                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+//                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+//                            mContext.startActivity(intent);
+//                        }
+//                    }
+//
+//                }
+//            });
+            tvContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:"+list.get(getAdapterPosition()).getOwnerContactDetails()));
+                    mContext.startActivity(intent);
+                }
+            });
+            tvViewDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
                         Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
                         intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
                         mContext.startActivity(intent);
-                    } else {
-                        // Redirect To MOU
-                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
-                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
-                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-                            mContext.startActivity(intent);
-                        }
+                    } else if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
+                        Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+                        intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+                        mContext.startActivity(intent);
                     }
-
                 }
             });
 
