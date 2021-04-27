@@ -21,9 +21,9 @@ public class OxyMachineListActivityPresenter implements APIPresenterListener {
         this.mContext = new WeakReference<>(mContext);
     }
 
-    public void getOxyMachineList(){
+    public void getOxyMachineList(String url){
         mContext.get().showProgressBar();
-        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+
         //final String url = "https://run.mocky.io/v3/09b8651a-7f95-456e-9b8c-546bb33a2c82";
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);

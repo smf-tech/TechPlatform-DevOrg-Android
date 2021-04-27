@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.OxyMachineListAdapter;
 import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
@@ -32,10 +34,12 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineListModel;
+import com.octopusbjsindia.models.MissionRahat.RequirementsListResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineListActivityPresenter;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
@@ -48,7 +52,9 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     private Activity activity;
     private ArrayList<OxygenMachineList>oxygenMachineLists = new ArrayList<>();
     private OxyMachineListAdapter oxyMachineListAdapter;
-
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    private String nextPageUrl="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +78,39 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
         oxyMachineListAdapter = new OxyMachineListAdapter(this,oxygenMachineLists, this);
         layoutOxymachineListBinding.rvTrainerbactchlistview.setAdapter(oxyMachineListAdapter);
-        presenter.getOxyMachineList();
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+        presenter.getOxyMachineList(url);
+
+        layoutOxymachineListBinding.rvTrainerbactchlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+
+                    if (loading) {
+
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+//                            getData();
+                            if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
+                                presenter.getOxyMachineList(nextPageUrl);
+                            }
+                        }
+                    }
+                }
+
+//                if (dy < -5 && (this).isFilterApplied() &&
+//                        btnClearFilters.getVisibility() != View.VISIBLE) {
+//                    btnClearFilters.setVisibility(View.VISIBLE);
+//                } else if (dy > 5 && (!((MatrimonyProfileListActivity) getActivity()).isFilterApplied()) &&
+//                        btnClearFilters.getVisibility() == View.VISIBLE) {
+//                    btnClearFilters.setVisibility(View.GONE);
+//                }
+            }
+        });
 
     }
 
@@ -101,12 +139,32 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     @Override
     public void onSuccessListener(String requestID, String response) {
         hideProgressBar();
-        CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+        /*CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
         Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                 responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
-        OxygenMachineListModel oxygenMachineListModel = new Gson().fromJson(response, OxygenMachineListModel.class);
-        oxygenMachineLists.addAll(oxygenMachineListModel.getOxygenMachineLists());
-        oxyMachineListAdapter.notifyDataSetChanged();
+        OxygenMachineListModel oxygenMachineListModel = new Gson().fromJson(response, OxygenMachineListModel.class);*/
+        try {
+            if (response != null) {
+                OxygenMachineListModel oxygenMachineListModel = new Gson().fromJson(response, OxygenMachineListModel.class);
+                if (oxygenMachineListModel.getCode() == 200) {
+                    if (requestID.equalsIgnoreCase("RequirementsList")) {
+                        nextPageUrl = oxygenMachineListModel.getNextPageUrl();
+                        oxygenMachineLists.addAll(oxygenMachineListModel.getOxygenMachineLists());
+                        oxyMachineListAdapter.notifyDataSetChanged();
+                        loading =true;
+                    }
+                } else {
+                    if (oxygenMachineListModel.getCode() == 1000) {
+                        Util.logOutUser(this);
+                    } else {
+                        onFailureListener(requestID, oxygenMachineListModel.getMessage());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            onFailureListener(requestID, e.getMessage());
+        }
+
 
 
     }
