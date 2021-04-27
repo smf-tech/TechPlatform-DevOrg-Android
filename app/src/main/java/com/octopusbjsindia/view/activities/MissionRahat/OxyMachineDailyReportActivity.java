@@ -26,6 +26,7 @@ import com.octopusbjsindia.databinding.ActivityOxymachineDailyReportBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.DailyRecordRequestModel;
+import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
@@ -61,8 +62,22 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
         setClickListners();
         dailyReportBinding.toolbar.toolbarTitle.setText("Daily Oxygen usage report");
-
         presenter.getMasterData();
+        Gson gson = new Gson();
+        if (getIntent().getExtras() != null) {
+            String machineDataString = getIntent().getExtras().getString("MachineDataString");
+            OxygenMachineList oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
+            Log.d("machine_id---",oxygenMachineList.getCode());
+            populateMachineData(oxygenMachineList);
+        }
+
+    }
+
+    private void populateMachineData(OxygenMachineList oxygenMachineList) {
+        dailyReportBinding.etHospitalName.setText(oxygenMachineList.getHospitalName());
+        dailyReportBinding.etHospitalIncharge.setText(oxygenMachineList.getInchargeName());
+        dailyReportBinding.etHospitalContact.setText(oxygenMachineList.getInchargeMobileNumber());
+        dailyReportBinding.etSelectMachines.setText(oxygenMachineList.getCode());
     }
 
     private void setClickListners() {
