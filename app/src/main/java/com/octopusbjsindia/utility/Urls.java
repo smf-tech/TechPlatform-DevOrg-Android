@@ -289,6 +289,12 @@ public class Urls {
         public static final String GET_CREATE_MACHINE_MASTER_DATA = "api/getMasterDataList";
         public static final String CREATE_MACHINE = "api/insertMachine";
         public static final String CREATE_HOSPITAL = "api/addHospital";
+        public static final String HOSPITAL_LIST = "api/getHospitalList";
+        public static final String MACHINE_LIST = "api/getMRMachineList";
+        public static final String CONCENTRATOR_REQUEST = "api/addRequirmentForm";
+        public static final String CONCENTRATOR_REQUEST_LIST = "api/getAllRequirmentFormsList";
+        public static final String CONCENTRATOR_REQUEST_DETAILS = "api/getReuirmentDetails";
+        public static final String CONCENTRATOR_REQUEST_ACTION = "api/requirmentAction";
         public static final String SAVE_MACHINE_MOU = "api/saveMachineMOU";
         public static final String SEND_MACHINE_DAILY_REPORT = "api/machineDailyReport";
         public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
