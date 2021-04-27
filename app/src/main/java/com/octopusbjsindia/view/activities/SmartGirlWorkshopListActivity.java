@@ -87,6 +87,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
     private FragmentManager fManager;
     private RelativeLayout progressBar;
     public RelativeLayout ly_no_data;
+    private ImageView iv_refresh;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -105,6 +106,7 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         super.onResume();
         //presenter.getBatchList();
       //  useDefaultRequest();
+        showEmailButton();
     }
 
     @Override
@@ -131,6 +133,8 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         //---
         progressBar = findViewById(R.id.ly_progress_bar);
         ly_no_data = findViewById(R.id.ly_no_data);
+        iv_refresh  = findViewById(R.id.iv_refresh);
+        iv_refresh.setOnClickListener(this);
         rv_trainerbactchlistview = findViewById(R.id.rv_trainerbactchlistview);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -291,7 +295,9 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
         dataList.addAll(trainerBachListResponseModel.getWorkshopBachListResponse().getWorkshopBachLists());
         trainerBatchListRecyclerAdapter.notifyDataSetChanged();
             if (trainerBachListResponseModel.getWorkshopBachListResponse().getWorkshopBachLists()!=null&&trainerBachListResponseModel.getWorkshopBachListResponse().getWorkshopBachLists().size()<1){
-                ly_no_data.setVisibility(View.VISIBLE);
+                if (dataList!=null&&dataList.size()<1) {
+                    ly_no_data.setVisibility(View.VISIBLE);
+                }
             }
 
         if (dataList!=null) {
@@ -587,7 +593,8 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 }
             } else {
                 toolbar_action.setVisibility(View.VISIBLE);
-                fb_email_data.setVisibility(View.VISIBLE);
+                //fb_email_data.setVisibility(View.VISIBLE);
+                showEmailButton();
                 try {
                     tvTitle.setText("Workshop List");
                     if (dataList != null) {
@@ -839,6 +846,11 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
             case R.id.fb_email_data:
                 Util.showEnterEmailDialog(this,1,null);
                 break;
+            case R.id.iv_refresh:
+                callWorkshopListApi(useDefaultRequest(),"");
+                ly_no_data.setVisibility(View.GONE);
+                break;
+
 
         }
     }
@@ -870,5 +882,21 @@ public class SmartGirlWorkshopListActivity extends AppCompatActivity implements 
                 "emailid":"rbisen@bjsindia.org"*/
 
         return paramjsonString;
+    }
+
+
+
+    public void showEmailButton(){
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if(roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            fb_email_data.setVisibility(View.GONE);
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_EMAIL_DASHBOARD){
+                    fb_email_data.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }

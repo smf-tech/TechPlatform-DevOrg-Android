@@ -27,12 +27,13 @@ public class SmartGirlDashboardListAdapter extends RecyclerView.Adapter<SmartGir
     Context mContext;
     private List<DashboardListItem> dataList;
     private AllTrainersListRecyclerAdapter.OnRequestItemClicked clickListener;
+    private String stringListType;
 
-
-    public SmartGirlDashboardListAdapter(Context context, List<DashboardListItem> dataList, final AllTrainersListRecyclerAdapter.OnRequestItemClicked clickListener) {
+    public SmartGirlDashboardListAdapter(Context context, List<DashboardListItem> dataList,String listType, final AllTrainersListRecyclerAdapter.OnRequestItemClicked clickListener) {
         mContext = context;
         this.dataList = dataList;
         this.clickListener = clickListener;
+        this.stringListType = listType;
 
     }
 
@@ -55,12 +56,21 @@ public class SmartGirlDashboardListAdapter extends RecyclerView.Adapter<SmartGir
         //todo -add value from response when available
         if (dataList.get(position).getWorkshopCount()!=null) {
             holder.tv_workshops_conducted.setVisibility(View.VISIBLE);
-            holder.tv_workshops_conducted.setText("Number of workshop " + dataList.get(position).getWorkshopCount());
+            holder.tv_workshops_conducted.setText("Number of workshops conducted : " + dataList.get(position).getWorkshopCount());
         }
 
         if (dataList.get(position).getBatchCount()!=null) {
             holder.tv_batches_attended.setVisibility(View.VISIBLE);
-            holder.tv_batches_attended.setText("Number of batches " + dataList.get(position).getBatchCount());
+            holder.tv_batches_attended.setText("Number of batches attended : " + dataList.get(position).getBatchCount());
+        }
+        if (stringListType.equalsIgnoreCase("beneficiary")){
+            holder.tv_workshops_conducted.setVisibility(View.VISIBLE);
+            holder.tv_workshops_conducted.setText("Number of workshops attended : " + dataList.get(position).getWorkshopCount());
+            holder.tv_batches_attended.setVisibility(View.GONE);
+        }
+        if (stringListType.equalsIgnoreCase("masterTrainer")){
+            holder.tv_workshops_conducted.setVisibility(View.GONE);
+            holder.tv_batches_attended.setVisibility(View.GONE);
         }
 
 

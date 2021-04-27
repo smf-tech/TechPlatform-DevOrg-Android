@@ -244,6 +244,10 @@ public class TrainerBatchListRecyclerAdapter extends RecyclerView.Adapter<Traine
                 }
             });
 
+
+
+
+
             btnPopupMenu = itemView.findViewById(R.id.btn_popmenu);
             btnPopupMenu.setOnClickListener(new View.OnClickListener() {
                 @Override

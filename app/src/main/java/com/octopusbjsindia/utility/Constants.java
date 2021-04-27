@@ -409,6 +409,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_VISIT_MONITORTNG = 106;
         public static final Integer ACCESS_CODE_STRUCTURE_COMPLETE = 107;
         public static final Integer ROLE_CODE_SS_OPERATOR = 113;
+        public static final Integer ROLE_CODE_MR_HOSPITAL_INCHARGE = 135;
         public static final Integer STRUCTURE_APPROVED = 115;
         public static final Integer STRUCTURE_PREPARED = 116;
         public static final Integer STRUCTURE_IN_PROGRESS =	117;
@@ -491,10 +492,14 @@ public class Constants {
         // TODO
         public static final int ACCESS_CODE_WORKSHOP_SUPPORT = 158;
         public static final int ACCESS_CODE_BATCH_SUPPORT = 157;
+        public static final int ACCESS_CODE_EMAIL_DASHBOARD = 162;
+        public static final int ACCESS_CODE_EMAIL_FEEDBACK = 163;
+        public static final int ACCESS_CODE_EMAIL_BATCH_FEEDBACK = 164;
+
 
 //prod
 
-        /*public static final String MOCK_TEST_FORM = "5f33e9da9f8b7d2ba4493e93";
+        public static final String MOCK_TEST_FORM = "5f33e9da9f8b7d2ba4493e93";
         public static final String PRE_TEST_FORM = "5f33e8f69f8b7d2ba4493e92";
 
         public static final String ORGANISER_FEEDBACK_FORM = "5f33e4c75b5f3a3fb534e224";
@@ -511,10 +516,10 @@ public class Constants {
 
 
         public static final String BATCH_SUPPORT_DOC_FORM = "5faa228906398b0e09183e44";
-        public static final String WORKSHOP_SUPPORT_DOC_FORM = "5faa222e244ba177f315802a";*/
+        public static final String WORKSHOP_SUPPORT_DOC_FORM = "5faa222e244ba177f315802a";
 
 //stage
-        public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
+     /*   public static final String MOCK_TEST_FORM = "5ea82d7b2c81b43be40b21f7";
         public static final String PRE_TEST_FORM = "5ea6a6b385046668f74b7f97";
 
         public static final String ORGANISER_FEEDBACK_FORM = "5ea7cb4849c5d7695b51203f";
@@ -531,7 +536,7 @@ public class Constants {
 
         public static final String BATCH_SUPPORT_DOC_FORM = "5fa64c482d366d1445425ff3";
         public static final String WORKSHOP_SUPPORT_DOC_FORM = "5fa6468e2d366d1445425ff2";
-
+*/
 
     }
 

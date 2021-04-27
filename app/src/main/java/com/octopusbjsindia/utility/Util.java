@@ -70,6 +70,7 @@ import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.fragments.HomeFragment;
@@ -768,6 +769,22 @@ public class Util {
             e.printStackTrace();
         }
         return "";
+    }
+
+    //for showing fixed date after input month
+    public static void showEndDateWithMonthDifference(OxyMachineMouActivity oxyMachineMouActivity, EditText etEndDate,long selecteddate,int monthCount) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(selecteddate);
+                cal.add(Calendar.MONTH, monthCount);
+                Date d = cal.getTime();
+                DateFormat dateFormatting = new SimpleDateFormat(Constants.FORM_DATE);
+                String dateCalulated = dateFormatting.format(d);
+                etEndDate.setText(dateCalulated);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
     }
 
     private int getDaysBetween(String start, String end) {

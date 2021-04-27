@@ -120,7 +120,7 @@ public class SmartGirlDashboardListActivity extends AppCompatActivity implements
                 + String.format(Urls.SmartGirl.GET_DAHSBOARDS_LIST_API, StringListType);
         smartGirlDashboardsListPresenter.getRequestedList(getRoleAccessUrl);*/
         //set up adapter
-        smartGirlDashboardListAdapter = new SmartGirlDashboardListAdapter(this, DataList,
+        smartGirlDashboardListAdapter = new SmartGirlDashboardListAdapter(this, DataList,StringListType,
                 this::onItemClicked);
         rv_dashboard_listview.setAdapter(smartGirlDashboardListAdapter);
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {

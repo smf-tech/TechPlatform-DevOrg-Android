@@ -20,10 +20,10 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorApprovalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorRequirementActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.util.List;
@@ -133,6 +133,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_machine_list:
+                Intent intent2 = new Intent(getActivity(), OxyMachineListActivity.class);
+                getActivity().startActivity(intent2);
                 break;
         }
     }

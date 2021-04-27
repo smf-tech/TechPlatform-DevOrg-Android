@@ -90,12 +90,12 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
         }
 
         if (dataList.get(position).getPreFeedBackStatus()) {
-            holder.tv_prefeedback_status.setText("Pre Feedback -"+"submitted");
+            holder.tv_prefeedback_status.setText("Pre Feedback -"+"Submitted");
         }else {
             holder.tv_prefeedback_status.setText("Pre Feedback -"+"Pending");
         }
         if (dataList.get(position).getPostFeedBackStatus()) {
-            holder.tv_postfeedback_status.setText("Post Feedback -"+"submitted");
+            holder.tv_postfeedback_status.setText("Post Feedback -"+"Submitted");
         }else {
             holder.tv_postfeedback_status.setText("Post Feedback -"+"Pending");
         }
@@ -262,19 +262,7 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                     });
                 }
             });
-            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
-            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-            if(roleAccessList != null) {
-                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
-                btnPopupMenu.setVisibility(View.INVISIBLE);
-                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
-                    if (roleAccessObject.getActionCode()== Constants.SmartGirlModule.ACCESS_CODE_MOCK_TEST){
-                        btnPopupMenu.setVisibility(View.VISIBLE);
-                    }else {
 
-                    }
-                }
-            }
         }
     }
 

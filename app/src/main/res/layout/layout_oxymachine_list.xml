@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/userregistrationmatrimony"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/card_gray_bg"
     android:orientation="vertical"
-
     tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+
     <include
         android:id="@+id/toolbar"
-        layout="@layout/app_toolbar"/>
+        layout="@layout/app_toolbar" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
             android:id="@+id/rv_trainerbactchlistview"
-            android:layout_weight="1"
-            android:padding="10dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimen_05dp" />
+            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_weight="1"
+            android:padding="10dp" />
 
 
         <RelativeLayout
@@ -45,50 +44,27 @@
                 android:focusable="true"
                 android:indeterminateOnly="true" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/ly_no_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
+
             <ImageView
                 android:id="@+id/iv_no_data"
                 android:layout_width="@dimen/standard_240"
                 android:layout_height="@dimen/standard_240"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_no_data"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_no_data" />
+
             <TextView
-                android:layout_below="@+id/iv_no_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="No Data"/>
-            <ImageView
-                android:id="@+id/iv_refresh"
-                android:layout_width="wrap_content"
                 android:layout_below="@+id/iv_no_data"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dimen_25dp"
-                android:src="@drawable/ic_refresh"/>
+                android:text="No Data" />
         </RelativeLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fb_email_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:src="@android:drawable/ic_dialog_email"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:tint="@color/white" />
-        <FrameLayout
-            android:id="@+id/feedback_form_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
     </RelativeLayout>
 </LinearLayout>
