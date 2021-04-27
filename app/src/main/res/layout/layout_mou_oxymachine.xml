@@ -78,6 +78,8 @@
                         android:digits="0123456789+"
                         android:hint="Contact number"
                         android:inputType="phone|number"
+                        android:focusable="false"
+                        android:longClickable="false"
                         android:maxLength="10" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +92,8 @@
                         android:id="@+id/et_machines_quantity"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Number of machine allocated"
+                        android:focusable="false"
+                        android:longClickable="false"
                          />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +105,11 @@
                     <EditText
                         android:id="@+id/et_machine_code_selection"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="machine codes"
+                        android:hint="Machine codes"
+                        android:focusable="false"
+                        android:maxLines="5"
+                        android:inputType="textMultiLine"
+                        android:longClickable="false"
                          />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,23 +150,24 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
+
+
+                <CheckBox
+                    android:id="@+id/check_box_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_terms_service" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:id="@+id/tv_terms_codition"
                     android:text="@string/text_terms_service"
                     android:autoLink="web"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
                     style="@style/textinputstyle"
-                    android:padding="@dimen/dimen_10dp"
+                    android:paddingStart="@dimen/dimen_10dp"
                     android:layout_height="wrap_content"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <CheckBox
-                    android:id="@+id/check_box_terms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I agrre." />
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_submit"

@@ -76,8 +76,8 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
         setClickListners();
         mouOxymachineBinding.toolbar.toolbarTitle.setText("Machine MOU");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
-                    "Terms of Service and Privacy Policy</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
+            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("<p><h7><u>" +
+                    "Terms of Service and Privacy Policy.</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
         } else {
             mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
                     "Terms of Service and Privacy Policy</u></h7></p>"));
@@ -165,7 +165,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private String getMouRequestData() {
         MouRequestModel mouRequestModel = new MouRequestModel();
         Gson gson = new GsonBuilder().create();
-        mouRequestModel.setRequirementId("608588760bdd640b9538eab7");
+        mouRequestModel.setRequirementId(requirmentId);
         mouRequestModel.setStartDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etStartDate.getText().toString())));
         mouRequestModel.setEndDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etEndDate.getText().toString())));
         String paramjson = gson.toJson(mouRequestModel);
