@@ -24,6 +24,7 @@ import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorApprovalActi
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorRequirementActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.util.List;
 
@@ -132,7 +133,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_approval:
-                intent = new Intent(getActivity(), ConcentratorApprovalActivity.class);
+                intent = new Intent(getActivity(), RequirementsListActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_machine_list:

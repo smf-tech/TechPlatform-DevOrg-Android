@@ -288,5 +288,11 @@ public class Urls {
     public class MissionRahat {
         public static final String GET_CREATE_MACHINE_MASTER_DATA = "api/getMasterDataList";
         public static final String CREATE_MACHINE = "api/insertMachine";
+        public static final String HOSPITAL_LIST = "api/getHospitalList";
+        public static final String MACHINE_LIST = "api/getMRMachineList";
+        public static final String CONCENTRATOR_REQUEST = "api/addRequirmentForm";
+        public static final String CONCENTRATOR_REQUEST_LIST = "api/getAllRequirmentFormsList";
+        public static final String CONCENTRATOR_REQUEST_DETAILS = "api/getReuirmentDetails";
+        public static final String CONCENTRATOR_REQUEST_ACTION = "api/requirmentAction";
     }
 }
