@@ -190,12 +190,12 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
@@ -207,8 +207,9 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             });
         }else if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
             CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+            /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
+            Util.showToast(responseOBJ.getMessage(), this);
             closeCurrentActivity();
         }
     }

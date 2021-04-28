@@ -181,19 +181,21 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
         CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-        Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+        /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
+        Util.showToast(responseOBJ.getMessage(), this);
+        closeCurrentActivity();
     }
 
     @Override
@@ -216,7 +218,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
     @Override
     public void closeCurrentActivity() {
-
+        finish();
     }
 
     @Override

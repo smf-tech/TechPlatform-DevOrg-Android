@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DailyRecordRequestModel {
-    @SerializedName("Machine_code")
+    @SerializedName("machine_code")
     @Expose
     private String MachineCode;
 
