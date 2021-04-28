@@ -78,8 +78,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
         oxyMachineListAdapter = new OxyMachineListAdapter(this,oxygenMachineLists, this);
         layoutOxymachineListBinding.rvTrainerbactchlistview.setAdapter(oxyMachineListAdapter);
-        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
-        presenter.getOxyMachineList(url);
+
 
         layoutOxymachineListBinding.rvTrainerbactchlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -125,6 +124,12 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+        presenter.getOxyMachineList(url);
+    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
