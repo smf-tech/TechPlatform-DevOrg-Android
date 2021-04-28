@@ -48,8 +48,12 @@ import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 public class OxyMachineMouActivity extends AppCompatActivity implements APIDataListener,
@@ -126,7 +130,13 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
         mouOxymachineBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                if (mouOxymachineBinding.etStartDate.getText().toString().trim().length() == 0) {
+                    Util.snackBarToShowMsg(OxyMachineMouActivity.this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please select start date.", Snackbar.LENGTH_LONG);
+
+                }else {
+                    Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                }
                 //setEndDate(); not used for now keep open
                 /*Util.showEndDateWithMonthDifference(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,
                         Util.getDateInLong(mouOxymachineBinding.etStartDate.getText().toString()),2);*/
@@ -298,10 +308,33 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter MOU end date.", Snackbar.LENGTH_LONG);
             return false;
-        } else {
+        } else if (checkDateValidation()) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Start date should not be greater than end date.", Snackbar.LENGTH_LONG);
+            return false;
+        }else {
 
         }
         return true;
     }
 
+
+    private boolean checkDateValidation() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(mouOxymachineBinding.etStartDate.getText().toString().trim());
+            endDate = sdf.parse(mouOxymachineBinding.etEndDate.getText().toString().trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (startDate.getTime() > endDate.getTime()) {
+            String msg = "start date should not be greater than end date";
+            return true;
+        }
+        return false;
+    }
 }
