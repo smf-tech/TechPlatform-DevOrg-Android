@@ -76,18 +76,21 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent;
                     if (project.equalsIgnoreCase("SS")) {
-                        intent = new Intent(mContext, SSActionsActivity.class);
-                    } else {
-                        intent = new Intent(mContext, GPActionsActivity.class);
+                        Intent intent = new Intent(mContext, SSActionsActivity.class);
+                        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                        intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
+                        intent.putExtra("viewType", viewType);
+                        intent.putExtra("title", title);
+                        mContext.startActivity(intent);
+                    } else if (project.equalsIgnoreCase("GP")) {
+                        Intent intent = new Intent(mContext, GPActionsActivity.class);
+                        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                        intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
+                        intent.putExtra("viewType", viewType);
+                        intent.putExtra("title", title);
+                        mContext.startActivity(intent);
                     }
-                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-                    intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
-//                    intent.putExtra("selectedStatus",108);
-                    intent.putExtra("viewType", viewType);
-                    intent.putExtra("title", title);
-                    mContext.startActivity(intent);
                 }
             });
 

@@ -20,11 +20,8 @@ import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorRequirementActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
-import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
-import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.util.List;
 
@@ -107,7 +104,6 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
 
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()) {
             case R.id.fb_select:
                 if (!isFABOpen) {
@@ -117,24 +113,18 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 }
                 break;
             case R.id.fb_machine:
-                intent = new Intent(getActivity(), CreateMachineActivity.class);
-                getActivity().startActivity(intent);
+                Intent i = new Intent(getActivity(), CreateMachineActivity.class);
+                getActivity().startActivity(i);
                 break;
             case R.id.fb_hospital:
-                intent = new Intent(getActivity(), CreateHospitalActivity.class);
+                Intent intent = new Intent(getActivity(), CreateHospitalActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_requirement_form:
-                intent = new Intent(getActivity(), ConcentratorRequirementActivity.class);
-                getActivity().startActivity(intent);
                 break;
             case R.id.fb_approval:
-                intent = new Intent(getActivity(), RequirementsListActivity.class);
-                getActivity().startActivity(intent);
                 break;
             case R.id.fb_machine_list:
-                Intent intent2 = new Intent(getActivity(), OxyMachineListActivity.class);
-                getActivity().startActivity(intent2);
                 break;
         }
     }
