@@ -205,10 +205,11 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             runOnUiThread(() -> {
                 populateData(responseOBJ.getHospitalDetailsRespone());
             });
-        }else {
+        }else if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
             CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+            closeCurrentActivity();
         }
     }
 
@@ -232,7 +233,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
     @Override
     public void closeCurrentActivity() {
-
+        finish();
     }
 
     @Override

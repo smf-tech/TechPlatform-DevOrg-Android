@@ -1,19 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userregistrationmatrimony"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar" />
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_background_color"
-    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/app_toolbar" />
+    >
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
         android:background="@color/white"
-        android:layout_below="@+id/toolbar"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
         <ScrollView
@@ -83,32 +92,6 @@
                         android:longClickable="false"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_machine_hours"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Usage in hours"
-                        android:inputType="numberDecimal"
-                        android:maxLength="3" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_numberof_patients"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Number of patients benefited"
-                        android:inputType="number"
-                        android:maxLength="3" />
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
@@ -121,6 +104,7 @@
                         android:hint="Select report slot"
                         android:longClickable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,6 +144,33 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_machine_hours"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Usage in hours"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_numberof_patients"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Number of patients benefited"
+                        android:inputType="number"
+                        android:maxLength="3" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
                 <Button
                     android:id="@+id/btn_submit"
                     style="@style/AppStyleButton"
@@ -195,3 +206,4 @@
             android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>
+</LinearLayout>

@@ -1,15 +1,32 @@
 package com.octopusbjsindia.adapter;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.octopusbjsindia.R;
 import com.octopusbjsindia.databinding.RowOxymachineListBinding;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
+import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
+import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
+import com.octopusbjsindia.view.activities.StructureVisitMonitoringActivity;
 
 import java.util.ArrayList;
 
@@ -41,7 +58,11 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
     public void onBindViewHolder(@NonNull OxyMachineViewHolder holder, int position) {
         holder.rowOxymachineListBinding.tvMachineCode.setText(oxygenMachineLists.get(position).getCode());
         holder.rowOxymachineListBinding.txtStatus.setText(oxygenMachineLists.get(position).getStatus());
-
+        if(oxygenMachineLists.get(position).getStatus().equalsIgnoreCase("Deployed")){
+            holder.rowOxymachineListBinding.txtStatus.setTextColor(mContext.getResources().getColor(R.color.dark_green));
+        }else {
+            holder.rowOxymachineListBinding.txtStatus.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+        }
 
         holder.rowOxymachineListBinding.txtStateName.setText(oxygenMachineLists.get(position).getStateName());
         holder.rowOxymachineListBinding.txtDistrictName.setText(oxygenMachineLists.get(position).getDistrictName());
@@ -67,7 +88,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
 
     public class OxyMachineViewHolder extends RecyclerView.ViewHolder {
         RowOxymachineListBinding rowOxymachineListBinding;
-
+        PopupMenu popup;
         public OxyMachineViewHolder(@NonNull RowOxymachineListBinding itemView) {
             super(itemView.getRoot());
             
@@ -75,10 +96,40 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
             rowOxymachineListBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onRequestItemClicked.onItemClicked(getAdapterPosition());
+                   // onRequestItemClicked.onItemClicked(getAdapterPosition());
                 }
             });
+            rowOxymachineListBinding.btnPopmenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popup = new PopupMenu((mContext), v);
+                    popup.inflate(R.menu.machinelist_popup_menu);
+                    popup.show();
+                    popup.getMenu().findItem(R.id.action_daily_report).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_patient_info).setVisible(false);
 
+                    //------
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Intent intent;
+                            switch (item.getItemId()) {
+                                case R.id.action_daily_report:
+                                    //machine daily report
+                                    onRequestItemClicked.onItemClicked(getAdapterPosition());
+                                    break;
+                                case R.id.action_patient_info:
+                                    //Add patient information
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+
+
+                    //---------
+                }
+            });
         }
     }
 

@@ -28,7 +28,7 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
     private WeakReference<OxyMachineMouActivity> mContext;
     private final String TAG = OxyMachineMouActivityPresenter.class.getName();
 
-    private static final String KEY_SUBMIT_MOU = "submitmoudata";
+    public static final String KEY_SUBMIT_MOU = "submitmoudata";
     public static final String GET_REQUIREMENT_MOU = "getrequirementmou";
 
     public OxyMachineMouActivityPresenter(OxyMachineMouActivity mContext) {

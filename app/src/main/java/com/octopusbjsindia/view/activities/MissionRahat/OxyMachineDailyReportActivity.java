@@ -66,7 +66,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private void initView() {
 
         setClickListners();
-        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Oxygen Usage Report");
+        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Report");
         presenter.getMasterData();
         Gson gson = new Gson();
         if (getIntent().getExtras() != null) {
@@ -87,6 +87,12 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     }
 
     private void setClickListners() {
+        dailyReportBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         dailyReportBinding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +120,8 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
                             "Please select start date of report.", Snackbar.LENGTH_LONG);
 
                 }else {
-                    Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate);
+                    //Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate);
+                    Util.showDateDialogEnableMAxDateFromSelected(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate,dailyReportBinding.etStartDate.getText().toString());
                 }
             }
         });
@@ -125,12 +132,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
                 showSlotsDropDown();
             }
         });
-        dailyReportBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
     }
 
     private void showSlotsDropDown() {
