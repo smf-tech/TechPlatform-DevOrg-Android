@@ -36,7 +36,11 @@ import com.octopusbjsindia.presenter.MissionRahat.OxyMachineDailyReportPresenter
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class OxyMachineDailyReportActivity extends AppCompatActivity implements APIDataListener,View.OnClickListener,
@@ -97,13 +101,21 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             public void onClick(View v) {
                 //setStartDate();
                 Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+                dailyReportBinding.etEndDate.setText("");
             }
         });
         dailyReportBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setStartDate();
-                Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+                //setENdDate();
+
+                if (dailyReportBinding.etStartDate.getText().toString().trim().length() == 0) {
+                    Util.snackBarToShowMsg(OxyMachineDailyReportActivity.this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please select start date of report.", Snackbar.LENGTH_LONG);
+
+                }else {
+                    Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate);
+                }
             }
         });
 
@@ -247,10 +259,33 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select end date of report.", Snackbar.LENGTH_LONG);
             return false;
+        }else if (checkDateValidation()) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Start date should not be greater than end date.", Snackbar.LENGTH_LONG);
+            return false;
         } else {
 
         }
         return true;
+    }
+
+    private boolean checkDateValidation() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(dailyReportBinding.etStartDate.getText().toString().trim());
+            endDate = sdf.parse(dailyReportBinding.etEndDate.getText().toString().trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (startDate.getTime() > endDate.getTime()) {
+            String msg = "start date should not be greater than end date";
+            return true;
+        }
+        return false;
     }
 
 
