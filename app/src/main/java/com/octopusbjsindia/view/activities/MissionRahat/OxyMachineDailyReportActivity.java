@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineDailyReportPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
@@ -50,6 +52,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private String selectedSlot="", selectedSlotId="";
     private ArrayList<CustomSpinnerObject> reportSlotList = new ArrayList<>();
     private Activity activity;
+    private int position;
     private OxygenMachineList receivedOxygenMachineData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
         Gson gson = new Gson();
         if (getIntent().getExtras() != null) {
             String machineDataString = getIntent().getExtras().getString("MachineDataString");
+            position = getIntent().getExtras().getInt("position");
             OxygenMachineList oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
             Log.d("machine_id---",oxygenMachineList.getCode());
             populateMachineData(oxygenMachineList);
@@ -195,7 +199,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
         /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                 responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
         Util.showToast(responseOBJ.getMessage(), this);
-        closeCurrentActivity();
+        closeCurrentActivityWithResult();
     }
 
     @Override
@@ -359,10 +363,11 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     }
 
 
-
-
-
-
-
-
+    public void closeCurrentActivityWithResult() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("HOURS_USED_COUNT", 0);
+        returnIntent.putExtra("PATIENTS_BENEFITED_COUNT", 0);
+        returnIntent.putExtra("UPDATE_POSITION", position);
+        setResult(Constants.MissionRahat.RECORD_UPDATE, returnIntent);
+    }
 }
