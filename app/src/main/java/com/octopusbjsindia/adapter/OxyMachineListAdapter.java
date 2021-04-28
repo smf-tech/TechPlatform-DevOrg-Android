@@ -93,20 +93,28 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
             super(itemView.getRoot());
             
             rowOxymachineListBinding = itemView;
+
             rowOxymachineListBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    // onRequestItemClicked.onItemClicked(getAdapterPosition());
                 }
             });
+            if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
+                rowOxymachineListBinding.btnPopmenu.setVisibility(View.VISIBLE);
+            }else {
+                rowOxymachineListBinding.btnPopmenu.setVisibility(View.GONE);
+            }
             rowOxymachineListBinding.btnPopmenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     popup = new PopupMenu((mContext), v);
                     popup.inflate(R.menu.machinelist_popup_menu);
                     popup.show();
-                    popup.getMenu().findItem(R.id.action_daily_report).setVisible(true);
-                    popup.getMenu().findItem(R.id.action_patient_info).setVisible(false);
+                    if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
+                        popup.getMenu().findItem(R.id.action_daily_report).setVisible(true);
+                        popup.getMenu().findItem(R.id.action_patient_info).setVisible(false);
+                    }
 
                     //------
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

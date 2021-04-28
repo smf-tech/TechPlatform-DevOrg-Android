@@ -133,12 +133,12 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        emptyResponse();
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        emptyResponse();
     }
 
     @Override
@@ -157,6 +157,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
                         oxygenMachineLists.addAll(oxygenMachineListModel.getOxygenMachineLists());
                         oxyMachineListAdapter.notifyDataSetChanged();
                         loading =true;
+                        emptyResponse();
                     }
                 } else {
                     if (oxygenMachineListModel.getCode() == 1000) {
@@ -164,6 +165,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
                     } else {
                         onFailureListener(requestID, oxygenMachineListModel.getMessage());
                     }
+                    emptyResponse();
                 }
             }
         } catch (Exception e) {
@@ -216,7 +218,16 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             Gson gson = new Gson();
             String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
             intent1.putExtra("MachineDataString", machineDataString);
+            intent1.putExtra("position", pos);
             startActivity(intent1);
+        }
+    }
+
+    public void emptyResponse() {
+        if (oxygenMachineLists.size()<1) {
+            layoutOxymachineListBinding.lyNoData.setVisibility(View.VISIBLE);
+        }else {
+            layoutOxymachineListBinding.lyNoData.setVisibility(View.GONE);
         }
     }
 }

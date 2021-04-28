@@ -72,7 +72,6 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
                 CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
                 if (commonResponse.getCode() == 200) {
                     mContext.get().onSuccessListener(KEY_SUBMIT_DAILY_REPORT, response);
-                    mContext.get().closeCurrentActivity();
                 } else {
                     mContext.get().onFailureListener(KEY_SUBMIT_DAILY_REPORT, commonResponse.getMessage());
                 }
