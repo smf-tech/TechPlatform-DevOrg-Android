@@ -171,11 +171,10 @@
 
             <Button
                 android:id="@+id/btSubmit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_margin="@dimen/dimen_10dp"
                 android:text="@string/submit" />
         </LinearLayout>
     </ScrollView>

@@ -236,6 +236,8 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
 
     @Override
     public void onCustomSpinnerSelection(String type) {
+        selectedMachineCodes= "";
+        selectedMachineID = "";
         for (CustomSpinnerObject obj : machineList) {
             if (obj.isSelected()) {
                 if(selectedMachineCodes.equals("")){
@@ -245,8 +247,7 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
                     selectedMachineCodes = selectedMachineCodes + "," +obj.getName();
                     selectedMachineID = selectedMachineID + "," +obj.get_id();
                 }
-
-                selectedMachineList.add(obj);
+//                selectedMachineList.add(obj);
             }
         }
         etMachines.setText(selectedMachineCodes);
