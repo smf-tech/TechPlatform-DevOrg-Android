@@ -15,15 +15,15 @@ public class OxyMachineListActivityPresenter implements APIPresenterListener {
     private WeakReference<OxyMachineListActivity> mContext;
     private final String TAG = OxyMachineListActivityPresenter.class.getName();
 
-    private static final String GET_MACHINE_LIST = "machineList";
+    public static final String GET_MACHINE_LIST = "machineList";
 
     public OxyMachineListActivityPresenter(OxyMachineListActivity mContext) {
         this.mContext = new WeakReference<>(mContext);
     }
 
-    public void getOxyMachineList(){
+    public void getOxyMachineList(String url){
         mContext.get().showProgressBar();
-        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+
         //final String url = "https://run.mocky.io/v3/09b8651a-7f95-456e-9b8c-546bb33a2c82";
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);

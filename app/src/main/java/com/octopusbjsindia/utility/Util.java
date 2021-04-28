@@ -1148,6 +1148,36 @@ public class Util {
         dateDialog.getDatePicker().setMaxDate(maxDateLong);
         dateDialog.show();
     }
+    public static void showDateDialogEnableMAxDateFromSelected(Context context, final EditText editText, String selectedDate)
+    {
+        final Calendar today = Calendar.getInstance();
+        final int mYear = today.get(Calendar.YEAR);
+        final int mMonth = today.get(Calendar.MONTH);
+        final int mDay = today.get(Calendar.DAY_OF_MONTH);
+
+        long minDateLong = getDateInLong(selectedDate);
+        today.setTimeInMillis(minDateLong);
+
+
+        Calendar twoDaysLater = (Calendar) today.clone();
+        twoDaysLater.add(Calendar.DATE, 1);
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(today.getTimeInMillis());
+        dateDialog.getDatePicker().setMaxDate(twoDaysLater.getTimeInMillis());
+
+        dateDialog.show();
+    }
+
 
     public static void showDateDialogEnableAfterMin(Context context, final EditText editText, String minDate) {
         final Calendar c = Calendar.getInstance();

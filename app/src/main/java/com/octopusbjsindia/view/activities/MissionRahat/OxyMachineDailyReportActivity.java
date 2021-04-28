@@ -36,7 +36,11 @@ import com.octopusbjsindia.presenter.MissionRahat.OxyMachineDailyReportPresenter
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class OxyMachineDailyReportActivity extends AppCompatActivity implements APIDataListener,View.OnClickListener,
@@ -62,7 +66,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private void initView() {
 
         setClickListners();
-        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Oxygen Usage Report");
+        dailyReportBinding.toolbar.toolbarTitle.setText("Daily Report");
         presenter.getMasterData();
         Gson gson = new Gson();
         if (getIntent().getExtras() != null) {
@@ -83,6 +87,12 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     }
 
     private void setClickListners() {
+        dailyReportBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         dailyReportBinding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,13 +107,22 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             public void onClick(View v) {
                 //setStartDate();
                 Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+                dailyReportBinding.etEndDate.setText("");
             }
         });
         dailyReportBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setStartDate();
-                Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etStartDate);
+                //setENdDate();
+
+                if (dailyReportBinding.etStartDate.getText().toString().trim().length() == 0) {
+                    Util.snackBarToShowMsg(OxyMachineDailyReportActivity.this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please select start date of report.", Snackbar.LENGTH_LONG);
+
+                }else {
+                    //Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate);
+                    Util.showDateDialogEnableMAxDateFromSelected(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate,dailyReportBinding.etStartDate.getText().toString());
+                }
             }
         });
 
@@ -113,12 +132,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
                 showSlotsDropDown();
             }
         });
-        dailyReportBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
     }
 
     private void showSlotsDropDown() {
@@ -167,19 +181,21 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
     public void onSuccessListener(String requestID, String response) {
         CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-        Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+        /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
+        Util.showToast(responseOBJ.getMessage(), this);
+        closeCurrentActivity();
     }
 
     @Override
@@ -202,7 +218,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
     @Override
     public void closeCurrentActivity() {
-
+        finish();
     }
 
     @Override
@@ -247,10 +263,33 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select end date of report.", Snackbar.LENGTH_LONG);
             return false;
+        }else if (checkDateValidation()) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Start date should not be greater than end date.", Snackbar.LENGTH_LONG);
+            return false;
         } else {
 
         }
         return true;
+    }
+
+    private boolean checkDateValidation() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(dailyReportBinding.etStartDate.getText().toString().trim());
+            endDate = sdf.parse(dailyReportBinding.etEndDate.getText().toString().trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (startDate.getTime() > endDate.getTime()) {
+            String msg = "start date should not be greater than end date";
+            return true;
+        }
+        return false;
     }
 
 

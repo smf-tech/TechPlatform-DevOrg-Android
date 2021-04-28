@@ -28,7 +28,7 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
     private WeakReference<OxyMachineMouActivity> mContext;
     private final String TAG = OxyMachineMouActivityPresenter.class.getName();
 
-    private static final String KEY_SUBMIT_MOU = "submitmoudata";
+    public static final String KEY_SUBMIT_MOU = "submitmoudata";
     public static final String GET_REQUIREMENT_MOU = "getrequirementmou";
 
     public OxyMachineMouActivityPresenter(OxyMachineMouActivity mContext) {
@@ -80,7 +80,14 @@ public class OxyMachineMouActivityPresenter implements APIPresenterListener {
         }
         if (response != null) {
             if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
-                mContext.get().onSuccessListener(requestID,response);
+                CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
+
+                if (commonResponse.getCode() == 200) {
+                    mContext.get().onSuccessListener(requestID,response);
+                    mContext.get().closeCurrentActivity();
+                } else {
+                    mContext.get().onFailureListener(requestID, commonResponse.getMessage());
+                }
             }else if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.GET_REQUIREMENT_MOU)) {
                 mContext.get().onSuccessListener(requestID,response);
             }

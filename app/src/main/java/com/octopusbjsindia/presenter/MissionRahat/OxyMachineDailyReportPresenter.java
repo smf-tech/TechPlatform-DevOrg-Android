@@ -22,7 +22,7 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
     private WeakReference<OxyMachineDailyReportActivity> mContext;
     private final String TAG = OxyMachineDailyReportPresenter.class.getName();
 
-    private static final String KEY_SUBMIT_DAILY_REPORT = "submitReportData";
+    public static final String KEY_SUBMIT_DAILY_REPORT = "submitReportData";
     public static final String KEY_CREATE_MACHINE_MASTER_DATA = "getMasterData";
 
     public OxyMachineDailyReportPresenter(OxyMachineDailyReportActivity mContext) {
@@ -69,7 +69,14 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
     public void onSuccessListener(String requestID, String response) {
         if (response != null) {
             if (requestID.equalsIgnoreCase(OxyMachineDailyReportPresenter.KEY_SUBMIT_DAILY_REPORT)) {
-                mContext.get().onSuccessListener(KEY_SUBMIT_DAILY_REPORT, response);
+                CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
+                if (commonResponse.getCode() == 200) {
+                    mContext.get().onSuccessListener(KEY_SUBMIT_DAILY_REPORT, response);
+                    mContext.get().closeCurrentActivity();
+                } else {
+                    mContext.get().onFailureListener(KEY_SUBMIT_DAILY_REPORT, commonResponse.getMessage());
+                }
+
             }else if (requestID.equalsIgnoreCase(KEY_CREATE_MACHINE_MASTER_DATA)) {
 
                 // Please note, here we have used same model class for data parsing as SS master data model class.

@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -36,14 +41,19 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 public class OxyMachineMouActivity extends AppCompatActivity implements APIDataListener,
@@ -69,6 +79,15 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
         setClickListners();
         mouOxymachineBinding.toolbar.toolbarTitle.setText("Machine MOU");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("<p><h7><u>" +
+                    "Terms of Service and Privacy Policy.</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            mouOxymachineBinding.tvTermsCodition.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
+                    "Terms of Service and Privacy Policy</u></h7></p>"));
+        }
+
+
         if (getIntent().getExtras() != null) {
             requirmentId = getIntent().getExtras().getString("RequestId");
             Log.d("requirment_Id---",requirmentId);
@@ -111,7 +130,13 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
         mouOxymachineBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                if (mouOxymachineBinding.etStartDate.getText().toString().trim().length() == 0) {
+                    Util.snackBarToShowMsg(OxyMachineMouActivity.this.getWindow().getDecorView().findViewById(android.R.id.content),
+                            "Please select start date.", Snackbar.LENGTH_LONG);
+
+                }else {
+                    Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                }
                 //setEndDate(); not used for now keep open
                 /*Util.showEndDateWithMonthDifference(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,
                         Util.getDateInLong(mouOxymachineBinding.etStartDate.getText().toString()),2);*/
@@ -121,6 +146,14 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        mouOxymachineBinding.tvTermsCodition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL + Urls.MissionRahat.TERMS_AND_CONDITIONS_MISSION_RAHAT));
+                startActivity(browserIntent);
             }
         });
     }
@@ -142,7 +175,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     private String getMouRequestData() {
         MouRequestModel mouRequestModel = new MouRequestModel();
         Gson gson = new GsonBuilder().create();
-        mouRequestModel.setRequirementId("608588760bdd640b9538eab7");
+        mouRequestModel.setRequirementId(requirmentId);
         mouRequestModel.setStartDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etStartDate.getText().toString())));
         mouRequestModel.setEndDate(String.valueOf(Util.getDateInLong(mouOxymachineBinding.etEndDate.getText().toString())));
         String paramjson = gson.toJson(mouRequestModel);
@@ -157,12 +190,12 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
     @Override
     public void onFailureListener(String requestID, String message) {
-
+        Util.showToast(message, this);
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-
+        Util.showToast(error.getMessage(), this);
     }
 
     @Override
@@ -172,10 +205,12 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             runOnUiThread(() -> {
                 populateData(responseOBJ.getHospitalDetailsRespone());
             });
-        }else {
+        }else if (requestID.equalsIgnoreCase(OxyMachineMouActivityPresenter.KEY_SUBMIT_MOU)) {
             CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
+            /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
+            Util.showToast(responseOBJ.getMessage(), this);
+            closeCurrentActivity();
         }
     }
 
@@ -199,7 +234,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
 
     @Override
     public void closeCurrentActivity() {
-
+        finish();
     }
 
     @Override
@@ -275,10 +310,33 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter MOU end date.", Snackbar.LENGTH_LONG);
             return false;
-        } else {
+        } else if (checkDateValidation()) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Start date should not be greater than end date.", Snackbar.LENGTH_LONG);
+            return false;
+        }else {
 
         }
         return true;
     }
 
+
+    private boolean checkDateValidation() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = sdf.parse(mouOxymachineBinding.etStartDate.getText().toString().trim());
+            endDate = sdf.parse(mouOxymachineBinding.etEndDate.getText().toString().trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (startDate.getTime() > endDate.getTime()) {
+            String msg = "start date should not be greater than end date";
+            return true;
+        }
+        return false;
+    }
 }
