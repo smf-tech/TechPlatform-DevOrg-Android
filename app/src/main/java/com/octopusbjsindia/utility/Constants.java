@@ -556,9 +556,12 @@ public class Constants {
     public static class MissionRahat {
         public static final int ACCESS_CODE_MACHINE_CREATE = 165;
         public static final int ACCESS_CODE_HOSPTAL_CREATE = 166;
-        public static final int ACCESS_CODE_REQUIREMENT_FORM = 170;
         public static final int ACCESS_CODE_REQUIREMENT_APPROVAL = 167;
+        public static final int ACCESS_CODE_REQUIREMENT_FORM = 170;
         public static final int ACCESS_CODE_DAILY_REPORT = 171;
         public static final int ACCESS_CODE_VIEW_MACHINE_LIST = 172;
+        public static final int ACCESS_CODE_DOWNLOAD_MOU = 173;
+        public static final int ACCESS_CODE_NEW_PATIENT = 174;
+        public static final int ACCESS_CODE_SUBMIT_MOU = 175;
     }
 }

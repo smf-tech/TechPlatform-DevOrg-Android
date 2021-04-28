@@ -22,7 +22,7 @@ public class YouTubeVideoActivity extends YouTubeBaseActivity implements YouTube
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_you_tube_video);
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubeview);
-        youTubePlayerView.initialize(getString(R.string.youtube_api_key), this);
+//        youTubePlayerView.initialize(getString(R.string.youtube_api_key), this);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class YouTubeVideoActivity extends YouTubeBaseActivity implements YouTube
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST) {
-            getYouTubePlayerProvider().initialize(getString(R.string.youtube_api_key), this);
+//            getYouTubePlayerProvider().initialize(getString(R.string.youtube_api_key), this);
         }
     }
 

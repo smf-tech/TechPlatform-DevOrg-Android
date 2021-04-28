@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
@@ -30,7 +31,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     private FloatingActionButton fbSelect;
     private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList;
     private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
-            isDailyReportAllowed, isMachineListAllowed;
+            isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU;
     private boolean isFABOpen = false;
 
     @Override
@@ -85,6 +86,15 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_VIEW_MACHINE_LIST)) {
                     isMachineListAllowed = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_DOWNLOAD_MOU)) {
+                    isDownloadMOU = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_NEW_PATIENT)) {
+                    isNewPatient = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_SUBMIT_MOU)) {
+                    isSubmitMOU = true;
                     continue;
                 }
             }
@@ -212,5 +222,11 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     @Override
     public void closeCurrentActivity() {
 
+    }
+
+    public void populateAnalyticsData(SSAnalyticsAPIResponse mrAnalyticsData) {
+    }
+
+    public void emptyResponse() {
     }
 }

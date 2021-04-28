@@ -15,7 +15,13 @@
         android:layout_marginTop="@dimen/dimen_50dp"
         android:layout_marginStart="@dimen/dimen_20dp"
         android:layout_marginEnd="@dimen/dimen_20dp"
-        android:layerType="software" />
+        android:layerType="software"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/mission_rahat"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_machine_list"
