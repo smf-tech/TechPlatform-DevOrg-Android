@@ -181,6 +181,7 @@
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
                     android:text="View Details"/>
 
             </LinearLayout>

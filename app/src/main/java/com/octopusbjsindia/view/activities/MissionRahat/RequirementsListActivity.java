@@ -1,13 +1,23 @@
 package com.octopusbjsindia.view.activities.MissionRahat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +59,10 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
         setTitle("Requirements List");
 
+        boolean isDownloadMOU = getIntent().getBooleanExtra("isDownloadMOU",false);
+        boolean isSubmitMOU = getIntent().getBooleanExtra("isSubmitMOU",false);
+        boolean isApprovalAllowed = getIntent().getBooleanExtra("isApprovalAllowed",false);
+
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new RequirementsListActivityPresenter(this);
         if (Util.isConnected(this)) {
@@ -57,7 +71,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
         rvRequestList = findViewById(R.id.rvRequestList);
-        adapter = new RequirementsListAdapter(list,this);
+        adapter = new RequirementsListAdapter(list,this, isDownloadMOU, isSubmitMOU, isApprovalAllowed);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvRequestList.setLayoutManager(layoutManager);
         rvRequestList.setAdapter(adapter);
@@ -104,6 +118,26 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            if (resultCode == Activity.RESULT_OK) {
+                int position = data.getIntExtra("position",-1);
+                String status = data.getStringExtra("status");
+                if(position != -1){
+                    if(status.equalsIgnoreCase("MOU_DONE")){
+                        list.get(position).setMOUDone(true);
+                    } else {
+                        list.get(position).setStatus(status);
+                    }
+
+                    adapter.notifyItemChanged(position,list.get(position));
+                }
+            }
+        }
     }
 
     @Override
@@ -155,7 +189,35 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     public void closeCurrentActivity() {
 
     }
+    public void showEmailDialog(String btText, int adapterPosition) {
+        Dialog dialog;
+        Button btn_submit;
+        EditText edt_reason;
 
-    public void setList(List<RequirementsListData> data) {
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_email_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+        btn_submit = dialog.findViewById(R.id.btn_submit);
+        btn_submit.setText(btText);
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    Util.showToast(RequirementsListActivity.this,"Please enter valid email.");
+                } else {
+
+                    presenter.getMailMOU();
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
     }
+
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListData;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorApprovalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
@@ -22,9 +23,14 @@ import java.util.ArrayList;
 public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsListAdapter.ViewHolder> {
     ArrayList<RequirementsListData> list;
     RequirementsListActivity mContext;
-    public RequirementsListAdapter(ArrayList<RequirementsListData> list, RequirementsListActivity context) {
+    boolean isDownloadMOU, isSubmitMOU, isApprovalAllowed;
+    public RequirementsListAdapter(ArrayList<RequirementsListData> list, RequirementsListActivity context,
+                                   boolean isDownloadMOU, boolean isSubmitMOU, boolean isApprovalAllowed) {
         this.list = list;
         this.mContext = context;
+        this.isDownloadMOU = isDownloadMOU ;
+        this.isSubmitMOU = isSubmitMOU;
+        this.isApprovalAllowed = isApprovalAllowed;
     }
 
     @NonNull
@@ -50,6 +56,25 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
         holder.tvContact.setText(list.get(position).getOwnerContactDetails());
         holder.tvDistrict.setText(list.get(position).getDistrictName());
         holder.tvInCharge.setText(list.get(position).getUserName());
+        if(isApprovalAllowed){
+            if(list.get(position).getStatus().equalsIgnoreCase("Pending")){
+                holder.tvViewDetails.setVisibility(View.VISIBLE);
+                holder.tvViewDetails.setText("View Details");
+            }
+        } else if(isSubmitMOU){
+            if(list.get(position).getStatus().equalsIgnoreCase("Approved")) {
+                holder.tvViewDetails.setVisibility(View.VISIBLE);
+                holder.tvViewDetails.setText("Waiting for MOU");
+            }
+        }  else if(isDownloadMOU){
+            if(list.get(position).isMOUDone()) {
+                holder.tvViewDetails.setVisibility(View.VISIBLE);
+                holder.tvViewDetails.setText("Download MOU");
+            }
+            holder.tvViewDetails.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvViewDetails.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -73,24 +98,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvInCharge = itemView.findViewById(R.id.tvInCharge);
             tvViewDetails = itemView.findViewById(R.id.tvViewDetails);
             lyMain = itemView.findViewById(R.id.lyMain);
-//            lyMain.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
-//                        Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
-//                        intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
-//                        mContext.startActivity(intent);
-//                    } else {
-//                        // Redirect To MOU
-//                        if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
-//                            Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
-//                            intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-//                            mContext.startActivity(intent);
-//                        }
-//                    }
-//
-//                }
-//            });
+
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,14 +110,19 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvViewDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("pending")){
+                    if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Pending")){
                         Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
-                        intent.putExtra("RequestId",list.get(getAdapterPosition()).getId());
-                        mContext.startActivity(intent);
+                        intent.putExtra("position", getAdapterPosition());
+                        intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+//                        mContext.startActivity(intent);
+                        mContext.startActivityForResult(intent, 1001);
                     } else if(list.get(getAdapterPosition()).getStatus().equalsIgnoreCase("Approved")) {
                         Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
+                        intent.putExtra("position", getAdapterPosition());
                         intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
                         mContext.startActivity(intent);
+                    } else if(list.get(getAdapterPosition()).isMOUDone()){
+                        mContext.showEmailDialog("Send MOU on this Email",getAdapterPosition());
                     }
                 }
             });

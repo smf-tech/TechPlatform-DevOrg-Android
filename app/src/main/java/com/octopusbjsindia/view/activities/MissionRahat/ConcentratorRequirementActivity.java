@@ -34,7 +34,7 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
 
     ConcentratorRequirementActivityPresenter presenter;
     RelativeLayout progressBar;
-    ArrayList<SearchListData> hospitalList;
+    ArrayList<SearchListData> hospitalList = new ArrayList<>();
 
     EditText etHospitalName, etAddress, etOwnerName, etContactNumber, etInChargeName, etContactNumberInCharge,
             etPermissionOxygenBed, etPermissionGeneralBed, etExistingOxygenBed, etExistingGeneralBed,
@@ -111,7 +111,7 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
                     Util.showToast(this,"Please enter no. of Existing General Bed");
                 } else if(TextUtils.isEmpty(etNumberOfConcentratorRequired.getText().toString())){
                     Util.showToast(this,"Please enter number of concentrator required");
-                }  else if(1 < Integer.parseInt(etNumberOfConcentratorRequired.getText().toString())){
+                }  else if(1 > Integer.parseInt(etNumberOfConcentratorRequired.getText().toString())){
                     Util.showToast(this,"Please enter valid number of concentrator required");
                 } else {
                     HashMap request = new HashMap<String,Object>();

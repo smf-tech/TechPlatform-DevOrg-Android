@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/dimen_10dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_10dp">
+
+            <TextView
+                android:id="@+id/txt_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_horizontal"
+                android:text="Please enter email id to receive data"
+                android:textColor="@color/grey_medium"
+                android:textSize="@dimen/text_size_16" />
+
+            <EditText
+                android:id="@+id/edt_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_size_16"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/bg_grey_box"
+                android:fontFamily="@font/opensans_regular"
+                android:gravity="center_vertical"
+                android:hint="Please enter email Id here."
+                android:inputType="textShortMessage|textMultiLine"
+                android:maxLength="200"
+                android:padding="@dimen/dimen_05dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="normal" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit"
+                style="@style/AppStyleBorderButton"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_weight="1"
+                android:text="Email Data"
+                android:visibility="visible" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

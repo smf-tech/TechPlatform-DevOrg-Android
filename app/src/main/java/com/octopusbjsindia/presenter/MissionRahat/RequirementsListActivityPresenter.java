@@ -1,8 +1,10 @@
 package com.octopusbjsindia.presenter.MissionRahat;
 
 import com.android.volley.VolleyError;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.request.APIRequestCall;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.lang.ref.WeakReference;
@@ -46,8 +48,14 @@ public class RequirementsListActivityPresenter implements APIPresenterListener {
         mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-
         requestCall.getDataApiCall("RequirementsList", Url);
     }
 
+    public void getMailMOU() {
+        mContext.get().showProgressBar();
+        String url = BuildConfig.BASE_URL + Urls.MissionRahat.MOU_ON_MAIL;
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall("RequirementsList", url);
+    }
 }

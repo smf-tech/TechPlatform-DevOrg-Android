@@ -31,6 +31,9 @@ public class RequirementsListData {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("isMOUDone")
+    @Expose
+    private boolean isMOUDone;
 
     public String getId() {
         return id;
@@ -104,4 +107,11 @@ public class RequirementsListData {
         this.status = status;
     }
 
+    public boolean isMOUDone() {
+        return isMOUDone;
+    }
+
+    public void setMOUDone(boolean MOUDone) {
+        isMOUDone = MOUDone;
+    }
 }

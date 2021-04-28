@@ -42,7 +42,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     private FloatingActionButton fbSelect;
     private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList;
     private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
-            isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU;
+            isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU, isRequirementList;
     private boolean isFABOpen = false;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -125,6 +125,9 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_SUBMIT_MOU)) {
                     isSubmitMOU = true;
                     continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_VIEW_REQUIREMENT_LIST)) {
+                    isRequirementList = true;
+                    continue;
                 }
             }
         }
@@ -133,16 +136,16 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     @Override
     public void onResume() {
         super.onResume();
-        if (Util.isConnected(getActivity())) {
-            missionRahatFragmentPresenter.getMRAnalyticsData("", "");
-        } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-        }
-        if (mrAnalyticsDataList.size() > 0) {
-            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
-        } else {
-            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
-        }
+//        if (Util.isConnected(getActivity())) {
+//            missionRahatFragmentPresenter.getMRAnalyticsData("", "");
+//        } else {
+//            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+//        }
+//        if (mrAnalyticsDataList.size() > 0) {
+//            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+//        } else {
+//            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+//        }
         closeFABMenu();
     }
 
@@ -180,6 +183,9 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 break;
             case R.id.fb_approval:
                 intent = new Intent(getActivity(), RequirementsListActivity.class);
+                intent.putExtra("isDownloadMOU",isDownloadMOU);
+                intent.putExtra("isSubmitMOU",isSubmitMOU);
+                intent.putExtra("isApprovalAllowed",isApprovalAllowed);
                 getActivity().startActivity(intent);
                 break;
             case R.id.fb_machine_list:
@@ -233,7 +239,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbRequirementForm.hide();
             fbRequirementForm.animate().translationY(0);
         }
-        if (isApprovalAllowed) {
+        if (isRequirementList) {
             fbApproval.hide();
             fbApproval.animate().translationY(0);
         }

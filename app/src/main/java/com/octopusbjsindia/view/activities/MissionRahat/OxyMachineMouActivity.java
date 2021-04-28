@@ -62,11 +62,14 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
     LayoutMouOxymachineBinding mouOxymachineBinding;
     private Activity activity;
     private String requirmentId;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.layout_mou_oxymachine);
+
+        position  = getIntent().getIntExtra("position",-1);
         mouOxymachineBinding = LayoutMouOxymachineBinding.inflate(getLayoutInflater());
         View view = mouOxymachineBinding.getRoot();
         setContentView(view);
@@ -209,8 +212,16 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
             CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
             /*Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     responseOBJ.getMessage(), Snackbar.LENGTH_LONG);*/
+            if(responseOBJ.getCode()==200){
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("position",position);
+                returnIntent.putExtra("status","MOU_DONE");
+                setResult(Activity.RESULT_OK,returnIntent);
+                closeCurrentActivity();
+                finish();
+            }
             Util.showToast(responseOBJ.getMessage(), this);
-            closeCurrentActivity();
+
         }
     }
 

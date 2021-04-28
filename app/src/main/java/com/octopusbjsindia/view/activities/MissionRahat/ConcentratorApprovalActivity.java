@@ -2,7 +2,9 @@ package com.octopusbjsindia.view.activities.MissionRahat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
     private ArrayList<CustomSpinnerObject> machineList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> selectedMachineList = new ArrayList<>();
     String selectedMachineCodes = "", selectedMachineID = "", requestId = "";
+    int position;
     EditText etNumberOfConcentratorApproved, etMachines, etDateMachineAllocation, etObservationReason;
     TextView tvHospitalName, tvAddress, tvVisitDate, tvMachineRequired, tvPersonVisited, tvDesignation;
 
@@ -49,7 +52,8 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concentrator_approval);
 
-        requestId = getIntent().getStringExtra("RequestId");
+        position  = getIntent().getIntExtra("position",-1);
+        requestId  = getIntent().getStringExtra("RequestId");
         setTitle("Requirement Details");
 
         progressBar = findViewById(R.id.lyProgressBar);
@@ -196,6 +200,10 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
     @Override
     public void onSuccessListener(String requestID, String response) {
         Util.showToast(this, response);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("position",position);
+        returnIntent.putExtra("status","Approved");
+        setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
 
@@ -247,7 +255,7 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
                     selectedMachineCodes = selectedMachineCodes + "," +obj.getName();
                     selectedMachineID = selectedMachineID + "," +obj.get_id();
                 }
-//                selectedMachineList.add(obj);
+                selectedMachineList.add(obj);
             }
         }
         etMachines.setText(selectedMachineCodes);

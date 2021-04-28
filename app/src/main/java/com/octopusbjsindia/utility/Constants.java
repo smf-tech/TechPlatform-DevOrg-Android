@@ -563,5 +563,6 @@ public class Constants {
         public static final int ACCESS_CODE_DOWNLOAD_MOU = 173;
         public static final int ACCESS_CODE_NEW_PATIENT = 174;
         public static final int ACCESS_CODE_SUBMIT_MOU = 175;
+        public static final int ACCESS_CODE_VIEW_REQUIREMENT_LIST = 176;
     }
 }
