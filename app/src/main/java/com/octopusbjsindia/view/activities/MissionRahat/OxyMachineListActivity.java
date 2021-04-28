@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,7 +69,9 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     }
 
     private void initView() {
-
+        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+        oxygenMachineLists.clear();
+        presenter.getOxyMachineList(url);
         setClickListners();
         layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List");
 
@@ -127,8 +130,10 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     @Override
     protected void onResume() {
         super.onResume();
-        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
-        presenter.getOxyMachineList(url);
+        /*final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
+        oxygenMachineLists.clear();
+        presenter.getOxyMachineList(url);*/
+
     }
 
     @Override
@@ -219,7 +224,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
             intent1.putExtra("MachineDataString", machineDataString);
             intent1.putExtra("position", pos);
-            startActivity(intent1);
+            startActivityForResult(intent1,Constants.MissionRahat.RECORD_UPDATE);
         }
     }
 
@@ -228,6 +233,27 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             layoutOxymachineListBinding.lyNoData.setVisibility(View.VISIBLE);
         }else {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.MissionRahat.RECORD_UPDATE && data != null) {
+            int hoursUsedCount = data.getIntExtra("HOURS_USED_COUNT", 0);
+            int patientsBenefitedCount = data.getIntExtra("PATIENTS_BENEFITED_COUNT", 0);
+            int updatePosition = data.getIntExtra("UPDATE_POSITION", 0);
+            updateList(hoursUsedCount,patientsBenefitedCount,updatePosition);
+        }
+
+    }
+
+    private void updateList(int hoursUsedCount, int patientsBenefitedCount, int updatePosition) {
+        if (oxygenMachineLists.size() >updatePosition) {
+            oxygenMachineLists.get(updatePosition).setBenefitedPatientCount(oxygenMachineLists.get(updatePosition).getBenefitedPatientCount()+patientsBenefitedCount);
+            oxygenMachineLists.get(updatePosition).setWorkingHrsCount(oxygenMachineLists.get(updatePosition).getWorkingHrsCount()+hoursUsedCount);
+            oxyMachineListAdapter.notifyItemChanged(updatePosition);
+            oxyMachineListAdapter.notifyDataSetChanged();;
         }
     }
 }
