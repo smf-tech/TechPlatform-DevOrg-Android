@@ -37,7 +37,7 @@
         android:text="Machine List"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_create_machine"
+        app:icon="@drawable/ic_machine_list"
         app:iconTint="@color/white"
         android:visibility="gone" />
 
@@ -54,7 +54,7 @@
         android:text="Approvals"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_approvals_icon_db"
+        app:icon="@drawable/ic_approval_request_icon"
         app:iconTint="@color/white"
         android:visibility="gone" />
 
@@ -88,7 +88,7 @@
         android:text="New Hospital"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_menu_home"
+        app:icon="@drawable/ic_hospital_create_icon"
         app:iconTint="@color/white"
         android:visibility="gone" />
 
@@ -105,7 +105,7 @@
         android:text="New Machine"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:icon="@drawable/ic_create_machine"
+        app:icon="@drawable/ic_machine_create_icon"
         app:iconTint="@color/white"
         android:visibility="gone" />
 
