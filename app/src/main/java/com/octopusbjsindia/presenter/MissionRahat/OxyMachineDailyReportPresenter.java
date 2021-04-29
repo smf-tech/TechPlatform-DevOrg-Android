@@ -40,6 +40,7 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
 
 
     public void submitDailyReportData(String paramjson) {
+        mContext.get().showProgressBar();
         final String url = BuildConfig.BASE_URL + Urls.MissionRahat.SEND_MACHINE_DAILY_REPORT;
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
@@ -67,26 +68,29 @@ public class OxyMachineDailyReportPresenter implements APIPresenterListener {
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        if (response != null) {
-            if (requestID.equalsIgnoreCase(OxyMachineDailyReportPresenter.KEY_SUBMIT_DAILY_REPORT)) {
-                CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
-                if (commonResponse.getCode() == 200) {
-                    mContext.get().onSuccessListener(KEY_SUBMIT_DAILY_REPORT, response);
-                } else {
-                    mContext.get().onFailureListener(KEY_SUBMIT_DAILY_REPORT, commonResponse.getMessage());
-                }
+        if (mContext != null && mContext.get() != null) {
+            mContext.get().hideProgressBar();
+            if (response != null) {
+                if (requestID.equalsIgnoreCase(OxyMachineDailyReportPresenter.KEY_SUBMIT_DAILY_REPORT)) {
+                    CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
+                    if (commonResponse.getCode() == 200) {
+                        mContext.get().onSuccessListener(KEY_SUBMIT_DAILY_REPORT, response);
+                    } else {
+                        mContext.get().onFailureListener(KEY_SUBMIT_DAILY_REPORT, commonResponse.getMessage());
+                    }
 
-            }else if (requestID.equalsIgnoreCase(KEY_CREATE_MACHINE_MASTER_DATA)) {
+                } else if (requestID.equalsIgnoreCase(KEY_CREATE_MACHINE_MASTER_DATA)) {
 
-                // Please note, here we have used same model class for data parsing as SS master data model class.
-                // So, dont do any change in model class for Mission Rahat project as it can affect to SS.
-                // If need change, create another model class for Mission Rahat.
+                    // Please note, here we have used same model class for data parsing as SS master data model class.
+                    // So, dont do any change in model class for Mission Rahat project as it can affect to SS.
+                    // If need change, create another model class for Mission Rahat.
 
-                MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
-                if (masterDataResponse.getStatus() == 1000) {
-                    Util.logOutUser(mContext.get());
-                } else {
-                    mContext.get().setMasterData(masterDataResponse);
+                    MasterDataResponse masterDataResponse = new Gson().fromJson(response, MasterDataResponse.class);
+                    if (masterDataResponse.getStatus() == 1000) {
+                        Util.logOutUser(mContext.get());
+                    } else {
+                        mContext.get().setMasterData(masterDataResponse);
+                    }
                 }
             }
         }
