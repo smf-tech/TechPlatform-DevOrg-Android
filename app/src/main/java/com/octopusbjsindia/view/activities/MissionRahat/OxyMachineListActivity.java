@@ -240,7 +240,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.MissionRahat.RECORD_UPDATE && data != null) {
-            int hoursUsedCount = data.getIntExtra("HOURS_USED_COUNT", 0);
+            double hoursUsedCount = data.getDoubleExtra("HOURS_USED_COUNT", 0);
             int patientsBenefitedCount = data.getIntExtra("PATIENTS_BENEFITED_COUNT", 0);
             int updatePosition = data.getIntExtra("UPDATE_POSITION", 0);
             updateList(hoursUsedCount,patientsBenefitedCount,updatePosition);
