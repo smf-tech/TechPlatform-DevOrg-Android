@@ -16,7 +16,7 @@ public class DailyRecordRequestModel {
     private String slotId;
     @SerializedName("hours_usages")
     @Expose
-    private Integer hoursUsages;
+    private Double hoursUsages;
     @SerializedName("benefited_patient_no")
     @Expose
     private Integer benefitedPatientNo;
@@ -43,13 +43,7 @@ public class DailyRecordRequestModel {
         this.slotId = slotId;
     }
 
-    public Integer getHoursUsages() {
-        return hoursUsages;
-    }
 
-    public void setHoursUsages(Integer hoursUsages) {
-        this.hoursUsages = hoursUsages;
-    }
 
     public Integer getBenefitedPatientNo() {
         return benefitedPatientNo;
@@ -81,5 +75,13 @@ public class DailyRecordRequestModel {
 
     public void setMachineCode(String machineCode) {
         MachineCode = machineCode;
+    }
+
+    public Double getHoursUsages() {
+        return hoursUsages;
+    }
+
+    public void setHoursUsages(Double hoursUsages) {
+        this.hoursUsages = hoursUsages;
     }
 }

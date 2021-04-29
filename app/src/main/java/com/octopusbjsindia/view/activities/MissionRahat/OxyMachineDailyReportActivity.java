@@ -52,7 +52,8 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
     private String selectedSlot = "", selectedSlotId = "";
     private ArrayList<CustomSpinnerObject> reportSlotList = new ArrayList<>();
     private Activity activity;
-    private int position, hours_used_count = 0, patients_benefited_count = 0;
+    private int position,  patients_benefited_count = 0;
+    private double hours_used_count = 0;
 
 
     private OxygenMachineList receivedOxygenMachineData;
@@ -153,7 +154,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
     private void callSubmitMethod() {
         presenter.submitDailyReportData(getMouRequestData());
-        hours_used_count = Integer.parseInt(dailyReportBinding.etMachineHours.getText().toString());
+        hours_used_count = Double.parseDouble(dailyReportBinding.etMachineHours.getText().toString());
         patients_benefited_count = Integer.parseInt(dailyReportBinding.etNumberofPatients.getText().toString());
 
     }
@@ -165,7 +166,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
         dailyReportRequestModel.setMachineCode(receivedOxygenMachineData.getCode());
         dailyReportRequestModel.setSlotId(selectedSlotId);
         dailyReportRequestModel.setBenefitedPatientNo(Integer.parseInt(dailyReportBinding.etNumberofPatients.getText().toString()));
-        dailyReportRequestModel.setHoursUsages(Integer.parseInt(dailyReportBinding.etMachineHours.getText().toString()));
+        dailyReportRequestModel.setHoursUsages(Double.parseDouble(dailyReportBinding.etMachineHours.getText().toString()));
         dailyReportRequestModel.setStartDate(String.valueOf(Util.getDateInLong(dailyReportBinding.etStartDate.getText().toString())));
         dailyReportRequestModel.setEndDate(String.valueOf(Util.getDateInLong(dailyReportBinding.etEndDate.getText().toString())));
         String paramjson = gson.toJson(dailyReportRequestModel);
