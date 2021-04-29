@@ -213,7 +213,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbRequirementForm.animate().translationY(-height);
             height = height + 140;
         }
-        if (isApprovalAllowed) {
+        if (isRequirementList) {
             fbApproval.show();
             fbApproval.animate().translationY(-height);
             height = height + 140;
