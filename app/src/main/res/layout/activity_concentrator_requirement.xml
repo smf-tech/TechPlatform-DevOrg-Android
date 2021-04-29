@@ -59,6 +59,7 @@
                     android:id="@+id/etOwnerName"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Name of owner *"
+                    android:enabled="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +74,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Contact details *"
                     android:inputType="number"
+                    android:enabled="false"
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 

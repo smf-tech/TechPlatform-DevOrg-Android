@@ -148,6 +148,8 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
                     selectedHospitalId = hospitalList.get(pos).getId();
                     etHospitalName.setText(hospitalList.get(pos).getValue());
                     etAddress.setText(hospitalList.get(pos).getAddress());
+                    etOwnerName.setText(hospitalList.get(pos).getPersonName());
+                    etContactNumber.setText(hospitalList.get(pos).getMobileNumber());
                 }
             }
         }

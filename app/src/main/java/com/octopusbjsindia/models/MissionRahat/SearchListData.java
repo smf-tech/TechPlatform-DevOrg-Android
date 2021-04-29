@@ -15,6 +15,12 @@ public class SearchListData implements Serializable {
     @SerializedName("address")
     @Expose
     private String address;
+    @SerializedName("personName")
+    @Expose
+    private String personName;
+    @SerializedName("mobileNumber")
+    @Expose
+    private String mobileNumber;
 
     public String getId() {
         return id;
@@ -38,5 +44,21 @@ public class SearchListData implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }

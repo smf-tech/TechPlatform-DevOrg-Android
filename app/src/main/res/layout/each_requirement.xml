@@ -184,6 +184,34 @@
                     android:visibility="gone"
                     android:text="View Details"/>
 
+                <TextView
+                    android:id="@+id/tvWaitingMOU"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    android:text="Waiting for MOU"/>
+
+                <TextView
+                    android:id="@+id/tvDownloadMOU"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    android:text="Download MOU"/>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
