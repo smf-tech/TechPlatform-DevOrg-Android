@@ -31,7 +31,7 @@ public class SearchListActivity extends AppCompatActivity {
         RecyclerView listView = findViewById(R.id.listView);
         ArrayList<SearchListData> list = (ArrayList<SearchListData>) getIntent().getSerializableExtra("List");
 
-        if (list != null || list.size() == 0)
+        if (list.size() == 0)
             findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         SearchListAdapter adapter = new SearchListAdapter(list, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

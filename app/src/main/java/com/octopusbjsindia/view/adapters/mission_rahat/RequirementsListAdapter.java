@@ -142,7 +142,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvDownloadMOU.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.showEmailDialog("Send MOU on this Email", getAdapterPosition());
+                    mContext.showEmailDialog("Send", getAdapterPosition());
                 }
             });
 
