@@ -43,7 +43,7 @@ public class OxygenMachineList {
     private String inchargeMobileNumber;
     @SerializedName("workingHrsCount")
     @Expose
-    private Integer workingHrsCount;
+    private Double workingHrsCount;
     @SerializedName("benefitedPatientCount")
     @Expose
     private Integer benefitedPatientCount;
@@ -147,13 +147,7 @@ public class OxygenMachineList {
         this.inchargeMobileNumber = inchargeMobileNumber;
     }
 
-    public Integer getWorkingHrsCount() {
-        return workingHrsCount;
-    }
 
-    public void setWorkingHrsCount(Integer workingHrsCount) {
-        this.workingHrsCount = workingHrsCount;
-    }
 
     public Integer getBenefitedPatientCount() {
         return benefitedPatientCount;
@@ -171,4 +165,11 @@ public class OxygenMachineList {
         this.deployDate = deployDate;
     }
 
+    public Double getWorkingHrsCount() {
+        return workingHrsCount;
+    }
+
+    public void setWorkingHrsCount(Double workingHrsCount) {
+        this.workingHrsCount = workingHrsCount;
+    }
 }

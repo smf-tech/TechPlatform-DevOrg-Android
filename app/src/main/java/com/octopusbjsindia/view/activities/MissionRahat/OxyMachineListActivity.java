@@ -248,7 +248,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
     }
 
-    private void updateList(int hoursUsedCount, int patientsBenefitedCount, int updatePosition) {
+    private void updateList(double hoursUsedCount, int patientsBenefitedCount, int updatePosition) {
         if (oxygenMachineLists.size() >updatePosition) {
             oxygenMachineLists.get(updatePosition).setBenefitedPatientCount(oxygenMachineLists.get(updatePosition).getBenefitedPatientCount()+patientsBenefitedCount);
             oxygenMachineLists.get(updatePosition).setWorkingHrsCount(oxygenMachineLists.get(updatePosition).getWorkingHrsCount()+hoursUsedCount);
