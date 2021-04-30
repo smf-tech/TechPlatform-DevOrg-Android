@@ -25,7 +25,7 @@ public class PatientInfoRequestModel {
     private String adharCard;
     @SerializedName("mobile_number")
     @Expose
-    private Integer mobileNumber;
+    private long mobileNumber;
     @SerializedName("start_saturation_level")
     @Expose
     private Double startSaturationLevel;
@@ -84,11 +84,11 @@ public class PatientInfoRequestModel {
         this.adharCard = adharCard;
     }
 
-    public Integer getMobileNumber() {
+    public long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(Integer mobileNumber) {
+    public void setMobileNumber(long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

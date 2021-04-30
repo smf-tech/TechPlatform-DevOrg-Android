@@ -177,7 +177,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         patientInfoRequestModel.setAge(Integer.parseInt(patientInfoBinding.etPatientAge.getText().toString()));
         patientInfoRequestModel.setIcmrCode(patientInfoBinding.etIcmrCode.getText().toString());
         patientInfoRequestModel.setAdharCard(patientInfoBinding.etPatientsAadhar.getText().toString());
-        patientInfoRequestModel.setMobileNumber(Integer.parseInt(patientInfoBinding.etMobileNumber.getText().toString()));
+        patientInfoRequestModel.setMobileNumber(Long.parseLong(patientInfoBinding.etMobileNumber.getText().toString()));
         patientInfoRequestModel.setStartSaturationLevel(Double.parseDouble(patientInfoBinding.etStartSaturation.getText().toString()));
         patientInfoRequestModel.setEndSaturationLevel(Double.parseDouble(patientInfoBinding.etEndSaturation.getText().toString()));
         patientInfoRequestModel.setMachineId(machineCode);
