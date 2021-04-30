@@ -299,6 +299,7 @@ public class Urls {
         public static final String SAVE_MACHINE_MOU = "api/saveMachineMOU";
         public static final String SEND_MACHINE_DAILY_REPORT = "api/machineDailyReport";
         public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
+        public static final String SAVE_PATIENT_DETAILS = "api/saveMRPatientDetails";
         public static final String GET_REQUIREMENT_MOU_DETAILS = "api/getReuirmentMOUDetails";
         public static final String MOU_ON_MAIL = "api/xxxxxxxxxx";
         public static final String TERMS_AND_CONDITIONS_MISSION_RAHAT = "api/termPage";

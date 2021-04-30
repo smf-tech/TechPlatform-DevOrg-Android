@@ -256,4 +256,25 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             oxyMachineListAdapter.notifyDataSetChanged();;
         }
     }
+
+    public void callToAddDailyReportorPatients(int pos,int type){
+        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
+            if (type == 1) {
+                Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);
+                Gson gson = new Gson();
+                String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+                intent1.putExtra("MachineDataString", machineDataString);
+                intent1.putExtra("position", pos);
+                startActivityForResult(intent1, Constants.MissionRahat.RECORD_UPDATE);
+            }
+            if (type == 2) {
+                Intent intent1 = new Intent(this, PatientInfoActivity.class);
+                Gson gson = new Gson();
+                String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+                intent1.putExtra("MachineDataString", machineDataString);
+                intent1.putExtra("position", pos);
+                startActivityForResult(intent1, Constants.MissionRahat.RECORD_UPDATE);
+            }
+        }
+    }
 }
