@@ -135,7 +135,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                     Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
                     intent.putExtra("position", getAdapterPosition());
                     intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intent);
+                    mContext.startActivityForResult(intent,1001);
 
                 }
             });
