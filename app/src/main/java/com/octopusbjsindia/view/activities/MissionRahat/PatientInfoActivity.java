@@ -70,7 +70,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
     private void initView() {
 
         setClickListners();
-        patientInfoBinding.toolbar.toolbarTitle.setText("Daily Report");
+        patientInfoBinding.toolbar.toolbarTitle.setText("Patient Information");
         presenter.getMasterData();
         Gson gson = new Gson();
         if (getIntent().getExtras() != null) {
