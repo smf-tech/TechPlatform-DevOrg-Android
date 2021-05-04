@@ -1,6 +1,8 @@
 package com.octopusbjsindia.presenter.MissionRahat;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.request.APIRequestCall;
@@ -8,6 +10,7 @@ import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class RequirementsListActivityPresenter implements APIPresenterListener {
     private WeakReference<RequirementsListActivity> mContext;
@@ -51,11 +54,13 @@ public class RequirementsListActivityPresenter implements APIPresenterListener {
         requestCall.getDataApiCall("RequirementsList", Url);
     }
 
-    public void getMailMOU() {
+    public void getMailMOU(HashMap<String, String> map) {
         mContext.get().showProgressBar();
         String url = BuildConfig.BASE_URL + Urls.MissionRahat.MOU_ON_MAIL;
+        Gson gson = new GsonBuilder().create();
+        String params = gson.toJson(map);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.getDataApiCall("RequirementsList", url);
+        requestCall.postDataApiCall("MOU_ON_MAIL", params, url);
     }
 }
