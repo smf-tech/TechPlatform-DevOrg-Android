@@ -29,6 +29,8 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListData;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.Structure;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.RequirementsListActivityPresenter;
 import com.octopusbjsindia.utility.Urls;
@@ -38,6 +40,7 @@ import com.octopusbjsindia.view.adapters.mission_rahat.RequirementsListAdapter;
 import com.octopusbjsindia.view.adapters.mission_rahat.SearchListAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RequirementsListActivity extends AppCompatActivity implements APIDataListener {
@@ -50,7 +53,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
-    private String nextPageUrl="";
+    private String nextPageUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +62,19 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
         setTitle("Requirements List");
 
-        boolean isDownloadMOU = getIntent().getBooleanExtra("isDownloadMOU",false);
-        boolean isSubmitMOU = getIntent().getBooleanExtra("isSubmitMOU",false);
-        boolean isApprovalAllowed = getIntent().getBooleanExtra("isApprovalAllowed",false);
+        boolean isDownloadMOU = getIntent().getBooleanExtra("isDownloadMOU", false);
+        boolean isSubmitMOU = getIntent().getBooleanExtra("isSubmitMOU", false);
+        boolean isApprovalAllowed = getIntent().getBooleanExtra("isApprovalAllowed", false);
 
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new RequirementsListActivityPresenter(this);
         if (Util.isConnected(this)) {
-            presenter.getRequirementsList( BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
+            presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
         rvRequestList = findViewById(R.id.rvRequestList);
-        adapter = new RequirementsListAdapter(list,this, isDownloadMOU, isSubmitMOU, isApprovalAllowed);
+        adapter = new RequirementsListAdapter(list, this, isDownloadMOU, isSubmitMOU, isApprovalAllowed);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvRequestList.setLayoutManager(layoutManager);
         rvRequestList.setAdapter(adapter);
@@ -91,7 +94,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                             loading = false;
 //                            getData();
                             if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
-                                presenter.getRequirementsList( nextPageUrl);
+                                presenter.getRequirementsList(nextPageUrl);
                             }
                         }
                     }
@@ -108,6 +111,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
         });
 
     }
+
     public void setTitle(String title) {
         TextView tvTitle = findViewById(R.id.toolbar_title);
         ImageView back = findViewById(R.id.toolbar_back_action);
@@ -125,16 +129,16 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001) {
             if (resultCode == Activity.RESULT_OK) {
-                int position = data.getIntExtra("position",-1);
+                int position = data.getIntExtra("position", -1);
                 String status = data.getStringExtra("status");
-                if(position != -1){
-                    if(status.equalsIgnoreCase("MOU_DONE")){
+                if (position != -1) {
+                    if (status.equalsIgnoreCase("MOU_DONE")) {
                         list.get(position).setMOUDone(true);
                     } else {
                         list.get(position).setStatus(status);
                     }
 
-                    adapter.notifyItemChanged(position,list.get(position));
+                    adapter.notifyItemChanged(position, list.get(position));
                 }
             }
         }
@@ -155,22 +159,29 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
         try {
             if (response != null) {
-                RequirementsListResponse data = new Gson().fromJson(response, RequirementsListResponse.class);
-                if (data.getCode() == 200) {
-                    if (requestID.equalsIgnoreCase("RequirementsList")) {
+
+                if (requestID.equalsIgnoreCase("RequirementsList")) {
+                    RequirementsListResponse data = new Gson().fromJson(response, RequirementsListResponse.class);
+                    if (data.getCode() == 200) {
                         nextPageUrl = data.getNextPageUrl();
                         list.addAll(data.getData());
                         adapter.notifyDataSetChanged();
-                    }
-                } else {
-                    if (data.getCode() == 1000) {
-                        Util.logOutUser(this);
-                    } else {
+                    } else if (data.getCode() == 1000) {
                         onFailureListener(requestID, data.getMessage());
+                        Util.logOutUser(this);
+                    }
+                } else if (requestID.equalsIgnoreCase("MOU_ON_MAIL")) {
+                    CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);
+                    if (commonResponse.getCode() == 200) {
+                        onFailureListener(requestID, commonResponse.getMessage());
+                    } else if (commonResponse.getCode() == 1000) {
+                        onFailureListener(requestID, commonResponse.getMessage());
+                        Util.logOutUser(this);
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             onFailureListener(requestID, e.getMessage());
         }
     }
@@ -189,6 +200,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     public void closeCurrentActivity() {
 
     }
+
     public void showEmailDialog(String btText, int adapterPosition) {
         Dialog dialog;
         Button btn_submit;
@@ -209,10 +221,12 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                 String strEmailId = edt_reason.getText().toString();
                 if (!TextUtils.isEmpty(strEmailId.toString().trim())
                         && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
-                    Util.showToast(RequirementsListActivity.this,"Please enter valid email.");
+                    Util.showToast(RequirementsListActivity.this, "Please enter valid email.");
                 } else {
-
-                    presenter.getMailMOU();
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("email_id", strEmailId.trim());
+                    map.put("requirment_id", list.get(adapterPosition).getId());
+                    presenter.getMailMOU(map);
                     dialog.dismiss();
                 }
             }
