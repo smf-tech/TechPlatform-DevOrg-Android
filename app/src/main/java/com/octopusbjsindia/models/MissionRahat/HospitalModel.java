@@ -7,6 +7,10 @@ import java.io.Serializable;
 
 public class HospitalModel implements Serializable {
 
+    @SerializedName("hospital_type_id")
+    @Expose
+    private String hospitalTypeId;
+
     @SerializedName("state_id")
     @Expose
     private String stateId;
@@ -86,4 +90,11 @@ public class HospitalModel implements Serializable {
     @Expose
     private String mobile_number;
 
+    public String getHospitalTypeId() {
+        return hospitalTypeId;
+    }
+
+    public void setHospitalTypeId(String hospitalTypeId) {
+        this.hospitalTypeId = hospitalTypeId;
+    }
 }

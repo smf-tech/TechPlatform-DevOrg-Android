@@ -17,6 +17,9 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.HospitalModel;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.presenter.MissionRahat.CreateHospitalActivityPresenter;
@@ -33,11 +36,12 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
     private RelativeLayout progressBar;
     private CreateHospitalActivityPresenter presenter;
     private EditText etState, etDistrict, etHospitalName, etAddress, etPersonName, etDesignation,
-            etMobile;
+            etMobile,etSelectUserType;
     private Button btSubmit, btback;
-    private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict;
+    private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict,selectedHospitalType,selectedHospitalTypeID;
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> hospitalTypeList = new ArrayList<>();
     private HospitalModel hospitalModel;
 
     @Override
@@ -49,6 +53,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         presenter = new CreateHospitalActivityPresenter(this);
         initView();
         setTitle("Create Hospital");
+        presenter.getMasterData();
     }
 
     private void initView() {
@@ -60,11 +65,13 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         etPersonName = findViewById(R.id.et_responsible_person_name);
         etDesignation = findViewById(R.id.et_person_designation);
         etMobile = findViewById(R.id.et_mobile_number);
+        etSelectUserType  = findViewById(R.id.et_select_user_type);
         btSubmit = findViewById(R.id.bt_submit);
 
         etState.setOnClickListener(this);
         etDistrict.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
+        etSelectUserType.setOnClickListener(this);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
         presenter.getLocationData("",
@@ -83,6 +90,9 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         switch (v.getId()) {
             case R.id.toolbar_back_action:
                 finish();
+                break;
+            case R.id.et_select_user_type:
+                showSlotsDropDown();
                 break;
             case R.id.et_state:
                 if (stateList.size() > 0) {
@@ -132,6 +142,33 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void showSlotsDropDown() {
+        CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
+                "Select user type", hospitalTypeList, false);
+
+        cddCity.show();
+        cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+
+    public void setMasterData(MasterDataResponse masterDataResponse) {
+        for (MasterDataList obj : masterDataResponse.getData()) {
+            if (obj.getForm().equalsIgnoreCase("mission_rahat_incharge_type")) {
+                if (obj.getField().equalsIgnoreCase("inchargeType")) {
+                    for (MasterDataValue data : obj.getData()) {
+                        CustomSpinnerObject temp = new CustomSpinnerObject();
+                        temp.set_id(data.getId());
+                        temp.setName(data.getValue());
+                        temp.setSelected(false);
+                        hospitalTypeList.add(temp);
+                    }
+                }
+            }
+        }
+    }
+
+
     private boolean isAllDataValid() {
         if (TextUtils.isEmpty(selectedStateId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -140,6 +177,10 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         } else if (TextUtils.isEmpty(selectedDistrictId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select District.", Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(selectedHospitalTypeID)){
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please select user type Hospital/NGO etc.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etHospitalName.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -170,6 +211,8 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
             hospitalModel.setPersonName(etPersonName.getText().toString().trim());
             hospitalModel.setDesignation(etDesignation.getText().toString().trim());
             hospitalModel.setMobile_number(etMobile.getText().toString().trim());
+            hospitalModel.setHospitalTypeId(selectedHospitalTypeID);
+
         }
         return true;
     }
@@ -280,6 +323,17 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                 }
                 etDistrict.setText(selectedDistrict);
                 break;
+            case "Select user type":
+                for (CustomSpinnerObject district : hospitalTypeList) {
+                    if (district.isSelected()) {
+                        selectedHospitalType = district.getName();
+                        selectedHospitalTypeID = district.get_id();
+                        break;
+                    }
+                }
+                etSelectUserType.setText(selectedHospitalType);
+                break;
+
         }
     }
 }
