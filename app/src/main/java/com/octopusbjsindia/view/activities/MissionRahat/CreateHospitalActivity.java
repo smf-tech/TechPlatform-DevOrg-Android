@@ -43,6 +43,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> hospitalTypeList = new ArrayList<>();
     private HospitalModel hospitalModel;
+    private EditText etRegistrationNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +67,14 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         etDesignation = findViewById(R.id.et_person_designation);
         etMobile = findViewById(R.id.et_mobile_number);
         etSelectUserType  = findViewById(R.id.et_select_user_type);
+        etRegistrationNo  = findViewById(R.id.et_registration_no);
         btSubmit = findViewById(R.id.bt_submit);
 
         etState.setOnClickListener(this);
         etDistrict.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
         etSelectUserType.setOnClickListener(this);
+        etRegistrationNo.setOnClickListener(this);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
         presenter.getLocationData("",
@@ -186,7 +189,12 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter hospital name.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etAddress.getText().toString().trim())) {
+        }/* else if (TextUtils.isEmpty(etRegistrationNo.getText().toString().trim())) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please enter Registration number.", Snackbar.LENGTH_LONG);
+            return false;
+        }*/
+        else if (TextUtils.isEmpty(etAddress.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter hospital address.", Snackbar.LENGTH_LONG);
             return false;
@@ -212,6 +220,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
             hospitalModel.setDesignation(etDesignation.getText().toString().trim());
             hospitalModel.setMobile_number(etMobile.getText().toString().trim());
             hospitalModel.setHospitalTypeId(selectedHospitalTypeID);
+            hospitalModel.setRegistrationNo(etRegistrationNo.getText().toString().trim());
 
         }
         return true;

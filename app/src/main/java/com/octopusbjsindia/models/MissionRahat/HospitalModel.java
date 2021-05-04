@@ -10,6 +10,9 @@ public class HospitalModel implements Serializable {
     @SerializedName("hospital_type_id")
     @Expose
     private String hospitalTypeId;
+    @SerializedName("registration_no")
+    @Expose
+    private String registrationNo;
 
     @SerializedName("state_id")
     @Expose
@@ -96,5 +99,13 @@ public class HospitalModel implements Serializable {
 
     public void setHospitalTypeId(String hospitalTypeId) {
         this.hospitalTypeId = hospitalTypeId;
+    }
+
+    public String getRegistrationNo() {
+        return registrationNo;
+    }
+
+    public void setRegistrationNo(String registrationNo) {
+        this.registrationNo = registrationNo;
     }
 }
