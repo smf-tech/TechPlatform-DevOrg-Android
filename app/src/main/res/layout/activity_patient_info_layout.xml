@@ -48,7 +48,7 @@
                         <EditText
                             android:id="@+id/et_patient_name"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="Enter Patient name"
+                            android:hint="Enter patient name"
                             android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                              />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +75,7 @@
                         <EditText
                             android:id="@+id/et_patient_age"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="Enter patient age."
+                            android:hint="Enter patient age"
                             android:inputType="number"
                             android:maxLength="3"
                             />
@@ -102,7 +102,7 @@
                         <EditText
                             android:id="@+id/et_patients_aadhar"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="Enter Aadhaar number"
+                            android:hint="Enter aadhaar number"
                             android:inputType="number"
                             android:maxLength="12"
                             />
@@ -129,7 +129,7 @@
                         <EditText
                             android:id="@+id/et_start_saturation"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="Start Saturation Level"
+                            android:hint="Start saturation Level"
                             android:inputType="number"
                             android:maxLength="2"
                             />
@@ -143,7 +143,7 @@
                         <EditText
                             android:id="@+id/et_end_saturation"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="End Saturation Level"
+                            android:hint="End saturation Level"
                             android:inputType="number"
                             android:maxLength="2"
                             />
