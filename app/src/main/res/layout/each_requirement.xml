@@ -210,7 +210,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
                     android:visibility="gone"
-                    android:text="Download MOU"/>
+                    android:text="Send MOU"/>
 
             </LinearLayout>
         </LinearLayout>

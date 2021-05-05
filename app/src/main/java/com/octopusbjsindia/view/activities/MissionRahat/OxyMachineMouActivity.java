@@ -217,7 +217,6 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
                 returnIntent.putExtra("position",position);
                 returnIntent.putExtra("status","MOU_DONE");
                 setResult(Activity.RESULT_OK,returnIntent);
-                closeCurrentActivity();
                 finish();
             }
             Util.showToast(responseOBJ.getMessage(), this);
