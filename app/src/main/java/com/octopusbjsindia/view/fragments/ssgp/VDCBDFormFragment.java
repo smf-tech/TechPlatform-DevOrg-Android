@@ -115,7 +115,7 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
         et_annual_income = vdcbdFormFragmentView.findViewById(R.id.et_annual_income);
         et_numberof_crops = vdcbdFormFragmentView.findViewById(R.id.et_numberof_crops);
         et_type_of_crops = vdcbdFormFragmentView.findViewById(R.id.et_type_of_crops);
-        et_remark = vdcbdFormFragmentView.findViewById(R.id.et_remark);
+//        et_remark = vdcbdFormFragmentView.findViewById(R.id.et_remark);
         btn_submit = vdcbdFormFragmentView.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
         etState.setOnClickListener(this);
@@ -317,7 +317,7 @@ public class VDCBDFormFragment extends Fragment implements View.OnClickListener,
                 vdcBdRequestModel.setAnnualIncome(et_annual_income.getText().toString());
                 vdcBdRequestModel.setCropNumberTime(et_numberof_crops.getText().toString());
                 vdcBdRequestModel.setTypeOfCrop(et_type_of_crops.getText().toString());
-                vdcBdRequestModel.setComment(et_remark.getText().toString());
+//                vdcBdRequestModel.setComment(et_remark.getText().toString());
 
                 presenter.submitBdData(vdcBdRequestModel);
             }

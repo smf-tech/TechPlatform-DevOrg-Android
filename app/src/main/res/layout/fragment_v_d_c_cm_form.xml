@@ -228,16 +228,16 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_img" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/textinputstyle"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:id="@+id/et_remark"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="Remark" />
-            </com.google.android.material.textfield.TextInputLayout>
+<!--                <EditText-->
+<!--                    android:id="@+id/et_remark"-->
+<!--                    style="@style/RegistrationEditTextLayout"-->
+<!--                    android:hint="Remark" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
 
             <Button
