@@ -1,19 +1,10 @@
 package com.octopusbjsindia.view.activities.MissionRahat;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,38 +15,38 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.OxyMachineListAdapter;
-import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
 import com.octopusbjsindia.databinding.LayoutOxymachineListBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineListModel;
-import com.octopusbjsindia.models.MissionRahat.RequirementsListResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineListActivityPresenter;
-import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
-public class OxyMachineListActivity extends AppCompatActivity implements OxyMachineListAdapter.OnRequestItemClicked, APIDataListener,
-        CustomSpinnerListener {
+public class OxyMachineListActivity extends AppCompatActivity implements
+        OxyMachineListAdapter.OnRequestItemClicked, APIDataListener, CustomSpinnerListener, View.OnClickListener {
     private OxyMachineListActivityPresenter presenter;
     private LayoutOxymachineListBinding layoutOxymachineListBinding;
     private Activity activity;
-    private ArrayList<OxygenMachineList>oxygenMachineLists = new ArrayList<>();
+    private ArrayList<OxygenMachineList> oxygenMachineLists = new ArrayList<>();
     private OxyMachineListAdapter oxyMachineListAdapter;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
-    private String nextPageUrl="";
+    private String nextPageUrl = "";
+    private boolean isAssignMachinesToDistrictAllowed, isAssignMachinesToTalukaAllowed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +63,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
         final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
         oxygenMachineLists.clear();
         presenter.getOxyMachineList(url);
-        setClickListners();
+        //setClickListners();
         layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -81,7 +72,6 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
 
         oxyMachineListAdapter = new OxyMachineListAdapter(this,oxygenMachineLists, this);
         layoutOxymachineListBinding.rvTrainerbactchlistview.setAdapter(oxyMachineListAdapter);
-
 
         layoutOxymachineListBinding.rvTrainerbactchlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -114,18 +104,34 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             }
         });
 
-    }
-
-    private void setClickListners() {
-
-
-        layoutOxymachineListBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_ASSIGN_MACHINES_DISTRICT)) {
+                    isAssignMachinesToDistrictAllowed = true;
+                    layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_ASSIGN_MACHINES_TALUKA)) {
+                    isAssignMachinesToTalukaAllowed = true;
+                    layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
+                    continue;
+                }
             }
-        });
+        }
+        layoutOxymachineListBinding.toolbar.toolbarBackAction.setOnClickListener(this);
+        layoutOxymachineListBinding.fbMachineAssign.setOnClickListener(this);
     }
+
+//    private void setClickListners() {
+//        layoutOxymachineListBinding.toolbar.toolbarBackAction.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//    }
 
     @Override
     protected void onResume() {
@@ -133,7 +139,6 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
         /*final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
         oxygenMachineLists.clear();
         presenter.getOxyMachineList(url);*/
-
     }
 
     @Override
@@ -176,9 +181,6 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
         } catch (Exception e) {
             onFailureListener(requestID, e.getMessage());
         }
-
-
-
     }
 
     @Override
@@ -215,7 +217,6 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
                 responseOBJ.getMessage(), Snackbar.LENGTH_LONG);
     }
 
-
     @Override
     public void onItemClicked(int pos) {
         if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
@@ -245,15 +246,30 @@ public class OxyMachineListActivity extends AppCompatActivity implements OxyMach
             int updatePosition = data.getIntExtra("UPDATE_POSITION", 0);
             updateList(hoursUsedCount,patientsBenefitedCount,updatePosition);
         }
-
     }
 
     private void updateList(double hoursUsedCount, int patientsBenefitedCount, int updatePosition) {
-        if (oxygenMachineLists.size() >updatePosition) {
-            oxygenMachineLists.get(updatePosition).setBenefitedPatientCount(oxygenMachineLists.get(updatePosition).getBenefitedPatientCount()+patientsBenefitedCount);
-            oxygenMachineLists.get(updatePosition).setWorkingHrsCount(oxygenMachineLists.get(updatePosition).getWorkingHrsCount()+hoursUsedCount);
+        if (oxygenMachineLists.size() > updatePosition) {
+            oxygenMachineLists.get(updatePosition).setBenefitedPatientCount(oxygenMachineLists.get(updatePosition).getBenefitedPatientCount() + patientsBenefitedCount);
+            oxygenMachineLists.get(updatePosition).setWorkingHrsCount(oxygenMachineLists.get(updatePosition).getWorkingHrsCount() + hoursUsedCount);
             oxyMachineListAdapter.notifyItemChanged(updatePosition);
-            oxyMachineListAdapter.notifyDataSetChanged();;
+            oxyMachineListAdapter.notifyDataSetChanged();
+            ;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.toolbar_back_action:
+                finish();
+                break;
+            case R.id.fb_machine_assign:
+                Intent intent = new Intent(this, OxyMachinesAssignActivity.class);
+                intent.putExtra("isAssignToDistrictAllowed", isAssignMachinesToDistrictAllowed);
+                intent.putExtra("isAssignToTalukaAllowed", isAssignMachinesToTalukaAllowed);
+                startActivity(intent);
+                break;
         }
     }
 }

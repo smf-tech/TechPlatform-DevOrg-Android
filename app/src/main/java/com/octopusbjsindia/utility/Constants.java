@@ -564,9 +564,8 @@ public class Constants {
         public static final int ACCESS_CODE_NEW_PATIENT = 174;
         public static final int ACCESS_CODE_SUBMIT_MOU = 175;
         public static final int ACCESS_CODE_VIEW_REQUIREMENT_LIST = 176;
-
-
+        public static final int ACCESS_CODE_ASSIGN_MACHINES_DISTRICT = 177;
+        public static final int ACCESS_CODE_ASSIGN_MACHINES_TALUKA = 178;
         public static final int RECORD_UPDATE = 1101;
-
     }
 }

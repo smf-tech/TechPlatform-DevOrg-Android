@@ -302,10 +302,6 @@ public class Urls {
         public static final String GET_REQUIREMENT_MOU_DETAILS = "api/getReuirmentMOUDetails";
         public static final String MOU_ON_MAIL = "api/sendMOUMailPDF";
         public static final String TERMS_AND_CONDITIONS_MISSION_RAHAT = "api/termPage";
-
-
-
-
-
+        public static final String ASSIGN_MACHINE = "api/assignMachines";
     }
 }

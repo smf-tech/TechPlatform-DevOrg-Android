@@ -22,21 +22,21 @@ public class MachineModel implements Serializable {
         this.stateName = stateName;
     }
 
-    public String getDistrictId() {
-        return districtId;
-    }
-
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getDistrictName() {
-        return districtName;
-    }
-
-    public void setDistrictName(String districtName) {
-        this.districtName = districtName;
-    }
+//    public String getDistrictId() {
+//        return districtId;
+//    }
+//
+//    public void setDistrictId(String districtId) {
+//        this.districtId = districtId;
+//    }
+//
+//    public String getDistrictName() {
+//        return districtName;
+//    }
+//
+//    public void setDistrictName(String districtName) {
+//        this.districtName = districtName;
+//    }
 
     public String getModelTypeId() {
         return modelTypeId;

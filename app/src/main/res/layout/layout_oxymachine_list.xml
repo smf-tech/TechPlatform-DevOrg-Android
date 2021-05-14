@@ -20,7 +20,25 @@
             android:id="@+id/rv_trainerbactchlistview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dimen_07dp"/> />
+            android:layout_marginTop="@dimen/dimen_07dp" />
+        />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fb_machine_assign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabSize="mini"
+            android:text="Machine List"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_machine_list"
+            app:iconTint="@color/white"
+            android:visibility="gone" />
 
 
         <RelativeLayout
