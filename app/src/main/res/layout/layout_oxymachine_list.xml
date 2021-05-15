@@ -33,7 +33,7 @@
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:backgroundTint="@color/colorPrimary"
             app:fabSize="mini"
-            android:text="Machine List"
+            android:text="Assign Machines"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:icon="@drawable/ic_machine_list"

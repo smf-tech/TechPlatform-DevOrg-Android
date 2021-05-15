@@ -91,13 +91,12 @@
                     android:layout_height="wrap_content"
                     android:hint="Number of machines to assign"
                     android:imeOptions="actionNext"
-                    android:focusable="false"
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/bt_submit"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_margin="@dimen/dimen_20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/submit" />

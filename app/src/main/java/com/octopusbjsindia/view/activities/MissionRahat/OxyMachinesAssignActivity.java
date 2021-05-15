@@ -43,6 +43,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> capacityList = new ArrayList<>();
     private AssignMachinesModel assignMachinesModel;
+    private boolean isAssignMachinesToDistrictAllowed, isAssignMachinesToTalukaAllowed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,10 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new OxyMachinesAssignActivityPresenter(this);
+        isAssignMachinesToDistrictAllowed = getIntent().getBooleanExtra(
+                "isAssignToDistrictAllowed", false);
+        isAssignMachinesToTalukaAllowed = getIntent().getBooleanExtra(
+                "isAssignToTalukaAllowed", false);
         initView();
         setTitle("Assign Machines");
     }
@@ -62,8 +67,6 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
         etCapacity = findViewById(R.id.et_capacity);
         etCount = findViewById(R.id.et_count);
         btSubmit = findViewById(R.id.bt_submit);
-        etDistrict.setOnClickListener(this);
-        etTaluka.setOnClickListener(this);
         etCapacity.setOnClickListener(this);
         etCount.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
@@ -72,9 +75,22 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
         TextView tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText("Assign Machines");
 
-        presenter.getLocationData("",
+        if (isAssignMachinesToDistrictAllowed) {
+            etDistrict.setVisibility(View.VISIBLE);
+            etDistrict.setOnClickListener(this);
+        } else {
+            etDistrict.setVisibility(View.GONE);
+        }
+        if (isAssignMachinesToTalukaAllowed) {
+            etTaluka.setVisibility(View.VISIBLE);
+            etTaluka.setOnClickListener(this);
+        } else {
+            etTaluka.setVisibility(View.GONE);
+        }
+
+        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                Constants.JurisdictionLevelName.STATE_LEVEL);
+                Constants.JurisdictionLevelName.DISTRICT_LEVEL);
 
         presenter.getMasterData();
     }
@@ -94,7 +110,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        presenter.getLocationData(selectedDistrictId,
+                        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId(),
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                     } else {
@@ -118,7 +134,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL);
                         } else {
-                            Util.showToast("Please select talukax.", this);
+                            Util.showToast("Please select taluka.", this);
                         }
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), this);
@@ -133,6 +149,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.bt_submit:
+                machineCount = etCount.getText().toString();
                 if (isAllDataValid()) {
                     presenter.assignMachine(assignMachinesModel);
                 }
@@ -142,13 +159,17 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
 
     private boolean isAllDataValid() {
         if (TextUtils.isEmpty(selectedDistrictId)) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please select district.", Snackbar.LENGTH_LONG);
-            return false;
+            if (isAssignMachinesToDistrictAllowed) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please select district.", Snackbar.LENGTH_LONG);
+                return false;
+            }
         } else if (TextUtils.isEmpty(selectedTalukaId)) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please select taluka.", Snackbar.LENGTH_LONG);
-            return false;
+            if (isAssignMachinesToTalukaAllowed) {
+                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Please select taluka.", Snackbar.LENGTH_LONG);
+                return false;
+            }
         } else if (TextUtils.isEmpty(selectedCapacityId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine capacity.", Snackbar.LENGTH_LONG);
@@ -158,12 +179,13 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                     "Please enter machine count to assign.", Snackbar.LENGTH_LONG);
             return false;
         } else {
-            assignMachinesModel.setTalukaId(selectedTalukaId);
-            assignMachinesModel.setTalukaName(selectedTaluka);
-            assignMachinesModel.setDistrictId(selectedDistrictId);
-            assignMachinesModel.setDistrictName(selectedDistrict);
+            if (isAssignMachinesToDistrictAllowed) {
+                assignMachinesModel.setDistrictId(selectedDistrictId);
+            }
+            if (isAssignMachinesToTalukaAllowed) {
+                assignMachinesModel.setTalukaId(selectedTalukaId);
+            }
             assignMachinesModel.setMahineCapacityId(selectedCapacityId);
-            assignMachinesModel.setMahineCapacity(selectedCapacity);
             assignMachinesModel.setMachineCount(machineCount);
         }
         return true;
@@ -275,7 +297,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                     }
                 }
                 etDistrict.setText(selectedDistrict);
-                if (selectedDistrict != "" && selectedDistrict != "State") {
+                if (selectedDistrict != "" && selectedDistrictId != "") {
                     presenter.getLocationData(selectedDistrictId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.TALUKA_LEVEL);

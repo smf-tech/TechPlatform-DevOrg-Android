@@ -54,7 +54,7 @@ public class OxyMachinesAssignActivityPresenter implements APIPresenterListener 
         if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
             requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-            requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
+            requestCall.postDataApiCall(GET_TALUKA, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
@@ -74,7 +74,7 @@ public class OxyMachinesAssignActivityPresenter implements APIPresenterListener 
         Log.d(ASSIGN_MACHINE, " url: " + assignMachineUrl);
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(assignMachineUrl, params, assignMachineUrl);
+        requestCall.postDataApiCall(ASSIGN_MACHINE, params, assignMachineUrl);
     }
 
     @Override
