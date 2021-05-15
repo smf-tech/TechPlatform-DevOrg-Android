@@ -118,11 +118,11 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
                     Util.showToast(this,"Please enter valid number of concentrator required");
                 } else {
                     HashMap request = new HashMap<String,Object>();
-                    request.put("hospital_id",selectedHospitalId);
-                    request.put("owner_name",etOwnerName.getText().toString().trim());
-                    request.put("owner_contact_details",etContactNumber.getText().toString().trim());
-                    request.put("incharge_name",etInChargeName.getText().toString().trim());
-                    request.put("incharge_contact_details",etContactNumberInCharge.toString().trim());
+//                    request.put("hospital_id",selectedHospitalId);
+//                    request.put("owner_name",etOwnerName.getText().toString().trim());
+//                    request.put("owner_contact_details",etContactNumber.getText().toString().trim());
+//                    request.put("incharge_name",etInChargeName.getText().toString().trim());
+//                    request.put("incharge_contact_details",etContactNumberInCharge.toString().trim());
 
                     HashMap granted = new HashMap<String,Object>();
                     granted.put("oxygen_bed",etPermissionOxygenBed.getText().toString().trim());
