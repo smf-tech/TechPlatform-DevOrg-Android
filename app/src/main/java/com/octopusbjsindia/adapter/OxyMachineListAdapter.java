@@ -25,6 +25,7 @@ import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureVisitMonitoringActivity;
 
@@ -113,7 +114,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
                     popup.show();
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
                         popup.getMenu().findItem(R.id.action_daily_report).setVisible(true);
-                        popup.getMenu().findItem(R.id.action_patient_info).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_patient_info).setVisible(true);
                     }
 
                     //------
@@ -124,10 +125,12 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
                             switch (item.getItemId()) {
                                 case R.id.action_daily_report:
                                     //machine daily report
-                                    onRequestItemClicked.onItemClicked(getAdapterPosition());
+                                    //onRequestItemClicked.onItemClicked(getAdapterPosition());
+                                    ((OxyMachineListActivity)mContext).callToAddDailyReportorPatients(getAdapterPosition(),1);
                                     break;
                                 case R.id.action_patient_info:
                                     //Add patient information
+                                    ((OxyMachineListActivity)mContext).callToAddDailyReportorPatients(getAdapterPosition(),2);
                                     break;
                             }
                             return false;

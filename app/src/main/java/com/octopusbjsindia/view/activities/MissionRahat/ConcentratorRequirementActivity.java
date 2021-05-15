@@ -23,6 +23,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.MissionRahat.SearchListData;
 import com.octopusbjsindia.presenter.MissionRahat.ConcentratorRequirementActivityPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
@@ -36,10 +37,11 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
     RelativeLayout progressBar;
     ArrayList<SearchListData> hospitalList = new ArrayList<>();
 
-    EditText etHospitalName, etAddress, etOwnerName, etContactNumber, etInChargeName, etContactNumberInCharge,
-            etPermissionOxygenBed, etPermissionGeneralBed, etExistingOxygenBed, etExistingGeneralBed,
+    EditText etPermissionOxygenBed, etPermissionGeneralBed, etExistingOxygenBed, etExistingGeneralBed,
             etNumberOfConcentratorRequired;
-    String selectedHospitalId = "";
+//    etHospitalName, etAddress, etOwnerName, etContactNumber, etInChargeName, etContactNumberInCharge,
+
+//    String selectedHospitalId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +57,22 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
 
-        etHospitalName = findViewById(R.id.etHospitalName);
-        etAddress = findViewById(R.id.etAddress);
-        etOwnerName = findViewById(R.id.etOwnerName);
-        etContactNumber = findViewById(R.id.etContactNumber);
-        etInChargeName = findViewById(R.id.etInChargeName);
-        etContactNumberInCharge = findViewById(R.id.etContactNumberInCharge);
+//        etHospitalName = findViewById(R.id.etHospitalName);
+//        etAddress = findViewById(R.id.etAddress);
+//        etOwnerName = findViewById(R.id.etOwnerName);
+//        etContactNumber = findViewById(R.id.etContactNumber);
+//        etInChargeName = findViewById(R.id.etInChargeName);
+//        etContactNumberInCharge = findViewById(R.id.etContactNumberInCharge);
         etPermissionOxygenBed = findViewById(R.id.etPermissionOxygenBed);
         etPermissionGeneralBed = findViewById(R.id.etPermissionGeneralBed);
         etExistingOxygenBed = findViewById(R.id.etExistingOxygenBed);
         etExistingGeneralBed = findViewById(R.id.etExistingGeneralBed);
         etNumberOfConcentratorRequired = findViewById(R.id.etNumberOfConcentratorRequired);
 
-        etInChargeName.setText(Util.getUserObjectFromPref().getUserName());
-        etContactNumberInCharge.setText(Util.getUserObjectFromPref().getUserMobileNumber());
-
-        etHospitalName.setOnClickListener(this);
+//        etInChargeName.setText(Util.getUserObjectFromPref().getUserName());
+//        etContactNumberInCharge.setText(Util.getUserObjectFromPref().getUserMobileNumber());
+//
+//        etHospitalName.setOnClickListener(this);
         findViewById(R.id.btSubmit).setOnClickListener(this);
     }
 
@@ -87,21 +89,22 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
             case R.id.toolbar_back_action:
                 finish();
                 break;
-            case R.id.etHospitalName:
-                Intent intent = new Intent(this, SearchListActivity.class);
-                intent.putExtra("List", hospitalList);
-                startActivityForResult(intent, 1001);
-                break;
+//            case R.id.etHospitalName:
+//                Intent intent = new Intent(this, SearchListActivity.class);
+//                intent.putExtra("List", hospitalList);
+//                startActivityForResult(intent, 1001);
+//                break;
             case R.id.btSubmit:
-                if(TextUtils.isEmpty(selectedHospitalId)){
-                    Util.showToast(this,"Please select Hospital");
-                } else if(TextUtils.isEmpty(etOwnerName.getText().toString())){
-                    Util.showToast(this,"Please enter owner name of hospital");
-                } else if(TextUtils.isEmpty(etContactNumber.getText().toString())){
-                    Util.showToast(this,"Please enter owner contact");
-                }  else if(etContactNumber.getText().toString().length()<10){
-                    Util.showToast(this,"Please enter valid owner contact");
-                } else if(TextUtils.isEmpty(etPermissionOxygenBed.getText().toString())){
+//                if(TextUtils.isEmpty(selectedHospitalId)){
+//                    Util.showToast(this,"Please select Hospital");
+//                } else if(TextUtils.isEmpty(etOwnerName.getText().toString())){
+//                    Util.showToast(this,"Please enter owner name of hospital");
+//                } else if(TextUtils.isEmpty(etContactNumber.getText().toString())){
+//                    Util.showToast(this,"Please enter owner contact");
+//                }  else if(etContactNumber.getText().toString().length()<10){
+//                    Util.showToast(this,"Please enter valid owner contact");
+//                } else
+                if(TextUtils.isEmpty(etPermissionOxygenBed.getText().toString())){
                     Util.showToast(this,"Please enter no. of permission granted for Oxygen bed");
                 } else if(TextUtils.isEmpty(etPermissionGeneralBed.getText().toString())){
                     Util.showToast(this,"Please enter no. of permission granted for General Bed");
@@ -115,11 +118,11 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
                     Util.showToast(this,"Please enter valid number of concentrator required");
                 } else {
                     HashMap request = new HashMap<String,Object>();
-                    request.put("hospital_id",selectedHospitalId);
-                    request.put("owner_name",etOwnerName.getText().toString().trim());
-                    request.put("owner_contact_details",etContactNumber.getText().toString().trim());
-                    request.put("incharge_name",etInChargeName.getText().toString().trim());
-                    request.put("incharge_contact_details",etContactNumberInCharge.toString().trim());
+//                    request.put("hospital_id",selectedHospitalId);
+//                    request.put("owner_name",etOwnerName.getText().toString().trim());
+//                    request.put("owner_contact_details",etContactNumber.getText().toString().trim());
+//                    request.put("incharge_name",etInChargeName.getText().toString().trim());
+//                    request.put("incharge_contact_details",etContactNumberInCharge.toString().trim());
 
                     HashMap granted = new HashMap<String,Object>();
                     granted.put("oxygen_bed",etPermissionOxygenBed.getText().toString().trim());
@@ -141,18 +144,18 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001) {
-            if (resultCode == Activity.RESULT_OK) {
-                int pos = data.getIntExtra("result",-1);
-                if(pos != -1){
-                    selectedHospitalId = hospitalList.get(pos).getId();
-                    etHospitalName.setText(hospitalList.get(pos).getValue());
-                    etAddress.setText(hospitalList.get(pos).getAddress());
-                    etOwnerName.setText(hospitalList.get(pos).getPersonName());
-                    etContactNumber.setText(hospitalList.get(pos).getMobileNumber());
-                }
-            }
-        }
+//        if (requestCode == 1001) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                int pos = data.getIntExtra("result",-1);
+//                if(pos != -1){
+//                    selectedHospitalId = hospitalList.get(pos).getId();
+//                    etHospitalName.setText(hospitalList.get(pos).getValue());
+//                    etAddress.setText(hospitalList.get(pos).getAddress());
+//                    etOwnerName.setText(hospitalList.get(pos).getPersonName());
+//                    etContactNumber.setText(hospitalList.get(pos).getMobileNumber());
+//                }
+//            }
+//        }
     }
 
     @Override

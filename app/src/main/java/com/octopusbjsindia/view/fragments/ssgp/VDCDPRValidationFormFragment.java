@@ -142,7 +142,7 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
         et_reason = vdcdprFormFragmentView.findViewById(R.id.et_reason);
         et_struct_code = vdcdprFormFragmentView.findViewById(R.id.et_struct_code);
         et_structure_status = vdcdprFormFragmentView.findViewById(R.id.et_structure_status);
-        et_remark = vdcdprFormFragmentView.findViewById(R.id.et_remark);
+//        et_remark = vdcdprFormFragmentView.findViewById(R.id.et_remark);
         et_working_hours  = vdcdprFormFragmentView.findViewById(R.id.et_working_hours);
         et_start_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_start_meter_reading);
         et_end_meter_reading  = vdcdprFormFragmentView.findViewById(R.id.et_end_meter_reading);
@@ -414,7 +414,7 @@ public class VDCDPRValidationFormFragment extends Fragment implements View.OnCli
 
                     vdcDprRequestModel.setStructureId(selectedStructureId);
 
-                    vdcDprRequestModel.setComment(et_remark.getText().toString());
+//                    vdcDprRequestModel.setComment(et_remark.getText().toString());
 
                     presenter.submitDPR(vdcDprRequestModel);
                 }

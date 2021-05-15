@@ -241,7 +241,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.MissionRahat.RECORD_UPDATE && data != null) {
-            int hoursUsedCount = data.getIntExtra("HOURS_USED_COUNT", 0);
+            double hoursUsedCount = data.getDoubleExtra("HOURS_USED_COUNT", 0);
             int patientsBenefitedCount = data.getIntExtra("PATIENTS_BENEFITED_COUNT", 0);
             int updatePosition = data.getIntExtra("UPDATE_POSITION", 0);
             updateList(hoursUsedCount,patientsBenefitedCount,updatePosition);
@@ -270,6 +270,27 @@ public class OxyMachineListActivity extends AppCompatActivity implements
                 intent.putExtra("isAssignToTalukaAllowed", isAssignMachinesToTalukaAllowed);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    public void callToAddDailyReportorPatients(int pos,int type){
+        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
+            if (type == 1) {
+                Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);
+                Gson gson = new Gson();
+                String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+                intent1.putExtra("MachineDataString", machineDataString);
+                intent1.putExtra("position", pos);
+                startActivityForResult(intent1, Constants.MissionRahat.RECORD_UPDATE);
+            }
+            if (type == 2) {
+                Intent intent1 = new Intent(this, PatientInfoActivity.class);
+                Gson gson = new Gson();
+                String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
+                intent1.putExtra("MachineDataString", machineDataString);
+                intent1.putExtra("position", pos);
+                startActivityForResult(intent1, Constants.MissionRahat.RECORD_UPDATE);
+            }
         }
     }
 }

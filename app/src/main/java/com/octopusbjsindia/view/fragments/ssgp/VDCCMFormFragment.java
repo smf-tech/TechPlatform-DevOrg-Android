@@ -126,7 +126,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
         et_total_participant  = vdccmFormFragmentView.findViewById(R.id.et_total_participant);
         et_discussion  = vdccmFormFragmentView.findViewById(R.id.et_discussion);
         et_meeting_feedback  = vdccmFormFragmentView.findViewById(R.id.et_meeting_feedback);
-        et_remark  = vdccmFormFragmentView.findViewById(R.id.et_remark);
+//        et_remark  = vdccmFormFragmentView.findViewById(R.id.et_remark);
         iv_activity_photo  = vdccmFormFragmentView.findViewById(R.id.iv_activity_photo);
         iv_meeting_photo  = vdccmFormFragmentView.findViewById(R.id.iv_meeting_photo);
         iv_attendace_sheet_photo  = vdccmFormFragmentView.findViewById(R.id.iv_attendace_sheet_photo);
@@ -264,7 +264,7 @@ public class VDCCMFormFragment extends Fragment implements View.OnClickListener,
                 vdcCmRequestModel.setActivityPhoto(UrlActivityPhoto);  //UrlActivityPhoto
                 vdcCmRequestModel.setMeetingPhoto(UrlMeetingPhoto); //UrlMeetingPhoto
                 vdcCmRequestModel.setAttendanceMeetingPhoto(UrlAttendacesheetPhoto);  //UrlAttendacesheetPhoto
-                vdcCmRequestModel.setComment(et_remark.getText().toString());
+//                vdcCmRequestModel.setComment(et_remark.getText().toString());
 
                 presenter.submitCMData(vdcCmRequestModel);
             }

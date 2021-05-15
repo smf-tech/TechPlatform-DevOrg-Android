@@ -151,7 +151,7 @@ public class VDFFormFragment extends Fragment implements APIDataListener, Custom
         etReason = vdfFormFragmentView.findViewById(R.id.et_reason);
         etFutureWorkTime = vdfFormFragmentView.findViewById(R.id.et_future_work_time);
         etWorkableStructCount = vdfFormFragmentView.findViewById(R.id.et_workable_struct_count);
-        etRemark = vdfFormFragmentView.findViewById(R.id.et_remark);
+//        etRemark = vdfFormFragmentView.findViewById(R.id.et_remark);
         iv_demandletter_photo1 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo1);
         iv_demandletter_photo2 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo2);
         iv_demandletter_photo3 = vdfFormFragmentView.findViewById(R.id.iv_demandletter_photo3);

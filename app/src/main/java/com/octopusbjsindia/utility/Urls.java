@@ -293,12 +293,14 @@ public class Urls {
         public static final String HOSPITAL_LIST = "api/getHospitalList";
         public static final String MACHINE_LIST = "api/getMRMachineList";
         public static final String CONCENTRATOR_REQUEST = "api/addRequirmentForm";
+        public static final String ADD_INCHARGE_REQUEST = "api/addInchargeHospital";
         public static final String CONCENTRATOR_REQUEST_LIST = "api/getAllRequirmentFormsList";
         public static final String CONCENTRATOR_REQUEST_DETAILS = "api/getReuirmentDetails";
         public static final String CONCENTRATOR_REQUEST_ACTION = "api/requirmentAction";
         public static final String SAVE_MACHINE_MOU = "api/saveMachineMOU";
         public static final String SEND_MACHINE_DAILY_REPORT = "api/machineDailyReport";
         public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
+        public static final String SAVE_PATIENT_DETAILS = "api/saveMRPatientDetails";
         public static final String GET_REQUIREMENT_MOU_DETAILS = "api/getReuirmentMOUDetails";
         public static final String MOU_ON_MAIL = "api/sendMOUMailPDF";
         public static final String TERMS_AND_CONDITIONS_MISSION_RAHAT = "api/termPage";
