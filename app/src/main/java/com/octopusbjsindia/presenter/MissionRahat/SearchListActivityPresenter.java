@@ -11,15 +11,16 @@ import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorRequirementActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.SearchListActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-public class ConcentratorRequirementActivityPresenter implements APIPresenterListener {
-    private WeakReference<ConcentratorRequirementActivity> mContext;
+public class SearchListActivityPresenter implements APIPresenterListener {
+    private WeakReference<SearchListActivity> mContext;
 
-    public ConcentratorRequirementActivityPresenter(ConcentratorRequirementActivity context) {
-        mContext = new WeakReference<ConcentratorRequirementActivity>(context);
+    public SearchListActivityPresenter(SearchListActivity context) {
+        mContext = new WeakReference<SearchListActivity>(context);
     }
 
     @Override
@@ -54,10 +55,10 @@ public class ConcentratorRequirementActivityPresenter implements APIPresenterLis
 
                         SearchListResponse responseData = new Gson().fromJson(response, SearchListResponse.class);
                         mContext.get().setHostpitalList("GET_HOSPITALS", responseData.getData());
-                    } else  if (requestID.equalsIgnoreCase("CONCENTRATOR_REQUEST")) {
-                        mContext.get().onSuccessListener(requestID,commonResponse.getMessage());
-                    } else  if (requestID.equalsIgnoreCase("HOSPITAL_ASSIGNMENT_REQUEST")) {
-                        mContext.get().onSuccessListener(requestID,commonResponse.getMessage());
+                    } else if (requestID.equalsIgnoreCase("CONCENTRATOR_REQUEST")) {
+                        mContext.get().onSuccessListener(requestID, commonResponse.getMessage());
+                    } else if (requestID.equalsIgnoreCase("HOSPITAL_ASSIGNMENT_REQUEST")) {
+                        mContext.get().onSuccessListener(requestID, commonResponse.getMessage());
                     }
                 } else {
                     if (commonResponse.getCode() == 1000) {
@@ -90,6 +91,7 @@ public class ConcentratorRequirementActivityPresenter implements APIPresenterLis
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall("CONCENTRATOR_REQUEST", params, insertMachineUrl);
     }
+
     public void assignHospitaltoIncharge(HashMap request) {
         mContext.get().showProgressBar();
         Gson gson = new GsonBuilder().create();

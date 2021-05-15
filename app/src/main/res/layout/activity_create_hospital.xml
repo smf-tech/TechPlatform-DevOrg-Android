@@ -62,6 +62,20 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_select_user_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="Select user type"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -71,7 +85,23 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter hospital name"
+                    android:hint="Enter name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_registration_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter registration (for hospital)"
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -87,7 +117,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter hospital address"
+                    android:hint="Enter address"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -103,7 +133,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Responsible person name"
+                    android:hint="Owner/responsible person name"
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
