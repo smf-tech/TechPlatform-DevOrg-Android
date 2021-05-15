@@ -26,7 +26,8 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etHospitalName"
@@ -40,7 +41,8 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etAddress"
@@ -53,7 +55,8 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etOwnerName"
@@ -67,7 +70,8 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etContactNumber"
@@ -75,14 +79,16 @@
                     android:hint="Contact details *"
                     android:inputType="number"
                     android:enabled="false"
-                    android:maxLength="10"/>
+                    android:maxLength="10"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etInChargeName"
@@ -95,7 +101,8 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etContactNumberInCharge"
