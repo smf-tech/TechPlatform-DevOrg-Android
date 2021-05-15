@@ -28,6 +28,7 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.DailyRecordRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.MissionRahat.PatientInfoRequestModel;
+import com.octopusbjsindia.models.MissionRahat.SearchListData;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
@@ -38,11 +39,13 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PatientInfoActivity extends AppCompatActivity implements APIDataListener, View.OnClickListener,
         CustomSpinnerListener {
     private PatientInfoPresenter presenter;
+    private OxygenMachineList oxygenMachineList;
     private ArrayList<CustomSpinnerObject> genderList = new ArrayList<>();
     private ActivityPatientInfoLayoutBinding patientInfoBinding;
     private String selectedSlot = "", selectedSlotId = "";
@@ -50,7 +53,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
     private Activity activity;
     private int position, patients_benefited_count = 0;
     private double hours_used_count = 0;
-    private String machineCode,selectedGender = "";
+    private String machineCode, selectedGender = "";
 
 
     private OxygenMachineList receivedOxygenMachineData;
@@ -76,7 +79,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         if (getIntent().getExtras() != null) {
             String machineDataString = getIntent().getExtras().getString("MachineDataString");
             position = getIntent().getExtras().getInt("position");
-            OxygenMachineList oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
+            oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
             Log.d("machine_code---", oxygenMachineList.getCode());
             machineCode = oxygenMachineList.getCode();
             patientInfoBinding.etSelectMachines.setText(machineCode);
@@ -91,7 +94,18 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         female.set_id("2");
         female.setName("Female");
         genderList.add(female);
+
+        if (oxygenMachineList.getStatus().equalsIgnoreCase("working")){
+            //preFillData(); or call api for data
+            presenter.getPatientInfo();
+        }
+
     }
+
+    private void preFillData() {
+
+    }
+
 
 
     private void setClickListners() {
@@ -148,6 +162,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         });*/
 
     }
+
     private void showGenderDropDown() {
         CustomSpinnerDialogClass csdGender = new CustomSpinnerDialogClass(PatientInfoActivity.this, this,
                 "Select Gender", genderList, false);
@@ -155,6 +170,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         csdGender.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
     }
+
     private void showSlotsDropDown() {
         CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
                 "Select report slot", reportSlotList, false);
@@ -171,7 +187,9 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
     private String getMouRequestData() {
         PatientInfoRequestModel patientInfoRequestModel = new PatientInfoRequestModel();
         Gson gson = new GsonBuilder().create();
-        patientInfoRequestModel.setName(patientInfoBinding.etPatientName.getText().toString());
+        patientInfoRequestModel.setReportDate(patientInfoBinding.etReportDate.getText().toString());
+        patientInfoRequestModel.setMachineStartDate(patientInfoBinding.etStartDate.getText().toString());
+        patientInfoRequestModel.setMachineEndDate(patientInfoBinding.etEndDate.getText().toString());
         patientInfoRequestModel.setGender(patientInfoBinding.etSelectGender.getText().toString());
         patientInfoRequestModel.setName(patientInfoBinding.etPatientName.getText().toString());
         patientInfoRequestModel.setAge(Integer.parseInt(patientInfoBinding.etPatientAge.getText().toString()));
@@ -182,8 +200,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         patientInfoRequestModel.setEndSaturationLevel(Double.parseDouble(patientInfoBinding.etEndSaturation.getText().toString()));
         patientInfoRequestModel.setMachineId(machineCode);
         patientInfoRequestModel.setNoOfDays(Integer.parseInt(patientInfoBinding.etMachineUsedDays.getText().toString()));
-        
-
+        patientInfoRequestModel.setRemark(patientInfoBinding.etOtherRemark.getText().toString());
 
 
         patientInfoBinding.etSelectMachines.getText().toString();
@@ -389,4 +406,18 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         dialog.show();
     }
 
+
+    public void setPatientInfo(String get_hospitals, String response) {
+
+        patientInfoBinding.etReportDate.setText("");
+        patientInfoBinding.etSelectMachines.setText("");
+        patientInfoBinding.etPatientName.setText("");
+        patientInfoBinding.etSelectGender.setText("");
+        patientInfoBinding.etPatientAge.setText("");
+        patientInfoBinding.etIcmrCode.setText("");
+        patientInfoBinding.etPatientsAadhar.setText("");
+        patientInfoBinding.etMobileNumber.setText("");
+        patientInfoBinding.etStartDate.setText("");
+        patientInfoBinding.etStartSaturation.setText("");
+    }
 }

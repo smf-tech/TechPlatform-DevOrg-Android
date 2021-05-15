@@ -32,6 +32,7 @@ import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.SearchListActivity;
 import com.octopusbjsindia.view.adapters.SSAnalyticsAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import java.util.List;
 public class MissionRahatFragment extends Fragment implements APIDataListener, View.OnClickListener {
     private View machineRahatFragmentView;
     private FloatingActionButton fbSelect;
-    private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList;
+    private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList,fbSelectHopsital;
     private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
             isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU, isRequirementList;
     private boolean isFABOpen = false;
@@ -85,6 +86,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         fbApproval.setOnClickListener(this);
         fbMachineList = machineRahatFragmentView.findViewById(R.id.fb_machine_list);
         fbMachineList.setOnClickListener(this);
+        fbSelectHopsital = machineRahatFragmentView.findViewById(R.id.fb_hospital_assign);
+        fbSelectHopsital.setOnClickListener(this);
 
         rvMRAnalytics = machineRahatFragmentView.findViewById(R.id.rv_mr_analytics);
         rvMRAnalytics.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -177,9 +180,17 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 intent = new Intent(getActivity(), CreateHospitalActivity.class);
                 getActivity().startActivity(intent);
                 break;
+            case R.id.fb_hospital_assign:
+                intent = new Intent(getActivity(), SearchListActivity.class);
+                intent.putExtra("actionType",Constants.MissionRahat.HOSPITAL_SELECTION_FOR_INCHARGE);
+                getActivity().startActivity(intent);
+                break;
+
             case R.id.fb_requirement_form:
                 intent = new Intent(getActivity(), ConcentratorRequirementActivity.class);
+                intent.putExtra("actionType",Constants.MissionRahat.HOSPITAL_SELECTION_FOR_RESULT);
                 getActivity().startActivity(intent);
+
                 break;
             case R.id.fb_approval:
                 intent = new Intent(getActivity(), RequirementsListActivity.class);
@@ -221,6 +232,13 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         if (isMachineListAllowed) {
             fbMachineList.show();
             fbMachineList.animate().translationY(-height);
+            height = height + 140;
+        }
+        // TODO need to add condition
+        if (true){
+            fbSelectHopsital.show();
+            fbSelectHopsital.animate().translationY(-height);
+            height = height + 140;
         }
         fbSelect.setRotation(45);
     }
@@ -247,6 +265,9 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbMachineList.hide();
             fbMachineList.animate().translationY(0);
         }
+        fbSelectHopsital.hide();
+        fbSelectHopsital.animate().translationY(0);
+
         fbSelect.setRotation(0);
     }
 

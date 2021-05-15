@@ -4,6 +4,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
+import com.octopusbjsindia.models.MissionRahat.SearchListResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.request.APIRequestCall;
@@ -35,6 +36,14 @@ public class PatientInfoPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(KEY_CREATE_MACHINE_MASTER_DATA, Url);
     }
 
+
+    public void getPatientInfo() {
+        mContext.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.HOSPITAL_LIST;
+        requestCall.getDataApiCall("GET_HOSPITALS", Url);
+    }
 
     public void submitDailyReportData(String paramjson) {
         mContext.get().showProgressBar();
@@ -88,6 +97,10 @@ public class PatientInfoPresenter implements APIPresenterListener {
                     } else {
                         mContext.get().setMasterData(masterDataResponse);
                     }
+                }if (requestID.equalsIgnoreCase("GET_HOSPITALS")) {
+
+                    //SearchListResponse responseData = new Gson().fromJson(response, SearchListResponse.class);
+                    mContext.get().setPatientInfo("GET_HOSPITALS", response);
                 }
             }
         }

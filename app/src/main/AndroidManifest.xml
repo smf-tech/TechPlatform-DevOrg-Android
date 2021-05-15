@@ -40,7 +40,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.MissionRahat.SearchListActivity"></activity>
+        <activity android:name=".view.activities.MissionRahat.SearchListActivity" />
         <activity android:name=".view.activities.MissionRahat.RequirementsListActivity" />
         <activity android:name=".view.activities.MissionRahat.ConcentratorApprovalActivity" />
         <activity android:name=".view.activities.MissionRahat.ConcentratorRequirementActivity" />
@@ -278,14 +278,18 @@
         <activity
             android:name=".view.activities.ssgp.GPActionsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activities.MissionRahat.OxyMachineMouActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MissionRahat.OxyMachineDailyReportActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MissionRahat.OxyMachineListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.MissionRahat.PatientInfoActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineMouActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineDailyReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.PatientInfoActivity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

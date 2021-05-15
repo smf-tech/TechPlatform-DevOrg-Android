@@ -293,6 +293,7 @@ public class Urls {
         public static final String HOSPITAL_LIST = "api/getHospitalList";
         public static final String MACHINE_LIST = "api/getMRMachineList";
         public static final String CONCENTRATOR_REQUEST = "api/addRequirmentForm";
+        public static final String ADD_INCHARGE_REQUEST = "api/addInchargeHospital";
         public static final String CONCENTRATOR_REQUEST_LIST = "api/getAllRequirmentFormsList";
         public static final String CONCENTRATOR_REQUEST_DETAILS = "api/getReuirmentDetails";
         public static final String CONCENTRATOR_REQUEST_ACTION = "api/requirmentAction";

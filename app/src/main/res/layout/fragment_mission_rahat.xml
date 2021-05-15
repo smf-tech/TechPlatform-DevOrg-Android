@@ -75,6 +75,7 @@
         app:iconTint="@color/white"
         android:visibility="gone" />
 
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fb_hospital"
         android:layout_width="wrap_content"
@@ -108,7 +109,22 @@
         app:icon="@drawable/ic_machine_create_icon"
         app:iconTint="@color/white"
         android:visibility="gone" />
-
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_hospital_assign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        android:text="Select Hospital"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_new_form_icon"
+        app:iconTint="@color/white"
+        android:visibility="visible" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_select"
         android:layout_width="wrap_content"

@@ -5,9 +5,37 @@ import com.google.gson.annotations.SerializedName;
 
 public class PatientInfoRequestModel {
 
+    @SerializedName("report_date")
+    @Expose
+    private String reportDate;
     @SerializedName("machine_id")
     @Expose
     private String machineId;
+
+    public String getMachineStartDate() {
+        return machineStartDate;
+    }
+
+    public void setMachineStartDate(String machineStartDate) {
+        this.machineStartDate = machineStartDate;
+    }
+
+    public String getMachineEndDate() {
+        return machineEndDate;
+    }
+
+    public void setMachineEndDate(String machineEndDate) {
+        this.machineEndDate = machineEndDate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -32,10 +60,19 @@ public class PatientInfoRequestModel {
     @SerializedName("end_saturation_level")
     @Expose
     private Double endSaturationLevel;
+    @SerializedName("machine_start_date")
+    @Expose
+    private String machineStartDate;
+    @SerializedName("machine_end_date")
+    @Expose
+    private String machineEndDate;
+
     @SerializedName("no_of_days")
     @Expose
     private Integer noOfDays;
-
+    @SerializedName("remark")
+    @Expose
+    private String remark;
     public String getMachineId() {
         return machineId;
     }
@@ -116,4 +153,11 @@ public class PatientInfoRequestModel {
         this.noOfDays = noOfDays;
     }
 
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
+    }
 }

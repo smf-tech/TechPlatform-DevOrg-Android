@@ -23,6 +23,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.MissionRahat.SearchListData;
 import com.octopusbjsindia.presenter.MissionRahat.ConcentratorRequirementActivityPresenter;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concentrator_requirement);
         setTitle("Concentrator Requirement");
-
+        boolean isForHospitalAssignment  = getIntent().getBooleanExtra("isForHospitalAssignment",false);
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new ConcentratorRequirementActivityPresenter(this);
         if (Util.isConnected(this)) {
@@ -90,6 +91,7 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
             case R.id.etHospitalName:
                 Intent intent = new Intent(this, SearchListActivity.class);
                 intent.putExtra("List", hospitalList);
+                intent.putExtra("actionType", Constants.MissionRahat.HOSPITAL_SELECTION_FOR_RESULT);
                 startActivityForResult(intent, 1001);
                 break;
             case R.id.btSubmit:
@@ -153,8 +155,25 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
                 }
             }
         }
+        if (requestCode == 1002) {
+            if (resultCode == Activity.RESULT_OK) {
+                int pos = data.getIntExtra("result",-1);
+                if(pos != -1){
+                    selectedHospitalId = hospitalList.get(pos).getId();
+                    etHospitalName.setText(hospitalList.get(pos).getValue());
+                    etAddress.setText(hospitalList.get(pos).getAddress());
+                    etOwnerName.setText(hospitalList.get(pos).getPersonName());
+                    etContactNumber.setText(hospitalList.get(pos).getMobileNumber());
+                    assignHospitaltoIncharge(selectedHospitalId);
+                }
+            }
+        }
     }
-
+public void assignHospitaltoIncharge(String selectedHospitalId){
+    HashMap request = new HashMap<String,Object>();
+    request.put("hospital_id",selectedHospitalId);
+    presenter.assignHospitaltoIncharge(request);
+}
     @Override
     public void onBackPressed() {
         final Dialog dialog = new Dialog(Objects.requireNonNull(this));
