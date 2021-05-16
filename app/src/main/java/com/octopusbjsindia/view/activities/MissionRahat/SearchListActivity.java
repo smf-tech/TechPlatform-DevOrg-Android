@@ -4,10 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,11 +34,13 @@ import com.octopusbjsindia.view.adapters.mission_rahat.SearchListAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchListActivity extends AppCompatActivity implements  APIDataListener {
 
     RelativeLayout ly_no_data;
     private int actionType = -1;
+    private int selectedPosition =  -1;
     private SearchListActivityPresenter presenter;
     private ArrayList<SearchListData> hospitalList = new ArrayList<>();
     private SearchListAdapter adapter;
@@ -72,6 +83,7 @@ public class SearchListActivity extends AppCompatActivity implements  APIDataLis
     }
 
     public void onSelected(int position) {
+        selectedPosition = position;
         if (actionType == Constants.MissionRahat.HOSPITAL_SELECTION_FOR_RESULT) {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("result", position);
@@ -79,9 +91,8 @@ public class SearchListActivity extends AppCompatActivity implements  APIDataLis
             finish();
         } else if (actionType == Constants.MissionRahat.HOSPITAL_SELECTION_FOR_INCHARGE) {
             // call api to connect in charge to hospital
-            HashMap request = new HashMap<String, Object>();
-            request.put("hospital_id", hospitalList.get(position).getId());
-            presenter.assignHospitaltoIncharge(request);
+            showDialog(SearchListActivity.this, "Alert", "Do you want to submit ?"+"\nHospital can not changed once selected.", "No", "Yes");
+
         }
     }
 
@@ -130,5 +141,58 @@ public class SearchListActivity extends AppCompatActivity implements  APIDataLis
             }
         });
 
+    }
+
+    //assignment confirmation
+    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
+            btn2String) {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(context));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialogs_leave_layout);
+
+        if (!TextUtils.isEmpty(dialogTitle)) {
+            TextView title = dialog.findViewById(R.id.tv_dialog_title);
+            title.setText(dialogTitle);
+            title.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(message)) {
+            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+            text.setText(message);
+            text.setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(btn1String)) {
+            Button button = dialog.findViewById(R.id.btn_dialog);
+            button.setText(btn1String);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                // Close dialog
+
+                dialog.dismiss();
+            });
+        }
+
+        if (!TextUtils.isEmpty(btn2String)) {
+            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+            button1.setText(btn2String);
+            button1.setVisibility(View.VISIBLE);
+            button1.setOnClickListener(v -> {
+                // Close dialog
+                try {
+                    dialog.dismiss();
+                    HashMap request = new HashMap<String, Object>();
+                    request.put("hospital_id", hospitalList.get(selectedPosition).getId());
+                    presenter.assignHospitaltoIncharge(request);
+                } catch (IllegalStateException e) {
+                    Log.e("TAG", e.getMessage());
+                }
+            });
+        }
+
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 }

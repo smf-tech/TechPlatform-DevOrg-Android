@@ -290,6 +290,7 @@
         <activity
             android:name=".view.activities.MissionRahat.PatientInfoActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.activities.MissionRahat.ConcentratorTakeOverActivity" />
 
         <receiver
             android:name=".receivers.SmsReceiver"

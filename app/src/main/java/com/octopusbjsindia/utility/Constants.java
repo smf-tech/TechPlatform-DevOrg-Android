@@ -570,5 +570,8 @@ public class Constants {
         public static final int HOSPITAL_SELECTION_FOR_INCHARGE = 2;
         public static final int HOSPITAL_SELECTION_FOR_RESULT = 1;
 
+        public static final int HANDOVER = 2;
+        public static final int TAKEOVER = 1;
+
     }
 }

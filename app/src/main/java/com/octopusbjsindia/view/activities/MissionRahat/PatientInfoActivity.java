@@ -95,6 +95,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         female.setName("Female");
         genderList.add(female);
 
+        //TODO need to discuss for api  and status of machine
         if (oxygenMachineList.getStatus().equalsIgnoreCase("working")){
             //preFillData(); or call api for data
             presenter.getPatientInfo();
