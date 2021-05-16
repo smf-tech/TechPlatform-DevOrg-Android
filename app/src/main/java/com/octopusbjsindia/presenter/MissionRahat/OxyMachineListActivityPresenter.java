@@ -1,12 +1,9 @@
 package com.octopusbjsindia.presenter.MissionRahat;
 
 import com.android.volley.VolleyError;
-import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.request.APIRequestCall;
-import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
-import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -21,12 +18,20 @@ public class OxyMachineListActivityPresenter implements APIPresenterListener {
         this.mContext = new WeakReference<>(mContext);
     }
 
-    public void getOxyMachineList(String url){
-        mContext.get().showProgressBar();
+//    public void getOxyMachineList(String url){
+//        mContext.get().showProgressBar();
+//
+//        //final String url = "https://run.mocky.io/v3/09b8651a-7f95-456e-9b8c-546bb33a2c82";
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        requestCall.getDataApiCall(GET_MACHINE_LIST, url);
+//    }
 
-        //final String url = "https://run.mocky.io/v3/09b8651a-7f95-456e-9b8c-546bb33a2c82";
+    public void getOxyMachineList(String url) {
+        mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
+        //final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
         requestCall.getDataApiCall(GET_MACHINE_LIST, url);
     }
 

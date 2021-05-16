@@ -72,7 +72,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
         btSubmit.setOnClickListener(this);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
-        presenter.getLocationData("",
+        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.STATE_LEVEL);
 
@@ -101,7 +101,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        presenter.getLocationData("",
+                        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.STATE_LEVEL);
                     } else {

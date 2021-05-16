@@ -47,7 +47,8 @@
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_district"

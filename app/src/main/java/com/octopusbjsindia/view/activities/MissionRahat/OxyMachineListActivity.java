@@ -46,6 +46,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     private boolean loading = true;
     private String nextPageUrl = "";
     private boolean isAssignMachinesToDistrictAllowed, isAssignMachinesToTalukaAllowed;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +57,11 @@ public class OxyMachineListActivity extends AppCompatActivity implements
         setContentView(view);
         activity = OxyMachineListActivity.this;
         presenter = new OxyMachineListActivityPresenter(this);
+        url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
         initView();
     }
 
     private void initView() {
-        final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
-        oxygenMachineLists.clear();
-        presenter.getOxyMachineList(url);
-        //setClickListners();
         layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -136,9 +134,8 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        /*final String url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
         oxygenMachineLists.clear();
-        presenter.getOxyMachineList(url);*/
+        presenter.getOxyMachineList(url);
     }
 
     @Override

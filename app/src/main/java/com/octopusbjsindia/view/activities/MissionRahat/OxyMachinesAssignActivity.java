@@ -174,9 +174,9 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine capacity.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(machineCount)) {
+        } else if (TextUtils.isEmpty(machineCount) || machineCount.equalsIgnoreCase("0")) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please enter machine count to assign.", Snackbar.LENGTH_LONG);
+                    "Please enter valid machine count to assign.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             if (isAssignMachinesToDistrictAllowed) {
