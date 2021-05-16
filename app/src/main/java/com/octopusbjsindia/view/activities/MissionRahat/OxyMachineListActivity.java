@@ -162,8 +162,10 @@ public class OxyMachineListActivity extends AppCompatActivity implements
                     if (requestID.equalsIgnoreCase(OxyMachineListActivityPresenter.GET_MACHINE_LIST)) {
                         nextPageUrl = oxygenMachineListModel.getNextPageUrl();
                         oxygenMachineLists.addAll(oxygenMachineListModel.getOxygenMachineLists());
+                        layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List ("
+                                + oxygenMachineListModel.getTotal() + ")");
                         oxyMachineListAdapter.notifyDataSetChanged();
-                        loading =true;
+                        loading = true;
                         emptyResponse();
                     }
                 } else {
