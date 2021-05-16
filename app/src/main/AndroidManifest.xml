@@ -40,6 +40,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
+        <activity android:name=".view.activities.MissionRahat.OxyMachinesAssignActivity"></activity>
         <activity android:name=".view.activities.MissionRahat.SearchListActivity" />
         <activity android:name=".view.activities.MissionRahat.RequirementsListActivity" />
         <activity android:name=".view.activities.MissionRahat.ConcentratorApprovalActivity" />

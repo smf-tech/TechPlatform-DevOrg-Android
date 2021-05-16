@@ -144,16 +144,16 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     @Override
     public void onResume() {
         super.onResume();
-//        if (Util.isConnected(getActivity())) {
-//            missionRahatFragmentPresenter.getMRAnalyticsData("", "");
-//        } else {
-//            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
-//        }
-//        if (mrAnalyticsDataList.size() > 0) {
-//            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
-//        } else {
-//            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
-//        }
+        if (Util.isConnected(getActivity())) {
+            missionRahatFragmentPresenter.getMRAnalyticsData("", "");
+        } else {
+            Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
+        }
+        if (mrAnalyticsDataList.size() > 0) {
+            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+        } else {
+            machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+        }
         closeFABMenu();
     }
 
@@ -324,6 +324,12 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                 if (data != null) {
                     mrAnalyticsDataList.add(data);
                 }
+            }
+            mrAnalyticsAdapter.notifyDataSetChanged();
+            if (mrAnalyticsDataList.size() > 0) {
+                machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
+            } else {
+                machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
             }
         }
     }

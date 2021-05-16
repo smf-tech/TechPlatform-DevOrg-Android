@@ -90,6 +90,18 @@ public class ConcentratorApprovalActivityPresenter implements APIPresenterListen
         requestCall.postDataApiCall("REQUEST_DETAILS", params, Url);
     }
 
+    public void getMachines(String talukaID) {
+        mContext.get().showProgressBar();
+        Gson gson = new GsonBuilder().create();
+        HashMap request = new HashMap<String, String>();
+        request.put("taluka_id", talukaID);
+        String params = gson.toJson(request);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.MACHINE_LIST;
+        requestCall.postDataApiCall("MACHINE_LIST", params, Url);
+    }
+
     public void submitRequest(HashMap request) {
         mContext.get().showProgressBar();
         Gson gson = new GsonBuilder().create();
@@ -100,11 +112,5 @@ public class ConcentratorApprovalActivityPresenter implements APIPresenterListen
         requestCall.postDataApiCall("CONCENTRATOR_REQUEST_ACTION", params, url);
     }
 
-    public void getMachines() {
-        mContext.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.MACHINE_LIST;
-        requestCall.getDataApiCall("MACHINE_LIST", Url);
-    }
+
 }

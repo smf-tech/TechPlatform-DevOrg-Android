@@ -51,11 +51,11 @@ public class ConcentratorRequirementActivity extends AppCompatActivity implement
 
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new ConcentratorRequirementActivityPresenter(this);
-        if (Util.isConnected(this)) {
-            presenter.getHospitals();
-        } else {
-            Util.showToast(this, getResources().getString(R.string.msg_no_network));
-        }
+//        if (Util.isConnected(this)) {
+//            presenter.getHospitals();
+//        } else {
+//            Util.showToast(this, getResources().getString(R.string.msg_no_network));
+//        }
 
 //        etHospitalName = findViewById(R.id.etHospitalName);
 //        etAddress = findViewById(R.id.etAddress);

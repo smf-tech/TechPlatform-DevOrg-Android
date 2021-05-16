@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,10 +43,12 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
     RelativeLayout progressBar;
     private ArrayList<CustomSpinnerObject> machineList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> selectedMachineList = new ArrayList<>();
-    String selectedMachineCodes = "", selectedMachineID = "", requestId = "";
+    String selectedMachineCodes = "", selectedMachineID = "", requestId = "", talukaId = "",
+            valO2support = "Inadequate", valProvideFreeO2 = "Yes", valPowerBackup= "Generator";
     int position;
-    EditText etNumberOfConcentratorApproved, etMachines, etDateMachineAllocation, etObservationReason;
-    TextView tvHospitalName, tvAddress, tvVisitDate, tvMachineRequired, tvPersonVisited, tvDesignation;
+    EditText etNumberOfConcentratorApproved, etMachines, etDateMachineAllocation, etObservationReason,
+            etInfrastructure, etNoOfBeds, etDailyPatientsIntake, etMortalityRate, etPatientsDischarged, etO2Charges;
+    TextView tvHospitalName, tvAddress, tvVisitDate, tvMachineRequired, tvPersonVisited, tvDesignation, tvState, tvDistrict, tvTaluka;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
 
         position  = getIntent().getIntExtra("position",-1);
         requestId  = getIntent().getStringExtra("RequestId");
+        talukaId  = getIntent().getStringExtra("talukaId");
         setTitle("Requirement Details");
 
         progressBar = findViewById(R.id.lyProgressBar);
@@ -65,19 +69,70 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
         tvDesignation = findViewById(R.id.tvDesignation);
         tvVisitDate = findViewById(R.id.tvVisitDate);
         tvMachineRequired = findViewById(R.id.tvMachineRequired);
+        tvState = findViewById(R.id.tvState);
+        tvDistrict = findViewById(R.id.tvDistrict);
+        tvTaluka = findViewById(R.id.tvTaluka);
         etNumberOfConcentratorApproved = findViewById(R.id.etNumberOfConcentratorApproved);
         etMachines = findViewById(R.id.etMachines);
         etDateMachineAllocation = findViewById(R.id.etDateMachineAllocation);
         etObservationReason = findViewById(R.id.etObservationReason);
+
+        etInfrastructure = findViewById(R.id.etInfrastructure);
+        etNoOfBeds = findViewById(R.id.etNoOfBeds);
+        etDailyPatientsIntake = findViewById(R.id.etDailyPatientsIntake);
+        etMortalityRate = findViewById(R.id.etMortalityRate);
+        etPatientsDischarged = findViewById(R.id.etPatientsDischarged);
+        etO2Charges = findViewById(R.id.etO2Charges);
 
         etMachines.setOnClickListener(this);
         etDateMachineAllocation.setOnClickListener(this);
         findViewById(R.id.btnApprove).setOnClickListener(this);
         findViewById(R.id.btReject).setOnClickListener(this);
 
+        RadioGroup rgO2support = findViewById(R.id.rgO2support);
+        rgO2support.setOnCheckedChangeListener((group,checkedId)->{
+            switch (checkedId) {
+                case R.id.rbYes:
+                    valO2support = "Yes";
+                    break;
+                case R.id.rbNo:
+                    valO2support = "No";
+                    break;
+                case R.id.rbInadequate:
+                    valO2support = "Inadequate";
+                    break;
+            }
+        });
+        RadioGroup rgPowerBackup = findViewById(R.id.rgPowerBackup);
+        rgPowerBackup.setOnCheckedChangeListener((group,checkedId)->{
+            switch (checkedId) {
+                case R.id.rbGenerator:
+                    valPowerBackup = "Generator";
+                    break;
+                case R.id.rbInverter:
+                    valPowerBackup = "Inverter";
+                    break;
+                case R.id.rbNon:
+                    valPowerBackup = "Not Available";
+                    break;
+            }
+        });
+
+        RadioGroup rgProvideO2Free = findViewById(R.id.rgProvideO2Free);
+        rgProvideO2Free.setOnCheckedChangeListener((group,checkedId)->{
+            switch (checkedId) {
+                case R.id.rbFreeO2Yes:
+                    valProvideFreeO2 = "Generator";
+                    break;
+                case R.id.rbFreeO2No:
+                    valProvideFreeO2 = "Inverter";
+                    break;
+            }
+        });
+
         if (Util.isConnected(this)) {
             presenter.getDetails(requestId);
-            presenter.getMachines();
+            presenter.getMachines(talukaId);
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
@@ -130,6 +185,16 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
                     request.put("praposed_date",Util.dateTimeToTimeStamp(etDateMachineAllocation.getText().toString(),"00:00"));
                     request.put("feedback",etObservationReason.getText().toString());
                     request.put("machines_allotted",selectedMachineID.split(","));
+
+                    request.put("o2_support",valO2support);
+                    request.put("power_backup",valPowerBackup);
+                    request.put("val_provide_free_o2",valProvideFreeO2);
+                    request.put("infrastructure",etInfrastructure.getText().toString());
+                    request.put("no_of_beds",etNoOfBeds.getText().toString());
+                    request.put("daily_patients_intake",etDailyPatientsIntake.getText().toString());
+                    request.put("mortality_rate",etMortalityRate.getText().toString());
+                    request.put("patients_discharged",etPatientsDischarged.getText().toString());
+                    request.put("o2_charges",etO2Charges.getText().toString());
 
                     presenter.submitRequest(request);
                 }
@@ -230,6 +295,9 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
         tvDesignation.setText(data.getDesignation());
         tvMachineRequired.setText(data.getRequestedQuantityConcentratorMachine().toString());
         tvVisitDate.setText(Util.getDateFromTimestamp(new Date().getTime(), Constants.FORM_DATE));
+        tvState.setText(data.getStateName());
+        tvDistrict.setText(data.getDistrictName());
+        tvTaluka.setText(data.getTalukaName());
     }
 
     public void setMachineList(List<SearchListData> data) {

@@ -1,11 +1,5 @@
 package com.octopusbjsindia.view.activities.MissionRahat;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -22,6 +16,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
@@ -29,19 +29,14 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListData;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListResponse;
-import com.octopusbjsindia.models.SujalamSuphalam.Structure;
 import com.octopusbjsindia.models.events.CommonResponse;
-import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.RequirementsListActivityPresenter;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
 import com.octopusbjsindia.view.adapters.mission_rahat.RequirementsListAdapter;
-import com.octopusbjsindia.view.adapters.mission_rahat.SearchListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class RequirementsListActivity extends AppCompatActivity implements APIDataListener {
 
@@ -54,13 +49,12 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     private String nextPageUrl = "";
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requirements_list);
-
-        setTitle("Requirements List");
 
         boolean isDownloadMOU = getIntent().getBooleanExtra("isDownloadMOU", false);
         boolean isSubmitMOU = getIntent().getBooleanExtra("isSubmitMOU", false);
@@ -110,18 +104,16 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
             }
         });
 
-    }
-
-    public void setTitle(String title) {
-        TextView tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle = findViewById(R.id.toolbar_title);
+        tvTitle.setText("Requirements List");
         ImageView back = findViewById(R.id.toolbar_back_action);
-        tvTitle.setText(title);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
     }
 
     @Override
@@ -137,7 +129,6 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                     } else {
                         list.get(position).setStatus(status);
                     }
-
                     adapter.notifyItemChanged(position, list.get(position));
                 }
             }
@@ -165,10 +156,16 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                     if (data.getCode() == 200) {
                         nextPageUrl = data.getNextPageUrl();
                         list.addAll(data.getData());
+                        tvTitle.setText("Requirements List (" + data.getTotal() + ")");
                         adapter.notifyDataSetChanged();
                     } else if (data.getCode() == 1000) {
                         onFailureListener(requestID, data.getMessage());
                         Util.logOutUser(this);
+                    }
+                    if(list.size()<1){
+                        findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+                    } else {
+                        findViewById(R.id.ly_no_data).setVisibility(View.GONE);
                     }
                 } else if (requestID.equalsIgnoreCase("MOU_ON_MAIL")) {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);

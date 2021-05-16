@@ -23,6 +23,9 @@ public class OxygenMachineList {
     @SerializedName("districtName")
     @Expose
     private String districtName;
+    @SerializedName("talukaName")
+    @Expose
+    private String talukaName;
     @SerializedName("capacity")
     @Expose
     private String capacity;
@@ -97,6 +100,14 @@ public class OxygenMachineList {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getTalukaName() {
+        return talukaName;
+    }
+
+    public void setTalukaName(String talukaName) {
+        this.talukaName = talukaName;
     }
 
     public String getCapacity() {

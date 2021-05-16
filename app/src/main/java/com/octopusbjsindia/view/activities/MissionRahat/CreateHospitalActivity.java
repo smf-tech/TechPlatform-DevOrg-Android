@@ -35,12 +35,14 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
 
     private RelativeLayout progressBar;
     private CreateHospitalActivityPresenter presenter;
-    private EditText etState, etDistrict, etHospitalName, etAddress, etPersonName, etDesignation,
-            etMobile,etSelectUserType;
+    private EditText etState, etDistrict, etTaluka, etHospitalName, etAddress, etPersonName, etDesignation,
+            etMobile, etSelectUserType;
     private Button btSubmit, btback;
-    private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict,selectedHospitalType,selectedHospitalTypeID;
+    private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict,
+            selectedTalukaId, selectedTaluka, selectedHospitalType, selectedHospitalTypeID;
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> hospitalTypeList = new ArrayList<>();
     private HospitalModel hospitalModel;
     private EditText etRegistrationNo;
@@ -61,6 +63,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         hospitalModel = new HospitalModel();
         etState = findViewById(R.id.et_state);
         etDistrict = findViewById(R.id.et_district);
+        etTaluka = findViewById(R.id.et_taluka);
         etHospitalName = findViewById(R.id.et_hospital_name);
         etAddress = findViewById(R.id.et_hospital_address);
         etPersonName = findViewById(R.id.et_responsible_person_name);
@@ -72,12 +75,13 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
 
         etState.setOnClickListener(this);
         etDistrict.setOnClickListener(this);
+        etTaluka.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
         etSelectUserType.setOnClickListener(this);
         etRegistrationNo.setOnClickListener(this);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
-        presenter.getLocationData("",
+        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.STATE_LEVEL);
     }
@@ -108,7 +112,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        presenter.getLocationData("",
+                        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.STATE_LEVEL);
                     } else {
@@ -131,6 +135,27 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                         } else {
                             Util.showToast("Please select state.", this);
+                        }
+                    } else {
+                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                    }
+                }
+                break;
+            case R.id.et_taluka:
+                if (talukaList.size() > 0) {
+                    CustomSpinnerDialogClass csdTaluka = new CustomSpinnerDialogClass(this, this,
+                            "Select Taluka", talukaList, false);
+                    csdTaluka.show();
+                    csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    if (Util.isConnected(this)) {
+                        if ((!TextUtils.isEmpty(selectedDistrictId))) {
+                            presenter.getLocationData(selectedDistrictId,
+                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else {
+                            Util.showToast("Please select taluka.", this);
                         }
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), this);
@@ -179,9 +204,13 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
             return false;
         } else if (TextUtils.isEmpty(selectedDistrictId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please select District.", Snackbar.LENGTH_LONG);
+                    "Please select district.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(selectedHospitalTypeID)){
+        } else if (TextUtils.isEmpty(selectedTalukaId)) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please select taluka.", Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(selectedHospitalTypeID)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select user type Hospital/NGO etc.", Snackbar.LENGTH_LONG);
             return false;
@@ -214,6 +243,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         } else {
             hospitalModel.setStateId(selectedStateId);
             hospitalModel.setDistrictId(selectedDistrictId);
+            hospitalModel.setTaukaId(selectedTalukaId);
             hospitalModel.setHospitalName(etHospitalName.getText().toString().trim());
             hospitalModel.setAddress(etAddress.getText().toString().trim());
             hospitalModel.setPersonName(etPersonName.getText().toString().trim());
@@ -221,7 +251,6 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
             hospitalModel.setMobile_number(etMobile.getText().toString().trim());
             hospitalModel.setHospitalTypeId(selectedHospitalTypeID);
             hospitalModel.setRegistrationNo(etRegistrationNo.getText().toString().trim());
-
         }
         return true;
     }
@@ -255,6 +284,21 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                         district.setName(location.getName());
                         district.setSelected(false);
                         districtList.add(district);
+                    }
+                }
+                break;
+            case Constants.JurisdictionLevelName.TALUKA_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    talukaList.clear();
+                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
+
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        CustomSpinnerObject taluka = new CustomSpinnerObject();
+                        taluka.set_id(location.getId());
+                        taluka.setName(location.getName());
+                        taluka.setSelected(false);
+                        talukaList.add(taluka);
                     }
                 }
                 break;
@@ -316,7 +360,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                     }
                 }
                 etState.setText(selectedState);
-                if (selectedState != "" && selectedState != "State") {
+                if (selectedState != "") {
                     presenter.getLocationData(selectedStateId,
                             Util.getUserObjectFromPref().getJurisdictionTypeId(),
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
@@ -331,6 +375,21 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                     }
                 }
                 etDistrict.setText(selectedDistrict);
+                if (selectedDistrict != "") {
+                    presenter.getLocationData(selectedDistrictId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                }
+                break;
+            case "Select Taluka":
+                for (CustomSpinnerObject taluka : talukaList) {
+                    if (taluka.isSelected()) {
+                        selectedTaluka = taluka.getName();
+                        selectedTalukaId = taluka.get_id();
+                        break;
+                    }
+                }
+                etTaluka.setText(selectedTaluka);
                 break;
             case "Select user type":
                 for (CustomSpinnerObject district : hospitalTypeList) {

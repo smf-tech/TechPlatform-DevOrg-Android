@@ -60,6 +60,25 @@
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!--taluka-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_taluka"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/taluka"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
@@ -69,7 +88,7 @@
                     android:id="@+id/et_select_user_type"
                     style="@style/RegistrationEditTextLayout"
                     android:focusable="false"
-                    android:hint="Select user type"
+                    android:hint="Select center type"
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +104,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter name"
+                    android:hint="Center name"
                     android:imeOptions="actionNext"
                     android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>

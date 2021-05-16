@@ -87,12 +87,12 @@ android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hospital name"
+                    android:text="Taluka"
                     android:layout_marginTop="@dimen/dimen_02dp"
                     android:textSize="@dimen/text_size_12"/>
 
                 <TextView
-                    android:id="@+id/txt_hospital_name"
+                    android:id="@+id/txtTaluka"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="name"
@@ -140,7 +140,19 @@ android:orientation="vertical">
                     android:text="name"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textSize="@dimen/text_size_12" />
 
+                <TextView
+                    android:id="@+id/txt_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvLbl"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -163,6 +175,20 @@ android:orientation="vertical">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Maharashtra"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hospital name"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_hospital_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
                     android:textStyle="bold" />
 
                 <TextView
@@ -223,37 +249,6 @@ android:orientation="vertical">
 
 
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/dimen_02dp"
-                android:layout_marginStart="@dimen/dimen_05dp">
-                <TextView
-                    android:id="@+id/tvLbl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:textSize="@dimen/text_size_12" />
-
-                <TextView
-                    android:id="@+id/txt_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvLbl"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-
-
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

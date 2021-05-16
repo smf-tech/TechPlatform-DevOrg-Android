@@ -1,22 +1,14 @@
 package com.octopusbjsindia.adapter;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.os.Build;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
@@ -24,10 +16,7 @@ import com.octopusbjsindia.databinding.RowOxymachineListBinding;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
-import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
-import com.octopusbjsindia.view.activities.StructureVisitMonitoringActivity;
 
 import java.util.ArrayList;
 
@@ -79,7 +68,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
 
         holder.rowOxymachineListBinding.txtDonerName.setText(oxygenMachineLists.get(position).getDonorName());
         holder.rowOxymachineListBinding.txtBenefitedCount.setText(String.valueOf(oxygenMachineLists.get(position).getBenefitedPatientCount()));
-
+        holder.rowOxymachineListBinding.txtTaluka.setText(oxygenMachineLists.get(position).getTalukaName());
     }
 
     @Override

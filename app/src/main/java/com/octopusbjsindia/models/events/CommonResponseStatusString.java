@@ -14,8 +14,6 @@ public class CommonResponseStatusString {
     @Expose
     private String message;
 
-
-
     public String getMessage() {
         return message;
     }

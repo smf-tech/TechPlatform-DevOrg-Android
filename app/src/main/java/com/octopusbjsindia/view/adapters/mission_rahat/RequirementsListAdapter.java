@@ -63,6 +63,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
         holder.tvStatus.setText(list.get(position).getStatus());
         holder.tvOwner.setText(list.get(position).getOwnerName());
         holder.tvState.setText(list.get(position).getStateName());
+        holder.tvTaluka.setText(list.get(position).getTalukaName());
         holder.tvMachineRequired.setText(list.get(position).getRequiredMachine().toString());
         holder.tvContact.setText(list.get(position).getOwnerContactDetails());
         holder.tvDistrict.setText(list.get(position).getDistrictName());
@@ -85,7 +86,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                 holder.tvDownloadMOU.setVisibility(View.VISIBLE);
             }
         } else if (list.get(position).getStatus().equalsIgnoreCase("Approved") && !list.get(position).isMOUDone()) {
-            if (isSubmitMOU ) {
+            if (isSubmitMOU) {
                 holder.tvViewDetails.setVisibility(View.GONE);
                 holder.tvWaitingMOU.setVisibility(View.VISIBLE);
                 holder.tvDownloadMOU.setVisibility(View.GONE);
@@ -103,7 +104,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvHospitalName, tvStatus, tvOwner, tvState, tvMachineRequired, tvContact, tvDistrict,
+        TextView tvHospitalName, tvStatus, tvOwner, tvState, tvTaluka, tvMachineRequired, tvContact, tvDistrict,
                 tvInCharge, tvViewDetails, tvWaitingMOU, tvDownloadMOU;
         RelativeLayout lyMain;
         ImageView btn_popmenu;
@@ -114,6 +115,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvOwner = itemView.findViewById(R.id.tvOwner);
             tvState = itemView.findViewById(R.id.tvState);
+            tvTaluka = itemView.findViewById(R.id.tvTaluka);
             tvMachineRequired = itemView.findViewById(R.id.tvMachineRequired);
             tvContact = itemView.findViewById(R.id.tvContact);
             tvDistrict = itemView.findViewById(R.id.tvDistrict);
@@ -135,10 +137,11 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvViewDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
-                        intent.putExtra("position", getAdapterPosition());
-                        intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-                        mContext.startActivityForResult(intent, 1001);
+                    Intent intent = new Intent(mContext, ConcentratorApprovalActivity.class);
+                    intent.putExtra("position", getAdapterPosition());
+                    intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
+                    intent.putExtra("talukaId", list.get(getAdapterPosition()).getTaluka_id());
+                    mContext.startActivityForResult(intent, 1001);
                 }
             });
             tvWaitingMOU.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +150,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                     Intent intent = new Intent(mContext, OxyMachineMouActivity.class);
                     intent.putExtra("position", getAdapterPosition());
                     intent.putExtra("RequestId", list.get(getAdapterPosition()).getId());
-                    mContext.startActivityForResult(intent,1001);
+                    mContext.startActivityForResult(intent, 1001);
 
                 }
             });

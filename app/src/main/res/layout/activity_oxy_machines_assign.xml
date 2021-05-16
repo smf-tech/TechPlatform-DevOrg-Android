@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.octopusbjsindia.view.activities.MissionRahat.CreateMachineActivity">
+    tools:context="com.octopusbjsindia.view.activities.MissionRahat.OxyMachinesAssignActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -22,33 +22,13 @@
             android:layout_margin="@dimen/dimen_05dp"
             android:orientation="vertical">
 
-            <!--state-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_margin="@dimen/dimen_03dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_state"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/state"
-                    android:imeOptions="actionNext"
-                    android:focusable="false"
-                    android:longClickable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <!--district-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextInputLayoutHint"
-                android:visibility="gone">
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_district"
@@ -61,18 +41,21 @@
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <!--state-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_model"
+                    android:id="@+id/et_taluka"
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select Machine model"
+                    android:hint="@string/taluka"
                     android:imeOptions="actionNext"
                     android:focusable="false"
                     android:longClickable="false" />
@@ -102,19 +85,19 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_donor"
+                    android:id="@+id/et_count"
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Doner name"
+                    android:hint="Number of machines to assign"
                     android:imeOptions="actionNext"
-                    android:focusable="false"
-                    android:longClickable="false" />
+                    android:longClickable="false"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/bt_submit"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_margin="@dimen/dimen_20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/submit" />
