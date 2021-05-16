@@ -113,7 +113,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
                     popup.inflate(R.menu.machinelist_popup_menu);
                     popup.show();
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
-                        popup.getMenu().findItem(R.id.action_daily_report).setVisible(true);
+                        popup.getMenu().findItem(R.id.action_daily_report).setVisible(false);
                         popup.getMenu().findItem(R.id.action_patient_info).setVisible(true);
                     }
 
