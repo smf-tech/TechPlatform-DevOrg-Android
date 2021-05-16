@@ -3,22 +3,32 @@ package com.octopusbjsindia.view.adapters.mission_rahat;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.MissionRahat.RequirementsListData;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorApprovalActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorTakeOverActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.RequirementsListActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsListAdapter.ViewHolder> {
     ArrayList<RequirementsListData> list;
@@ -96,7 +106,8 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
         TextView tvHospitalName, tvStatus, tvOwner, tvState, tvMachineRequired, tvContact, tvDistrict,
                 tvInCharge, tvViewDetails, tvWaitingMOU, tvDownloadMOU;
         RelativeLayout lyMain;
-
+        ImageView btn_popmenu;
+        PopupMenu popup;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvHospitalName = itemView.findViewById(R.id.tvHospitalName);
@@ -111,6 +122,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             tvWaitingMOU = itemView.findViewById(R.id.tvWaitingMOU);
             tvDownloadMOU = itemView.findViewById(R.id.tvDownloadMOU);
             lyMain = itemView.findViewById(R.id.lyMain);
+             btn_popmenu = itemView.findViewById(R.id.btn_popmenu);
 
             tvContact.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,6 +155,77 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                 @Override
                 public void onClick(View v) {
                     mContext.showEmailDialog("Send", getAdapterPosition());
+                }
+            });
+
+            RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+            RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+            if (roleAccessList != null) {
+                List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                    if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_TAKEOVER)) {
+                        btn_popmenu.setVisibility(View.VISIBLE);
+                    } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_HANDOVER)) {
+                        btn_popmenu.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+
+
+
+
+            btn_popmenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popup = new PopupMenu((mContext), v);
+                    popup.inflate(R.menu.requirementlist_popup_menu);
+
+
+                    RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+                    RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+                    if (roleAccessList != null) {
+                        List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+                        for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                            if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_TAKEOVER)) {
+                                popup.getMenu().findItem(R.id.action_takeover).setVisible(true);
+                            } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_MACHINE_HANDOVER)) {
+                                popup.getMenu().findItem(R.id.action_handover).setVisible(true);
+                            }
+                        }
+                    }
+
+
+                    popup.show();
+                    //------
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Intent intent;
+                            switch (item.getItemId()) {
+                                case R.id.action_takeover:
+                                    if (list.get(getAdapterPosition()).isMOUDone()) {
+                                        intent = new Intent(mContext, ConcentratorTakeOverActivity.class);
+                                        intent.putExtra("actionType", Constants.MissionRahat.TAKEOVER);
+                                        intent.putExtra("RequirementId", list.get(getAdapterPosition()).getId());
+                                        mContext.startActivity(intent);
+                                    }else {
+                                        Util.showToast("Please complete MOU process first.",mContext);
+                                    }
+                                    break;
+                                case R.id.action_handover:
+                                    intent = new Intent(mContext, ConcentratorTakeOverActivity.class);
+                                    intent.putExtra("actionType",Constants.MissionRahat.HANDOVER);
+                                    intent.putExtra("RequirementId",list.get(getAdapterPosition()).getId());
+                                    mContext.startActivity(intent);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+
+
+                    //---------
                 }
             });
 

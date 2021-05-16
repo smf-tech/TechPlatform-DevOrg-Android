@@ -5,28 +5,29 @@ import com.google.gson.annotations.SerializedName;
 
 public class PatientInfoRequestModel {
 
-    @SerializedName("report_date")
-    @Expose
-    private String reportDate;
+
+
+    public long getMachineStartDate() {
+        return machineStartDate;
+    }
+
+    public void setMachineStartDate(long machineStartDate) {
+        this.machineStartDate = machineStartDate;
+    }
+
+    public long getMachineEndDate() {
+        return machineEndDate;
+    }
+
+    public void setMachineEndDate(long machineEndDate) {
+        this.machineEndDate = machineEndDate;
+    }
+
     @SerializedName("machine_id")
     @Expose
     private String machineId;
 
-    public String getMachineStartDate() {
-        return machineStartDate;
-    }
 
-    public void setMachineStartDate(String machineStartDate) {
-        this.machineStartDate = machineStartDate;
-    }
-
-    public String getMachineEndDate() {
-        return machineEndDate;
-    }
-
-    public void setMachineEndDate(String machineEndDate) {
-        this.machineEndDate = machineEndDate;
-    }
 
     public String getRemark() {
         return remark;
@@ -60,12 +61,12 @@ public class PatientInfoRequestModel {
     @SerializedName("end_saturation_level")
     @Expose
     private Double endSaturationLevel;
-    @SerializedName("machine_start_date")
+    @SerializedName("start_date")
     @Expose
-    private String machineStartDate;
-    @SerializedName("machine_end_date")
+    private long machineStartDate;
+    @SerializedName("end_date")
     @Expose
-    private String machineEndDate;
+    private long machineEndDate;
 
     @SerializedName("no_of_days")
     @Expose
@@ -153,11 +154,5 @@ public class PatientInfoRequestModel {
         this.noOfDays = noOfDays;
     }
 
-    public String getReportDate() {
-        return reportDate;
-    }
 
-    public void setReportDate(String reportDate) {
-        this.reportDate = reportDate;
-    }
 }

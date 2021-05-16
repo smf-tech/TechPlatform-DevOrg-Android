@@ -28,7 +28,9 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.DailyRecordRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.MissionRahat.PatientInfoRequestModel;
+import com.octopusbjsindia.models.MissionRahat.PatientInfoResponseModel;
 import com.octopusbjsindia.models.MissionRahat.SearchListData;
+import com.octopusbjsindia.models.MissionRahat.SearchListResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
@@ -39,6 +41,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -81,7 +84,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
             position = getIntent().getExtras().getInt("position");
             oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
             Log.d("machine_code---", oxygenMachineList.getCode());
-            machineCode = oxygenMachineList.getCode();
+            machineCode = oxygenMachineList.getId();
             patientInfoBinding.etSelectMachines.setText(machineCode);
 
         }
@@ -98,9 +101,22 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         //TODO need to discuss for api  and status of machine
         if (oxygenMachineList.getStatus().equalsIgnoreCase("working")){
             //preFillData(); or call api for data
-            presenter.getPatientInfo();
+            presenter.getPatientInfo(getRequestData());
+        }else {
+            patientInfoBinding.etOtherRemark.setVisibility(View.GONE);
+            patientInfoBinding.etMachineUsedDays.setVisibility(View.GONE);
+            patientInfoBinding.etEndSaturation.setVisibility(View.GONE);
+            patientInfoBinding.etEndDate.setVisibility(View.GONE);
         }
+//        presenter.getPatientInfo(getRequestData());
+    }
 
+    private String getRequestData() {
+        HashMap request = new HashMap<String, Object>();
+        request.put("machine_id", machineCode);
+        Gson gson = new GsonBuilder().create();
+        String params = gson.toJson(request);
+        return params;
     }
 
     private void preFillData() {
@@ -131,36 +147,19 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
                 showGenderDropDown();
             }
         });
-        /*patientInfoBinding.etStartDate.setOnClickListener(new View.OnClickListener() {
+
+        patientInfoBinding.etStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setStartDate();
-                Util.showDateDialogMin(PatientInfoActivity.this, patientInfoBinding.etStartDate);
-                patientInfoBinding.etEndDate.setText("");
+                Util.showDateDialog(PatientInfoActivity.this, patientInfoBinding.etStartDate);
             }
         });
         patientInfoBinding.etEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setENdDate();
-
-                if (patientInfoBinding.etStartDate.getText().toString().trim().length() == 0) {
-                    Util.snackBarToShowMsg(PatientInfoActivity.this.getWindow().getDecorView().findViewById(android.R.id.content),
-                            "Please select start date of report.", Snackbar.LENGTH_LONG);
-
-                } else {
-                    //Util.showDateDialogMin(OxyMachineDailyReportActivity.this, patientInfoBinding.etEndDate);
-                    Util.showDateDialogEnableMAxDateFromSelected(PatientInfoActivity.this, patientInfoBinding.etEndDate, patientInfoBinding.etStartDate.getText().toString());
-                }
+                Util.showDateDialogMin(PatientInfoActivity.this, patientInfoBinding.etEndDate);
             }
         });
-
-        patientInfoBinding.etSelectSlot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSlotsDropDown();
-            }
-        });*/
 
     }
 
@@ -188,9 +187,9 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
     private String getMouRequestData() {
         PatientInfoRequestModel patientInfoRequestModel = new PatientInfoRequestModel();
         Gson gson = new GsonBuilder().create();
-        patientInfoRequestModel.setReportDate(patientInfoBinding.etReportDate.getText().toString());
-        patientInfoRequestModel.setMachineStartDate(patientInfoBinding.etStartDate.getText().toString());
-        patientInfoRequestModel.setMachineEndDate(patientInfoBinding.etEndDate.getText().toString());
+/*
+
+        patientInfoRequestModel.setMachineStartDate(Util.getDateInLong(patientInfoBinding.etStartDate.getText().toString()));
         patientInfoRequestModel.setGender(patientInfoBinding.etSelectGender.getText().toString());
         patientInfoRequestModel.setName(patientInfoBinding.etPatientName.getText().toString());
         patientInfoRequestModel.setAge(Integer.parseInt(patientInfoBinding.etPatientAge.getText().toString()));
@@ -198,17 +197,48 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         patientInfoRequestModel.setAdharCard(patientInfoBinding.etPatientsAadhar.getText().toString());
         patientInfoRequestModel.setMobileNumber(Long.parseLong(patientInfoBinding.etMobileNumber.getText().toString()));
         patientInfoRequestModel.setStartSaturationLevel(Double.parseDouble(patientInfoBinding.etStartSaturation.getText().toString()));
-        patientInfoRequestModel.setEndSaturationLevel(Double.parseDouble(patientInfoBinding.etEndSaturation.getText().toString()));
         patientInfoRequestModel.setMachineId(machineCode);
-        patientInfoRequestModel.setNoOfDays(Integer.parseInt(patientInfoBinding.etMachineUsedDays.getText().toString()));
+*/
+
+        /*if (oxygenMachineList.getStatus().equalsIgnoreCase("working")) {
+            patientInfoRequestModel.setEndSaturationLevel(Double.parseDouble(patientInfoBinding.etEndSaturation.getText().toString()));
+        patientInfoRequestModel.setMachineEndDate(Util.getDateInLong(patientInfoBinding.etEndDate.getText().toString()));
+            patientInfoRequestModel.setNoOfDays(Integer.parseInt(patientInfoBinding.etMachineUsedDays.getText().toString()));
         patientInfoRequestModel.setRemark(patientInfoBinding.etOtherRemark.getText().toString());
 
+        }*/
 
-        patientInfoBinding.etSelectMachines.getText().toString();
-        patientInfoBinding.etMachineUsedDays.getText().toString();
 
-        String paramjson = gson.toJson(patientInfoRequestModel);
-        return paramjson;
+        HashMap request = new HashMap<String, Object>();
+        request.put("machine_id", machineCode);
+        request.put("name", patientInfoBinding.etPatientName.getText().toString());
+        request.put("gender", patientInfoBinding.etSelectGender.getText().toString());
+        request.put("age",Integer.parseInt(patientInfoBinding.etPatientAge.getText().toString()));
+        request.put("icmr_code", patientInfoBinding.etIcmrCode.getText().toString());
+        request.put("adhar_card",patientInfoBinding.etPatientsAadhar.getText().toString());
+        request.put("mobile_number",Long.parseLong(patientInfoBinding.etMobileNumber.getText().toString()));
+        request.put("start_saturation_level",Double.parseDouble(patientInfoBinding.etStartSaturation.getText().toString()));
+        request.put("start_date",Util.getDateInLong(patientInfoBinding.etStartDate.getText().toString()));
+        //yes no field
+
+
+        if (oxygenMachineList.getStatus().equalsIgnoreCase("working")) {
+
+            request.put("end_saturation_level", Double.parseDouble(patientInfoBinding.etEndSaturation.getText().toString()));
+            request.put("end_date",Util.getDateInLong(patientInfoBinding.etEndDate.getText().toString()));
+            request.put("no_of_days",Integer.parseInt(patientInfoBinding.etMachineUsedDays.getText().toString()));
+            request.put("remark", patientInfoBinding.etOtherRemark.getText().toString());
+
+        }
+
+
+
+
+
+        //Gson gson = new GsonBuilder().create();
+        String params = gson.toJson(request);
+
+        return params;
     }
 
 
@@ -328,7 +358,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter start saturation level of patient.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (patientInfoBinding.etEndSaturation.getText().toString().trim().length() == 0) {
+        }/* else if (patientInfoBinding.etEndSaturation.getText().toString().trim().length() == 0) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter end saturation level of patient.", Snackbar.LENGTH_LONG);
             return false;
@@ -336,7 +366,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter number of machine hours used.", Snackbar.LENGTH_LONG);
             return false;
-        } else {
+        }*/ else {
 
         }
         return true;
@@ -381,7 +411,6 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(v -> {
                 // Close dialog
-
                 dialog.dismiss();
             });
         }
@@ -409,16 +438,28 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
 
 
     public void setPatientInfo(String get_hospitals, String response) {
+        PatientInfoResponseModel patientInfoResponseModel =
+                new Gson().fromJson(response, PatientInfoResponseModel.class);
 
-        patientInfoBinding.etReportDate.setText("");
-        patientInfoBinding.etSelectMachines.setText("");
-        patientInfoBinding.etPatientName.setText("");
-        patientInfoBinding.etSelectGender.setText("");
-        patientInfoBinding.etPatientAge.setText("");
-        patientInfoBinding.etIcmrCode.setText("");
-        patientInfoBinding.etPatientsAadhar.setText("");
-        patientInfoBinding.etMobileNumber.setText("");
-        patientInfoBinding.etStartDate.setText("");
-        patientInfoBinding.etStartSaturation.setText("");
+        patientInfoBinding.etSelectMachines.setText(machineCode);
+        patientInfoBinding.etPatientName.setText(patientInfoResponseModel.getPatientInfoResponse().getName());
+        patientInfoBinding.etSelectGender.setText(patientInfoResponseModel.getPatientInfoResponse().getGender());
+        patientInfoBinding.etPatientAge.setText(String.valueOf(patientInfoResponseModel.getPatientInfoResponse().getAge()));
+        patientInfoBinding.etIcmrCode.setText(patientInfoResponseModel.getPatientInfoResponse().getIcmrCode());
+        patientInfoBinding.etPatientsAadhar.setText(patientInfoResponseModel.getPatientInfoResponse().getAdharCard());
+        patientInfoBinding.etMobileNumber.setText(String.valueOf(patientInfoResponseModel.getPatientInfoResponse().getMobileNumber()));
+        patientInfoBinding.etStartDate.setText(Util.getFormattedDateFromTimestamp(patientInfoResponseModel.getPatientInfoResponse().getStartDate()));
+        patientInfoBinding.etStartSaturation.setText(String.valueOf(patientInfoResponseModel.getPatientInfoResponse().getStartSaturationLevel()));
+
+        patientInfoBinding.etSelectMachines.setClickable(false);
+        patientInfoBinding.etPatientName.setClickable(false);
+        patientInfoBinding.etSelectGender.setClickable(false);
+        patientInfoBinding.etPatientAge.setClickable(false);
+        patientInfoBinding.etIcmrCode.setClickable(false);
+        patientInfoBinding.etPatientsAadhar.setClickable(false);
+        patientInfoBinding.etMobileNumber.setClickable(false);
+        patientInfoBinding.etStartDate.setClickable(false);
+        patientInfoBinding.etStartSaturation.setClickable(false);
+
     }
 }

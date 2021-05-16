@@ -37,12 +37,12 @@ public class PatientInfoPresenter implements APIPresenterListener {
     }
 
 
-    public void getPatientInfo() {
+    public void getPatientInfo(String paramjson) {
         mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
-        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.HOSPITAL_LIST;
-        requestCall.getDataApiCall("GET_HOSPITALS", Url);
+        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_MACHINE_PATIENT_INFO;
+        requestCall.postDataApiCall("GET_HOSPITALS",paramjson, Url);
     }
 
     public void submitDailyReportData(String paramjson) {

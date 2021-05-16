@@ -44,7 +44,8 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
     private FloatingActionButton fbSelect;
     private ExtendedFloatingActionButton fbMachine, fbHospital, fbRequirementForm, fbApproval, fbMachineList,fbSelectHopsital;
     private boolean isMachineCreate, isHospitalCreate, isRequirementForm, isApprovalAllowed,
-            isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU, isRequirementList;
+            isDailyReportAllowed, isMachineListAllowed, isDownloadMOU, isNewPatient, isSubmitMOU, isRequirementList,
+            isAddHospital;
     private boolean isFABOpen = false;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
@@ -128,6 +129,9 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_SUBMIT_MOU)) {
                     isSubmitMOU = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_ADD_HOSPITAL)){
+                    isAddHospital = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.MissionRahat.ACCESS_CODE_VIEW_REQUIREMENT_LIST)) {
                     isRequirementList = true;
@@ -235,8 +239,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             fbMachineList.animate().translationY(-height);
             height = height + 140;
         }
-        // TODO need to add condition
-        if (true){
+        if (isAddHospital){
             fbSelectHopsital.show();
             fbSelectHopsital.animate().translationY(-height);
             height = height + 140;

@@ -20,11 +20,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.MissionRahat.SearchListData;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.ConcentratorRequirementActivityPresenter;
 import com.octopusbjsindia.presenter.MissionRahat.ConcentratorTakeOverActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
@@ -42,8 +47,11 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
     private int actionType = -1;
     RelativeLayout progressBar;
     String type = "";
+    String receivedRequirementId = "";
     ArrayList<SearchListData> hospitalList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> yesNoList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> machineCapacityList = new ArrayList<>();
+    private String selectedOption = "", selectedOptionId = "",selectedCapacityId = "";
 
     EditText etNumberOfMachines, etNumberOfPowerCables, etNumberOfConnectors, etNasalConula, etDisplayFunctioning, etOxymeterFunctioning,
             etRemoteFunctioning, etUserManual, etCapacity, etUnidentifiedNoise, etSafelyPackaged;
@@ -53,13 +61,14 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concentrator_takeover);
-        setTitle("Concentrator Requirement");
+
         //boolean isForTakeOver = getIntent().getBooleanExtra("isForTakeOver", false);
         actionType = getIntent().getIntExtra("actionType", -1);
+        receivedRequirementId  = getIntent().getStringExtra("RequirementId");
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new ConcentratorTakeOverActivityPresenter(this);
         if (Util.isConnected(this)) {
-        //    presenter.getHospitals();
+            presenter.getMasterData();
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
@@ -89,16 +98,18 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
 
         CustomSpinnerObject yes = new CustomSpinnerObject();
         yes.set_id("1");
-        yes.setName("YES");
+        yes.setName("yes");
         yesNoList.add(yes);
         CustomSpinnerObject no = new CustomSpinnerObject();
         no.set_id("2");
-        no.setName("NO");
+        no.setName("no");
         yesNoList.add(no);
         if (actionType == Constants.MissionRahat.TAKEOVER) {
-            type = "takeover";
+            type = "take_over";
+            setTitle("Take over form");
         }else if (actionType == Constants.MissionRahat.HANDOVER) {
-            type = "handover";
+            type = "hand_over";
+            setTitle("Hand over");
         }
     }
 
@@ -115,28 +126,52 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
 
             case R.id.etDisplayFunctioning:
                 CustomSpinnerDialogClass csdGender = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
-                        "Select YesNo", yesNoList, false);
+                        "Display Functioning", yesNoList, false);
                 csdGender.show();
                 csdGender.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etOxymeterFunctioning:
-
+                CustomSpinnerDialogClass csdGender1 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "Oxymeter Functioning", yesNoList, false);
+                csdGender1.show();
+                csdGender1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etRemoteFunctioning:
-
+                CustomSpinnerDialogClass csdGender2 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "Remote Functioning", yesNoList, false);
+                csdGender2.show();
+                csdGender2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etUserManual:
-
+                CustomSpinnerDialogClass csdGender3 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "User Manual Available", yesNoList, false);
+                csdGender3.show();
+                csdGender3.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etCapacity:
-
+                CustomSpinnerDialogClass csdGender4 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "Select Capacity", machineCapacityList, false);
+                csdGender4.show();
+                csdGender4.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etUnidentifiedNoise:
-
+                CustomSpinnerDialogClass csdGender5 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "Noise Observed", yesNoList, false);
+                csdGender5.show();
+                csdGender5.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
             case R.id.etSafelyPackaged:
-
+                CustomSpinnerDialogClass csdGender6 = new CustomSpinnerDialogClass(ConcentratorTakeOverActivity.this, this,
+                        "Safely Packaged", yesNoList, false);
+                csdGender6.show();
+                csdGender6.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
 
 
@@ -144,45 +179,47 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
                 finish();
                 break;
             case R.id.btSubmit:
-                /*if(TextUtils.isEmpty(selectedHospitalId)){
-                    Util.showToast(this,"Please select Hospital");
-                } else if(TextUtils.isEmpty(etOwnerName.getText().toString())){
-                    Util.showToast(this,"Please enter owner name of hospital");
-                } else if(TextUtils.isEmpty(etContactNumber.getText().toString())){
-                    Util.showToast(this,"Please enter owner contact");
-                }  else if(etContactNumber.getText().toString().length()<10){
-                    Util.showToast(this,"Please enter valid owner contact");
-                } else if(TextUtils.isEmpty(etPermissionOxygenBed.getText().toString())){
-                    Util.showToast(this,"Please enter no. of permission granted for Oxygen bed");
-                } else if(TextUtils.isEmpty(etPermissionGeneralBed.getText().toString())){
-                    Util.showToast(this,"Please enter no. of permission granted for General Bed");
-                } else if(TextUtils.isEmpty(etExistingOxygenBed.getText().toString())){
-                    Util.showToast(this,"Please enter no. of Existing Oxygen Bed");
-                } else if(TextUtils.isEmpty(etExistingGeneralBed.getText().toString())){
-                    Util.showToast(this,"Please enter no. of Existing General Bed");
-                } else if(TextUtils.isEmpty(etNumberOfConcentratorRequired.getText().toString())){
-                    Util.showToast(this,"Please enter number of concentrator required");
-                }  else if(1 > Integer.parseInt(etNumberOfConcentratorRequired.getText().toString())){
-                    Util.showToast(this,"Please enter valid number of concentrator required");
-                } else*/
+                if(TextUtils.isEmpty(etNumberOfMachines.getText().toString())){
+                    Util.showToast(this,"Please enter number of machine");
+                } else if(TextUtils.isEmpty(etCapacity.getText().toString())){
+                    Util.showToast(this,"Please select capacity");
+                } else if(TextUtils.isEmpty(etNumberOfPowerCables.getText().toString())){
+                    Util.showToast(this,"Please enter number of power cables.");
+                } else if(TextUtils.isEmpty(etNumberOfConnectors.getText().toString())){
+                    Util.showToast(this,"Please enter number of connectors.");
+                } else if(TextUtils.isEmpty(etNasalConula.getText().toString())){
+                    Util.showToast(this,"Please enter number of nasal cannula.");
+                } else if(TextUtils.isEmpty(etDisplayFunctioning.getText().toString())){
+                    Util.showToast(this,"Please select is display functioning.");
+                } else if(TextUtils.isEmpty(etOxymeterFunctioning.getText().toString())){
+                    Util.showToast(this,"Please select is oxy meter functioning.");
+                } else if(TextUtils.isEmpty(etRemoteFunctioning.getText().toString())){
+                    Util.showToast(this,"Please select is oxy remote functioning.");
+                } else if(TextUtils.isEmpty(etUserManual.getText().toString())){
+                    Util.showToast(this,"Please select is user manual available.");
+                }  else if(TextUtils.isEmpty(etUnidentifiedNoise.getText().toString())){
+                    Util.showToast(this,"Please select is unidentified noise observed.");
+                }  else if(TextUtils.isEmpty(etSafelyPackaged.getText().toString())){
+                    Util.showToast(this,"Please select is safely packaged for take over.");
+                } else
             {
 
 
                 HashMap request = new HashMap<String, Object>();
-
-                request.put("requirementId", "example");
-                request.put("type", type);
-                request.put("numof_machine", "10");
-                request.put("capacity", "5L");
-                request.put("numof_power_cable", "10");
-                request.put("numof_connector", "10");
-                request.put("numof_nasal_cannula", "10");
-                request.put("is_display_working", "YES");
-                request.put("is_oxymeter_working", "YES");
-                request.put("is_remote_working", "YES");
-                request.put("is_usermanual_availble", "YES");
-                request.put("is_unidentifies_noise", "YES");
-                request.put("is_safely_packaged", "YES");
+                request.put("requirement_id", receivedRequirementId);
+                request.put("form_type", type);
+                request.put("numof_machine", etNumberOfMachines.getText().toString());
+                request.put("capacity", selectedCapacityId);
+                request.put("numof_power_cable",etNumberOfPowerCables.getText().toString());
+                request.put("numof_connector", etNumberOfConnectors.getText().toString());
+                request.put("numof_nasal_cannula", etNasalConula.getText().toString());
+                //yes no field
+                request.put("is_display_working", etDisplayFunctioning.getText().toString());
+                request.put("is_oxymeter_working", etOxymeterFunctioning.getText().toString());
+                request.put("is_remote_working", etRemoteFunctioning.getText().toString());
+                request.put("is_usermanual_availble", etUserManual.getText().toString());
+                request.put("is_unidentifies_noise", etUnidentifiedNoise.getText().toString());
+                request.put("is_safely_packaged", etSafelyPackaged.getText().toString());
 
 
                 presenter.submitRequest(request);
@@ -274,7 +311,8 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        Util.showToast(this, response);
+        CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
+        Util.showToast(responseOBJ.getMessage(), this);
         finish();
     }
 
@@ -300,17 +338,99 @@ public class ConcentratorTakeOverActivity extends AppCompatActivity implements V
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
-
-            case "Select Gender":
-                /*for (CustomSpinnerObject obj : genderList) {
+            case "Display Functioning":
+                for (CustomSpinnerObject obj : yesNoList) {
                     if (obj.isSelected()) {
-                        selectedGender = obj.getName();
+                        selectedOption= obj.getName();
 //                        selectedTaskID = obj.get_id();
                         break;
                     }
                 }
-                patientInfoBinding.etSelectGender.setText(selectedGender);*/
+                etDisplayFunctioning.setText(selectedOption);
                 break;
+
+            case "Oxymeter Functioning":
+                for (CustomSpinnerObject obj : yesNoList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etOxymeterFunctioning.setText(selectedOption);
+                break;
+
+            case "Remote Functioning":
+                for (CustomSpinnerObject obj : yesNoList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etRemoteFunctioning.setText(selectedOption);
+                break;
+
+            case "User Manual Available":
+                for (CustomSpinnerObject obj : yesNoList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etUserManual.setText(selectedOption);
+                break;
+
+            case "Select Capacity":
+                for (CustomSpinnerObject obj : machineCapacityList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+                        selectedCapacityId = obj.get_id();
+                        break;
+                    }
+                }
+                etCapacity.setText(selectedOption);
+                break;
+
+            case "Noise Observed":
+                for (CustomSpinnerObject obj : yesNoList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etUnidentifiedNoise.setText(selectedOption);
+                break;
+
+            case "Safely Packaged":
+                for (CustomSpinnerObject obj : yesNoList) {
+                    if (obj.isSelected()) {
+                        selectedOption= obj.getName();
+//                        selectedTaskID = obj.get_id();
+                        break;
+                    }
+                }
+                etSafelyPackaged.setText(selectedOption);
+                break;
+
+        }
+    }
+
+    public void setMasterData(MasterDataResponse masterDataResponse) {
+        for (MasterDataList obj : masterDataResponse.getData()) {
+            if (obj.getForm().equalsIgnoreCase("mr_machine_create")) {
+                if (obj.getField().equalsIgnoreCase("machineCapacity")) {
+                    for (MasterDataValue data : obj.getData()) {
+                        CustomSpinnerObject temp = new CustomSpinnerObject();
+                        temp.set_id(data.getId());
+                        temp.setName(data.getValue());
+                        temp.setSelected(false);
+                        machineCapacityList.add(temp);
+                    }
+                }
+            }
         }
     }
 }

@@ -564,11 +564,15 @@ public class Constants {
         public static final int ACCESS_CODE_NEW_PATIENT = 174;
         public static final int ACCESS_CODE_SUBMIT_MOU = 175;
         public static final int ACCESS_CODE_VIEW_REQUIREMENT_LIST = 176;
+        public static final int ACCESS_ADD_HOSPITAL = 179;
 
 
         public static final int RECORD_UPDATE = 1101;
         public static final int HOSPITAL_SELECTION_FOR_INCHARGE = 2;
         public static final int HOSPITAL_SELECTION_FOR_RESULT = 1;
+
+        public static final int ACCESS_CODE_MACHINE_TAKEOVER = 180;
+        public static final int ACCESS_CODE_MACHINE_HANDOVER = 181;
 
         public static final int HANDOVER = 2;
         public static final int TAKEOVER = 1;

@@ -34,7 +34,22 @@
                     android:padding="@dimen/dimen_05dp"
                     android:text="Hospital Name"
                     android:textSize="@dimen/text_size_16"
+                    android:layout_weight="8"
                     android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/btn_popmenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text=""
+                    android:textSize="@dimen/text_size_12"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:paddingEnd="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_02dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_options_icon"
+                    android:drawableEnd="@drawable/ic_options_icon" />
 
             </LinearLayout>
 
