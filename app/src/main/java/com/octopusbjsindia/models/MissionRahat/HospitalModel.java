@@ -20,6 +20,18 @@ public class HospitalModel implements Serializable {
     @SerializedName("district_id")
     @Expose
     private String districtId;
+
+    public String getTaukaId() {
+        return taukaId;
+    }
+
+    public void setTaukaId(String taukaId) {
+        this.taukaId = taukaId;
+    }
+
+    @SerializedName("taluka_id")
+    @Expose
+    private String taukaId;
     @SerializedName("hospital_name")
     @Expose
     private String hospitalName;

@@ -34,12 +34,12 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
         View.OnClickListener, CustomSpinnerListener {
     private RelativeLayout progressBar;
     private CreateMachineActivityPresenter presenter;
-    private EditText etState, etDistrict, etModel, etCapacity, etDonor;
+    private EditText etState, etModel, etCapacity, etDonor; //etDistrict
     private Button btSubmit, btback;
-    private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict, selectedModel,
-            selectedModelId, selectedCapacity, selectedCapacityId, selectedDonorName, selectedDonorId;
+    private String selectedStateId, selectedState, selectedModel,
+            selectedModelId, selectedCapacity, selectedCapacityId, selectedDonorName, selectedDonorId; //selectedDistrictId, selectedDistrict
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
+    //private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineModelList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> capacityList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> donorList = new ArrayList<>();
@@ -59,20 +59,20 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
     private void initView() {
         machineModel = new MachineModel();
         etState = findViewById(R.id.et_state);
-        etDistrict = findViewById(R.id.et_district);
+        //etDistrict = findViewById(R.id.et_district);
         etModel = findViewById(R.id.et_model);
         etCapacity = findViewById(R.id.et_capacity);
         etDonor = findViewById(R.id.et_donor);
         btSubmit = findViewById(R.id.bt_submit);
         etState.setOnClickListener(this);
-        etDistrict.setOnClickListener(this);
+        //etDistrict.setOnClickListener(this);
         etModel.setOnClickListener(this);
         etCapacity.setOnClickListener(this);
         etDonor.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
 
-        presenter.getLocationData("",
+        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.STATE_LEVEL);
 
@@ -82,7 +82,6 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
     public void setTitle(String title) {
         TextView tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText(title);
-        findViewById(R.id.toolbar_back_action).setOnClickListener(this);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        presenter.getLocationData("",
+                        presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId(),
                                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                 Constants.JurisdictionLevelName.STATE_LEVEL);
                     } else {
@@ -110,27 +109,27 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                     }
                 }
                 break;
-            case R.id.et_district:
-                if (districtList.size() > 0) {
-                    CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(this, this,
-                            "Select District", districtList, false);
-                    csdDisttrict.show();
-                    csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
-                } else {
-                    if (Util.isConnected(this)) {
-                        if ((!TextUtils.isEmpty(selectedStateId))) {
-                            presenter.getLocationData(selectedStateId,
-                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        } else {
-                            Util.showToast("Please select state.", this);
-                        }
-                    } else {
-                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
-                    }
-                }
-                break;
+//            case R.id.et_district:
+//                if (districtList.size() > 0) {
+//                    CustomSpinnerDialogClass csdDisttrict = new CustomSpinnerDialogClass(this, this,
+//                            "Select District", districtList, false);
+//                    csdDisttrict.show();
+//                    csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.MATCH_PARENT);
+//                } else {
+//                    if (Util.isConnected(this)) {
+//                        if ((!TextUtils.isEmpty(selectedStateId))) {
+//                            presenter.getLocationData(selectedStateId,
+//                                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+//                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+//                        } else {
+//                            Util.showToast("Please select state.", this);
+//                        }
+//                    } else {
+//                        Util.showToast(getResources().getString(R.string.msg_no_network), this);
+//                    }
+//                }
+//                break;
             case R.id.et_model:
                 CustomSpinnerDialogClass csdStructureDept = new CustomSpinnerDialogClass(this, this,
                         "Select machine model", machineModelList, false);
@@ -165,11 +164,13 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select state.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(selectedDistrictId)) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please select District.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(selectedModelId)) {
+        }
+//        else if (TextUtils.isEmpty(selectedDistrictId)) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please select District.", Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (TextUtils.isEmpty(selectedModelId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine model.", Snackbar.LENGTH_LONG);
             return false;
@@ -184,8 +185,8 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
         } else {
             machineModel.setStateId(selectedStateId);
             machineModel.setStateName(selectedState);
-            machineModel.setDistrictId(selectedDistrictId);
-            machineModel.setDistrictName(selectedDistrict);
+//            machineModel.setDistrictId(selectedDistrictId);
+//            machineModel.setDistrictName(selectedDistrict);
             machineModel.setModelTypeId(selectedModelId);
             machineModel.setMachineModel(selectedModel);
             machineModel.setMahineCapacityId(selectedCapacityId);
@@ -213,21 +214,21 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                     }
                 }
                 break;
-            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    districtList.clear();
-                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
-
-                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
-                        CustomSpinnerObject district = new CustomSpinnerObject();
-                        district.set_id(location.getId());
-                        district.setName(location.getName());
-                        district.setSelected(false);
-                        districtList.add(district);
-                    }
-                }
-                break;
+//            case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
+//                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+//                    districtList.clear();
+//                    //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
+//
+//                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+//                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+//                        CustomSpinnerObject district = new CustomSpinnerObject();
+//                        district.set_id(location.getId());
+//                        district.setName(location.getName());
+//                        district.setSelected(false);
+//                        districtList.add(district);
+//                    }
+//                }
+//                break;
             default:
                 break;
         }
@@ -307,9 +308,9 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
             case "Select State":
-                etDistrict.setText("");
-                selectedDistrict = "";
-                selectedDistrictId = "";
+//                etDistrict.setText("");
+//                selectedDistrict = "";
+//                selectedDistrictId = "";
                 for (CustomSpinnerObject mState : stateList) {
                     if (mState.isSelected()) {
                         selectedState = mState.getName();
@@ -324,16 +325,16 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
                             Constants.JurisdictionLevelName.DISTRICT_LEVEL);
                 }
                 break;
-            case "Select District":
-                for (CustomSpinnerObject district : districtList) {
-                    if (district.isSelected()) {
-                        selectedDistrict = district.getName();
-                        selectedDistrictId = district.get_id();
-                        break;
-                    }
-                }
-                etDistrict.setText(selectedDistrict);
-                break;
+//            case "Select District":
+//                for (CustomSpinnerObject district : districtList) {
+//                    if (district.isSelected()) {
+//                        selectedDistrict = district.getName();
+//                        selectedDistrictId = district.get_id();
+//                        break;
+//                    }
+//                }
+//                etDistrict.setText(selectedDistrict);
+//                break;
             case "Select machine model":
                 selectedModel = "";
                 selectedModelId = "";

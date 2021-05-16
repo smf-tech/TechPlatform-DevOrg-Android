@@ -49,7 +49,11 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
             if(ssAnalyticsData.getStatus()!=null){
                 holder.tvLabel.setText(ssAnalyticsData.getStatus());
                 holder.pbSsAnalytics.setProgress(ssAnalyticsData.getPercentValue());
-                holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()) + "%");
+                if (project.equalsIgnoreCase("MR")) {
+                    holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()));
+                } else {
+                    holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()) + "%");
+                }
 //                holder.tvValue.setVisibility(View.INVISIBLE);
 //                holder.tvValueUnit.setVisibility(View.INVISIBLE);
             } else{

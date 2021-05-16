@@ -26,6 +26,7 @@ public class CreateHospitalActivityPresenter implements APIPresenterListener {
 
     final String GET_STATE = "getState";
     final String GET_DISTRICT = "getDistrict";
+    final String GET_TALUKA = "getTaluka";
     final String CREATE_HOSPITAL = "createHospital";
     private WeakReference<CreateHospitalActivity> mContext;
     private final String TAG = CreateHospitalActivityPresenter.class.getName();
@@ -55,6 +56,8 @@ public class CreateHospitalActivityPresenter implements APIPresenterListener {
             requestCall.postDataApiCall(GET_STATE, new JSONObject(map).toString(), getLocationUrl);
         } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
             requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+            requestCall.postDataApiCall(GET_TALUKA, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
@@ -95,8 +98,8 @@ public class CreateHospitalActivityPresenter implements APIPresenterListener {
         mContext.get().hideProgressBar();
         try {
             if (response != null) {
-                if (requestID.equalsIgnoreCase(GET_STATE) ||
-                        requestID.equalsIgnoreCase(GET_DISTRICT)) {
+                if (requestID.equalsIgnoreCase(GET_STATE) || requestID.equalsIgnoreCase(GET_DISTRICT)
+                        || requestID.equalsIgnoreCase(GET_TALUKA)) {
 
                     JurisdictionLevelResponse jurisdictionLevelResponse
                             = new Gson().fromJson(response, JurisdictionLevelResponse.class);
@@ -110,6 +113,9 @@ public class CreateHospitalActivityPresenter implements APIPresenterListener {
                         } else if (requestID.equalsIgnoreCase(GET_DISTRICT)) {
                             mContext.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
                                     Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        } else if (requestID.equalsIgnoreCase(GET_TALUKA)) {
+                            mContext.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
                         }
                     }
                 } else if (requestID.equalsIgnoreCase(CREATE_HOSPITAL)) {
