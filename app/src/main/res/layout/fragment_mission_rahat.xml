@@ -51,7 +51,7 @@
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
-        android:text="Approvals"
+        android:text="Requirement List"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:icon="@drawable/ic_approval_request_icon"
@@ -124,7 +124,7 @@
         android:textColor="@color/white"
         app:icon="@drawable/ic_new_form_icon"
         app:iconTint="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_select"
         android:layout_width="wrap_content"
