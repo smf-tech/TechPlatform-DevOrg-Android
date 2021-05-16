@@ -24,27 +24,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
-import com.octopusbjsindia.R;
 import com.octopusbjsindia.adapter.OxyMachineListAdapter;
-import com.octopusbjsindia.databinding.LayoutMouOxymachineBinding;
 import com.octopusbjsindia.databinding.LayoutOxymachineListBinding;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
-import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineListModel;
-import com.octopusbjsindia.models.MissionRahat.RequirementsListResponse;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineListActivityPresenter;
-import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class OxyMachineListActivity extends AppCompatActivity implements OxyMachineListAdapter.OnRequestItemClicked, APIDataListener,
         CustomSpinnerListener {

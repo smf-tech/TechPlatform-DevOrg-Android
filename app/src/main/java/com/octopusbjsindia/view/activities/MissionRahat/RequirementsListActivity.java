@@ -137,7 +137,6 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                     } else {
                         list.get(position).setStatus(status);
                     }
-
                     adapter.notifyItemChanged(position, list.get(position));
                 }
             }
@@ -169,6 +168,11 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
                     } else if (data.getCode() == 1000) {
                         onFailureListener(requestID, data.getMessage());
                         Util.logOutUser(this);
+                    }
+                    if(list.size()<1){
+                        findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
+                    } else {
+                        findViewById(R.id.ly_no_data).setVisibility(View.GONE);
                     }
                 } else if (requestID.equalsIgnoreCase("MOU_ON_MAIL")) {
                     CommonResponse commonResponse = new Gson().fromJson(response, CommonResponse.class);

@@ -50,11 +50,12 @@ public class ConcentratorRequirementActivityPresenter implements APIPresenterLis
             if (response != null) {
                 CommonResponseStatusString commonResponse = new Gson().fromJson(response, CommonResponseStatusString.class);
                 if (commonResponse.getCode() == 200) {
-                    if (requestID.equalsIgnoreCase("GET_HOSPITALS")) {
-
-                        SearchListResponse responseData = new Gson().fromJson(response, SearchListResponse.class);
-                        mContext.get().setHostpitalList("GET_HOSPITALS", responseData.getData());
-                    } else  if (requestID.equalsIgnoreCase("CONCENTRATOR_REQUEST")) {
+//                    if (requestID.equalsIgnoreCase("GET_HOSPITALS")) {
+//
+//                        SearchListResponse responseData = new Gson().fromJson(response, SearchListResponse.class);
+//                        mContext.get().setHostpitalList("GET_HOSPITALS", responseData.getData());
+//                    } else
+                    if (requestID.equalsIgnoreCase("CONCENTRATOR_REQUEST")) {
                         mContext.get().onSuccessListener(requestID,commonResponse.getMessage());
                     } else  if (requestID.equalsIgnoreCase("HOSPITAL_ASSIGNMENT_REQUEST")) {
                         mContext.get().onSuccessListener(requestID,commonResponse.getMessage());
@@ -73,13 +74,13 @@ public class ConcentratorRequirementActivityPresenter implements APIPresenterLis
         }
     }
 
-    public void getHospitals() {
-        mContext.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.HOSPITAL_LIST;
-        requestCall.getDataApiCall("GET_HOSPITALS", Url);
-    }
+//    public void getHospitals() {
+//        mContext.get().showProgressBar();
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.HOSPITAL_LIST;
+//        requestCall.getDataApiCall("GET_HOSPITALS", Url);
+//    }
 
     public void submitRequest(HashMap request) {
         mContext.get().showProgressBar();

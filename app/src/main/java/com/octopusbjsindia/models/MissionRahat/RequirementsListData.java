@@ -16,6 +16,9 @@ public class RequirementsListData {
     @SerializedName("districtName")
     @Expose
     private String districtName;
+    @SerializedName("talukaName")
+    @Expose
+    private String talukaName;
     @SerializedName("userName")
     @Expose
     private String userName;
@@ -34,6 +37,10 @@ public class RequirementsListData {
     @SerializedName("isMOUDone")
     @Expose
     private boolean isMOUDone;
+    @SerializedName("taluka_id")
+    @Expose
+    private String taluka_id;
+
 
     public String getId() {
         return id;
@@ -65,6 +72,14 @@ public class RequirementsListData {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getTalukaName() {
+        return talukaName;
+    }
+
+    public void setTalukaName(String talukaName) {
+        this.talukaName = talukaName;
     }
 
     public String getUserName() {
@@ -113,5 +128,13 @@ public class RequirementsListData {
 
     public void setMOUDone(boolean MOUDone) {
         isMOUDone = MOUDone;
+    }
+
+    public String getTaluka_id() {
+        return taluka_id;
+    }
+
+    public void setTaluka_id(String taluka_id) {
+        this.taluka_id = taluka_id;
     }
 }

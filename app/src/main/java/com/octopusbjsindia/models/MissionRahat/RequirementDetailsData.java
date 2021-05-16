@@ -16,6 +16,15 @@ public class RequirementDetailsData {
     @SerializedName("hospitalName")
     @Expose
     private String hospitalName;
+    @SerializedName("stateName")
+    @Expose
+    private String stateName;
+    @SerializedName("districtName")
+    @Expose
+    private String districtName;
+    @SerializedName("talukaName")
+    @Expose
+    private String talukaName;
     @SerializedName("address")
     @Expose
     private String address;
@@ -53,6 +62,30 @@ public class RequirementDetailsData {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getTalukaName() {
+        return talukaName;
+    }
+
+    public void setTalukaName(String talukaName) {
+        this.talukaName = talukaName;
     }
 
     public String getAddress() {

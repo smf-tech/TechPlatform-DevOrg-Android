@@ -10,188 +10,406 @@
         android:id="@+id/toolbar"
         layout="@layout/app_toolbar" />
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_margin="@dimen/dimen_10dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Hospital name"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvHospitalName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Address"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Name of person visited"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvPersonVisited"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Designation"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvDesignation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Date of visit"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvVisitDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:text="Requested quantity of oxygen concentrator machine"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tvMachineRequired"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_05dp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp">
-
-                <EditText
-                    android:id="@+id/etNumberOfConcentratorApproved"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="Approve quantity of oxygen concentrator machines *"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etMachines"
-                    style="@style/RegistrationEditTextLayout"
-                    android:focusable="false"
-                    android:hint="Select machines"
-                    android:longClickable="false"
-                    android:inputType="textMultiLine"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etDateMachineAllocation"
-                    style="@style/RegistrationEditTextLayout"
-                    android:focusable="false"
-                    android:hint="Proposed date for machine allocation "
-                    android:longClickable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etObservationReason"
-                    style="@style/RegistrationEditTextLayout"
-                    android:gravity="start"
-                    android:hint="Observation / Reason"
-                    android:inputType="textMultiLine"
-                    android:minLines="3" />
-            </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="@dimen/dimen_10dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:orientation="vertical"
+                android:weightSum="10">
 
-                <Button
-                    android:id="@+id/btnApprove"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Hospital name"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvHospitalName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="State"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="District"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Taluka"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvTaluka"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Address"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Name of person visited"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvPersonVisited"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Designation"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvDesignation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Date of visit"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvVisitDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:text="Requested quantity of oxygen concentrator machine"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tvMachineRequired"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etInfrastructure"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Infrastructure"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etNoOfBeds"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Number of Beds"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/dimen_20dp"
-                    android:layout_marginEnd="@dimen/dimen_20dp"
-                    android:layout_weight="1"
-                    android:text="Approv" />
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="Have O2 support" />
 
-                <Button
-                    android:id="@+id/btReject"
+                <RadioGroup
+                    android:id="@+id/rgO2support"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbInadequate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Inadequate" />
+
+                    <RadioButton
+                        android:id="@+id/rbYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes" />
+
+                    <RadioButton
+                        android:id="@+id/rbNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+
+
+                </RadioGroup>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/dimen_20dp"
-                    android:layout_marginEnd="@dimen/dimen_20dp"
-                    android:layout_weight="1"
-                    android:text="Reject" />
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="Power Backup" />
+
+                <RadioGroup
+                    android:id="@+id/rgPowerBackup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbGenerator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Generator" />
+
+                    <RadioButton
+                        android:id="@+id/rbInverter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Inverter" />
+
+                    <RadioButton
+                        android:id="@+id/rbNon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Not Available" />
+                </RadioGroup>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etDailyPatientsIntake"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Daily intake of patients"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etMortalityRate"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Mortality Rate in last 2 weeks due to lack of O2"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etPatientsDischarged"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Patients discharged in last 2 weeks"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etO2Charges"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="O2 Charges Applied by Hospital"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp">
+
+                    <EditText
+                        android:id="@+id/etNumberOfConcentratorApproved"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Approve quantity of oxygen concentrator machines *"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etMachines"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:hint="Select machines"
+                        android:inputType="textMultiLine"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etDateMachineAllocation"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:hint="Proposed date for machine allocation "
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:text="If, willing to provide O2 free of charge" />
+
+                <RadioGroup
+                    android:id="@+id/rgProvideO2Free"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbFreeO2Yes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Yes" />
+
+                    <RadioButton
+                        android:id="@+id/rbFreeO2No"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+                </RadioGroup>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etObservationReason"
+                        style="@style/RegistrationEditTextLayout"
+                        android:gravity="start"
+                        android:hint="Observation / Reason"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btnApprove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:layout_weight="1"
+                        android:text="Approve" />
+
+                    <Button
+                        android:id="@+id/btReject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:layout_weight="1"
+                        android:text="Reject" />
+                </LinearLayout>
+
             </LinearLayout>
 
+
         </LinearLayout>
-
-
-    </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/lyProgressBar"
