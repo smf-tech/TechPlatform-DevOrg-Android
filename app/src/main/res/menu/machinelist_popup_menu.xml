@@ -5,6 +5,6 @@
         android:title="Daily Report" />
     <item
         android:id="@+id/action_patient_info"
-        android:title="Add Patient Info." />
+        android:title="Add Patient information" />
 
 </menu>

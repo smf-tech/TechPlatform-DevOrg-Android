@@ -56,7 +56,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
     private Activity activity;
     private int position, patients_benefited_count = 0;
     private double hours_used_count = 0;
-    private String machineCode, selectedGender = "";
+    private String machineCode,machienCodeName, selectedGender = "";
 
 
     private OxygenMachineList receivedOxygenMachineData;
@@ -85,7 +85,8 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
             oxygenMachineList = gson.fromJson(machineDataString, OxygenMachineList.class);
             Log.d("machine_code---", oxygenMachineList.getCode());
             machineCode = oxygenMachineList.getId();
-            patientInfoBinding.etSelectMachines.setText(machineCode);
+            machienCodeName = oxygenMachineList.getCode();
+            patientInfoBinding.etSelectMachines.setText(machienCodeName);
 
         }
 
@@ -441,7 +442,7 @@ public class PatientInfoActivity extends AppCompatActivity implements APIDataLis
         PatientInfoResponseModel patientInfoResponseModel =
                 new Gson().fromJson(response, PatientInfoResponseModel.class);
 
-        patientInfoBinding.etSelectMachines.setText(machineCode);
+        patientInfoBinding.etSelectMachines.setText(machienCodeName);
         patientInfoBinding.etPatientName.setText(patientInfoResponseModel.getPatientInfoResponse().getName());
         patientInfoBinding.etSelectGender.setText(patientInfoResponseModel.getPatientInfoResponse().getGender());
         patientInfoBinding.etPatientAge.setText(String.valueOf(patientInfoResponseModel.getPatientInfoResponse().getAge()));

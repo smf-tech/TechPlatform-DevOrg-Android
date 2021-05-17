@@ -222,7 +222,7 @@ android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Worked Hours"
+                    android:text="Worked days"
                     android:layout_marginTop="@dimen/dimen_02dp"
                     android:textSize="@dimen/text_size_12"/>
 
