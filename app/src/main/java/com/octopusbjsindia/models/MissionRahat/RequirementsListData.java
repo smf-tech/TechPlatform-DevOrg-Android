@@ -37,6 +37,15 @@ public class RequirementsListData {
     @SerializedName("isMOUDone")
     @Expose
     private boolean isMOUDone;
+
+    @SerializedName("isHandOver")
+    @Expose
+    private boolean isHandOver;
+
+    @SerializedName("isTakeOver")
+    @Expose
+    private boolean isTakeOver;
+
     @SerializedName("taluka_id")
     @Expose
     private String taluka_id;
@@ -129,6 +138,24 @@ public class RequirementsListData {
     public void setMOUDone(boolean MOUDone) {
         isMOUDone = MOUDone;
     }
+
+
+    public boolean isHandOver() {
+        return isHandOver;
+    }
+
+    public void setHandOver(boolean handOver) {
+        isHandOver = handOver;
+    }
+
+    public boolean isTakeOver() {
+        return isTakeOver;
+    }
+
+    public void setTakeOver(boolean takeOver) {
+        isTakeOver = takeOver;
+    }
+
 
     public String getTaluka_id() {
         return taluka_id;

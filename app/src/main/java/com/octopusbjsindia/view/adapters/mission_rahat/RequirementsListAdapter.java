@@ -33,7 +33,8 @@ import java.util.List;
 public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsListAdapter.ViewHolder> {
     ArrayList<RequirementsListData> list;
     RequirementsListActivity mContext;
-    boolean isDownloadMOU, isSubmitMOU, isApprovalAllowed;
+    boolean isDownloadMOU, isSubmitMOU, isApprovalAllowed,isMenuVisible =false;
+
 
     public RequirementsListAdapter(ArrayList<RequirementsListData> list, RequirementsListActivity context,
                                    boolean isDownloadMOU, boolean isSubmitMOU, boolean isApprovalAllowed) {
@@ -96,6 +97,7 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
             holder.tvWaitingMOU.setVisibility(View.GONE);
             holder.tvDownloadMOU.setVisibility(View.GONE);
         }
+
     }
 
     @Override
@@ -217,10 +219,19 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                                     }
                                     break;
                                 case R.id.action_handover:
-                                    intent = new Intent(mContext, ConcentratorTakeOverActivity.class);
-                                    intent.putExtra("actionType",Constants.MissionRahat.HANDOVER);
-                                    intent.putExtra("RequirementId",list.get(getAdapterPosition()).getId());
-                                    mContext.startActivity(intent);
+                                    if (list.get(getAdapterPosition()).isMOUDone()) {
+                                        if (list.get(getAdapterPosition()).isTakeOver())
+                                        {
+                                            intent = new Intent(mContext, ConcentratorTakeOverActivity.class);
+                                            intent.putExtra("actionType", Constants.MissionRahat.HANDOVER);
+                                            intent.putExtra("RequirementId", list.get(getAdapterPosition()).getId());
+                                            mContext.startActivity(intent);
+                                        }else {
+                                            Util.showToast("Take over process is not completed for this requirement.",mContext);
+                                        }
+                                    }else {
+                                        Util.showToast("Please complete MOU process first.",mContext);
+                                    }
                                     break;
                             }
                             return false;
