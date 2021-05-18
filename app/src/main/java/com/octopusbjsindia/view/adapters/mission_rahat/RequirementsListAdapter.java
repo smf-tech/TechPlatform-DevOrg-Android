@@ -220,7 +220,8 @@ public class RequirementsListAdapter extends RecyclerView.Adapter<RequirementsLi
                                     break;
                                 case R.id.action_handover:
                                     if (list.get(getAdapterPosition()).isMOUDone()) {
-                                        if (list.get(getAdapterPosition()).isTakeOver()) {
+                                        if (list.get(getAdapterPosition()).isTakeOver())
+                                        {
                                             intent = new Intent(mContext, ConcentratorTakeOverActivity.class);
                                             intent.putExtra("actionType", Constants.MissionRahat.HANDOVER);
                                             intent.putExtra("RequirementId", list.get(getAdapterPosition()).getId());
