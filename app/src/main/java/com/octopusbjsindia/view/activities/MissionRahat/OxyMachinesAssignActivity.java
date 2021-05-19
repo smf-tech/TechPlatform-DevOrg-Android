@@ -158,14 +158,15 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
     }
 
     private boolean isAllDataValid() {
-        if (TextUtils.isEmpty(selectedDistrictId)) {
-            if (isAssignMachinesToDistrictAllowed) {
+        if (isAssignMachinesToDistrictAllowed) {
+            if (TextUtils.isEmpty(selectedDistrictId)) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please select district.", Snackbar.LENGTH_LONG);
                 return false;
             }
-        } else if (TextUtils.isEmpty(selectedTalukaId)) {
-            if (isAssignMachinesToTalukaAllowed) {
+        }
+        if (isAssignMachinesToTalukaAllowed) {
+            if (TextUtils.isEmpty(selectedTalukaId)) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please select taluka.", Snackbar.LENGTH_LONG);
                 return false;
