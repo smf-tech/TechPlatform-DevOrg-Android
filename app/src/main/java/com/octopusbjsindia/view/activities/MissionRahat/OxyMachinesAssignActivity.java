@@ -129,12 +129,18 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        if ((!TextUtils.isEmpty(selectedDistrictId))) {
-                            presenter.getLocationData(selectedDistrictId,
+                        if (etDistrict.getVisibility() == View.VISIBLE) {
+                            if ((!TextUtils.isEmpty(selectedDistrictId))) {
+                                presenter.getLocationData(selectedDistrictId,
+                                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                            } else {
+                                Util.showToast("Please select district.", this);
+                            }
+                        } else {
+                            presenter.getLocationData(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId(),
                                     Util.getUserObjectFromPref().getJurisdictionTypeId(),
                                     Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                        } else {
-                            Util.showToast("Please select taluka.", this);
                         }
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), this);
@@ -171,7 +177,8 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                         "Please select taluka.", Snackbar.LENGTH_LONG);
                 return false;
             }
-        } else if (TextUtils.isEmpty(selectedCapacityId)) {
+        }
+        if (TextUtils.isEmpty(selectedCapacityId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine capacity.", Snackbar.LENGTH_LONG);
             return false;
