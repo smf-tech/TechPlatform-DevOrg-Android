@@ -171,7 +171,8 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                         "Please select taluka.", Snackbar.LENGTH_LONG);
                 return false;
             }
-        } else if (TextUtils.isEmpty(selectedCapacityId)) {
+        }
+            if (TextUtils.isEmpty(selectedCapacityId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine capacity.", Snackbar.LENGTH_LONG);
             return false;
