@@ -55,7 +55,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateHospitalActivityPresenter(this);
         initView();
-        setTitle("Create Hospital");
+        setTitle("Create Center");
         presenter.getMasterData();
     }
 
@@ -172,7 +172,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
 
     private void showSlotsDropDown() {
         CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
-                "Select user type", hospitalTypeList, false);
+                "Select Center", hospitalTypeList, false);
 
         cddCity.show();
         cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
