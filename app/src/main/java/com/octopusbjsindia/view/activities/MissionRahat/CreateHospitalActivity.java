@@ -391,7 +391,7 @@ public class CreateHospitalActivity extends AppCompatActivity implements View.On
                 }
                 etTaluka.setText(selectedTaluka);
                 break;
-            case "Select user type":
+            case "Select Center":
                 for (CustomSpinnerObject district : hospitalTypeList) {
                     if (district.isSelected()) {
                         selectedHospitalType = district.getName();

@@ -231,8 +231,10 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     public void emptyResponse() {
         if (oxygenMachineLists.size()<1) {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.VISIBLE);
+            layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.GONE);
         }else {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.GONE);
+            layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
         }
     }
 
