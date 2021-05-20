@@ -8,6 +8,9 @@ public class AppUpdate {
     @SerializedName("logo_path")
     @Expose
     private String logo_path;
+    @SerializedName("terms_url_mob")
+    @Expose
+    private String terms_url_mob;
 
     @SerializedName("support")
     @Expose
@@ -72,5 +75,13 @@ public class AppUpdate {
 
     public void setSupport(String support) {
         this.support = support;
+    }
+
+    public String getTerms_url_mob() {
+        return terms_url_mob;
+    }
+
+    public void setTerms_url_mob(String terms_url_mob) {
+        this.terms_url_mob = terms_url_mob;
     }
 }
