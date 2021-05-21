@@ -139,7 +139,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
                             "Please select start date.", Snackbar.LENGTH_LONG);
 
                 }else {
-                    Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                    Util.showDateDialogEnableAfterMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,mouOxymachineBinding.etStartDate.getText().toString());
                 }
                 //setEndDate(); not used for now keep open
                 /*Util.showEndDateWithMonthDifference(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,

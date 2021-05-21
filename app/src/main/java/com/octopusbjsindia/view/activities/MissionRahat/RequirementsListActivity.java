@@ -62,11 +62,11 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new RequirementsListActivityPresenter(this);
-        if (Util.isConnected(this)) {
+        /*if (Util.isConnected(this)) {
             presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
-        }
+        }*/
         rvRequestList = findViewById(R.id.rvRequestList);
         adapter = new RequirementsListAdapter(list, this, isDownloadMOU, isSubmitMOU, isApprovalAllowed);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -120,6 +120,7 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     protected void onResume() {
         super.onResume();
         if (Util.isConnected(this)) {
+            list.clear();
             presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
