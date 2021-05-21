@@ -117,6 +117,16 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (Util.isConnected(this)) {
+            presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
+        } else {
+            Util.showToast(this, getResources().getString(R.string.msg_no_network));
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001) {
