@@ -3,13 +3,17 @@ package com.octopusbjsindia.presenter.MissionRahat;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.presenter.HomeActivityPresenter;
 import com.octopusbjsindia.presenter.SujalamSuphalamFragmentPresenter;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.MissionRahat.MissionRahatFragment;
 
 import org.json.JSONObject;
@@ -24,6 +28,7 @@ public class MissionRahatFragmentPresenter implements APIPresenterListener {
     public static final String GET_MR_ANALYTICS = "getMRAnalytics";
     private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_DISTRICT_ID = "district_id";
+    public static final String GET_ROLE_ACCESS ="getRoleAccesss";
 
     public MissionRahatFragmentPresenter(MissionRahatFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -75,15 +80,34 @@ public class MissionRahatFragmentPresenter implements APIPresenterListener {
         fragmentWeakReference.get().hideProgressBar();
         try {
             if (response != null) {
-                SSAnalyticsAPIResponse mrAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
-                if (mrAnalyticsData.getCode() == 200) {
-                    fragmentWeakReference.get().populateAnalyticsData(mrAnalyticsData);
-                } else if (mrAnalyticsData.getCode() == 400) {
-                    fragmentWeakReference.get().emptyResponse();
+                if (requestID.equalsIgnoreCase(GET_ROLE_ACCESS)) {
+                    RoleAccessAPIResponse roleAccessAPIResponse = new Gson().fromJson(response, RoleAccessAPIResponse.class);
+                    if (roleAccessAPIResponse.getStatus() == 200 && roleAccessAPIResponse.getData() != null) {
+                        Util.saveRoleAccessObjectInPref(response);
+                        fragmentWeakReference.get().refreshAccess();
+                    }
+                }
+                if (requestID.equalsIgnoreCase(GET_MR_ANALYTICS)) {
+                    SSAnalyticsAPIResponse mrAnalyticsData = PlatformGson.getPlatformGsonInstance().fromJson(response, SSAnalyticsAPIResponse.class);
+                    if (mrAnalyticsData.getCode() == 200) {
+                        fragmentWeakReference.get().populateAnalyticsData(mrAnalyticsData);
+                    } else if (mrAnalyticsData.getCode() == 400) {
+                        fragmentWeakReference.get().emptyResponse();
+                    }
                 }
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
         }
+    }
+
+    public void getRoleAccess() {
+        final String getRoleAccessUrl = BuildConfig.BASE_URL
+                + String.format(Urls.Home.GET_ROLE_ACCESS);
+        Log.d(TAG, "getRoleAccessUrl: url" + getRoleAccessUrl);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall(GET_ROLE_ACCESS, getRoleAccessUrl);
     }
 }

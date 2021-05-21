@@ -33,8 +33,9 @@ public class LoginRequestCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-
-                    Log.d(TAG, "generateOtp - Resp: " + res);
+                    if (BuildConfig.DEBUG) {
+                        Log.d(TAG, "generateOtp - Resp: " + res);
+                    }
                     listener.onSuccessListener(res);
                 }
             } catch (Exception e) {

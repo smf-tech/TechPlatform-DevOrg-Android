@@ -321,4 +321,5 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             Util.downloadAndLoadIcon(getActivity());
         }
     }
+
 }
