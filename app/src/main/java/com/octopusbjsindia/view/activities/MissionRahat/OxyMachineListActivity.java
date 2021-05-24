@@ -234,7 +234,9 @@ public class OxyMachineListActivity extends AppCompatActivity implements
             layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.GONE);
         }else {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.GONE);
-            layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
+            if (isAssignMachinesToDistrictAllowed || isAssignMachinesToTalukaAllowed) {
+                layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -129,7 +129,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                             ViewGroup.LayoutParams.MATCH_PARENT);
                 } else {
                     if (Util.isConnected(this)) {
-                        if(etDistrict.getVisibility() == View.VISIBLE) {
+                        if (etDistrict.getVisibility() == View.VISIBLE) {
                             if ((!TextUtils.isEmpty(selectedDistrictId))) {
                                 presenter.getLocationData(selectedDistrictId,
                                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
@@ -178,7 +178,7 @@ public class OxyMachinesAssignActivity extends AppCompatActivity implements View
                 return false;
             }
         }
-            if (TextUtils.isEmpty(selectedCapacityId)) {
+        if (TextUtils.isEmpty(selectedCapacityId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select machine capacity.", Snackbar.LENGTH_LONG);
             return false;
