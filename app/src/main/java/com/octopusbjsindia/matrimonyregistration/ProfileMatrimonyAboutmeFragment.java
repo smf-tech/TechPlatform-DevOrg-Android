@@ -508,10 +508,11 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                 *//*&&((RegistrationActivity)getActivity()).otherMaritialInformation.getAadharUrl().length() == 0*//*) {
             msg = "Please add Aadhar Image"; //getResources().getString(R.string.msg_enter_name);
         } else */
-        if (et_about_me.getText().toString().trim().length() < 100) {
-            msg = "Please add minimum 100 characters in information about you."; //getResources().getString(R.string.msg_enter_name);
-        } else if (et_partner_expectation.getText().toString().trim().length() < 100) {
-            msg = "Please add minimum 100 characters about your expectations."; //getResources().getString(R.string.msg_enter_name);
+
+            if (et_about_me.getText().toString().trim().length() == 0) {
+                msg = "Please enter about yourself"; //getResources().getString(R.string.msg_enter_name);
+        } else if (et_partner_expectation.getText().toString().trim().length() == 0) {
+                msg = "Please enter about expectation from partner"; //getResources().getString(R.string.msg_enter_name);
         } else if (((RegistrationActivity) getActivity()).otherMaritialInformation.getEducationalUrl() == null) {
             msg = "Please add Educational certificate";//getResources().getString(R.string.msg_enter_name);
         }
