@@ -127,24 +127,24 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001) {
-            if (resultCode == Activity.RESULT_OK) {
-                int position = data.getIntExtra("position", -1);
-                String status = data.getStringExtra("status");
-                if (position != -1) {
-                    if (status.equalsIgnoreCase("MOU_DONE")) {
-                        list.get(position).setMOUDone(true);
-                    } else {
-                        list.get(position).setStatus(status);
-                    }
-                    adapter.notifyItemChanged(position, list.get(position));
-                }
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1001) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                int position = data.getIntExtra("position", -1);
+//                String status = data.getStringExtra("status");
+//                if (position != -1) {
+//                    if (status.equalsIgnoreCase("MOU_DONE")) {
+//                        list.get(position).setMOUDone(true);
+//                    } else {
+//                        list.get(position).setStatus(status);
+//                    }
+//                    adapter.notifyItemChanged(position, list.get(position));
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void onFailureListener(String requestID, String message) {
