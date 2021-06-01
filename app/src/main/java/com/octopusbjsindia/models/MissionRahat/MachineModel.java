@@ -86,6 +86,14 @@ public class MachineModel implements Serializable {
         this.donorName = donorName;
     }
 
+    public String getMachineCount() {
+        return machineCount;
+    }
+
+    public void setMachineCount(String machineCount) {
+        this.machineCount = machineCount;
+    }
+
     @SerializedName("state_id")
     @Expose
     private String stateId;
@@ -116,4 +124,7 @@ public class MachineModel implements Serializable {
     @SerializedName("donor_name")
     @Expose
     private String donorName;
+    @SerializedName("machine_count")
+    @Expose
+    private String machineCount;
 }
