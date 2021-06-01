@@ -62,11 +62,11 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
 
         progressBar = findViewById(R.id.lyProgressBar);
         presenter = new RequirementsListActivityPresenter(this);
-        if (Util.isConnected(this)) {
+        /*if (Util.isConnected(this)) {
             presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
         } else {
             Util.showToast(this, getResources().getString(R.string.msg_no_network));
-        }
+        }*/
         rvRequestList = findViewById(R.id.rvRequestList);
         adapter = new RequirementsListAdapter(list, this, isDownloadMOU, isSubmitMOU, isApprovalAllowed);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -117,23 +117,34 @@ public class RequirementsListActivity extends AppCompatActivity implements APIDa
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001) {
-            if (resultCode == Activity.RESULT_OK) {
-                int position = data.getIntExtra("position", -1);
-                String status = data.getStringExtra("status");
-                if (position != -1) {
-                    if (status.equalsIgnoreCase("MOU_DONE")) {
-                        list.get(position).setMOUDone(true);
-                    } else {
-                        list.get(position).setStatus(status);
-                    }
-                    adapter.notifyItemChanged(position, list.get(position));
-                }
-            }
+    protected void onResume() {
+        super.onResume();
+        if (Util.isConnected(this)) {
+            list.clear();
+            presenter.getRequirementsList(BuildConfig.BASE_URL + Urls.MissionRahat.CONCENTRATOR_REQUEST_LIST);
+        } else {
+            Util.showToast(this, getResources().getString(R.string.msg_no_network));
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1001) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                int position = data.getIntExtra("position", -1);
+//                String status = data.getStringExtra("status");
+//                if (position != -1) {
+//                    if (status.equalsIgnoreCase("MOU_DONE")) {
+//                        list.get(position).setMOUDone(true);
+//                    } else {
+//                        list.get(position).setStatus(status);
+//                    }
+//                    adapter.notifyItemChanged(position, list.get(position));
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void onFailureListener(String requestID, String message) {

@@ -27,6 +27,7 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.presenter.MissionRahat.MissionRahatFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorRequirementActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.ConcentratorTakeOverActivity;
 import com.octopusbjsindia.view.activities.MissionRahat.CreateHospitalActivity;
@@ -100,7 +101,12 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         mrAnalyticsAdapter.notifyDataSetChanged();
 
         missionRahatFragmentPresenter = new MissionRahatFragmentPresenter(this);
+        setRoleAccess();
 
+    }
+
+    private void setRoleAccess() {
+        resetAccess();
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if (roleAccessList != null) {
@@ -141,11 +147,25 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         }
     }
 
+    private void resetAccess() {
+        isRequirementList = false;
+        isAddHospital = false;
+        isSubmitMOU = false;
+        isNewPatient = false;
+        isDownloadMOU = false;
+        isMachineListAllowed = false;
+        isApprovalAllowed = false;
+        isRequirementForm = false;
+        isHospitalCreate = false;
+        isMachineCreate = false;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         if (Util.isConnected(getActivity())) {
             missionRahatFragmentPresenter.getMRAnalyticsData("", "");
+            missionRahatFragmentPresenter.getRoleAccess();
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
@@ -155,6 +175,7 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
             machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         }
         closeFABMenu();
+
     }
 
     @Override
@@ -339,5 +360,9 @@ public class MissionRahatFragment extends Fragment implements APIDataListener, V
         machineRahatFragmentView.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
         rvMRAnalytics.setAdapter(mrAnalyticsAdapter);
         mrAnalyticsAdapter.notifyDataSetChanged();
+    }
+
+    public void refreshAccess() {
+        setRoleAccess();
     }
 }

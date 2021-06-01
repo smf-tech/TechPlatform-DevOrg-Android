@@ -37,6 +37,7 @@ import com.octopusbjsindia.models.MissionRahat.HospitalDetailsResponeModel;
 import com.octopusbjsindia.models.MissionRahat.MachineModel;
 import com.octopusbjsindia.models.MissionRahat.MouRequestModel;
 import com.octopusbjsindia.models.MissionRahat.OxygenMachineList;
+import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.presenter.MissionRahat.OxyMachineMouActivityPresenter;
@@ -138,7 +139,7 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
                             "Please select start date.", Snackbar.LENGTH_LONG);
 
                 }else {
-                    Util.showDateDialogMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate);
+                    Util.showDateDialogEnableAfterMin(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,mouOxymachineBinding.etStartDate.getText().toString());
                 }
                 //setEndDate(); not used for now keep open
                 /*Util.showEndDateWithMonthDifference(OxyMachineMouActivity.this, mouOxymachineBinding.etEndDate,
@@ -155,8 +156,13 @@ public class OxyMachineMouActivity extends AppCompatActivity implements APIDataL
         mouOxymachineBinding.tvTermsCodition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL + Urls.MissionRahat.TERMS_AND_CONDITIONS_MISSION_RAHAT));
-                startActivity(browserIntent);
+                AppConfigResponseModel obj = new Gson().fromJson(
+                        Util.getStringFromPref(Constants.OperatorModule.APP_CONFIG_RESPONSE),
+                        AppConfigResponseModel.class);
+                if (obj.getAppConfigResponse().getAppUpdate().getTerms_url_mob()!=null) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.BASE_URL + obj.getAppConfigResponse().getAppUpdate().getTerms_url_mob()));
+                    startActivity(browserIntent);
+                }
             }
         });
     }

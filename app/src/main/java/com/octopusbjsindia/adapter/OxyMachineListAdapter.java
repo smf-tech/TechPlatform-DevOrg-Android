@@ -115,7 +115,7 @@ public class OxyMachineListAdapter extends RecyclerView.Adapter<OxyMachineListAd
                                 case R.id.action_daily_report:
                                     //machine daily report
                                     //onRequestItemClicked.onItemClicked(getAdapterPosition());
-                                    ((OxyMachineListActivity)mContext).callToAddDailyReportorPatients(getAdapterPosition(),1);
+                                    //((OxyMachineListActivity)mContext).callToAddDailyReportorPatients(getAdapterPosition(),1);
                                     break;
                                 case R.id.action_patient_info:
                                     //Add patient information
