@@ -59,7 +59,7 @@ public class WorkshopBatchListRecyclerAdapter extends RecyclerView.Adapter<Works
     @Override
     public EmployeeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.row_trainer_batch_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.row_workshop_item, parent, false);
         return new EmployeeViewHolder(view);
     }
 

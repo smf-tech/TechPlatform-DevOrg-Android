@@ -87,6 +87,8 @@ public class MemberListRecyclerAdapter extends RecyclerView.Adapter<MemberListRe
                     .into(holder.user_profile_pic);
 
 
+        } else {
+            holder.user_profile_pic.setImageResource(R.drawable.ic_user_avatar);
         }
 
         if (dataList.get(position).getPreFeedBackStatus()) {
