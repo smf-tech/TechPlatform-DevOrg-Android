@@ -33,6 +33,7 @@ import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class OxyMachineListActivity extends AppCompatActivity implements
@@ -47,6 +48,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     private String nextPageUrl = "";
     private boolean isAssignMachinesToDistrictAllowed, isAssignMachinesToTalukaAllowed;
     private String url;
+    HashMap<String,Object> reques = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +65,13 @@ public class OxyMachineListActivity extends AppCompatActivity implements
 
     private void initView() {
         layoutOxymachineListBinding.toolbar.toolbarTitle.setText("Oxygen Concentrator List");
+        layoutOxymachineListBinding.toolbar.toolbarEditAction.setVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
         layoutOxymachineListBinding.rvTrainerbactchlistview.setLayoutManager(layoutManager);
 
-        oxyMachineListAdapter = new OxyMachineListAdapter(this,oxygenMachineLists, this);
+        oxyMachineListAdapter = new OxyMachineListAdapter(this, oxygenMachineLists, this);
         layoutOxymachineListBinding.rvTrainerbactchlistview.setAdapter(oxyMachineListAdapter);
 
         layoutOxymachineListBinding.rvTrainerbactchlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -86,7 +89,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
                             loading = false;
 //                            getData();
                             if (nextPageUrl != null && !TextUtils.isEmpty(nextPageUrl)) {
-                                presenter.getOxyMachineList(nextPageUrl);
+                                presenter.getOxyMachineList(nextPageUrl, reques);
                             }
                         }
                     }
@@ -120,6 +123,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
         }
         layoutOxymachineListBinding.toolbar.toolbarBackAction.setOnClickListener(this);
         layoutOxymachineListBinding.fbMachineAssign.setOnClickListener(this);
+        layoutOxymachineListBinding.toolbar.toolbarEditAction.setOnClickListener(this);
     }
 
 //    private void setClickListners() {
@@ -135,7 +139,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         oxygenMachineLists.clear();
-        presenter.getOxyMachineList(url);
+        presenter.getOxyMachineList(url, reques);
     }
 
     @Override
@@ -224,15 +228,15 @@ public class OxyMachineListActivity extends AppCompatActivity implements
             String machineDataString = gson.toJson(oxygenMachineLists.get(pos));
             intent1.putExtra("MachineDataString", machineDataString);
             intent1.putExtra("position", pos);
-            startActivityForResult(intent1,Constants.MissionRahat.RECORD_UPDATE);
+            startActivityForResult(intent1, Constants.MissionRahat.RECORD_UPDATE);
         }
     }
 
     public void emptyResponse() {
-        if (oxygenMachineLists.size()<1) {
+        if (oxygenMachineLists.size() < 1) {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.VISIBLE);
             layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.GONE);
-        }else {
+        } else {
             layoutOxymachineListBinding.lyNoData.setVisibility(View.GONE);
             if (isAssignMachinesToDistrictAllowed || isAssignMachinesToTalukaAllowed) {
                 layoutOxymachineListBinding.fbMachineAssign.setVisibility(View.VISIBLE);
@@ -247,8 +251,15 @@ public class OxyMachineListActivity extends AppCompatActivity implements
             double hoursUsedCount = data.getDoubleExtra("HOURS_USED_COUNT", 0);
             int patientsBenefitedCount = data.getIntExtra("PATIENTS_BENEFITED_COUNT", 0);
             int updatePosition = data.getIntExtra("UPDATE_POSITION", 0);
-            updateList(hoursUsedCount,patientsBenefitedCount,updatePosition);
+            updateList(hoursUsedCount, patientsBenefitedCount, updatePosition);
+        } else if (requestCode == 1010 && data != null) {
+            reques = (HashMap<String, Object>) data.getSerializableExtra("reques");
+            boolean isSubmit =  data.getBooleanExtra("isSubmit",false);
+            if(isSubmit){
+                presenter.getOxyMachineList(url, reques);
+            }
         }
+
     }
 
     private void updateList(double hoursUsedCount, int patientsBenefitedCount, int updatePosition) {
@@ -263,12 +274,17 @@ public class OxyMachineListActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.toolbar_back_action:
                 finish();
                 break;
+            case R.id.toolbar_edit_action:
+                intent = new Intent(this, FilterActivity.class);
+                startActivityForResult(intent, 1010);
+                break;
             case R.id.fb_machine_assign:
-                Intent intent = new Intent(this, OxyMachinesAssignActivity.class);
+                intent = new Intent(this, OxyMachinesAssignActivity.class);
                 intent.putExtra("isAssignToDistrictAllowed", isAssignMachinesToDistrictAllowed);
                 intent.putExtra("isAssignToTalukaAllowed", isAssignMachinesToTalukaAllowed);
                 startActivity(intent);
@@ -276,7 +292,7 @@ public class OxyMachineListActivity extends AppCompatActivity implements
         }
     }
 
-    public void callToAddDailyReportorPatients(int pos,int type){
+    public void callToAddDailyReportorPatients(int pos, int type) {
         if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_MR_HOSPITAL_INCHARGE) {
             if (type == 1) {
                 Intent intent1 = new Intent(this, OxyMachineDailyReportActivity.class);

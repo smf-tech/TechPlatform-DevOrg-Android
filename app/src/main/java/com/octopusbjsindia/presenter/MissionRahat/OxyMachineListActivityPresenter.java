@@ -5,7 +5,10 @@ import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineListActivity;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class OxyMachineListActivityPresenter implements APIPresenterListener {
 
@@ -27,12 +30,12 @@ public class OxyMachineListActivityPresenter implements APIPresenterListener {
 //        requestCall.getDataApiCall(GET_MACHINE_LIST, url);
 //    }
 
-    public void getOxyMachineList(String url) {
+    public void getOxyMachineList(String url, HashMap<String, Object> map) {
         mContext.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         //final String Url = BuildConfig.BASE_URL + Urls.MissionRahat.GET_ALL_OXYMACHINE_LIST;
-        requestCall.getDataApiCall(GET_MACHINE_LIST, url);
+        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), url);
     }
 
 

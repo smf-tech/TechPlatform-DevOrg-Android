@@ -314,6 +314,7 @@ public class ConcentratorApprovalActivity extends AppCompatActivity implements V
     public void onCustomSpinnerSelection(String type) {
         selectedMachineCodes= "";
         selectedMachineID = "";
+        selectedMachineList.clear();
         for (CustomSpinnerObject obj : machineList) {
             if (obj.isSelected()) {
                 if(selectedMachineCodes.equals("")){

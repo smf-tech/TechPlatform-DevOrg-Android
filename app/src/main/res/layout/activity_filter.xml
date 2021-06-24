@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.MissionRahat.FilterActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:orientation="vertical">
+
+        <!--state-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_03dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etState"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/state"
+                android:imeOptions="actionNext"
+                android:longClickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--district-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_03dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDistrict"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/district"
+                android:imeOptions="actionNext"
+                android:longClickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--taluka-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_03dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTaluka"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/taluka"
+                android:imeOptions="actionNext"
+                android:longClickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!--model_type-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_03dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etModelType"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Model"
+                android:imeOptions="actionNext"
+                android:longClickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!--capacity-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_03dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCapacity"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Capacity"
+                android:imeOptions="actionNext"
+                android:longClickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:text="@string/submit"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/ly_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+</RelativeLayout>
