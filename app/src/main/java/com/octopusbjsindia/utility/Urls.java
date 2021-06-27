@@ -45,15 +45,15 @@ public class Urls {
         public static final String APPROVE_REJECT_REQUEST = "api/users/approval/%1$s";
         //landing page summary
         public static final String GET_APPROVALS_SUMMARY_REQUESTS = "api/teammanagmentsummary";
-        public static final String GET_PENDING_APPROVAL_REQUESTS ="api/getlistbyfilter";
-        public static final String GET_TM_FILTERS_REQUESTS ="api/teammanagmentfilter";
-        public static final String GET_TM_USER_DETAILS_REQUESTS ="api/getuserbyfilter";
-        public static final String GET_TM_USER_APPROVE_REJECT_REQUEST ="api/applicationapproval";
+        public static final String GET_PENDING_APPROVAL_REQUESTS = "api/getlistbyfilter";
+        public static final String GET_TM_FILTERS_REQUESTS = "api/teammanagmentfilter";
+        public static final String GET_TM_USER_DETAILS_REQUESTS = "api/getuserbyfilter";
+        public static final String GET_TM_USER_APPROVE_REJECT_REQUEST = "api/applicationapproval";
 
-        public static final String GET_USER_FORM_RECORD ="api/forms/getUserFormRecords";
+        public static final String GET_USER_FORM_RECORD = "api/forms/getUserFormRecords";
 
 
-        public static final String PUT_UPDATE_FIREBASEID_TO_SERVER ="api/updateFirebaseId";
+        public static final String PUT_UPDATE_FIREBASEID_TO_SERVER = "api/updateFirebaseId";
     }
 
 
@@ -83,22 +83,22 @@ public class Urls {
     }
 
     public class Leaves {
-        public static final String APPLY_LEAVE= "api/createLeave";
-        public static final String REQUEST_COMPOFF_= "api/applyCompoff";
+        public static final String APPLY_LEAVE = "api/createLeave";
+        public static final String REQUEST_COMPOFF_ = "api/applyCompoff";
         public static final String GET_MONTHLY_LEAVES = "api/getLeavesSummary/%1$s/%2$s";
         public static final String DELETE_USER_LEAVE = "api/deleteLeave/%1$s";
-        public static final String HOLIDAY_LIST= "api/getYearHolidayList";
-        public static final String LEAVE_BALANCE= "api/getUserLeaveBalance";
+        public static final String HOLIDAY_LIST = "api/getYearHolidayList";
+        public static final String LEAVE_BALANCE = "api/getUserLeaveBalance";
     }
 
     public class Attendance {
-        public static final String GET_ALL_MONTH="api/getuserattendance/";
-        public static final String SUBMIT_ATTENDANCE="api/insertAttendance";
-        public static final String GET_TEAM_ATTENDANCE="api/getTeamAttendance";
+        public static final String GET_ALL_MONTH = "api/getuserattendance/";
+        public static final String SUBMIT_ATTENDANCE = "api/insertAttendance";
+        public static final String GET_TEAM_ATTENDANCE = "api/getTeamAttendance";
         public static final String GET_TEAM_USER_ATTENDANCE = "api/getTeamUserAttendance";
     }
 
-    public class ContentManagement{
+    public class ContentManagement {
         public static final String GET_CONTENT_DATA = "api/contentDashboard/%1$s";
     }
 
@@ -118,7 +118,7 @@ public class Urls {
         public static final String MEET_ARCHIVE_DELETE = "api/archiveMeet/%1$s/%2$s";
         public static final String MEET_ALLOCATE_BADGES = "api/allocateBadge/%1$s/%2$s";
         public static final String MEET_FINALISE_BADGES = "api/isFinalize/%1$s";
-        public static final String ALL_FILTER_USERS ="api/getAllFilterUsers";
+        public static final String ALL_FILTER_USERS = "api/getAllFilterUsers";
         public static final String GET_FILTER_MASTER_DATA = "api/matrimonyUserFilterMasterData";
         //added new filter education level in master data
         public static final String GET_FILTER_MASTER_DATA_V2 = "api/matrimonyUserFilterMasterDataV2";
@@ -198,7 +198,7 @@ public class Urls {
 
     }
 
-    public class Configuration{
+    public class Configuration {
         public static final String API_CONFIG = "api/configuration";
     }
 
@@ -209,7 +209,7 @@ public class Urls {
         public static final String COMMENT_LIST = "api/commentList";
     }
 
-    public class SmartGirl{
+    public class SmartGirl {
         public static final String GET_MASTER_TRAINER_DASHBOARD = "api/masterTrainerDashboard";
         public static final String GET_BATCH_CATEGORY = "api/getbatchCategory";
         public static final String CREATE_BATCH_API = "api/createBatch";
@@ -272,7 +272,7 @@ public class Urls {
         public static final String SEND_VIDEO_STATUS = "api/send_video_status";
     }
 
-    public class SSGP{
+    public class SSGP {
         public static final String CREATE_STRUCTURE = "api/createGPStructure";
         public static final String DAILY_PROGRESS_REPORT = "api/dailyProgessReport";
         public static final String DAILY_PROGRESS_REPORT_VALIDATION = "api/dmValidateMachineReport";
@@ -299,7 +299,8 @@ public class Urls {
         public static final String CONCENTRATOR_REQUEST_ACTION = "api/requirmentAction";
         public static final String SAVE_MACHINE_MOU = "api/saveMachineMOU";
         public static final String SEND_MACHINE_DAILY_REPORT = "api/machineDailyReport";
-        public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
+        //        public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineList";
+        public static final String GET_ALL_OXYMACHINE_LIST = "api/getAllOxyMachineListV2";
         public static final String SAVE_PATIENT_DETAILS = "api/saveMRPatientDetails";
         public static final String GET_REQUIREMENT_MOU_DETAILS = "api/getReuirmentMOUDetails";
         public static final String MOU_ON_MAIL = "api/sendMOUMailPDF";
@@ -307,10 +308,6 @@ public class Urls {
         public static final String ASSIGN_MACHINE = "api/addMachineLocations";
         public static final String GET_MACHINE_PATIENT_INFO = "api/getMachinePatientData";
         public static final String MACHINE_HANDTAKEOVER_FORM = "api/machineHandTakeOverForm";
-
-
-
-
 
 
     }
