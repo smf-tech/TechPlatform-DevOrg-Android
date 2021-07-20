@@ -34,7 +34,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
         View.OnClickListener, CustomSpinnerListener {
     private RelativeLayout progressBar;
     private CreateMachineActivityPresenter presenter;
-    private EditText etState, etModel, etCapacity, etDonor; //etDistrict
+    private EditText etState, etModel, etCapacity, etDonor, etMachineCount; //etDistrict
     private Button btSubmit, btback;
     private String selectedStateId, selectedState, selectedModel,
             selectedModelId, selectedCapacity, selectedCapacityId, selectedDonorName, selectedDonorId; //selectedDistrictId, selectedDistrict
@@ -63,6 +63,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
         etModel = findViewById(R.id.et_model);
         etCapacity = findViewById(R.id.et_capacity);
         etDonor = findViewById(R.id.et_donor);
+        etMachineCount = findViewById(R.id.et_machine_count);
         btSubmit = findViewById(R.id.bt_submit);
         etState.setOnClickListener(this);
         //etDistrict.setOnClickListener(this);
@@ -182,6 +183,12 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please select donor.", Snackbar.LENGTH_LONG);
             return false;
+        } else if (TextUtils.isEmpty(etMachineCount.getText().toString()) ||
+                Integer.parseInt(etMachineCount.getText().toString()) == 0 ||
+                Integer.parseInt(etMachineCount.getText().toString()) > 30) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please enter proper machine count. Value should be between 1 to 30.", Snackbar.LENGTH_LONG);
+            return false;
         } else {
             machineModel.setStateId(selectedStateId);
             machineModel.setStateName(selectedState);
@@ -193,6 +200,7 @@ public class CreateMachineActivity extends AppCompatActivity implements APIDataL
             machineModel.setMahineCapacity(selectedCapacity);
             machineModel.setDonerId(selectedDonorId);
             machineModel.setDonorName(selectedDonorName);
+            machineModel.setMachineCount(etMachineCount.getText().toString());
         }
         return true;
     }
