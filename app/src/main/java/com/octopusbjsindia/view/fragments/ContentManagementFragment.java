@@ -206,7 +206,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         }
     }
 
-    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList,int groupPosition, int childPosition) {
+    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList, int groupPosition,
+                                  int childPosition, String contentId) {
         ArrayList<DownloadLanguageSelection> list = new ArrayList<>();
         for (LanguageDetail languageDetail : languageDetailsList) {
             DownloadLanguageSelection downloadLanguageSelection = new DownloadLanguageSelection();
@@ -238,7 +239,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         button.setOnClickListener(v -> {
             if (downloadPosition > -1) {
                 if (Util.isConnected(getContext())) {
-                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(),
+                            groupPosition, childPosition, contentId);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
@@ -259,7 +261,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
 
-    public void beginDownload(String url, int groupCount, int childCount) {
+    public void beginDownload(String url, int groupCount, int childCount, String contentId) {
         groupPosition = groupCount;
         childPosition = childCount;
         listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
@@ -291,6 +293,10 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                 // do something when successful
+                // call api to update backend about downloaded file with content_id for this user.
+                if (contentId != null && contentId != "") {
+                    presenter.sendDownloadedContentDetails(contentId);
+                }
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
                 listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);

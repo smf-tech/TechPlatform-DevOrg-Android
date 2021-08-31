@@ -100,6 +100,7 @@ public class Urls {
 
     public class ContentManagement{
         public static final String GET_CONTENT_DATA = "api/contentDashboard/%1$s";
+        public static final String SEND_DOWNLOADED_CONTENT_DETAILS = "api/downloadedContentDetails/%1$s";
     }
 
     public class Matrimony {

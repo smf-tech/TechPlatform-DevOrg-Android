@@ -179,7 +179,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     contentManagementFragment.setDownloadPosition(-1);
 //                    ContentData contentData = (ContentData) getChild(groupPosition, childPosition);
 //                    ArrayList<LanguageDetail> languageDetailsList = gson.fromJson(contentData.getLanguageDetailsString(), type);
-                    contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition, childPosition);
+                    contentManagementFragment.showDownloadPopup(languageDetailsList, groupPosition,
+                            childPosition, contentData.getId());
                     //contentManagementFragment.beginDownload(languageDetail.getDownloadUrl());
                     //break;
                     //}

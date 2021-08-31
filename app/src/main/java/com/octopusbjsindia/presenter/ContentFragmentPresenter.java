@@ -17,6 +17,7 @@ public class ContentFragmentPresenter implements APIPresenterListener {
     private WeakReference<ContentManagementFragment> fragmentWeakReference;
     private final String TAG = ContentFragmentPresenter.class.getName();
     public static final String GET_CONTENT_DATA = "getContentData";
+    public static final String SEND_CONTENT_DETAILS = "sendContentData";
 
     public ContentFragmentPresenter(ContentManagementFragment mFragment) {
         fragmentWeakReference = new WeakReference<>(mFragment);
@@ -33,6 +34,15 @@ public class ContentFragmentPresenter implements APIPresenterListener {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         requestCall.getDataApiCall(GET_CONTENT_DATA, getContentUrl);
+    }
+
+    public void sendDownloadedContentDetails(String contentId) {
+        final String sendContentDetailsUrl = BuildConfig.BASE_URL
+                + String.format(Urls.ContentManagement.SEND_DOWNLOADED_CONTENT_DETAILS, contentId);
+        fragmentWeakReference.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall(SEND_CONTENT_DETAILS, sendContentDetailsUrl);
     }
 
     @Override
