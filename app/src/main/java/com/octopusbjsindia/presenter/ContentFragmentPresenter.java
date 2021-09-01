@@ -7,7 +7,6 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.content.ContentAPIResponse;
 import com.octopusbjsindia.models.content.ContentData;
-import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
@@ -88,14 +87,15 @@ public class ContentFragmentPresenter implements APIPresenterListener {
                     } else {
                         fragmentWeakReference.get().showEmptyResponse(allContent.getMessage());
                     }
-                } else if (requestID.equalsIgnoreCase(ContentFragmentPresenter.SEND_CONTENT_DETAILS)) {
-                    CommonResponseStatusString responseStatusString = PlatformGson.getPlatformGsonInstance().fromJson(response,
-                            CommonResponseStatusString.class);
-                    if (responseStatusString.getStatus().equals("200")) {
-                        fragmentWeakReference.get().onSuccessListener(ContentFragmentPresenter.SEND_CONTENT_DETAILS,
-                                responseStatusString.getMessage());
-                    }
                 }
+//                else if (requestID.equalsIgnoreCase(ContentFragmentPresenter.SEND_CONTENT_DETAILS)) {
+//                    CommonResponseStatusString responseStatusString = PlatformGson.getPlatformGsonInstance().fromJson(response,
+//                            CommonResponseStatusString.class);
+//                    if (responseStatusString.getStatus().equals("200")) {
+//                        fragmentWeakReference.get().onSuccessListener(ContentFragmentPresenter.SEND_CONTENT_DETAILS,
+//                                responseStatusString.getMessage());
+//                    }
+//                }
             }
         } catch (Exception e) {
             fragmentWeakReference.get().onFailureListener(requestID, e.getMessage());
