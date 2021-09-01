@@ -294,9 +294,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                 // do something when successful
                 // call api to update backend about downloaded file with content_id for this user.
-                if (contentId != null && contentId != "") {
-                    presenter.sendDownloadedContentDetails(contentId);
-                }
+//                if (contentId != null && contentId != "") {
+//                    presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupCount)).get(childCount));
+//                }
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
                 listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
@@ -324,6 +324,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
                 }
+                presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
                 if (groupPosition != -1 && childPosition != -1) {
                     listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDawnloadSatrted(false);
                 }
@@ -338,7 +339,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         //getActivity().unregisterReceiver(onDownloadComplete);
     }
 
-
     @Override
     public void onFailureListener(String requestID, String message) {
         showEmptyResponse(getResources().getString(R.string.msg_something_went_wrong));
@@ -351,7 +351,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
     }
 
     public void saveContentData(List<ContentData> contentDataList) {
