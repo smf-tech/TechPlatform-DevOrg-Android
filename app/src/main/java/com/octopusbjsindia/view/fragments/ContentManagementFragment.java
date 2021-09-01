@@ -139,14 +139,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
 
-//        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-//                return false;
-//
-//            }
-//        });
-
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {
@@ -157,21 +149,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 lastExpandedPosition = i;
             }
         });
-
-//        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-//
-//            @Override
-//            public void onGroupCollapse(int groupPosition) {
-//            }
-//        });
-//
-//        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-//            @Override
-//            public boolean onChildClick(ExpandableListView parent, View v,
-//                                        int groupPosition, int childPosition, long id) {
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -293,10 +270,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
             } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
                 // do something when successful
-                // call api to update backend about downloaded file with content_id for this user.
-//                if (contentId != null && contentId != "") {
-//                    presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupCount)).get(childCount));
-//                }
             } else if (status == DownloadManager.STATUS_RUNNING) {
                 // do something when running
                 listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
@@ -308,10 +281,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onDetach() {
         super.onDetach();
-//        if (presenter != null) {
-//            presenter.clearData();
-//            presenter = null;
-//        }
     }
 
     // broadcast receiver for download a file
@@ -324,6 +293,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
                 }
+                // call api to update backend about downloaded file with content_id for this user.
                 presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
                 if (groupPosition != -1 && childPosition != -1) {
                     listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDawnloadSatrted(false);
