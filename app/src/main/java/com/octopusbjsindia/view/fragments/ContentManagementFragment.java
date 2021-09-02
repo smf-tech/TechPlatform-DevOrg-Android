@@ -139,14 +139,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 listDataHeader, listDataChild, getContext());
         expListView.setAdapter(expandableListAdapter);
 
-//        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-//                return false;
-//
-//            }
-//        });
-
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {
@@ -157,21 +149,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 lastExpandedPosition = i;
             }
         });
-
-//        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-//
-//            @Override
-//            public void onGroupCollapse(int groupPosition) {
-//            }
-//        });
-//
-//        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-//            @Override
-//            public boolean onChildClick(ExpandableListView parent, View v,
-//                                        int groupPosition, int childPosition, long id) {
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -206,7 +183,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         }
     }
 
-    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList,int groupPosition, int childPosition) {
+    public void showDownloadPopup(ArrayList<LanguageDetail> languageDetailsList, int groupPosition,
+                                  int childPosition, String contentId) {
         ArrayList<DownloadLanguageSelection> list = new ArrayList<>();
         for (LanguageDetail languageDetail : languageDetailsList) {
             DownloadLanguageSelection downloadLanguageSelection = new DownloadLanguageSelection();
@@ -238,7 +216,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         button.setOnClickListener(v -> {
             if (downloadPosition > -1) {
                 if (Util.isConnected(getContext())) {
-                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(), groupPosition, childPosition);
+                    beginDownload(languageDetailsList.get(downloadPosition).getDownloadUrl(),
+                            groupPosition, childPosition, contentId);
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
@@ -259,7 +238,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
 
-    public void beginDownload(String url, int groupCount, int childCount) {
+    public void beginDownload(String url, int groupCount, int childCount, String contentId) {
         groupPosition = groupCount;
         childPosition = childCount;
         listDataChild.get(listDataHeader.get(groupCount)).get(childCount).setDawnloadSatrted(true);
@@ -302,10 +281,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onDetach() {
         super.onDetach();
-//        if (presenter != null) {
-//            presenter.clearData();
-//            presenter = null;
-//        }
     }
 
     // broadcast receiver for download a file
@@ -318,6 +293,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 if (getActivity() != null) {
                     Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
                 }
+                // call api to update backend about downloaded file with content_id for this user.
+                presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
                 if (groupPosition != -1 && childPosition != -1) {
                     listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDawnloadSatrted(false);
                 }
@@ -332,7 +309,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         //getActivity().unregisterReceiver(onDownloadComplete);
     }
 
-
     @Override
     public void onFailureListener(String requestID, String message) {
         showEmptyResponse(getResources().getString(R.string.msg_something_went_wrong));
@@ -345,7 +321,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
     }
 
     public void saveContentData(List<ContentData> contentDataList) {
