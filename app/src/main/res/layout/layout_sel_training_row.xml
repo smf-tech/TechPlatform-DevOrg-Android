@@ -15,7 +15,7 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_10dp"></TextView>
+            android:layout_margin="@dimen/dimen_10dp"/>
 
         <FrameLayout
             android:id="@+id/frame_images"

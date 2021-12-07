@@ -13,6 +13,12 @@ public class SELAssignmentData implements Serializable {
     @SerializedName("formId")
     @Expose
     private String formId;
+    @SerializedName("isFormSubmitted")
+    @Expose
+    private boolean isFormSubmitted = false;
+    @SerializedName("contentUrl")
+    @Expose
+    private String contentUrl;
 
     public String getFormName() {
         return formName;
@@ -30,4 +36,19 @@ public class SELAssignmentData implements Serializable {
         this.formId = formId;
     }
 
+    public boolean isFormSubmitted() {
+        return isFormSubmitted;
+    }
+
+    public void setFormSubmitted(boolean formSubmitted) {
+        isFormSubmitted = formSubmitted;
+    }
+
+    public String getContentUrl() {
+        return contentUrl;
+    }
+
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
+    }
 }

@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.activities;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -888,6 +889,9 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     }
                     submitForm();
                     dialog.dismiss();
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("id",formData.getId());
+                    setResult(Activity.RESULT_OK,returnIntent);
                     finish();
                 }
             });

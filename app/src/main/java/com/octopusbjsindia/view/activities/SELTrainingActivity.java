@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.activities;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -27,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.sel_content.SELAssignmentData;
 import com.octopusbjsindia.models.sel_content.SELVideoContent;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.SELAssignmentAdapter;
 import com.octopusbjsindia.view.adapters.SELTrainingAdapter;
@@ -49,6 +52,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     private DownloadManager downloadmanager;
     private long downloadID;
     private String filename;
+    private ArrayList<SELAssignmentData> assignmentList= new ArrayList<>();
     private List<Long> downloadIdList = new ArrayList<>();
 
     @Override
@@ -85,8 +89,8 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         selTrainingAdapter = new SELTrainingAdapter(this, trainingObject.getReadingDataList());
         rvReadingContent.setLayoutManager(new LinearLayoutManager(this));
         rvReadingContent.setAdapter(selTrainingAdapter);
-
-        selAssignmentAdapter = new SELAssignmentAdapter(this, trainingObject.getAssignmentList());
+        assignmentList = (ArrayList<SELAssignmentData>) trainingObject.getAssignmentList();
+        selAssignmentAdapter = new SELAssignmentAdapter(this, assignmentList);
         rvFormAssignment.setLayoutManager(new LinearLayoutManager(this));
         rvFormAssignment.setAdapter(selAssignmentAdapter);
     }
@@ -211,4 +215,25 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             }
         }
     };
+    public void displayForm(String formId){
+        Intent intent = new Intent(this, FormDisplayActivity.class);
+        intent.putExtra(Constants.PM.FORM_ID, formId);
+        startActivityForResult(intent,1001);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1001) {
+            if(resultCode == Activity.RESULT_OK){
+                String id=data.getStringExtra("id");
+                for(int i=0;i<assignmentList.size();i++){
+                    if(id.equalsIgnoreCase(assignmentList.get(i).getFormId())){
+                        assignmentList.get(i).setFormSubmitted(true);
+                        selAssignmentAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    }
 }
