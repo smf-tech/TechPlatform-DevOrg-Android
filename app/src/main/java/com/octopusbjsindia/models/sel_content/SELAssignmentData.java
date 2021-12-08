@@ -18,7 +18,9 @@ public class SELAssignmentData implements Serializable {
     private boolean isFormSubmitted = false;
     @SerializedName("contentUrl")
     @Expose
-    private String contentUrl;
+    private String answersPdfUrl;
+    private String answersPdfName;
+    private boolean isDownloadStarted = false;
 
     public String getFormName() {
         return formName;
@@ -44,11 +46,28 @@ public class SELAssignmentData implements Serializable {
         isFormSubmitted = formSubmitted;
     }
 
-    public String getContentUrl() {
-        return contentUrl;
+    public String getAnswersPdfUrl() {
+        return answersPdfUrl;
     }
 
-    public void setContentUrl(String contentUrl) {
-        this.contentUrl = contentUrl;
+    public void setAnswersPdfUrl(String answersPdfUrl) {
+        this.answersPdfUrl = answersPdfUrl;
     }
+
+    public String getAnswersPdfName() {
+        return answersPdfName;
+    }
+
+    public void setAnswersPdfName(String answersPdfName) {
+        this.answersPdfName = answersPdfName;
+    }
+
+    public boolean isDownloadStarted() {
+        return isDownloadStarted;
+    }
+
+    public void setDownloadStarted(boolean downloadStarted) {
+        isDownloadStarted = downloadStarted;
+    }
+
 }

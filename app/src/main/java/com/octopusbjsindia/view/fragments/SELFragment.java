@@ -1,9 +1,11 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -18,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.models.sel_content.SELAssignmentData;
 import com.octopusbjsindia.models.sel_content.SELVideoContent;
 import com.octopusbjsindia.models.sel_content.VideoContentAPIResponse;
 import com.octopusbjsindia.presenter.SELFragmentPresenter;
@@ -33,6 +36,9 @@ public class SELFragment extends Fragment implements APIDataListener {
     private SELFragmentAdapter selFragmentAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
+    private List<Boolean> isModuleAccessible = new ArrayList<>();
+    private boolean isAllModulesCompleted = false;
+    private Button btnGetCertificate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,15 +60,14 @@ public class SELFragment extends Fragment implements APIDataListener {
         presenter = new SELFragmentPresenter(this);
         RecyclerView rvSelContent = view.findViewById(R.id.rv_sel_content);
         ImageView ivNoData = view.findViewById(R.id.iv_no_data);
-        selFragmentAdapter = new SELFragmentAdapter(this, selContentList);
+        btnGetCertificate = view.findViewById(R.id.btn_certificate);
+        selFragmentAdapter = new SELFragmentAdapter(this, selContentList, isModuleAccessible);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
         if (Util.isConnected(getActivity())) {
             presenter.getSelContentData();
             ivNoData.setVisibility(View.GONE);
         } else {
-//            selContentList.clear();
-//            selFragmentAdapter.notifyDataSetChanged();
             if (selContentList.size() == 0) {
                 Util.showToast(getString(R.string.msg_no_network), getContext());
                 ivNoData.setVisibility(View.VISIBLE);
@@ -110,7 +115,41 @@ public class SELFragment extends Fragment implements APIDataListener {
         if (selVideoContentList.size() > 0) {
             selContentList.clear();
             selContentList.addAll(selVideoContentList);
-            selFragmentAdapter.notifyDataSetChanged();
+            updateModuleAccessList();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateModuleAccessList() {
+        for (SELVideoContent selContent: selContentList) {
+            boolean isAccessible = false;
+            if(selContent.getAssignmentList()!= null && selContent.getAssignmentList().size()>0) {
+                for (SELAssignmentData selAssignmentData: selContent.getAssignmentList()) {
+                    if(selAssignmentData.isFormSubmitted()) {
+                        isAccessible = true;
+                    } else {
+                        isAccessible = false;
+                        break;
+                    }
+                }
+                isModuleAccessible.add(isAccessible);
+            } else {
+                isModuleAccessible.add(true);
+            }
+        }
+
+        selFragmentAdapter.notifyDataSetChanged();
+
+        for (Boolean isModuleCompleted: isModuleAccessible) {
+            if(isModuleCompleted) {
+                isAllModulesCompleted = true;
+            } else {
+                isAllModulesCompleted =  false;
+                break;
+            }
+        }
+        if (isAllModulesCompleted) {
+            btnGetCertificate.setVisibility(View.VISIBLE);
         }
     }
 

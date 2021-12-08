@@ -14,6 +14,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_10dp" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_certificate"
+        style="@style/AppStyleButton"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rv_sel_content"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:elevation="@dimen/dimen_03dp"
+        android:text="Get Certificate"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

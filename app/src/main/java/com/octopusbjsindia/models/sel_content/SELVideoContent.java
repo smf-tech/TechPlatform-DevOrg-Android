@@ -20,6 +20,9 @@ public class SELVideoContent implements Serializable {
     @SerializedName("thumbnail_url")
     @Expose
     private String thumbnailUrl;
+    @SerializedName("isVideoSeen")
+    @Expose
+    private boolean isVideoSeen;
     @SerializedName("form_Id")
     @Expose
     private List<SELAssignmentData> assignmentList = new ArrayList<SELAssignmentData>();
@@ -57,6 +60,14 @@ public class SELVideoContent implements Serializable {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public boolean isVideoSeen() {
+        return isVideoSeen;
+    }
+
+    public void setVideoSeen(boolean videoSeen) {
+        isVideoSeen = videoSeen;
     }
 
     public List<SELAssignmentData> getAssignmentList() {

@@ -41,8 +41,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class SELTrainingActivity extends AppCompatActivity implements View.OnClickListener {
-    //    private String videoId;
-//    private boolean isVideoCompleted = false;
     private RecyclerView rvReadingContent, rvFormAssignment;
     private SELVideoContent trainingObject;
     private SELTrainingAdapter selTrainingAdapter;
@@ -60,7 +58,6 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sel_training_video);
         trainingObject = (SELVideoContent) getIntent().getSerializableExtra("TrainingObject");
-        //String vidAddress = "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
         initView();
     }
 
@@ -86,13 +83,23 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         }
         ivThumbnail.setOnClickListener(this);
 
-        selTrainingAdapter = new SELTrainingAdapter(this, trainingObject.getReadingDataList());
-        rvReadingContent.setLayoutManager(new LinearLayoutManager(this));
-        rvReadingContent.setAdapter(selTrainingAdapter);
-        assignmentList = (ArrayList<SELAssignmentData>) trainingObject.getAssignmentList();
-        selAssignmentAdapter = new SELAssignmentAdapter(this, assignmentList);
-        rvFormAssignment.setLayoutManager(new LinearLayoutManager(this));
-        rvFormAssignment.setAdapter(selAssignmentAdapter);
+        if(trainingObject.getReadingDataList()!= null && trainingObject.getReadingDataList().size()>0) {
+            selTrainingAdapter = new SELTrainingAdapter(this, trainingObject.getReadingDataList());
+            rvReadingContent.setLayoutManager(new LinearLayoutManager(this));
+            rvReadingContent.setAdapter(selTrainingAdapter);
+        } else {
+            findViewById(R.id.tv_reading_label).setVisibility(View.GONE);
+            rvReadingContent.setVisibility(View.GONE);
+        }
+        if(trainingObject.getAssignmentList()!= null && trainingObject.getAssignmentList().size()>0) {
+            selAssignmentAdapter = new SELAssignmentAdapter(this,
+                    trainingObject.getAssignmentList(), trainingObject.isVideoSeen());
+            rvFormAssignment.setLayoutManager(new LinearLayoutManager(this));
+            rvFormAssignment.setAdapter(selAssignmentAdapter);
+        } else {
+            findViewById(R.id.tv_assignment_label).setVisibility(View.GONE);
+            rvFormAssignment.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -114,10 +121,6 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         } else if (v.getId() == R.id.toolbar_back_action) {
             finish();
         }
-    }
-
-    public void setDownloadPosition(int downloadPosition) {
-        this.downloadPosition = downloadPosition;
     }
 
     public void showDownloadPopup(String downloadUrl, int position) {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.sel_content.SELVideoContent;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.SELTrainingActivity;
 import com.octopusbjsindia.view.fragments.SELFragment;
 
@@ -20,10 +21,13 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
 
     private List<SELVideoContent> selContentList;
     private SELFragment mContext;
+    private List<Boolean> isModuleAccessible;
 
-    public SELFragmentAdapter(SELFragment context, final List<SELVideoContent> selContentList) {
+    public SELFragmentAdapter(SELFragment context, final List<SELVideoContent> selContentList,
+                              List<Boolean> isModuleAccessible) {
         mContext = context;
         this.selContentList = selContentList;
+        this.isModuleAccessible = isModuleAccessible;
     }
 
     @NonNull
@@ -48,9 +52,13 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
             tvTraining.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext.getActivity(), SELTrainingActivity.class);
-                    intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
+                    if (isModuleAccessible.get(getAdapterPosition())) {
+                        Intent intent = new Intent(mContext.getActivity(), SELTrainingActivity.class);
+                        intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                    } else {
+                        Util.showToast(mContext, "Please complete above module.");
+                    }
                 }
             });
         }
