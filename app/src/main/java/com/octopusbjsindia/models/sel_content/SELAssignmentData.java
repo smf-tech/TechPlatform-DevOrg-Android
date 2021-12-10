@@ -16,7 +16,7 @@ public class SELAssignmentData implements Serializable {
     @SerializedName("isFormSubmitted")
     @Expose
     private boolean isFormSubmitted = false;
-    @SerializedName("contentUrl")
+    @SerializedName("correctAnswersPdf")
     @Expose
     private String answersPdfUrl;
     private String answersPdfName;

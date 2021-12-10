@@ -57,7 +57,7 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
                         intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
                     } else {
-                        Util.showToast(mContext, "Please complete above module.");
+                        Util.showToast("Please complete above module.", mContext);
                     }
                 }
             });

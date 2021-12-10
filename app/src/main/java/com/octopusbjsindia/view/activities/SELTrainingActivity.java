@@ -80,6 +80,9 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
                     .applyDefaultRequestOptions(requestOptions)
                     .load(trainingObject.getThumbnailUrl())
                     .into(ivThumbnail);
+        } else {
+            findViewById(R.id.tv_video_label).setVisibility(View.GONE);
+            findViewById(R.id.ly_thumbnail).setVisibility(View.GONE);
         }
         ivThumbnail.setOnClickListener(this);
 

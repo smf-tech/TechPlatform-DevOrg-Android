@@ -121,10 +121,12 @@ public class SELFragment extends Fragment implements APIDataListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateModuleAccessList() {
-        for (SELVideoContent selContent: selContentList) {
-            boolean isAccessible = false;
-            if(selContent.getAssignmentList()!= null && selContent.getAssignmentList().size()>0) {
-                for (SELAssignmentData selAssignmentData: selContent.getAssignmentList()) {
+        isModuleAccessible.clear();
+        isModuleAccessible.add(true);
+        for (int i=0; i<selContentList.size()-1; i++) {
+            boolean isAccessible = true;
+            if(selContentList.get(i).getAssignmentList()!= null && selContentList.get(i).getAssignmentList().size()>0) {
+                for (SELAssignmentData selAssignmentData: selContentList.get(i).getAssignmentList()) {
                     if(selAssignmentData.isFormSubmitted()) {
                         isAccessible = true;
                     } else {
