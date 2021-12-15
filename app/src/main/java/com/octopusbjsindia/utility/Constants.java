@@ -568,7 +568,6 @@ public class Constants {
         public static final int ACCESS_CODE_ASSIGN_MACHINES_TALUKA = 178;
         public static final int ACCESS_ADD_HOSPITAL = 179;
 
-
         public static final int RECORD_UPDATE = 1101;
         public static final int HOSPITAL_SELECTION_FOR_INCHARGE = 2;
         public static final int HOSPITAL_SELECTION_FOR_RESULT = 1;
@@ -579,5 +578,9 @@ public class Constants {
         public static final int HANDOVER = 2;
         public static final int TAKEOVER = 1;
 
+    }
+
+    public static class VideoTutorialModule {
+        public static final String VIDEO_SEEN = "video_seen";
     }
 }

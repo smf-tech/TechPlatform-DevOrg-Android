@@ -1,6 +1,8 @@
 package com.octopusbjsindia.view.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,12 +14,15 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.presenter.SELTrainingVideoActivityPresenter;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
+import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 
 public class SELTrainingVideoActivity extends AppCompatActivity implements APIDataListener {
@@ -105,6 +110,9 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
         super.onDestroy();
         if (!isVideoCompleted) {
             presenter.sendVideoStatus(videoId, "resume", stopPosition);
+            Intent intent = new Intent();
+            intent.setAction(Constants.VideoTutorialModule.VIDEO_SEEN);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
 
@@ -127,6 +135,11 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
         Util.snackBarToShowMsg(getWindow().getDecorView()
                         .findViewById(android.R.id.content), getString(R.string.msg_failure),
                 Snackbar.LENGTH_LONG);
+
+        Intent intent = new Intent();
+        intent.setAction(Constants.VideoTutorialModule.VIDEO_SEEN);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
         finish();
     }
 

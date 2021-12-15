@@ -37,7 +37,7 @@ public class SELAssignmentAdapter extends RecyclerView.Adapter<SELAssignmentAdap
 
     private List<com.octopusbjsindia.models.sel_content.SELAssignmentData> SELAssignmentData;
     private SELTrainingActivity mContext;
-    private boolean isVideoSeen;
+    public boolean isVideoSeen;
 
     public SELAssignmentAdapter(SELTrainingActivity context,
                                 final List<SELAssignmentData> SELAssignmentData, boolean isVideoSeen) {
@@ -104,7 +104,7 @@ public class SELAssignmentAdapter extends RecyclerView.Adapter<SELAssignmentAdap
             rlAssignmentRow = itemView.findViewById(R.id.rl_assignment_row);
             imgDownload = itemView.findViewById(R.id.img_download);
             imgView = itemView.findViewById(R.id.img_view);
-            pbDownloading = itemView.findViewById(R.id.pbDownloading);
+            pbDownloading = itemView.findViewById(R.id.pb_downloading);
             imgForm = itemView.findViewById(R.id.iv_form);
 
             imgForm.setOnClickListener(new View.OnClickListener() {

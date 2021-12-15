@@ -1,5 +1,8 @@
 package com.octopusbjsindia.view.activities;
 
+import static com.octopusbjsindia.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
+import static com.octopusbjsindia.utility.Constants.VideoTutorialModule.VIDEO_SEEN;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
@@ -22,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,6 +107,22 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             findViewById(R.id.tv_assignment_label).setVisibility(View.GONE);
             rvFormAssignment.setVisibility(View.GONE);
         }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(VIDEO_SEEN);
+
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(this))
+                .registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(final Context context, final Intent intent) {
+                        String action = Objects.requireNonNull(intent.getAction());
+                        if (VIDEO_SEEN.equals(action)) {
+                            trainingObject.setVideoSeen(true);
+                            selAssignmentAdapter.isVideoSeen = true;
+                        }
+                    }
+                }, filter);
+
     }
 
     @Override
