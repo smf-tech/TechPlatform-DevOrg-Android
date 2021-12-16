@@ -3,7 +3,12 @@ package com.octopusbjsindia.view.adapters;
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
+import static com.octopusbjsindia.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -32,6 +38,7 @@ import com.octopusbjsindia.view.activities.SELTrainingActivity;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public class SELAssignmentAdapter extends RecyclerView.Adapter<SELAssignmentAdapter.ViewHolder> {
 
@@ -114,8 +121,7 @@ public class SELAssignmentAdapter extends RecyclerView.Adapter<SELAssignmentAdap
                         if (SELAssignmentData.get(getAdapterPosition()).getFormId() != null &&
                                 !TextUtils.isEmpty(SELAssignmentData.get(getAdapterPosition()).getFormId())) {
 
-                            mContext.displayForm(SELAssignmentData.get(getAdapterPosition()).getFormId());
-
+                            mContext.displayForm(SELAssignmentData.get(getAdapterPosition()).getFormId(), getAdapterPosition());
                         } else {
                             Util.showToast(mContext, "Something went wrong. Please try again later.");
                         }
@@ -130,8 +136,8 @@ public class SELAssignmentAdapter extends RecyclerView.Adapter<SELAssignmentAdap
                 public void onClick(View view) {
                     if (Permissions.isWriteExternalStoragePermission(mContext, mContext)) {
                         //mContext.setDownloadPosition(-1);
-                        mContext.showDownloadPopup(SELAssignmentData.get(getAdapterPosition()).getAnswersPdfUrl(),
-                                getAdapterPosition());
+                        mContext.showDownloadPopup(SELAssignmentData.get(getAdapterPosition()).
+                                        getAnswersPdfUrl(), getAdapterPosition(), 1);
                     }
                 }
             });

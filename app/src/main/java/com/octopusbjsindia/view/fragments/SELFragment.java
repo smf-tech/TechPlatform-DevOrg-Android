@@ -30,7 +30,7 @@ import com.octopusbjsindia.view.adapters.SELFragmentAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SELFragment extends Fragment implements APIDataListener {
+public class SELFragment extends Fragment implements APIDataListener, View.OnClickListener {
     private SELFragmentPresenter presenter;
     private final List<SELVideoContent> selContentList = new ArrayList<>();
     private SELFragmentAdapter selFragmentAdapter;
@@ -39,6 +39,7 @@ public class SELFragment extends Fragment implements APIDataListener {
     private List<Boolean> isModuleAccessible = new ArrayList<>();
     private boolean isAllModulesCompleted = false;
     private Button btnGetCertificate;
+    private ImageView ivNoData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,11 +60,21 @@ public class SELFragment extends Fragment implements APIDataListener {
         progressBar = view.findViewById(R.id.pb_profile_act);
         presenter = new SELFragmentPresenter(this);
         RecyclerView rvSelContent = view.findViewById(R.id.rv_sel_content);
-        ImageView ivNoData = view.findViewById(R.id.iv_no_data);
+        ivNoData = view.findViewById(R.id.iv_no_data);
         btnGetCertificate = view.findViewById(R.id.btn_certificate);
         selFragmentAdapter = new SELFragmentAdapter(this, selContentList, isModuleAccessible);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (Util.isConnected(getActivity())) {
             presenter.getSelContentData();
             ivNoData.setVisibility(View.GONE);
@@ -75,16 +86,6 @@ public class SELFragment extends Fragment implements APIDataListener {
                 ivNoData.setVisibility(View.GONE);
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -180,5 +181,10 @@ public class SELFragment extends Fragment implements APIDataListener {
         if (getActivity() != null) {
             getActivity().onBackPressed();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        // get certificate on mail id
     }
 }

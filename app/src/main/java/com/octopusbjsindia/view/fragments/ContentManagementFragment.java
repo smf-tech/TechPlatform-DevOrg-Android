@@ -294,7 +294,9 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                     Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
                 }
                 // call api to update backend about downloaded file with content_id for this user.
-                presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
+                if(context instanceof HomeActivity) {
+                    presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
+                }
                 if (groupPosition != -1 && childPosition != -1) {
                     listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDawnloadSatrted(false);
                 }

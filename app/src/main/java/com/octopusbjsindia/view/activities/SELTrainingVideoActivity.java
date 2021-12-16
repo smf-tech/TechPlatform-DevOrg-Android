@@ -110,9 +110,6 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
         super.onDestroy();
         if (!isVideoCompleted) {
             presenter.sendVideoStatus(videoId, "resume", stopPosition);
-            Intent intent = new Intent();
-            intent.setAction(Constants.VideoTutorialModule.VIDEO_SEEN);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
     }
 

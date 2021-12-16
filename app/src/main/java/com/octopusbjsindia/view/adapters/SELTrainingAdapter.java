@@ -97,7 +97,8 @@ public class SELTrainingAdapter extends RecyclerView.Adapter<SELTrainingAdapter.
                 public void onClick(View view) {
                     if (Permissions.isWriteExternalStoragePermission(mContext, mContext)) {
                         //mContext.setDownloadPosition(-1);
-                        mContext.showDownloadPopup(SELReadingDataList.get(getAdapterPosition()).getContentUrl(), getAdapterPosition());
+                        mContext.showDownloadPopup(SELReadingDataList.get
+                                (getAdapterPosition()).getContentUrl(), getAdapterPosition(), 0);
                     }
                 }
             });

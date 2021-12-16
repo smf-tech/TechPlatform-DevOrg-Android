@@ -56,6 +56,8 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     private String filename;
     private ArrayList<SELAssignmentData> assignmentList= new ArrayList<>();
     private List<Long> downloadIdList = new ArrayList<>();
+    public int selectedFormPostion;
+    private int type = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,9 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        this.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        this.registerReceiver(onSELDownloadComplete, new IntentFilter
+                (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(trainingObject.getTitle());
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
@@ -89,6 +93,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             findViewById(R.id.ly_thumbnail).setVisibility(View.GONE);
         }
         ivThumbnail.setOnClickListener(this);
+        assignmentList = (ArrayList<SELAssignmentData>) trainingObject.getAssignmentList();
 
         if(trainingObject.getReadingDataList()!= null && trainingObject.getReadingDataList().size()>0) {
             selTrainingAdapter = new SELTrainingAdapter(this, trainingObject.getReadingDataList());
@@ -98,9 +103,9 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             findViewById(R.id.tv_reading_label).setVisibility(View.GONE);
             rvReadingContent.setVisibility(View.GONE);
         }
-        if(trainingObject.getAssignmentList()!= null && trainingObject.getAssignmentList().size()>0) {
+        if(assignmentList!= null && assignmentList.size()>0) {
             selAssignmentAdapter = new SELAssignmentAdapter(this,
-                    trainingObject.getAssignmentList(), trainingObject.isVideoSeen());
+                    assignmentList, trainingObject.isVideoSeen());
             rvFormAssignment.setLayoutManager(new LinearLayoutManager(this));
             rvFormAssignment.setAdapter(selAssignmentAdapter);
         } else {
@@ -122,7 +127,6 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
                 }, filter);
-
     }
 
     @Override
@@ -146,7 +150,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void showDownloadPopup(String downloadUrl, int position) {
+    public void showDownloadPopup(String downloadUrl, int position, int type) {
         downloadPosition = position;
 
         final Dialog dialog = new Dialog(Objects.requireNonNull(this));
@@ -174,7 +178,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         button1.setVisibility(View.VISIBLE);
         button1.setOnClickListener(v -> {
             if (Util.isConnected(this)) {
-                beginDownload(downloadUrl, position);
+                beginDownload(downloadUrl, position, type);
             } else {
                 Util.showToast(getString(R.string.msg_no_network), this);
             }
@@ -189,7 +193,8 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         dialog.show();
     }
 
-    public void beginDownload(String url, int position) {
+    public void beginDownload(String url, int position, int type) {
+        this.type= type;
         downloadmanager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -210,38 +215,61 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
             cursor.close();
 
-            if (status == DownloadManager.STATUS_FAILED) {
-                // do something when failed
-                trainingObject.getReadingDataList().get(position).setDownloadStarted(false);
-            } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
-                // do something pending or paused
-                trainingObject.getReadingDataList().get(position).setDownloadStarted(true);
-            } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                // do something when successful
-            } else if (status == DownloadManager.STATUS_RUNNING) {
-                // do something when running
-                trainingObject.getReadingDataList().get(position).setDownloadStarted(true);
+            if (type == 0) {
+                if (status == DownloadManager.STATUS_FAILED) {
+                    // do something when failed
+                    trainingObject.getReadingDataList().get(position).setDownloadStarted(false);
+                } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
+                    // do something pending or paused
+                    trainingObject.getReadingDataList().get(position).setDownloadStarted(true);
+                } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    // do something when successful
+                } else if (status == DownloadManager.STATUS_RUNNING) {
+                    // do something when running
+                    trainingObject.getReadingDataList().get(position).setDownloadStarted(true);
+                }
+                selTrainingAdapter.notifyDataSetChanged();
+            } else {
+                if (status == DownloadManager.STATUS_FAILED) {
+                    // do something when failed
+                    trainingObject.getAssignmentList().get(position).setDownloadStarted(false);
+                } else if (status == DownloadManager.STATUS_PENDING || status == DownloadManager.STATUS_PAUSED) {
+                    // do something pending or paused
+                    trainingObject.getAssignmentList().get(position).setDownloadStarted(true);
+                } else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    // do something when successful
+                } else if (status == DownloadManager.STATUS_RUNNING) {
+                    // do something when running
+                    trainingObject.getAssignmentList().get(position).setDownloadStarted(true);
+                }
+                selAssignmentAdapter.notifyDataSetChanged();
             }
         }
-        selTrainingAdapter.notifyDataSetChanged();
     }
 
     // broadcast receiver for download a file
-    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+    private BroadcastReceiver onSELDownloadComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Intent data = intent;
+            //Intent data = intent;
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 Util.showToast("Download completed.", this);
                 if (downloadPosition != -1) {
-                    trainingObject.getReadingDataList().get(downloadPosition).setDownloadStarted(false);
+                    if(type == 0) {
+                        trainingObject.getReadingDataList().get(downloadPosition).setDownloadStarted(false);
+                        selTrainingAdapter.notifyDataSetChanged();
+                    } else if(type == 1) {
+                        trainingObject.getAssignmentList().get(downloadPosition).setDownloadStarted(false);
+                        selAssignmentAdapter.notifyDataSetChanged();
+                    }
                 }
-                selTrainingAdapter.notifyDataSetChanged();
             }
         }
     };
-    public void displayForm(String formId){
+
+    public void displayForm(String formId, int position){
+        selectedFormPostion = position;
         Intent intent = new Intent(this, FormDisplayActivity.class);
         intent.putExtra(Constants.PM.FORM_ID, formId);
         startActivityForResult(intent,1001);
