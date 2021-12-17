@@ -1,14 +1,21 @@
 package com.octopusbjsindia.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +36,7 @@ import com.octopusbjsindia.view.adapters.SELFragmentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SELFragment extends Fragment implements APIDataListener, View.OnClickListener {
     private SELFragmentPresenter presenter;
@@ -62,6 +70,7 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
         RecyclerView rvSelContent = view.findViewById(R.id.rv_sel_content);
         ivNoData = view.findViewById(R.id.iv_no_data);
         btnGetCertificate = view.findViewById(R.id.btn_certificate);
+        btnGetCertificate.setOnClickListener(this);
         selFragmentAdapter = new SELFragmentAdapter(this, selContentList, isModuleAccessible);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
@@ -186,5 +195,20 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
     @Override
     public void onClick(View v) {
         // get certificate on mail id
+        Util.showEnterEmailDialog(getActivity(), 2, this);
+    }
+
+    public void onReceiveEmailId(String strEmailId) {
+        if (TextUtils.isEmpty(strEmailId)){
+            Util.showToast("Please enter valid email", getActivity());
+        } else {
+            presenter.sendSELCertificateOnMail(strEmailId);
+        }
+    }
+
+    public void showResponse(String message) {
+        if(message!=null) {
+            Util.showToast(message, getActivity());
+        }
     }
 }

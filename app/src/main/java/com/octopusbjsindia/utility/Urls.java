@@ -271,6 +271,7 @@ public class Urls {
     public class SEL {
         public static final String GET_SEL_CONTENT = "api/get_training_videos";
         public static final String SEND_VIDEO_STATUS = "api/send_video_status";
+        public static final String SEND_SEL_CERTIFICATE_ON_MAIL = "api/send_sel_certificate_on_mail";
     }
 
     public class SSGP {

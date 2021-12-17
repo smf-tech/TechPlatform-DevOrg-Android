@@ -76,6 +76,7 @@ import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
 import com.octopusbjsindia.view.fragments.ReportsFragment;
+import com.octopusbjsindia.view.fragments.SELFragment;
 import com.octopusbjsindia.view.fragments.TMUserAttendanceApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
@@ -1937,7 +1938,12 @@ public class Util {
             btn_submit.setVisibility(View.VISIBLE);
             btn_pre_feedback.setVisibility(View.GONE);
             btn_post_feedback.setVisibility(View.GONE);
-        }else {
+        } else if(pos == 2) {
+            btn_submit.setVisibility(View.VISIBLE);
+            btn_pre_feedback.setVisibility(View.GONE);
+            btn_post_feedback.setVisibility(View.GONE);
+            btn_submit.setText("Request Certificate");
+        } else {
             btn_submit.setVisibility(View.GONE);
             btn_pre_feedback.setVisibility(View.VISIBLE);
             btn_post_feedback.setVisibility(View.VISIBLE);
@@ -1954,9 +1960,14 @@ public class Util {
                     if (context instanceof SmartGirlWorkshopListActivity){
                         ((SmartGirlWorkshopListActivity) context).onReceiveEmailId(strEmailId, pos);
                     }
-                    if (context instanceof TrainerBatchListActivity){
+                    else if (context instanceof TrainerBatchListActivity){
                         ((TrainerBatchListActivity) context).onReceiveEmailId(strEmailId, pos);
                     }
+                    else if (fragment!= null && fragment instanceof SELFragment){
+                        ((SELFragment)fragment).onReceiveEmailId(strEmailId);
+                    }
+
+
 
                     dialog.dismiss();
                 }

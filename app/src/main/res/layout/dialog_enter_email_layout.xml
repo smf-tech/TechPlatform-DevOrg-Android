@@ -20,7 +20,7 @@
             android:id="@+id/txt_dialog_title"
             android:gravity="center_horizontal"
             android:textColor="@color/grey_medium"
-            android:text="Please enter email id to receive data"
+            android:text="Please enter email id."
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/opensans_bold"

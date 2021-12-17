@@ -109,7 +109,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
             }
         }
         AppEvents.trackAppEvent(getString(R.string.event_content_screen_visit));
-        getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
@@ -164,6 +163,14 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         if (expandableListAdapter != null) {
             expandableListAdapter.notifyDataSetChanged();
         }
+        getActivity().registerReceiver(onDownloadComplete, new IntentFilter
+                (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(onDownloadComplete);
     }
 
     private void updateListView() {
@@ -308,7 +315,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //getActivity().unregisterReceiver(onDownloadComplete);
     }
 
     @Override

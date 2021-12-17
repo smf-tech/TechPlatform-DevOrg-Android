@@ -8,7 +8,6 @@ public class VideoContentAPIResponse implements Serializable {
     private Integer status;
     private String message;
     private List<SELVideoContent> data = new ArrayList<SELVideoContent>();
-    ;
 
     public Integer getStatus() {
         return status;

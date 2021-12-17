@@ -130,6 +130,19 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(onSELDownloadComplete, new IntentFilter
+                (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(onSELDownloadComplete);
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_thumbnail) {
             if (trainingObject.getVideoUrl() != null &&

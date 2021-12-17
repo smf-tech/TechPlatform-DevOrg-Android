@@ -112,7 +112,6 @@ public class MatrimonyMeetFragmentPresenter implements APIPresenterListener {
         final String meetArchiveDeleteUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Matrimony.MEET_ARCHIVE_DELETE, meetId, type);
         Log.d(TAG, "meetArchiveDeleteUrl: url" + meetArchiveDeleteUrl);
-        fragmentWeakReference.get().showProgressBar();
         if(type.equals("Deleted")){
             requestCall.getDataApiCall(MATRIMONY_MEET_DELETE, meetArchiveDeleteUrl);
         }
