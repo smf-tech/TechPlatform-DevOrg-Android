@@ -202,7 +202,17 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
         if (TextUtils.isEmpty(strEmailId)){
             Util.showToast("Please enter valid email", getActivity());
         } else {
-            presenter.sendSELCertificateOnMail(strEmailId);
+            if(Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!= null) {
+                if(Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!= null) {
+                    if(Util.getUserObjectFromPref().getUserLocation().getSchoolIds()!= null) {
+                        presenter.sendSELCertificateOnMail(strEmailId,
+                                Util.getUserObjectFromPref().getUserName(),
+                                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName(),
+                                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName(),
+                                Util.getUserObjectFromPref().getUserLocation().getSchoolIds().get(0).getName());
+                    }
+                }
+            }
         }
     }
 

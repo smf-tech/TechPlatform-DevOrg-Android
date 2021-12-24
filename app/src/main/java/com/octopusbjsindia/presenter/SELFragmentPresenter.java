@@ -13,7 +13,10 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.fragments.SELFragment;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class SELFragmentPresenter implements APIPresenterListener {
 
@@ -36,14 +39,22 @@ public class SELFragmentPresenter implements APIPresenterListener {
         requestCall.getDataApiCall(GET_SEL_CONTENT, getSELContentUrl);
     }
 
-    public void sendSELCertificateOnMail(String mailId) {
+    public void sendSELCertificateOnMail(String mailId, String userName, String disctrict, String taluka, String school) {
         fragmentWeakReference.get().showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
+        HashMap<String,String> map=new HashMap<>();
+        map.put("mail_id", mailId);
+        map.put("user_name", userName);
+        map.put("district", disctrict);
+        map.put("taluka", taluka);
+        map.put("school", school);
         String sendSELCertificateOnMail = BuildConfig.BASE_URL
-                + String.format(Urls.SEL.SEND_SEL_CERTIFICATE_ON_MAIL, mailId);
+                + String.format(Urls.SEL.SEND_SEL_CERTIFICATE_ON_MAIL);
+
         Log.d(TAG, "getSELCertificateOnMail: url" + sendSELCertificateOnMail);
-        requestCall.getDataApiCall(SEND_SEL_CERTIFICATE_ON_MAIL, sendSELCertificateOnMail);
+        requestCall.postDataApiCall(SEND_SEL_CERTIFICATE_ON_MAIL, new JSONObject(map).toString(),
+                sendSELCertificateOnMail);
     }
 
     public void clearData() {
