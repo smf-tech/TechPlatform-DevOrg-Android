@@ -1952,9 +1952,9 @@ public class Util {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String strEmailId = edt_reason.getText().toString();
-                if (!TextUtils.isEmpty(strEmailId.toString().trim())
-                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                String strEmailId = edt_reason.getText().toString().trim();
+                if (!TextUtils.isEmpty(strEmailId)
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId).matches()) {
                     showToast(context,"Please enter valid email.");
                 } else {
                     if (context instanceof SmartGirlWorkshopListActivity){
@@ -1966,9 +1966,6 @@ public class Util {
                     else if (fragment!= null && fragment instanceof SELFragment){
                         ((SELFragment)fragment).onReceiveEmailId(strEmailId);
                     }
-
-
-
                     dialog.dismiss();
                 }
             }

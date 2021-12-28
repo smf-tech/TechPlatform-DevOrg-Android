@@ -21,13 +21,13 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
 
     private List<SELVideoContent> selContentList;
     private SELFragment mContext;
-    private List<Boolean> isModuleAccessible;
+    private List<Boolean> isModuleCompleted;
 
     public SELFragmentAdapter(SELFragment context, final List<SELVideoContent> selContentList,
-                              List<Boolean> isModuleAccessible) {
+                              List<Boolean> isModuleCompleted) {
         mContext = context;
         this.selContentList = selContentList;
-        this.isModuleAccessible = isModuleAccessible;
+        this.isModuleCompleted = isModuleCompleted;
     }
 
     @NonNull
@@ -52,12 +52,18 @@ public class SELFragmentAdapter extends RecyclerView.Adapter<SELFragmentAdapter.
             tvTraining.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isModuleAccessible.get(getAdapterPosition())) {
+                    if(getAdapterPosition() == 0) {
                         Intent intent = new Intent(mContext.getActivity(), SELTrainingActivity.class);
                         intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
                     } else {
-                        Util.showToast("Please complete above module.", mContext);
+                        if (isModuleCompleted.get(getAdapterPosition()-1)) {
+                            Intent intent = new Intent(mContext.getActivity(), SELTrainingActivity.class);
+                            intent.putExtra("TrainingObject", selContentList.get(getAdapterPosition()));
+                            mContext.startActivity(intent);
+                        } else {
+                            Util.showToast("Please complete above module.", mContext);
+                        }
                     }
                 }
             });

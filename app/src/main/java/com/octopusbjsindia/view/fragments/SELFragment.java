@@ -44,7 +44,7 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
     private SELFragmentAdapter selFragmentAdapter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private List<Boolean> isModuleAccessible = new ArrayList<>();
+    private List<Boolean> isModuleCompleted = new ArrayList<>();
     private boolean isAllModulesCompleted = false;
     private Button btnGetCertificate;
     private ImageView ivNoData;
@@ -71,7 +71,7 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
         ivNoData = view.findViewById(R.id.iv_no_data);
         btnGetCertificate = view.findViewById(R.id.btn_certificate);
         btnGetCertificate.setOnClickListener(this);
-        selFragmentAdapter = new SELFragmentAdapter(this, selContentList, isModuleAccessible);
+        selFragmentAdapter = new SELFragmentAdapter(this, selContentList, isModuleCompleted);
         rvSelContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSelContent.setAdapter(selFragmentAdapter);
     }
@@ -131,11 +131,12 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateModuleAccessList() {
-        isModuleAccessible.clear();
-        isModuleAccessible.add(true);
-        for (int i=0; i<selContentList.size()-1; i++) {
-            boolean isAccessible = true;
-            if(selContentList.get(i).getAssignmentList()!= null && selContentList.get(i).getAssignmentList().size()>0) {
+        isModuleCompleted.clear();
+        //isModuleCompleted.add(true);
+        for (int i=0; i<selContentList.size(); i++) {
+            boolean isAccessible = false;
+            if(selContentList.get(i).getAssignmentList()!= null && selContentList.get(i).
+                    getAssignmentList().size()>0) {
                 for (SELAssignmentData selAssignmentData: selContentList.get(i).getAssignmentList()) {
                     if(selAssignmentData.isFormSubmitted()) {
                         isAccessible = true;
@@ -144,16 +145,16 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
                         break;
                     }
                 }
-                isModuleAccessible.add(isAccessible);
+                isModuleCompleted.add(isAccessible);
             } else {
-                isModuleAccessible.add(true);
+                isModuleCompleted.add(true);
             }
         }
 
         selFragmentAdapter.notifyDataSetChanged();
 
-        for (Boolean isModuleCompleted: isModuleAccessible) {
-            if(isModuleCompleted) {
+        for (Boolean isCompleted: isModuleCompleted) {
+            if(isCompleted) {
                 isAllModulesCompleted = true;
             } else {
                 isAllModulesCompleted =  false;

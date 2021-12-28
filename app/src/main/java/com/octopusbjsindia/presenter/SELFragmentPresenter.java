@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.events.CommonResponseStatusString;
 import com.octopusbjsindia.models.sel_content.VideoContentAPIResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
@@ -95,7 +96,7 @@ public class SELFragmentPresenter implements APIPresenterListener {
                         fragmentWeakReference.get().showResponse(videoContentAPIResponse.getMessage());
                     }
                 } else if(requestID.equalsIgnoreCase(SELFragmentPresenter.SEND_SEL_CERTIFICATE_ON_MAIL)) {
-                    CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
+                    CommonResponseStatusString responseOBJ = new Gson().fromJson(response, CommonResponseStatusString.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage());
                 }
             }
