@@ -1,6 +1,4 @@
 package com.octopusbjsindia.view.activities;
-
-import static com.octopusbjsindia.syncAdapter.SyncAdapterUtils.EVENT_FORM_SUBMITTED;
 import static com.octopusbjsindia.utility.Constants.VideoTutorialModule.VIDEO_SEEN;
 
 import android.app.ActionBar;

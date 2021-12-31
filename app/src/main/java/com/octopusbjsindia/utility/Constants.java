@@ -582,5 +582,6 @@ public class Constants {
 
     public static class VideoTutorialModule {
         public static final String VIDEO_SEEN = "video_seen";
+        public static final String VIDEO_NOT_SEEN = "video_not_seen";
     }
 }

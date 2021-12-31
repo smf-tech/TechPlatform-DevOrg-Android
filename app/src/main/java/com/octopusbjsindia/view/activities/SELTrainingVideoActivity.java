@@ -129,12 +129,12 @@ public class SELTrainingVideoActivity extends AppCompatActivity implements APIDa
 
     @Override
     public void onSuccessListener(String requestID, String response) {
-        Util.snackBarToShowMsg(getWindow().getDecorView()
-                        .findViewById(android.R.id.content), getString(R.string.msg_failure),
-                Snackbar.LENGTH_LONG);
-
         Intent intent = new Intent();
-        intent.setAction(Constants.VideoTutorialModule.VIDEO_SEEN);
+        if(isVideoCompleted) {
+            intent.setAction(Constants.VideoTutorialModule.VIDEO_SEEN);
+        } else {
+            intent.setAction(Constants.VideoTutorialModule.VIDEO_NOT_SEEN);
+        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
         finish();
