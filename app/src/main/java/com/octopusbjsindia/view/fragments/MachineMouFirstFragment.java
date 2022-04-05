@@ -103,7 +103,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         statusCode = getActivity().getIntent().getIntExtra("statusCode", 0);
         progressBarLayout = machineMouFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFragmentView.findViewById(R.id.pb_profile_act);
-        editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
+        //editOwnerType = machineMouFragmentView.findViewById(R.id.et_owner_type);
         etMachineState = machineMouFragmentView.findViewById(R.id.et_machine_state);
         etMachineDistrict = machineMouFragmentView.findViewById(R.id.et_machine_district);
         etMachineTaluka = machineMouFragmentView.findViewById(R.id.et_machine_taluka);
@@ -115,7 +115,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etChasisNumber = machineMouFragmentView.findViewById(R.id.et_chasis_number);
         etExcavationCapacity = machineMouFragmentView.findViewById(R.id.et_excavation_capacity);
         etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
-        etProviderName = machineMouFragmentView.findViewById(R.id.et_provider_name);
+        //etProviderName = machineMouFragmentView.findViewById(R.id.et_provider_name);
         etProviderContact = machineMouFragmentView.findViewById(R.id.et_provider_contact);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
         llEligible = machineMouFragmentView.findViewById(R.id.ll_eligible);
@@ -218,8 +218,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     }
 
     private void setMachineFirstData() {
-        editOwnerType.setFocusable(false);
-        editOwnerType.setLongClickable(false);
+//        editOwnerType.setFocusable(false);
+//        editOwnerType.setLongClickable(false);
         etMachineState.setFocusable(false);
         etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
@@ -242,12 +242,12 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etExcavationCapacity.setLongClickable(false);
         etDieselCapacity.setFocusable(false);
         etDieselCapacity.setLongClickable(false);
-        etProviderName.setFocusable(false);
-        etProviderName.setLongClickable(false);
+//        etProviderName.setFocusable(false);
+//        etProviderName.setLongClickable(false);
         etProviderContact.setFocusable(false);
         etProviderContact.setLongClickable(false);
 
-        editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
+        //editOwnerType.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOwnedBy());
         //etUniqueIdNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode());
         etMachineState.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getState());
         etMachineDistrict.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDistrict());
@@ -260,13 +260,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getChasisNo());
         etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getExcavationCapacity());
         etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
-        etProviderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderName());
+        //etProviderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderName());
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderContactNumber());
     }
 
     private void setUIForMachineCreate() {
-        editOwnerType.setFocusable(false);
-        editOwnerType.setLongClickable(false);
+//        editOwnerType.setFocusable(false);
+//        editOwnerType.setLongClickable(false);
         etMachineState.setFocusable(false);
         etMachineState.setLongClickable(false);
         etMachineDistrict.setFocusable(false);
@@ -282,7 +282,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etMeterWorking.setFocusable(false);
         etMeterWorking.setLongClickable(false);
 
-        editOwnerType.setOnClickListener(this);
+        //editOwnerType.setOnClickListener(this);
         etMachineType.setOnClickListener(this);
         etYear.setOnClickListener(this);
         etMachineMakeModel.setOnClickListener(this);
@@ -440,8 +440,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 (etExcavationCapacity.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
                 (etDieselCapacity.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderName(
-                (etProviderName.getText().toString().trim()));
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderName(
+//                (etProviderName.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
         if (Util.isConnected(getActivity())) {
@@ -521,6 +521,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             case R.id.btn_first_part_mou:
                 if (statusCode == Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
                     if (Util.isConnected(getActivity())) {
+                        //selectedOwner = ownershipList.get(ownershipList.size()-1).getName();
+                        selectedOwnerId = ownershipList.get(ownershipList.size()-1).get_id();
                         if (isAllDataValid()) {
                             setCreateMachineData();
                         }
@@ -551,13 +553,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
-            case R.id.et_owner_type:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Ownership Type", ownershipList, false);
-                cdd.show();
-                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_owner_type:
+//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
+//                        "Select Ownership Type", ownershipList, false);
+//                cdd.show();
+//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
             case R.id.et_machine_state:
                 CustomSpinnerDialogClass cdd6 = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State",
@@ -693,11 +695,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (etProviderContact.getText().toString().trim().length() != 10) {
+        }
+//        else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (etProviderContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);
@@ -709,16 +713,16 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     @Override
     public void onCustomSpinnerSelection(String type) {
         switch (type) {
-            case "Select Ownership Type":
-                for (CustomSpinnerObject ownershipType : ownershipList) {
-                    if (ownershipType.isSelected()) {
-                        selectedOwner = ownershipType.getName();
-                        selectedOwnerId = ownershipType.get_id();
-                        break;
-                    }
-                }
-                editOwnerType.setText(selectedOwner);
-                break;
+//            case "Select Ownership Type":
+//                for (CustomSpinnerObject ownershipType : ownershipList) {
+//                    if (ownershipType.isSelected()) {
+//                        selectedOwner = ownershipType.getName();
+//                        selectedOwnerId = ownershipType.get_id();
+//                        break;
+//                    }
+//                }
+//                editOwnerType.setText(selectedOwner);
+//                break;
             case "Select State":
                 for (CustomSpinnerObject state : machineStateList) {
                     if (state.isSelected()) {

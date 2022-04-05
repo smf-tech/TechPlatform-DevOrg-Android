@@ -10,6 +10,9 @@
         android:id="@+id/action_visit_monitoring"
         android:title="Visit and Monitoring" />
     <item
+        android:id="@+id/action_silt_transportation_record"
+        android:title="Silt Transport Record" />
+    <item
         android:id="@+id/action_structure_completion"
         android:title="Structure Completion" />
     <item

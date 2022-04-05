@@ -195,6 +195,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             accountCurrent.setSelected(false);
             accountTypesList.add(accountCurrent);
         }
+        etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMachine().getProviderContactNumber());
         if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             setUIForMouUpdate();
         }
@@ -213,8 +215,6 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                 getProviderInformation().getLastName());
         etProviderLastName.setFocusable(false);
         etProviderLastName.setLongClickable(false);
-        etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMachine().getProviderContactNumber());
 //        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
 //                getMachine().getMachineMobileNumber());
         if(((MachineMouActivity) getActivity()).chequeImageUri!= null) {
@@ -276,11 +276,12 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_last_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etProviderContact.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_provider_contact), Snackbar.LENGTH_LONG);
-            return false;
         }
+//        else if (TextUtils.isEmpty(etProviderContact.getText().toString().trim())){
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_provider_contact), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
 //        else if ( TextUtils.isEmpty(etMachineMobile.getText().toString().trim())){
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.enter_machine_mobile), Snackbar.LENGTH_LONG);
@@ -351,11 +352,11 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         getString(R.string.select_image), Snackbar.LENGTH_LONG);
                 return false;
             }
-            if (etProviderContact.getText().toString().trim().length() != 10){
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.enter_proper_provider_contact), Snackbar.LENGTH_LONG);
-                return false;
-            }
+//            if (etProviderContact.getText().toString().trim().length() != 10){
+//                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                        getString(R.string.enter_proper_provider_contact), Snackbar.LENGTH_LONG);
+//                return false;
+//            }
 //            if (etMachineMobile.getText().toString().trim().length() != 10){
 //                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                        getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
@@ -396,8 +397,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             case R.id.btn_second_part_mou:
                 if(isAllDataValid()){
                     setMachineSecondData();
-                    if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                            getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
+//                    if(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                            getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
                         MouDetails mouDetails = new MouDetails();
                         ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
                         Date d = new Date();
@@ -407,9 +408,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
                         //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
                         ((MachineMouActivity) getActivity()).uploadData();
-                    } else {
-                        ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
-                    }
+//                    } else {
+//                        ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
+//                    }
                 }
                 break;
             case R.id.btn_previous_mou:

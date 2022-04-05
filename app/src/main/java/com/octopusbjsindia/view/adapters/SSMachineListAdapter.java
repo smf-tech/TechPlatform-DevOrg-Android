@@ -189,6 +189,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
                     popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
+                    popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -207,7 +208,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
                         }
                     }
-
 
                     if (fragment.isRealiseOperator) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==

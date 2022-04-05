@@ -42,6 +42,7 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
+import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
@@ -110,8 +111,6 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     @Override
     public void onBindViewHolder(@NonNull SSStructureListAdapter.ViewHolder holder, int position) {
         holder.tvStatus.setText(ssDataList.get(position).getStructureStatus());
-
-
         holder.tvStructureCode.setText(ssDataList.get(position).getStructureCode());
         holder.tvStructureType.setText(ssDataList.get(position).getStructureType());
         holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
@@ -283,6 +282,17 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent intent;
                             switch (item.getItemId()) {
+                                case R.id.action_silt_transportation_record:
+                                    Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+                                    siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                    siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                    siltTransportationIntent.putExtra("type", "siltTransportRecord");
+//                                    siltTransportationIntent.putExtra("machineId",
+//                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getCode());
+                                    siltTransportationIntent.putExtra("structureId", ssDataList.get
+                                            (getAdapterPosition()).getStructureId());
+                                    activity.startActivity(siltTransportationIntent);
+                                    break;
                                 case R.id.action_preparation:
                                     showDialog(activity, "Alert", "Are you sure, want to prepare structure?",
                                             "Yes", "No", getAdapterPosition(), 1);
