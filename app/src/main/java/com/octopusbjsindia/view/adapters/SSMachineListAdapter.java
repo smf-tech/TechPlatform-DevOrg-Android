@@ -189,15 +189,15 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
                     popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
-                    popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                    //popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
                         //popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
                         if (fragment.isDieselRecordForm) {
                             popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
                         }
@@ -263,9 +263,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
                         if (fragment.isDieselRecordForm) {
                             popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
                         }
@@ -292,14 +292,14 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_machine_release).setVisible(true);
                         }
                     }
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
-                    }
+//                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
+//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                                    Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
+//                    }
                     if (!ssDataList.get(getAdapterPosition()).getMouUploaded()) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                 Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
@@ -359,16 +359,16 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                                 (getAdapterPosition()).getDeployedStrutureId());
                                         activity.startActivity(dieselRecordIntent);
                                         break;
-                                    case R.id.action_silt_transportation_record:
-                                        Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
-                                        siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
-                                        siltTransportationIntent.putExtra("title", "Silt Transportation Record");
-                                        siltTransportationIntent.putExtra("type", "siltTransportRecord");
-                                        siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
-                                                (getAdapterPosition()).getDeployedStrutureId());
-                                        activity.startActivity(siltTransportationIntent);
-                                        break;
+//                                    case R.id.action_silt_transportation_record:
+//                                        Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+//                                        siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+//                                        siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+//                                        siltTransportationIntent.putExtra("type", "siltTransportRecord");
+//                                        siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
+//                                                (getAdapterPosition()).getDeployedStrutureId());
+//                                        activity.startActivity(siltTransportationIntent);
+//                                        break;
                                     case R.id.action_machine_release:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseMachine(getAdapterPosition());

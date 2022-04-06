@@ -95,7 +95,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private SiltTransportationRecordFragmentPresenter presenter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    String machineId, currentStructureId;
+    private String machineId, currentStructureId;
     private ImageView imgRegisterOne, clickedImageView; //imgRegisterTwo, imgRegisterThree, ;
     private Uri outputUri;
     private Uri finalUri;
@@ -165,11 +165,16 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         etBType.setFocusable(false);
         etBType.setLongClickable(false);
         etBFirstName = siltTransportationRecordFragmentView.findViewById(R.id.et_b_fname);
+        etBFirstName.setLongClickable(false);
         etBLastName = siltTransportationRecordFragmentView.findViewById(R.id.et_b_lname);
+        etBLastName.setLongClickable(false);
         etBMobile = siltTransportationRecordFragmentView.findViewById(R.id.et_b_mobile);
+        etBMobile.setLongClickable(false);
         etBMobile.addTextChangedListener(textWatcher);
         etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tractor_trips_count);
+        etTractorTripsCount.setLongClickable(false);
         etTipperTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tipper_trips_count);
+        etTipperTripsCount.setLongClickable(false);
         //etFarmersCount = siltTransportationRecordFragmentView.findViewById(R.id.et_farmers_count);
         //etBeneficiariesCount = siltTransportationRecordFragmentView.findViewById(R.id.et_beneficiaries_count);
         imgRegisterOne = siltTransportationRecordFragmentView.findViewById(R.id.img_register_one);
@@ -186,18 +191,21 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
 
         if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
-            etState.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+            selectedState = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName();
             selectedStateId = Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId();
+            etState.setText(selectedState);
         }
         if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-            etDistrict.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+            selectedDistrict = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName();
             selectedDistrictId = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId();
+            etDistrict.setText(selectedDistrict);
         }
         if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
                 Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-            etTaluka.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+            selectedTaluka = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName();
             selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
+            etTaluka.setText(selectedTaluka);
         }
 
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
@@ -375,9 +383,13 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         siltTransportRecord.setSiltTransportDate(Util.dateTimeToTimeStamp(etDate.getText().toString(),
                                 "00:00"));
                         siltTransportRecord.setStateId(selectedStateId);
+                        siltTransportRecord.setStateName(selectedState);
                         siltTransportRecord.setDistrictId(selectedDistrictId);
+                        siltTransportRecord.setDistrictName(selectedDistrict);
                         siltTransportRecord.setTalukaId(selectedTalukaId);
+                        siltTransportRecord.setTalukaName(selectedTaluka);
                         siltTransportRecord.setVillageId(selectedVillageId);
+                        siltTransportRecord.setVillageName(selectedVillage);
                         siltTransportRecord.setbTypeId(selectedBTypeId);
                         siltTransportRecord.setbFirstName(etBFirstName.getText().toString());
                         siltTransportRecord.setbLastName(etBLastName.getText().toString());
@@ -769,8 +781,8 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         getActivity().finish();
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-        intent.putExtra("viewType", 2);
-        intent.putExtra("title", "Machine List");
+        intent.putExtra("viewType", 1);
+        intent.putExtra("title", "Structure List");
         getActivity().startActivity(intent);
     }
 

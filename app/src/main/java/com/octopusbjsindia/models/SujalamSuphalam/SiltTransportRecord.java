@@ -18,29 +18,29 @@ public class SiltTransportRecord implements Serializable {
     @Expose
     private long siltTransportDate;
 
-    @SerializedName("stateId")
+    @SerializedName("state_id")
     @Expose
     private String stateId;
-    @SerializedName("stateName")
+    @SerializedName("state_name")
     @Expose
     private String stateName;
-    @SerializedName("districtId")
+    @SerializedName("district_id")
     @Expose
     private String districtId;
 
-    @SerializedName("districtName")
+    @SerializedName("district_name")
     @Expose
     private String districtName;
-        @SerializedName("talukaId")
+        @SerializedName("taluka_id")
     @Expose
     private String talukaId;
-    @SerializedName("talukaName")
+    @SerializedName("taluka_name")
     @Expose
     private String talukaName;
-    @SerializedName("villageId")
+    @SerializedName("village_id")
     @Expose
     private String villageId;
-    @SerializedName("villageName")
+    @SerializedName("village_name")
     @Expose
     private String villageName;
 
