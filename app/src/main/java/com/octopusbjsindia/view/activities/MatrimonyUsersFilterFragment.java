@@ -50,8 +50,8 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private TextView txtMinAge, txtMaxAge;
     private MatrimonyUsersFilterActivityPresenter presenter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
-    private EditText etMobile, etName, etMeetStatus, etVerificationStatus, etState, etGender, etSect, etQualification,et_education_level, etMaritalStatus, etPaidOrFree;
-    private String selectedMeetStatus, selectedVerificationStatus, selectedState, selectedQualification, selectedGender, selectedSect,
+    private EditText etMobile, etUniqueId, etName, etMeetStatus, etVerificationStatus, etCountry, etState, etGender, etSect, etQualification,et_education_level, etMaritalStatus, etPaidOrFree;
+    private String selectedMeetStatus, selectedVerificationStatus, selectedCountry, selectedState, selectedQualification, selectedGender, selectedSect,
             selectedMaritalStatus, selectedPaidOrFree;
     private SimpleRangeView rangeView;
     private MatrimonyUserFilterData matrimonyUserFilterData;
@@ -87,10 +87,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         ivClearFilter = view.findViewById(R.id.iv_clear_filter);
         ivClearFilter.setOnClickListener(this);
         etMobile = view.findViewById(R.id.et_mobile);
+        etUniqueId = view.findViewById(R.id.et_unique_id);
         etName = view.findViewById(R.id.et_name);
         etMeetStatus = view.findViewById(R.id.et_meet_status);
         etVerificationStatus = view.findViewById(R.id.et_verification_status);
         etState = view.findViewById(R.id.et_state);
+        etCountry = view.findViewById(R.id.et_country);
         etGender = view.findViewById(R.id.et_gender);
         etSect = view.findViewById(R.id.et_sect);
         et_education_level = view.findViewById(R.id.et_education_level);
@@ -115,6 +117,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             }
         }
         etState.setOnClickListener(this);
+        etCountry.setOnClickListener(this);
         etGender.setOnClickListener(this);
         etSect.setOnClickListener(this);
         et_education_level.setOnClickListener(this);
@@ -182,6 +185,9 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         if (matrimonyUserFilterData.getMobile_number() != null) {
             etMobile.setText(matrimonyUserFilterData.getMobile_number());
         }
+        if (matrimonyUserFilterData.getUniqueId() != null) {
+            etUniqueId.setText(matrimonyUserFilterData.getUniqueId());
+        }
         if (matrimonyUserFilterData.getUser_name() != null) {
             etName.setText(matrimonyUserFilterData.getUser_name());
         }
@@ -190,6 +196,9 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         }
         if (matrimonyUserFilterData.getUser_verification_status() != null) {
             etVerificationStatus.setText(matrimonyUserFilterData.getUser_verification_status());
+        }
+        if (matrimonyUserFilterData.getCountry() != null) {
+            etCountry.setText(matrimonyUserFilterData.getCountry());
         }
         if (matrimonyUserFilterData.getState_names() != null) {
             etState.setText(matrimonyUserFilterData.getState_names());
@@ -258,6 +267,16 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                         tempVerificationStatusList.add(customSpinnerObject);
                     }
                     ((MatrimonyProfileListActivity) getActivity()).setVerificationStatusList(tempVerificationStatusList);
+                    break;
+                case "country":
+                    ((MatrimonyProfileListActivity) getActivity()).getCountryList().clear();
+                    ArrayList<CustomSpinnerObject> tempCountyList = new ArrayList<>();
+                    for (String countryName : masterData.getValues()) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(countryName);
+                        tempCountyList.add(customSpinnerObject);
+                    }
+                    ((MatrimonyProfileListActivity) getActivity()).setCountryList(tempCountyList);
                     break;
                 case "state":
                     ((MatrimonyProfileListActivity) getActivity()).getStateList().clear();
@@ -406,6 +425,13 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 csdverificationStatus.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
+            case R.id.et_country:
+                CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Country", ((MatrimonyProfileListActivity) getActivity()).getCountryList(), true);
+                csdCountry.show();
+                csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
             case R.id.et_state:
                 CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State", ((MatrimonyProfileListActivity) getActivity()).getStateList(), true);
@@ -476,6 +502,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                 } else {
                     matrimonyUserFilterData.setMobile_number(null);
+                    if (etUniqueId.getText().toString().trim().length() > 0) {
+                        matrimonyUserFilterData.setUniqueId(etUniqueId.getText().toString().trim());
+                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                    } else {
+                        matrimonyUserFilterData.setUser_name(null);
+                    }
                     if (etName.getText().toString().trim().length() > 0) {
                         matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
                         ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
@@ -499,6 +531,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                     if (matrimonyUserFilterData.getUser_verification_status() != null
                             || matrimonyUserFilterData.getUser_meet_status() != null
+                            || matrimonyUserFilterData.getCountry() != null
                             || matrimonyUserFilterData.getState_names() != null
                             || matrimonyUserFilterData.getUser_sect() != null
                             || matrimonyUserFilterData.getQualification_degrees() != null
@@ -519,9 +552,11 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
                 etMobile.setText("");
+                etUniqueId.setText("");
                 etName.setText("");
                 etMeetStatus.setText("");
                 etVerificationStatus.setText("");
+                etCountry.setText("");
                 etState.setText("");
                 etQualification.setText("");
                 etGender.setText("");
@@ -538,6 +573,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 matrimonyUserFilterData.setUser_name(null);
                 matrimonyUserFilterData.setUser_meet_status(null);
                 matrimonyUserFilterData.setUser_verification_status(null);
+                matrimonyUserFilterData.setCountry(null);
                 matrimonyUserFilterData.setState_names(null);
                 matrimonyUserFilterData.setQualification_degrees(null);
                 matrimonyUserFilterData.setGender(null);
@@ -553,6 +589,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 }
 
                 for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getVerificationStatusList()) {
+                    if (obj.isSelected()) {
+                        obj.setSelected(false);
+                    }
+                }
+
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getCountryList()) {
                     if (obj.isSelected()) {
                         obj.setSelected(false);
                     }
@@ -630,6 +672,20 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 }
                 etVerificationStatus.setText(selectedVerificationStatus);
                 matrimonyUserFilterData.setUser_verification_status(selectedVerificationStatus);
+                break;
+            case "Select Country":
+                selectedCountry = null;
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getCountryList()) {
+                    if (obj.isSelected()) {
+                        if (selectedCountry != null && selectedCountry != "") {
+                            selectedCountry = selectedCountry + "," + obj.getName();
+                        } else {
+                            selectedCountry = obj.getName();
+                        }
+                    }
+                }
+                etCountry.setText(selectedCountry);
+                matrimonyUserFilterData.setCountry(selectedCountry);
                 break;
             case "Select State":
                 selectedState = null;

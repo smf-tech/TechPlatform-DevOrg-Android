@@ -111,37 +111,27 @@
                             android:src="@drawable/ic_share"
                             android:visibility="gone" />
 
-                        <!--                        <TextView-->
-                        <!--                            android:id="@+id/tv_approval_status"-->
-                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
-                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
-                        <!--                            android:layout_gravity="start"-->
-                        <!--                            android:layout_marginTop="@dimen/dimen_20dp"-->
-                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
-                        <!--                            android:fontFamily="@font/opensans_bold"-->
-                        <!--                            android:gravity="center_vertical"-->
-                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
-                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
-                        <!--                            android:text="Approved"-->
-                        <!--                            android:textColor="@color/white"-->
-                        <!--                            android:textSize="@dimen/text_size_10" />-->
+                        <LinearLayout
+                            android:id="@+id/ly_unique_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:background="@drawable/bg_circular_tsp_black_40"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_02dp">
 
-                        <!--                        <TextView-->
-                        <!--                            android:id="@+id/tv_premium"-->
-                        <!--                            android:layout_width="@dimen/dimen_75dp"-->
-                        <!--                            android:layout_height="@dimen/dimen_25dp"-->
-                        <!--                            android:layout_gravity="start"-->
-                        <!--                            android:layout_marginTop="@dimen/dimen_50dp"-->
-                        <!--                            android:background="@drawable/ic_publish_ribbon"-->
-                        <!--                            android:fontFamily="@font/opensans_bold"-->
-                        <!--                            android:gravity="center_vertical"-->
-                        <!--                            android:paddingStart="@dimen/dimen_05dp"-->
-                        <!--                            android:paddingEnd="@dimen/dimen_10dp"-->
-                        <!--                            android:text="Premium"-->
-                        <!--                            android:textColor="@color/white"-->
-                        <!--                            android:textSize="@dimen/text_size_10" />-->
+                            <TextView
+                                android:id="@+id/tv_unique_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:text="BJS-XXX"
+                                android:textSize="@dimen/text_size_11"
+                                android:textColor="@color/white"
+                                />
 
-
+                        </LinearLayout>
                         <LinearLayout
                             android:id="@+id/ly_premium"
                             android:layout_width="wrap_content"
@@ -149,6 +139,7 @@
                             android:layout_margin="@dimen/dimen_05dp"
                             android:background="@drawable/bg_circular_tsp_black_40"
                             android:orientation="horizontal"
+                            android:layout_below="@+id/ly_unique_id"
                             android:padding="@dimen/dimen_02dp">
 
                             <ImageView

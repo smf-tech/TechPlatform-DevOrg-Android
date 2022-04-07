@@ -38,6 +38,7 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private String minAge, maxAge;
     // FilterCandidateFragment arraylists
     private List<String> minMaxAgeList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> countryList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
 
     public ArrayList<CustomSpinnerObject> getMeetStatusList() {
@@ -171,6 +172,14 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
 
     public void setMinMaxAgeList(List<String> minMaxAgeList) {
         this.minMaxAgeList = minMaxAgeList;
+    }
+
+    public ArrayList<CustomSpinnerObject> getCountryList() {
+        return countryList;
+    }
+
+    public void setCountryList(ArrayList<CustomSpinnerObject> countryList) {
+        this.countryList = countryList;
     }
 
     public ArrayList<CustomSpinnerObject> getStateList() {

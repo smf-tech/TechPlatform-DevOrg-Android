@@ -65,26 +65,39 @@
             android:padding="@dimen/dimen_10dp"
             android:layout_below="@+id/toolbar_action_view">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/et_mobile"
-                    style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/find_by_mobile"
-                    android:longClickable="false"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:textIsSelectable="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <LinearLayout
                 android:id="@+id/ll_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_mobile"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/find_by_mobile"
+                        android:longClickable="false"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:textIsSelectable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_unique_id"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Find by unique ID"
+                        android:longClickable="false"
+                        android:textIsSelectable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
@@ -122,6 +135,20 @@
                         android:id="@+id/et_verification_status"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/user_verification_status"
+                        android:longClickable="false"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_country"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/country"
+                        android:editable="false"
                         android:longClickable="false"
                         android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>

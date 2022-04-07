@@ -83,7 +83,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //personal
     private TextView tv_gender, tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
-            tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink;
+            tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink,tv_unique_id;
     //educational and fammily
     private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income, tv_degree,
             tv_family_type, tv_sakha_gotra_1, tv_sakha_gotra_2, tv_sakha_gotra_3, tv_sakha_gotra_4,
@@ -222,6 +222,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         btn_verify_ids = findViewById(R.id.btn_verify_ids);
         btn_verify_edu = findViewById(R.id.btn_verify_edu);
         //Personal details -
+        tv_unique_id  = findViewById(R.id.tv_unique_id);
         tv_name = findViewById(R.id.tv_name);
         tv_gender = findViewById(R.id.tv_gender);
         tv_birth_date = findViewById(R.id.tv_birth_date);
@@ -267,6 +268,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                 .append(matrimonialProfile.getPersonalDetails().getSect()).toString();
         txtValue.setText(s);
 
+        tv_unique_id.setText(userProfileList.getMatrimonial_profile().getProfile_unique_id());
         userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name();
         tv_name.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getFirst_name() + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getMiddle_name()
                 + " " + userProfileList.getMatrimonial_profile().getPersonal_details().getLast_name());

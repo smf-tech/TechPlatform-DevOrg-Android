@@ -28,13 +28,36 @@
 
 
                 <ImageView
+                    android:id="@+id/user_profile_pic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:id="@+id/user_profile_pic"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/profileimagetest" />
+
+                <LinearLayout
+                    android:id="@+id/ly_unick_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_02dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_unick_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="BJS-XXX"
+                        android:textSize="@dimen/text_size_11"
+                        android:textColor="@color/white"
+                        />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ly_premium"
@@ -43,6 +66,7 @@
                     android:layout_margin="@dimen/dimen_05dp"
                     android:background="@drawable/bg_circular_tsp_black_40"
                     android:orientation="horizontal"
+                    android:layout_below="@+id/ly_unick_id"
                     android:padding="@dimen/dimen_02dp"
                     android:visibility="gone">
 

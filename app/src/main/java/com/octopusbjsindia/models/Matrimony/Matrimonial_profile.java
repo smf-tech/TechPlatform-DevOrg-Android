@@ -40,6 +40,9 @@ public class Matrimonial_profile implements Serializable {
     @SerializedName("educationApproved")
     @Expose
     private boolean educationApproved;
+    @SerializedName("profile_unique_id")
+    @Expose
+    private String profile_unique_id;
 
 
     public Personal_details getPersonal_details() {
@@ -121,5 +124,13 @@ public class Matrimonial_profile implements Serializable {
 
     public void setEducationApproved(boolean educationApproved) {
         this.educationApproved = educationApproved;
+    }
+
+    public String getProfile_unique_id() {
+        return profile_unique_id;
+    }
+
+    public void setProfile_unique_id(String profile_unique_id) {
+        this.profile_unique_id = profile_unique_id;
     }
 }

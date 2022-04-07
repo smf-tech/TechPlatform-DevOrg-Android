@@ -56,7 +56,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                     /*.append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCity()+",")
                     .append(dataList.get(position).getMatrimonial_profile().getResidential_details().getCountry()).toString();*/
             holder.txtValue.setText(s);
-
+            holder.tv_unick_id.setText((dataList.get(position).getMatrimonial_profile().getProfile_unique_id()));
             //sectionType.equalsIgnoreCase("MeetUserList")
             if (!TextUtils.isEmpty(dataList.get(position).getUserMeetStatus())) {
                 //holder.tv_approval_status.setText(dataList.get(position).getUserMeetStatus());
@@ -110,7 +110,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
     class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle, txtValue, tv_approval_status, tv_premium, tv_payment_status, tvPremium,
-                tvMeetApproved, tv_blocked, tv_blocked_count;
+                tvMeetApproved, tv_blocked, tv_blocked_count,tv_unick_id;
         ImageView user_profile_pic, ivMeetApproved;
         LinearLayout lyPremium, lyMeetApproved,ly_blocked_count;
 //            Button btn_reject,btn_approve;
@@ -126,6 +126,7 @@ public class MatrimonyProfileListRecyclerAdapter extends RecyclerView.Adapter<Ma
                 txtValue = itemView.findViewById(R.id.tv_value);
                 tv_blocked = itemView.findViewById(R.id.tv_blocked);
                 tv_blocked_count = itemView.findViewById(R.id.tv_blocked_count);
+                tv_unick_id = itemView.findViewById(R.id.tv_unick_id);
                 ly_blocked_count = itemView.findViewById(R.id.ly_blocked_count);
                 user_profile_pic = itemView.findViewById(R.id.user_profile_pic);
 

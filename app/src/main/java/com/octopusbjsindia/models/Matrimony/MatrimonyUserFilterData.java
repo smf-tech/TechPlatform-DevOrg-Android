@@ -2,9 +2,11 @@ package com.octopusbjsindia.models.Matrimony;
 
 public class MatrimonyUserFilterData {
     private String mobile;
+    private String uniqueId;
     private String name;
     private String meet_status;
     private String verification_status;
+    private String country;
     private String state_names;
     private String age_ranges;
     private String gender;
@@ -22,6 +24,14 @@ public class MatrimonyUserFilterData {
 
     public void setMobile_number(String mobile_number) {
         this.mobile = mobile_number;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public String getUser_name() {
@@ -46,6 +56,14 @@ public class MatrimonyUserFilterData {
 
     public void setUser_verification_status(String user_verification_status) {
         this.verification_status = user_verification_status;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getState_names() {
