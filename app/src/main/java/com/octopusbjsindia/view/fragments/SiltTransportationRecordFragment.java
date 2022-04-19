@@ -96,7 +96,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private String machineId, currentStructureId;
-    private ImageView imgRegisterOne, clickedImageView; //imgRegisterTwo, imgRegisterThree, ;
+    //private ImageView imgRegisterOne, clickedImageView; //imgRegisterTwo, imgRegisterThree, ;
     private Uri outputUri;
     private Uri finalUri;
     private final String TAG = MachineDieselRecordFragment.class.getName();
@@ -104,8 +104,8 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
     private Button btnSubmit;
-    private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etBFirstName, etBLastName, etBMobile,
-            etTractorTripsCount, etTipperTripsCount;
+    private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etSurveyNo, etBFirstName, etBLastName, etBMobile,
+            etTractorTripsCount, etTipperTripsCount, etTotalSilt;
     //etFarmersCount, etBeneficiariesCount;
     private String currentPhotoPath = "";
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -164,6 +164,8 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         etBType.setOnClickListener(this);
         etBType.setFocusable(false);
         etBType.setLongClickable(false);
+        etSurveyNo = siltTransportationRecordFragmentView.findViewById(R.id.et_survey_no);
+        etSurveyNo.setLongClickable(false);
         etBFirstName = siltTransportationRecordFragmentView.findViewById(R.id.et_b_fname);
         etBFirstName.setLongClickable(false);
         etBLastName = siltTransportationRecordFragmentView.findViewById(R.id.et_b_lname);
@@ -171,14 +173,18 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         etBMobile = siltTransportationRecordFragmentView.findViewById(R.id.et_b_mobile);
         etBMobile.setLongClickable(false);
         etBMobile.addTextChangedListener(textWatcher);
-        etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tractor_trips_count);
+        etTractorTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_trolley_trips_count);
         etTractorTripsCount.setLongClickable(false);
         etTipperTripsCount = siltTransportationRecordFragmentView.findViewById(R.id.et_tipper_trips_count);
         etTipperTripsCount.setLongClickable(false);
+//        etTotalSilt = siltTransportationRecordFragmentView.findViewById(R.id.et_total_silt);
+//        etTotalSilt.setOnClickListener(this);
+//        etTotalSilt.setFocusable(false);
+//        etTotalSilt.setLongClickable(false);
         //etFarmersCount = siltTransportationRecordFragmentView.findViewById(R.id.et_farmers_count);
         //etBeneficiariesCount = siltTransportationRecordFragmentView.findViewById(R.id.et_beneficiaries_count);
-        imgRegisterOne = siltTransportationRecordFragmentView.findViewById(R.id.img_register_one);
-        imgRegisterOne.setOnClickListener(this);
+//        imgRegisterOne = siltTransportationRecordFragmentView.findViewById(R.id.img_register_one);
+//        imgRegisterOne.setOnClickListener(this);
 //        imgRegisterTwo = siltTransportationRecordFragmentView.findViewById(R.id.img_register_two);
 //        imgRegisterTwo.setOnClickListener(this);
 //        imgRegisterThree = siltTransportationRecordFragmentView.findViewById(R.id.img_register_three);
@@ -362,10 +368,10 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                 cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.img_register_one:
-                clickedImageView = imgRegisterOne;
-                onAddImageClick();
-                break;
+//            case R.id.img_register_one:
+//                clickedImageView = imgRegisterOne;
+//                onAddImageClick();
+//                break;
 //            case R.id.img_register_two:
 //                clickedImageView = imgRegisterTwo;
 //                onAddImageClick();
@@ -391,6 +397,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         siltTransportRecord.setVillageId(selectedVillageId);
                         siltTransportRecord.setVillageName(selectedVillage);
                         siltTransportRecord.setbTypeId(selectedBTypeId);
+                        siltTransportRecord.setSurveyNo(etSurveyNo.getText().toString());
                         siltTransportRecord.setbFirstName(etBFirstName.getText().toString());
                         siltTransportRecord.setbLastName(etBLastName.getText().toString());
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
@@ -517,6 +524,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     public void updateBeneficiaryDetails(SiltTransportRecord record) {
+        etSurveyNo.setText(record.getSurveyNo());
         etBFirstName.setText(record.getbFirstName());
         etBLastName.setText(record.getbLastName());
         if(selectedStateId == null ||!selectedStateId.equals(record.getStateId())) {
@@ -564,122 +572,122 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         etBType.setText(selectedBType);
     }
 
-    private void onAddImageClick() {
-        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            showPictureDialog();
-        }
-    }
+//    private void onAddImageClick() {
+//        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+//            showPictureDialog();
+//        }
+//    }
 
-    private void showPictureDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle(getString(R.string.title_choose_picture));
-        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+//    private void showPictureDialog() {
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+//        dialog.setTitle(getString(R.string.title_choose_picture));
+//        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+//
+//        dialog.setItems(items, (dialog1, which) -> {
+//            switch (which) {
+//                case 0:
+//                    choosePhotoFromGallery();
+//                    break;
+//
+//                case 1:
+//                    takePhotoFromCamera();
+//                    break;
+//            }
+//        });
+//        dialog.show();
+//    }
 
-        dialog.setItems(items, (dialog1, which) -> {
-            switch (which) {
-                case 0:
-                    choosePhotoFromGallery();
-                    break;
+//    private void choosePhotoFromGallery() {
+//        try {
+//            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+//        } catch (ActivityNotFoundException e) {
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
-                case 1:
-                    takePhotoFromCamera();
-                    break;
-            }
-        });
-        dialog.show();
-    }
+//    private void takePhotoFromCamera() {
+//        try {
+//            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            File file = getImageFile(); // 1
+//            Uri uri;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+//                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+//            else
+//                uri = Uri.fromFile(file); // 3
+//            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+//            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+//        } catch (ActivityNotFoundException e) {
+//            //display an error message
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
+//                    Toast.LENGTH_SHORT).show();
+//        } catch (SecurityException e) {
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
-    private void choosePhotoFromGallery() {
-        try {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+//            try {
+//                finalUri = Uri.fromFile(new File(currentPhotoPath));
+//                Crop.of(finalUri, finalUri).start(getContext(), this);
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+//            if (data != null) {
+//                try {
+//                    getImageFile();
+//                    outputUri = data.getData();
+//                    finalUri = Uri.fromFile(new File(currentPhotoPath));
+//                    Crop.of(outputUri, finalUri).start(getContext(), this);
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                }
+//            }
+//        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+//            try {
+//                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+//                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                clickedImageView.setImageURI(finalUri);
+//                if (Util.isValidImageSize(imageFile)) {
+//                    imageHashmap.put("register" + imageCount, bitmap);
+//                    imageCount++;
+//                } else {
+//                    Util.showToast(getString(R.string.msg_big_image), this);
+//                }
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        }
+//    }
 
-    private void takePhotoFromCamera() {
-        try {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = getImageFile(); // 1
-            Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-            else
-                uri = Uri.fromFile(file); // 3
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-        } catch (ActivityNotFoundException e) {
-            //display an error message
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
-                    Toast.LENGTH_SHORT).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
-            try {
-                finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(), this);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-            if (data != null) {
-                try {
-                    getImageFile();
-                    outputUri = data.getData();
-                    finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            try {
-                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                clickedImageView.setImageURI(finalUri);
-                if (Util.isValidImageSize(imageFile)) {
-                    imageHashmap.put("register" + imageCount, bitmap);
-                    imageCount++;
-                } else {
-                    Util.showToast(getString(R.string.msg_big_image), this);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
-    }
-
-    private File getImageFile() {
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        File file;
-        file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
-        currentPhotoPath = file.getPath();
-        return file;
-    }
+//    private File getImageFile() {
+//        // External sdcard location
+//        File mediaStorageDir = new File(
+//                Environment
+//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+//                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+//        // Create the storage directory if it does not exist
+//        if (!mediaStorageDir.exists()) {
+//            if (!mediaStorageDir.mkdirs()) {
+//                return null;
+//            }
+//        }
+//        // Create a media file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+//                Locale.getDefault()).format(new Date());
+//        File file;
+//        file = new File(mediaStorageDir.getPath() + File.separator
+//                + "IMG_" + timeStamp + ".jpg");
+//        currentPhotoPath = file.getPath();
+//        return file;
+//    }
 
     private void uploadData(SiltTransportRecord siltTransportRecord) {
         showProgressBar();

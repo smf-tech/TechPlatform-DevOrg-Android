@@ -596,5 +596,13 @@
     <string name="msg_numberof_crops">Please enter number of crops taken in year.</string>
     <string name="msg_enter_remark">Please enter remark.</string>
     <string name="structure_status">Structure status</string>
+    <string name="supervisor_first_name">Machine Supervisor First Name</string>
+    <string name="supervisor_last_name">Machine Supervisor Last Name</string>
+    <string name="operator_first_name">Operator First Name</string>
+    <string name="operator_last_name">Operator Last Name</string>
+    <string name="enter_supervisor_first_name">Please enter supervisor\'s first name</string>
+    <string name="enter_supervisor_last_name">Please enter supervisor\'s last name</string>
+    <string name="enter_operator_first_name">Enter machine operator\'s first name</string>
+    <string name="enter_operator_last_name">Enter operator\'s last name</string>
 
 </resources>

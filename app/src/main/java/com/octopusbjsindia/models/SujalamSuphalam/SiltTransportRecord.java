@@ -48,6 +48,10 @@ public class SiltTransportRecord implements Serializable {
     @Expose
     private String bTypeId;
 
+    @SerializedName("survey_no")
+    @Expose
+    private String surveyNo;
+
     @SerializedName("b_first_name")
     @Expose
     private String bFirstName;
@@ -168,6 +172,14 @@ public class SiltTransportRecord implements Serializable {
 
     public void setbTypeId(String bTypeId) {
         this.bTypeId = bTypeId;
+    }
+
+    public String getSurveyNo() {
+        return surveyNo;
+    }
+
+    public void setSurveyNo(String surveyNo) {
+        this.surveyNo = surveyNo;
     }
 
     public String getbFirstName() {

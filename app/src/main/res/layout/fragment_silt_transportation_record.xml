@@ -52,6 +52,44 @@
                         android:maxLength="10"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_fname"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Beneficiary first name"
+                        android:inputType="textCapWords"
+                        android:maxLength="100"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_lname"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Beneficiary last name"
+                        android:inputType="textCapWords"
+                        android:maxLength="100"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_survey_no"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Survey number"
+                        android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -122,7 +160,6 @@
 
                 </LinearLayout>
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
@@ -140,35 +177,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/et_b_fname"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary first name"
-                        android:inputType="textCapWords"
-                        android:maxLength="100"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_b_lname"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary last name"
-                        android:inputType="textCapWords"
-                        android:maxLength="100"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_tractor_trips_count"
+                        android:id="@+id/et_trolley_trips_count"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Tractor trips count"
                         android:inputType="number"
@@ -194,6 +203,17 @@
 <!--                    android:layout_height="wrap_content">-->
 
 <!--                    <EditText-->
+<!--                        android:id="@+id/et_total_silt"-->
+<!--                        style="@style/RegistrationEditTextLayout"-->
+<!--                        android:hint="Total silt"/>-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    style="@style/textinputstyle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <EditText-->
 <!--                        android:id="@+id/et_farmers_count"-->
 <!--                        style="@style/RegistrationEditTextLayout"-->
 <!--                        android:hint="Number of farmers"-->
@@ -212,21 +232,21 @@
 <!--                        android:inputType="number"/>-->
 <!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <ImageView
-                    android:id="@+id/img_register_one"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:src="@drawable/ic_add_img"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="gone"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_register_one"-->
+<!--                    android:layout_width="150dp"-->
+<!--                    android:layout_height="150dp"-->
+<!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+<!--                    android:src="@drawable/ic_add_img"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:visibility="gone"/>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Image"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="gone"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Image"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:visibility="gone"/>-->
 
 <!--                <ImageView-->
 <!--                    android:id="@+id/img_register_two"-->

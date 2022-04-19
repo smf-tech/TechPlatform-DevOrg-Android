@@ -27,7 +27,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_ownership"
@@ -81,6 +82,35 @@
                     android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_supervisor_first_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/supervisor_first_name"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_supervisor_last_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/supervisor_last_name"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
@@ -91,7 +121,6 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_mobile"
                     android:inputType="number"
-                    android:visibility="gone"
                     android:maxLength="10"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +128,48 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_first_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_first_name"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_last_name"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_last_name"
+                    android:maxLength="50"
+                    android:inputType="textPersonName"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_operator_mobile"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/operator_contact"
+                    android:inputType="number"
+                    android:maxLength="10"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_trade_name"
@@ -111,7 +182,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_turnover"
@@ -125,7 +197,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_gst_reg_no"
@@ -138,7 +211,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_pan_no"
@@ -151,7 +225,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_bank_name"
@@ -165,7 +240,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_branch"
@@ -179,7 +255,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_ifsc"
@@ -192,7 +269,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_account_no"
@@ -205,7 +283,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_confirm_account_no"
@@ -222,7 +301,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_img" />
+                android:src="@drawable/ic_img"
+                android:visibility="gone"/>
 
             <com.octopusbjsindia.view.customs.TextViewSemiBold
                 android:id="@+id/event_pic_label"
@@ -234,12 +314,14 @@
                 android:text="@string/account_image"
                 android:textColor="@color/medium_grey"
                 android:fontFamily="@font/opensans"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_14"
+                android:visibility="gone"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_account_holder_name"
@@ -253,7 +335,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_account_type"
