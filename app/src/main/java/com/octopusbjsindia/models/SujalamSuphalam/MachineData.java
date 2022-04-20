@@ -123,7 +123,6 @@ public class MachineData  implements Serializable {
     @Expose
     private String operatorContactNumber;
 
-
     public Boolean getMouUploaded() {
         return isMouUploaded;
     }

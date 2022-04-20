@@ -63,7 +63,7 @@ import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class StructureCompletionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
     final String STRUCTURE_STATUS = "StructureStatus";
 

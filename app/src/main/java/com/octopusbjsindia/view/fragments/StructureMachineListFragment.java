@@ -91,7 +91,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isOperatorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd, isRealiseOperator, isAssignOperator;
+            isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator;
     private FloatingActionButton fbSelect, fbCreate, fbCreateOperator;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
@@ -201,7 +201,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     isVillageFilter = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_REALISE_OPERATOR)) {
-                    isRealiseOperator = true;
+                    isReleaseOperator = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
                     isAssignOperator = true;

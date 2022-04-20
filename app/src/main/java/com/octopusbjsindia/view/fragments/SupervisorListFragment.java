@@ -23,18 +23,18 @@ import com.android.volley.VolleyError;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.SujalamSuphalam.OpratorListData;
-import com.octopusbjsindia.presenter.OperatorListFragmentPresenter;
+import com.octopusbjsindia.presenter.SupervisorListFragmentPresenter;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.OperatorsListAdapter;
 
 import java.util.List;
 import java.util.Objects;
 
-public class OperatorListFragment extends Fragment implements APIDataListener {
+public class SupervisorListFragment extends Fragment implements APIDataListener {
 
     private View view;
     private RelativeLayout progressBarLayout;
-    private OperatorListFragmentPresenter presenter;
+    private SupervisorListFragmentPresenter presenter;
     Context activity;
     RecyclerView rvOperator;
     String machineId;
@@ -58,14 +58,13 @@ public class OperatorListFragment extends Fragment implements APIDataListener {
         super.onViewCreated(view, savedInstanceState);
         progressBarLayout = view.findViewById(R.id.progress_bar);
 
-
-        presenter = new OperatorListFragmentPresenter(this);
+        presenter = new SupervisorListFragmentPresenter(this);
 
         machineId = getActivity().getIntent().getStringExtra("machineId");
         machineCode = getActivity().getIntent().getStringExtra("machineCode");
 
         if (Util.isConnected(getActivity())) {
-            presenter.getOperators();
+            presenter.getSupervisors();
         } else {
             Util.showToast(activity.getString(R.string.msg_no_network), activity);
         }

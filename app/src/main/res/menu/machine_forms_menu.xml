@@ -47,13 +47,13 @@
         android:visible="false"/>
 
     <item
-        android:id="@+id/action_assign_operator"
-        android:title="Assign Operator"
+        android:id="@+id/action_assign_supervisor"
+        android:title="Assign Supervisor"
         android:visible="false" />
 
     <item
-        android:id="@+id/action_release_operator"
-        android:title="Release Operator"
+        android:id="@+id/action_release_supervisor"
+        android:title="Release Supervisor"
         android:visible="false" />
 
 </menu>

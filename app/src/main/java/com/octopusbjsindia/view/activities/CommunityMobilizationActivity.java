@@ -57,7 +57,6 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 public class CommunityMobilizationActivity extends AppCompatActivity implements View.OnClickListener,
         CustomSpinnerListener, APIDataListener {
 
-    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
 
     EditText selecteETVillage, etActivity, etTask, etA1MeetingDate, etA1VillageName, etA1GrampanchayatName, etA1NoOfParticipant,

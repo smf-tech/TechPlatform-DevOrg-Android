@@ -2,12 +2,10 @@ package com.octopusbjsindia.view.adapters;
 
 import android.app.ActionBar;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,16 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.stories.FeedData;
 import com.octopusbjsindia.presenter.StoriesFragmentPresenter;
-import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommentActivity;
-import com.octopusbjsindia.view.activities.StructureCompletionActivity;
-import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
 import com.octopusbjsindia.view.activities.WebViewActivity;
 import com.octopusbjsindia.view.fragments.StoriesFragment;
 

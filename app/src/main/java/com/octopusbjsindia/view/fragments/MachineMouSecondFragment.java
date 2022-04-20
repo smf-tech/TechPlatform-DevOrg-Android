@@ -63,8 +63,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnSecondPartMou, btnPreviousMou;
-    private EditText etProviderFirstName, etProviderLastName, etProviderContact, etSupervisorFName,
-            etSupervisorLName ,etMachineMobile, etOperatorFName, etOperatorLName, etOperatorMobile;
+    private EditText etProviderFirstName, etProviderLastName, etProviderContact,
+            etOperatorFName, etOperatorLName, etOperatorMobile;
+    //etSupervisorFName, etSupervisorLName ,etMachineMobile,
 
 //            etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
 //            etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
@@ -113,9 +114,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderFirstName = machineMouSecondFragmentView.findViewById(R.id.et_provider_first_name);
         etProviderLastName = machineMouSecondFragmentView.findViewById(R.id.et_provider_last_name);
         etProviderContact = machineMouSecondFragmentView.findViewById(R.id.et_provider_contact);
-        etSupervisorFName = machineMouSecondFragmentView.findViewById(R.id.et_supervisor_first_name);
-        etSupervisorLName = machineMouSecondFragmentView.findViewById(R.id.et_supervisor_last_name);
-        etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
+//        etSupervisorFName = machineMouSecondFragmentView.findViewById(R.id.et_supervisor_first_name);
+//        etSupervisorLName = machineMouSecondFragmentView.findViewById(R.id.et_supervisor_last_name);
+//        etMachineMobile = machineMouSecondFragmentView.findViewById(R.id.et_machine_mobile);
         etOperatorFName = machineMouSecondFragmentView.findViewById(R.id.et_operator_first_name);
         etOperatorLName = machineMouSecondFragmentView.findViewById(R.id.et_operator_last_name);
         etOperatorMobile = machineMouSecondFragmentView.findViewById(R.id.et_operator_mobile);
@@ -226,16 +227,16 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etProviderLastName.setFocusable(false);
         etProviderLastName.setLongClickable(false);
 
-        etSupervisorFName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getFirstName());
-        etSupervisorFName.setFocusable(false);
-        etSupervisorFName.setLongClickable(false);
-        etSupervisorLName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getLastName());
-        etSupervisorLName.setFocusable(false);
-        etSupervisorLName.setLongClickable(false);
-        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMachine().getMachineMobileNumber());
+//        etSupervisorFName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getProviderInformation().getFirstName());
+//        etSupervisorFName.setFocusable(false);
+//        etSupervisorFName.setLongClickable(false);
+//        etSupervisorLName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getProviderInformation().getLastName());
+//        etSupervisorLName.setFocusable(false);
+//        etSupervisorLName.setLongClickable(false);
+//        etMachineMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+//                getMachine().getMachineMobileNumber());
 
         etOperatorFName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getFirstName());
@@ -313,19 +314,20 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                    getString(R.string.enter_provider_contact), Snackbar.LENGTH_LONG);
 //            return false;
 //        }
-        else if (TextUtils.isEmpty(etSupervisorFName.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_supervisor_first_name), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etSupervisorLName.getText().toString().trim())){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_supervisor_last_name), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (etMachineMobile.getText().toString().trim().length() != 10){
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etOperatorFName.getText().toString().trim())){
+//        else if (TextUtils.isEmpty(etSupervisorFName.getText().toString().trim())){
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_supervisor_first_name), Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etSupervisorLName.getText().toString().trim())){
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_supervisor_last_name), Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (etMachineMobile.getText().toString().trim().length() != 10){
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (TextUtils.isEmpty(etOperatorFName.getText().toString().trim())){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_first_name), Snackbar.LENGTH_LONG);
             return false;
@@ -503,11 +505,11 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber
                 (etProviderContact.getText().toString().trim());
 
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setSupervisorName(
-                (etSupervisorFName.getText().toString().trim() + " " + etSupervisorLName.getText().
-                        toString().trim()));
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
-                (etMachineMobile.getText().toString().trim());
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setSupervisorName(
+//                (etSupervisorFName.getText().toString().trim() + " " + etSupervisorLName.getText().
+//                        toString().trim()));
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
+//                (etMachineMobile.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOperatorName(
                 (etOperatorFName.getText().toString().trim() + " " + etOperatorLName.getText().
                         toString().trim()));

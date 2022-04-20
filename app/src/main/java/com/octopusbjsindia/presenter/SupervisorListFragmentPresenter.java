@@ -10,15 +10,15 @@ import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.fragments.OperatorListFragment;
+import com.octopusbjsindia.view.fragments.SupervisorListFragment;
 
 import java.util.HashMap;
 
-public class OperatorListFragmentPresenter implements APIPresenterListener {
+public class SupervisorListFragmentPresenter implements APIPresenterListener {
 
-    OperatorListFragment mContext;
+    SupervisorListFragment mContext;
 
-    public OperatorListFragmentPresenter(OperatorListFragment mContext) {
+    public SupervisorListFragmentPresenter(SupervisorListFragment mContext) {
         this.mContext = mContext;
     }
 
@@ -66,7 +66,7 @@ public class OperatorListFragmentPresenter implements APIPresenterListener {
 
     }
 
-    public void getOperators() {
+    public void getSupervisors() {
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
         mContext.showProgressBar();
@@ -75,9 +75,7 @@ public class OperatorListFragmentPresenter implements APIPresenterListener {
         requestCall.getDataApiCall("Operators", url);
     }
 
-    public void assignOperators(String opretorId, String machineId) {
-
-
+    public void assignSupervisors(String opretorId, String machineId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("machine_id", machineId);
         map.put("operator_id", opretorId);

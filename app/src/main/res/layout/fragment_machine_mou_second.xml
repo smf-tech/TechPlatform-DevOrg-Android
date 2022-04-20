@@ -86,7 +86,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_supervisor_first_name"
@@ -100,7 +101,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_supervisor_last_name"
@@ -114,7 +116,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_machine_mobile"

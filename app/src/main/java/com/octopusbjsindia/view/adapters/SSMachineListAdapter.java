@@ -94,7 +94,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Do MOU");
                 }
-            } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+            }
+            else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                 if (fragment.isMachineEligible) {
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Set Eligibility");
@@ -203,12 +204,12 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                        if (fragment.isMachineVisitValidationForm) {
 //                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
 //                        }
-                        if (fragment.isMachineShiftForm) {
-                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-                        }
+//                        if (fragment.isMachineShiftForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        }
                     }
 
-                    if (fragment.isRealiseOperator) {
+                    if (fragment.isReleaseOperator) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                 Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -222,15 +223,15 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(true);
+                                popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(true);
                             } else {
-                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                                popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                             }
                         } else {
-                            popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                            popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
@@ -247,15 +248,15 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                                popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(true);
                             } else {
-                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                                popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                             }
                         } else {
-                            popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                            popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                     }
 
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -271,9 +272,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                        if (fragment.isMachineVisitValidationForm) {
 //                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
 //                        }
-                        if (fragment.isMachineShiftForm) {
-                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-                        }
+//                        if (fragment.isMachineShiftForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        }
                     }
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE ||
@@ -329,13 +330,13 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         public boolean onMenuItemClick(MenuItem item) {
                             if (Util.isConnected(activity)) {
                                 switch (item.getItemId()) {
-                                    case R.id.action_machine_shifting:
-                                        if (Util.isConnected(activity)) {
-                                            fragment.shiftMachine(getAdapterPosition());
-                                        } else {
-                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                                        }
-                                        break;
+//                                    case R.id.action_machine_shifting:
+//                                        if (Util.isConnected(activity)) {
+//                                            fragment.shiftMachine(getAdapterPosition());
+//                                        } else {
+//                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                                        }
+//                                        break;
 //                                    case R.id.action_machine_visit:
 //                                        Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
 //                                        machineVisitIntent.putExtra("SwitchToFragment", "MachineVisitValidationFragment");
@@ -385,32 +386,32 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
 //                                        }
 //                                        break;
-                                    case R.id.action_machine_mou_upload:
-                                        Intent mouUploadIntent = new Intent(activity, SSActionsActivity.class);
-                                        mouUploadIntent.putExtra("SwitchToFragment", "MouUploadFragment");
-                                        mouUploadIntent.putExtra("title", "Upload MOU");
-                                        mouUploadIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        mouUploadIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                        activity.startActivity(mouUploadIntent);
-                                        activity.finish();
-                                        break;
-                                    case R.id.action_machine_signoff:
-                                        if (Util.isConnected(activity)) {
-                                            fragment.sendMachineSignOff(getAdapterPosition());
-                                        } else {
-                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                                        }
-                                        break;
-                                    case R.id.action_assign_operator:
+//                                    case R.id.action_machine_mou_upload:
+//                                        Intent mouUploadIntent = new Intent(activity, SSActionsActivity.class);
+//                                        mouUploadIntent.putExtra("SwitchToFragment", "MouUploadFragment");
+//                                        mouUploadIntent.putExtra("title", "Upload MOU");
+//                                        mouUploadIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        mouUploadIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+//                                        activity.startActivity(mouUploadIntent);
+//                                        activity.finish();
+//                                        break;
+//                                    case R.id.action_machine_signoff:
+//                                        if (Util.isConnected(activity)) {
+//                                            fragment.sendMachineSignOff(getAdapterPosition());
+//                                        } else {
+//                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                                        }
+//                                        break;
+                                    case R.id.action_assign_supervisor:
                                         Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
-                                        operatorIntent.putExtra("SwitchToFragment", "OperatorList");
+                                        operatorIntent.putExtra("SwitchToFragment", "SupervisorList");
                                         operatorIntent.putExtra("title", "Operator List");
                                         operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);
                                         activity.finish();
                                         break;
-                                    case R.id.action_release_operator:
+                                    case R.id.action_release_supervisor:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseOperator(getAdapterPosition());
                                         } else {
