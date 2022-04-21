@@ -126,9 +126,9 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
     public void setTitle(String title) {
         toolbar_title.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
-        ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
-        toolbar_edit_action.setOnClickListener(this);
+//        ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+//        toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
+//        toolbar_edit_action.setOnClickListener(this);
     }
 
     public void setActivityTitle(String title) {
@@ -147,13 +147,12 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
             case R.id.toolbar_back_action:
                 finish();
                 break;
-            case R.id.toolbar_edit_action:
-                Intent intent = new Intent(this, SSActionsActivity.class);
-                intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
-                intent.putExtra("title", "Saved Structure");
-                startActivity(intent);
-
-                break;
+//            case R.id.toolbar_edit_action:
+//                Intent intent = new Intent(this, SSActionsActivity.class);
+//                intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
+//                intent.putExtra("title", "Saved Structure");
+//                startActivity(intent);
+//                break;
         }
     }
 

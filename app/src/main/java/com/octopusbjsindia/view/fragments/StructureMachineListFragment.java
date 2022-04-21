@@ -768,25 +768,32 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (structureListData != null) {
             ssStructureListData.clear();
-            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
-            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
-
             filteredStructureListData.clear();
-            for (StructureData structureData : structureListData.getData()) {
-                boolean flag = false;
-                for (StructureData obj : offlineStructureListData) {
-                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (flag) {
-                    structureData.setSavedOffine(true);
-                    ssStructureListData.add(structureData);
-                } else {
-                    ssStructureListData.add(structureData);
-                }
-            }
+
+            //For RWB project, structure offline save functionality removed. So following code commented.
+
+//            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
+//            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
+
+//            for (StructureData structureData : structureListData.getData()) {
+//                boolean flag = false;
+//                for (StructureData obj : offlineStructureListData) {
+//                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//                if (flag) {
+//                    structureData.setSavedOffine(true);
+//                    ssStructureListData.add(structureData);
+//                } else {
+//                    ssStructureListData.add(structureData);
+//                }
+//            }
+            //For RWB project, structure offline save functionality removed. So above code commented
+            // and following line added.
+            ssStructureListData.addAll(structureListData.getData());
+
             if (selectedStatus != 0) {
                 for (StructureData structureData : ssStructureListData) {
                     if (structureData.getStructureStatusCode() == selectedStatus) {

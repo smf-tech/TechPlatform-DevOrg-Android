@@ -119,20 +119,20 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
         holder.tvVillage.setText(ssDataList.get(position).getVillage());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
-//        if (isSave) {
-//            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
-//                holder.tvMachinCount.setText("None");
-//            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
-//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
-//            } else {
-//                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
-//            }
-//        }
+        if (isSave) {
+            if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
+                holder.tvMachinCount.setText("None");
+            } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
+                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
+            } else {
+                holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
+            }
+        }
         // commented for RWB
 //        if (!isSaveOfflineStructure) {
 //            holder.btSave.setVisibility(View.INVISIBLE);
 //        } else {
-//            // save button visibal
+//            // save button visible
 //            if (ssDataList.get(position).isSavedOffine()) {
 //                holder.btSave.setVisibility(View.INVISIBLE);
 //                DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
@@ -193,7 +193,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvVillage = itemView.findViewById(R.id.tv_village);
             tvStartDate = itemView.findViewById(R.id.tv_start_date);
             tvEndDate = itemView.findViewById(R.id.tv_end_date);
-            btSave = itemView.findViewById(R.id.bt_save);
+            //btSave = itemView.findViewById(R.id.bt_save);
             tvBoundary = itemView.findViewById(R.id.tv_boundary);
 //            if (isSave) {
 //                btSave.setText("Save Offline");
@@ -391,24 +391,25 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
 //                public void onClick(View view) {
 //                }
 //            });
-            btSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (isSave) {
-                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
-                                .insert(ssDataList.get(getAdapterPosition()));
-                        ssDataList.get(getAdapterPosition()).setSavedOffine(true);
-                        notifyItemChanged(getAdapterPosition());
-                        Util.showToast("Structure Saved Offline", activity);
-                    } else {
-                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
-                                .delete(ssDataList.get(getAdapterPosition()).getStructureId());
-                        ssDataList.remove(getAdapterPosition());
-                        notifyDataSetChanged();
-                        Util.showToast("Structure Removed from Offline ", activity);
-                    }
-                }
-            });
+            //Structure offline save functionality remove for RWB
+//            btSave.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (isSave) {
+//                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
+//                                .insert(ssDataList.get(getAdapterPosition()));
+//                        ssDataList.get(getAdapterPosition()).setSavedOffine(true);
+//                        notifyItemChanged(getAdapterPosition());
+//                        Util.showToast("Structure Saved Offline", activity);
+//                    } else {
+//                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao()
+//                                .delete(ssDataList.get(getAdapterPosition()).getStructureId());
+//                        ssDataList.remove(getAdapterPosition());
+//                        notifyDataSetChanged();
+//                        Util.showToast("Structure Removed from Offline ", activity);
+//                    }
+//                }
+//            });
 
             tvMachinCount.setOnClickListener(new View.OnClickListener() {
                 @Override
