@@ -139,7 +139,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     private void init() {
-        presenter = new SiltTransportationRecordFragmentPresenter(this);
+//        presenter = new SiltTransportationRecordFragmentPresenter(this);
         progressBarLayout = siltTransportationRecordFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = siltTransportationRecordFragmentView.findViewById(R.id.pb_profile_act);
         etDate = siltTransportationRecordFragmentView.findViewById(R.id.et_date);

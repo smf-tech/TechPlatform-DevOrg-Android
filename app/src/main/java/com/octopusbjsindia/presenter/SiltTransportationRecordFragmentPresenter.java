@@ -12,6 +12,7 @@ import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.view.activities.SiltTransportationRecordActivity;
 import com.octopusbjsindia.view.fragments.SiltTransportationRecordFragment;
 
 import org.json.JSONObject;
@@ -20,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class SiltTransportationRecordFragmentPresenter implements APIPresenterListener {
-    private WeakReference<SiltTransportationRecordFragment> fragmentWeakReference;
+    private WeakReference<SiltTransportationRecordActivity> fragmentWeakReference;
     private final String TAG = SiltTransportationRecordFragmentPresenter.class.getName();
     private static final String KEY_SELECTED_ID = "selected_location_id";
     private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
@@ -32,7 +33,7 @@ public class SiltTransportationRecordFragmentPresenter implements APIPresenterLi
     public static final String KEY_MOBILE = "mobile";
     public static final String GET_B_INFO = "getBeneficiaryInfo";
 
-    public SiltTransportationRecordFragmentPresenter(SiltTransportationRecordFragment tmFragment) {
+    public SiltTransportationRecordFragmentPresenter(SiltTransportationRecordActivity tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
     }
 
