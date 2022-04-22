@@ -77,12 +77,6 @@ public class MachineData  implements Serializable {
     @SerializedName("deployedStrutureCode")
     @Expose
     private String deployedStrutureCode;
-    @SerializedName("operator_name")
-    @Expose
-    private String operatorName;
-    @SerializedName("operator_contact_number")
-    @Expose
-    private String operatorContactNumber;
     @SerializedName("haltReason")
     @Expose
     private String haltReason;
@@ -95,9 +89,6 @@ public class MachineData  implements Serializable {
     @SerializedName("isMachineSignOff")
     @Expose
     private Boolean isMachineSignOff;
-    @SerializedName("machine_mobile_number")
-    @Expose
-    private String machineMobileNumber;
     @SerializedName("updatedDate")
     @Expose
     private String lastUpdatedTime;
@@ -119,7 +110,18 @@ public class MachineData  implements Serializable {
     @SerializedName("operator_id")
     @Expose
     private String operatorId;
-
+    @SerializedName("supervisor_name")
+    @Expose
+    private String supervisorName;
+    @SerializedName("machine_mobile_number")
+    @Expose
+    private String machineMobileNumber;
+    @SerializedName("operator_name")
+    @Expose
+    private String operatorName;
+    @SerializedName("operator_contact_number")
+    @Expose
+    private String operatorContactNumber;
 
     public Boolean getMouUploaded() {
         return isMouUploaded;
@@ -416,5 +418,13 @@ public class MachineData  implements Serializable {
 
     public void setOperatorId(String operatorId) {
         this.operatorId = operatorId;
+    }
+
+    public String getSupervisorName() {
+        return supervisorName;
+    }
+
+    public void setSupervisorName(String supervisorName) {
+        this.supervisorName = supervisorName;
     }
 }

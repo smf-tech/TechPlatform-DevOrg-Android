@@ -14,14 +14,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.view.fragments.CreateOpeartorFragment;
+import com.octopusbjsindia.view.fragments.CreateSupervisorFragment;
 import com.octopusbjsindia.view.fragments.MachineDeployStructureListFragment;
 import com.octopusbjsindia.view.fragments.MachineDieselRecordFragment;
 import com.octopusbjsindia.view.fragments.MachineNonUtilizationFragment;
 import com.octopusbjsindia.view.fragments.MachineShiftingFormFragment;
 import com.octopusbjsindia.view.fragments.MachineVisitValidationFragment;
 import com.octopusbjsindia.view.fragments.MouUploadFragment;
-import com.octopusbjsindia.view.fragments.OperatorListFragment;
+import com.octopusbjsindia.view.fragments.SupervisorListFragment;
 import com.octopusbjsindia.view.fragments.SavedStructureListFragment;
 import com.octopusbjsindia.view.fragments.SiltTransportationRecordFragment;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
@@ -101,13 +101,13 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
                         fragment.setArguments(data);
                         openFragment();
                         break;
-                    case "OperatorList":
-                        fragment = new OperatorListFragment();
+                    case "SupervisorList":
+                        fragment = new SupervisorListFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;
                     case "CreateOperatorFragment":
-                        fragment = new CreateOpeartorFragment();
+                        fragment = new CreateSupervisorFragment();
                         fragment.setArguments(data);
                         openFragment();
                         break;
@@ -126,9 +126,9 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
     public void setTitle(String title) {
         toolbar_title.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
-        ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
-        toolbar_edit_action.setOnClickListener(this);
+//        ImageView toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
+//        toolbar_edit_action.setImageResource(R.drawable.ic_saved_offline);
+//        toolbar_edit_action.setOnClickListener(this);
     }
 
     public void setActivityTitle(String title) {
@@ -147,13 +147,12 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
             case R.id.toolbar_back_action:
                 finish();
                 break;
-            case R.id.toolbar_edit_action:
-                Intent intent = new Intent(this, SSActionsActivity.class);
-                intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
-                intent.putExtra("title", "Saved Structure");
-                startActivity(intent);
-
-                break;
+//            case R.id.toolbar_edit_action:
+//                Intent intent = new Intent(this, SSActionsActivity.class);
+//                intent.putExtra("SwitchToFragment", "SavedStructureListFragment");
+//                intent.putExtra("title", "Saved Structure");
+//                startActivity(intent);
+//                break;
         }
     }
 

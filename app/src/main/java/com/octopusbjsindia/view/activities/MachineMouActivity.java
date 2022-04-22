@@ -156,14 +156,14 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     public void uploadData() {
         showProgressBar();
-        gpsTracker = new GPSTracker(this);
-        if (gpsTracker.isGPSEnabled(this, this)) {
-            location = gpsTracker.getLocation();
-            if (location != null) {
-                getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
-                getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
-            }
-        }
+//        gpsTracker = new GPSTracker(this);
+//        if (gpsTracker.isGPSEnabled(this, this)) {
+//            location = gpsTracker.getLocation();
+//            if (location != null) {
+//                getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+//                getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+//            }
+//        }
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -203,10 +203,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(getMachineDetailData()));
-                if (location != null) {
-                    params.put("lat", String.valueOf(location.getLatitude()));
-                    params.put("long ", String.valueOf(location.getLongitude()));
-                }
+//                if (location != null) {
+//                    params.put("lat", String.valueOf(location.getLatitude()));
+//                    params.put("long ", String.valueOf(location.getLongitude()));
+//                }
                 params.put("imageArraySize", String.valueOf(getImageHashmap().size()));//add string parameters
                 return params;
             }
@@ -329,16 +329,28 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void showProgressBar() {
-
+        this.runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        this.runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void closeCurrentActivity() {
-
+        if (this != null) {
+            this.onBackPressed();
+        }
     }
 }

@@ -77,7 +77,7 @@ import java.util.Objects;
 public class StructureVisitMonitoringActivity extends AppCompatActivity implements View.OnClickListener,
         APIDataListener, CustomSpinnerListener {
 
-    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
 
     private RelativeLayout progressBar;

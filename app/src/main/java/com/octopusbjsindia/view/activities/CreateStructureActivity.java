@@ -48,11 +48,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private RelativeLayout progressBar;
     private CreateStructureActivityPresenter presenter;
 
-    private EditText etState, etDistrict, etTaluka, etHostVillage, etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
+    private EditText etState, etDistrict, etTaluka, etHostVillage,
+            //etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
             etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, etStructureWorkType, etStructureOwnerDepartment,
-            etNotaDetail, etSubStructureOwnerDepartment, etAdministrativeApprovalNo, etAdministrativeApprovalDate,
-            etTechnicalSanctionNo, etTechnicalSanctionDate, etIntervention, etAdministrativeEstimateAmount, etApproximateWorkingHours, etApproximateDieselConsumptionAmount,
-            etApproximateDieselLiters, etApproximateEstimateQuantity, etRemark;
+            //etNotaDetail, etSubStructureOwnerDepartment,
+                    etAdministrativeApprovalNo, etAdministrativeApprovalDate,
+            etTechnicalSanctionNo, etTechnicalSanctionDate, etIntervention, etAdministrativeEstimateAmount,
+                    //etApproximateWorkingHours, etApproximateDieselConsumptionAmount, etApproximateDieselLiters,
+                    etApproximateEstimateQuantity, etRemark;
     private Button btSubmit;
 
     private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka,
@@ -66,24 +69,24 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     String userDistrictIds = "";
     String userTalukaIds = "";
 
-    private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
-    private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
+    //private ArrayList<String> selectedCatchmentVillageId = new ArrayList<String>();
+    //private ArrayList<String> selectedCatchmentVillage = new ArrayList<String>();
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> districtList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> talukaList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> villageList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> catchmentVillageList = new ArrayList<>();
+    //private ArrayList<CustomSpinnerObject> catchmentVillageList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureDepartmentList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> structureSubDepartmentList = new ArrayList<>();
+    //private ArrayList<CustomSpinnerObject> structureSubDepartmentList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureWorkTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> interventionList = new ArrayList<>();
 
     private Structure structureData;
 
-    private GPSTracker gpsTracker;
-    private Location location;
+    //private GPSTracker gpsTracker;
+    //private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,14 +99,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         initView();
         setTitle("Create Structure");
 
-        gpsTracker = new GPSTracker(this);
-        if (gpsTracker.isGPSEnabled(this, this)) {
-            location = gpsTracker.getLocation();
-        }
+//        gpsTracker = new GPSTracker(this);
+//        if (gpsTracker.isGPSEnabled(this, this)) {
+//            location = gpsTracker.getLocation();
+//        }
     }
 
     private void initView() {
-
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if (roleAccessList != null) {
@@ -162,16 +164,16 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etDistrict = findViewById(R.id.et_district);
         etTaluka = findViewById(R.id.et_taluka);
         etHostVillage = findViewById(R.id.et_host_village);
-        etHostVillagePopulation = findViewById(R.id.et_host_village_population);
-        etCatchmentVillage = findViewById(R.id.et_catchment_village);
-        etCatchmentVillagePopulation = findViewById(R.id.et_catchment_village_population);
+//        etHostVillagePopulation = findViewById(R.id.et_host_village_population);
+//        etCatchmentVillage = findViewById(R.id.et_catchment_village);
+//        etCatchmentVillagePopulation = findViewById(R.id.et_catchment_village_population);
         etGatNo = findViewById(R.id.et_gat_no);
         etWaterShedNo = findViewById(R.id.et_water_shed_no);
         etArea = findViewById(R.id.et_area);
         etStructureName = findViewById(R.id.et_structure_name);
         etStructureOwnerDepartment = findViewById(R.id.et_structure_owner_department);
-        etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
-        etNotaDetail = findViewById(R.id.et_nota_detail);
+//        etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
+//        etNotaDetail = findViewById(R.id.et_nota_detail);
         etStructureType = findViewById(R.id.et_structure_type);
         etStructureWorkType = findViewById(R.id.et_structure_work_type);
         etAdministrativeApprovalNo = findViewById(R.id.et_administrative_approval_no);
@@ -180,9 +182,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etTechnicalSanctionDate = findViewById(R.id.et_technical_sanction_date);
         etIntervention = findViewById(R.id.et_intervention);
         etAdministrativeEstimateAmount = findViewById(R.id.et_administrative_estimate_amount);
-        etApproximateWorkingHours = findViewById(R.id.et_approximate_working_hours);
-        etApproximateDieselConsumptionAmount = findViewById(R.id.et_approximate_diesel_consumption_amount);
-        etApproximateDieselLiters = findViewById(R.id.et_approximate_diesel_liters);
+//        etApproximateWorkingHours = findViewById(R.id.et_approximate_working_hours);
+//        etApproximateDieselConsumptionAmount = findViewById(R.id.et_approximate_diesel_consumption_amount);
+//        etApproximateDieselLiters = findViewById(R.id.et_approximate_diesel_liters);
         etApproximateEstimateQuantity = findViewById(R.id.et_approximate_estimate_quantity);
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
@@ -309,12 +311,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etHostVillage.setOnClickListener(this);
         etAdministrativeApprovalDate.setOnClickListener(this);
         etTechnicalSanctionDate.setOnClickListener(this);
-        etCatchmentVillage.setOnClickListener(this);
+        //etCatchmentVillage.setOnClickListener(this);
         etIntervention.setOnClickListener(this);
         etStructureType.setOnClickListener(this);
         etStructureWorkType.setOnClickListener(this);
         etStructureOwnerDepartment.setOnClickListener(this);
-        etSubStructureOwnerDepartment.setOnClickListener(this);
+        //etSubStructureOwnerDepartment.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
 
         //get District
@@ -390,13 +392,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdHostVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.et_catchment_village:
-                CustomSpinnerDialogClass csdCatchmentVillage = new CustomSpinnerDialogClass(this, this,
-                        "Select Catchment Village", catchmentVillageList, true);
-                csdCatchmentVillage.show();
-                csdCatchmentVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_catchment_village:
+//                CustomSpinnerDialogClass csdCatchmentVillage = new CustomSpinnerDialogClass(this, this,
+//                        "Select Catchment Village", catchmentVillageList, true);
+//                csdCatchmentVillage.show();
+//                csdCatchmentVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
             case R.id.et_structure_owner_department:
                 structureDepartmentList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
@@ -415,24 +417,24 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdStructureDept.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.et_sub_structure_owner_department:
-                structureSubDepartmentList.clear();
-                for (int i = 0; i < masterDataLists.size(); i++) {
-                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
-                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
-                            CustomSpinnerObject temp = new CustomSpinnerObject();
-                            temp.set_id(obj.getId());
-                            temp.setName(obj.getValue());
-                            temp.setSelected(false);
-                            structureSubDepartmentList.add(temp);
-                        }
-                }
-                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
-                        "Select Sub Structure owner department", structureSubDepartmentList, false);
-                cddCity.show();
-                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+//            case R.id.et_sub_structure_owner_department:
+//                structureSubDepartmentList.clear();
+//                for (int i = 0; i < masterDataLists.size(); i++) {
+//                    if (masterDataLists.get(i).getField().equalsIgnoreCase("structureSubDept"))
+//                        for (MasterDataValue obj : masterDataLists.get(i).getData()) {
+//                            CustomSpinnerObject temp = new CustomSpinnerObject();
+//                            temp.set_id(obj.getId());
+//                            temp.setName(obj.getValue());
+//                            temp.setSelected(false);
+//                            structureSubDepartmentList.add(temp);
+//                        }
+//                }
+//                CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(this, this,
+//                        "Select Sub Structure owner department", structureSubDepartmentList, false);
+//                cddCity.show();
+//                cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
             case R.id.et_intervention:
                 interventionList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
@@ -499,7 +501,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     presenter.submitStructure(structureData);
                 }
                 break;
-
         }
     }
 
@@ -516,19 +517,21 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Host Village.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etHostVillagePopulation.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Host Village Population.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, select Catchment Village.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Catchment Village Population.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etGatNo.getText().toString())) {
+        }
+//        else if (TextUtils.isEmpty(etHostVillagePopulation.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill Host Village Population.", Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(android.text.TextUtils.join(",", selectedCatchmentVillage))) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, select Catchment Village.", Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etCatchmentVillagePopulation.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill Catchment Village Population.", Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (TextUtils.isEmpty(etGatNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Gat No.", Snackbar.LENGTH_LONG);
             return false;
@@ -548,15 +551,18 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Structure Name.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, select Sub-structure Owner DepartmentId.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etNotaDetail.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Nota Detail.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(selectedStructureTypeId)) {
+        }
+//        else if (TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, select Sub-structure Owner DepartmentId.", Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+//        else if (TextUtils.isEmpty(etNotaDetail.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill Nota Detail.", Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (TextUtils.isEmpty(selectedStructureTypeId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Structure Type.", Snackbar.LENGTH_LONG);
             return false;
@@ -580,19 +586,21 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Administrative Estimate Amount.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Approximate Working Hours.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
+        }
+//        else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill Approximate Working Hours.", Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
+//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
             return false;
@@ -604,17 +612,17 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setTaluka(selectedTaluka);
             structureData.setVillageId(selectedHostVillageId);
             structureData.setVillage(selectedHostVillage);
-            structureData.setVillagePopulation(etHostVillagePopulation.getText().toString());
-            structureData.setCatchmentVillagesIds(android.text.TextUtils.join(",", selectedCatchmentVillageId));
-            structureData.setCatchmentVillages(android.text.TextUtils.join(",", selectedCatchmentVillage));
-            structureData.setTotalPopulation(etCatchmentVillagePopulation.getText().toString());
+//            structureData.setVillagePopulation(etHostVillagePopulation.getText().toString());
+//            structureData.setCatchmentVillagesIds(android.text.TextUtils.join(",", selectedCatchmentVillageId));
+//            structureData.setCatchmentVillages(android.text.TextUtils.join(",", selectedCatchmentVillage));
+//            structureData.setTotalPopulation(etCatchmentVillagePopulation.getText().toString());
             structureData.setGatNo(etGatNo.getText().toString());
             structureData.setWaterShedNo(etWaterShedNo.getText().toString());
             structureData.setArea(etArea.getText().toString());
             structureData.setName(etStructureName.getText().toString());
             structureData.setDepartmentId(selectedStructureOwnerDepartmentId);
             structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
-            structureData.setNotaDetail(etNotaDetail.getText().toString());
+            //structureData.setNotaDetail(etNotaDetail.getText().toString());
             structureData.setStructureType(selectedStructureTypeId);
             structureData.setWorkType(selectedStructureWorkTypeId);
             structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
@@ -623,14 +631,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setTechnicalSectionDate(etTechnicalSanctionDate.getText().toString());
             structureData.setInterventionId(selectedInterventionId);
             structureData.setAdministrativeEstimateAmount(etAdministrativeEstimateAmount.getText().toString());
-            structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
-            structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
-            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
+//            structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
+//            structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
+//            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
             structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
-            if (location != null) {
-                structureData.setLat(location.getLatitude());
-                structureData.setLog(location.getLongitude());
-            }
+//            if (location != null) {
+//                structureData.setLat(location.getLatitude());
+//                structureData.setLog(location.getLongitude());
+//            }
             structureData.setFfId(Util.getUserObjectFromPref().getId());
             structureData.setRemark(etRemark.getText().toString());
         }
@@ -705,17 +713,17 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etHostVillage.setText(selectedHostVillage);
                 break;
-            case "Select Catchment Village":
-                selectedCatchmentVillage.clear();
-                selectedCatchmentVillageId.clear();
-                for (CustomSpinnerObject obj : catchmentVillageList) {
-                    if (obj.isSelected()) {
-                        selectedCatchmentVillage.add(obj.getName());
-                        selectedCatchmentVillageId.add(obj.get_id());
-                    }
-                }
-                etCatchmentVillage.setText(android.text.TextUtils.join(",", selectedCatchmentVillage));
-                break;
+//            case "Select Catchment Village":
+//                selectedCatchmentVillage.clear();
+//                selectedCatchmentVillageId.clear();
+//                for (CustomSpinnerObject obj : catchmentVillageList) {
+//                    if (obj.isSelected()) {
+//                        selectedCatchmentVillage.add(obj.getName());
+//                        selectedCatchmentVillageId.add(obj.get_id());
+//                    }
+//                }
+//                etCatchmentVillage.setText(android.text.TextUtils.join(",", selectedCatchmentVillage));
+//                break;
             case "Select Structure owner department":
                 for (CustomSpinnerObject obj : structureDepartmentList) {
                     if (obj.isSelected()) {
@@ -725,15 +733,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etStructureOwnerDepartment.setText(selectedStructureOwnerDepartment);
                 break;
-            case "Select Sub Structure owner department":
-                for (CustomSpinnerObject obj : structureSubDepartmentList) {
-                    if (obj.isSelected()) {
-                        selectedSubStructureOwnerDepartment = obj.getName();
-                        selectedSubStructureOwnerDepartmentId = obj.get_id();
-                    }
-                }
-                etSubStructureOwnerDepartment.setText(selectedSubStructureOwnerDepartment);
-                break;
+//            case "Select Sub Structure owner department":
+//                for (CustomSpinnerObject obj : structureSubDepartmentList) {
+//                    if (obj.isSelected()) {
+//                        selectedSubStructureOwnerDepartment = obj.getName();
+//                        selectedSubStructureOwnerDepartmentId = obj.get_id();
+//                    }
+//                }
+//                etSubStructureOwnerDepartment.setText(selectedSubStructureOwnerDepartment);
+//                break;
             case "Select Intervention":
                 int selectedType = -1;
                 for (CustomSpinnerObject obj : interventionList) {
@@ -904,7 +912,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (data != null && !data.isEmpty()) {
                     villageList.clear();
-                    catchmentVillageList.clear();
+                    //catchmentVillageList.clear();
                     //Collections.sort(data, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
 
                     for (int i = 0; i < data.size(); i++) {
@@ -916,7 +924,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         meetCountry.setName(location.getName());
                         meetCountry.setSelected(false);
                         villageList.add(meetCountry);
-                        catchmentVillageList.add(meetCountry);
+                        //catchmentVillageList.add(meetCountry);
                         //}
                     }
                 }

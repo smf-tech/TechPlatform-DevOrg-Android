@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.SujalamSuphalam.OpratorListData;
-import com.octopusbjsindia.presenter.OperatorListFragmentPresenter;
+import com.octopusbjsindia.presenter.SupervisorListFragmentPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +27,10 @@ public class OperatorsListAdapter extends RecyclerView.Adapter<OperatorsListAdap
 
     private ArrayList<OpratorListData> opratorList;
     private Context mContext;
-    private OperatorListFragmentPresenter presenter;
+    private SupervisorListFragmentPresenter presenter;
     private String machineId;
 
-    public OperatorsListAdapter(String machineId, List<OpratorListData> opratorList, Context mContext, OperatorListFragmentPresenter presenter) {
+    public OperatorsListAdapter(String machineId, List<OpratorListData> opratorList, Context mContext, SupervisorListFragmentPresenter presenter) {
         this.opratorList = (ArrayList<OpratorListData>) opratorList;
         this.mContext = mContext;
         this.presenter = presenter;
@@ -40,7 +40,7 @@ public class OperatorsListAdapter extends RecyclerView.Adapter<OperatorsListAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_oprator,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_supervisor,
                 parent, false);
         return new OperatorsListAdapter.ViewHolder(v);
     }
@@ -92,7 +92,7 @@ public class OperatorsListAdapter extends RecyclerView.Adapter<OperatorsListAdap
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            presenter.assignOperators(opratorList.get(position).getId(), machineId);
+            presenter.assignSupervisors(opratorList.get(position).getId(), machineId);
             dialog.dismiss();
         });
 

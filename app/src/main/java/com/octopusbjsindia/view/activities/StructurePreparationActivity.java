@@ -80,10 +80,10 @@ import java.util.Objects;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class StructurePripretionsActivity extends AppCompatActivity implements View.OnClickListener,
+public class StructurePreparationActivity extends AppCompatActivity implements View.OnClickListener,
         APIDataListener , CustomSpinnerListener {
 
-    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
     ImageView selectedIV;
     EditText etFFName, etFFMobile, etReson,etTypeOfBeneficiary;
@@ -361,7 +361,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                             finish();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
-                            Toast.makeText(StructurePripretionsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(StructurePreparationActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -369,7 +369,7 @@ public class StructurePripretionsActivity extends AppCompatActivity implements V
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
-                        Toast.makeText(StructurePripretionsActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StructurePreparationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                         DatabaseManager.getDBInstance(Platform.getInstance()).getStructurePripretionDataDao()
                                 .insert(requestData);
                         Util.showToast("Structure will be prepared soon.", this);

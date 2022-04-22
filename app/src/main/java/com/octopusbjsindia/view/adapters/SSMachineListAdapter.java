@@ -61,18 +61,17 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         MachineData machineData = ssDataList.get(position);
         holder.tvStatus.setText(machineData.getStatus());
         holder.tvMachineCode.setText(machineData.getMachineCode());
-        holder.tvTcName.setText(machineData.getTcName());
+        holder.tvSupervisorName.setText(machineData.getSupervisorName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
-        holder.tvContact.setText(machineData.getTcContactNumber());
-        holder.tvLocation.setText(machineData.getMachineLocation());
-        holder.tvOwnerValue.setText(machineData.getOwnedBy());
+        holder.tvSupervisorContact.setText(machineData.getMachineMobileNumber());
+        holder.tvTaluka.setText(machineData.getMachineLocation());
         holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
         if (machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
-            holder.tvOperator.setVisibility(View.VISIBLE);
-            holder.tvOperator.setText(machineData.getOperatorName());
+            holder.tvOperatorName.setVisibility(View.VISIBLE);
+            holder.tvOperatorName.setText(machineData.getOperatorName());
             holder.tvOperatorContact.setVisibility(View.VISIBLE);
             holder.tvOperatorContact.setText(machineData.getOperatorContactNumber());
         }
@@ -95,7 +94,8 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Do MOU");
                 }
-            } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+            }
+            else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                 if (fragment.isMachineEligible) {
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Set Eligibility");
@@ -138,9 +138,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvMachineCode, tvTcName, tvMachineModel, tvContact, tvStructureCode,
-                tvLastUpdatedTime, tvOperatorLabel, tvOperator, tvOperatorContactLabel, tvOperatorContact,
-                tvLocation, tvOwnerValue, tvReason;
+        TextView tvStatus, tvMachineCode, tvSupervisorName, tvMachineModel, tvSupervisorContact, tvStructureCode,
+                tvLastUpdatedTime, tvOperatorLabel, tvOperatorName, tvOperatorContactLabel, tvOperatorContact,
+                tvTaluka, tvReason;
         Button btAction;
         ImageView btnPopupMenu, ivSignoff;
         LinearLayout rlMachine;
@@ -151,27 +151,27 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             super(itemView);
             tvStatus = itemView.findViewById(R.id.tv_status);
             tvMachineCode = itemView.findViewById(R.id.tv_machine_code);
-            tvTcName = itemView.findViewById(R.id.tv_tc_name);
+            tvSupervisorName = itemView.findViewById(R.id.tv_supervisor_name);
             tvMachineModel = itemView.findViewById(R.id.tv_machine_model);
-            tvLocation = itemView.findViewById(R.id.tv_location);
-            tvOwnerValue = itemView.findViewById(R.id.tv_owner_value);
-            tvContact = itemView.findViewById(R.id.tv_contact);
+            tvTaluka = itemView.findViewById(R.id.tv_taluka);
+            tvSupervisorContact = itemView.findViewById(R.id.tv_supervisor_contact);
             btAction = itemView.findViewById(R.id.bt_action);
             lyReason = itemView.findViewById(R.id.ly_reason);
             tvReason = itemView.findViewById(R.id.tv_reason);
             lyAction = itemView.findViewById(R.id.ly_action);
             ivSignoff = itemView.findViewById(R.id.iv_signoff);
-            tvContact.setOnClickListener(new View.OnClickListener() {
+            tvSupervisorContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showPublishApiDialog("Confirmation",
-                            "Are you sure you want to call this number?", "YES", "No", tvContact.getText().toString());
+                            "Are you sure you want to call this number?", "YES",
+                            "No", tvSupervisorContact.getText().toString());
                 }
             });
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
-            tvOperatorLabel = itemView.findViewById(R.id.tv_operator_label);
-            tvOperator = itemView.findViewById(R.id.tv_operator);
-            tvOperatorContactLabel = itemView.findViewById(R.id.tv_operator_contact_label);
+            //tvOperatorLabel = itemView.findViewById(R.id.tv_operator_label);
+            tvOperatorName = itemView.findViewById(R.id.tv_operator_name);
+            //tvOperatorContactLabel = itemView.findViewById(R.id.tv_operator_contact_label);
             tvOperatorContact = itemView.findViewById(R.id.tv_operator_contact);
             tvOperatorContact.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -188,28 +188,28 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
-                    popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
+                    //popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
+                    //popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
                         //popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
-                        if (fragment.isDieselRecordForm) {
-                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-                        }
-                        if (fragment.isMachineVisitValidationForm) {
-                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-                        }
-                        if (fragment.isMachineShiftForm) {
-                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-                        }
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
+//                        if (fragment.isDieselRecordForm) {
+//                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        }
+//                        if (fragment.isMachineVisitValidationForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        }
+//                        if (fragment.isMachineShiftForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        }
                     }
 
-
-                    if (fragment.isRealiseOperator) {
+                    if (fragment.isReleaseOperator) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                 Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
@@ -223,15 +223,15 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(true);
+                                popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(true);
                             } else {
-                                popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                                popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                             }
                         } else {
-                            popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                            popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_release_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
@@ -248,33 +248,33 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                 ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                         Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
                             if (!ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
-                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(true);
+                                popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(true);
                             } else {
-                                popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                                popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                             }
                         } else {
-                            popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                            popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                         }
                     } else {
-                        popup.getMenu().findItem(R.id.action_assign_operator).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_assign_supervisor).setVisible(false);
                     }
 
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
-                        if (fragment.isDieselRecordForm) {
-                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-                        }
-                        if (fragment.isMachineVisitValidationForm) {
-                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-                        }
-                        if (fragment.isMachineShiftForm) {
-                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-                        }
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
+//                        if (fragment.isDieselRecordForm) {
+//                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
+//                        }
+//                        if (fragment.isMachineVisitValidationForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
+//                        }
+//                        if (fragment.isMachineShiftForm) {
+//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
+//                        }
                     }
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE ||
@@ -292,14 +292,14 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             popup.getMenu().findItem(R.id.action_machine_release).setVisible(true);
                         }
                     }
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
-                        if (fragment.isSiltTransportForm) {
-                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                        }
-                    }
+//                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
+//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+//                                    Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+//                        if (fragment.isSiltTransportForm) {
+//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+//                        }
+//                    }
                     if (!ssDataList.get(getAdapterPosition()).getMouUploaded()) {
                         if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                 Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
@@ -318,9 +318,9 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                            if (fragment.isMouImagesUpload) {
 //                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
 //                            }
-                            if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
-                                popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
-                            }
+//                            if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
+//                                popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
+//                            }
                         }
                     }
                     popup.show();
@@ -330,45 +330,45 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         public boolean onMenuItemClick(MenuItem item) {
                             if (Util.isConnected(activity)) {
                                 switch (item.getItemId()) {
-                                    case R.id.action_machine_shifting:
-                                        if (Util.isConnected(activity)) {
-                                            fragment.shiftMachine(getAdapterPosition());
-                                        } else {
-                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                                        }
-                                        break;
-                                    case R.id.action_machine_visit:
-                                        Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
-                                        machineVisitIntent.putExtra("SwitchToFragment", "MachineVisitValidationFragment");
-                                        machineVisitIntent.putExtra("title", "Machine Visit and Validation");
-                                        machineVisitIntent.putExtra("type", "visitMachine");
-                                        machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        machineVisitIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                        machineVisitIntent.putExtra("currentStructureId", ssDataList.get
-                                                (getAdapterPosition()).getDeployedStrutureId());
-                                        activity.startActivity(machineVisitIntent);
-                                        break;
-                                    case R.id.action_diesel_record:
-                                        Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
-                                        dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
-                                        dieselRecordIntent.putExtra("title", "Record of Diesel");
-                                        dieselRecordIntent.putExtra("type", "dieselRecord");
-                                        dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        dieselRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                        dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
-                                                (getAdapterPosition()).getDeployedStrutureId());
-                                        activity.startActivity(dieselRecordIntent);
-                                        break;
-                                    case R.id.action_silt_transportation_record:
-                                        Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
-                                        siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
-                                        siltTransportationIntent.putExtra("title", "Silt Transportation Record");
-                                        siltTransportationIntent.putExtra("type", "siltTransportRecord");
-                                        siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
-                                                (getAdapterPosition()).getDeployedStrutureId());
-                                        activity.startActivity(siltTransportationIntent);
-                                        break;
+//                                    case R.id.action_machine_shifting:
+//                                        if (Util.isConnected(activity)) {
+//                                            fragment.shiftMachine(getAdapterPosition());
+//                                        } else {
+//                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                                        }
+//                                        break;
+//                                    case R.id.action_machine_visit:
+//                                        Intent machineVisitIntent = new Intent(activity, SSActionsActivity.class);
+//                                        machineVisitIntent.putExtra("SwitchToFragment", "MachineVisitValidationFragment");
+//                                        machineVisitIntent.putExtra("title", "Machine Visit and Validation");
+//                                        machineVisitIntent.putExtra("type", "visitMachine");
+//                                        machineVisitIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        machineVisitIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+//                                        machineVisitIntent.putExtra("currentStructureId", ssDataList.get
+//                                                (getAdapterPosition()).getDeployedStrutureId());
+//                                        activity.startActivity(machineVisitIntent);
+//                                        break;
+//                                    case R.id.action_diesel_record:
+//                                        Intent dieselRecordIntent = new Intent(activity, SSActionsActivity.class);
+//                                        dieselRecordIntent.putExtra("SwitchToFragment", "MachineDieselRecordFragment");
+//                                        dieselRecordIntent.putExtra("title", "Record of Diesel");
+//                                        dieselRecordIntent.putExtra("type", "dieselRecord");
+//                                        dieselRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        dieselRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+//                                        dieselRecordIntent.putExtra("currentStructureId", ssDataList.get
+//                                                (getAdapterPosition()).getDeployedStrutureId());
+//                                        activity.startActivity(dieselRecordIntent);
+//                                        break;
+//                                    case R.id.action_silt_transportation_record:
+//                                        Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
+//                                        siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+//                                        siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+//                                        siltTransportationIntent.putExtra("type", "siltTransportRecord");
+//                                        siltTransportationIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        siltTransportationIntent.putExtra("currentStructureId", ssDataList.get
+//                                                (getAdapterPosition()).getDeployedStrutureId());
+//                                        activity.startActivity(siltTransportationIntent);
+//                                        break;
                                     case R.id.action_machine_release:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseMachine(getAdapterPosition());
@@ -376,42 +376,42 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                                         }
                                         break;
-                                    case R.id.action_machine_worklog:
-                                        if (Util.isConnected(activity)) {
-                                            Intent startMain1 = new Intent(activity, MachineWorkingDataListActivity.class);
-                                            startMain1.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                            startMain1.putExtra("machineName", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                            activity.startActivity(startMain1);
-                                        } else {
-                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                                        }
-                                        break;
-                                    case R.id.action_machine_mou_upload:
-                                        Intent mouUploadIntent = new Intent(activity, SSActionsActivity.class);
-                                        mouUploadIntent.putExtra("SwitchToFragment", "MouUploadFragment");
-                                        mouUploadIntent.putExtra("title", "Upload MOU");
-                                        mouUploadIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
-                                        mouUploadIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
-                                        activity.startActivity(mouUploadIntent);
-                                        activity.finish();
-                                        break;
-                                    case R.id.action_machine_signoff:
-                                        if (Util.isConnected(activity)) {
-                                            fragment.sendMachineSignOff(getAdapterPosition());
-                                        } else {
-                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                                        }
-                                        break;
-                                    case R.id.action_assign_operator:
+//                                    case R.id.action_machine_worklog:
+//                                        if (Util.isConnected(activity)) {
+//                                            Intent startMain1 = new Intent(activity, MachineWorkingDataListActivity.class);
+//                                            startMain1.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                            startMain1.putExtra("machineName", ssDataList.get(getAdapterPosition()).getMachineCode());
+//                                            activity.startActivity(startMain1);
+//                                        } else {
+//                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                                        }
+//                                        break;
+//                                    case R.id.action_machine_mou_upload:
+//                                        Intent mouUploadIntent = new Intent(activity, SSActionsActivity.class);
+//                                        mouUploadIntent.putExtra("SwitchToFragment", "MouUploadFragment");
+//                                        mouUploadIntent.putExtra("title", "Upload MOU");
+//                                        mouUploadIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+//                                        mouUploadIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+//                                        activity.startActivity(mouUploadIntent);
+//                                        activity.finish();
+//                                        break;
+//                                    case R.id.action_machine_signoff:
+//                                        if (Util.isConnected(activity)) {
+//                                            fragment.sendMachineSignOff(getAdapterPosition());
+//                                        } else {
+//                                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
+//                                        }
+//                                        break;
+                                    case R.id.action_assign_supervisor:
                                         Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
-                                        operatorIntent.putExtra("SwitchToFragment", "OperatorList");
+                                        operatorIntent.putExtra("SwitchToFragment", "SupervisorList");
                                         operatorIntent.putExtra("title", "Operator List");
                                         operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);
                                         activity.finish();
                                         break;
-                                    case R.id.action_release_operator:
+                                    case R.id.action_release_supervisor:
                                         if (Util.isConnected(activity)) {
                                             fragment.releaseOperator(getAdapterPosition());
                                         } else {

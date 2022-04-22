@@ -91,7 +91,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isOperatorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd, isRealiseOperator, isAssignOperator;
+            isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator;
     private FloatingActionButton fbSelect, fbCreate, fbCreateOperator;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
@@ -201,7 +201,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     isVillageFilter = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_REALISE_OPERATOR)) {
-                    isRealiseOperator = true;
+                    isReleaseOperator = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
                     isAssignOperator = true;
@@ -768,25 +768,32 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         if (structureListData != null) {
             ssStructureListData.clear();
-            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
-            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
-
             filteredStructureListData.clear();
-            for (StructureData structureData : structureListData.getData()) {
-                boolean flag = false;
-                for (StructureData obj : offlineStructureListData) {
-                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (flag) {
-                    structureData.setSavedOffine(true);
-                    ssStructureListData.add(structureData);
-                } else {
-                    ssStructureListData.add(structureData);
-                }
-            }
+
+            //For RWB project, structure offline save functionality removed. So following code commented.
+
+//            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
+//            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
+
+//            for (StructureData structureData : structureListData.getData()) {
+//                boolean flag = false;
+//                for (StructureData obj : offlineStructureListData) {
+//                    if (obj.getStructureCode().equalsIgnoreCase(structureData.getStructureCode())) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//                if (flag) {
+//                    structureData.setSavedOffine(true);
+//                    ssStructureListData.add(structureData);
+//                } else {
+//                    ssStructureListData.add(structureData);
+//                }
+//            }
+            //For RWB project, structure offline save functionality removed. So above code commented
+            // and following line added.
+            ssStructureListData.addAll(structureListData.getData());
+
             if (selectedStatus != 0) {
                 for (StructureData structureData : ssStructureListData) {
                     if (structureData.getStructureStatusCode() == selectedStatus) {

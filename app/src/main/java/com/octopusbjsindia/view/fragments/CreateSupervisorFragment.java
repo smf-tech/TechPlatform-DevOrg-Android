@@ -82,28 +82,28 @@ import static android.app.Activity.RESULT_OK;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class CreateOpeartorFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
+public class CreateSupervisorFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
         , CustomSpinnerListener {
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnFourthPartMou;
-    private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
-            etAppInstalled;
-    private ImageView imgLicense;
-    private ArrayList<CustomSpinnerObject> isTrainingDoneList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> isAppInstalledList = new ArrayList<>();
-    private String selectedtrainingOption, selectedAppInstalledOption;
-    private Uri outputUri;
-    private Uri finalUri;
-    private final String TAG = MachineMouFourthFragment.class.getName();
+    private EditText etOperatorName, etOperatorLastName, etOperatorContact;
+            //etLicenseNumber, etOperatorTraining, etAppInstalled;
+//    private ImageView imgLicense;
+//    private ArrayList<CustomSpinnerObject> isTrainingDoneList = new ArrayList<>();
+//    private ArrayList<CustomSpinnerObject> isAppInstalledList = new ArrayList<>();
+//    private String selectedtrainingOption, selectedAppInstalledOption;
+//    private Uri outputUri;
+//    private Uri finalUri;
+//    private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
-    private int imgCount = 0;
-    private String currentPhotoPath = "";
-    private String pdfURL = "";
+//    private int imgCount = 0;
+//    private String currentPhotoPath = "";
+//    private String pdfURL = "";
     OperatorDetails operatorDetails;
     HashMap<String, Bitmap> imageHashmap = new HashMap<>();
-    private Uri operatorLicenseImageUri;
+    //private Uri operatorLicenseImageUri;
 
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
@@ -147,25 +147,25 @@ public class CreateOpeartorFragment extends Fragment implements View.OnClickList
         etOperatorName = machineMouFourthFragmentView.findViewById(R.id.et_operator_name);
         etOperatorLastName = machineMouFourthFragmentView.findViewById(R.id.et_operator_last_name);
         etOperatorContact = machineMouFourthFragmentView.findViewById(R.id.et_operator_contact);
-        etLicenseNumber = machineMouFourthFragmentView.findViewById(R.id.et_license_number);
-        imgLicense = machineMouFourthFragmentView.findViewById(R.id.img_license);
-        imgLicense.setOnClickListener(this);
-        etOperatorTraining = machineMouFourthFragmentView.findViewById(R.id.et_operator_training);
-        etOperatorTraining.setOnClickListener(this);
-        etAppInstalled = machineMouFourthFragmentView.findViewById(R.id.et_app_installed);
-        etAppInstalled.setOnClickListener(this);
-        CustomSpinnerObject optionYes = new CustomSpinnerObject();
-        optionYes.setName("Yes");
-        optionYes.set_id("1");
-        optionYes.setSelected(false);
-        isTrainingDoneList.add(optionYes);
-        isAppInstalledList.add(optionYes);
-        CustomSpinnerObject optionNo = new CustomSpinnerObject();
-        optionNo.setName("No");
-        optionNo.set_id("2");
-        optionNo.setSelected(false);
-        isTrainingDoneList.add(optionNo);
-        isAppInstalledList.add(optionNo);
+//        etLicenseNumber = machineMouFourthFragmentView.findViewById(R.id.et_license_number);
+//        imgLicense = machineMouFourthFragmentView.findViewById(R.id.img_license);
+//        imgLicense.setOnClickListener(this);
+//        etOperatorTraining = machineMouFourthFragmentView.findViewById(R.id.et_operator_training);
+//        etOperatorTraining.setOnClickListener(this);
+//        etAppInstalled = machineMouFourthFragmentView.findViewById(R.id.et_app_installed);
+//        etAppInstalled.setOnClickListener(this);
+//        CustomSpinnerObject optionYes = new CustomSpinnerObject();
+//        optionYes.setName("Yes");
+//        optionYes.set_id("1");
+//        optionYes.setSelected(false);
+//        isTrainingDoneList.add(optionYes);
+//        isAppInstalledList.add(optionYes);
+//        CustomSpinnerObject optionNo = new CustomSpinnerObject();
+//        optionNo.setName("No");
+//        optionNo.set_id("2");
+//        optionNo.setSelected(false);
+//        isTrainingDoneList.add(optionNo);
+//        isAppInstalledList.add(optionNo);
     }
 
     @Override
@@ -180,173 +180,178 @@ public class CreateOpeartorFragment extends Fragment implements View.OnClickList
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }
                 break;
-            case R.id.et_operator_training:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Is Training Completed?", isTrainingDoneList,
-                        false);
-                cdd1.show();
-                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
-            case R.id.et_app_installed:
-                CustomSpinnerDialogClass cdd2 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Is App Installed?", isAppInstalledList,
-                        false);
-                cdd2.show();
-                cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
-            case R.id.img_license:
-                onAddImageClick();
-                break;
+//            case R.id.et_operator_training:
+//                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
+//                        "Is Training Completed?", isTrainingDoneList,
+//                        false);
+//                cdd1.show();
+//                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
+//            case R.id.et_app_installed:
+//                CustomSpinnerDialogClass cdd2 = new CustomSpinnerDialogClass(getActivity(), this,
+//                        "Is App Installed?", isAppInstalledList,
+//                        false);
+//                cdd2.show();
+//                cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//                break;
+//            case R.id.img_license:
+//                onAddImageClick();
+//                break;
         }
     }
 
-    private void onAddImageClick() {
-        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            showPictureDialog();
-        }
-    }
+//    private void onAddImageClick() {
+//        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+//            showPictureDialog();
+//        }
+//    }
 
-    private void showPictureDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle(getString(R.string.title_choose_picture));
-        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
-
-        dialog.setItems(items, (dialog1, which) -> {
-            switch (which) {
-                case 0:
-                    choosePhotoFromGallery();
-                    break;
-
-                case 1:
-                    takePhotoFromCamera();
-                    break;
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void choosePhotoFromGallery() {
-        try {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void takePhotoFromCamera() {
-        try {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = getImageFile(); // 1
-            Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-            else
-                uri = Uri.fromFile(file); // 3
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-        } catch (ActivityNotFoundException e) {
-            //display an error message
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
-                    Toast.LENGTH_SHORT).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
-            try {
-                finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(), this);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-            if (data != null) {
-                try {
-                    getImageFile();
-                    outputUri = data.getData();
-                    finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            try {
-                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                imgLicense.setImageURI(finalUri);
-                operatorLicenseImageUri = finalUri;
-                if (Util.isValidImageSize(imageFile)) {
-                    imgCount++;
-                    imageHashmap.put("licenseImage", bitmap);
-                } else {
-                    Util.showToast(getString(R.string.msg_big_image), this);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
-    }
-
-    private File getImageFile() {
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        File file;
-        file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
-        currentPhotoPath = file.getPath();
-        return file;
-
-    }
+//    private void showPictureDialog() {
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+//        dialog.setTitle(getString(R.string.title_choose_picture));
+//        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+//
+//        dialog.setItems(items, (dialog1, which) -> {
+//            switch (which) {
+//                case 0:
+//                    choosePhotoFromGallery();
+//                    break;
+//
+//                case 1:
+//                    takePhotoFromCamera();
+//                    break;
+//            }
+//        });
+//
+//        dialog.show();
+//    }
+//
+//    private void choosePhotoFromGallery() {
+//        try {
+//            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+//        } catch (ActivityNotFoundException e) {
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    private void takePhotoFromCamera() {
+//        try {
+//            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            File file = getImageFile(); // 1
+//            Uri uri;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+//                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+//            else
+//                uri = Uri.fromFile(file); // 3
+//            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+//            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+//        } catch (ActivityNotFoundException e) {
+//            //display an error message
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
+//                    Toast.LENGTH_SHORT).show();
+//        } catch (SecurityException e) {
+//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+//            try {
+//                finalUri = Uri.fromFile(new File(currentPhotoPath));
+//                Crop.of(finalUri, finalUri).start(getContext(), this);
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+//            if (data != null) {
+//                try {
+//                    getImageFile();
+//                    outputUri = data.getData();
+//                    finalUri = Uri.fromFile(new File(currentPhotoPath));
+//                    Crop.of(outputUri, finalUri).start(getContext(), this);
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                }
+//            }
+//        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+//            try {
+//                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+//                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                imgLicense.setImageURI(finalUri);
+//                operatorLicenseImageUri = finalUri;
+//                if (Util.isValidImageSize(imageFile)) {
+//                    imgCount++;
+//                    imageHashmap.put("licenseImage", bitmap);
+//                } else {
+//                    Util.showToast(getString(R.string.msg_big_image), this);
+//                }
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        }
+//    }
+//
+//    private File getImageFile() {
+//        // External sdcard location
+//        File mediaStorageDir = new File(
+//                Environment
+//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+//                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+//        // Create the storage directory if it does not exist
+//        if (!mediaStorageDir.exists()) {
+//            if (!mediaStorageDir.mkdirs()) {
+//                return null;
+//            }
+//        }
+//        // Create a media file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+//                Locale.getDefault()).format(new Date());
+//        File file;
+//        file = new File(mediaStorageDir.getPath() + File.separator
+//                + "IMG_" + timeStamp + ".jpg");
+//        currentPhotoPath = file.getPath();
+//        return file;
+//
+//    }
 
     public boolean isAllDataValid() {
         if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_name), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_operator_first_name), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etOperatorLastName.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_operator_last_name), Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
-            return false;
-        } else if (operatorLicenseImageUri == null) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
-            return false;
         }
+//        else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (TextUtils.isEmpty(etAppInstalled.getText().toString().trim())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
+//            return false;
+//        } else if (operatorLicenseImageUri == null) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
         if (etOperatorContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
@@ -360,9 +365,6 @@ public class CreateOpeartorFragment extends Fragment implements View.OnClickList
         operatorDetails.setFirstName(etOperatorName.getText().toString().trim());
         operatorDetails.setLastName(etOperatorLastName.getText().toString().trim());
         operatorDetails.setContactNumnber(etOperatorContact.getText().toString().trim());
-        operatorDetails.setLicenceNumber(etLicenseNumber.getText().toString().trim());
-        operatorDetails.setIsTrainingDone(selectedtrainingOption);
-        operatorDetails.setIsAppInstalled(selectedAppInstalledOption);
         if (Util.isConnected(getActivity())) {
             uploadData();
         } else {
@@ -589,43 +591,43 @@ public class CreateOpeartorFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onCustomSpinnerSelection(String type) {
-        switch (type) {
-            case "Is Training Completed?":
-                for (CustomSpinnerObject trainingOption : isTrainingDoneList) {
-                    if (trainingOption.isSelected()) {
-                        selectedtrainingOption = trainingOption.getName();
-                        break;
-                    }
-                }
-                etOperatorTraining.setText(selectedtrainingOption);
-                break;
-            case "Is App Installed?":
-                for (CustomSpinnerObject appInstallationOption : isAppInstalledList) {
-                    if (appInstallationOption.isSelected()) {
-                        selectedAppInstalledOption = appInstallationOption.getName();
-                        break;
-                    }
-                }
-                etAppInstalled.setText(selectedAppInstalledOption);
-                break;
-        }
+//        switch (type) {
+//            case "Is Training Completed?":
+//                for (CustomSpinnerObject trainingOption : isTrainingDoneList) {
+//                    if (trainingOption.isSelected()) {
+//                        selectedtrainingOption = trainingOption.getName();
+//                        break;
+//                    }
+//                }
+//                etOperatorTraining.setText(selectedtrainingOption);
+//                break;
+//            case "Is App Installed?":
+//                for (CustomSpinnerObject appInstallationOption : isAppInstalledList) {
+//                    if (appInstallationOption.isSelected()) {
+//                        selectedAppInstalledOption = appInstallationOption.getName();
+//                        break;
+//                    }
+//                }
+//                etAppInstalled.setText(selectedAppInstalledOption);
+//                break;
+//        }
     }
 
     @Override
     public void onImageUploadedListener(String response, String formName) {
         hideProgressBar();
-        try {
-            if (new JSONObject(response).has("data")) {
-                JSONObject data = new JSONObject(response).getJSONObject("data");
-                pdfURL = (String) data.get("url");
-                Log.e(TAG, "PDF Url: " + pdfURL);
-
-            } else {
-                Log.e(TAG, "onPostExecute: Invalid response");
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+//        try {
+//            if (new JSONObject(response).has("data")) {
+//                JSONObject data = new JSONObject(response).getJSONObject("data");
+//                pdfURL = (String) data.get("url");
+//                Log.e(TAG, "PDF Url: " + pdfURL);
+//
+//            } else {
+//                Log.e(TAG, "onPostExecute: Invalid response");
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
     }
 
     @Override

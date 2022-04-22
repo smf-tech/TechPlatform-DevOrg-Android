@@ -383,9 +383,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:text="Save Offline"
-                        android:textColor="@color/colorPrimary"
                         android:textAllCaps="false"
-                        android:textSize="@dimen/text_size_11" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_11"
+                        android:visibility="invisible" />
                 </RelativeLayout>
 
             </LinearLayout>

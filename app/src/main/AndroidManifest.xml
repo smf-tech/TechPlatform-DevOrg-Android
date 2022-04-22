@@ -141,7 +141,7 @@
             android:name=".view.activities.StructureVisitMonitoringActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.StructurePripretionsActivity"
+            android:name=".view.activities.StructurePreparationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.CreateStructureActivity"

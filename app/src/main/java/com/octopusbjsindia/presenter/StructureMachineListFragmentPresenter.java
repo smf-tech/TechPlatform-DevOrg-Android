@@ -117,19 +117,19 @@ public class StructureMachineListFragmentPresenter implements APIPresenterListen
         requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
     }
 
-    public void getStateMachinesList(String stateId){
-        HashMap<String,String> map=new HashMap<>();
-        map.put(KEY_STATE_ID, stateId);
-
-        fragmentWeakReference.get().showProgressBar();
-        final String getMachinesListUrl = BuildConfig.BASE_URL
-                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
-        Log.d(TAG, "getStateMachineListUrl: url" + getMachinesListUrl);
-        fragmentWeakReference.get().showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
-    }
+//    public void getStateMachinesList(String stateId){
+//        HashMap<String,String> map=new HashMap<>();
+//        map.put(KEY_STATE_ID, stateId);
+//
+//        fragmentWeakReference.get().showProgressBar();
+//        final String getMachinesListUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.SSModule.GET_SS_MACHINE_LIST);
+//        Log.d(TAG, "getStateMachineListUrl: url" + getMachinesListUrl);
+//        fragmentWeakReference.get().showProgressBar();
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        requestCall.postDataApiCall(GET_MACHINE_LIST, new JSONObject(map).toString(), getMachinesListUrl);
+//    }
 
     public void getJurisdictionLevelData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         APIRequestCall requestCall = new APIRequestCall();

@@ -74,16 +74,6 @@
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/rb_terminate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:fontFamily="@font/opensans"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Terminate MOU"
-                    android:textColor="@color/dark_grey" />
-
-                <RadioButton
                     android:id="@+id/rb_deploy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,6 +81,16 @@
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Allocate machine in taluka"
+                    android:textColor="@color/dark_grey" />
+
+                <RadioButton
+                    android:id="@+id/rb_terminate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:fontFamily="@font/opensans"
+                    android:padding="@dimen/dimen_10dp"
+                    android:text="Terminate MOU"
                     android:textColor="@color/dark_grey" />
 
             </RadioGroup>
