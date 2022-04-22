@@ -221,7 +221,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         } else{
                             Intent i = new Intent(OperatorActivity.this, SiltTransportationRecordActivity.class);
                             i.putExtra("machineId",machine_id);
-                            i.putExtra("currentStructureId",structure_id);
+                            i.putExtra("structureId",structure_id);
                             startActivity(i);
                         }
                         return true;
