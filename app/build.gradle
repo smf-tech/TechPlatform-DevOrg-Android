@@ -10,10 +10,10 @@ android {
             storePassword 'ss@123'
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 23
         versionName "1.23"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -126,6 +126,8 @@ dependencies {
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-ui:2.4.1'
     annotationProcessor "androidx.room:room-compiler:2.1.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'

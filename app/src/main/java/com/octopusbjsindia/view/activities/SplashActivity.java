@@ -273,7 +273,7 @@ public class SplashActivity extends AppCompatActivity {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
-                        intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
+                        intent = new Intent(SplashActivity.this, OperatorActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);

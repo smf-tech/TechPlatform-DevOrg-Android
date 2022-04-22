@@ -594,7 +594,7 @@
     <string name="meter_stop">Stop</string>
     <string name="meter_pause">Pause</string>
     <string name="meter_resume">Resume</string>
-    <string name="machine_meter_reading">Machine meter reading</string>
+    <string name="machine_meter_reading">Machine Operation</string>
     <string name="update_data">Update Data</string>
     <string name="enter_expiry_date">Enter MOU Expiry date.</string>
     <string name="enter_mou_start_date">Enter MOU start date</string>
@@ -814,5 +814,14 @@
     <string name="msg_numberof_crops">Please enter number of crops taken in year.</string>
     <string name="msg_enter_remark">Please enter remark.</string>
     <string name="structure_status">Structure status</string>
+    <string name="title_activity_opretore">OpretoreActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

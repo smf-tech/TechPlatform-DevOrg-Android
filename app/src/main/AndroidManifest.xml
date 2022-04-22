@@ -40,7 +40,15 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.MissionRahat.FilterActivity"></activity>
+        <activity
+            android:name=".view.activities.SiltTransportationRecordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activities.OperatorActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.MissionRahat.FilterActivity" />
         <activity android:name=".view.activities.MissionRahat.OxyMachinesAssignActivity" />
         <activity android:name=".view.activities.MissionRahat.SearchListActivity" />
         <activity android:name=".view.activities.MissionRahat.RequirementsListActivity" />

@@ -19,7 +19,9 @@ public class OperatorMachineCodeDataModel {
     @Expose
     private int minute_of_pause;
 
-
+    @SerializedName("structure_id")
+    @Expose
+    private String structure_id;
 
     @SerializedName("machine_id")
     @Expose
@@ -55,6 +57,13 @@ public class OperatorMachineCodeDataModel {
         this.nonutilisationTypeData = nonutilisationTypeData;
     }
 
+    public String getStructure_id() {
+        return structure_id;
+    }
+
+    public void setStructure_id(String structure_id) {
+        this.structure_id = structure_id;
+    }
 
     public int getHour_of_day() {
         return hour_of_day;

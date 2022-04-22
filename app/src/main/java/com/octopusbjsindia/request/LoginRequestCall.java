@@ -120,7 +120,7 @@ public class LoginRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getTokenUrl = BuildConfig.BASE_URL + Urls.Login.GENERATE_TOKEN;
-
+        Log.d(TAG, "getToken - url: " + getTokenUrl);
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
                 getTokenUrl,
@@ -172,7 +172,7 @@ public class LoginRequestCall {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
-
+        Log.d(TAG, "getUserProfile - url: " + getProfileUrl);
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getProfileUrl,
