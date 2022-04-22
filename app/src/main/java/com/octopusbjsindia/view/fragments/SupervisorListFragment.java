@@ -68,9 +68,7 @@ public class SupervisorListFragment extends Fragment implements APIDataListener 
         } else {
             Util.showToast(activity.getString(R.string.msg_no_network), activity);
         }
-
         rvOperator = view.findViewById(R.id.rv_operator);
-
     }
 
     @Override
@@ -124,11 +122,9 @@ public class SupervisorListFragment extends Fragment implements APIDataListener 
     }
 
     public void populateOpratorList(List<OpratorListData> data) {
-
         rvOperator.setLayoutManager(new LinearLayoutManager(getActivity()));
         OperatorsListAdapter ssMachineListAdapter = new OperatorsListAdapter(machineId, data, getActivity(), presenter);
         rvOperator.setAdapter(ssMachineListAdapter);
-
     }
 
     public void assignOperatorsSuccess(String msg) {
@@ -164,6 +160,5 @@ public class SupervisorListFragment extends Fragment implements APIDataListener 
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
-
     }
 }

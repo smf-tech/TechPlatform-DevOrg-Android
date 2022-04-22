@@ -55,11 +55,12 @@ public class SSActionsActivity extends AppCompatActivity implements View.OnClick
                         fragment = new StructureMachineListFragment();
                         fragment.setArguments(data);
                         openFragment();
-                        if (data.getInt("viewType", 0) == 1) {
-                            findViewById(R.id.toolbar_edit_action).setVisibility(View.VISIBLE);
-                        } else {
-                            findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
-                        }
+                        findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
+//                        if (data.getInt("viewType", 0) == 1) {
+//                            findViewById(R.id.toolbar_edit_action).setVisibility(View.VISIBLE);
+//                        } else {
+//                            findViewById(R.id.toolbar_edit_action).setVisibility(View.GONE);
+//                        }
                         break;
                     case "MachineDeployStructureListFragment":
                         fragment = new MachineDeployStructureListFragment();

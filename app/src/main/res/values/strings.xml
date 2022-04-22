@@ -652,7 +652,7 @@
     <string name="host_village_pop">Host Village Population</string>
     <string name="catchment_villages">Catchment villages</string>
     <string name="catchment_villages_pop">Catchment Villages Population</string>
-    <string name="gat_no">Gat No.</string>
+    <string name="gat_no">Gat No./ Survey No.</string>
     <string name="water_shed">Water Shed No.</string>
     <string name="area">Area</string>
     <string name="structure_name">Structure Name *</string>
@@ -825,5 +825,7 @@
     <string name="enter_supervisor_last_name">Please enter supervisor\'s last name</string>
     <string name="enter_operator_first_name">Enter machine operator\'s first name</string>
     <string name="enter_operator_last_name">Enter operator\'s last name</string>
+    <string name="supervisor_contact">Supervisor contact number</string>
+    <string name="enter_supervisor_contact">Enter supervisor contact number</string>
 
 </resources>
