@@ -83,7 +83,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="2dp"
                     android:contentDescription="@string/content_description"
-                    android:padding="@dimen/dimen_05dp"
+                    android:padding="@dimen/dimen_07dp"
                     android:src="@drawable/ic_popup_menu"
                     android:visibility="visible" />
             </LinearLayout>

@@ -283,6 +283,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
+            Glide.with(OperatorActivity.this)
+                    .load(R.drawable.jcb_stopped)   //Uri.parse(list.get(0).getImage()))
+                    .into(iv_jcb);
         } else if (machine_status.equals("submit")) {
             Uri imageUri1 = Uri.parse(preferences.getString("startUri", ""));
             img_start_meter.setImageURI(imageUri1);
@@ -296,6 +299,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
+            Glide.with(OperatorActivity.this)
+                    .load(R.drawable.jcb_stopped)   //Uri.parse(list.get(0).getImage()))
+                    .into(iv_jcb);
         } else if (machine_status.equalsIgnoreCase("Working")) {
             Uri imageUri = Uri.parse(preferences.getString("startUri", ""));
             img_start_meter.setImageURI(imageUri);
