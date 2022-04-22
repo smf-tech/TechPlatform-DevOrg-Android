@@ -109,8 +109,6 @@ public class SplashActivity extends AppCompatActivity {
             tv_powered.setText("Powered By");
             tv_app_version.setText("Version -"+appVersion);
 
-
-
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
