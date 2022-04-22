@@ -405,7 +405,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     case R.id.action_assign_supervisor:
                                         Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
                                         operatorIntent.putExtra("SwitchToFragment", "SupervisorList");
-                                        operatorIntent.putExtra("title", "Operator List");
+                                        operatorIntent.putExtra("title", "Supervisors List");
                                         operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);

@@ -88,7 +88,7 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnFourthPartMou;
-    private EditText etOperatorName, etOperatorLastName, etOperatorContact;
+    private EditText etFirstName, etLastName, etContact;
             //etLicenseNumber, etOperatorTraining, etAppInstalled;
 //    private ImageView imgLicense;
 //    private ArrayList<CustomSpinnerObject> isTrainingDoneList = new ArrayList<>();
@@ -144,9 +144,9 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
         btnFourthPartMou.setOnClickListener(this);
-        etOperatorName = machineMouFourthFragmentView.findViewById(R.id.et_operator_name);
-        etOperatorLastName = machineMouFourthFragmentView.findViewById(R.id.et_operator_last_name);
-        etOperatorContact = machineMouFourthFragmentView.findViewById(R.id.et_operator_contact);
+        etFirstName = machineMouFourthFragmentView.findViewById(R.id.et_supervisor_first_name);
+        etLastName = machineMouFourthFragmentView.findViewById(R.id.et_supervisor_last_name);
+        etContact = machineMouFourthFragmentView.findViewById(R.id.et_supervisor_contact);
 //        etLicenseNumber = machineMouFourthFragmentView.findViewById(R.id.et_license_number);
 //        imgLicense = machineMouFourthFragmentView.findViewById(R.id.img_license);
 //        imgLicense.setOnClickListener(this);
@@ -322,17 +322,17 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
 //    }
 
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())) {
+        if (TextUtils.isEmpty(etFirstName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_first_name), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_supervisor_first_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOperatorLastName.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(etLastName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_last_name), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_supervisor_last_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(etContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_supervisor_contact), Snackbar.LENGTH_LONG);
             return false;
         }
 //        else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {
@@ -352,7 +352,7 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
 //                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
 //            return false;
 //        }
-        if (etOperatorContact.getText().toString().trim().length() != 10) {
+        if (etContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
             return false;
@@ -362,9 +362,9 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
 
     private void setMachineFourthData() {
         operatorDetails = new OperatorDetails();
-        operatorDetails.setFirstName(etOperatorName.getText().toString().trim());
-        operatorDetails.setLastName(etOperatorLastName.getText().toString().trim());
-        operatorDetails.setContactNumnber(etOperatorContact.getText().toString().trim());
+        operatorDetails.setFirstName(etFirstName.getText().toString().trim());
+        operatorDetails.setLastName(etLastName.getText().toString().trim());
+        operatorDetails.setContactNumnber(etContact.getText().toString().trim());
         if (Util.isConnected(getActivity())) {
             uploadData();
         } else {
