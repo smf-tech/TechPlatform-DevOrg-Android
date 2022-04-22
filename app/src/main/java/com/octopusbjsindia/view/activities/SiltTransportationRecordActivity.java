@@ -248,7 +248,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 break;
             case R.id.et_state:
                 if (stateList.size() > 0) {
-                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(this, this,
+                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(SiltTransportationRecordActivity.this, this,
                             "Select State", stateList, false);
                     cdd1.show();
                     cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -265,7 +265,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 break;
             case R.id.et_district:
                 if (districtList.size() > 0) {
-                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(this, this,
+                    CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(SiltTransportationRecordActivity.this, this,
                             "Select District", districtList, false);
                     cdd1.show();
                     cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -552,9 +552,9 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
                             if (responseOBJ.getStatus() == 200) {
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), SiltTransportationRecordActivity.this);
                             } else {
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(responseOBJ.getMessage(), SiltTransportationRecordActivity.this);
                             }
                             Log.d("response -", jsonString);
                             closeCurrentActivity();

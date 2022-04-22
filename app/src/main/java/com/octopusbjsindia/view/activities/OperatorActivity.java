@@ -511,10 +511,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Log.d("response Received -", jsonString);
                             //Util.showToast("Sync response->"+ jsonString, this);
-                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                    deleteSinglSynccedOperatorRecord(data.get_id());
+//                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+//                                    deleteSinglSynccedOperatorRecord(data.get_id());
 //                            if (id == data.get_id()){
-//                                Util.showToast("Sync Successful.", this);
+                                Util.showToast("Submitted Successfully.", OperatorActivity.this);
 //                            }
 
                         } catch (UnsupportedEncodingException e) {
