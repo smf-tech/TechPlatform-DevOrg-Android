@@ -3,7 +3,7 @@
     <item
         android:icon="@drawable/ic_halt"
         android:id="@+id/halt"
-        android:title="Halt Reson"/>
+        android:title="Halt Reason"/>
 
     <item
         android:icon="@drawable/ic_halt"

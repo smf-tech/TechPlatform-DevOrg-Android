@@ -204,7 +204,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 //                menuHelper.setForceShowIcon(true);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getTitle().toString().equalsIgnoreCase("Halt")){
+                        if(item.getTitle().toString().equalsIgnoreCase("Halt Reason")){
                             if (machine_status.equals("Working")) {
                                 Util.showToast("Machine is in Working state.", OperatorActivity.this);
                             } else {
