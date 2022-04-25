@@ -92,7 +92,7 @@
                 <EditText
                     android:id="@+id/et_supervisor_first_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/supervisor_first_name"
+                    android:hint="@string/fa_first_name"
                     android:maxLength="50"
                     android:inputType="textPersonName"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
@@ -107,7 +107,7 @@
                 <EditText
                     android:id="@+id/et_supervisor_last_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/supervisor_last_name"
+                    android:hint="@string/fa_last_name"
                     android:maxLength="50"
                     android:inputType="textPersonName"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>

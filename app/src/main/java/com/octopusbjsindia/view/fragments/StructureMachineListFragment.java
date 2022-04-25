@@ -911,7 +911,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else if (view.getId() == R.id.fb_create_operator) {
             Intent machineVisitIntent = new Intent(getActivity(), SSActionsActivity.class);
             machineVisitIntent.putExtra("SwitchToFragment", "CreateOperatorFragment");
-            machineVisitIntent.putExtra("title", "Create Supervisor");
+            machineVisitIntent.putExtra("title", "Create Field Associate");
             getActivity().startActivity(machineVisitIntent);
 
         } else if (view.getId() == R.id.tv_state_filter) {

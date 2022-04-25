@@ -36,7 +36,7 @@
                         <EditText
                             android:id="@+id/et_supervisor_first_name"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/supervisor_first_name"
+                            android:hint="@string/fa_first_name"
                             android:inputType="textMultiLine"
                             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 " />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -49,7 +49,7 @@
                         <EditText
                             android:id="@+id/et_supervisor_last_name"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/supervisor_last_name"
+                            android:hint="@string/fa_last_name"
                             android:inputType="textMultiLine"
                             android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 " />
                         />
@@ -63,7 +63,7 @@
                         <EditText
                             android:id="@+id/et_supervisor_contact"
                             style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/supervisor_contact"
+                            android:hint="@string/fa_contact"
                             android:inputType="number"
                             android:maxLength="10" />
                     </com.google.android.material.textfield.TextInputLayout>
