@@ -178,7 +178,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 break;
             case R.id.buttonStopService:
 
-                if(stopUri.getPath().length() <= 0)
+                if(startUri == null)
                     msg = "Please select Stop meter reading photo";
                  else if(et_emeter_read.getText().toString().length() <= 0) {
                     msg = "Please Enter Stop meter reading";
