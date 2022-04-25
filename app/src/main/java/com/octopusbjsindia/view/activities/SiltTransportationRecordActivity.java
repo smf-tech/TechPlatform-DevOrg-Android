@@ -95,7 +95,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
     private Button btnSubmit;
-    private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etSurveyNo, etBFirstName, etBLastName, etBMobile,
+    private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etArea, etSurveyNo, etBFirstName, etBLastName, etBMobile,
             etTractorTripsCount, etTipperTripsCount, etTotalSilt;
     //etFarmersCount, etBeneficiariesCount;
     private String currentPhotoPath = "";
@@ -141,6 +141,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etBType.setLongClickable(false);
         etSurveyNo = findViewById(R.id.et_survey_no);
         etSurveyNo.setLongClickable(false);
+        etArea = findViewById(R.id.et_area);
+        etArea.setLongClickable(false);
         etBFirstName = findViewById(R.id.et_b_fname);
         etBFirstName.setLongClickable(false);
         etBLastName = findViewById(R.id.et_b_lname);
@@ -153,7 +155,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etTipperTripsCount = findViewById(R.id.et_tipper_trips_count);
         etTipperTripsCount.setLongClickable(false);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("Silt Record");
+        tv_toolbar_title.setText("Silt Beneficiary Record");
         findViewById(R.id.iv_toobar_back).setOnClickListener(this);
         btnSubmit = findViewById(R.id.btn_submit);
         btnSubmit.setOnClickListener(this);
@@ -365,6 +367,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                         siltTransportRecord.setVillageName(selectedVillage);
                         siltTransportRecord.setbTypeId(selectedBTypeId);
                         siltTransportRecord.setSurveyNo(etSurveyNo.getText().toString());
+                        siltTransportRecord.setArea(etArea.getText().toString());
                         siltTransportRecord.setbFirstName(etBFirstName.getText().toString());
                         siltTransportRecord.setbLastName(etBLastName.getText().toString());
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
@@ -492,6 +495,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
 
     public void updateBeneficiaryDetails(SiltTransportRecord record) {
         etSurveyNo.setText(record.getSurveyNo());
+        etArea.setText(record.getArea());
         etBFirstName.setText(record.getbFirstName());
         etBLastName.setText(record.getbLastName());
         if(selectedStateId == null ||!selectedStateId.equals(record.getStateId())) {

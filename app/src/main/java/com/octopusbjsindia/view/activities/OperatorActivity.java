@@ -15,7 +15,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -144,9 +146,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     @Override
     public void onClick(View view) {
+        String msg = "";
         switch (view.getId()) {
             case R.id.buttonStartService:
-                if (et_smeter_read.getText().toString().length() > 0 && startUri != null) {
+
+                if(startUri == null)
+                    msg = "Please select Start meter reading photo";
+                else if(et_smeter_read.getText().toString().length() <= 0) {
+                    msg = "Please enter start meter reading";
+                }
+                if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
                     operatorRequestResponseModel.setStatus_code("" + state_start);
@@ -163,11 +172,18 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                     checkDate();
                 } else {
-                    Util.showToast("Please submit start meter reading Or start meter Pic.", OperatorActivity.this);
+                    Util.showToast(msg, OperatorActivity.this);
                 }
+
                 break;
             case R.id.buttonStopService:
-                if (et_emeter_read.getText().toString().length() > 0 && stopUri != null) {
+
+                if(stopUri.getPath().length() <= 0)
+                    msg = "Please select Stop meter reading photo";
+                 else if(et_emeter_read.getText().toString().length() <= 0) {
+                    msg = "Please Enter Stop meter reading";
+                }
+                if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
                     operatorRequestResponseModel.setStatus_code("" + state_stop);
@@ -184,7 +200,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                     checkDate();
                 } else {
-                    Util.showToast("Please submit Stop meter reading Or Stop meter Pic.", OperatorActivity.this);
+                    Util.showToast(msg, OperatorActivity.this);
                 }
                 break;
             case R.id.img_start_meter:
@@ -351,6 +367,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
+                outputUri = data.getData();
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
@@ -371,7 +388,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                clickedImageView.setImageURI(finalUri);
+//                clickedImageView.setImageURI(finalUri);
+                Glide.with(this)
+                        .load(new File(finalUri.getPath()))
+                        .placeholder(new ColorDrawable(Color.RED))
+                        .into(clickedImageView);
                 if (Util.isValidImageSize(imageFile)) {
                     if (imageType.equals("Start")) {
                         imageHashmap.put("image", bitmap);

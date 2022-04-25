@@ -130,36 +130,37 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:gravity="center_horizontal"
+                android:weightSum="2"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_start_meter"
-                    android:layout_width="@dimen/dimen_130dp"
-                    android:layout_height="@dimen/dimen_130dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
                     android:padding="@dimen/dimen_01dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_meter"
+                    android:src="@drawable/ic_start_meter_reading"
                     />
 
 
                 <ImageView
                     android:id="@+id/img_end_meter"
-                    android:layout_width="@dimen/dimen_130dp"
-                    android:layout_height="@dimen/dimen_130dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/dimen_05dp"
                     android:layout_weight="1"
                     android:longClickable="false"
                     android:padding="@dimen/dimen_01dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_meter" />
+                    android:src="@drawable/ic_end_meter_reading" />
                 <!--android:drawableEnd="@drawable/ic_cal_event"-->
 
 

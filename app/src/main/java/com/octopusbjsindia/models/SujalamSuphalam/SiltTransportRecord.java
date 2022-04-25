@@ -52,6 +52,10 @@ public class SiltTransportRecord implements Serializable {
     @Expose
     private String surveyNo;
 
+    @SerializedName("area")
+    @Expose
+    private String area;
+
     @SerializedName("b_first_name")
     @Expose
     private String bFirstName;
@@ -180,6 +184,14 @@ public class SiltTransportRecord implements Serializable {
 
     public void setSurveyNo(String surveyNo) {
         this.surveyNo = surveyNo;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getbFirstName() {
