@@ -15,7 +15,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -144,9 +146,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     @Override
     public void onClick(View view) {
+        String msg = "";
         switch (view.getId()) {
             case R.id.buttonStartService:
-                if (et_smeter_read.getText().toString().length() > 0 && startUri != null) {
+
+                if(startUri == null)
+                    msg = "Please select Start meter reading photo";
+                else if(et_smeter_read.getText().toString().length() <= 0) {
+                    msg = "Please enter start meter reading";
+                }
+                if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
                     operatorRequestResponseModel.setStatus_code("" + state_start);
@@ -163,11 +172,18 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                     checkDate();
                 } else {
-                    Util.showToast("Please submit start meter reading Or start meter Pic.", OperatorActivity.this);
+                    Util.showToast(msg, OperatorActivity.this);
                 }
+
                 break;
             case R.id.buttonStopService:
-                if (et_emeter_read.getText().toString().length() > 0 && stopUri != null) {
+
+                if(startUri == null)
+                    msg = "Please select Stop meter reading photo";
+                 else if(et_emeter_read.getText().toString().length() <= 0) {
+                    msg = "Please Enter Stop meter reading";
+                }
+                if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
                     operatorRequestResponseModel.setStatus_code("" + state_stop);
@@ -184,7 +200,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                     checkDate();
                 } else {
-                    Util.showToast("Please submit Stop meter reading Or Stop meter Pic.", OperatorActivity.this);
+                    Util.showToast(msg, OperatorActivity.this);
                 }
                 break;
             case R.id.img_start_meter:
@@ -204,7 +220,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 //                menuHelper.setForceShowIcon(true);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getTitle().toString().equalsIgnoreCase("Halt")){
+                        if(item.getTitle().toString().equalsIgnoreCase("Halt Reason")){
                             if (machine_status.equals("Working")) {
                                 Util.showToast("Machine is in Working state.", OperatorActivity.this);
                             } else {
@@ -221,7 +237,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         } else{
                             Intent i = new Intent(OperatorActivity.this, SiltTransportationRecordActivity.class);
                             i.putExtra("machineId",machine_id);
-                            i.putExtra("currentStructureId",structure_id);
+                            i.putExtra("structureId",structure_id);
                             startActivity(i);
                         }
                         return true;
@@ -283,6 +299,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
+            Glide.with(OperatorActivity.this)
+                    .load(R.drawable.jcb_stopped)   //Uri.parse(list.get(0).getImage()))
+                    .into(iv_jcb);
         } else if (machine_status.equals("submit")) {
             Uri imageUri1 = Uri.parse(preferences.getString("startUri", ""));
             img_start_meter.setImageURI(imageUri1);
@@ -296,6 +315,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
+            Glide.with(OperatorActivity.this)
+                    .load(R.drawable.jcb_stopped)   //Uri.parse(list.get(0).getImage()))
+                    .into(iv_jcb);
         } else if (machine_status.equalsIgnoreCase("Working")) {
             Uri imageUri = Uri.parse(preferences.getString("startUri", ""));
             img_start_meter.setImageURI(imageUri);
@@ -345,6 +367,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
+                outputUri = data.getData();
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
@@ -365,7 +388,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-                clickedImageView.setImageURI(finalUri);
+//                clickedImageView.setImageURI(finalUri);
+                Glide.with(this)
+                        .load(new File(finalUri.getPath()))
+                        .placeholder(new ColorDrawable(Color.RED))
+                        .into(clickedImageView);
                 if (Util.isValidImageSize(imageFile)) {
                     if (imageType.equals("Start")) {
                         imageHashmap.put("image", bitmap);
@@ -505,10 +532,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Log.d("response Received -", jsonString);
                             //Util.showToast("Sync response->"+ jsonString, this);
-                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                    deleteSinglSynccedOperatorRecord(data.get_id());
+//                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+//                                    deleteSinglSynccedOperatorRecord(data.get_id());
 //                            if (id == data.get_id()){
-//                                Util.showToast("Sync Successful.", this);
+                                Util.showToast("Submitted Successfully.", OperatorActivity.this);
 //                            }
 
                         } catch (UnsupportedEncodingException e) {

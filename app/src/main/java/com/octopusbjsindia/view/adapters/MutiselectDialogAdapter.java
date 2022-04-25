@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle;
-        Button btSelectFilter;
+        ImageView btSelectFilter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
