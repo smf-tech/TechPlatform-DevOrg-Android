@@ -48,12 +48,12 @@
 
     <item
         android:id="@+id/action_assign_supervisor"
-        android:title="Assign Supervisor"
+        android:title="Assign Field Associate"
         android:visible="false" />
 
     <item
         android:id="@+id/action_release_supervisor"
-        android:title="Release Supervisor"
+        android:title="Release Field Associate"
         android:visible="false" />
 
 </menu>

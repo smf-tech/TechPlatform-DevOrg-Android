@@ -324,15 +324,15 @@ public class CreateSupervisorFragment extends Fragment implements View.OnClickLi
     public boolean isAllDataValid() {
         if (TextUtils.isEmpty(etFirstName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_supervisor_first_name), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_fa_first_name), Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etLastName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_supervisor_last_name), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_fa_last_name), Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(etContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_supervisor_contact), Snackbar.LENGTH_LONG);
+                    getString(R.string.enter_fa_contact), Snackbar.LENGTH_LONG);
             return false;
         }
 //        else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {

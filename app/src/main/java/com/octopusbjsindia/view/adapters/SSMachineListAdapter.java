@@ -92,7 +92,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
             if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                 if (fragment.isMachineMou) {
                     holder.btAction.setVisibility(View.VISIBLE);
-                    holder.btAction.setText("Do MOU");
+                    holder.btAction.setText("Next Step");
                 }
             }
             else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
@@ -405,7 +405,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     case R.id.action_assign_supervisor:
                                         Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
                                         operatorIntent.putExtra("SwitchToFragment", "SupervisorList");
-                                        operatorIntent.putExtra("title", "Supervisors List");
+                                        operatorIntent.putExtra("title", "Field Associates List");
                                         operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);

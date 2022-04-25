@@ -554,8 +554,8 @@
     <string name="msg_structure_boundary">Waiting for location Accuracy</string>
     <string name="machine_signoff_alert_message">Are you sure, you want to send sign-off for this machine?</string>
     <string name="machine_removed">हे डिव्हाइस कोणत्याही मशीनला नियुक्त केलेले नाही \nकृपया आपल्या सुपरवाइजरशी संपर्क साधा.</string>
-    <string name="release_opretor_alert_message">Are you sure want to release the operator from this machine?</string>
-    <string name="assign_opretor_alert_message">Are you sure want to assign the operator from this machine?</string>
+    <string name="release_opretor_alert_message">Are you sure you want to release the Field Associate from this machine?</string>
+    <string name="assign_opretor_alert_message">Are you sure you want to assign the Field Associate to this machine?</string>
     <string name="event_content_screen_visit">Content Module Screen visited</string>
     <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
     <string name="type_of_beneficiary">Type of beneficiary</string>
@@ -601,12 +601,12 @@
     <string name="fa_last_name">Field Associate Last Name</string>
     <string name="operator_first_name">Operator First Name</string>
     <string name="operator_last_name">Operator Last Name</string>
-    <string name="enter_supervisor_first_name">Please enter supervisor\'s first name</string>
-    <string name="enter_supervisor_last_name">Please enter supervisor\'s last name</string>
+    <string name="enter_fa_first_name">Please enter Field Associate\'s first name</string>
+    <string name="enter_fa_last_name">Please enter Field Associate\'s last name</string>
     <string name="enter_operator_first_name">Enter machine operator\'s first name</string>
     <string name="enter_operator_last_name">Enter operator\'s last name</string>
     <string name="fa_contact">Field Associate contact number</string>
-    <string name="enter_supervisor_contact">Enter supervisor contact number</string>
+    <string name="enter_fa_contact">Enter Field Associate\'s contact number</string>
     <string name="machine_operator_form">Operator Details</string>
     <string name="order_ref_number">Order Reference Number</string>
     <string name="enter_order_ref_number">Please enter order reference number</string>
