@@ -102,7 +102,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                             Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                         toolbar_title.setText(R.string.machine_eligible_form_title);
                     } else {
-                        toolbar_title.setText(R.string.machine_mou_form);
+                        toolbar_title.setText(R.string.machine_operator_form);
                     }
                     machineId = getIntent().getStringExtra("machineId");
                     statusCode = getIntent().getIntExtra("statusCode",0);

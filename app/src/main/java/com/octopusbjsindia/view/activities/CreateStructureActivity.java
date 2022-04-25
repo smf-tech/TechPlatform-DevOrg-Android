@@ -55,7 +55,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     etAdministrativeApprovalNo, etAdministrativeApprovalDate,
             etTechnicalSanctionNo, etTechnicalSanctionDate, etIntervention, etAdministrativeEstimateAmount,
                     //etApproximateWorkingHours, etApproximateDieselConsumptionAmount, etApproximateDieselLiters,
-                    etApproximateEstimateQuantity, etRemark;
+                    etApproximateEstimateQuantity, etPotentialSiltQuantity, etRemark;
     private Button btSubmit;
 
     private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka,
@@ -186,6 +186,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //        etApproximateDieselConsumptionAmount = findViewById(R.id.et_approximate_diesel_consumption_amount);
 //        etApproximateDieselLiters = findViewById(R.id.et_approximate_diesel_liters);
         etApproximateEstimateQuantity = findViewById(R.id.et_approximate_estimate_quantity);
+        etPotentialSiltQuantity = findViewById(R.id.et_potential_silt_quantity);
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
 
@@ -602,7 +603,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //        }
         else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
+                    "Please, Fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
             return false;
         } else {
             structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
@@ -635,6 +636,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //            structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
 //            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
             structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
+            structureData.setPotentialSiltQuantity(etPotentialSiltQuantity.getText().toString());
 //            if (location != null) {
 //                structureData.setLat(location.getLatitude());
 //                structureData.setLog(location.getLongitude());

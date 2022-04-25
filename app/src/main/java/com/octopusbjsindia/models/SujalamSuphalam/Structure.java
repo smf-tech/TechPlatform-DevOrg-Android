@@ -81,6 +81,9 @@ public class Structure implements Serializable {
     @SerializedName("apprx_estimate_qunty")
     @Expose
     private String apprxEstimateQunty;
+    @SerializedName("potential_silt_quantity")
+    @Expose
+    private String potentialSiltQuantity;
     @SerializedName("remark")
     @Expose
     private String remark;
@@ -313,6 +316,15 @@ public class Structure implements Serializable {
 
     public void setApprxEstimateQunty(String apprxEstimateQunty) {
         this.apprxEstimateQunty = apprxEstimateQunty;
+    }
+
+
+    public String getPotentialSiltQuantity() {
+        return potentialSiltQuantity;
+    }
+
+    public void setPotentialSiltQuantity(String potentialSiltQuantity) {
+        this.potentialSiltQuantity = potentialSiltQuantity;
     }
 
     public String getRemark() {

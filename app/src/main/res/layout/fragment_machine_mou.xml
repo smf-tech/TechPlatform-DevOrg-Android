@@ -189,6 +189,18 @@
                     android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_order_ref_number"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="@string/order_ref_number"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
 <!--            <com.google.android.material.textfield.TextInputLayout-->
 <!--                style="@style/textinputstyle"-->
 <!--                android:layout_width="match_parent"-->

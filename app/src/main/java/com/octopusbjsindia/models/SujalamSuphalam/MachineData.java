@@ -50,6 +50,9 @@ public class MachineData  implements Serializable {
     @SerializedName("disel_tank_capacity")
     @Expose
     private String diselTankCapacity;
+    @SerializedName("order_ref_number")
+    @Expose
+    private String orderRefNumber;
     @SerializedName("provider_name")
     @Expose
     private String providerName;
@@ -298,6 +301,14 @@ public class MachineData  implements Serializable {
 
     public void setDiselTankCapacity(String diselTankCapacity) {
         this.diselTankCapacity = diselTankCapacity;
+    }
+
+    public String getOrderRefNumber() {
+        return orderRefNumber;
+    }
+
+    public void setOrderRefNumber(String orderRefNumber) {
+        this.orderRefNumber = orderRefNumber;
     }
 
     public String getStatus() {

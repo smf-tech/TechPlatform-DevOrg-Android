@@ -606,5 +606,8 @@
     <string name="enter_operator_last_name">Enter operator\'s last name</string>
     <string name="supervisor_contact">Supervisor contact number</string>
     <string name="enter_supervisor_contact">Enter supervisor contact number</string>
+    <string name="machine_operator_form">Operator Details</string>
+    <string name="order_ref_number">Order Reference Number</string>
+    <string name="enter_order_ref_number">Please enter order reference number</string>
 
 </resources>
