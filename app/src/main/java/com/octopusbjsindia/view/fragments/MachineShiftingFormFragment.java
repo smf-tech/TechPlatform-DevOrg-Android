@@ -285,7 +285,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     }
 
     private void showDialog() {
-        Util.showDialog(getContext(), "Sujalam Suphalam", getResources().getString(R.string.machine_stop_alert_message),
+        Util.showDialog(getContext(), "RWB", getResources().getString(R.string.machine_stop_alert_message),
                 "OK", "");
     }
 

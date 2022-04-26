@@ -357,7 +357,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
         TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
+        title.setText("Alert");
         title.setVisibility(View.VISIBLE);
 
         TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
@@ -400,7 +400,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
         TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
+        title.setText("Alert");
         title.setVisibility(View.VISIBLE);
 
         TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
@@ -528,7 +528,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
         TextView title = dialog.findViewById(R.id.tv_dialog_title);
-        title.setText("Sujalam Suphalam");
+        title.setText("Alert");
         title.setVisibility(View.VISIBLE);
 
         TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
