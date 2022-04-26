@@ -367,7 +367,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                outputUri = data.getData();
+//                outputUri = data.getData();
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
