@@ -20,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -89,7 +91,9 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         etMobile = view.findViewById(R.id.et_mobile);
         etUniqueId = view.findViewById(R.id.et_unique_id);
         etName = view.findViewById(R.id.et_name);
+        TextInputLayout lyMeetStatus = view.findViewById(R.id.ly_meet_status);
         etMeetStatus = view.findViewById(R.id.et_meet_status);
+        TextInputLayout lyVerificationStatus = view.findViewById(R.id.ly_verification_status);
         etVerificationStatus = view.findViewById(R.id.et_verification_status);
         etState = view.findViewById(R.id.et_state);
         etCountry = view.findViewById(R.id.et_country);
@@ -102,17 +106,17 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         llFilter = view.findViewById(R.id.ll_filter);
         if (((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().getSection_type().
                 equalsIgnoreCase(Constants.MatrimonyModule.MEET_USERS_SECTION)) {
-            etMeetStatus.setVisibility(View.VISIBLE);
+            lyMeetStatus.setVisibility(View.VISIBLE);
             etMeetStatus.setOnClickListener(this);
-            etVerificationStatus.setVisibility(View.VISIBLE);
+            lyVerificationStatus.setVisibility(View.VISIBLE);
             etVerificationStatus.setOnClickListener(this);
         } else {
-            etMeetStatus.setVisibility(View.GONE);
+            lyMeetStatus.setVisibility(View.GONE);
             if (((MatrimonyProfileListActivity) getActivity()).getMatrimonyUserFilterData().getSection_type().
                     equalsIgnoreCase(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION)) {
-                etVerificationStatus.setVisibility(View.GONE);
+                lyVerificationStatus.setVisibility(View.GONE);
             } else {
-                etVerificationStatus.setVisibility(View.VISIBLE);
+                lyVerificationStatus.setVisibility(View.VISIBLE);
                 etVerificationStatus.setOnClickListener(this);
             }
         }
@@ -157,26 +161,26 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     (Urls.Matrimony.GET_FILTER_MASTER_DATA_V2));
         }
 
-        etMobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int count, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
-                if (charSequence.length() == 1) {
-                    llFilter.setVisibility(View.GONE);
-                } else if (charSequence.length() == 0) {
-                    llFilter.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+//        etMobile.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int count, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
+//                if (charSequence.length() == 1) {
+//                    llFilter.setVisibility(View.GONE);
+//                } else if (charSequence.length() == 0) {
+//                    llFilter.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
     }
 
     private void setFilterData() {

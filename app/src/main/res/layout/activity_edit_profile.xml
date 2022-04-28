@@ -174,7 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="10">
+                android:weightSum="10"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_user_geo_location"
@@ -209,7 +210,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_user_address"
                 style="@style/RegistrationTextInputLayout"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_user_address"
@@ -277,7 +279,6 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText

@@ -307,6 +307,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 btnClearFilters.setVisibility(View.GONE);
+                toolbarFilter.setVisibility(View.VISIBLE);
                 //clear UserProfiles list as we are now calling getAllUserList api and will upadte
                 // same list with filtered data.
                 userProfileLists.clear();
@@ -488,9 +489,9 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == Constants.MatrimonyModule.FLAG_UPDATE_RESULT && data != null) {
 //            UserProfileList listItem = (UserProfileList) data.getSerializableExtra(Constants.Planner.MEMBER_LIST_DATA);
 //            int receivedPos = data.getIntExtra(Constants.Planner.MEMBER_LIST_COUNT, -1);
@@ -499,6 +500,5 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 //                matrimonyProfileListRecyclerAdapter.notifyItemChanged(receivedPos);
 //            }
 //        }
-
-    }
+//    }
 }

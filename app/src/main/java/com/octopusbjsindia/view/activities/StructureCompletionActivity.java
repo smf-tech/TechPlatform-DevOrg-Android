@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
@@ -66,27 +67,23 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
     private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
     final String STRUCTURE_STATUS = "StructureStatus";
-
-    ImageView selecteIV;
-    EditText etReason;
+    private ImageView selecteIV;
+    private TextInputLayout lyReason;
+    private EditText etReason;
 //    etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays, etDieselConsumedAmount,
 //            etDieselConsumedQuantity, etWorkDimension;
-
     private Uri outputUri;
     private Uri finalUri;
-
-    RelativeLayout progressBar;
-
+    private RelativeLayout progressBar;
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_COMPLETION;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
-    Map<String, String> requestData = new HashMap<>();
-    StructureData structureData;
-    int structureStatus;
-
-    String completion = "true";
-    String currentPhotoPath;
+    private Map<String, String> requestData = new HashMap<>();
+    private StructureData structureData;
+    private int structureStatus;
+    private String completion = "true";
+    private String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +97,14 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         initView();
         if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
             setTitle("Close Structure");
+            TextView tvLabel = findViewById(R.id.tv_photo_lbl);
+            tvLabel.setText("Certificate Images");
         } else {
             setTitle("Structure Completion");
         }
     }
 
     private void initView() {
-
         RadioGroup rgCompletion = findViewById(R.id.rg_completion);
 //        etSiltQantity = findViewById(R.id.et_silt_qantity);
 //        etWorkStartDate = findViewById(R.id.et_work_start_date);
@@ -115,6 +113,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 //        etDieselConsumedAmount = findViewById(R.id.et_diesel_consumed_amount);
 //        etDieselConsumedQuantity = findViewById(R.id.et_diesel_consumed_quantity);
 //        etWorkDimension = findViewById(R.id.et_work_dimension);
+        lyReason = findViewById(R.id.ly_reason);
         etReason = findViewById(R.id.et_reason);
 
         ImageView iv1 = findViewById(R.id.iv_structure1);
@@ -149,11 +148,11 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
                     switch (i) {
                         case R.id.rb_completion_yes:
-                            etReason.setVisibility(View.GONE);
+                            lyReason.setVisibility(View.GONE);
                             completion = "true";
                             break;
                         case R.id.rb_completion_no:
-                            etReason.setVisibility(View.VISIBLE);
+                            lyReason.setVisibility(View.VISIBLE);
                             completion = "false";
                             break;
                     }
@@ -271,7 +270,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 return false;
             }
         } else {
-            if (etReason.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
+            if (lyReason.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Reason.", Snackbar.LENGTH_LONG);
                 return false;

@@ -14,6 +14,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -84,29 +85,25 @@ import java.util.Objects;
 public class OperatorActivity extends AppCompatActivity implements APIDataListener,SingleSelectBottomSheet.MultiSpinnerListener, View.OnClickListener {
 
     private final String TAG = "OperatorActivity";
-
     private ImageView img_start_meter, img_end_meter, clickedImageView;
-    private TextView tv_machine_code;
+    private TextView tv_machine_code, tvVersionCode, tvDeviceName;
     private ImageView iv_jcb, toolbar_edit_action;
     private EditText et_emeter_read, et_smeter_read;
     private Button btnStartService, btnStopService;
-
     private String machine_id = "", machine_code = "", machine_status = "", structure_id = "";
-    ArrayList<String> ListHaltReasons = new ArrayList<>();
-
+    private ArrayList<String> ListHaltReasons = new ArrayList<>();
     private Uri outputUri, finalUri, startUri, stopUri;
     private String imageType;
     private String currentPhotoPath = "";
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private SingleSelectBottomSheet bottomSheetDialogFragment;
-
     private int state_start = 112;
     private int state_stop = 110;
     private int state_halt = 111;
     private RequestQueue rQueue;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    SimpleDateFormat df;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private SimpleDateFormat df;
     private String strReasonId="";
 
     @Override
@@ -121,6 +118,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         editor = preferences.edit();
         df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
+        tvVersionCode = findViewById(R.id.tv_version_code);
+        tvDeviceName = findViewById(R.id.tv_device_name);
         tv_machine_code = findViewById(R.id.tv_machine_code_new);
         et_emeter_read = findViewById(R.id.et_emeter_read);
         et_smeter_read = findViewById(R.id.et_smeter_read);
@@ -132,10 +131,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         iv_jcb = findViewById(R.id.jcb);
 
         checkDate();
+        setDeviceInfo();
 
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
         requestOptions = requestOptions.apply(RequestOptions.noTransformation());
-
 
         btnStartService.setOnClickListener(this);
         btnStopService.setOnClickListener(this);
@@ -144,12 +143,23 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         toolbar_edit_action.setOnClickListener(this);
     }
 
+    private void setDeviceInfo() {
+        try {
+            String appVersion  = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tvVersionCode.setText("Version-"+appVersion);
+            String deviceName = android.os.Build.MODEL;
+            String deviceMake = Build.MANUFACTURER;
+            tvDeviceName.setText(deviceMake+" "+deviceName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View view) {
         String msg = "";
         switch (view.getId()) {
             case R.id.buttonStartService:
-
                 if(startUri == null)
                     msg = "Please select Start meter reading photo";
                 else if(et_smeter_read.getText().toString().length() <= 0) {
@@ -177,11 +187,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                 break;
             case R.id.buttonStopService:
-
-                if(startUri == null)
+                if(stopUri == null) {
                     msg = "Please select Stop meter reading photo";
-                 else if(et_emeter_read.getText().toString().length() <= 0) {
+                } else if(et_emeter_read.getText().toString().length() <= 0) {
                     msg = "Please Enter Stop meter reading";
+                } else if(Integer.parseInt(et_emeter_read.getText().toString()) <
+                        Integer.parseInt(et_smeter_read.getText().toString())) {
+                    msg = "Stop meter reading cannot be less than Start meter reading.";
                 }
                 if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
@@ -412,7 +424,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
-
         Gson gson = new Gson();
         editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
         machine_id = operatorMachineData.getMachine_id();
@@ -522,7 +533,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         Log.d("uploadMachineLog", "URL: " + upload_URL);
         Log.d("uploadMachineLog", "Data: " + new Gson().toJson(data));
-        String imageToSend = data.getImage();
+        //String imageToSend = data.getImage();
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -588,15 +599,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
                 {
-                    if (TextUtils.isEmpty(imageToSend)) {
-                        params.put("image0", new DataPart("image0", new byte[0],
-                                "image/jpeg"));
-                    } else {
-                        drawable = new BitmapDrawable(getResources(), imageToSend);
+//                    if (TextUtils.isEmpty(imageToSend)) {
+//                        params.put("image0", new DataPart("image0", new byte[0],
+//                                "image/jpeg"));
+//                    } else {
 
+                        //drawable = new BitmapDrawable(getResources(), imageToSend);
+                        drawable = new BitmapDrawable(getResources(), imageHashmap.get("image"));
                         params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
                                 "image/jpeg"));
-                    }
+                    //}
                 }
                 return params;
             }

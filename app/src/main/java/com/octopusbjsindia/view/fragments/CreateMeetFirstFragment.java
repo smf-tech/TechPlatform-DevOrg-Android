@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -84,6 +85,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             selectedCountryId, selectedStateId, selectedCityId;
     private EditText edtMeetName, edtMeetVenue, etMeetWebLink, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo ,etNote;
+    private TextInputLayout lyRegAmt, lyPaymentInfo;
     private SimpleRangeView rangeView;
     private RadioGroup rgPaidFree, rgOnlinePayment;
     private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
@@ -149,6 +151,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         edtMeetRegStartDate.setOnClickListener(this);
         edtMeetRegEndDate = view.findViewById(R.id.edt_meet_reg_end_date);
         edtMeetRegEndDate.setOnClickListener(this);
+        lyRegAmt = view.findViewById(R.id.ly_reg_amt);
         edtRegAmt = view.findViewById(R.id.edt_reg_amt);
         rgPaidFree = view.findViewById(R.id.rg_paid_free);
         rgPaidFree.setOnCheckedChangeListener(this);
@@ -163,6 +166,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         etMaritalStatus = view.findViewById(R.id.etMaritalStatus);
         tvCriteria = view.findViewById(R.id.tvCriteria);
         lyCriteria = view.findViewById(R.id.lyCriteria);
+        lyPaymentInfo = view.findViewById(R.id.ly_payment_info);
         etPaymentInfo = view.findViewById(R.id.etPaymentInfo);
         etNote = view.findViewById(R.id.etNote);
 
@@ -834,28 +838,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             case R.id.rb_free:
                 isRegPaid = false;
                 isPaidFreeRGChecked = 1;
-                edtRegAmt.setVisibility(View.GONE);
+                lyRegAmt.setVisibility(View.GONE);
                 rgOnlinePayment.setVisibility(View.GONE);
-                etPaymentInfo.setVisibility(View.GONE);
+                lyPaymentInfo.setVisibility(View.GONE);
                 edtRegAmt.setText("");
                 isOnlinePaymentAllowed = false;
                 break;
             case R.id.rb_paid:
                 isRegPaid = true;
                 isPaidFreeRGChecked = 2;
-                edtRegAmt.setVisibility(View.VISIBLE);
+                lyRegAmt.setVisibility(View.VISIBLE);
                 rgOnlinePayment.setVisibility(View.VISIBLE);
-                etPaymentInfo.setVisibility(View.VISIBLE);
+                lyPaymentInfo.setVisibility(View.VISIBLE);
                 break;
             case R.id.rb_online_no:
                 isOnlinePaymentAllowed = false;
                 isOnlinePaymentRGChecked = 2;
-                etPaymentInfo.setVisibility(View.VISIBLE);
+                lyPaymentInfo.setVisibility(View.VISIBLE);
                 break;
             case R.id.rb_online_yes:
                 isOnlinePaymentAllowed = true;
                 isOnlinePaymentRGChecked = 1;
-                etPaymentInfo.setVisibility(View.GONE);
+                lyPaymentInfo.setVisibility(View.GONE);
                 break;
         }
     }

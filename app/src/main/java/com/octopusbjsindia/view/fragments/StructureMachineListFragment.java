@@ -740,7 +740,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void populateMachineData(String requestID, MachineListAPIResponse machineListData) {
-
         ssMachineListData.clear();
         filteredMachineListData.clear();
         if (machineListData != null) {
@@ -762,7 +761,6 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         showNoDataMessage();
     }
-
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
 

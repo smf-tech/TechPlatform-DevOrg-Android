@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MachineData  implements Serializable {
+public class MachineData implements Serializable {
 
     @SerializedName("_id")
     @Expose
@@ -52,7 +52,7 @@ public class MachineData  implements Serializable {
     private String diselTankCapacity;
     @SerializedName("order_ref_number")
     @Expose
-    private String orderRefNumber;
+    private String order_ref_number;
     @SerializedName("provider_name")
     @Expose
     private String providerName;
@@ -303,12 +303,12 @@ public class MachineData  implements Serializable {
         this.diselTankCapacity = diselTankCapacity;
     }
 
-    public String getOrderRefNumber() {
-        return orderRefNumber;
+    public String getOrder_ref_number() {
+        return order_ref_number;
     }
 
-    public void setOrderRefNumber(String orderRefNumber) {
-        this.orderRefNumber = orderRefNumber;
+    public void setOrder_ref_number(String order_ref_number) {
+        this.order_ref_number = order_ref_number;
     }
 
     public String getStatus() {

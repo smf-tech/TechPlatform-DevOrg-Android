@@ -263,7 +263,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getChasisNo());
         etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getExcavationCapacity());
         etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
-        etOrderRefNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOrderRefNumber());
+        etOrderRefNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOrder_ref_number());
         //etProviderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderName());
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderContactNumber());
     }
@@ -444,8 +444,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 (etExcavationCapacity.getText().toString().trim());
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
                 (etDieselCapacity.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOrderRefNumber
-                (etOrderRefNumber.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOrder_ref_number(
+                (etOrderRefNumber.getText().toString().trim()));
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderName(
 //                (etProviderName.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(

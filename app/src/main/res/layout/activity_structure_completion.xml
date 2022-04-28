@@ -55,9 +55,11 @@
             <!-- not Completion Reason-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:id="@+id/ly_reason"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_reason"
@@ -66,8 +68,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Reason"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapWords"
-                    android:visibility="gone"/>
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
 

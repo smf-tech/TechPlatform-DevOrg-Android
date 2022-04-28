@@ -349,6 +349,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
+                        android:id="@+id/ly_reg_amt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
@@ -404,6 +405,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/textinputstyle"
+                        android:id="@+id/ly_payment_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"

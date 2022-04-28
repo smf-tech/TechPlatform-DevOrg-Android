@@ -37,6 +37,7 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -86,8 +87,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private EditText etUserOrganization;
     private EditText etUserProject;
     private EditText etUserRole;
+    private TextInputLayout lyUserCountry;
     private EditText etUserCountry;
+    private TextInputLayout lyUserState;
     private EditText etUserState;
+    private TextInputLayout lyUserDistrict, lyUserCity, lyUserTaluka, lyUserCluster, lyGrampanchayt,
+            lyUserVillage, lyUserSchool, lyUserCenter;
     private EditText etUserDistrict, etUserCity, etUserTaluka, etUserCluster, etGrampanchayt,
             etUserVillage, etUserSchool, etUserCenter;
     private ImageView imgUserProfilePic;
@@ -260,26 +265,38 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         });
         etUserRole = findViewById(R.id.etUserRole);
+
+        lyUserCountry = findViewById(R.id.input_user_country);
         etUserCountry = findViewById(R.id.etUserCountry);
+        lyUserState = findViewById(R.id.input_user_state);
         etUserState = findViewById(R.id.etUserState);
+        lyUserDistrict = findViewById(R.id.input_user_district);
         etUserDistrict = findViewById(R.id.etUserDistrict);
+        lyUserCity = findViewById(R.id.input_user_city);
         etUserCity = findViewById(R.id.etUserCity);
+        lyUserTaluka = findViewById(R.id.input_user_taluka);
         etUserTaluka = findViewById(R.id.etUserTaluka);
+        lyUserCluster = findViewById(R.id.input_user_cluster);
         etUserCluster = findViewById(R.id.etUserCluster);
+        lyGrampanchayt = findViewById(R.id.input_grampanchayt);
         etGrampanchayt = findViewById(R.id.etGrampanchayt);
+        lyUserVillage = findViewById(R.id.input_user_village);
         etUserVillage = findViewById(R.id.etUserVillage);
+        lyUserSchool = findViewById(R.id.input_user_school);
         etUserSchool = findViewById(R.id.etUserSchool);
+        lyUserCenter = findViewById(R.id.input_user_center);
         etUserCenter = findViewById(R.id.etUserCenter);
+
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
 
         hideJurisdictionLevel();
         setListeners();
 
-        if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
-            findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
-            findViewById(R.id.input_user_address).setVisibility(View.GONE);
-        }
+//        if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
+//            findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
+//            findViewById(R.id.input_user_address).setVisibility(View.GONE);
+//        }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -394,7 +411,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         UserLocation userLocation = userInfo.getUserLocation();
         if (userLocation.getCountryId() != null && userLocation.getCountryId().size() > 0) {
-            etUserCountry.setVisibility(View.VISIBLE);
+            lyUserCountry.setVisibility(View.VISIBLE);
             selectedCountries.clear();
             String countryNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCountryId() != null
@@ -414,7 +431,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
-            etUserState.setVisibility(View.VISIBLE);
+            lyUserState.setVisibility(View.VISIBLE);
             selectedStates.clear();
             String stateNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getStateId() != null
@@ -433,7 +450,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
-            etUserDistrict.setVisibility(View.VISIBLE);
+            lyUserDistrict.setVisibility(View.VISIBLE);
             selectedDistricts.clear();
             String districtNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().
@@ -452,7 +469,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getCityIds() != null && userLocation.getCityIds().size() > 0) {
-            etUserCity.setVisibility(View.VISIBLE);
+            lyUserCity.setVisibility(View.VISIBLE);
             selectedCities.clear();
             String cityNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCityIds() != null
@@ -472,7 +489,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
-            etUserTaluka.setVisibility(View.VISIBLE);
+            lyUserTaluka.setVisibility(View.VISIBLE);
             selectedTalukas.clear();
             String talukaNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getTalukaIds() != null
@@ -492,7 +509,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
-            etUserVillage.setVisibility(View.VISIBLE);
+            lyUserVillage.setVisibility(View.VISIBLE);
             selectedVillages.clear();
             String villageNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getVillageIds() != null
@@ -511,7 +528,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
-            etUserCluster.setVisibility(View.VISIBLE);
+            lyUserCluster.setVisibility(View.VISIBLE);
             selectedClusters.clear();
             String clusterNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getClusterIds() != null
@@ -530,7 +547,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getGranpanchayatIds() != null && userLocation.getGranpanchayatIds().size() > 0) {
-            etGrampanchayt.setVisibility(View.VISIBLE);
+            lyGrampanchayt.setVisibility(View.VISIBLE);
             selectedClusters.clear();
             String panchaytNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getGranpanchayatIds() != null
@@ -549,7 +566,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getSchoolIds() != null && userLocation.getSchoolIds().size() > 0) {
-            etUserSchool.setVisibility(View.VISIBLE);
+            lyUserSchool.setVisibility(View.VISIBLE);
             selectedSchools.clear();
             String schoolNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getSchoolIds() != null
@@ -568,7 +585,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
 
         if (userLocation.getLearningCenterIds() != null && userLocation.getLearningCenterIds().size() > 0) {
-            etUserCenter.setVisibility(View.VISIBLE);
+            lyUserCenter.setVisibility(View.VISIBLE);
             selectedCenter.clear();
             String schoolNames = "";
             if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getLearningCenterIds() != null
@@ -727,7 +744,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     } else {
-                        if (etUserCountry.getVisibility() == View.VISIBLE) {
+                        if (lyUserCountry.getVisibility() == View.VISIBLE) {
                             Toast.makeText(this, getString(R.string.msg_select_country), Toast.LENGTH_LONG).show();
                         } else {
 //                            profilePresenter.getProfileLocationData("",
@@ -864,7 +881,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 ViewGroup.LayoutParams.MATCH_PARENT);
                     }
                 } else {
-                    if (etUserCity.getVisibility() == View.VISIBLE) {
+                    if (lyUserCity.getVisibility() == View.VISIBLE) {
                         if (selectedCities != null && selectedCities.size() > 0 &&
                                 !TextUtils.isEmpty(selectedCities.get(0).getId())) {
                             String selectedCityIds = "";
@@ -889,7 +906,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         } else {
                             Toast.makeText(this, getString(R.string.msg_select_city), Toast.LENGTH_LONG).show();
                         }
-                    } else if (etUserDistrict.getVisibility() == View.VISIBLE) {
+                    } else if (lyUserDistrict.getVisibility() == View.VISIBLE) {
                         if (selectedDistricts != null && selectedDistricts.size() > 0 &&
                                 !TextUtils.isEmpty(selectedDistricts.get(0).getId())) {
                             String selectedDistrictIds = "";
@@ -940,7 +957,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 ViewGroup.LayoutParams.MATCH_PARENT);
                     }
                 } else {
-                    if (etUserCluster.getVisibility() == View.VISIBLE) {
+                    if (lyUserCluster.getVisibility() == View.VISIBLE) {
                         if (selectedClusters != null && selectedClusters.size() > 0 &&
                                 !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
                             String selectedClusterIds = "";
@@ -965,7 +982,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         } else {
                             Toast.makeText(this, getString(R.string.msg_select_cluster), Toast.LENGTH_LONG).show();
                         }
-                    } else if (etGrampanchayt.getVisibility() == View.VISIBLE) {
+                    } else if (lyGrampanchayt.getVisibility() == View.VISIBLE) {
                         if (selectedPanchayat != null && selectedPanchayat.size() > 0 &&
                                 !TextUtils.isEmpty(selectedPanchayat.get(0).getId())) {
                             String selectedPanchayatIds = "";
@@ -989,7 +1006,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         } else {
                             Toast.makeText(this, getString(R.string.msg_select_panchyt), Toast.LENGTH_LONG).show();
                         }
-                    } else if (etUserTaluka.getVisibility() == View.VISIBLE) {
+                    } else if (lyUserTaluka.getVisibility() == View.VISIBLE) {
                         if (selectedTalukas != null && selectedTalukas.size() > 0 &&
                                 !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
                             String selectedTalukaIds = "";
@@ -1428,35 +1445,35 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             msg = getString(R.string.msg_select_project);
         } else if (selectedRoles == null || selectedRoles.size() == 0) {
             msg = getString(R.string.msg_select_role);
-        } else if ((etUserCountry.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCountry.getVisibility() == View.VISIBLE) &&
                 (selectedCountries == null || selectedCountries.size() == 0)) {
             msg = getString(R.string.msg_select_country);
-        } else if ((etUserState.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserState.getVisibility() == View.VISIBLE) &&
                 (selectedStates == null || selectedStates.size() == 0)) {
             msg = getString(R.string.msg_select_state);
-        } else if ((etUserDistrict.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserDistrict.getVisibility() == View.VISIBLE) &&
                 (selectedDistricts == null || selectedDistricts.size() == 0)) {
             msg = getString(R.string.msg_select_district);
-        } else if ((etUserCity.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCity.getVisibility() == View.VISIBLE) &&
                 (selectedCities == null || selectedCities.size() == 0)) {
             msg = getString(R.string.msg_select_city);
-        } else if ((etUserTaluka.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserTaluka.getVisibility() == View.VISIBLE) &&
                 (selectedTalukas == null || selectedTalukas.size() == 0)) {
             msg = getString(R.string.msg_select_taluka);
-        } else if ((etUserCluster.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCluster.getVisibility() == View.VISIBLE) &&
                 (selectedClusters == null || selectedClusters.size() == 0)) {
             msg = getString(R.string.msg_select_cluster);
-        } else if ((etGrampanchayt.getVisibility() == View.VISIBLE) &&
+        } else if ((lyGrampanchayt.getVisibility() == View.VISIBLE) &&
                 (selectedPanchayat == null || selectedPanchayat.size() == 0)) {
             msg = getString(R.string.msg_select_panchyt);
-        } else if ((etUserVillage.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserVillage.getVisibility() == View.VISIBLE) &&
                 (selectedVillages == null || selectedVillages.size() == 0)) {
             msg = getString(R.string.msg_select_village);
-        } else if ((etUserSchool.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserSchool.getVisibility() == View.VISIBLE) &&
                 (selectedSchools == null || selectedSchools.size() == 0)) {
             msg = getString(R.string.msg_select_school);
-        } else if ((etUserCenter.getVisibility() == View.VISIBLE) &&
-                (etUserCenter == null || selectedCenter.size() == 0)) {
+        } else if ((lyUserCenter.getVisibility() == View.VISIBLE) &&
+                (selectedCenter == null || selectedCenter.size() == 0)) {
             msg = getString(R.string.msg_select_center);
         }
 
@@ -1616,34 +1633,34 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void hideJurisdictionLevel() {
-        etUserCountry.setVisibility(View.GONE);
+        lyUserCountry.setVisibility(View.GONE);
         selectedCountries.clear();
 
-        etUserState.setVisibility(View.GONE);
+        lyUserState.setVisibility(View.GONE);
         selectedStates.clear();
 
-        etUserDistrict.setVisibility(View.GONE);
+        lyUserDistrict.setVisibility(View.GONE);
         selectedDistricts.clear();
 
-        etUserCity.setVisibility(View.GONE);
+        lyUserCity.setVisibility(View.GONE);
         selectedCities.clear();
 
-        etUserTaluka.setVisibility(View.GONE);
+        lyUserTaluka.setVisibility(View.GONE);
         selectedTalukas.clear();
 
-        etUserCluster.setVisibility(View.GONE);
+        lyUserCluster.setVisibility(View.GONE);
         selectedClusters.clear();
 
-        etGrampanchayt.setVisibility(View.GONE);
+        lyGrampanchayt.setVisibility(View.GONE);
         selectedPanchayat.clear();
 
-        etUserVillage.setVisibility(View.GONE);
+        lyUserVillage.setVisibility(View.GONE);
         selectedVillages.clear();
 
-        etUserSchool.setVisibility(View.GONE);
+        lyUserSchool.setVisibility(View.GONE);
         selectedSchools.clear();
 
-        etUserCenter.setVisibility(View.GONE);
+        lyUserCenter.setVisibility(View.GONE);
         selectedCenter.clear();
     }
 
@@ -1763,51 +1780,51 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private void setJurisdictionLevel(String level) {
         switch (level) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
-                etUserCountry.setVisibility(View.VISIBLE);
+                lyUserCountry.setVisibility(View.VISIBLE);
                 selectedCountries.clear();
                 break;
 
             case Constants.JurisdictionLevelName.STATE_LEVEL:
-                etUserState.setVisibility(View.VISIBLE);
+                lyUserState.setVisibility(View.VISIBLE);
                 selectedStates.clear();
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-                etUserDistrict.setVisibility(View.VISIBLE);
+                lyUserDistrict.setVisibility(View.VISIBLE);
                 selectedDistricts.clear();
                 break;
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
-                etUserCity.setVisibility(View.VISIBLE);
+                lyUserCity.setVisibility(View.VISIBLE);
                 selectedCities.clear();
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
-                etUserTaluka.setVisibility(View.VISIBLE);
+                lyUserTaluka.setVisibility(View.VISIBLE);
                 selectedTalukas.clear();
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
-                etUserVillage.setVisibility(View.VISIBLE);
+                lyUserVillage.setVisibility(View.VISIBLE);
                 selectedVillages.clear();
                 break;
 
             case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
-                etUserCluster.setVisibility(View.VISIBLE);
+                lyUserCluster.setVisibility(View.VISIBLE);
                 selectedClusters.clear();
                 break;
 
             case Constants.JurisdictionLevelName.GRAM_PANCHAYAT:
-                etGrampanchayt.setVisibility(View.VISIBLE);
+                lyGrampanchayt.setVisibility(View.VISIBLE);
                 selectedPanchayat.clear();
                 break;
 
             case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
-                etUserSchool.setVisibility(View.VISIBLE);
+                lyUserSchool.setVisibility(View.VISIBLE);
                 selectedSchools.clear();
                 break;
             case Constants.JurisdictionLevelName.LEARNING_CENTER:
-                etUserCenter.setVisibility(View.VISIBLE);
+                lyUserCenter.setVisibility(View.VISIBLE);
                 selectedCenter.clear();
                 break;
         }
@@ -2224,7 +2241,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedCountries != null && selectedCountries.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserState.getVisibility() == View.VISIBLE) {
+                    if (lyUserState.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedCountryIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
@@ -2289,7 +2306,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             etUserState.setText(selectedStateNames);
 
             if (selectedStates != null && selectedStates.size() > 0) {
-                if (etUserCity.getVisibility() == View.VISIBLE) {
+                if (lyUserCity.getVisibility() == View.VISIBLE) {
                     if (Util.isConnected(this)) {
 //                        profilePresenter.getProfileLocationData(selectedStateIds,
 //                                jurisdictionId,
@@ -2302,7 +2319,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 selectedProjects.get(0).getId(), selectedRole.getId());
                     }
                 }
-                if (etUserDistrict.getVisibility() == View.VISIBLE) {
+                if (lyUserDistrict.getVisibility() == View.VISIBLE) {
                     if (Util.isConnected(this)) {
 //                        profilePresenter.getProfileLocationData(selectedStateIds,
 //                                jurisdictionId,
@@ -2364,7 +2381,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             etUserCity.setText(selectedCityNames);
 
             if (Util.isConnected(this)) {
-                if (etUserTaluka.getVisibility() == View.VISIBLE) {
+                if (lyUserTaluka.getVisibility() == View.VISIBLE) {
 //                    profilePresenter.getProfileLocationData(selectedCityIds,
 //                            jurisdictionId,
 //                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
@@ -2424,7 +2441,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             etUserDistrict.setText(selectedDistrictNames);
 
             if (Util.isConnected(this)) {
-                if (etUserTaluka.getVisibility() == View.VISIBLE) {
+                if (lyUserTaluka.getVisibility() == View.VISIBLE) {
                     //                    profilePresenter.getProfileLocationData(selectedDistrictIds,
                     //                            jurisdictionId,
                     //                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
@@ -2480,7 +2497,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedTalukas != null && selectedTalukas.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserCluster.getVisibility() == View.VISIBLE) {
+                    if (lyUserCluster.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedTalukaIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
@@ -2490,7 +2507,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 jurisdictionId,
                                 Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
-                    } else if (etGrampanchayt.getVisibility() == View.VISIBLE) {
+                    } else if (lyGrampanchayt.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedTalukaIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
@@ -2500,7 +2517,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                                 jurisdictionId,
                                 Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
                                 selectedProjects.get(0).getId(), selectedRole.getId());
-                    } else if (etUserVillage.getVisibility() == View.VISIBLE) {
+                    } else if (lyUserVillage.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedTalukaIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
@@ -2551,7 +2568,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedClusters != null && selectedClusters.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserVillage.getVisibility() == View.VISIBLE) {
+                    if (lyUserVillage.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedClusterIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
@@ -2601,7 +2618,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedPanchayat != null && selectedPanchayat.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserVillage.getVisibility() == View.VISIBLE) {
+                    if (lyUserVillage.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedPanchayatIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
@@ -2649,7 +2666,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedVillages != null && selectedVillages.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserSchool.getVisibility() == View.VISIBLE) {
+                    if (lyUserSchool.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedVillageIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
@@ -2690,7 +2707,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             if (selectedCenter != null && selectedCenter.size() > 0) {
                 if (Util.isConnected(this)) {
-                    if (etUserCenter.getVisibility() == View.VISIBLE) {
+                    if (lyUserCenter.getVisibility() == View.VISIBLE) {
 //                        profilePresenter.getProfileLocationData(selectedSchoolIds,
 //                                jurisdictionId,
 //                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),

@@ -96,7 +96,8 @@
                         style="@style/RegistrationEditTextLayout"
                         android:hint="Find by unique ID"
                         android:longClickable="false"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textAllCaps="true"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -114,20 +115,22 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
+                    android:id="@+id/ly_meet_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/et_meet_status"
                         style="@style/RegistrationEditTextLayout"
                         android:hint="@string/user_meet_status"
                         android:longClickable="false"
-                        android:focusable="false" />
+                        android:focusable="false"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
+                    android:id="@+id/ly_verification_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
