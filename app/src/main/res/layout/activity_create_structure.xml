@@ -414,7 +414,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_liters"
                     style="@style/RegistrationEditTextLayout"
@@ -430,7 +431,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_consumption_amount"
                     style="@style/RegistrationEditTextLayout"

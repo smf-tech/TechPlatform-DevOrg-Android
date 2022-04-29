@@ -277,12 +277,6 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_filtertype:
-                //onBackPressed();
-                break;
-            case R.id.img_filter_image:
-
-                break;
             case R.id.toolbar_back_action1:
                 getActivity().finish();
                 break;
@@ -323,6 +317,10 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
                 } else if (toOpen.equals("AllUserList")) {
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
+                }  else if (toOpen.equals("BlockedUsers")) {
+                    matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.BLOCKED_USER_SECTION);
+                } else if (toOpen.equals("BangUsers")) {
+                    matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.BANGED_USER_SECTION);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
                 userProfileListsFiltered.clear();

@@ -170,13 +170,14 @@ public class SplashActivity extends AppCompatActivity {
 //                            {
 //                                {
                             String currentVersion = appConfigResponseModel.getAppConfigResponse().getAppUpdate().getOctopusAppVersion();
+                            Log.d("CurrentLiveVersion","Current Live Version : "+currentVersion);
                             String appVersion = "";
                             try {
                                 appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                                Log.d("ThisBuildVersion","This Build Version : "+currentVersion);
                             } catch (PackageManager.NameNotFoundException e) {
                                 e.printStackTrace();
                             }
-
 
                             float appV = 0, currentV = 0;
                             if (appVersion != null && appVersion.length() != 0)
@@ -207,8 +208,6 @@ public class SplashActivity extends AppCompatActivity {
 
         Dialog dialog;
         Button btnSubmit, btn_cancel;
-        TextView edt_reason;
-        Activity activity = context;
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -216,7 +215,6 @@ public class SplashActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
 
-        edt_reason = dialog.findViewById(R.id.tv_reason);
         btn_cancel = dialog.findViewById(R.id.btn_cancel);
         btnSubmit = dialog.findViewById(R.id.btn_submit);
         if (pos == 1) {

@@ -331,10 +331,14 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         Constants.READ_PHONE_STORAGE);
             } else {
-                deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                deviceId = Settings.Secure.getString(getActivity().getApplicationContext().
+                        getContentResolver(), Settings.Secure.ANDROID_ID);
+                Log.d("Android","Android ID : "+deviceId);
             }
         } else {
-            deviceId = Settings.Secure.getString(getActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(getActivity().getApplicationContext().
+                    getContentResolver(), Settings.Secure.ANDROID_ID);
+            Log.d("Android","Android ID : "+deviceId);
         }
     }
 
