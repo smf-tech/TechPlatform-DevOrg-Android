@@ -1,7 +1,6 @@
 package com.octopusbjsindia.view.fragments;
 
 import android.annotation.SuppressLint;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
@@ -130,6 +129,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (getArguments() != null) {
             processId = getArguments().getString(Constants.PM.PROCESS_ID);
             mIsInEditMode = getArguments().getBoolean(Constants.PM.EDIT_MODE, false);
+
             String formId = getArguments().getString(Constants.PM.FORM_ID);
             FormData formData = DatabaseManager.getDBInstance(getActivity()).getFormSchema(formId);
 
@@ -158,11 +158,8 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     } else {
                         if (Util.isConnected(getContext()) && !mIsPartiallySaved && !TextUtils.isEmpty(processId)) {
                             String url;
-                            if (formModel.getData() != null && formModel.getData().getMicroService() != null
-                                    && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
-                                    && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
-                                url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
-                                        formModel.getData().getMicroService().getRoute());
+                            if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
+                                url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
 
                                 formPresenter.getFormResults(url);
                             }
@@ -474,12 +471,9 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             } else {
                 if (Util.isConnected(getContext())) {
                     String url;
-                    if (formModel.getData() != null && formModel.getData().getMicroService() != null
-                            && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
-                            && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+                    if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
 
-                        url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
-                                formModel.getData().getMicroService().getRoute());
+                        url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
 
                         formPresenter.getFormResults(url);
                     }
@@ -702,11 +696,14 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                         formPresenter.setMatrixDynamicValuesMap(formComponentCreator.getMatrixDynamicValuesMap());
 
                         String url = null;
-                        if (formModel.getData() != null && formModel.getData().getMicroService() != null
-                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
-                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
-                            url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
-                                    formModel.getData().getMicroService().getRoute());
+//                        if (formModel.getData() != null && formModel.getData().getMicroService() != null
+//                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getBaseUrl())
+//                                && !TextUtils.isEmpty(formModel.getData().getMicroService().getRoute())) {
+//                            url = getResources().getString(R.string.form_field_mandatory, formModel.getData().getMicroService().getBaseUrl(),
+//                                    formModel.getData().getMicroService().getRoute());
+//                        }
+                        if (formModel.getData() != null && formModel.getData().getApi_url() != null) {
+                            url = formModel.getData().getApi_url() + "/" + formModel.getData().getId();
                         }
 
                         if (mIsInEditMode && !mIsPartiallySaved) {
@@ -1074,7 +1071,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
+                    + "/Octopus/Image/picture.jpg";
 
             File imageFile = new File(imageFilePath);
             outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()

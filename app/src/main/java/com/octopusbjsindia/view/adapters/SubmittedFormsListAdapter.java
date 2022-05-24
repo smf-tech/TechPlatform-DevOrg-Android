@@ -13,7 +13,7 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.FormActivity;
+import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,8 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
     //private ArrayList<String> processStatus;
     private HashMap<String, String> processSyncStatusHashmap;
 
-    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map, HashMap<String, String> processSyncStatusHashmap) {
+    public SubmittedFormsListAdapter(final Context context, final Map<String, List<ProcessData>> map,
+                                     HashMap<String, String> processSyncStatusHashmap) {
         this.mContext = context;
         this.mMap = map;
         this.processSyncStatusHashmap = processSyncStatusHashmap;
@@ -48,7 +49,6 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
         if (formResults != null) {
             return formResults.size();
         }
-
         return 0;
     }
 
@@ -112,10 +112,16 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
-                             final boolean isLastChild, final View convertView, final ViewGroup parent) {
+                             final boolean isLastChild, View view, final ViewGroup parent) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
-                parent, false);
+//        View view = LayoutInflater.from(mContext).inflate(R.layout.row_dashboard_pending_forms_card_view,
+//                parent, false);
+
+        if (view == null) {
+            LayoutInflater infalInflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = infalInflater.inflate(R.layout.row_dashboard_pending_forms_card_view, null);
+        }
 
         ArrayList<String> list = new ArrayList<>(mMap.keySet());
         String cat = list.get(groupPosition);
@@ -132,6 +138,22 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
                 ((TextView) view.findViewById(R.id.txt_dashboard_pending_form_created_at))
                         .setText(Util.getDateTimeFromTimestamp(data.getMicroservice().getUpdatedAt()));
             }
+
+            ((TextView) view.findViewById(R.id.txt_status)).setText(data.getFormApprovalStatus().
+                    substring(0, 1).toUpperCase() + data.getFormApprovalStatus().substring(1));
+
+            (view.findViewById(R.id.txt_rejection_reason)).setVisibility(View.GONE);
+
+            if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.PENDING_STATUS)) {
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.yellow));
+            } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.APPROVED_STATUS)) {
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.green));
+            } else if (data.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.REJECTED_STATUS)) {
+                (view.findViewById(R.id.txt_rejection_reason)).setVisibility(View.VISIBLE);
+                ((TextView) view.findViewById(R.id.txt_rejection_reason))
+                        .setText("Rejection reason : " + data.getFormRejectionReason());
+                ((TextView) view.findViewById(R.id.txt_status)).setTextColor(mContext.getResources().getColor(R.color.red));
+            }
         }
 
         final ProcessData finalFormResult = data;
@@ -142,22 +164,23 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
                     final String formID = finalFormResult.getId();
                     final String processID = finalFormResult.getMicroservice().getId();
 
-                    Intent intent = new Intent(mContext, FormActivity.class);
-                    intent.putExtra(Constants.PM.PROCESS_ID, formID);
-                    intent.putExtra(Constants.PM.FORM_ID, processID);
-                    intent.putExtra(Constants.PM.EDIT_MODE, true);
-                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+//                    Intent intent = new Intent(mContext, FormActivity.class);
+//                    intent.putExtra(Constants.PM.PROCESS_ID, formID);
+//                    intent.putExtra(Constants.PM.FORM_ID, processID);
+//                    intent.putExtra(Constants.PM.EDIT_MODE, true);
+//                    intent.putExtra(Constants.PM.PARTIAL_FORM, false);
 
-//                    if (cat.equals(mContext.getString(R.string.syncing_pending))) {
+                    Intent intent = new Intent(mContext, FormDisplayActivity.class);
+                    intent.putExtra(Constants.PM.PROCESS_ID, processID);
+                    intent.putExtra(Constants.PM.FORM_ID, formID);
+                    //intent.putExtra(Constants.PM.EDIT_MODE, true);
+                    //intent.putExtra(Constants.PM.PARTIAL_FORM, false);
+
+//                    if(finalData.getFormApprovalStatus()!=null && finalData.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
 //                        intent.putExtra(Constants.PM.FORM_ID, formID);
 //                        intent.putExtra(Constants.PM.PROCESS_ID, processID);
 //                        intent.putExtra(Constants.PM.PARTIAL_FORM, true);
 //                    }
-                    if(finalData.getFormApprovalStatus()!=null && finalData.getFormApprovalStatus().equalsIgnoreCase(Constants.PM.UNSYNC_STATUS)){
-                        intent.putExtra(Constants.PM.FORM_ID, formID);
-                        intent.putExtra(Constants.PM.PROCESS_ID, processID);
-                        intent.putExtra(Constants.PM.PARTIAL_FORM, true);
-                    }
                     mContext.startActivity(intent);
                 }
             } else {

@@ -6,15 +6,13 @@ import com.google.gson.annotations.SerializedName;
 @SuppressWarnings("unused")
 public class JurisdictionType {
 
+
     @SerializedName("_id")
     @Expose
     private String id;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("role_code")
-    @Expose
-    private int roleCode;
 
     public String getId() {
         return id;
@@ -32,11 +30,4 @@ public class JurisdictionType {
         this.name = name;
     }
 
-    public int getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(int roleCode) {
-        this.roleCode = roleCode;
-    }
 }

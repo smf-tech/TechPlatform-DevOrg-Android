@@ -5,12 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +16,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
@@ -46,7 +45,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
     private MatrimonyMeetFragmentPresenter matrimonyMeetFragmentPresenter;
     MatrimonyMeet meetData;
     PopupMenu popup;
-    private MatrimonyFragment matrimonyFragment;
+    private MatrimonyMeetDetailFragment matrimonyFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,15 +97,6 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
                 if(meetData.getIs_published()){
                     popup.getMenu().findItem(R.id.action_delete).setVisible(false);
                 }
-                //if(meetData.getBadgeFanlize()){
-                /*if(meetData.getBadgeFanlize() != null && meetData.getBadgeFanlize()) {
-                    *//*popup.getMenu().findItem(R.id.action_allocate_badge).setVisible(false);
-                    popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);*//*
-                    popup.getMenu().findItem(R.id.action_delete).setVisible(false);
-                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(true);
-                }else {
-                    popup.getMenu().findItem(R.id.action_gen_booklet).setVisible(false);
-                }*/
 
                 if (meetData.getRegistrationSchedule().getRegEndDateTime() <= Util.getCurrentTimeStamp())
                 {
@@ -147,7 +137,7 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
             if(status == 200){
                 popup.getMenu().findItem(R.id.action_finalise_badge).setVisible(false);
                 meetData.setBadgeFanlize(true);
-                MatrimonyFragment.getInstance().updateBadgeStatus(true);
+                MatrimonyMeetDetailFragment.getInstance().updateBadgeStatus(true);
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_ARCHIVE)){
@@ -159,13 +149,13 @@ public class MatrimonyMeetFragment extends Fragment implements PopupMenu.OnMenuI
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)){
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
-                MatrimonyFragment.getInstance().updateMeetList();
+//                MatrimonyMeetDetailFragment.getInstance().updateMeetList();
             }
         }
         if(requestId.equals(MatrimonyMeetFragmentPresenter.MEET_ALLOCATE_BADGES)){
             if(status == 200){
                 //matrimonyMeetList.get(currentPosition).setIs_published(true);
-                MatrimonyFragment.getInstance().updateBadgeStatus(false);
+                MatrimonyMeetDetailFragment.getInstance().updateBadgeStatus(false);
             }
         }
     }

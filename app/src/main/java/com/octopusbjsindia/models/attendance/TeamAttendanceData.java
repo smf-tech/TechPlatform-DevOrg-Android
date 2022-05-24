@@ -5,9 +5,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class TeamAttendanceData {
 
+    @SerializedName("user_id")
+    @Expose
+    private String user_id;
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("date")
+    @Expose
+    private String date;
     @SerializedName("role_name")
     @Expose
     private String roleName;
@@ -24,12 +30,29 @@ public class TeamAttendanceData {
     @Expose
     private CheckIn checkOut = null;
 
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getRoleName() {

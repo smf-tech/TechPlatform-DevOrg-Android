@@ -47,6 +47,8 @@ public class HomeRequestCall {
         final String getModulesUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Home.GET_MODULES, user.getOrgId(), user.getRoleIds());
 
+        Log.d(TAG, "getHomeModules - URL: " + getModulesUrl);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getModulesUrl,

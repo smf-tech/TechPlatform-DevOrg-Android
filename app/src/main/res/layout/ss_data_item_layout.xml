@@ -152,18 +152,18 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_ownedby_label"
+                        android:id="@+id/tv_location_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Owned By"
+                        android:text="Taluka"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
-                        android:id="@+id/tv_owner_value"
+                        android:id="@+id/tv_taluka"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_ownedby_label"
+                        android:layout_below="@+id/tv_location_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_13" />
@@ -207,18 +207,18 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_provider_label"
+                        android:id="@+id/tv_supervisor_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Provider Name"
+                        android:text="Machine Field Associate"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
-                        android:id="@+id/tv_provider"
+                        android:id="@+id/tv_supervisor_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_provider_label"
+                        android:layout_below="@+id/tv_supervisor_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_13" />
@@ -235,11 +235,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Provider Contact Number"
+                        android:text="Field Associate Contact Number"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
-                        android:id="@+id/tv_contact"
+                        android:id="@+id/tv_supervisor_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_contact_label"
@@ -264,18 +264,18 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_location_label"
+                        android:id="@+id/tv_operator_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Taluka"
+                        android:text="Operator"
                         android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
-                        android:id="@+id/tv_location"
+                        android:id="@+id/tv_operator_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_location_label"
+                        android:layout_below="@+id/tv_operator_label"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_13" />
@@ -293,8 +293,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:text="Operator Contact Number"
-                        android:textSize="@dimen/dimen_10dp"
-                        />
+                        android:textSize="@dimen/dimen_10dp" />
 
                     <TextView
                         android:id="@+id/tv_operator_contact"
@@ -304,8 +303,7 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_13"
-                        android:visibility="gone" />
+                        android:textSize="@dimen/text_size_13" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -315,32 +313,6 @@
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/tv_operator_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Operator Name"
-                        android:textSize="@dimen/dimen_10dp"
-                         />
-
-                    <TextView
-                        android:id="@+id/tv_operator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_operator_label"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_13"
-                        android:visibility="gone" />
-
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -364,6 +336,32 @@
                         android:fontFamily="@font/opensans_semibold"
                         android:textSize="@dimen/text_size_13"
                         android:visibility="visible" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_dummy_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text=""
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_dummy_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_dummy_label"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:textSize="@dimen/text_size_13"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -402,16 +400,28 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_status_lebal"
                         android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:fontFamily="@font/opensans_semibold"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_15" />
+                        android:textSize="@dimen/text_size_13"/>
+
+                    <ImageView
+                        android:id="@+id/iv_signoff"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="@dimen/dimen_20dp"
+                        android:layout_toRightOf="@+id/tv_status_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_signoff"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/ly_action"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/bt_action"
@@ -425,7 +435,47 @@
                         android:visibility="invisible" />
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ly_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
+                    <TextView
+                        android:id="@+id/tv_reason_lebal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:text="Halt Reason"
+                        android:textSize="@dimen/dimen_10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_reason"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_reason_lebal"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:textColor="@color/tab_select"
+                        android:textSize="@dimen/text_size_13"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_03dp"
+                android:orientation="horizontal">
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1">-->
+                <!--</RelativeLayout>-->
             </LinearLayout>
 
         </LinearLayout>

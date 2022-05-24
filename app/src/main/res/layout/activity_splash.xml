@@ -6,27 +6,59 @@
     android:gravity="center_horizontal"
     tools:context=".view.activities.SplashActivity">
 
+<!--    <ImageView-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:id="@+id/img_logo"-->
+<!--        android:layout_marginTop="@dimen/dimen_150dp"-->
+<!--        android:contentDescription="@string/content_description"-->
+<!--        android:src="@drawable/ic_splash" />-->
+
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_150dp"
+        android:id="@+id/img_logo"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_100dp"
         android:contentDescription="@string/content_description"
         android:src="@drawable/ic_splash" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/dimen_40dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
         android:orientation="horizontal">
-        <TextView
+        <com.octopusbjsindia.view.customs.TextViewSemiBold
             android:id="@+id/powered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/powered_by_logo"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_14"
+            android:layout_centerHorizontal="true"
+            android:text="Powered By"/>
+        <ImageView
+            android:layout_width="@dimen/dimen_100dp"
+            android:src="@drawable/ic_splash"
+            android:id="@+id/powered_by_logo"
+            android:layout_above="@+id/tv_app_version"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_height="@dimen/dimen_50dp"/>
+
+        <TextView
+            android:id="@+id/tv_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/text_size_10"
             android:text="Version"/>
+
         <TextView
             android:id="@+id/by"
             android:layout_width="wrap_content"

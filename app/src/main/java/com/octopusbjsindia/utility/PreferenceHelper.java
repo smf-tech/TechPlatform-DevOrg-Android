@@ -8,6 +8,7 @@ public class PreferenceHelper {
 
     public static final String PREFER_NAME = "Platform";
     public static final String TOKEN = "Token";
+    public static final String TOKEN_KEY = "TokenKey";
     public static final String IS_PENDING = "IS_PENDING";
     public static final String NON_PENDING = "NON_PENDING";
 

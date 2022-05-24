@@ -22,6 +22,26 @@
             android:layout_margin="@dimen/dimen_05dp"
             android:orientation="vertical">
 
+            <!--state-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/state"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <!--district-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
@@ -75,7 +95,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_host_village_population"
                     style="@style/RegistrationEditTextLayout"
@@ -91,7 +112,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_catchment_village"
                     style="@style/RegistrationEditTextLayout"
@@ -106,7 +128,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_catchment_village_population"
                     style="@style/RegistrationEditTextLayout"
@@ -205,7 +228,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_sub_structure_owner_department"
                     style="@style/RegistrationEditTextLayout"
@@ -221,7 +245,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_nota_detail"
@@ -231,6 +256,22 @@
                     android:hint="NOTA Details"
                     android:imeOptions="actionNext"
                     android:inputType="text|textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Intervention-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_intervention"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Intervention"
+                    android:imeOptions="actionNext"
+                    android:focusable="false"
+                    android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!--Structure Category / Type-->
             <com.google.android.material.textfield.TextInputLayout
@@ -264,6 +305,40 @@
                     android:focusable="false"
                     android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Technical Sanction Number-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_technical_sanction_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Technical Sanction Number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="10"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--Technical Sanction Date-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_technical_sanction_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Technical Sanction Date"
+                    android:imeOptions="actionNext"
+                    android:inputType="text|textCapWords"
+                    android:focusable="false"
+                    android:longClickable="false"/>
+
             <!--Administrative Approval Number-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
@@ -299,54 +374,7 @@
                     android:focusable="false"
                     android:longClickable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <!--Technical Sanction Number-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_margin="@dimen/dimen_03dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_technical_sanction_no"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Technical Sanction Number"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="10"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <!--Technical Sanction Date-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_margin="@dimen/dimen_03dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_technical_sanction_date"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Technical Sanction Date"
-                    android:imeOptions="actionNext"
-                    android:inputType="text|textCapWords"
-                    android:focusable="false"
-                    android:longClickable="false"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <!--Intervention-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
-                android:layout_margin="@dimen/dimen_03dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_intervention"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select Intervention"
-                    android:imeOptions="actionNext"
-                    android:focusable="false"
-                    android:longClickable="false"/>
+
             </com.google.android.material.textfield.TextInputLayout>
             <!--Administrative Estimate  Amount-->
             <com.google.android.material.textfield.TextInputLayout
@@ -369,7 +397,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_working_hours"
                     style="@style/RegistrationEditTextLayout"
@@ -385,7 +414,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_liters"
                     style="@style/RegistrationEditTextLayout"
@@ -401,7 +431,8 @@
                 style="@style/textinputstyle"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_diesel_consumption_amount"
                     style="@style/RegistrationEditTextLayout"
@@ -423,11 +454,29 @@
                     style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Approximate Estimate Quantity (CuM)"
+                    android:hint="Sanctioned Silt Quantity (CuM)"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="5"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Approximate potential silt excavation capacity of structure -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_potential_silt_quantity"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Approximate Potential Silt Quantity (CuM)"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="6"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!--Remark-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"

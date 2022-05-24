@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.SiltTransportationRecordActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/dimen_10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_date"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Slit transportation date"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/ic_cal_event"
+                        android:inputType="date"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_mobile"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Beneficiary mobile number"
+                        android:inputType="number"
+                        android:maxLength="10"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_fname"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Beneficiary first name"
+                        android:inputType="textCapWords"
+                        android:maxLength="100"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_lname"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Beneficiary last name"
+                        android:inputType="textCapWords"
+                        android:maxLength="100"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_survey_no"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Survey number"
+                        android:inputType="text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_area"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Field Area(Hectors)"
+                        android:inputType="numberDecimal"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="@dimen/dimen_10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_state"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/state"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_district"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/district"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="@dimen/dimen_10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_taluka"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/taluka"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dimen_05dp">
+
+                        <EditText
+                            android:id="@+id/et_village"
+                            style="@style/RegistrationEditTextLayout"
+                            android:hint="@string/village"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_b_type"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Select Beneficiary type" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_trolley_trips_count"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Tractor trips count"
+                        android:inputType="number"
+                        android:maxLength="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/et_tipper_trips_count"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Tipper trips count"
+                        android:inputType="number"
+                        android:maxLength="3"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    style="@style/textinputstyle"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
+
+                <!--                    <EditText-->
+                <!--                        android:id="@+id/et_total_silt"-->
+                <!--                        style="@style/RegistrationEditTextLayout"-->
+                <!--                        android:hint="Total silt"/>-->
+                <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    style="@style/textinputstyle"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
+
+                <!--                    <EditText-->
+                <!--                        android:id="@+id/et_farmers_count"-->
+                <!--                        style="@style/RegistrationEditTextLayout"-->
+                <!--                        android:hint="Number of farmers"-->
+                <!--                        android:inputType="number"/>-->
+                <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    style="@style/textinputstyle"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
+
+                <!--                    <EditText-->
+                <!--                        android:id="@+id/et_beneficiaries_count"-->
+                <!--                        style="@style/RegistrationEditTextLayout"-->
+                <!--                        android:hint="Number of beneficiaries"-->
+                <!--                        android:inputType="number"/>-->
+                <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/img_register_one"-->
+                <!--                    android:layout_width="150dp"-->
+                <!--                    android:layout_height="150dp"-->
+                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+                <!--                    android:src="@drawable/ic_add_img"-->
+                <!--                    android:layout_gravity="center_horizontal"-->
+                <!--                    android:visibility="gone"/>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Image"-->
+                <!--                    android:layout_gravity="center_horizontal"-->
+                <!--                    android:visibility="gone"/>-->
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/img_register_two"-->
+                <!--                    android:layout_width="150dp"-->
+                <!--                    android:layout_height="150dp"-->
+                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+                <!--                    android:src="@drawable/ic_add_img"-->
+                <!--                    android:layout_gravity="center_horizontal"/>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Image 2 of Register"-->
+                <!--                    android:layout_gravity="center_horizontal"/>-->
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/img_register_three"-->
+                <!--                    android:layout_width="150dp"-->
+                <!--                    android:layout_height="150dp"-->
+                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+                <!--                    android:src="@drawable/ic_add_img"-->
+                <!--                    android:layout_gravity="center_horizontal"/>-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Image 3 of Register"-->
+                <!--                    android:layout_gravity="center_horizontal"/>-->
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/submit" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

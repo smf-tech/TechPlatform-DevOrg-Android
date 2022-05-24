@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Default overflow menu items -->
+    <item
+        android:id="@+id/action_machine_worklog"
+        android:title="Show Machine Work Record"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_add_trainer"
+        android:title="Add Trainer"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_register_trainer"
+        android:title="Register As Trainer"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_add_beneficiary"
+        android:title="Add Beneficiary"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_register_beneficiary"
+        android:title="Register To Workshop"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_pretest_trainer"
+        android:title="Take Pre Test"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_pre_feedback"
+        android:title="Pre Feedback"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_post_feedback"
+        android:title="Post Feedback"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_organizer_feedback"
+        android:title="Organizer Feedback"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_parent_feedback"
+        android:title="Parent Feedback"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_cancel_batch"
+        android:title="Cancel Event"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_edit_batch"
+        android:title="Edit Event"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_complete_batch"
+        android:title="Complete Event"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_add_new_batch"
+        android:title="Add Batch"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_add_new_workshop"
+        android:title="Add Workshop"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_take_mocktest"
+        android:title="Take Mocktest"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_batch_supportdoc"
+        android:title="Add Support Doc"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_workshop_supportdoc"
+        android:title="Add Support Doc"
+        android:visible="false"/>
+</menu>

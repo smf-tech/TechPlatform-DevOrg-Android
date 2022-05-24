@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activities.OperatorActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/operator_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:paddingEnd="5dp"
+            app:titleTextColor="@android:color/white">
+
+            <LinearLayout
+                android:id="@+id/toolbar_action_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/toolbar_back_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:contentDescription="@string/content_description"
+                    android:background="@drawable/ic_back_white" />
+                <ImageView
+                    android:id="@+id/toolbar_back_action_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:contentDescription="@string/content_description"
+                    android:background="@drawable/ic_back_white" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="247dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/opensans"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="@string/machine_meter_reading"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/toolbar_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:contentDescription="@string/content_description"
+                    android:padding="@dimen/dimen_10dp"
+                    android:tint="@color/white"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_sync"
+                    />
+
+                <ImageView
+                    android:id="@+id/toolbar_edit_action"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:contentDescription="@string/content_description"
+                    android:padding="@dimen/dimen_07dp"
+                    android:src="@drawable/ic_popup_menu"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/ly_device_details"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+        <TextView
+            android:id="@+id/tv_version_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:textColor="@color/colorPrimary" />
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:textColor="@color/colorPrimary" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_machine_code_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_device_details"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:gravity="center_horizontal"
+        android:text="Machine Code"
+        android:textColor="@color/colorPrimary" />
+
+    <ImageView
+        android:id="@+id/jcb"
+        android:layout_width="@dimen/dimen_145dp"
+        android:layout_height="@dimen/dimen_130dp"
+        android:layout_below="@+id/tv_machine_code_new"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/jcb_stopped"
+        android:visibility="visible" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jcb"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:gravity="center_horizontal"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_start_meter"
+                    android:layout_width="@dimen/dimen_200dp"
+                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    android:longClickable="false"
+                    android:padding="@dimen/dimen_01dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_start_meter_reading" />
+
+                <ImageView
+                    android:id="@+id/img_end_meter"
+                    android:layout_width="@dimen/dimen_200dp"
+                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    android:longClickable="false"
+                    android:padding="@dimen/dimen_01dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_end_meter_reading" />
+                <!--android:drawableEnd="@drawable/ic_cal_event"-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <!--Start Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_start_date1"
+                    style="@style/textinputstyleoperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
+
+                    <EditText
+                        android:id="@+id/et_smeter_read"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="Start reading*"
+                        android:inputType="number|numberDecimal"
+                        android:maxLength="8" />
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--End Date-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tly_end_date1"
+                    style="@style/textinputstyleoperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHintoperator">
+
+                    <EditText
+                        android:id="@+id/et_emeter_read"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="End reading*"
+                        android:inputType="number|numberDecimal"
+                        android:maxLength="8" />
+                    <!--android:drawableEnd="@drawable/ic_cal_event"-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonStartService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+
+                        android:text="@string/meter_start"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:id="@+id/buttonStopService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/meter_stop"
+                        android:textColor="#fff" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

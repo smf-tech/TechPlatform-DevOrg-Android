@@ -6,6 +6,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class StateResponse {
+
     @SerializedName("status")
     private String status;
 

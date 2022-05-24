@@ -1,235 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_matrimony_fragment"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/lighter_grey">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.MatrimonyFragment">
 
     <ScrollView
-        android:id="@+id/sv_matrimony_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/rl_meetLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-    <RelativeLayout
-        android:id="@+id/rl_meet_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="245dp">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/meet_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />
-
-        <TextView
-            android:id="@+id/tv_meet_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="170dp"
-            android:gravity="center_horizontal"
-            android:text="BJS Matrimonial Meet"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16"
-            android:fontFamily="@font/opensans_semibold"/>
-
-        <LinearLayout
-            android:id="@+id/button_lay"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_60dp"
-            android:layout_marginStart="@dimen/dimen_40dp"
-            android:layout_below="@+id/tv_meet_title"
-            android:layout_marginEnd="@dimen/dimen_40dp"
-            android:orientation="horizontal"
-            android:weightSum="10">
-
-            <TextView
-                android:id="@+id/btn_view_profiles"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:padding="@dimen/dimen_10dp"
-                android:background="@drawable/bg_white_border_grey"
-                android:text="@string/view_profiles_btn_label"
-                android:textAllCaps="false"
-                android:fontFamily="@font/opensans_regular"/>
-
-            <TextView
-                android:id="@+id/btn_register_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:padding="@dimen/dimen_10dp"
-                android:background="@drawable/bg_white_border_grey"
-                android:text="@string/register_profile_btn_label"
-                android:textAllCaps="false"
-                android:fontFamily="@font/opensans_regular"/>
-
-        </LinearLayout>
-    </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/rl_meet_view_pager">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
+                android:id="@+id/ly_upcoming_meets"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:background="@color/white"
-                app:cardCornerRadius="@dimen/dimen_10dp">
+                android:layout_height="@dimen/dimen_277dp">
 
-                <LinearLayout
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_upcoming_meets"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_277dp" />
+
+                <TextView
+                    android:id="@+id/tv_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!--new user -->
+            <RelativeLayout
+                android:id="@+id/ly_main_newuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/ly_newuser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:orientation="vertical">
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp">
 
                     <TextView
-                        android:id="@+id/tv_meet_date"
+                        android:id="@+id/tv_newuser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:drawableStart="@drawable/ic_clock_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textStyle="bold" />
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="Recently Joined" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:layout_toStartOf="@+id/tv_see_all_newuser"
+                        android:layout_toEndOf="@+id/tv_newuser" />
+                    <!--                android:background="@color/grey_light" />-->
 
                     <TextView
-                        android:id="@+id/tv_meet_time"
+                        android:id="@+id/tv_see_all_newuser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_20dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_regular" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dimen_02dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/bg_circular_border_gray_30"
+                        android:fontFamily="@font/opensans_regular"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_05dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_05dp"
+                        android:text="See All" />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_new_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ly_newuser" />
+
+                <RelativeLayout
+                    android:id="@+id/ly_no_newuser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_235dp"
+                    android:layout_below="@+id/ly_newuser"
+                    android:layout_margin="@dimen/dimen_05dp">
 
                     <TextView
-                        android:id="@+id/tv_meet_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableStart="@drawable/ic_venue_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold" />
-
-                    <TextView
-                        android:id="@+id/tv_meet_venue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_20dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_regular" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableLeft="@drawable/ic_contacts_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:gravity="center"
-                        android:text="Contacts" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_meet_organizer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableStart="@drawable/ic_rupees_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:text="Registration Fees" />
-
-                    <TextView
-                        android:id="@+id/tv_reg_amt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:drawableStart="@drawable/ic_rupee_black"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_regular" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableStart="@drawable/ic_calendar_icon"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:text="Registration Period" />
-
-                    <TextView
-                        android:id="@+id/tv_reg_period"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_regular" />
-
-                    <TextView
-                        android:id="@+id/tv_badges_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_15dp"
-                        android:drawableStart="@drawable/ic_badge_icon"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:background="@color/white"
-                app:cardCornerRadius="@dimen/dimen_10dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_meet_analytics"
+                        android:id="@+id/tv_no_newuser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp">
-                    </androidx.recyclerview.widget.RecyclerView>
+                        android:fontFamily="@font/opensans_regular"
+                        android:gravity="center"
+                        android:text="No profiles found."
+                        android:textSize="@dimen/text_size_12" />
+                    <!--                android:textColor="@color/grey_light"-->
 
-                <!--</LinearLayout>-->
 
-            </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/iv_newuser"
+                        android:layout_width="@dimen/dimen_235dp"
+                        android:layout_height="@dimen/dimen_235dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_no_data" />
+                </RelativeLayout>
+            </RelativeLayout>
 
-            <Button
-                android:id="@+id/btn_publish_saved_meet"
+            <!--varification pending -->
+            <RelativeLayout
+                android:id="@+id/ly_main_varification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/RegistrationEditTextLayout"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/meet_publish" />
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginBottom="@dimen/dimen_10dp">
 
+                <RelativeLayout
+                    android:id="@+id/ly_varification_pending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp">
+
+                    <TextView
+                        android:id="@+id/tv_varification_pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/opensans_bold"
+                        android:text="Verification Pending" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dimen_05dp"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:layout_toStartOf="@+id/tv_see_all_varification_pending"
+                        android:layout_toEndOf="@+id/tv_varification_pending" />
+                    <!--                android:background="@color/grey_light" />-->
+
+                    <TextView
+                        android:id="@+id/tv_see_all_varification_pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="@dimen/dimen_02dp"
+                        android:fontFamily="@font/opensans_regular"
+                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_05dp"
+                        android:paddingEnd="@dimen/dimen_10dp"
+                        android:paddingBottom="@dimen/dimen_05dp"
+                        android:background="@drawable/bg_circular_border_gray_30"
+                        android:text="See All" />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_varification_pending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ly_varification_pending" />
+
+                <RelativeLayout
+                    android:id="@+id/ly_no_varification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_235dp"
+                    android:layout_below="@+id/ly_varification_pending"
+                    android:layout_margin="@dimen/dimen_05dp">
+
+                    <TextView
+                        android:id="@+id/tv_no_varification_pending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_regular"
+                        android:gravity="center"
+                        android:text="No profiles found."
+                        android:textSize="@dimen/text_size_12" />
+                    <!--                android:textColor="@color/grey_light"-->
+
+
+                    <ImageView
+                        android:id="@+id/iv_varification_pending"
+                        android:layout_width="@dimen/dimen_235dp"
+                        android:layout_height="@dimen/dimen_235dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_no_data" />
+                </RelativeLayout>
+            </RelativeLayout>
         </LinearLayout>
-        </RelativeLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fbMyTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="My Team"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_create_meet"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_create_meet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Create Meet"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_create_meet"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_all_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="All Candidates"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_all_candidate"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_blocked_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Blocked User"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_blockd_user"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_bang_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Banned User"
+        android:textSize="@dimen/text_size_10"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_banned"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
     <RelativeLayout
-        android:id="@+id/profile_act_progress_bar"
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -244,46 +309,6 @@
             android:layout_centerInParent="true"
             android:clickable="true"
             android:focusable="true"
-            android:indeterminateOnly="true"
-            android:visibility="gone" />
+            android:indeterminateOnly="true" />
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_create_meet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:rotation="45"
-        app:tint="@color/white"
-        android:src="@drawable/ic_close"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_no_meet"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_no_saved"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_regular"
-            android:gravity="center"
-            android:text="No matrimony meet available. Please click on + icon at the bottom right corner to create new meet."
-            android:textColor="@color/light_grey"
-            android:textSize="@dimen/text_size_12" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_235dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/empty_matrimony_back" />
-    </RelativeLayout>
-
 </RelativeLayout>

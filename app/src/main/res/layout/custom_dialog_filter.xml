@@ -34,35 +34,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
-               <!-- <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/start_date_lbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/view_startdate"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="Start Date"
-                        android:textColor="@color/dark_grey"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_title_14" />
-
-                    <com.platform.view.customs.TextViewSemiBold
-                        android:id="@+id/tv_startdate"
-                        android:layout_below="@+id/start_date_lbl"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_calender_sml"
-                        android:drawablePadding="@dimen/dimen_05dp"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="Start Date"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_title_14" />
-                </RelativeLayout>-->
 
                 <!--Start Date-->
                 <com.google.android.material.textfield.TextInputLayout
@@ -89,35 +60,6 @@
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 
-               <!-- <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <com.platform.view.customs.TextViewRegular
-                        android:id="@+id/end_date_lbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/view_enddate"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="End Date"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:fontFamily="@font/opensans_semibold"/>
-
-                    <com.platform.view.customs.TextViewSemiBold
-                        android:id="@+id/tv_enddate"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/end_date_lbl"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="End Date"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/text_size_title_14"
-                        android:drawableStart="@drawable/ic_calender_sml"
-                        android:drawablePadding="@dimen/dimen_05dp"/>
-                </RelativeLayout>-->
-
                 <!--End Date-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tly_end_date"
@@ -137,18 +79,44 @@
                         android:clickable="false"
                         android:drawableEnd="@drawable/ic_cal_event"
                         android:focusable="false"
-                        android:hint="@string/task_start_date"
+                        android:hint="@string/task_end_date"
                         android:inputType="date"
                         android:longClickable="false"/>
                     <!--android:drawableEnd="@drawable/ic_cal_event"-->
                 </com.google.android.material.textfield.TextInputLayout>
 
-
             </LinearLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Name" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-
-
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etState"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:hint="State" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_filterchoice"

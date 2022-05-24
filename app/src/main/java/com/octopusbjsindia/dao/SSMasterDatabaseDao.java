@@ -12,14 +12,11 @@ import java.util.List;
 
 @Dao
 public interface SSMasterDatabaseDao {
-    @Query("SELECT * FROM SSMasterDatabase")
-    List<SSMasterDatabase> getSSMasterData();
+    @Query("SELECT * FROM SSMasterDatabase where type = :type")
+    List<SSMasterDatabase> getSSMasterData(String type);
 
     @Query("DELETE FROM SSMasterDatabase")
     void deleteSSMasterData();
-
-    @Query("DELETE FROM NotificationData WHERE id  = :id")
-    void deleteNotification(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SSMasterDatabase ssMasterDatabase);

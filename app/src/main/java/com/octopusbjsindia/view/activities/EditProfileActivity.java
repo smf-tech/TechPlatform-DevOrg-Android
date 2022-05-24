@@ -1,8 +1,6 @@
 package com.octopusbjsindia.view.activities;
 
-import android.Manifest;
 import android.app.Activity;
-
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -13,68 +11,72 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.APIDataListener;
+import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.listeners.ProfileTaskListener;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.models.profile.Jurisdiction;
-import com.octopusbjsindia.models.profile.JurisdictionLocation;
+import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.profile.Organization;
 import com.octopusbjsindia.models.profile.OrganizationProject;
 import com.octopusbjsindia.models.profile.OrganizationRole;
+import com.octopusbjsindia.models.profile.Project;
 import com.octopusbjsindia.models.profile.UserLocation;
+import com.octopusbjsindia.models.user.RoleData;
 import com.octopusbjsindia.models.user.UserInfo;
-import com.octopusbjsindia.presenter.ProfileActivityPresenter;
+import com.octopusbjsindia.presenter.EditProfileActivityPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.widgets.MultiSelectSpinner;
+import com.octopusbjsindia.view.adapters.DropDownSelectionAdapter;
+import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 public class EditProfileActivity extends BaseActivity implements ProfileTaskListener,
-        View.OnClickListener, AdapterView.OnItemSelectedListener,
-        MultiSelectSpinner.MultiSpinnerListener {
-
-    private BottomSheetDialogFragment bottomSheetDialogFragment;
+        View.OnClickListener, APIDataListener, CustomSpinnerListener {
 
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
@@ -83,38 +85,38 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private EditText etUserMobileNumber;
     private EditText etUserEmailId;
     private EditText etUserOrganization;
-
-    private Spinner spOrganization;
-    private Spinner spCountry;
-    private Spinner spState;
-    private Spinner spRole;
-    private Spinner spStructure;
-    private Spinner spProject;
-
-    //private MultiSelectSpinner spProject;
-    private MultiSelectSpinner spDistrict;
-    private MultiSelectSpinner spCity;
-    private MultiSelectSpinner spTaluka;
-    private MultiSelectSpinner spCluster;
-    private MultiSelectSpinner spVillage;
-
+    private EditText etUserProject;
+    private EditText etUserRole;
+    private TextInputLayout lyUserCountry;
+    private EditText etUserCountry;
+    private TextInputLayout lyUserState;
+    private EditText etUserState;
+    private TextInputLayout lyUserDistrict, lyUserCity, lyUserTaluka, lyUserCluster, lyGrampanchayt,
+            lyUserVillage, lyUserSchool, lyUserCenter;
+    private EditText etUserDistrict, etUserCity, etUserTaluka, etUserCluster, etGrampanchayt,
+            etUserVillage, etUserSchool, etUserCenter;
     private ImageView imgUserProfilePic;
+    RadioGroup radioGroup;
     private ImageView backButton;
     private Button btnProfileSubmit;
-
     private String userGender = Constants.Login.MALE;
+    private ArrayList<CustomSpinnerObject> selectionOrgList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> selectionProjectList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> selectionRolesList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerCountries = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerStates = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerDistricts = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerCities = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerTalukas = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerVillages = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerClusters = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerPanchayt = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerSchools = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> customSpinnerCenter = new ArrayList<>();
 
     private List<Organization> organizations = new ArrayList<>();
     private List<OrganizationProject> projects = new ArrayList<>();
     private List<OrganizationRole> roles = new ArrayList<>();
-
-    private List<JurisdictionType> countries = new ArrayList<>();
-    private List<JurisdictionType> states = new ArrayList<>();
-    private List<JurisdictionType> districts = new ArrayList<>();
-    private List<JurisdictionType> cities = new ArrayList<>();
-    private List<JurisdictionType> talukas = new ArrayList<>();
-    private List<JurisdictionType> clusters = new ArrayList<>();
-    private List<JurisdictionType> villages = new ArrayList<>();
 
     private ArrayList<JurisdictionType> selectedProjects = new ArrayList<>();
     private ArrayList<String> selectedRoles = new ArrayList<>();
@@ -125,28 +127,46 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ArrayList<JurisdictionType> selectedCities = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedTalukas = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedClusters = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedPanchayat = new ArrayList<>();
     private ArrayList<JurisdictionType> selectedVillages = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedSchools = new ArrayList<>();
+    private ArrayList<JurisdictionType> selectedCenter = new ArrayList<>();
 
+    private String selectedStateIds, selectedCityIds, selectedDistrictIds, selectedTalukaIds, selectedClusterIds,
+            selectedVillageIds;
     private Uri outputUri;
     private Uri finalUri;
-    private ProfileActivityPresenter profilePresenter;
-
-    private JurisdictionType selectedProject;
+    private EditProfileActivityPresenter profilePresenter;
     private OrganizationRole selectedRole;
     private Organization selectedOrg;
-
     private boolean mImageUploaded;
     private String mUploadedImageUrl;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private final String TAG = EditProfileActivity.class.getName();
+    private String currentPhotoPath = "";
+    private String multiLocationLevel = "";
+    private String jurisdictionId = "";
+    private boolean isRoleSelected;
+
+    private RecyclerView rvOrg;
+    private DropDownSelectionAdapter orgDropDownAdapter;
+    private final List<CustomSpinnerObject> filterOrgList = new ArrayList<>();
+    private String selectedOrgName = "";
+
+    private RecyclerView rvProject;
+    private DropDownSelectionAdapter projectDropDownAdapter;
+    private final List<CustomSpinnerObject> filterProjectList = new ArrayList<>();
+    private String selectedProjectName = "";
+    private boolean isOrgSelected = false, isProjectSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        profilePresenter = new ProfileActivityPresenter(this);
+        profilePresenter = new EditProfileActivityPresenter(this);
+
         if (getIntent().getStringExtra(Constants.Login.ACTION) == null ||
                 !getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
@@ -156,6 +176,16 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void initViews() {
+        rvOrg = findViewById(R.id.rv_org_list);
+        orgDropDownAdapter = new DropDownSelectionAdapter(filterOrgList, "Organization", this);
+        rvOrg.setLayoutManager(new LinearLayoutManager(this));
+        rvOrg.setAdapter(orgDropDownAdapter);
+
+        rvProject = findViewById(R.id.rv_project_list);
+        projectDropDownAdapter = new DropDownSelectionAdapter(filterProjectList, "Project", this);
+        rvProject.setLayoutManager(new LinearLayoutManager(this));
+        rvProject.setAdapter(projectDropDownAdapter);
+
         setActionbar(getString(R.string.registration_title));
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
@@ -166,8 +196,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         etUserBirthDate = findViewById(R.id.et_user_birth_date);
         etUserMobileNumber = findViewById(R.id.et_user_mobile_number);
         etUserEmailId = findViewById(R.id.et_user_email_id);
-
-        RadioGroup radioGroup = findViewById(R.id.user_gender_group);
+        radioGroup = findViewById(R.id.user_gender_group);
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
             switch (checkedId) {
                 case R.id.gender_male:
@@ -181,33 +210,82 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     break;
             }
         });
-
-        spOrganization = findViewById(R.id.sp_user_organization);
         etUserOrganization = findViewById(R.id.etUserOrganization);
+        etUserOrganization.addTextChangedListener(new TextWatcher() {
 
-        spProject = findViewById(R.id.sp_project);
-        //spProject.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_PROJECT);
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        spRole = findViewById(R.id.sp_role);
-        spCountry = findViewById(R.id.sp_user_country);
-        spState = findViewById(R.id.sp_user_state);
+            }
 
-        spDistrict = findViewById(R.id.sp_district);
-        spDistrict.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_DISTRICT);
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                if (cs.toString().length() > 0) {
+                    if ((!selectedOrgName.equals(cs.toString()))) {
+                        filterOrg(cs.toString());
+                    }
+                } else {
+                    rvOrg.setVisibility(View.GONE);
+                }
+            }
 
-        spCity = findViewById(R.id.sp_city);
-        spCity.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_CITY);
+            @Override
+            public void afterTextChanged(Editable s) {
 
-        spTaluka = findViewById(R.id.sp_taluka);
-        spTaluka.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_TALUKA);
+            }
+        });
+        etUserProject = findViewById(R.id.etUserProject);
+        etUserProject.addTextChangedListener(new TextWatcher() {
 
-        spCluster = findViewById(R.id.sp_cluster);
-        spCluster.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_CLUSTER);
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        spStructure = findViewById(R.id.sp_user_structure);
+            }
 
-        spVillage = findViewById(R.id.sp_village);
-        spVillage.setSpinnerName(Constants.MultiSelectSpinnerType.SPINNER_VILLAGE);
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                if (selectedOrg != null && selectedOrgName.length() > 0) {
+                    if (cs.toString().length() > 0) {
+                        if ((!selectedProjectName.equals(cs.toString()))) {
+                            filterProject(cs.toString());
+                        }
+                    } else {
+                        rvProject.setVisibility(View.GONE);
+                    }
+                } else {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select organization.",
+                            Snackbar.LENGTH_LONG);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etUserRole = findViewById(R.id.etUserRole);
+
+        lyUserCountry = findViewById(R.id.input_user_country);
+        etUserCountry = findViewById(R.id.etUserCountry);
+        lyUserState = findViewById(R.id.input_user_state);
+        etUserState = findViewById(R.id.etUserState);
+        lyUserDistrict = findViewById(R.id.input_user_district);
+        etUserDistrict = findViewById(R.id.etUserDistrict);
+        lyUserCity = findViewById(R.id.input_user_city);
+        etUserCity = findViewById(R.id.etUserCity);
+        lyUserTaluka = findViewById(R.id.input_user_taluka);
+        etUserTaluka = findViewById(R.id.etUserTaluka);
+        lyUserCluster = findViewById(R.id.input_user_cluster);
+        etUserCluster = findViewById(R.id.etUserCluster);
+        lyGrampanchayt = findViewById(R.id.input_grampanchayt);
+        etGrampanchayt = findViewById(R.id.etGrampanchayt);
+        lyUserVillage = findViewById(R.id.input_user_village);
+        etUserVillage = findViewById(R.id.etUserVillage);
+        lyUserSchool = findViewById(R.id.input_user_school);
+        etUserSchool = findViewById(R.id.etUserSchool);
+        lyUserCenter = findViewById(R.id.input_user_center);
+        etUserCenter = findViewById(R.id.etUserCenter);
 
         imgUserProfilePic = findViewById(R.id.user_profile_pic);
         btnProfileSubmit = findViewById(R.id.btn_profile_submit);
@@ -215,10 +293,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         hideJurisdictionLevel();
         setListeners();
 
-        if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
-            findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
-            findViewById(R.id.input_user_address).setVisibility(View.GONE);
-        }
+//        if (Platform.getInstance().getAppMode().equals(Constants.App.BJS_MODE)) {
+//            findViewById(R.id.user_geo_location_view).setVisibility(View.GONE);
+//            findViewById(R.id.input_user_address).setVisibility(View.GONE);
+//        }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -230,87 +308,16 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         && getIntent().getStringExtra(Constants.Login.ACTION)
                         .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
 
-                    setActionbar(getString(R.string.update_profile));
 
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    String userName = userInfo.getUserName().trim();
-                    if (userName.split(" ").length == 3) {
-                        etUserFirstName.setText(userName.split(" ")[0]);
-                        etUserMiddleName.setText(userName.split(" ")[1]);
-                        etUserLastName.setText(userName.split(" ")[2]);
-                    } else if (userName.split(" ").length == 2) {
-                        etUserFirstName.setText(userName.split(" ")[0]);
-                        etUserLastName.setText(userName.split(" ")[1]);
-                    } else if (userName.split(" ").length == 1) {
-                        etUserFirstName.setText(userName);
+                    if (Util.isConnected(this)) {
+                        profilePresenter.getOrganizations();
                     }
-
-                    etUserBirthDate.setText(Util.getLongDateInString(
-                            userInfo.getUserBirthDate(), Constants.FORM_DATE));
-                    etUserMobileNumber.setText(userInfo.getUserMobileNumber());
-                    etUserEmailId.setText(userInfo.getUserEmailId());
-
-                    if (!TextUtils.isEmpty(userInfo.getUserGender())) {
-                        if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.MALE)) {
-                            radioGroup.check(R.id.gender_male);
-                            userGender = Constants.Login.MALE;
-                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.FEMALE)) {
-                            radioGroup.check(R.id.gender_female);
-                            userGender = Constants.Login.FEMALE;
-                        } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.OTHER)) {
-                            radioGroup.check(R.id.gender_other);
-                            userGender = Constants.Login.OTHER;
-                        }
-                    }
-
-                    List<Organization> orgData = Util.getUserOrgFromPref().getData();
-                    if (orgData != null && orgData.size() > 0) {
-                        int id = 0;
-                        showOrganizations(orgData);
-
-                        for (int i = 0; i < orgData.size(); i++) {
-                            if (userInfo.getOrgId().equals(orgData.get(i).getId())) {
-                                id = i;
-                                this.selectedOrg = orgData.get(i);
-                            }
-                        }
-                        spOrganization.setSelection(id);
-                    } else {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getOrganizations();
-                        } else {
-                            List<String> org = new ArrayList<>();
-                            org.add(userInfo.getOrgName());
-                            setOrganizationData(org);
-
-                            List<Organization> orgList = new ArrayList<>();
-                            Organization orgObj = new Organization();
-                            orgObj.setId(userInfo.getOrgId());
-                            orgObj.setOrgName(userInfo.getOrgName());
-                            orgList.add(orgObj);
-                            this.organizations = orgList;
-                        }
-                    }
-                    if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
-
-                        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
-                        requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-
-
-                        Glide.with(this)
-                                .applyDefaultRequestOptions(requestOptions)
-                                .load(userInfo.getProfilePic())
-                                .into(imgUserProfilePic);
-
-                        ((TextView) findViewById(R.id.user_profile_pic_label))
-                                .setText(getString(R.string.update_profile_pic));
-                    }
+                    setEditModeUserData();
                 }
             }
         } else {
             etUserMobileNumber.setText(Util.getUserMobileFromPref());
         }
-
         etUserMobileNumber.setEnabled(false);
         etUserMobileNumber.setFocusable(false);
         etUserMobileNumber.setClickable(false);
@@ -319,17 +326,296 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private void setListeners() {
         backButton.setOnClickListener(this);
         etUserBirthDate.setOnClickListener(this);
-
-        spOrganization.setOnItemSelectedListener(this);
-        spCountry.setOnItemSelectedListener(this);
-        spState.setOnItemSelectedListener(this);
-        spProject.setOnItemSelectedListener(this);
-        spRole.setOnItemSelectedListener(this);
-        spStructure.setOnItemSelectedListener(this);
-
         imgUserProfilePic.setOnClickListener(this);
         btnProfileSubmit.setOnClickListener(this);
-        etUserOrganization.setOnClickListener(this);
+        //etUserOrganization.setOnClickListener(this);
+        //etUserProject.setOnClickListener(this);
+        etUserRole.setOnClickListener(this);
+        etUserCountry.setOnClickListener(this);
+        etUserState.setOnClickListener(this);
+        etUserDistrict.setOnClickListener(this);
+        etUserCity.setOnClickListener(this);
+        etUserTaluka.setOnClickListener(this);
+        etUserCluster.setOnClickListener(this);
+        etGrampanchayt.setOnClickListener(this);
+        etUserVillage.setOnClickListener(this);
+        etUserSchool.setOnClickListener(this);
+        etUserCenter.setOnClickListener(this);
+    }
+
+    private void setEditModeUserData() {
+        setActionbar(getString(R.string.update_profile));
+        UserInfo userInfo = Util.getUserObjectFromPref();
+        String userName = userInfo.getUserName().trim();
+
+        if (userName.split(" ").length == 3) {
+            etUserFirstName.setText(userName.split(" ")[0]);
+            etUserMiddleName.setText(userName.split(" ")[1]);
+            etUserLastName.setText(userName.split(" ")[2]);
+        } else if (userName.split(" ").length == 2) {
+            etUserFirstName.setText(userName.split(" ")[0]);
+            etUserLastName.setText(userName.split(" ")[1]);
+        } else if (userName.split(" ").length == 1) {
+            etUserFirstName.setText(userName);
+        }
+        etUserBirthDate.setText(Util.getLongDateInString(
+                userInfo.getUserBirthDate(), Constants.FORM_DATE));
+        etUserMobileNumber.setText(userInfo.getUserMobileNumber());
+        etUserEmailId.setText(userInfo.getUserEmailId());
+
+        if (!TextUtils.isEmpty(userInfo.getUserGender())) {
+            if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.MALE)) {
+                radioGroup.check(R.id.gender_male);
+                userGender = Constants.Login.MALE;
+            } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.FEMALE)) {
+                radioGroup.check(R.id.gender_female);
+                userGender = Constants.Login.FEMALE;
+            } else if (userInfo.getUserGender().equalsIgnoreCase(Constants.Login.OTHER)) {
+                radioGroup.check(R.id.gender_other);
+                userGender = Constants.Login.OTHER;
+            }
+        }
+
+        Organization orgObj = new Organization();
+        orgObj.setId(userInfo.getOrgId());
+        orgObj.setOrgName(userInfo.getOrgName());
+        orgObj.setType(userInfo.getType());
+        this.selectedOrg = orgObj;
+        selectedOrgName = selectedOrg.getOrgName();
+        etUserOrganization.setText(selectedOrgName);
+
+        JurisdictionType project = new JurisdictionType();
+        project.setId(userInfo.getProjectIds().get(0).getId());
+        project.setName(userInfo.getProjectIds().get(0).getName());
+        selectedProjects.add(project);
+
+//        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+//        customSpinnerObject.set_id(userInfo.getProjectIds().get(0).getId());
+//        customSpinnerObject.setName(userInfo.getProjectIds().get(0).getName());
+//        selectionProjectList.add(customSpinnerObject);
+
+        selectedProjectName = userInfo.getProjectIds().get(0).getName();
+        etUserProject.setText(selectedProjectName);
+
+        multiLocationLevel = userInfo.getMultipleLocationLevel().getName();
+        jurisdictionId = userInfo.getJurisdictionTypeId();
+        OrganizationRole role = new OrganizationRole();
+        role.setId(userInfo.getRoleIds());
+        role.setDisplayName(userInfo.getRoleNames());
+        Project roleProject = new Project();
+        roleProject.setJurisdictionTypeId(userInfo.getJurisdictionTypeId());
+        role.setProject(roleProject);
+        selectedRole = role;
+        selectedRoles.add(selectedRole.getId());
+        etUserRole.setText(selectedRole.getDisplayName());
+
+        UserLocation userLocation = userInfo.getUserLocation();
+        if (userLocation.getCountryId() != null && userLocation.getCountryId().size() > 0) {
+            lyUserCountry.setVisibility(View.VISIBLE);
+            selectedCountries.clear();
+            String countryNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCountryId() != null
+                    && userInfo.getUserLocation().
+                    getCountryId().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCountryId().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(i);
+                    selectedCountries.add(j);
+                    if (i == 0) {
+                        countryNames = j.getName();
+                    } else {
+                        countryNames = countryNames + "," + j.getName();
+                    }
+                }
+                etUserCountry.setText(userInfo.getUserLocation().getCountryId().get(0).getName());
+            }
+        }
+
+        if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
+            lyUserState.setVisibility(View.VISIBLE);
+            selectedStates.clear();
+            String stateNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getStateId() != null
+                    && userInfo.getUserLocation().getStateId().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getStateId().get(i);
+                    selectedStates.add(j);
+                    if (i == 0) {
+                        stateNames = j.getName();
+                    } else {
+                        stateNames = stateNames + "," + j.getName();
+                    }
+                }
+                etUserState.setText(stateNames);
+            }
+        }
+
+        if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
+            lyUserDistrict.setVisibility(View.VISIBLE);
+            selectedDistricts.clear();
+            String districtNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().
+                    getDistrictIds() != null && userInfo.getUserLocation().getDistrictIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i);
+                    selectedDistricts.add(j);
+                    if (i == 0) {
+                        districtNames = j.getName();
+                    } else {
+                        districtNames = districtNames + "," + j.getName();
+                    }
+                }
+                etUserDistrict.setText(districtNames);
+            }
+        }
+
+        if (userLocation.getCityIds() != null && userLocation.getCityIds().size() > 0) {
+            lyUserCity.setVisibility(View.VISIBLE);
+            selectedCities.clear();
+            String cityNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getCityIds() != null
+                    && userInfo.getUserLocation().
+                    getCityIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getCityIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(i);
+                    selectedCities.add(j);
+                    if (i == 0) {
+                        cityNames = j.getName();
+                    } else {
+                        cityNames = cityNames + "," + j.getName();
+                    }
+                }
+                etUserCity.setText(cityNames);
+            }
+        }
+
+        if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
+            lyUserTaluka.setVisibility(View.VISIBLE);
+            selectedTalukas.clear();
+            String talukaNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getTalukaIds() != null
+                    && userInfo.getUserLocation().
+                    getTalukaIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i);
+                    selectedTalukas.add(j);
+                    if (i == 0) {
+                        talukaNames = j.getName();
+                    } else {
+                        talukaNames = talukaNames + "," + j.getName();
+                    }
+                }
+                etUserTaluka.setText(talukaNames);
+            }
+        }
+
+        if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
+            lyUserVillage.setVisibility(View.VISIBLE);
+            selectedVillages.clear();
+            String villageNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getVillageIds() != null
+                    && userInfo.getUserLocation().getVillageIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getVillageIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(i);
+                    selectedVillages.add(j);
+                    if (i == 0) {
+                        villageNames = j.getName();
+                    } else {
+                        villageNames = villageNames + "," + j.getName();
+                    }
+                }
+                etUserVillage.setText(villageNames);
+            }
+        }
+
+        if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
+            lyUserCluster.setVisibility(View.VISIBLE);
+            selectedClusters.clear();
+            String clusterNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getClusterIds() != null
+                    && userInfo.getUserLocation().getClusterIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getClusterIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getClusterIds().get(i);
+                    selectedClusters.add(j);
+                    if (i == 0) {
+                        clusterNames = j.getName();
+                    } else {
+                        clusterNames = clusterNames + "," + j.getName();
+                    }
+                }
+                etUserCluster.setText(clusterNames);
+            }
+        }
+
+        if (userLocation.getGranpanchayatIds() != null && userLocation.getGranpanchayatIds().size() > 0) {
+            lyGrampanchayt.setVisibility(View.VISIBLE);
+            selectedClusters.clear();
+            String panchaytNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getGranpanchayatIds() != null
+                    && userInfo.getUserLocation().getGranpanchayatIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getGranpanchayatIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getGranpanchayatIds().get(i);
+                    selectedClusters.add(j);
+                    if (i == 0) {
+                        panchaytNames = j.getName();
+                    } else {
+                        panchaytNames = panchaytNames + "," + j.getName();
+                    }
+                }
+                etGrampanchayt.setText(panchaytNames);
+            }
+        }
+
+        if (userLocation.getSchoolIds() != null && userLocation.getSchoolIds().size() > 0) {
+            lyUserSchool.setVisibility(View.VISIBLE);
+            selectedSchools.clear();
+            String schoolNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getSchoolIds() != null
+                    && userInfo.getUserLocation().getSchoolIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getSchoolIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getSchoolIds().get(i);
+                    selectedSchools.add(j);
+                    if (i == 0) {
+                        schoolNames = j.getName();
+                    } else {
+                        schoolNames = schoolNames + "," + j.getName();
+                    }
+                }
+                etUserSchool.setText(schoolNames);
+            }
+        }
+
+        if (userLocation.getLearningCenterIds() != null && userLocation.getLearningCenterIds().size() > 0) {
+            lyUserCenter.setVisibility(View.VISIBLE);
+            selectedCenter.clear();
+            String schoolNames = "";
+            if (userInfo.getUserLocation() != null && userInfo.getUserLocation().getLearningCenterIds() != null
+                    && userInfo.getUserLocation().getLearningCenterIds().size() > 0) {
+                for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getLearningCenterIds().size(); i++) {
+                    JurisdictionType j = Util.getUserObjectFromPref().getUserLocation().getLearningCenterIds().get(i);
+                    selectedCenter.add(j);
+                    if (i == 0) {
+                        schoolNames = j.getName();
+                    } else {
+                        schoolNames = schoolNames + "," + j.getName();
+                    }
+                }
+                etUserCenter.setText(schoolNames);
+            }
+        }
+
+        if (!TextUtils.isEmpty(userInfo.getProfilePic())) {
+            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_user_avatar);
+            requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
+
+            Glide.with(this)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(userInfo.getProfilePic())
+                    .into(imgUserProfilePic);
+
+            ((TextView) findViewById(R.id.user_profile_pic_label))
+                    .setText(getString(R.string.update_profile_pic));
+        }
+        profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
     }
 
     @Override
@@ -338,25 +624,609 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             case R.id.toolbar_back_action:
                 onBackPressed();
                 break;
-
             case R.id.et_user_birth_date:
                 showDateDialog(EditProfileActivity.this, findViewById(R.id.et_user_birth_date));
                 break;
-
             case R.id.user_profile_pic:
                 onAddImageClick();
                 break;
-
             case R.id.btn_profile_submit:
                 if (Util.isConnected(this)) {
                     submitProfileDetails();
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }
-
                 break;
-            case R.id.etUserOrganization:
-                spOrganization.performClick();
+            case R.id.etUserRole:
+                if (selectedOrg != null && selectedProjects.size() > 0 && etUserProject.getText().toString().length() > 0) {
+                    if (selectionRolesList.size() > 0) {
+                        CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Role",
+                                selectionRolesList, false);
+                        cddProject.show();
+                        cddProject.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        if (selectedProjects != null && selectedProjects.size() > 0 &&
+                                !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
+                            profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
+                                    selectedProjects.get(0).getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_project), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } else {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select project.",
+                            Snackbar.LENGTH_LONG);
+                }
+                break;
+            case R.id.etUserCountry:
+                if (customSpinnerCountries.size() > 0) {
+                    //String level = "";
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
+                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                                "Select Country", customSpinnerCountries,
+                                true);
+                        csdCountry.show();
+                        csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                                "Select Country", customSpinnerCountries,
+                                false);
+                        csdCountry.show();
+                        csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedProjects != null && selectedProjects.size() > 0 &&
+                            !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
+//                        profilePresenter.getProfileLocationData("",
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.COUNTRY_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3("", "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.COUNTRY_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_project), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserState:
+                if (customSpinnerStates.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.STATE_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select State", customSpinnerStates,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select State", customSpinnerStates,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedCountries.size() > 0 && selectedCountries.size() > 0 &&
+                            selectedCountries.get(0).getId().length() > 0) {
+                        String selectedCountryIds = "";
+                        for (int i = 0; i < selectedCountries.size(); i++) {
+                            JurisdictionType j = selectedCountries.get(i);
+                            if (i == 0) {
+                                selectedCountryIds = j.getId();
+                            } else {
+                                selectedCountryIds = selectedCountryIds + "," + j.getId();
+                            }
+                        }
+//                        profilePresenter.getProfileLocationData(selectedCountryIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3("", "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        if (lyUserCountry.getVisibility() == View.VISIBLE) {
+                            Toast.makeText(this, getString(R.string.msg_select_country), Toast.LENGTH_LONG).show();
+                        } else {
+//                            profilePresenter.getProfileLocationData("",
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3("", "",
+                                    "", "", "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        }
+                    }
+                }
+                break;
+            case R.id.etUserCity:
+                if (customSpinnerCities.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CITY_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select City", customSpinnerCities,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select City", customSpinnerCities,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedStates != null && selectedStates.size() > 0 &&
+                            !TextUtils.isEmpty(selectedStates.get(0).getId())) {
+                        String selectedStateIds = "";
+                        for (int i = 0; i < selectedStates.size(); i++) {
+                            JurisdictionType j = selectedStates.get(i);
+                            if (i == 0) {
+                                selectedStateIds = j.getId();
+                            } else {
+                                selectedStateIds = selectedStateIds + "," + j.getId();
+                            }
+                        }
+                        this.selectedStateIds = selectedStateIds;
+//                        profilePresenter.getProfileLocationData(selectedStateIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_state), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserDistrict:
+                if (customSpinnerDistricts.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select District", customSpinnerDistricts,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select District", customSpinnerDistricts,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedStates != null && selectedStates.size() > 0 &&
+                            !TextUtils.isEmpty(selectedStates.get(0).getId())) {
+                        String selectedStateIds = "";
+                        for (int i = 0; i < selectedStates.size(); i++) {
+                            JurisdictionType j = selectedStates.get(i);
+                            if (i == 0) {
+                                selectedStateIds = j.getId();
+                            } else {
+                                selectedStateIds = selectedStateIds + "," + j.getId();
+                            }
+                        }
+                        this.selectedStateIds = selectedStateIds;
+//                        profilePresenter.getProfileLocationData(selectedStateIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_state), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserTaluka:
+                if (customSpinnerTalukas.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select Taluka", customSpinnerTalukas,
+                                true);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                                "Select Taluka", customSpinnerTalukas,
+                                false);
+                        csdState.show();
+                        csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (lyUserCity.getVisibility() == View.VISIBLE) {
+                        if (selectedCities != null && selectedCities.size() > 0 &&
+                                !TextUtils.isEmpty(selectedCities.get(0).getId())) {
+                            String selectedCityIds = "";
+                            for (int i = 0; i < selectedCities.size(); i++) {
+                                JurisdictionType j = selectedCities.get(i);
+                                if (i == 0) {
+                                    selectedCityIds = j.getId();
+                                } else {
+                                    selectedCityIds = selectedCityIds + "," + j.getId();
+                                }
+                            }
+                            this.selectedCityIds = selectedCityIds;
+//                            profilePresenter.getProfileLocationData(selectedCityIds,
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                    "", "", "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_city), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (lyUserDistrict.getVisibility() == View.VISIBLE) {
+                        if (selectedDistricts != null && selectedDistricts.size() > 0 &&
+                                !TextUtils.isEmpty(selectedDistricts.get(0).getId())) {
+                            String selectedDistrictIds = "";
+                            for (int i = 0; i < selectedDistricts.size(); i++) {
+                                JurisdictionType j = selectedDistricts.get(i);
+                                if (i == 0) {
+                                    selectedDistrictIds = j.getId();
+                                } else {
+                                    selectedDistrictIds = selectedDistrictIds + "," + j.getId();
+                                }
+                            }
+                            this.selectedDistrictIds = selectedDistrictIds;
+//                            profilePresenter.getProfileLocationData(selectedDistrictIds,
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                    "", "", "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_district), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                break;
+            case R.id.etUserVillage:
+                if (customSpinnerVillages.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
+                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                                "Select Village", customSpinnerVillages,
+                                true);
+                        csdVillage.show();
+                        csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                                "Select Village", customSpinnerVillages,
+                                false);
+                        csdVillage.show();
+                        csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (lyUserCluster.getVisibility() == View.VISIBLE) {
+                        if (selectedClusters != null && selectedClusters.size() > 0 &&
+                                !TextUtils.isEmpty(selectedClusters.get(0).getId())) {
+                            String selectedClusterIds = "";
+                            for (int i = 0; i < selectedClusters.size(); i++) {
+                                JurisdictionType j = selectedClusters.get(i);
+                                if (i == 0) {
+                                    selectedClusterIds = j.getId();
+                                } else {
+                                    selectedClusterIds = selectedClusterIds + "," + j.getId();
+                                }
+                            }
+                            this.selectedClusterIds = selectedClusterIds;
+//                            profilePresenter.getProfileLocationData(selectedClusterIds,
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                    selectedTalukaIds, selectedClusterIds, "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_cluster), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (lyGrampanchayt.getVisibility() == View.VISIBLE) {
+                        if (selectedPanchayat != null && selectedPanchayat.size() > 0 &&
+                                !TextUtils.isEmpty(selectedPanchayat.get(0).getId())) {
+                            String selectedPanchayatIds = "";
+                            for (int i = 0; i < selectedPanchayat.size(); i++) {
+                                JurisdictionType j = selectedPanchayat.get(i);
+                                if (i == 0) {
+                                    selectedPanchayatIds = j.getId();
+                                } else {
+                                    selectedPanchayatIds = selectedPanchayatIds + "," + j.getId();
+                                }
+                            }
+//                            profilePresenter.getProfileLocationData(selectedPanchayatIds,
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                    selectedTalukaIds, selectedClusterIds, "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_panchyt), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (lyUserTaluka.getVisibility() == View.VISIBLE) {
+                        if (selectedTalukas != null && selectedTalukas.size() > 0 &&
+                                !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
+                            String selectedTalukaIds = "";
+                            for (int i = 0; i < selectedTalukas.size(); i++) {
+                                JurisdictionType j = selectedTalukas.get(i);
+                                if (i == 0) {
+                                    selectedTalukaIds = j.getId();
+                                } else {
+                                    selectedTalukaIds = selectedTalukaIds + "," + j.getId();
+                                }
+                            }
+                            this.selectedTalukaIds = selectedTalukaIds;
+//                            profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                    jurisdictionId,
+//                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                            profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                    selectedTalukaIds, selectedClusterIds, "",
+                                    jurisdictionId,
+                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                    selectedProjects.get(0).getId(), selectedRole.getId());
+                        } else {
+                            Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                break;
+            case R.id.etUserCluster:
+                if (customSpinnerClusters.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Cluster", customSpinnerClusters,
+                                true);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Cluster", customSpinnerClusters,
+                                false);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedTalukas != null && selectedTalukas.size() > 0 &&
+                            !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
+                        String selectedTalukaIds = "";
+                        for (int i = 0; i < selectedTalukas.size(); i++) {
+                            JurisdictionType j = selectedTalukas.get(i);
+                            if (i == 0) {
+                                selectedTalukaIds = j.getId();
+                            } else {
+                                selectedTalukaIds = selectedTalukaIds + "," + j.getId();
+                            }
+                        }
+                        this.selectedTalukaIds = selectedTalukaIds;
+//                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etGrampanchayt:
+                if (customSpinnerPanchayt.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Gram-Panchayat", customSpinnerPanchayt,
+                                true);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                                "Select Gram-Panchayat", customSpinnerPanchayt,
+                                false);
+                        csdCluster.show();
+                        csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedTalukas != null && selectedTalukas.size() > 0 &&
+                            !TextUtils.isEmpty(selectedTalukas.get(0).getId())) {
+                        String selectedTalukaIds = "";
+                        for (int i = 0; i < selectedTalukas.size(); i++) {
+                            JurisdictionType j = selectedTalukas.get(i);
+                            if (i == 0) {
+                                selectedTalukaIds = j.getId();
+                            } else {
+                                selectedTalukaIds = selectedTalukaIds + "," + j.getId();
+                            }
+                        }
+                        this.selectedTalukaIds = selectedTalukaIds;
+//                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_taluka), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserSchool:
+                if (customSpinnerSchools.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select School", customSpinnerSchools,
+                                true);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select School", customSpinnerSchools,
+                                false);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedVillages != null && selectedVillages.size() > 0 &&
+                            !TextUtils.isEmpty(selectedVillages.get(0).getId())) {
+                        String selectedVillageIds = "";
+                        for (int i = 0; i < selectedVillages.size(); i++) {
+                            JurisdictionType j = selectedVillages.get(i);
+                            if (i == 0) {
+                                selectedVillageIds = j.getId();
+                            } else {
+                                selectedVillageIds = selectedVillageIds + "," + j.getId();
+                            }
+                        }
+//                        profilePresenter.getProfileLocationData(selectedVillageIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, selectedVillageIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case R.id.etUserCenter:
+                if (customSpinnerCenter.size() > 0) {
+                    if (isRoleSelected) {
+                        Jurisdiction jurisdiction = selectedRole.getProject().getJurisdictions().
+                                get(selectedRole.getProject().getJurisdictions().size() - 1);
+                        multiLocationLevel = jurisdiction.getLevelName();
+                    }
+                    if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select Learning Center", customSpinnerCenter,
+                                true);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    } else {
+                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                                "Select Learning Center", customSpinnerCenter,
+                                false);
+                        csdSchool.show();
+                        csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                    }
+                } else {
+                    if (selectedSchools != null && selectedSchools.size() > 0 &&
+                            !TextUtils.isEmpty(selectedSchools.get(0).getId())) {
+                        String selectedSchoolIds = "";
+                        for (int i = 0; i < selectedSchools.size(); i++) {
+                            JurisdictionType j = selectedSchools.get(i);
+                            if (i == 0) {
+                                selectedSchoolIds = j.getId();
+                            } else {
+                                selectedSchoolIds = selectedSchoolIds + "," + j.getId();
+                            }
+                        }
+//                        profilePresenter.getProfileLocationData(selectedSchoolIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, selectedVillageIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_select_village), Toast.LENGTH_LONG).show();
+                    }
+                }
                 break;
         }
     }
@@ -421,7 +1291,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             userInfo.setType(selectedOrg.getType());
             userInfo.setProjectIds(selectedProjects);
 
-            JurisdictionType role = new JurisdictionType();
+            RoleData role = new RoleData();
             role.setId(selectedRole.getId());
             userInfo.setRoleIds(role);
 
@@ -437,105 +1307,120 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             UserLocation userLocation = new UserLocation();
             ArrayList<JurisdictionType> s = new ArrayList<>();
-            for (JurisdictionType country : selectedCountries) {
-                JurisdictionType countryObj = new JurisdictionType();
-                countryObj.setId(country.getId());
-                countryObj.setName(country.getName());
-                s.add(countryObj);
+            if (selectedCountries.size() > 0) {
+                for (JurisdictionType country : selectedCountries) {
+                    JurisdictionType countryObj = new JurisdictionType();
+                    countryObj.setId(country.getId());
+                    countryObj.setName(country.getName());
+                    s.add(countryObj);
+                    //userLocation.setCountryId(s);
+                }
                 userLocation.setCountryId(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType state : selectedStates) {
-                JurisdictionType stateObj = new JurisdictionType();
-                stateObj.setId(state.getId());
-                stateObj.setName(state.getName());
-                s.add(stateObj);
+            if (selectedStates.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType state : selectedStates) {
+                    JurisdictionType stateObj = new JurisdictionType();
+                    stateObj.setId(state.getId());
+                    stateObj.setName(state.getName());
+                    s.add(stateObj);
+                }
                 userLocation.setStateId(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType district : selectedDistricts) {
-                JurisdictionType districtObj = new JurisdictionType();
-                districtObj.setId(district.getId());
-                districtObj.setName(district.getName());
-                s.add(districtObj);
+            if (selectedDistricts.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType district : selectedDistricts) {
+                    JurisdictionType districtObj = new JurisdictionType();
+                    districtObj.setId(district.getId());
+                    districtObj.setName(district.getName());
+                    s.add(districtObj);
+                }
                 userLocation.setDistrictIds(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType city : selectedCities) {
-                JurisdictionType cityObj = new JurisdictionType();
-                cityObj.setId(city.getId());
-                cityObj.setName(city.getName());
-                s.add(cityObj);
+            if (selectedCities.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType city : selectedCities) {
+                    JurisdictionType cityObj = new JurisdictionType();
+                    cityObj.setId(city.getId());
+                    cityObj.setName(city.getName());
+                    s.add(cityObj);
+                }
                 userLocation.setCityIds(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType taluka : selectedTalukas) {
-                JurisdictionType talukaObj = new JurisdictionType();
-                talukaObj.setId(taluka.getId());
-                talukaObj.setName(taluka.getName());
-                s.add(talukaObj);
+            if (selectedTalukas.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType taluka : selectedTalukas) {
+                    JurisdictionType talukaObj = new JurisdictionType();
+                    talukaObj.setId(taluka.getId());
+                    talukaObj.setName(taluka.getName());
+                    s.add(talukaObj);
+                }
                 userLocation.setTalukaIds(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType cluster : selectedClusters) {
-                JurisdictionType clusterObj = new JurisdictionType();
-                clusterObj.setId(cluster.getId());
-                clusterObj.setName(cluster.getName());
-                s.add(clusterObj);
+            if (selectedClusters.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType cluster : selectedClusters) {
+                    JurisdictionType clusterObj = new JurisdictionType();
+                    clusterObj.setId(cluster.getId());
+                    clusterObj.setName(cluster.getName());
+                    s.add(clusterObj);
+                }
                 userLocation.setClusterIds(s);
             }
 
-            s = new ArrayList<>();
-            for (JurisdictionType village : selectedVillages) {
-                JurisdictionType villageObj = new JurisdictionType();
-                villageObj.setId(village.getId());
-                villageObj.setName(village.getName());
-                s.add(villageObj);
+            if (selectedPanchayat.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType cluster : selectedPanchayat) {
+                    JurisdictionType clusterObj = new JurisdictionType();
+                    clusterObj.setId(cluster.getId());
+                    clusterObj.setName(cluster.getName());
+                    s.add(clusterObj);
+                }
+                userLocation.setGranpanchayatIds(s);
+            }
+
+            if (selectedVillages.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType village : selectedVillages) {
+                    JurisdictionType villageObj = new JurisdictionType();
+                    villageObj.setId(village.getId());
+                    villageObj.setName(village.getName());
+                    s.add(villageObj);
+                }
                 userLocation.setVillageIds(s);
+            }
+
+            if (selectedSchools.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType school : selectedSchools) {
+                    JurisdictionType schoolObj = new JurisdictionType();
+                    schoolObj.setId(school.getId());
+                    schoolObj.setName(school.getName());
+                    s.add(schoolObj);
+                }
+                userLocation.setSchoolIds(s);
+            }
+
+            if (selectedCenter.size() > 0) {
+                s = new ArrayList<>();
+                for (JurisdictionType center : selectedCenter) {
+                    JurisdictionType centerObj = new JurisdictionType();
+                    centerObj.setId(center.getId());
+                    centerObj.setName(center.getName());
+                    s.add(centerObj);
+                }
+                userLocation.setLearningCenterIds(s);
             }
 
             userInfo.setUserLocation(userLocation);
             Util.saveUserLocationInPref(userLocation);
-            //if (addDeviceId()) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.READ_PHONE_STATE},
-                                Constants.READ_PHONE_STORAGE);
-                    }
-                }
-                if(getDeviceId().length()>0) {
-                    userInfo.setDevice_id(getDeviceId());
-                    profilePresenter.submitProfile(userInfo);
-                } else {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
-                            Snackbar.LENGTH_LONG);
-                }
+            profilePresenter.submitProfile(userInfo);
         }
-    }
-
-    private String getDeviceId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        Constants.READ_PHONE_STORAGE);
-            } else {
-                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.
-                        TELEPHONY_SERVICE);
-                //String deviceId = telephonyManager.getDeviceId();
-                String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-                return deviceId;
-            }
-        }
-        return "";
     }
 
     private boolean isAllInputsValid() {
@@ -547,7 +1432,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             msg = getResources().getString(R.string.msg_enter_mobile_number);
         } else if (etUserMobileNumber.getText().toString().trim().length() != 10) {
             msg = getResources().getString(R.string.msg_enter_valid_mobile_no);
-        }  else if (etUserBirthDate.getText().toString().trim().length() == 0) {
+        } else if (etUserBirthDate.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_birth_date);
         } else if (etUserEmailId.getText().toString().trim().length() != 0 &&
                 !Patterns.EMAIL_ADDRESS.matcher(etUserEmailId.getText().toString().trim()).matches()) {
@@ -555,32 +1440,41 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         } else if (TextUtils.isEmpty(userGender)) {
             msg = getString(R.string.msg_select_gender);
         } else if (selectedOrg == null || TextUtils.isEmpty(selectedOrg.getId())) {
-            msg = getString(R.string.msg_select_gender);
+            msg = getString(R.string.msg_select_org);
         } else if (selectedProjects == null || selectedProjects.size() == 0) {
             msg = getString(R.string.msg_select_project);
         } else if (selectedRoles == null || selectedRoles.size() == 0) {
             msg = getString(R.string.msg_select_role);
-        } else if ((spCountry.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCountry.getVisibility() == View.VISIBLE) &&
                 (selectedCountries == null || selectedCountries.size() == 0)) {
             msg = getString(R.string.msg_select_country);
-        } else if ((spState.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserState.getVisibility() == View.VISIBLE) &&
                 (selectedStates == null || selectedStates.size() == 0)) {
             msg = getString(R.string.msg_select_state);
-        } else if ((spDistrict.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserDistrict.getVisibility() == View.VISIBLE) &&
                 (selectedDistricts == null || selectedDistricts.size() == 0)) {
             msg = getString(R.string.msg_select_district);
-        } else if ((spCity.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCity.getVisibility() == View.VISIBLE) &&
                 (selectedCities == null || selectedCities.size() == 0)) {
             msg = getString(R.string.msg_select_city);
-        } else if ((spTaluka.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserTaluka.getVisibility() == View.VISIBLE) &&
                 (selectedTalukas == null || selectedTalukas.size() == 0)) {
             msg = getString(R.string.msg_select_taluka);
-        } else if ((spCluster.getVisibility() == View.VISIBLE) &&
+        } else if ((lyUserCluster.getVisibility() == View.VISIBLE) &&
                 (selectedClusters == null || selectedClusters.size() == 0)) {
             msg = getString(R.string.msg_select_cluster);
-        } else if ((spVillage.getVisibility() == View.VISIBLE) &&
+        } else if ((lyGrampanchayt.getVisibility() == View.VISIBLE) &&
+                (selectedPanchayat == null || selectedPanchayat.size() == 0)) {
+            msg = getString(R.string.msg_select_panchyt);
+        } else if ((lyUserVillage.getVisibility() == View.VISIBLE) &&
                 (selectedVillages == null || selectedVillages.size() == 0)) {
             msg = getString(R.string.msg_select_village);
+        } else if ((lyUserSchool.getVisibility() == View.VISIBLE) &&
+                (selectedSchools == null || selectedSchools.size() == 0)) {
+            msg = getString(R.string.msg_select_school);
+        } else if ((lyUserCenter.getVisibility() == View.VISIBLE) &&
+                (selectedCenter == null || selectedCenter.size() == 0)) {
+            msg = getString(R.string.msg_select_center);
         }
 
         if (TextUtils.isEmpty(msg)) {
@@ -623,18 +1517,15 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(this, getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
@@ -645,28 +1536,46 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
     }
 
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
-                if (imageFilePath == null) return;
-
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(this);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
-                    if (imageFilePath == null) return;
-
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -718,312 +1627,41 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showPictureDialog();
-            }
-            if(requestCode == Constants.READ_PHONE_STORAGE) {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getDeviceId();
-                } else {
-                    Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please allow - Read Phone State permission.",
-                            Snackbar.LENGTH_LONG);
-                }
-                return;
+//                showPictureDialog();
             }
         }
     }
 
     private void hideJurisdictionLevel() {
-        spCountry.setVisibility(View.GONE);
-        findViewById(R.id.txt_country).setVisibility(View.GONE);
-        countries.clear();
+        lyUserCountry.setVisibility(View.GONE);
         selectedCountries.clear();
 
-        spState.setVisibility(View.GONE);
-        findViewById(R.id.txt_state).setVisibility(View.GONE);
-        states.clear();
+        lyUserState.setVisibility(View.GONE);
         selectedStates.clear();
 
-        spDistrict.setVisibility(View.GONE);
-        findViewById(R.id.txt_district).setVisibility(View.GONE);
-        districts.clear();
+        lyUserDistrict.setVisibility(View.GONE);
         selectedDistricts.clear();
 
-        spCity.setVisibility(View.GONE);
-        findViewById(R.id.txt_city).setVisibility(View.GONE);
-        cities.clear();
+        lyUserCity.setVisibility(View.GONE);
         selectedCities.clear();
 
-        spTaluka.setVisibility(View.GONE);
-        findViewById(R.id.txt_taluka).setVisibility(View.GONE);
-        talukas.clear();
+        lyUserTaluka.setVisibility(View.GONE);
         selectedTalukas.clear();
 
-        spCluster.setVisibility(View.GONE);
-        findViewById(R.id.txt_cluster).setVisibility(View.GONE);
-        clusters.clear();
+        lyUserCluster.setVisibility(View.GONE);
         selectedClusters.clear();
 
-        spVillage.setVisibility(View.GONE);
-        findViewById(R.id.txt_village).setVisibility(View.GONE);
-        villages.clear();
+        lyGrampanchayt.setVisibility(View.GONE);
+        selectedPanchayat.clear();
+
+        lyUserVillage.setVisibility(View.GONE);
         selectedVillages.clear();
-    }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        switch (adapterView.getId()) {
-            case R.id.sp_user_organization:
-//                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-//                        && getIntent().getStringExtra(Constants.Login.ACTION)
-//                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
+        lyUserSchool.setVisibility(View.GONE);
+        selectedSchools.clear();
 
-                    //UserInfo userInfo = Util.getUserObjectFromPref();
-//                    int projectPosition = 0;
-//                    List<OrganizationProject> projectData = Util.getUserProjectsFromPref(this.selectedOrg.getId()).getData();
-//                    if (projectData != null && projectData.size() > 0) {
-//                        showOrganizationProjects(projectData);
-//
-////                        boolean[] selectedValues = new boolean[projectData.size()];
-////                        for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
-////                            selectedValues[projectIndex]
-////                                    = isContainsValue(userInfo.getProjectIds(), projectData.get(projectIndex).getId());
-//////                            if (userInfo.getProjectIds().equals(projectData.get(projectIndex).getId())) {
-//////                                projectPosition = projectIndex;
-//////                            }
-////                        }
-//                        //spProject.setSelectedValues(selectedValues);
-//                        for(int userProjectIndex = 0; userProjectIndex< userInfo.getProjectIds().size(); userProjectIndex++ ){
-//                            for (int projectIndex = 0; projectIndex < projectData.size(); projectIndex++) {
-//                                if (userInfo.getProjectIds().get(userProjectIndex).getId().
-//                                        equals(projectData.get(projectIndex).getId())) {
-//                                    projectPosition = projectIndex;
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        spProject.setSelection(projectPosition);
-//                        //spProject.setPreFilledText();
-//                        etUserOrganization.setText(this.selectedOrg.getOrgName());
-//                    } else {
-                        if (Util.isConnected(this)) {
-                            if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
-                            && !TextUtils.isEmpty(organizations.get(i).getId())) {
-                                this.selectedOrg = organizations.get(i);
-                                profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-                            }
-                        }
-//                        else {
-//                            List<OrganizationProject> projects = new ArrayList<>();
-//                            ArrayList<JurisdictionType> projectIds = userInfo.getProjectIds();
-//                            for (JurisdictionType project : projectIds) {
-//                                OrganizationProject op = new OrganizationProject();
-//                                op.setId(project.getId());
-//                                op.setOrgProjectName(project.getName());
-//                                projects.add(op);
-//                            }
-//                            showOrganizationProjects(projects);
-//                        }
-                //    }
-                //}
-//                else {
-//                    if (organizations != null && !organizations.isEmpty() && organizations.get(i) != null
-//                            && !TextUtils.isEmpty(organizations.get(i).getId())) {
-//                        this.selectedOrg = organizations.get(i);
-//                        profilePresenter.getOrganizationProjects(organizations.get(i).getId());
-////                        profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
-////                                Util.getUserObjectFromPref().getProjectIds().get(0).getId());
-//                    }
-//                }
-                break;
-
-            case R.id.sp_project:
-//                if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-//                        && getIntent().getStringExtra(Constants.Login.ACTION)
-//                        .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-                    //UserInfo userInfo = Util.getUserObjectFromPref();
-//                    int id = 0;
-//                    List<OrganizationRole> roleData = Util.getUserRoleFromPref(this.selectedOrg.getId()).getData();
-//                    if (roleData != null && roleData.size() > 0) {
-//                        showOrganizationRoles(roleData);
-//                        for (int roleIndex = 0; roleIndex < roleData.size(); roleIndex++) {
-//                            if (userInfo.getRoleIds().equals(roleData.get(roleIndex).getId())) {
-//                                id = roleIndex;
-//                            }
-//                        }
-//                        spRole.setSelection(id);
-//                    } else {
-                        if (Util.isConnected(this)) {
-                            if (projects != null && !projects.isEmpty() && projects.get(i) != null
-                                    && !TextUtils.isEmpty(projects.get(i).getId())) {
-                                profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
-                                        projects.get(i).getId());
-                            }
-                        }
-//                        else {
-//                            List<OrganizationRole> orgRoles = new ArrayList<>();
-//                            OrganizationRole or = new OrganizationRole();
-//                            or.setId(userInfo.getRoleIds());
-//                            or.setDisplayName(userInfo.getRoleNames());
-//                            orgRoles.add(or);
-//                            showOrganizationRoles(orgRoles);
-//                        }
-                //    }
-            //    }
-//                else {
-//                    if (projects != null && !projects.isEmpty() && projects.get(i) != null
-//                            && !TextUtils.isEmpty(projects.get(i).getId())) {
-//                        //this.selectedProject = projects.get(i);
-//                        profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
-//                                projects.get(i).getId());
-//                    }
-//                }
-                selectedProjects.clear();
-//                for (int i = 0; i < selected.length; i++) {
-//                    if (selected[i]) {
-                        JurisdictionType project = new JurisdictionType();
-                        project.setId(projects.get(i).getId());
-                        project.setName(projects.get(i).getOrgProjectName());
-                        selectedProjects.add(project);
-//
-//                profilePresenter.getOrganizationRoles(organizations.get(i).getId(),
-//                        projects.get(i).getId());
-//                    }
-//                }
-                break;
-
-            case R.id.sp_role:
-                if (roles != null && !roles.isEmpty() && roles.get(i) != null) {
-
-                    selectedRoles.clear();
-                    selectedRole = roles.get(i);
-                    selectedRoles.add(selectedRole.getDisplayName());
-
-                    if (selectedRole.getProject() != null) {
-                        List<Jurisdiction> jurisdictions = selectedRole.getProject().getJurisdictions();
-                        if (jurisdictions != null && jurisdictions.size() > 0) {
-                            hideJurisdictionLevel();
-                            for (Jurisdiction j : jurisdictions) {
-                                setJurisdictionLevel(j.getLevelName());
-                            }
-                        }
-                    } else {
-                        UserInfo userInfo = Util.getUserObjectFromPref();
-                        UserLocation userLocation = userInfo.getUserLocation();
-                        if (userLocation.getCountryId() != null && userLocation.getCountryId().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.COUNTRY_LEVEL);
-                        }
-
-                        if (userLocation.getStateId() != null && userLocation.getStateId().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.STATE_LEVEL);
-                        }
-
-                        if (userLocation.getDistrictIds() != null && userLocation.getDistrictIds().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        }
-
-                        if (userLocation.getCityIds() != null && userLocation.getCityIds().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.CITY_LEVEL);
-                        }
-
-                        if (userLocation.getTalukaIds() != null && userLocation.getTalukaIds().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                        }
-
-                        if (userLocation.getVillageIds() != null && userLocation.getVillageIds().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-                        }
-
-                        if (userLocation.getClusterIds() != null && userLocation.getClusterIds().size() > 0) {
-                            setJurisdictionLevel(Constants.JurisdictionLevelName.CLUSTER_LEVEL);
-                        }
-                    }
-                }
-                break;
-
-            case R.id.sp_user_country:
-                if (countries != null && !countries.isEmpty() && countries.get(i) != null) {
-                    selectedCountries.clear();
-                    selectedCountries.add(countries.get(i));
-
-                    if(spState.getVisibility() == View.VISIBLE){
-                        if(Util.isConnected(this)){
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                                    selectedRole.getProject().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.STATE_LEVEL);
-                        }
-//                        else {
-//                            List<String> stateNames = new ArrayList<>();
-//                            UserInfo userInfo = Util.getUserObjectFromPref();
-//                            List<JurisdictionType> stateObj = userInfo.getUserLocation().getStateId();
-//
-//                            Collections.sort(stateObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-//
-//                            for (int k = 0; k < stateObj.size(); k++) {
-//                                stateNames.add(stateObj.get(k).getName());
-//                                this.states.add(stateObj.get(k));
-//                            }
-//                            setStateData(stateNames);
-//                        }
-                    }
-                }
-
-            case R.id.sp_user_state:
-                if (states != null && !states.isEmpty() && states.get(i) != null) {
-
-                    selectedStates.clear();
-                    selectedStates.add(states.get(i));
-
-                    if (spCity.getVisibility() == View.VISIBLE) {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                                    selectedRole.getProject().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.CITY_LEVEL);
-                        }
-//                        else {
-//                            List<String> cityNames = new ArrayList<>();
-//                            UserInfo userInfo = Util.getUserObjectFromPref();
-//                            List<JurisdictionType> cityObj = userInfo.getUserLocation().getCityIds();
-//
-//                            Collections.sort(cityObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-//
-//                            for (int k = 0; k < cityObj.size(); k++) {
-//                                cityNames.add(cityObj.get(k).getName());
-//                                this.cities.add(cityObj.get(k));
-//                            }
-//                            setCityData(cityNames);
-//                        }
-                    }
-
-                    if (spDistrict.getVisibility() == View.VISIBLE) {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                                    selectedRole.getProject().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                        }
-//                        else {
-//                            List<String> districtNames = new ArrayList<>();
-//                            UserInfo userInfo = Util.getUserObjectFromPref();
-//                            List<JurisdictionType> districtObj = userInfo.getUserLocation().getDistrictIds();
-//
-//                            Collections.sort(districtObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-//
-//                            for (int k = 0; k < districtObj.size(); k++) {
-//                                districtNames.add(districtObj.get(k).getName());
-//                                this.districts.add(districtObj.get(k));
-//                            }
-//
-//                            setDistrictData(districtNames);
-//                        }
-                    }
-                }
-                break;
-
-            case R.id.sp_user_structure:
-                break;
-        }
+        lyUserCenter.setVisibility(View.GONE);
+        selectedCenter.clear();
     }
 
     private boolean isContainsValue(ArrayList<JurisdictionType> projects, String value) {
@@ -1036,7 +1674,17 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    public void onFailureListener(String requestID, String message) {
+        Util.showToast(message, this);
+    }
+
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        Util.showToast(error.getMessage(), this);
+    }
+
+    @Override
+    public void onSuccessListener(String requestID, String response) {
 
     }
 
@@ -1061,10 +1709,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
+    public void closeCurrentActivity() {
+
+    }
+
+    @Override
     public <T> void showNextScreen(T data) {
         Util.removeDatabaseRecords(false);
         Util.setSubmittedFormsLoaded(false);
 
+//        if (Permissions.isCameraPermissionGranted(this, this)) {
+//            Util.downloadAndLoadIcon(EditProfileActivity.this);
+//        }
         AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
@@ -1080,59 +1736,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     @Override
     public void showOrganizations(List<Organization> organizations) {
         this.organizations = organizations;
-        List<String> org = new ArrayList<>();
+        selectionOrgList.clear();
         for (int i = 0; i < organizations.size(); i++) {
-            org.add(organizations.get(i).getOrgName());
+            CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+            customSpinnerObject.set_id(organizations.get(i).getId());
+            customSpinnerObject.setName(organizations.get(i).getOrgName());
+            selectionOrgList.add(customSpinnerObject);
         }
-
-        setOrganizationData(org);
     }
 
     @Override
     public void showOrganizationProjects(List<OrganizationProject> organizationProjects) {
         if (organizationProjects != null && !organizationProjects.isEmpty()) {
 
-            Collections.sort(organizationProjects, (j1, j2) -> j1.getOrgProjectName().compareTo(j2.getOrgProjectName()));
-
-//            this.projects.clear();
-//            this.projects.addAll(organizationProjects);
-
-            List<String> projects = new ArrayList<>();
-//            List<OrganizationProject> projects = new ArrayList<>();
-            for (OrganizationProject organizationProject : organizationProjects) {
-                //projects.add(organizationProject.getOrgProjectName());
-                projects.add(organizationProject.getOrgProjectName());
-            }
-
             this.projects.clear();
             this.projects.addAll(organizationProjects);
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
-                    R.layout.layout_spinner_item, projects);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spProject.setAdapter(adapter);
-
-            //spProject.setItems(projects, getString(R.string.project), this);
-
-            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-                    && getIntent().getStringExtra(Constants.Login.ACTION)
-                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-                int projectId = 0;
-                UserInfo userInfo = Util.getUserObjectFromPref();
-
-                //boolean[] selectedValues = new boolean[organizationProjects.size()];
-                for(int userProjectIndex = 0; userProjectIndex< userInfo.getProjectIds().size(); userProjectIndex++ ){
-                    for (int projectIndex = 0; projectIndex < organizationProjects.size(); projectIndex++) {
-                        if (userInfo.getProjectIds().get(userProjectIndex).getId().
-                                equals(organizationProjects.get(projectIndex).getId())) {
-                            projectId = projectIndex;
-                        }
-                    }
-                }
-                //spProject.setSelectedValues(selectedValues);
-                spProject.setSelection(projectId);
-                //spProject.setPreFilledText();
+            selectionProjectList.clear();
+            for (int i = 0; i < organizationProjects.size(); i++) {
+                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                customSpinnerObject.set_id(organizationProjects.get(i).getId());
+                customSpinnerObject.setName(organizationProjects.get(i).getOrgProjectName());
+                selectionProjectList.add(customSpinnerObject);
             }
         }
     }
@@ -1141,33 +1765,14 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     public void showOrganizationRoles(List<OrganizationRole> organizationRoles) {
         if (organizationRoles != null && !organizationRoles.isEmpty()) {
 
-            Collections.sort(organizationRoles, (j1, j2) -> j1.getDisplayName().compareTo(j2.getDisplayName()));
-
-            List<String> roles = new ArrayList<>();
-            for (OrganizationRole organizationRole : organizationRoles) {
-                roles.add(organizationRole.getDisplayName());
-            }
-
             this.roles.clear();
             this.roles.addAll(organizationRoles);
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
-                    R.layout.layout_spinner_item, roles);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spRole.setAdapter(adapter);
-
-            if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-                    && getIntent().getStringExtra(Constants.Login.ACTION)
-                    .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-                int id = 0;
-                UserInfo userInfo = Util.getUserObjectFromPref();
-                for (int roleIndex = 0; roleIndex < organizationRoles.size(); roleIndex++) {
-                    if (userInfo.getRoleIds().equals(organizationRoles.get(roleIndex).getId())) {
-                        id = roleIndex;
-                    }
-                }
-                spRole.setSelection(id);
+            selectionRolesList.clear();
+            for (int i = 0; i < organizationRoles.size(); i++) {
+                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                customSpinnerObject.set_id(organizationRoles.get(i).getId());
+                customSpinnerObject.setName(organizationRoles.get(i).getDisplayName());
+                selectionRolesList.add(customSpinnerObject);
             }
         }
     }
@@ -1175,391 +1780,206 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private void setJurisdictionLevel(String level) {
         switch (level) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
-                spCountry.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_country).setVisibility(View.VISIBLE);
-                if (Util.isConnected(this)) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(), level);
-                } else {
-                    List<String> countryNames = new ArrayList<>();
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    List<JurisdictionType> countriesObj = userInfo.getUserLocation().getCountryId();
-
-                    Collections.sort(countriesObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                    for (int k = 0; k < countriesObj.size(); k++) {
-                        countryNames.add(countriesObj.get(k).getName());
-                        this.countries.add(countriesObj.get(k));
-                    }
-                    setCountryData(countryNames);
-                }
+                lyUserCountry.setVisibility(View.VISIBLE);
+                selectedCountries.clear();
                 break;
+
             case Constants.JurisdictionLevelName.STATE_LEVEL:
-                spState.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_state).setVisibility(View.VISIBLE);
-                if (Util.isConnected(this)) {
-                    profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                            selectedRole.getProject().getJurisdictionTypeId(), level);
-                } else {
-                    List<String> stateNames = new ArrayList<>();
-                    UserInfo userInfo = Util.getUserObjectFromPref();
-                    List<JurisdictionType> statesObj = userInfo.getUserLocation().getStateId();
-
-                    Collections.sort(statesObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                    for (int k = 0; k < statesObj.size(); k++) {
-                        stateNames.add(statesObj.get(k).getName());
-                        this.states.add(statesObj.get(k));
-                    }
-                    setStateData(stateNames);
-                }
+                lyUserState.setVisibility(View.VISIBLE);
+                selectedStates.clear();
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
-                spDistrict.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_district).setVisibility(View.VISIBLE);
+                lyUserDistrict.setVisibility(View.VISIBLE);
+                selectedDistricts.clear();
                 break;
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
-                spCity.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_city).setVisibility(View.VISIBLE);
+                lyUserCity.setVisibility(View.VISIBLE);
+                selectedCities.clear();
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
-                spTaluka.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_taluka).setVisibility(View.VISIBLE);
+                lyUserTaluka.setVisibility(View.VISIBLE);
+                selectedTalukas.clear();
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
-                spVillage.setVisibility(View.VISIBLE);
-                findViewById(R.id.txt_village).setVisibility(View.VISIBLE);
+                lyUserVillage.setVisibility(View.VISIBLE);
+                selectedVillages.clear();
                 break;
-        }
-    }
 
-    private void setOrganizationData(List<String> org) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
-                R.layout.layout_spinner_item, org);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spOrganization.setAdapter(adapter);
-    }
+            case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
+                lyUserCluster.setVisibility(View.VISIBLE);
+                selectedClusters.clear();
+                break;
 
-    private void setCountryData(List<String> countryNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
-                R.layout.layout_spinner_item, countryNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCountry.setAdapter(adapter);
+            case Constants.JurisdictionLevelName.GRAM_PANCHAYAT:
+                lyGrampanchayt.setVisibility(View.VISIBLE);
+                selectedPanchayat.clear();
+                break;
 
-        if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-                && getIntent().getStringExtra(Constants.Login.ACTION)
-                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-            int id = 0;
-            UserInfo userInfo = Util.getUserObjectFromPref();
-            List<JurisdictionType> countryId = userInfo.getUserLocation().getCountryId();
-            for (int i = 0; i < countries.size(); i++) {
-                if(countryId != null) {
-                    if (countryId.get(0).getId().equals(countries.get(i).getId())) {
-                        id = i;
-                    }
-                }
-            }
-            spCountry.setSelection(id);
-        }
-    }
-
-    private void setStateData(List<String> stateNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditProfileActivity.this,
-                R.layout.layout_spinner_item, stateNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spState.setAdapter(adapter);
-
-        if (getIntent().getStringExtra(Constants.Login.ACTION) != null
-                && getIntent().getStringExtra(Constants.Login.ACTION)
-                .equalsIgnoreCase(Constants.Login.ACTION_EDIT)) {
-
-            int id = 0;
-            UserInfo userInfo = Util.getUserObjectFromPref();
-            List<JurisdictionType> stateId = userInfo.getUserLocation().getStateId();
-            for (int i = 0; i < states.size(); i++) {
-                if(stateId != null) {
-                    if (stateId.get(0).getId().equals(states.get(i).getId())) {
-                        id = i;
-                    }
-                }
-            }
-            spState.setSelection(id);
-        }
-    }
-
-    private void setDistrictData(List<String> districts) {
-        spDistrict.setItems(districts, getString(R.string.district), this);
-
-        if (Util.getUserObjectFromPref().getUserLocation() != null) {
-            List<JurisdictionType> districtIds = Util.getUserObjectFromPref().getUserLocation().getDistrictIds();
-            if (districtIds != null && districtIds.size() > 0) {
-                boolean[] selectedValues = new boolean[this.districts.size()];
-                for (int districtIndex = 0; districtIndex < this.districts.size(); districtIndex++) {
-                    for (int districtIdIndex = 0; districtIdIndex < districtIds.size(); districtIdIndex++) {
-                        if (this.districts.get(districtIndex).getId().equals(districtIds.get(districtIdIndex).getId())) {
-                            selectedValues[districtIndex] = true;
-                            break;
-                        } else {
-                            selectedValues[districtIndex] = false;
-                        }
-                    }
-                }
-                spDistrict.setSelectedValues(selectedValues);
-                spDistrict.setPreFilledText();
-            }
-        }
-    }
-
-    private void setCityData(List<String> cities) {
-        spCity.setItems(cities, getString(R.string.city), this);
-
-        if (Util.getUserObjectFromPref().getUserLocation() != null) {
-            List<JurisdictionType> cityIds = Util.getUserObjectFromPref().getUserLocation().getCityIds();
-            if (cityIds != null && cityIds.size() > 0) {
-                boolean[] selectedValues = new boolean[this.cities.size()];
-                for (int cityIndex = 0; cityIndex < this.cities.size(); cityIndex++) {
-                    for (int cityIdIndex = 0; cityIdIndex < cityIds.size(); cityIdIndex++) {
-                        if (this.cities.get(cityIndex).getId().equals(cityIds.get(cityIdIndex).getId())) {
-                            selectedValues[cityIndex] = true;
-                            break;
-                        } else {
-                            selectedValues[cityIndex] = false;
-                        }
-                    }
-                }
-
-                spCity.setSelectedValues(selectedValues);
-                spCity.setPreFilledText();
-            }
-        }
-    }
-
-    private void setTalukaData(List<String> talukas) {
-        spTaluka.setItems(talukas, getString(R.string.taluka), this);
-
-        if (Util.getUserObjectFromPref().getUserLocation() != null) {
-            List<JurisdictionType> talukaIds = Util.getUserObjectFromPref().getUserLocation().getTalukaIds();
-            if (talukaIds != null && talukaIds.size() > 0) {
-                boolean[] selectedValues = new boolean[this.talukas.size()];
-                for (int talukaIndex = 0; talukaIndex < this.talukas.size(); talukaIndex++) {
-                    for (int talukaIdIndex = 0; talukaIdIndex < talukaIds.size(); talukaIdIndex++) {
-                        if (this.talukas.get(talukaIndex).getId().equals(talukaIds.get(talukaIdIndex).getId())) {
-                            selectedValues[talukaIndex] = true;
-                            break;
-                        } else {
-                            selectedValues[talukaIndex] = false;
-                        }
-                    }
-                }
-
-                spTaluka.setSelectedValues(selectedValues);
-                spTaluka.setPreFilledText();
-            }
-        }
-    }
-
-    private void setVillageData(List<String> villages) {
-        spVillage.setItems(villages, getString(R.string.village), this);
-
-        if (Util.getUserObjectFromPref().getUserLocation() != null) {
-            List<JurisdictionType> villageIds = Util.getUserObjectFromPref().getUserLocation().getVillageIds();
-            if (villageIds != null && villageIds.size() > 0) {
-                boolean[] selectedValues = new boolean[this.villages.size()];
-                for (int villageIndex = 0; villageIndex < this.villages.size(); villageIndex++) {
-                    for (int villageIdIndex = 0; villageIdIndex < villageIds.size(); villageIdIndex++) {
-                        if (this.villages.get(villageIndex).getId().equals(villageIds.get(villageIdIndex).getId())) {
-                            selectedValues[villageIndex] = true;
-                            break;
-                        } else {
-                            selectedValues[villageIndex] = false;
-                        }
-                    }
-                }
-                spVillage.setSelectedValues(selectedValues);
-                spVillage.setPreFilledText();
-            }
+            case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
+                lyUserSchool.setVisibility(View.VISIBLE);
+                selectedSchools.clear();
+                break;
+            case Constants.JurisdictionLevelName.LEARNING_CENTER:
+                lyUserCenter.setVisibility(View.VISIBLE);
+                selectedCenter.clear();
+                break;
         }
     }
 
     @Override
-    public void showJurisdictionLevel(List<JurisdictionLocation> jurisdictionLevels, String levelName) {
+    public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.countries.clear();
+                    customSpinnerCountries.clear();
                     List<String> countryNames = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCountry().getName().compareTo(j2.getCountry().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        countryNames.add(location.getCountry().getName());
-                        this.countries.add(location.getCountry());
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        countryNames.add(location.getName());
+                        CustomSpinnerObject country = new CustomSpinnerObject();
+                        country.set_id(location.getId());
+                        country.setName(location.getName());
+                        country.setSelected(false);
+                        this.customSpinnerCountries.add(country);
                     }
-
-                    setCountryData(countryNames);
                 }
                 break;
             case Constants.JurisdictionLevelName.STATE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.states.clear();
+                    customSpinnerStates.clear();
                     List<String> stateNames = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        stateNames.add(location.getState().getName());
-                        this.states.add(location.getState());
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        stateNames.add(location.getName());
+                        CustomSpinnerObject state = new CustomSpinnerObject();
+                        state.set_id(location.getId());
+                        state.setName(location.getName());
+                        state.setSelected(false);
+                        this.customSpinnerStates.add(state);
                     }
-                    setStateData(stateNames);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.districts.clear();
                     List<String> districts = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getDistrict().getName().compareTo(j2.getDistrict().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                districts.add(location.getDistrict().getName());
-                                this.districts.add(location.getDistrict());
-                            }
-                        }
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        districts.add(location.getName());
+                        CustomSpinnerObject district = new CustomSpinnerObject();
+                        district.set_id(location.getId());
+                        district.setName(location.getName());
+                        district.setSelected(false);
+                        this.customSpinnerDistricts.add(district);
                     }
-                    setDistrictData(districts);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.CITY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.cities.clear();
                     List<String> cities = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                cities.add(location.getCity().getName());
-                                this.cities.add(location.getCity());
-                            }
-                        }
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        cities.add(location.getName());
+                        CustomSpinnerObject city = new CustomSpinnerObject();
+                        city.set_id(location.getId());
+                        city.setName(location.getName());
+                        city.setSelected(false);
+                        this.customSpinnerCities.add(city);
                     }
-                    setCityData(cities);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.talukas.clear();
                     List<String> talukas = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getTaluka().getName().compareTo(j2.getTaluka().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        talukas.add(location.getTaluka().getName());
-                                        this.talukas.add(location.getTaluka());
-                                    }
-                                }
-                            }
-                        }
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        talukas.add(location.getName());
+                        CustomSpinnerObject taluka = new CustomSpinnerObject();
+                        taluka.set_id(location.getId());
+                        taluka.setName(location.getName());
+                        taluka.setSelected(false);
+                        this.customSpinnerTalukas.add(taluka);
                     }
-                    setTalukaData(talukas);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.VILLAGE_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.villages.clear();
                     List<String> villages = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getVillage().getName().compareTo(j2.getVillage().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                villages.add(location.getVillage().getName());
-                                                this.villages.add(location.getVillage());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        villages.add(location.getName());
+                        CustomSpinnerObject village = new CustomSpinnerObject();
+                        village.set_id(location.getId());
+                        village.setName(location.getName());
+                        village.setSelected(false);
+                        this.customSpinnerVillages.add(village);
                     }
-                    setVillageData(villages);
                 }
                 break;
 
             case Constants.JurisdictionLevelName.CLUSTER_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    this.clusters.clear();
                     List<String> clusters = new ArrayList<>();
-
-                    Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCluster().getName().compareTo(j2.getCluster().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
-                        JurisdictionLocation location = jurisdictionLevels.get(i);
-                        for (JurisdictionType state : selectedStates) {
-                            if (state.getName().equalsIgnoreCase(location.getState().getName())) {
-                                for (JurisdictionType district : selectedDistricts) {
-                                    if (district.getName().equalsIgnoreCase(location.getDistrict().getName())) {
-                                        for (JurisdictionType taluka : selectedTalukas) {
-                                            if (taluka.getName().equalsIgnoreCase(location.getTaluka().getName())) {
-                                                clusters.add(location.getCluster().getName());
-                                                this.clusters.add(location.getCluster());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    spCluster.setItems(clusters, getString(R.string.cluster), this);
-
-                    if (Util.getUserObjectFromPref().getUserLocation() != null) {
-                        List<JurisdictionType> clusterIds = Util.getUserObjectFromPref().getUserLocation().getClusterIds();
-                        if (clusterIds != null && clusterIds.size() > 0) {
-                            boolean[] selectedValues = new boolean[this.clusters.size()];
-                            for (int clusterIndex = 0; clusterIndex < this.clusters.size(); clusterIndex++) {
-                                for (int clusterIdIndex = 0; clusterIdIndex < clusterIds.size(); clusterIdIndex++) {
-                                    if (this.clusters.get(clusterIndex).getId().equals(clusterIds.get(clusterIdIndex).getId())) {
-                                        selectedValues[clusterIndex] = true;
-                                        break;
-                                    } else {
-                                        selectedValues[clusterIndex] = false;
-                                    }
-                                }
-                            }
-                            spCluster.setSelectedValues(selectedValues);
-                            spCluster.setPreFilledText();
-                        }
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        clusters.add(location.getName());
+                        CustomSpinnerObject cluster = new CustomSpinnerObject();
+                        cluster.set_id(location.getId());
+                        cluster.setName(location.getName());
+                        cluster.setSelected(false);
+                        this.customSpinnerClusters.add(cluster);
                     }
                 }
                 break;
-
+            case Constants.JurisdictionLevelName.GRAM_PANCHAYAT:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    List<String> panchayats = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        panchayats.add(location.getName());
+                        CustomSpinnerObject panchayat = new CustomSpinnerObject();
+                        panchayat.set_id(location.getId());
+                        panchayat.setName(location.getName());
+                        panchayat.setSelected(false);
+                        this.customSpinnerPanchayt.add(panchayat);
+                    }
+                }
+                break;
+            case Constants.JurisdictionLevelName.SCHOOL_LEVEL:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    List<String> schools = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        schools.add(location.getName());
+                        CustomSpinnerObject school = new CustomSpinnerObject();
+                        school.set_id(location.getId());
+                        school.setName(location.getName());
+                        school.setSelected(false);
+                        this.customSpinnerSchools.add(school);
+                    }
+                }
+                break;
+            case Constants.JurisdictionLevelName.LEARNING_CENTER:
+                if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
+                    List<String> centers = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        centers.add(location.getName());
+                        CustomSpinnerObject center = new CustomSpinnerObject();
+                        center.set_id(location.getId());
+                        center.setName(location.getName());
+                        center.setSelected(false);
+                        this.customSpinnerCenter.add(center);
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -1576,126 +1996,805 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
     }
 
-    @Override
-    public void onValuesSelected(boolean[] selected, String spinnerName) {
-        try {
-            switch (spinnerName) {
-                case Constants.MultiSelectSpinnerType.SPINNER_PROJECT:
-                    selectedProjects.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            JurisdictionType project = new JurisdictionType();
-                            project.setId(projects.get(i).getId());
-                            project.setName(projects.get(i).getOrgProjectName());
-                            selectedProjects.add(project);
-                        }
-                    }
-                    break;
+    public void onOrgSelection(int selectedPosition) {
+        rvOrg.setVisibility(View.GONE);
+        selectedOrgName = "";
+        selectedOrgName = filterOrgList.get(selectedPosition).getName();
+        etUserOrganization.setText(selectedOrgName);
+        // clear other dependent fields
+        hideJurisdictionLevel();
+        selectedProjects.clear();
+        selectedProjectName = "";
+        etUserProject.setText("");
+        selectionProjectList.clear();
+        etUserProject.setText("");
+        selectedRoles.clear();
+        selectedRole = null;
+        isRoleSelected = false;
+        selectionRolesList.clear();
+        etUserRole.setText("");
+        selectedCountries.clear();
+        customSpinnerCountries.clear();
+        etUserCountry.setText("");
+        selectedStates.clear();
+        customSpinnerStates.clear();
+        etUserState.setText("");
+        selectedDistricts.clear();
+        customSpinnerDistricts.clear();
+        etUserDistrict.setText("");
+        selectedCities.clear();
+        customSpinnerCities.clear();
+        etUserCity.setText("");
+        selectedClusters.clear();
+        customSpinnerClusters.clear();
+        etUserCluster.setText("");
+        selectedPanchayat.clear();
+        customSpinnerPanchayt.clear();
+        etGrampanchayt.setText("");
+        selectedTalukas.clear();
+        customSpinnerTalukas.clear();
+        etUserTaluka.setText("");
+        selectedVillages.clear();
+        customSpinnerVillages.clear();
+        etUserVillage.setText("");
+        selectedSchools.clear();
+        customSpinnerSchools.clear();
+        etUserSchool.setText("");
+        selectedCenter.clear();
+        customSpinnerCenter.clear();
+        etUserCenter.setText("");
 
-                case Constants.MultiSelectSpinnerType.SPINNER_ROLE:
-                    selectedRoles.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedRoles.add(roles.get(i).getId());
-                        }
-                    }
-                    break;
-
-                case Constants.MultiSelectSpinnerType.SPINNER_CITY:
-                    selectedCities.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedCities.add(cities.get(i));
-                        }
-                    }
-                    break;
-
-                case Constants.MultiSelectSpinnerType.SPINNER_DISTRICT:
-                    selectedDistricts.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedDistricts.add(districts.get(i));
-                        }
-                    }
-
-                    if (spTaluka.getVisibility() == View.VISIBLE) {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                                    selectedRole.getProject().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
-                        } else {
-                            List<String> talukaNames = new ArrayList<>();
-                            UserInfo userInfo = Util.getUserObjectFromPref();
-                            List<JurisdictionType> talukaObj = userInfo.getUserLocation().getTalukaIds();
-
-                            Collections.sort(talukaObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                            for (int k = 0; k < talukaObj.size(); k++) {
-                                talukaNames.add(talukaObj.get(k).getName());
-                                this.talukas.add(talukaObj.get(k));
-                            }
-
-                            setTalukaData(talukaNames);
-                        }
-                    }
-                    break;
-
-                case Constants.MultiSelectSpinnerType.SPINNER_TALUKA:
-                    selectedTalukas.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedTalukas.add(talukas.get(i));
-                        }
-                    }
-
-                    if (spVillage.getVisibility() == View.VISIBLE) {
-                        if (Util.isConnected(this)) {
-                            profilePresenter.getJurisdictionLevelData(selectedOrg.getId(),
-                                    selectedRole.getProject().getJurisdictionTypeId(),
-                                    Constants.JurisdictionLevelName.VILLAGE_LEVEL);
-                        } else {
-                            List<String> villageNames = new ArrayList<>();
-                            UserInfo userInfo = Util.getUserObjectFromPref();
-                            List<JurisdictionType> villageObj = userInfo.getUserLocation().getVillageIds();
-
-                            Collections.sort(villageObj, (j1, j2) -> j1.getName().compareTo(j2.getName()));
-
-                            for (int k = 0; k < villageObj.size(); k++) {
-                                villageNames.add(villageObj.get(k).getName());
-                                this.villages.add(villageObj.get(k));
-                            }
-
-                            setVillageData(villageNames);
-                        }
-                    }
-                    break;
-
-                case Constants.MultiSelectSpinnerType.SPINNER_CLUSTER:
-                    selectedClusters.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedClusters.add(clusters.get(i));
-                        }
-                    }
-                    break;
-
-                case Constants.MultiSelectSpinnerType.SPINNER_VILLAGE:
-                    selectedVillages.clear();
-                    for (int i = 0; i < selected.length; i++) {
-                        if (selected[i]) {
-                            selectedVillages.add(villages.get(i));
-                        }
-                    }
-                    break;
+        if (filterOrgList.get(selectedPosition) != null
+                && !TextUtils.isEmpty(filterOrgList.get(selectedPosition).get_id())) {
+            for (int i = 0; i < organizations.size(); i++) {
+                if (organizations.get(i).getId().equals(filterOrgList.get(selectedPosition).get_id())) {
+                    this.selectedOrg = organizations.get(i);
+                }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "EXCEPTION_IN_ON_VALUE_SELECTED");
+            profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
         }
     }
 
-    private void showMultiSelectBottomsheet() {
+    public void onProjectSelection(int selectedPosition) {
+        rvProject.setVisibility(View.GONE);
+        selectedProjectName = "";
+        selectedProjectName = filterProjectList.get(selectedPosition).getName();
+        etUserProject.setText(selectedProjectName);
+        // clear other dependent fields
+        hideJurisdictionLevel();
+        selectedRoles.clear();
+        selectedRole = null;
+        isRoleSelected = false;
+        selectionRolesList.clear();
+        etUserRole.setText("");
+        selectedCountries.clear();
+        customSpinnerCountries.clear();
+        etUserCountry.setText("");
+        selectedStates.clear();
+        customSpinnerStates.clear();
+        etUserState.setText("");
+        selectedDistricts.clear();
+        customSpinnerDistricts.clear();
+        etUserDistrict.setText("");
+        selectedCities.clear();
+        customSpinnerCities.clear();
+        etUserCity.setText("");
+        selectedClusters.clear();
+        customSpinnerClusters.clear();
+        etUserCluster.setText("");
+        selectedPanchayat.clear();
+        customSpinnerPanchayt.clear();
+        etGrampanchayt.setText("");
+        selectedTalukas.clear();
+        customSpinnerTalukas.clear();
+        etUserTaluka.setText("");
+        selectedVillages.clear();
+        customSpinnerVillages.clear();
+        etUserVillage.setText("");
+        selectedSchools.clear();
+        customSpinnerSchools.clear();
+        etUserSchool.setText("");
+        selectedCenter.clear();
+        customSpinnerCenter.clear();
+        etUserCenter.setText("");
+        // clear other dependent fields
+        if (Util.isConnected(this)) {
+            selectedProjects.clear();
+            if (filterProjectList.get(selectedPosition) != null
+                    && !TextUtils.isEmpty(filterProjectList.get(selectedPosition).get_id())) {
+                JurisdictionType project = new JurisdictionType();
+                project.setId(filterProjectList.get(selectedPosition).get_id());
+                project.setName(filterProjectList.get(selectedPosition).getName());
+                selectedProjects.add(project);
+                profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
+                        filterProjectList.get(selectedPosition).get_id());
+            }
+        }
+    }
 
-       /* bottomSheetDialogFragment = new MultiSelectBottomSheet();
-        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());*/
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        if (type.equals("Select Role")) {
+            int selectedPosition = -1;
+            String selectedRoleName = "";
+            for (CustomSpinnerObject customSpinnerObject : selectionRolesList) {
+                if (customSpinnerObject.isSelected()) {
+                    selectedRoleName = customSpinnerObject.getName();
+                    selectedPosition = selectionRolesList.indexOf(customSpinnerObject);
+                    break;
+                }
+            }
+            etUserRole.setText(selectedRoleName);
+            // clear other dependent fields
+            selectedCountries.clear();
+            customSpinnerCountries.clear();
+            etUserCountry.setText("");
+            selectedStates.clear();
+            customSpinnerStates.clear();
+            etUserState.setText("");
+            selectedDistricts.clear();
+            customSpinnerDistricts.clear();
+            etUserDistrict.setText("");
+            selectedCities.clear();
+            customSpinnerCities.clear();
+            etUserCity.setText("");
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedTalukas.clear();
+            customSpinnerTalukas.clear();
+            etUserTaluka.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+            if (Util.isConnected(this)) {
+                selectedRoles.clear();
+                if (roles != null && !roles.isEmpty() && roles.get(selectedPosition) != null
+                        && !TextUtils.isEmpty(roles.get(selectedPosition).getId())) {
+                    selectedRole = roles.get(selectedPosition);
+                    selectedRoles.add(selectedRole.getId());
+                    isRoleSelected = true;
+                    jurisdictionId = selectedRole.getProject().getJurisdictionTypeId();
+                }
+            }
+            if (selectedRole.getProject() != null) {
+                List<Jurisdiction> jurisdictions = selectedRole.getProject().getJurisdictions();
+                if (jurisdictions != null && jurisdictions.size() > 0) {
+                    hideJurisdictionLevel();
+                    for (Jurisdiction j : jurisdictions) {
+                        setJurisdictionLevel(j.getLevelName());
+                    }
+                    if (Util.isConnected(this)) {
+//                        profilePresenter.getProfileLocationData("", selectedRole.getProject().
+//                                        getJurisdictionTypeId(), jurisdictions.get(0).getLevelName(), selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3("", "",
+                                "", "", "", selectedRole.getProject().
+                                        getJurisdictionTypeId(), jurisdictions.get(0).getLevelName(), selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else {
+                        Util.showToast(getResources().getString(R.string.no_data_available), this);
+                    }
+                }
+            }
+        } else if (type.equals("Select Country")) {
+            selectedCountries.clear();
+            for (CustomSpinnerObject country : customSpinnerCountries) {
+                if (country.isSelected()) {
+                    JurisdictionType selectedCountry = new JurisdictionType();
+                    selectedCountry.setName(country.getName());
+                    selectedCountry.setId(country.get_id());
+                    selectedCountries.add(selectedCountry);
+                }
+            }
+            // clear other dependent fields
+            selectedStates.clear();
+            customSpinnerStates.clear();
+            etUserState.setText("");
+            selectedDistricts.clear();
+            customSpinnerDistricts.clear();
+            etUserDistrict.setText("");
+            selectedCities.clear();
+            customSpinnerCities.clear();
+            etUserCity.setText("");
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedTalukas.clear();
+            customSpinnerTalukas.clear();
+            etUserTaluka.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedCountryIds = "";
+            String selectedCountryNames = "";
+            for (int i = 0; i < selectedCountries.size(); i++) {
+                JurisdictionType j = selectedCountries.get(i);
+                if (i == 0) {
+                    selectedCountryIds = j.getId();
+                    selectedCountryNames = j.getName();
+                } else {
+                    selectedCountryIds = selectedCountryIds + "," + j.getId();
+                    selectedCountryNames = selectedCountryNames + "," + j.getName();
+                }
+            }
+            etUserCountry.setText(selectedCountryNames);
+
+            if (selectedCountries != null && selectedCountries.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserState.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedCountryIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3("", "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.STATE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select State")) {
+            selectedStates.clear();
+            for (CustomSpinnerObject state : customSpinnerStates) {
+                if (state.isSelected()) {
+                    JurisdictionType selectedState = new JurisdictionType();
+                    selectedState.setName(state.getName());
+                    selectedState.setId(state.get_id());
+                    selectedStates.add(selectedState);
+                }
+            }
+            // clear other dependent fields
+            selectedDistricts.clear();
+            customSpinnerDistricts.clear();
+            etUserDistrict.setText("");
+            selectedCities.clear();
+            customSpinnerCities.clear();
+            etUserCity.setText("");
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedTalukas.clear();
+            customSpinnerTalukas.clear();
+            etUserTaluka.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedStateIds = "";
+            String selectedStateNames = "";
+            for (int i = 0; i < selectedStates.size(); i++) {
+                JurisdictionType j = selectedStates.get(i);
+                if (i == 0) {
+                    selectedStateIds = j.getId();
+                    selectedStateNames = j.getName();
+                } else {
+                    selectedStateIds = selectedStateIds + "," + j.getId();
+                    selectedStateNames = selectedStateNames + "," + j.getName();
+                }
+            }
+            this.selectedStateIds = selectedStateIds;
+            etUserState.setText(selectedStateNames);
+
+            if (selectedStates != null && selectedStates.size() > 0) {
+                if (lyUserCity.getVisibility() == View.VISIBLE) {
+                    if (Util.isConnected(this)) {
+//                        profilePresenter.getProfileLocationData(selectedStateIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.CITY_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+                if (lyUserDistrict.getVisibility() == View.VISIBLE) {
+                    if (Util.isConnected(this)) {
+//                        profilePresenter.getProfileLocationData(selectedStateIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, "",
+                                "", "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.DISTRICT_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select City")) {
+            selectedCities.clear();
+            for (CustomSpinnerObject city : customSpinnerCities) {
+                if (city.isSelected()) {
+                    JurisdictionType selectedCity = new JurisdictionType();
+                    selectedCity.setName(city.getName());
+                    selectedCity.setId(city.get_id());
+                    selectedCities.add(selectedCity);
+                }
+            }
+            // clear other dependent fields
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedTalukas.clear();
+            customSpinnerTalukas.clear();
+            etUserTaluka.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedCityIds = "";
+            String selectedCityNames = "";
+            if (selectedCities != null && selectedCities.size() > 0) {
+                for (int i = 0; i < selectedCities.size(); i++) {
+                    JurisdictionType j = selectedCities.get(i);
+                    if (i == 0) {
+                        selectedCityIds = j.getId();
+                        selectedCityNames = j.getName();
+                    } else {
+                        selectedCityIds = selectedCityIds + "," + j.getId();
+                        selectedCityNames = selectedCityNames + "," + j.getName();
+                    }
+                }
+            }
+            this.selectedCityIds = selectedCityIds;
+            etUserCity.setText(selectedCityNames);
+
+            if (Util.isConnected(this)) {
+                if (lyUserTaluka.getVisibility() == View.VISIBLE) {
+//                    profilePresenter.getProfileLocationData(selectedCityIds,
+//                            jurisdictionId,
+//                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+//                            selectedProjects.get(0).getId(), selectedRole.getId());
+                    profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                            "", "", "",
+                            jurisdictionId,
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                            selectedProjects.get(0).getId(), selectedRole.getId());
+                }
+            }
+        } else if (type.equals("Select District")) {
+            selectedDistricts.clear();
+            for (CustomSpinnerObject district : customSpinnerDistricts) {
+                if (district.isSelected()) {
+                    JurisdictionType selectedDistrict = new JurisdictionType();
+                    selectedDistrict.setName(district.getName());
+                    selectedDistrict.setId(district.get_id());
+                    selectedDistricts.add(selectedDistrict);
+                }
+            }
+            // clear other dependent fields
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedTalukas.clear();
+            customSpinnerTalukas.clear();
+            etUserTaluka.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedDistrictIds = "";
+            String selectedDistrictNames = "";
+            if (selectedDistricts != null && selectedDistricts.size() > 0) {
+                for (int i = 0; i < selectedDistricts.size(); i++) {
+                    JurisdictionType j = selectedDistricts.get(i);
+                    if (i == 0) {
+                        selectedDistrictIds = j.getId();
+                        selectedDistrictNames = j.getName();
+                    } else {
+                        selectedDistrictIds = selectedDistrictIds + "," + j.getId();
+                        selectedDistrictNames = selectedDistrictNames + "," + j.getName();
+                    }
+                }
+            }
+            this.selectedDistrictIds = selectedDistrictIds;
+            etUserDistrict.setText(selectedDistrictNames);
+
+            if (Util.isConnected(this)) {
+                if (lyUserTaluka.getVisibility() == View.VISIBLE) {
+                    //                    profilePresenter.getProfileLocationData(selectedDistrictIds,
+                    //                            jurisdictionId,
+                    //                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                    //                            selectedProjects.get(0).getId(), selectedRole.getId());
+                    profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                            "", "", "",
+                            jurisdictionId,
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL, selectedOrg.getId(),
+                            selectedProjects.get(0).getId(), selectedRole.getId());
+                }
+            }
+        } else if (type.equals("Select Taluka")) {
+            selectedTalukas.clear();
+            for (CustomSpinnerObject taluka : customSpinnerTalukas) {
+                if (taluka.isSelected()) {
+                    JurisdictionType selectedTaluka = new JurisdictionType();
+                    selectedTaluka.setName(taluka.getName());
+                    selectedTaluka.setId(taluka.get_id());
+                    selectedTalukas.add(selectedTaluka);
+                }
+            }
+            // clear other dependent fields
+            selectedClusters.clear();
+            customSpinnerClusters.clear();
+            etUserCluster.setText("");
+            selectedPanchayat.clear();
+            customSpinnerPanchayt.clear();
+            etGrampanchayt.setText("");
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedTalukaIds = "";
+            String selectedTalukaNames = "";
+            for (int i = 0; i < selectedTalukas.size(); i++) {
+                JurisdictionType j = selectedTalukas.get(i);
+                if (i == 0) {
+                    selectedTalukaIds = j.getId();
+                    selectedTalukaNames = j.getName();
+                } else {
+                    selectedTalukaIds = selectedTalukaIds + "," + j.getId();
+                    selectedTalukaNames = selectedTalukaNames + "," + j.getName();
+                }
+            }
+            this.selectedTalukaIds = selectedTalukaIds;
+            etUserTaluka.setText(selectedTalukaNames);
+
+            if (selectedTalukas != null && selectedTalukas.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserCluster.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.CLUSTER_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else if (lyGrampanchayt.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, "", "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.GRAM_PANCHAYAT, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    } else if (lyUserVillage.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedTalukaIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select Cluster")) {
+            selectedClusters.clear();
+            for (CustomSpinnerObject cluster : customSpinnerClusters) {
+                if (cluster.isSelected()) {
+                    JurisdictionType selectedCluster = new JurisdictionType();
+                    selectedCluster.setName(cluster.getName());
+                    selectedCluster.setId(cluster.get_id());
+                    selectedClusters.add(selectedCluster);
+                }
+            }
+            // clear other dependent fields
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedClusterIds = "";
+            String selectedClusterNames = "";
+            for (int i = 0; i < selectedClusters.size(); i++) {
+                JurisdictionType j = selectedClusters.get(i);
+                if (i == 0) {
+                    selectedClusterIds = j.getId();
+                    selectedClusterNames = j.getName();
+                } else {
+                    selectedClusterIds = selectedClusterIds + "," + j.getId();
+                    selectedClusterNames = selectedClusterNames + "," + j.getName();
+                }
+            }
+            this.selectedClusterIds = selectedClusterIds;
+            etUserCluster.setText(selectedClusterNames);
+
+            if (selectedClusters != null && selectedClusters.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserVillage.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedClusterIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select Gram-Panchayat")) {
+            selectedPanchayat.clear();
+            for (CustomSpinnerObject panchayt : customSpinnerPanchayt) {
+                if (panchayt.isSelected()) {
+                    JurisdictionType selectedCluster = new JurisdictionType();
+                    selectedCluster.setName(panchayt.getName());
+                    selectedCluster.setId(panchayt.get_id());
+                    selectedPanchayat.add(selectedCluster);
+                }
+            }
+            // clear other dependent fields
+            selectedVillages.clear();
+            customSpinnerVillages.clear();
+            etUserVillage.setText("");
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedPanchayatIds = "";
+            String selectedPanchayatNames = "";
+            for (int i = 0; i < selectedPanchayat.size(); i++) {
+                JurisdictionType j = selectedPanchayat.get(i);
+                if (i == 0) {
+                    selectedPanchayatIds = j.getId();
+                    selectedPanchayatNames = j.getName();
+                } else {
+                    selectedPanchayatIds = selectedPanchayatIds + "," + j.getId();
+                    selectedPanchayatNames = selectedPanchayatNames + "," + j.getName();
+                }
+            }
+            etGrampanchayt.setText(selectedPanchayatNames);
+
+            if (selectedPanchayat != null && selectedPanchayat.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserVillage.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedPanchayatIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, "",
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.VILLAGE_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select Village")) {
+            selectedVillages.clear();
+            for (CustomSpinnerObject cluster : customSpinnerVillages) {
+                if (cluster.isSelected()) {
+                    JurisdictionType selectedVillage = new JurisdictionType();
+                    selectedVillage.setName(cluster.getName());
+                    selectedVillage.setId(cluster.get_id());
+                    selectedVillages.add(selectedVillage);
+                }
+            }
+            // clear other dependent fields
+            selectedSchools.clear();
+            customSpinnerSchools.clear();
+            etUserSchool.setText("");
+            selectedCenter.clear();
+            customSpinnerCenter.clear();
+            etUserCenter.setText("");
+
+            String selectedVillageIds = "";
+            String selectedVillageNames = "";
+            for (int i = 0; i < selectedVillages.size(); i++) {
+                JurisdictionType j = selectedVillages.get(i);
+                if (i == 0) {
+                    selectedVillageIds = j.getId();
+                    selectedVillageNames = j.getName();
+                } else {
+                    selectedVillageIds = selectedVillageIds + "," + j.getId();
+                    selectedVillageNames = selectedVillageNames + "," + j.getName();
+                }
+            }
+            this.selectedVillageIds = selectedVillageIds;
+            etUserVillage.setText(selectedVillageNames);
+
+            if (selectedVillages != null && selectedVillages.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserSchool.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedVillageIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, selectedVillageIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.SCHOOL_LEVEL, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+        } else if (type.equals("Select School")) {
+            selectedSchools.clear();
+            for (CustomSpinnerObject school : customSpinnerSchools) {
+                if (school.isSelected()) {
+                    JurisdictionType selectedSchool = new JurisdictionType();
+                    selectedSchool.setName(school.getName());
+                    selectedSchool.setId(school.get_id());
+                    selectedSchools.add(selectedSchool);
+                }
+            }
+            String selectedSchoolIds = "";
+            String selectedSchoolNames = "";
+            if (selectedSchools != null && selectedSchools.size() > 0) {
+                for (int i = 0; i < selectedSchools.size(); i++) {
+                    JurisdictionType j = selectedSchools.get(i);
+                    if (i == 0) {
+                        selectedSchoolIds = j.getId();
+                        selectedSchoolNames = j.getName();
+                    } else {
+                        selectedSchoolIds = selectedSchoolIds + "," + j.getId();
+                        selectedSchoolNames = selectedSchoolNames + "," + j.getName();
+                    }
+                }
+            }
+            etUserSchool.setText(selectedSchoolNames);
+
+            if (selectedCenter != null && selectedCenter.size() > 0) {
+                if (Util.isConnected(this)) {
+                    if (lyUserCenter.getVisibility() == View.VISIBLE) {
+//                        profilePresenter.getProfileLocationData(selectedSchoolIds,
+//                                jurisdictionId,
+//                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
+//                                selectedProjects.get(0).getId(), selectedRole.getId());
+                        profilePresenter.getProfileLocationDataV3(selectedStateIds, selectedDistrictIds,
+                                selectedTalukaIds, selectedClusterIds, selectedVillageIds,
+                                jurisdictionId,
+                                Constants.JurisdictionLevelName.LEARNING_CENTER, selectedOrg.getId(),
+                                selectedProjects.get(0).getId(), selectedRole.getId());
+                    }
+                }
+            }
+
+        } else if (type.equals("Select Learning Center")) {
+            selectedCenter.clear();
+            for (CustomSpinnerObject center : customSpinnerCenter) {
+                if (center.isSelected()) {
+                    JurisdictionType selectedSchool = new JurisdictionType();
+                    selectedSchool.setName(center.getName());
+                    selectedSchool.setId(center.get_id());
+                    selectedCenter.add(selectedSchool);
+                }
+            }
+            String selectedCenterIds = "";
+            String selectedCenterNames = "";
+            if (selectedCenter != null && selectedCenter.size() > 0) {
+                for (int i = 0; i < selectedCenter.size(); i++) {
+                    JurisdictionType j = selectedCenter.get(i);
+                    if (i == 0) {
+                        selectedCenterIds = j.getId();
+                        selectedCenterNames = j.getName();
+                    } else {
+                        selectedCenterIds = selectedCenterIds + "," + j.getId();
+                        selectedCenterNames = selectedCenterNames + "," + j.getName();
+                    }
+                }
+            }
+            etUserCenter.setText(selectedCenterNames);
+        }
+    }
+
+    private void filterOrg(String searchText) {
+        searchText = searchText.toLowerCase(Locale.getDefault());
+
+        filterOrgList.clear();
+        for (CustomSpinnerObject org : selectionOrgList) {
+            if (org.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
+                filterOrgList.add(org);
+            }
+        }
+        if (selectionOrgList.size() > 0 && filterOrgList.size() == 0) {
+            Util.snackBarToShowMsg(getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "No organization found with given text.",
+                    Snackbar.LENGTH_LONG);
+            selectedOrg = null;
+            selectedOrgName = "";
+            selectionProjectList.clear();
+        }
+        rvOrg.setVisibility(View.VISIBLE);
+        orgDropDownAdapter.notifyDataSetChanged();
+    }
+
+    private void filterProject(String searchText) {
+        if (selectedOrg != null && !TextUtils.isEmpty(selectedOrg.getId())) {
+            searchText = searchText.toLowerCase(Locale.getDefault());
+
+            if (filterProjectList != null) {
+                filterProjectList.clear();
+                for (CustomSpinnerObject project : selectionProjectList) {
+                    if (project.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
+                        filterProjectList.add(project);
+                    }
+                }
+                if (selectionProjectList.size() > 0 && filterProjectList.size() == 0) {
+                    Util.snackBarToShowMsg(getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "No project found with given text.",
+                            Snackbar.LENGTH_LONG);
+                    etUserProject.setText("");
+                    selectedRoles.clear();
+                    selectedRole = null;
+                    isRoleSelected = false;
+                }
+                rvProject.setVisibility(View.VISIBLE);
+                projectDropDownAdapter.notifyDataSetChanged();
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.msg_select_org), Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -260,8 +260,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
 
         for (int i = 0; i < data.get(0).getLocation().size(); i++) {
             addDynamicTextsTitels(data.get(0).getLocation().get(i).getDisplay_name());
-
-            addDynamicTextsValues(data.get(0).getLocation().get(i).getValue().get(0));
+            addDynamicTextsValues(android.text.TextUtils.join(",", data.get(0).getLocation().get(i).getValue()));
         }
 
         if (!TextUtils.isEmpty(data.get(0).getProfile_pic())) {

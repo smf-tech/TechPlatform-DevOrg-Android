@@ -15,7 +15,7 @@
             android:id="@+id/txt_dialog_title"
             android:gravity="center_horizontal"
             android:textColor="@color/medium_grey"
-            android:text="Enter meter reading"
+            android:text="@string/enter_meter_reading"
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensans_bold"
             android:textSize="@dimen/text_size_16"/>

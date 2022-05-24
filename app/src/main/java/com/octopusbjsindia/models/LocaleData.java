@@ -20,6 +20,9 @@ public class LocaleData implements Serializable {
     @SerializedName("hi")
     @Expose
     private String hi;
+    @SerializedName("de")
+    @Expose
+    private String de;
 
     public LocaleData(String defaultValue) {
         this.en = defaultValue;
@@ -55,13 +58,21 @@ public class LocaleData implements Serializable {
         }
     }
 
-//    public void setLocaleValue(String name) {
-//        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
-//            mr = name;
-//        } else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)) {
-//            hi = name;
-//        } else {
-//            en = name;
-//        }
-//    }
+    public String getDe() {
+        return de;
+    }
+
+    public void setDe(String de) {
+        this.de = de;
+    }
+
+    public void setLocaleValue(String name) {
+        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
+            mr = name;
+        } else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)) {
+            hi = name;
+        } else {
+            en = name;
+        }
+    }
 }

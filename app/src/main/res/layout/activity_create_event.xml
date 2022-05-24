@@ -303,7 +303,6 @@
                 style="@style/FormSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_50dp"
-
                 android:layout_below="@+id/tv_add_forms" />
 
             <!--<com.google.android.material.textfield.TextInputLayout-->

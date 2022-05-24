@@ -60,7 +60,6 @@ public class MonthlyAttendanceFragmentPresenter implements MonthlyAttendaceListe
     public void onSuccess(String response) {
         // parse a response and pass to activity
         fragmentWeakReference.get().hideProgressBar();
-        Log.i(TAG,"AttendanceData"+response);
         String ValidString=response.replace("$","");
         try {
             MonthlyAttendance monthlyAttendance=new Gson().fromJson(ValidString, MonthlyAttendance.class);

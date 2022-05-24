@@ -15,7 +15,9 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +29,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.RotateAnimation;
@@ -41,6 +44,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -66,24 +70,31 @@ import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
+import com.octopusbjsindia.view.activities.MissionRahat.OxyMachineMouActivity;
+import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
+import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.fragments.HomeFragment;
 import com.octopusbjsindia.view.fragments.PlannerFragment;
 import com.octopusbjsindia.view.fragments.ReportsFragment;
+import com.octopusbjsindia.view.fragments.SELFragment;
 import com.octopusbjsindia.view.fragments.TMUserAttendanceApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserProfileApprovalFragment;
+import com.octopusbjsindia.view.fragments.smartgirlfragment.MemberListFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -100,9 +111,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static com.octopusbjsindia.utility.Constants.BATCH_CREATED_DATE;
 import static com.octopusbjsindia.utility.Constants.DATE_FORMAT;
-import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.DATE_TIME_FORMAT;
+import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -196,6 +208,8 @@ public class Util {
         Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("Content-Type", "application/json;charset=UTF-8");
+        headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
+//        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
 
         if (isTokenPresent) {
             Login loginObj = getLoginObjectFromPref();
@@ -203,15 +217,42 @@ public class Util {
                     loginObj.getLoginData().getAccessToken() != null) {
                 headers.put(Constants.Login.AUTHORIZATION,
                         "Bearer " + loginObj.getLoginData().getAccessToken());
-                if (getUserObjectFromPref().getOrgId() != null) {
-                    headers.put("orgId", getUserObjectFromPref().getOrgId());
+                if (getUserObjectFromPref() != null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
                 }
-                if (getUserObjectFromPref().getProjectIds() != null) {
-                    headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
-                }
-                if (getUserObjectFromPref().getRoleIds() != null) {
-                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
-                }
+                headers.put("versionName",getAppVersion());
+            }
+        }
+
+        return headers;
+    }
+
+    public static Map<String, String> requestCustomHeader(boolean isTokenPresent, String orgId,
+                                                          String projectId, String roleId) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json, text/plain, */*");
+        headers.put("Content-Type", "application/json;charset=UTF-8");
+//        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
+
+        if (isTokenPresent) {
+            Login loginObj = getLoginObjectFromPref();
+            if (loginObj != null && loginObj.getLoginData() != null &&
+                    loginObj.getLoginData().getAccessToken() != null) {
+                headers.put(Constants.Login.AUTHORIZATION,
+                        "Bearer " + loginObj.getLoginData().getAccessToken());
+                headers.put("orgId", orgId);
+                headers.put("projectId", projectId);
+                headers.put("roleId", roleId);
+                headers.put("versionName", getAppVersion());
+                headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
             }
         }
 
@@ -254,6 +295,21 @@ public class Util {
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.Login.USER_MOBILE_NO, phone);
+        editor.apply();
+    }
+
+    public static String getIsDeviceMatchFromPref() {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences
+                (Constants.App.APP_DATA, Context.MODE_PRIVATE);
+        return preferences.getString(Constants.Login.USER_DEVICE_MATCH, "");
+    }
+
+    public static void saveIsDeviceMatchInPref(String isDeviceMatch) {
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.Login.USER_DEVICE_MATCH, isDeviceMatch);
         editor.apply();
     }
 
@@ -310,7 +366,14 @@ public class Util {
 
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
-        Util.saveLoginObjectInPref("");
+//        Util.saveLoginObjectInPref("");
+        SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
+                Constants.App.APP_DATA, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(Constants.Login.USER_OBJ);
+        editor.remove(Constants.Login.LOGIN_OBJ);
+        editor.apply();
         try {
             Intent startMain = new Intent(activity, LoginActivity.class);
             startMain.addCategory(Intent.CATEGORY_HOME);
@@ -440,6 +503,16 @@ public class Util {
         }
     }
 
+    public static void showToast(Context context, String msg) {
+        if (context != null) {
+            if (msg != null && msg.length() > 0) {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Please try again, something went wrong", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     public static void logger(String tag, String msg) {
         Log.e(tag, "@@@@@2" + msg);
     }
@@ -548,7 +621,7 @@ public class Util {
         return date;
     }
 
-    private static String getFormattedDate(String date, String dateFormat) {
+    public static String getFormattedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
         }
@@ -566,7 +639,24 @@ public class Util {
         }
         return String.format(Locale.getDefault(), "%s", date);
     }
+    public static String getBatchCreatedDate(String date, String dateFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
 
+        try {
+            String strLocale = getLocaleLanguageCode();
+            Locale.setDefault(new Locale(strLocale));
+            DateFormat outputFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(BATCH_CREATED_DATE, Locale.getDefault());
+
+            Date date1 = inputFormat.parse(date);
+            return String.format(Locale.getDefault(), "%s", outputFormat.format(date1));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return String.format(Locale.getDefault(), "%s", date);
+    }
     public static long getCurrentTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.getTime();
@@ -591,7 +681,7 @@ public class Util {
     }
 
     public static String getDateTimeFromTimestamp(long date) {
-        if (date > 0) {
+        {
             try {
                 int length = (int) (Math.log10(date) + 1);
                 if (length == 10) {
@@ -637,6 +727,39 @@ public class Util {
         return "";
     }
 
+    public static String getFormattedDatee(String date, String opFormat, String ipFormat) {
+        if (date == null || date.isEmpty()) {
+            return getFormattedDate(new Date().toString());
+        }
+
+        try {
+            //String strLocale = getLocaleLanguageCode();
+            Locale.setDefault(new Locale("en"));
+            DateFormat outputFormat = new SimpleDateFormat(opFormat, Locale.getDefault());
+            DateFormat inputFormat = new SimpleDateFormat(ipFormat, Locale.getDefault());
+
+            Date date1 = inputFormat.parse(date);
+            return String.format(Locale.getDefault(), "%s", outputFormat.format(date1));
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return String.format(Locale.getDefault(), "%s", date);
+    }
+
+    public static String getPastFutureDateStringFromToday(Integer pastFutureCount, String dateFormat) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, pastFutureCount);
+            Date d = cal.getTime();
+            DateFormat dateFormatting = new SimpleDateFormat(dateFormat);
+            String pastFutureDate = dateFormatting.format(d);
+            return pastFutureDate;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return "";
+    }
+
     public static String getAmPmTimeStringFromTimeString(String time) {
 
         try {
@@ -647,6 +770,22 @@ public class Util {
             e.printStackTrace();
         }
         return "";
+    }
+
+    //for showing fixed date after input month
+    public static void showEndDateWithMonthDifference(OxyMachineMouActivity oxyMachineMouActivity, EditText etEndDate,long selecteddate,int monthCount) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(selecteddate);
+                cal.add(Calendar.MONTH, monthCount);
+                Date d = cal.getTime();
+                DateFormat dateFormatting = new SimpleDateFormat(Constants.FORM_DATE);
+                String dateCalulated = dateFormatting.format(d);
+                etEndDate.setText(dateCalulated);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
     }
 
     private int getDaysBetween(String start, String end) {
@@ -919,7 +1058,6 @@ public class Util {
         }, mYear, mMonth, mDay);
 
         dateDialog.setTitle(context.getString(R.string.select_date_title));
-        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
 
@@ -966,13 +1104,13 @@ public class Util {
         dateDialog.show();
     }
 
-    public static void showDateDialogEnableBeforeDefinedDate(Context context, final EditText editText, String definedDate) {
+    public static void showDateDialogEnableBeforeMax(Context context, final EditText editText, String maxDate) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        long definedDateLong = getDateInLong(definedDate);
+        long definedDateLong = getDateInLong(maxDate);
         DatePickerDialog dateDialog
                 = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
 
@@ -1011,6 +1149,36 @@ public class Util {
         dateDialog.getDatePicker().setMaxDate(maxDateLong);
         dateDialog.show();
     }
+    public static void showDateDialogEnableMAxDateFromSelected(Context context, final EditText editText, String selectedDate)
+    {
+        final Calendar today = Calendar.getInstance();
+        final int mYear = today.get(Calendar.YEAR);
+        final int mMonth = today.get(Calendar.MONTH);
+        final int mDay = today.get(Calendar.DAY_OF_MONTH);
+
+        long minDateLong = getDateInLong(selectedDate);
+        today.setTimeInMillis(minDateLong);
+
+
+        Calendar twoDaysLater = (Calendar) today.clone();
+        twoDaysLater.add(Calendar.DATE, 1);
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(today.getTimeInMillis());
+        dateDialog.getDatePicker().setMaxDate(twoDaysLater.getTimeInMillis());
+
+        dateDialog.show();
+    }
+
 
     public static void showDateDialogEnableAfterMin(Context context, final EditText editText, String minDate) {
         final Calendar c = Calendar.getInstance();
@@ -1031,6 +1199,29 @@ public class Util {
 
         dateDialog.setTitle(context.getString(R.string.select_date_title));
         dateDialog.getDatePicker().setMinDate(minDateLong);
+        dateDialog.show();
+    }
+
+    public static void showDateDialogEnableBetweenMinToday(Context context, final EditText editText, String minDate) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        long minDateLong = getDateInLong(minDate);
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date);
+        }, mYear, mMonth, mDay);
+
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.getDatePicker().setMinDate(minDateLong);
+        dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
     }
 
@@ -1597,29 +1788,24 @@ public class Util {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
+                    PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
+                    preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,false);
                     String res = response.toString();
-                    Log.d(TAG, "update firebase id Requests - Resp: " + res);
-              /*  User user = new Gson().fromJson(res, User.class);
-              //  listener.TMUserProfileApprovalRequestsFetched(res);
-                if (res != null && user.getUserInfo() != null) {
-                    Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
-                }*/
-
+                    Log.d(TAG, "updateFBTokan - Resp: " + res);
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                //listener.onFailureListener(e.getMessage());
             }
         };
 
-        Response.ErrorListener pendingRequestsErrorListener = error ->
-        {
-            //   listener.onErrorListener(error);
-            Log.d(TAG, "update firebase id Requests - Resp error: " + error.getMessage());
+        Response.ErrorListener pendingRequestsErrorListener = error -> {
+            Log.d(TAG, "updateFBTokan - Resp error: " + error.getMessage());
         };
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.PUT_UPDATE_FIREBASEID_TO_SERVER;
+
+        Log.d(TAG, "updateFBTokan - url: " + getPendingRequestsUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
@@ -1635,5 +1821,196 @@ public class Util {
         gsonRequest.setShouldCache(false);
         gsonRequest.setBodyParams(requestObject);
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
+   //download and save project specific logo
+   public static  void downloadAndLoadIcon(Context context){
+       /*SharedPreferences preferences;
+       SharedPreferences.Editor editor;
+       preferences = Platform.getInstance().getSharedPreferences(
+               "AppData", Context.MODE_PRIVATE);
+       editor = Platform.getInstance().getSharedPreferences(
+               "AppData", Context.MODE_PRIVATE).edit();
+
+       String message = preferences.getString(Constants.OperatorModule.APP_CONFIG_RESPONSE,"");
+       if (!TextUtils.isEmpty(message)) {
+           AppConfigResponseModel appConfigResponseModel
+                   = new Gson().fromJson(message, AppConfigResponseModel.class);
+
+           UserInfo info = Util.getUserObjectFromPref();
+
+           if (info.getCurrent_project_logo()!=null && !TextUtils.isEmpty(info.getCurrent_project_logo())) {
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,info.getCurrent_project_logo());
+               editor.apply();
+               *//*Glide.with(context)
+                       .asBitmap()
+                       .load(info.getCurrent_project_logo())
+                       .into(new SimpleTarget<Bitmap>() {
+                           @Override
+                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition transition) {
+                               String logoPath = saveImage(resource, editor, preferences, context);
+                           }
+                       });*//*
+           }else {
+               editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,"");
+               editor.apply();
+           }
+       }*/
+   }
+    private static String saveImage(Bitmap image, SharedPreferences.Editor editor, SharedPreferences preferences, Context context) {
+        String currentPhotoPath = null;
+        File storageDir = getImageFile(); // 1
+        currentPhotoPath = storageDir.getPath();
+        boolean success = true;
+
+        if (success) {
+            try {
+                OutputStream fOut = new FileOutputStream(storageDir);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Add the image to the system gallery
+            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID.concat(".file_provider"), storageDir);
+            /*editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
+            editor.apply();
+
+            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");*/
+            /*if (path.equalsIgnoreCase("")){
+
+            }else {
+                img_logo.setImageURI(null);
+                img_logo.setImageURI(Uri.parse(path));
+            }*/
+
+        }
+        return currentPhotoPath;
+    }
+    //-------
+    private static File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + "logo" + ".png");
+
+        return file;
+    }
+
+    public static byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public static String showEnterEmailDialog(final Activity context, int pos, Fragment fragment) {
+        Dialog dialog;
+        Button btn_post_feedback, btn_pre_feedback,btn_submit;
+        EditText edt_reason;
+        Activity activity = context;
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_enter_email_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        edt_reason = dialog.findViewById(R.id.edt_reason);
+
+        btn_pre_feedback = dialog.findViewById(R.id.btn_pre_feedback);
+        btn_post_feedback = dialog.findViewById(R.id.btn_post_feedback);
+        btn_submit = dialog.findViewById(R.id.btn_submit);
+
+        if (pos == 1){
+            btn_submit.setVisibility(View.VISIBLE);
+            btn_pre_feedback.setVisibility(View.GONE);
+            btn_post_feedback.setVisibility(View.GONE);
+        } else if(pos == 2) {
+            btn_submit.setVisibility(View.VISIBLE);
+            btn_pre_feedback.setVisibility(View.GONE);
+            btn_post_feedback.setVisibility(View.GONE);
+            btn_submit.setText("Request Certificate");
+        } else {
+            btn_submit.setVisibility(View.GONE);
+            btn_pre_feedback.setVisibility(View.VISIBLE);
+            btn_post_feedback.setVisibility(View.VISIBLE);
+        }
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString().trim();
+                if (!TextUtils.isEmpty(strEmailId)
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId).matches()) {
+                    showToast(context,"Please enter valid email.");
+                } else {
+                    if (context instanceof SmartGirlWorkshopListActivity){
+                        ((SmartGirlWorkshopListActivity) context).onReceiveEmailId(strEmailId, pos);
+                    }
+                    else if (context instanceof TrainerBatchListActivity){
+                        ((TrainerBatchListActivity) context).onReceiveEmailId(strEmailId, pos);
+                    }
+                    else if (fragment!= null && fragment instanceof SELFragment){
+                        ((SELFragment)fragment).onReceiveEmailId(strEmailId);
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        btn_pre_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    showToast(context,"Please enter valid email.");
+                } else {
+                    if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
+                    }else if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
+                    }
+
+                    dialog.dismiss();
+                }
+            }
+
+        });
+
+        btn_post_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String strEmailId = edt_reason.getText().toString();
+                if (!TextUtils.isEmpty(strEmailId.toString().trim())
+                        && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
+                    showToast(context,"Please enter valid email.");
+                }  else {
+                    if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
+                    }else if (fragment instanceof MemberListFragment){
+                        ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
+                    }
+
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+
+        return "";
     }
 }

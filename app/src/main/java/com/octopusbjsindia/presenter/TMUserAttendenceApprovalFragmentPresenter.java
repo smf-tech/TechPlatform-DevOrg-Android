@@ -100,4 +100,9 @@ public class TMUserAttendenceApprovalFragmentPresenter implements TMUserProfileA
 
     //    fragmentWeakReference.get().hideProgressBar();
     }
+
+    @Override
+    public void onSuccessListener(String response, String type) {
+
+    }
 }

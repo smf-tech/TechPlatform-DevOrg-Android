@@ -1,1636 +1,2069 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="@dimen/dimen_16dp"
-        android:layout_height="match_parent">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <View
-                android:layout_width="match_parent"
-                android:background="?attr/colorPrimary"
-                android:layout_height="@dimen/standard_180"/>
-            
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_16dp"
-        android:layout_marginEnd="@dimen/dimen_16dp"
-        android:layout_marginStart="@dimen/dimen_16dp"
-        android:layout_height="match_parent">
-
-    <!--Profiles pics-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_profile_images"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_02dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="@dimen/dimen_190dp"-->
-            <!--android:src="@drawable/sachin" />-->
-
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_top"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_300dp">
-
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/circle_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_gravity="bottom" />
-
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/iv_add_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_share" />
-
-            <TextView
-                android:layout_width="@dimen/dimen_75dp"
-                android:text="Approved"
-                android:id="@+id/tv_approval_status"
-                android:layout_marginTop="@dimen/dimen_25dp"
-                android:background="@drawable/ic_publish_ribbon"
-                android:paddingEnd="@dimen/dimen_10dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="start"
-                android:textColor="@color/white"
-                android:fontFamily="@font/opensans_bold"
-                android:textSize="@dimen/text_size_10"
-                android:paddingStart="@dimen/dimen_05dp"
-                android:layout_height="@dimen/dimen_25dp" />
-
-            <TextView
-                android:layout_width="@dimen/dimen_75dp"
-                android:layout_height="@dimen/dimen_25dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:text="Premium"
-                android:gravity="center_vertical"
-                android:id="@+id/tv_premium"
-                android:layout_marginTop="@dimen/dimen_25dp"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                android:fontFamily="@font/opensans_bold"
-                android:textSize="@dimen/text_size_10"
-                android:background="@drawable/ic_publish_ribbon_right"
-                android:paddingStart="@dimen/dimen_16dp"
-                />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Personal details-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_personal_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cv_profile_images"
-        android:layout_margin="@dimen/dimen_05dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_personal_details_lebal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="Personal Details" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_personal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_arrow_right" />
-
-
-            <RelativeLayout
-                android:id="@+id/ly_personal_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_personal_details_lebal"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/line1"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01dp"
-                    android:layout_marginTop="@dimen/dimen_03dp"
-                    android:layout_marginBottom="@dimen/dimen_03dp"
-                    android:background="@color/light_grey" />
-
-                <!--Name / Address-->
-                <LinearLayout
-                    android:id="@+id/ly_name_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line1"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_name_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Name" />
-
-                        <TextView
-                            android:id="@+id/tv_name"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_name_lable"
-                            android:text="Sachin Kakade Kakade" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <!--    <TextView
-                                android:id="@+id/tv_Address_lable"
-                                style="@style/StyleTextViewLable"
-                                android:text="Address" />
-
-                            <TextView
-                                android:id="@+id/tv_Address"
-                                style="@style/StyleTextViewValue"
-                                android:layout_below="@+id/tv_Address_lable"
-                                android:text="Level 8, Muttha Chambers II, Senapati Bapat Road, Pune, Maharashtra 411016" />
-                        -->
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--DOB / birt time-->
-                <LinearLayout
-                    android:id="@+id/ly_dob_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_name_address"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_barth_date_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Birth Date" />
-
-                        <TextView
-                            android:id="@+id/tv_birth_date"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_barth_date_lable"
-                            android:text="22/12/1999" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_birth_time_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Birth Time" />
-
-                        <TextView
-                            android:id="@+id/tv_birth_time"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_birth_time_lable"
-                            android:text="06:59 am" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--age / berth place-->
-                <LinearLayout
-                    android:id="@+id/ly_age_birth_place"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_dob_time"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_age_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Age" />
-
-                        <TextView
-                            android:id="@+id/tv_age"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_age_lable"
-                            android:text="29" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_birth_place_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Birth Place" />
-
-                        <TextView
-                            android:id="@+id/tv_birth_place"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_birth_place_lable"
-                            android:text="Wagholi,Pune" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--blood grup / Marital Status -->
-                <LinearLayout
-                    android:id="@+id/ly_blood_maerital_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_age_birth_place"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_blood_group_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Blood Group" />
-
-                        <TextView
-                            android:id="@+id/tv_blood_group"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_blood_group_lable"
-                            android:text="O +ve" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_marital_status_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Marital Status" />
-
-                        <TextView
-                            android:id="@+id/tv_marital_status"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_marital_status_lable"
-                            android:text="Never Married" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--height / weight-->
-                <LinearLayout
-                    android:id="@+id/ly_height_weight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_blood_maerital_status"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_height_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Height" />
-
-                        <TextView
-                            android:id="@+id/tv_height"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_height_lable"
-                            android:text="5.8''" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_weight_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Weight" />
-
-                        <TextView
-                            android:id="@+id/tv_weight_tile"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_weight_lable"
-                            android:text="75 kg" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Complexion-Skin Tone / Manglik -->
-                <LinearLayout
-                    android:id="@+id/ly_skin_tone_manglik"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_height_weight"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_skin_tone_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Complexion / Skin Tone" />
-
-                        <TextView
-                            android:id="@+id/tv_skin_tone"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_skin_tone_lable"
-                            android:text="Fair" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_manglik_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Manglik" />
-
-                        <TextView
-                            android:id="@+id/tv_manglik"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_manglik_lable"
-                            android:text="No" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Sampraday / disability -->
-                <LinearLayout
-                    android:id="@+id/ly_sampraday_disability"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_skin_tone_manglik"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sampraday_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Sampraday" />
-
-                        <TextView
-                            android:id="@+id/tv_tv_sampraday"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sampraday_lable"
-                            android:text="Shwetamber" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_disability_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Disability" />
-
-                        <TextView
-                            android:id="@+id/tv_disability"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_disability_lable"
-                            android:text="No" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Smoke / Drink -->
-                <LinearLayout
-                    android:id="@+id/ly_smoke_drink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_sampraday_disability"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_smoke_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Smoke" />
-
-                        <TextView
-                            android:id="@+id/tv_smoke"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_smoke_lable"
-                            android:text="No" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_drink_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Drink" />
-
-                        <TextView
-                            android:id="@+id/tv_drink"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_drink_lable"
-                            android:text="No" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Education and Occupation Details-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_education_occupation_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cv_personal_details"
-        android:layout_margin="@dimen/dimen_05dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_education_occupation_details_lebal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="Education and Occupation Details" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_education_occupation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_arrow_right" />
-
-
-            <RelativeLayout
-                android:id="@+id/ly_education_occupation_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_education_occupation_details_lebal"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/line2"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01dp"
-                    android:layout_marginTop="@dimen/dimen_03dp"
-                    android:layout_marginBottom="@dimen/dimen_03dp"
-                    android:background="@color/light_grey" />
-
-                <!--education / occupation-->
-                <LinearLayout
-                    android:id="@+id/ly_education_occupation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line2"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_education_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Education" />
-
-                        <TextView
-                            android:id="@+id/tv_education"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_education_lable"
-                            android:text="BE computer" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_occupation_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Occupation" />
-
-                        <TextView
-                            android:id="@+id/tv_occupation"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_occupation_lable"
-                            android:text="Private Job" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Company / Business-Job Descrioption-->
-                <LinearLayout
-                    android:id="@+id/ly_company_business_job"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_education_occupation"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_company_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Company Name/Employer Name" />
-
-                        <TextView
-                            android:id="@+id/tv_company"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_company_lable"
-                            android:text="Shantilal Muttha Foundation" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_business_job_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Business Descrioption / Work Description / Job Profile" />
-
-                        <TextView
-                            android:id="@+id/tv_business_job"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_business_job_lable"
-                            android:text="Software Developer" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--blood grup / Marital Status -->
-                <LinearLayout
-                    android:id="@+id/ly_annual_income"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_company_business_job"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_annual_income_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Annual Income" />
-
-                        <TextView
-                            android:id="@+id/tv_annual_income"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_annual_income_lable"
-                            android:text="4 l/a" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <!-- <TextView
-                             android:id="@+id/tv_marital_status_lable"
-                             style="@style/StyleTextViewLable"
-                             android:text="Marital Status"/>
-                         <TextView
-                             android:id="@+id/tv_marital_status"
-                             android:layout_below="@+id/tv_marital_status_lable"
-                             style="@style/StyleTextViewValue"
-                             android:text="Never Married"/>-->
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Family Details-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_family_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cv_education_occupation_details"
-        android:layout_margin="@dimen/dimen_05dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_family_details_lebal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="Family Details" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_family"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_arrow_right" />
-
-
-            <RelativeLayout
-                android:id="@+id/ly_family_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_family_details_lebal"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/line3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01dp"
-                    android:layout_marginTop="@dimen/dimen_03dp"
-                    android:layout_marginBottom="@dimen/dimen_03dp"
-                    android:background="@color/light_grey" />
-
-                <!--Family Type-->
-                <LinearLayout
-                    android:id="@+id/ly_family_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line3"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_family_type_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Family Type" />
-
-                        <TextView
-                            android:id="@+id/tv_family_type"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_family_type_lable"
-                            android:text="Joint Family" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_occ lable"-->
-                        <!--style="@style/StyleTextViewLable"-->
-                        <!--android:text="Address" />-->
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_occ ion"-->
-                        <!--style="@style/StyleTextViewValue"-->
-                        <!--android:layout_below="@+id/tv_occupation_lable"-->
-                        <!--android:text="Private Job" />-->
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Sakha_Gotra 1 / Sakha_Gotra 2-->
-                <LinearLayout
-                    android:id="@+id/ly_sakha_gotra_1_gotra_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_family_type"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_1_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra 1 (Self)" />
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_1"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sakha_gotra_1_lable"
-                            android:text="Bansali" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_2_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra (Mamaji)" />
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_2"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sakha_gotra_2_lable"
-                            android:text="Bansali" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Sakha_Gotra 3 / Sakha_Gotra 4-->
-                <LinearLayout
-                    android:id="@+id/ly_sakha_gotra_3_gotra_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_sakha_gotra_1_gotra_2"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_3_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra (Dadiji )" />
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_3"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sakha_gotra_3_lable"
-                            android:text="Bansali" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_4_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Sakha/Gotra (Naniji )" />
-
-                        <TextView
-                            android:id="@+id/tv_sakha_gotra_4"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sakha_gotra_4_lable"
-                            android:text="Bansali" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Father's Full Name / Occupation -->
-                <LinearLayout
-                    android:id="@+id/ly_father_fullname_occupation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_sakha_gotra_3_gotra_4"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_father_fullname_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Father's Full Name" />
-
-                        <TextView
-                            android:id="@+id/tv_father_fullname"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_father_fullname_lable"
-                            android:text="Abcdef ghijklmn Opqrstuv" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_father_occupation_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Father's Occupation" />
-
-                        <TextView
-                            android:id="@+id/tv_father_occupation"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_father_occupation_lable"
-                            android:text="Business" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Mother's Full Name / Occupation -->
-                <LinearLayout
-                    android:id="@+id/ly_mother_fullname_occupation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_father_fullname_occupation"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_mother_fullname_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Mother's Full Name" />
-
-                        <TextView
-                            android:id="@+id/tv_mother_fullname"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_mother_fullname_lable"
-                            android:text="Abcdef ghijklmn Opqrstuv" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_mother_occupation_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Mother's Occupation" />
-
-                        <TextView
-                            android:id="@+id/tv_mother_occupation"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_mother_occupation_lable"
-                            android:text="Business" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Family Income / -->
-                <LinearLayout
-                    android:id="@+id/ly_family_income"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_mother_fullname_occupation"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_family_income_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Family Income" />
-
-                        <TextView
-                            android:id="@+id/tv_family_income"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_family_income_lable"
-                            android:text="8 l/a" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_mother_occupation_lable"-->
-                        <!--style="@style/StyleTextViewLable"-->
-                        <!--android:text="Mother's Occupation" />-->
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_mother_occupation"-->
-                        <!--style="@style/StyleTextViewValue"-->
-                        <!--android:layout_below="@+id/tv_mother_occupation_lable"-->
-                        <!--android:text="Business" />-->
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Brothers / Sisters-->
-                <LinearLayout
-                    android:id="@+id/ly_brothers_sisters"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_family_income"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_brothers_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Number of Brothers" />
-
-                        <TextView
-                            android:id="@+id/tv_brothers_fullname"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_brothers_lable"
-                            android:text="2" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_sisters_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Number of sisters" />
-
-                        <TextView
-                            android:id="@+id/tv_sisters"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_sisters_lable"
-                            android:text="2" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Residential Details-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_residential_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cv_family_details"
-        android:layout_margin="@dimen/dimen_05dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_residential_details_lebal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="Residential Details" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_residential"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_arrow_right" />
-
-
-            <RelativeLayout
-                android:id="@+id/ly_residential_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_residential_details_lebal"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/line4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01dp"
-                    android:layout_marginTop="@dimen/dimen_03dp"
-                    android:layout_marginBottom="@dimen/dimen_03dp"
-                    android:background="@color/light_grey" />
-
-                <!--Address /town-city -->
-                <LinearLayout
-                    android:id="@+id/ly_address_town_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line4"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_address_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Address" />
-
-                        <TextView
-                            android:id="@+id/tv_address"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_address_lable"
-                            android:text="Level 8, Muttha Chambers II, Senapati Bapat Road" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_town_city_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Town/City" />
-
-                        <TextView
-                            android:id="@+id/tv_town_city"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_town_city_lable"
-                            android:text="Pune" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--State / Country-->
-                <LinearLayout
-                    android:id="@+id/ly_state_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_address_town_city"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_state_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="State" />
-
-                        <TextView
-                            android:id="@+id/tv_state"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_state_lable"
-                            android:text="Maharashtra" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_country_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Country" />
-
-                        <TextView
-                            android:id="@+id/tv_country"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_country_lable"
-                            android:text="India" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--primary / secondary mobile-->
-                <LinearLayout
-                    android:id="@+id/ly_primary_secondary_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_state_country"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_primary_mobile_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Primary Mobile number" />
-
-                        <TextView
-                            android:id="@+id/tv_primary_mobile"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_primary_mobile_lable"
-                            android:text="9846352646" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_secondary_mobile_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Secondary Mobile number" />
-
-                        <TextView
-                            android:id="@+id/tv_secondary_mobile"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_secondary_mobile_lable"
-                            android:text="9846352646" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--peimary Email Address-->
-                <LinearLayout
-                    android:id="@+id/ly_primary_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_primary_secondary_mobile"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_primary_email_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Primary Email" />
-
-                        <TextView
-                            android:id="@+id/tv_primary_email"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_primary_email_lable"
-                            android:text="asdffgh@gmail.com" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <!--  <TextView
-                              android:id="@+id/tv_secondary_email_lable"
-                              style="@style/StyleTextViewLable"
-                              android:text="Secondary Mobile number" />
-
-                          <TextView
-                              android:id="@+id/tv_secondary_email"
-                              style="@style/StyleTextViewValue"
-                              android:layout_below="@+id/tv_secondary_email_lable"
-                              android:text="9846352646" />
-                        -->
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Other Details-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_other_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cv_residential_details"
-        android:layout_margin="@dimen/dimen_05dp"
-        app:cardCornerRadius="@dimen/dimen_08dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_other_details_lebal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="Other Details" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_arrow_right" />
-
-
-            <RelativeLayout
-                android:id="@+id/ly_other_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_other_details_lebal"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:visibility="visible">
-
-                <View
-                    android:id="@+id/line5"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01dp"
-                    android:layout_marginTop="@dimen/dimen_03dp"
-                    android:layout_marginBottom="@dimen/dimen_03dp"
-                    android:background="@color/light_grey" />
-
-                <!--about me / Expectations -->
-                <LinearLayout
-                    android:id="@+id/ly_about_me_expectations"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line5"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_about_me_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="About Me" />
-
-                        <TextView
-                            android:id="@+id/tv_about_me"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_about_me_lable"
-                            android:text="akjsd jashf kjasfh ajshf ajshfl ajshf kjajsh fnlaksh " />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_expectations_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Expectations From Life Partner" />
-
-                        <TextView
-                            android:id="@+id/tv_expectations"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_expectations_lable"
-                            android:text="akjsd jashf kjasfh ajshf ajshfl ajshf kjajsh fnlaksh " />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Activity & Achievements / other-->
-                <LinearLayout
-                    android:id="@+id/ly_activity_achievements_other"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_about_me_expectations"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_activity_chievements_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Activity and Achievements" />
-
-                        <TextView
-                            android:id="@+id/tv_activity_chievements"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_activity_chievements_lable"
-                            android:text="jahf kakjhf ajhf kakjshf ajsshf kjj ;ddvh ;jjdh" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_other_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Other Remarks" />
-
-                        <TextView
-                            android:id="@+id/tv_other"
-                            style="@style/StyleTextViewValue"
-                            android:layout_below="@+id/tv_other_lable"
-                            android:text="jahf kakjhf ajhf kakjshf ajsshf kjj ;ddvh ;jjdh" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!--Aadhar / Education Certificates-->
-                <LinearLayout
-                    android:id="@+id/ly_aadhar_education_certificates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ly_activity_achievements_other"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_aadhar_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Aadhar Card" />
-
-                        <ImageView
-                            android:id="@+id/iv_aadhar"
-                            android:layout_below="@+id/tv_aadhar_lable"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_200dp"
-                            android:src="@mipmap/app_logo"
-                            />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_education_certificates_lable"
-                            style="@style/StyleTextViewLable"
-                            android:text="Education Certificates" />
-
-                        <ImageView
-                            android:id="@+id/iv_education_certificates"
-                            android:layout_below="@+id/tv_education_certificates_lable"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_200dp"
-                            android:src="@mipmap/app_logo"
-                            />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:background="@color/white"
-            android:layout_below="@+id/cv_other_details"
-
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_interview_done"
-                style="@style/AppStyleButton"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_weight="1"
-                android:text="Interview Completed"
-                android:textColor="@color/white"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_mark_attendance"
-                style="@style/AppStyleButton"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_weight="1"
-                android:text="Mark Attendance"
-                android:textColor="@color/white"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-        </FrameLayout>
-    </ScrollView>
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
     <include
         android:id="@+id/profile_toolbar"
         layout="@layout/app_toolbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginBottom="@dimen/dimen_16dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/standard_180"
+                android:background="?attr/colorPrimary" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen_16dp"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginEnd="@dimen/dimen_16dp"
+                android:layout_marginBottom="@dimen/dimen_16dp">
+
+                <!--Profiles pics-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_profile_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_02dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="@dimen/dimen_190dp"-->
+                        <!--android:src="@drawable/sachin"/>
+                         xmlns:android="http://schemas.android.com/apk/res/android"-->
+
+                        <RelativeLayout
+                            android:id="@+id/frame_top"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_300dp">
+
+
+                            <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/viewpager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/gradient_sample"
+                                android:orientation="vertical"
+                                android:layout_alignParentBottom="true">
+
+                                <me.relex.circleindicator.CircleIndicator
+                                    android:id="@+id/circle_indicator"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center" />
+
+                                <TextView
+                                    android:id="@+id/tv_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:fontFamily="@font/opensans_regular"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/opensans_regular"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginBottom="@dimen/dimen_05dp"
+                                    android:text="Captain"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_12"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_add_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_share"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/ly_unique_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:background="@drawable/bg_circular_tsp_black_40"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_02dp">
+
+                            <TextView
+                                android:id="@+id/tv_unique_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:text="BJS-XXX"
+                                android:textSize="@dimen/text_size_11"
+                                android:textColor="@color/white"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ly_premium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:background="@drawable/bg_circular_tsp_black_40"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/ly_unique_id"
+                            android:padding="@dimen/dimen_02dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:src="@drawable/ic_premium" />
+
+                            <TextView
+                                android:id="@+id/tv_premium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:text="Premium"
+                                android:textSize="@dimen/text_size_11"
+                                android:textColor="@color/white"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_alignParentEnd="true"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ly_meet_verified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_meet_verified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:id="@+id/iv_meet_approved"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_varified" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_profile_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_profile_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="Profile Verified"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_profile" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_education_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_education_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="Education Verified"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_eduucation" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_id_varified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:background="@drawable/bg_circular_tsp_black_40"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_02dp"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_id_varified"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dimen_10dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:text="ID Verified"
+                                    android:textSize="@dimen/text_size_11"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/dimen_05dp"
+                                    android:src="@drawable/ic_id" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/ly_approve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_profile_images"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_approve"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Approve"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_reject"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Reject"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_verify_profile"
+                        style="@style/AppStyleButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:visibility="gone"
+                        android:text="Verify profile"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white" />
+                </LinearLayout>
+
+                <!--Personal details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_personal_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ly_approve"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_personal_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Personal Details" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_personal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_personal_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_personal_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line1"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <!--Name / Address-->
+                            <LinearLayout
+                                android:id="@+id/ly_name_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/line1"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_name_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Name" />
+
+                                    <TextView
+                                        android:id="@+id/tv_name"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_name_lable" />
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_gender_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Gender" />
+
+                                    <TextView
+                                        android:id="@+id/tv_gender"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_gender_lable"
+                                        android:text="" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <!--DOB / birt time-->
+                            <LinearLayout
+                                android:id="@+id/ly_dob_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_name_address"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_barth_date_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Birth Date" />
+
+                                    <TextView
+                                        android:id="@+id/tv_birth_date"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_barth_date_lable"
+                                        android:text="22/12/1999" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_birth_time_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Birth Time" />
+
+                                    <TextView
+                                        android:id="@+id/tv_birth_time"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_birth_time_lable"
+                                        android:text="06:59 am" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--age / berth place-->
+                            <LinearLayout
+                                android:id="@+id/ly_age_birth_place"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_dob_time"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_age_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Age" />
+
+                                    <TextView
+                                        android:id="@+id/tv_age"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_age_lable"
+                                        android:text="29" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_birth_place_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Birth Place" />
+
+                                    <TextView
+                                        android:id="@+id/tv_birth_place"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_birth_place_lable"
+                                        android:text="Wagholi,Pune" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--blood grup / Marital Status -->
+                            <LinearLayout
+                                android:id="@+id/ly_blood_maerital_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_age_birth_place"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_blood_group_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Blood Group" />
+
+                                    <TextView
+                                        android:id="@+id/tv_blood_group"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_blood_group_lable"
+                                        android:text="O +ve" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_marital_status_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Marital Status" />
+
+                                    <TextView
+                                        android:id="@+id/tv_marital_status"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_marital_status_lable"
+                                        android:text="Never Married" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ly_children_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_blood_maerital_status"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_children_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/tv_children_count_label"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Children" />
+
+                                    <TextView
+                                        android:id="@+id/tv_children_count"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_children_count_label" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_legally_divorce"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
+
+                                    <TextView
+                                        android:id="@+id/tv_legal_divorce_label"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Legally divorced?" />
+
+                                    <TextView
+                                        android:id="@+id/tv_legal_divorce"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_legal_divorce_label" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+                            <!--height / weight-->
+                            <LinearLayout
+                                android:id="@+id/ly_height_weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_children_info"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_height_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Height" />
+
+                                    <TextView
+                                        android:id="@+id/tv_height"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_height_lable"
+                                        android:text="5.8''" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_weight_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Weight" />
+
+                                    <TextView
+                                        android:id="@+id/tv_weight_tile"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_weight_lable"
+                                        android:text="75 kg" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Complexion-Skin Tone / Manglik -->
+                            <LinearLayout
+                                android:id="@+id/ly_skin_tone_manglik"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_height_weight"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_skin_tone_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Complexion / Skin Tone" />
+
+                                    <TextView
+                                        android:id="@+id/tv_skin_tone"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_skin_tone_lable"
+                                        android:text="Fair" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_manglik_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Manglik" />
+
+                                    <TextView
+                                        android:id="@+id/tv_manglik"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_manglik_lable"
+                                        android:text="No" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Sampraday / disability -->
+                            <LinearLayout
+                                android:id="@+id/ly_sampraday_disability"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_skin_tone_manglik"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sampraday_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sampraday" />
+
+                                    <TextView
+                                        android:id="@+id/tv_tv_sampraday"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sampraday_lable"
+                                        android:text="Shwetamber" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_subcaste_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sub caste" />
+
+                                    <TextView
+                                        android:id="@+id/tv_subcaste"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_subcaste_lable" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Smoke / Drink -->
+                            <LinearLayout
+                                android:id="@+id/ly_smoke_drink"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_sampraday_disability"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_smoke_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Smoke" />
+
+                                    <TextView
+                                        android:id="@+id/tv_smoke"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_smoke_lable"
+                                        android:text="No" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_drink_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Drink" />
+
+                                    <TextView
+                                        android:id="@+id/tv_drink"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_drink_lable"
+                                        android:text="No" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                            <!--Sampraday / disability -->
+                            <LinearLayout
+                                android:id="@+id/ly_disability"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_smoke_drink"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_disability_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Disability" />
+
+                                    <TextView
+                                        android:id="@+id/tv_disability"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_disability_lable"
+                                        android:text="No" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Education and Occupation Details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_education_occupation_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_personal_details"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_education_occupation_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Education and Occupation Details" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_education_occupation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_education_occupation_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_education_occupation_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line2"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <!--education / occupation-->
+                            <LinearLayout
+                                android:id="@+id/ly_education_occupation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/line2"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:visibility="visible"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_education_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Education Level" />
+
+                                    <TextView
+                                        android:id="@+id/tv_education"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_education_lable"
+                                        android:text="BE computer" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_occupation_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Occupation" />
+
+                                    <TextView
+                                        android:id="@+id/tv_occupation"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_occupation_lable"
+                                        android:text="Private Job" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Company / Business-Job Descrioption-->
+                            <LinearLayout
+                                android:id="@+id/ly_company_business_job"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_education_occupation"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_company_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Company Name/Employer Name" />
+
+                                    <TextView
+                                        android:id="@+id/tv_company"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_company_lable"
+                                        android:text="Shantilal Muttha Foundation" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_business_job_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Business Descrioption / Work Description / Job Profile" />
+
+                                    <TextView
+                                        android:id="@+id/tv_business_job"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_business_job_lable"
+                                        android:text="Software Developer" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--blood grup / Marital Status -->
+                            <LinearLayout
+                                android:id="@+id/ly_annual_income"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_company_business_job"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_annual_income_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Annual Income" />
+
+                                    <TextView
+                                        android:id="@+id/tv_annual_income"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_annual_income_lable"
+                                        android:text="4 l/a" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                     <TextView
+                                         android:id="@+id/tv_degree_lable"
+                                         style="@style/StyleTextViewLable"
+                                         android:text="Qualification" />
+                                     <TextView
+                                         android:id="@+id/tv_degree"
+                                         android:layout_below="@+id/tv_degree_lable"
+                                         style="@style/StyleTextViewValue"
+                                         android:text=""/>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Family Details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_family_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_education_occupation_details"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_family_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Family Details" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_family"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_family_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_family_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line3"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <!--Family Type-->
+                            <LinearLayout
+                                android:id="@+id/ly_family_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/line3"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_family_type_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Family Type" />
+
+                                    <TextView
+                                        android:id="@+id/tv_family_type"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_family_type_lable"
+                                        android:text="Joint Family" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <!--<TextView-->
+                                    <!--android:id="@+id/tv_occ lable"-->
+                                    <!--style="@style/StyleTextViewLable"-->
+                                    <!--android:text="Address" />-->
+
+                                    <!--<TextView-->
+                                    <!--android:id="@+id/tv_occ ion"-->
+                                    <!--style="@style/StyleTextViewValue"-->
+                                    <!--android:layout_below="@+id/tv_occupation_lable"-->
+                                    <!--android:text="Private Job" />-->
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Sakha_Gotra 1 / Sakha_Gotra 2-->
+                            <LinearLayout
+                                android:id="@+id/ly_sakha_gotra_1_gotra_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_family_type"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_1_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sakha/Gotra 1 (Self)" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_1"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sakha_gotra_1_lable"
+                                        android:text="Bansali" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_2_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sakha/Gotra (Mamaji)" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_2"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sakha_gotra_2_lable"
+                                        android:text="Bansali" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Sakha_Gotra 3 / Sakha_Gotra 4-->
+                            <LinearLayout
+                                android:id="@+id/ly_sakha_gotra_3_gotra_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_sakha_gotra_1_gotra_2"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_3_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sakha/Gotra (Dadiji )" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_3"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sakha_gotra_3_lable"
+                                        android:text="Bansali" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_4_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Sakha/Gotra (Naniji )" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sakha_gotra_4"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sakha_gotra_4_lable"
+                                        android:text="Bansali" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Father's Full Name / Occupation -->
+                            <LinearLayout
+                                android:id="@+id/ly_father_fullname_occupation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_sakha_gotra_3_gotra_4"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_father_fullname_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Father's Full Name" />
+
+                                    <TextView
+                                        android:id="@+id/tv_father_fullname"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_father_fullname_lable"
+                                        android:text="Abcdef ghijklmn Opqrstuv" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_father_occupation_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Father's Occupation" />
+
+                                    <TextView
+                                        android:id="@+id/tv_father_occupation"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_father_occupation_lable"
+                                        android:text="Business" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Mother's Full Name / Occupation -->
+                            <LinearLayout
+                                android:id="@+id/ly_mother_fullname_occupation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_father_fullname_occupation"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_mother_fullname_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Mother's Full Name" />
+
+                                    <TextView
+                                        android:id="@+id/tv_mother_fullname"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_mother_fullname_lable"
+                                        android:text="Abcdef ghijklmn Opqrstuv" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_mother_occupation_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Mother's Occupation" />
+
+                                    <TextView
+                                        android:id="@+id/tv_mother_occupation"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_mother_occupation_lable"
+                                        android:text="Business" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Family Income / -->
+                            <LinearLayout
+                                android:id="@+id/ly_family_income"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_mother_fullname_occupation"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_family_income_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Family Income" />
+
+                                    <TextView
+                                        android:id="@+id/tv_family_income"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_family_income_lable"
+                                        android:text="8 l/a" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <!--<TextView-->
+                                    <!--android:id="@+id/tv_mother_occupation_lable"-->
+                                    <!--style="@style/StyleTextViewLable"-->
+                                    <!--android:text="Mother's Occupation" />-->
+
+                                    <!--<TextView-->
+                                    <!--android:id="@+id/tv_mother_occupation"-->
+                                    <!--style="@style/StyleTextViewValue"-->
+                                    <!--android:layout_below="@+id/tv_mother_occupation_lable"-->
+                                    <!--android:text="Business" />-->
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Brothers / Sisters-->
+                            <LinearLayout
+                                android:id="@+id/ly_brothers_sisters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_family_income"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_brothers_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Number of Brothers" />
+
+                                    <TextView
+                                        android:id="@+id/tv_brothers_fullname"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_brothers_lable"
+                                        android:text="2" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_sisters_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Number of sisters" />
+
+                                    <TextView
+                                        android:id="@+id/tv_sisters"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_sisters_lable"
+                                        android:text="2" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Residential Details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_residential_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_family_details"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_residential_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Contact Details" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_residential"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_residential_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_residential_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line4"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <!--Address /town-city -->
+                            <LinearLayout
+                                android:id="@+id/ly_address_town_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/line4"
+                                android:visibility="gone"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_address_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Address" />
+
+                                    <TextView
+                                        android:id="@+id/tv_address"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_address_lable"
+                                        android:text="Level 8, Muttha Chambers II, Senapati Bapat Road" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_town_city_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Town/City" />
+
+                                    <TextView
+                                        android:id="@+id/tv_town_city"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_town_city_lable"
+                                        android:text="Pune" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--State / Country-->
+                            <LinearLayout
+                                android:id="@+id/ly_state_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_address_town_city"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_state_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="State" />
+
+                                    <TextView
+                                        android:id="@+id/tv_state"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_state_lable"
+                                        android:text="Maharashtra" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_country_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Country" />
+
+                                    <TextView
+                                        android:id="@+id/tv_country"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_country_lable"
+                                        android:text="India" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--primary / secondary mobile-->
+                            <LinearLayout
+                                android:id="@+id/ly_primary_secondary_mobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_state_country"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_primary_mobile_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Primary Mobile number" />
+
+                                    <TextView
+                                        android:id="@+id/tv_primary_mobile"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_primary_mobile_lable"
+                                        android:text="9846352646" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_secondary_mobile_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Secondary Mobile number" />
+
+                                    <TextView
+                                        android:id="@+id/tv_secondary_mobile"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_secondary_mobile_lable"
+                                        android:text="9846352646" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--peimary Email Address-->
+                            <LinearLayout
+                                android:id="@+id/ly_primary_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_primary_secondary_mobile"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_primary_email_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Primary Email" />
+
+                                    <TextView
+                                        android:id="@+id/tv_primary_email"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_primary_email_lable"
+                                        android:text="asdffgh@gmail.com" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <!--  <TextView
+                                          android:id="@+id/tv_secondary_email_lable"
+                                          style="@style/StyleTextViewLable"
+                                          android:text="Secondary Mobile number" />
+
+                                      <TextView
+                                          android:id="@+id/tv_secondary_email"
+                                          style="@style/StyleTextViewValue"
+                                          android:layout_below="@+id/tv_secondary_email_lable"
+                                          android:text="9846352646" />
+                                    -->
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Other Details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_other_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_residential_details"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_other_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Other Details" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_other"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_other_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_other_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line5"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <!--about me / Expectations -->
+                            <LinearLayout
+                                android:id="@+id/ly_about_me_expectations"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/line5"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_about_me_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="About Me" />
+
+                                    <TextView
+                                        android:id="@+id/tv_about_me"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_about_me_lable"
+                                        android:text="akjsd jashf kjasfh ajshf ajshfl ajshf kjajsh fnlaksh " />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_expectations_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Expectations From Life Partner" />
+
+                                    <TextView
+                                        android:id="@+id/tv_expectations"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_expectations_lable"
+                                        android:text="akjsd jashf kjasfh ajshf ajshfl ajshf kjajsh fnlaksh " />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Activity & Achievements / other-->
+                            <LinearLayout
+                                android:id="@+id/ly_activity_achievements_other"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_about_me_expectations"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_activity_chievements_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Activity and Achievements" />
+
+                                    <TextView
+                                        android:id="@+id/tv_activity_chievements"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_activity_chievements_lable"
+                                        android:text="jahf kakjhf ajhf kakjshf ajsshf kjj ;ddvh ;jjdh" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_other_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Other Remarks" />
+
+                                    <TextView
+                                        android:id="@+id/tv_other"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_other_lable"
+                                        android:text="jahf kakjhf ajhf kakjshf ajsshf kjj ;ddvh ;jjdh" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <!--Aadhar / Education Certificates-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/ly_activity_achievements_other"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/ly_aadhar_education_certificates"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ly_activity_achievements_other"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_05dp"
+                                        android:layout_marginEnd="@dimen/dimen_05dp"
+                                        android:layout_weight="1">
+
+                                        <TextView
+                                            android:id="@+id/tv_aadhar_lable"
+                                            style="@style/StyleTextViewLable"
+                                            android:text="Aadhar Card" />
+
+                                        <ImageView
+                                            android:id="@+id/iv_aadhar"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/dimen_200dp"
+                                            android:layout_below="@+id/tv_aadhar_lable"
+                                            android:scaleType="fitXY"
+                                            android:adjustViewBounds="true"
+                                            android:src="@drawable/ic_doc_placeholder" />
+
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/btn_verify_ids"
+                                            style="@style/AppStyleBorderButtonheight60"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/dimen_10dp"
+                                            android:layout_weight="1"
+                                            android:text="Verify ID"
+                                            android:layout_below="@+id/iv_aadhar"
+                                            android:textSize="@dimen/text_size_12"
+                                            android:textColor="@color/dark_grey" />
+
+                                    </RelativeLayout>
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_05dp"
+                                        android:layout_marginEnd="@dimen/dimen_05dp"
+                                        android:layout_weight="1">
+
+                                        <TextView
+                                            android:id="@+id/tv_education_certificates_lable"
+                                            style="@style/StyleTextViewLable"
+                                            android:text="Education Certificates" />
+
+                                        <ImageView
+                                            android:id="@+id/iv_education_certificates"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/dimen_200dp"
+                                            android:scaleType="fitXY"
+                                            android:layout_below="@+id/tv_education_certificates_lable"
+                                            android:src="@drawable/ic_certifcate_placeholder" />
+
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/btn_verify_edu"
+                                            style="@style/AppStyleBorderButtonheight60"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/dimen_10dp"
+                                            android:layout_below="@+id/iv_education_certificates"
+                                            android:layout_weight="1"
+                                            android:text="Verify Education"
+                                            android:textSize="@dimen/text_size_12"
+                                            android:textColor="@color/dark_grey" />
+
+
+                                    </RelativeLayout>
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:id="@+id/ly_myproof"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_myproof_title"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Support Documents" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_myproof_certificate"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/dimen_200dp"
+                                        android:scaleType="fitXY"
+                                        android:layout_below="@+id/tv_myproof_title"
+                                        android:src="@drawable/ic_certifcate_placeholder" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--MeetList Details-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_meetlist_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_other_details"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    app:cardCornerRadius="@dimen/dimen_08dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/cv_meetlist_details_lebal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:text="Meets Registered" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_meetlist_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:src="@drawable/ic_arrow_right" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/ly_meetlist_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/cv_meetlist_details_lebal"
+                            android:layout_margin="@dimen/dimen_05dp"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/line6"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen_01dp"
+                                android:layout_marginTop="@dimen/dimen_03dp"
+                                android:layout_marginBottom="@dimen/dimen_03dp"
+                                android:background="@color/light_grey" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:id="@+id/registered_meet_list"
+                                android:layout_margin="@dimen/dimen_05dp"
+                                android:layout_below="@+id/line6"
+                                android:paddingStart="@dimen/dimen_02dp"
+                                style="@style/StyleTextViewValue"
+                                android:layout_height="wrap_content"/>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_meetlist_details"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_interview_done"
+                        style="@style/AppStyleButtonheight60"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Interview Completed"
+                        android:textSize="@dimen/text_size_12"
+                        android:textColor="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_mark_attendance"
+                        style="@style/AppStyleButtonheight60"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:layout_weight="1"
+                        android:text="Mark Attendance"
+                        android:textSize="@dimen/text_size_12"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </FrameLayout>
+    </ScrollView>
+
+
+</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+
 </RelativeLayout>

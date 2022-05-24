@@ -63,8 +63,15 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
     @Override
     public void onSuccessListener(String response) {
         Home models = PlatformGson.getPlatformGsonInstance().fromJson(response, Home.class);
-        homeFragment.get().showNextScreen(models);
-    }
+        if(models.getStatus() == 1000) {
+            Util.logOutUser(homeFragment.get().getActivity());
+        }else if (models.getStatus() == 200) {
+            homeFragment.get().showNextScreen(models);
+        }else {
+            Util.showToast(models.getMessage(),homeFragment);
+        }
+        }
+
 
     @Override
     public void onUserProfileSuccessListener(String response) {
@@ -72,6 +79,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
         }
+        homeFragment.get().getdynamicLogo();
         getModules(user.getUserInfo());
     }
 
@@ -145,12 +153,13 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
                         Util.saveRoleAccessObjectInPref(response);
                         homeFragment.get().initiateViewPager();
                     } else {
+                        Util.saveRoleAccessObjectInPref(response);
                         homeFragment.get().initiateViewPager();
                     }
                 }
             }
         } catch (Exception e) {
-            homeFragment.get().initiateViewPager();
+//            homeFragment.get().initiateViewPager();
             homeFragment.get().showErrorMessage(homeFragment.get().getResources().getString(R.string.msg_something_went_wrong));
         }
     }

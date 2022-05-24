@@ -6,11 +6,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.models.LocaleData;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Elements {
+public class Elements implements Serializable {
     @ColumnInfo(name = "choices_by_url_response_path")
     private String choicesByUrlResponsePath;
 
@@ -33,7 +34,7 @@ public class Elements {
     private String inputType;
     @SerializedName("isRequired")
     @Expose
-    private Boolean isRequired;
+    private Boolean isRequired = false;
     @SerializedName("readOnly")
     @Expose
     private Boolean readOnly;
@@ -45,7 +46,7 @@ public class Elements {
     private String enableIf;
     @SerializedName("visibleIf")
     @Expose
-    private String visibleIf;
+    private VisibleIf visibleIf;
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
@@ -55,9 +56,17 @@ public class Elements {
     @SerializedName("validators")
     @Expose
     private List<Validator> validators = null;
+    //    @SerializedName("rows")
+//    @Expose
+//    private Integer rows;
     @SerializedName("rows")
     @Expose
-    private Integer rows;
+    private transient Integer rows;
+
+    @SerializedName("rows")
+    @Expose
+    private List<Row> rowsList = null;
+
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
@@ -67,6 +76,55 @@ public class Elements {
     @SerializedName("keyDuplicationError")
     @Expose
     private LocaleData keyDuplicationError;
+    @SerializedName("hasOther")
+    @Expose
+    private Boolean hasOther;
+    @SerializedName("rateMax")
+    @Expose
+    private Integer rateMax;
+    @SerializedName("minRateDescription")
+    @Expose
+    private MinRateDescription minRateDescription;
+    @SerializedName("maxRateDescription")
+    @Expose
+    private MaxRateDescription maxRateDescription;
+
+    @SerializedName("placeHolder")
+    @Expose
+    private LocaleData placeHolder;
+    @SerializedName("requiredErrorText")
+    @Expose
+    private LocaleData requiredErrorText;
+    @SerializedName("otherErrorText")
+    @Expose
+    private LocaleData otherErrorText;
+    @SerializedName("hasNone")
+    @Expose
+    private Boolean hasNone;
+    private String locationRequiredLevel;
+
+    @SerializedName("minDays")
+    @Expose
+    private Integer pastAllowedDays;
+    @SerializedName("maxDays")
+    @Expose
+    private Integer futureAllowedDays;
+
+    public LocaleData getOtherErrorText() {
+        return otherErrorText;
+    }
+
+    public void setOtherErrorText(LocaleData otherErrorText) {
+        this.otherErrorText = otherErrorText;
+    }
+
+    @SerializedName("minDate")
+    @Expose
+    private Long minDate;
+    @SerializedName("maxDate")
+    @Expose
+    private Long maxDate;
+
 
     public Boolean getReadOnly() {
         return readOnly;
@@ -116,11 +174,11 @@ public class Elements {
         this.enableIf = enableIf;
     }
 
-    public String getVisibleIf() {
+    public VisibleIf getVisibleIf() {
         return visibleIf;
     }
 
-    public void setVisibleIf(String visibleIf) {
+    public void setVisibleIf(VisibleIf visibleIf) {
         this.visibleIf = visibleIf;
     }
 
@@ -204,12 +262,29 @@ public class Elements {
         this.mAnswer = answer;
     }
 
-    public Integer getRows() {
-        return rows;
+//    public Integer getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(Integer rows) {
+//        this.rows = rows;
+//    }
+
+//    public List<String> getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(List<String> rows) {
+//        this.rows = rows;
+//    }
+
+
+    public List<Row> getRowsList() {
+        return rowsList;
     }
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
+    public void setRowsList(List<Row> rowsList) {
+        this.rowsList = rowsList;
     }
 
     public String getKeyName() {
@@ -226,6 +301,104 @@ public class Elements {
 
     public void setKeyDuplicationError(LocaleData keyDuplicationError) {
         this.keyDuplicationError = keyDuplicationError;
+    }
+
+    public Boolean getHasOther() {
+        return hasOther;
+    }
+
+    public void setHasOther(Boolean hasOther) {
+        this.hasOther = hasOther;
+    }
+
+    public Boolean getHasNone() {
+        return hasNone;
+    }
+
+    public void setHasNone(Boolean hasNone) {
+        this.hasNone = hasNone;
+    }
+
+
+
+    public Integer getRateMax() {
+        return rateMax;
+    }
+
+    public void setRateMax(Integer rateMax) {
+        this.rateMax = rateMax;
+    }
+
+    public MinRateDescription getMinRateDescription() {
+        return minRateDescription;
+    }
+
+    public void setMinRateDescription(MinRateDescription minRateDescription) {
+        this.minRateDescription = minRateDescription;
+    }
+
+    public MaxRateDescription getMaxRateDescription() {
+        return maxRateDescription;
+    }
+
+    public void setMaxRateDescription(MaxRateDescription maxRateDescription) {
+        this.maxRateDescription = maxRateDescription;
+    }
+
+    public String getLocationRequiredLevel() {
+        return locationRequiredLevel;
+    }
+
+    public void setLocationRequiredLevel(String locationRequiredLevel) {
+        this.locationRequiredLevel = locationRequiredLevel;
+    }
+
+    public LocaleData getPlaceHolder() {
+        return placeHolder;
+    }
+
+    public void setPlaceHolder(LocaleData placeHolder) {
+        this.placeHolder = placeHolder;
+    }
+
+    public LocaleData getRequiredErrorText() {
+        return requiredErrorText;
+    }
+
+    public void setRequiredErrorText(LocaleData requiredErrorText) {
+        this.requiredErrorText = requiredErrorText;
+    }
+
+    public Long getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(long minDate) {
+        this.minDate = minDate;
+    }
+
+    public Long getMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(long maxDate) {
+        this.maxDate = maxDate;
+    }
+
+    public Integer getPastAllowedDays() {
+        return pastAllowedDays;
+    }
+
+    public void setPastAllowedDays(Integer pastAllowedDays) {
+        this.pastAllowedDays = pastAllowedDays;
+    }
+
+    public Integer getFutureAllowedDays() {
+        return futureAllowedDays;
+    }
+
+    public void setFutureAllowedDays(Integer futureAllowedDays) {
+        this.futureAllowedDays = futureAllowedDays;
     }
 }
 

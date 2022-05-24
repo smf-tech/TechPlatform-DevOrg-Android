@@ -23,6 +23,12 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("venue")
     @Expose
     private String venue;
+    @SerializedName("meetWebLink")
+    @Expose
+    private String meetWebLink;
+    @SerializedName("meetReferralLink")
+    @Expose
+    private String meetReferralLink;
     @SerializedName("schedule")
     @Expose
     private MeetSchedule schedule;
@@ -43,10 +49,13 @@ public class MatrimonyMeet implements Serializable {
     private String meetImageUrl;
     @SerializedName("meetOrganizers")
     @Expose
-    private List<MatrimonyUserDetails> meetOrganizers = null;
-    @SerializedName("meetReferences")
+    private List<SubordinateData> meetOrganizers = null;
+//    @SerializedName("meetReferences")
+//    @Expose
+//    private ArrayList<MatrimonyUserDetails> meetReferences = null;
+    @SerializedName("meetSubordinators")
     @Expose
-    private ArrayList<MatrimonyUserDetails> meetReferences = null;
+    private ArrayList<SubordinateData> meetSubordinators = null;
     @SerializedName("analytics")
     @Expose
     private ArrayList<MeetAnalytics> analytics = null;
@@ -65,6 +74,15 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("is_allocate")
     @Expose
     private Boolean isAllocate;
+    @SerializedName("meetCriteria")
+    @Expose
+    private MeetCriteria meetCriteria;
+    @SerializedName("paymentInfo")
+    @Expose
+    private String paymentInfo;
+    @SerializedName("note")
+    @Expose
+    private String note;
 
     public String getId() {
         return id;
@@ -104,6 +122,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getMeetWebLink() {
+        return meetWebLink;
+    }
+
+    public void setMeetWebLink(String meetWebLink) {
+        this.meetWebLink = meetWebLink;
     }
 
     public MeetSchedule getSchedule() {
@@ -154,20 +180,28 @@ public class MatrimonyMeet implements Serializable {
         this.meetImageUrl = meetImageUrl;
     }
 
-    public List<MatrimonyUserDetails> getMeetOrganizers() {
+    public List<SubordinateData> getMeetOrganizers() {
         return meetOrganizers;
     }
 
-    public void setMeetOrganizers(List<MatrimonyUserDetails> meetOrganizers) {
+    public void setMeetOrganizers(List<SubordinateData> meetOrganizers) {
         this.meetOrganizers = meetOrganizers;
     }
+//
+//    public List<MatrimonyUserDetails> getMeetReferences() {
+//        return meetReferences;
+//    }
+//
+//    public void setMeetReferences(ArrayList<MatrimonyUserDetails> meetReferences) {
+//        this.meetReferences = meetReferences;
+//    }
 
-    public List<MatrimonyUserDetails> getMeetReferences() {
-        return meetReferences;
+    public ArrayList<SubordinateData> getMeetSubordinators() {
+        return meetSubordinators;
     }
 
-    public void setMeetReferences(ArrayList<MatrimonyUserDetails> meetReferences) {
-        this.meetReferences = meetReferences;
+    public void setMeetSubordinators(ArrayList<SubordinateData> meetSubordinators) {
+        this.meetSubordinators = meetSubordinators;
     }
 
     public ArrayList<MeetAnalytics> getAnalytics() {
@@ -218,4 +252,35 @@ public class MatrimonyMeet implements Serializable {
         isAllocate = allocate;
     }
 
+    public MeetCriteria getMeetCriteria() {
+        return meetCriteria;
+    }
+
+    public void setMeetCriteria(MeetCriteria meetCriteria) {
+        this.meetCriteria = meetCriteria;
+    }
+
+    public String getPaymentInfo() {
+        return paymentInfo;
+    }
+
+    public void setPaymentInfo(String paymentInfo) {
+        this.paymentInfo = paymentInfo;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getMeetReferralLink() {
+        return meetReferralLink;
+    }
+
+    public void setMeetReferralLink(String meetReferralLink) {
+        this.meetReferralLink = meetReferralLink;
+    }
 }

@@ -2,17 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_preparation"
-        android:title="Structure Preparation" />
+        android:title="Structure Preparation"
+        android:visible="false"/>
     <item
         android:id="@+id/action_mobilization"
-        android:title="Community Mobilization" />
+        android:title="Community Mobilization"
+        android:visible="false"/>
     <item
         android:id="@+id/action_visit_monitoring"
-        android:title="Visit and Monitoring" />
+        android:title="Visit and Monitoring"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_silt_transportation_record"
+        android:title="Silt Transport Record"
+        android:visible="false"/>
     <item
         android:id="@+id/action_structure_completion"
         android:title="Structure Completion" />
     <item
         android:id="@+id/action_structure_close"
         android:title="Structure Close" />
+    <item
+        android:id="@+id/action_structure_boundary"
+        android:title="Record Boundary"
+        android:visible="false"/>
 </menu>

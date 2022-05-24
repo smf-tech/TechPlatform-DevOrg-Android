@@ -26,18 +26,19 @@
                 android:id="@+id/toolbar_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:paddingTop ="@dimen/dimen_03dp"
                 android:paddingBottom ="@dimen/dimen_03dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:lines="2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_18"
                 android:textStyle="bold"
                 android:fontFamily="@font/opensans_bold"
+                android:text="Title"
                 />
 
             <ImageView
@@ -48,8 +49,9 @@
                 android:layout_marginEnd="2dp"
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_10dp"
-                android:tint="@color/white"
-                android:visibility="gone" />
+                android:src="@drawable/ic_search"
+                android:visibility="gone"
+                app:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/toolbar_edit_action"
@@ -60,7 +62,21 @@
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_edit"
-                android:visibility="invisible" />
+                app:tint="@color/white"
+                android:visibility="invisible"/>
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_blue_box"
+                android:iconifiedByDefault="false"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/toolbar_action1"
+                app:iconifiedByDefault="false"
+                android:visibility="gone"
+                app:queryHint="Search here" />
+
         </LinearLayout>
 
 </com.google.android.material.appbar.AppBarLayout>

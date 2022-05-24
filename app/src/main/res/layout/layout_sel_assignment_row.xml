@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_assignment_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        app:cardCornerRadius="@dimen/dimen_05dp">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dimen_50dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:gravity="center_vertical"/>
+
+        <FrameLayout
+            android:id="@+id/frame_images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <ImageView
+                android:id="@+id/img_download"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_download_icon"
+                android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/pb_downloading"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_view_file"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/iv_form"
+                android:layout_width="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_45dp"
+                android:src="@drawable/ic_add"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

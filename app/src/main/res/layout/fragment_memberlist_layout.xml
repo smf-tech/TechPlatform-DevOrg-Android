@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/userregistrationmatrimony"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_gray_bg"
+    android:orientation="vertical"
+    tools:context=".view.activities.UserRegistrationMatrimonyActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:id="@+id/rv_member_listview"
+            android:layout_weight="1"
+
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_05dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:src="@android:drawable/ic_dialog_email"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:tint="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>

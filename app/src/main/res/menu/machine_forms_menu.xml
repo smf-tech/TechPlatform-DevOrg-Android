@@ -36,4 +36,24 @@
         android:title="Release Machine from taluka"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_machine_mou_upload"
+        android:title="Upload Machine MOU"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_machine_signoff"
+        android:title="Sign-off machine"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_assign_supervisor"
+        android:title="Assign Field Associate"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_release_supervisor"
+        android:title="Release Field Associate"
+        android:visible="false" />
+
 </menu>

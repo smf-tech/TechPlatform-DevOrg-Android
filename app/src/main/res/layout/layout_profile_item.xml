@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dimen_12dp">
+    android:paddingTop="@dimen/dimen_05dp">
 
     <TextView
         android:id="@+id/user_profile_label"
@@ -18,7 +18,7 @@
         android:id="@+id/user_profile_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_12dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
         android:paddingStart="@dimen/dimen_25dp"
         android:paddingEnd="@dimen/dimen_10dp"
         android:textColor="@color/black"
@@ -27,6 +27,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_01dp"
-        android:layout_marginTop="@dimen/dimen_07dp"
+        android:layout_marginTop="@dimen/dimen_03dp"
         android:background="@color/profile_divider" />
 </LinearLayout>

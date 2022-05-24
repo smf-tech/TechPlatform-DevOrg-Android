@@ -60,11 +60,16 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         }
 
         Login login = new Gson().fromJson(response, Login.class);
-        if (login.getStatus().equalsIgnoreCase("failed")) {
+        if (login.getCode() == 400) {
             onFailureListener(login.getMessage());
         } else {
-            if (login.getStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+            if (login.getCode() == 200 || login.getCode() == 300) {
                 Util.saveLoginObjectInPref(response);
+                if (login.getCode() == 200) {
+                    Util.saveIsDeviceMatchInPref("Matched");
+                } else {
+                    Util.saveIsDeviceMatchInPref("MisMatched");
+                }
             } else if (login.getStatus().equalsIgnoreCase(Constants.FAILURE)) {
                 otpFragment.get().deRegisterOtpSmsReceiver();
             }
@@ -92,6 +97,7 @@ public class OtpFragmentPresenter implements UserRequestCallListener {
         isOtpVerifyCall = false;
         otpFragment.get().hideProgressBar();
         otpFragment.get().showNextScreen(user);
+        otpFragment.get().getdynamicLogo();
     }
 
     @Override

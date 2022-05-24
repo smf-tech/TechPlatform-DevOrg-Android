@@ -4,6 +4,7 @@ package com.octopusbjsindia.view.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.events.AddForm;
@@ -47,7 +49,6 @@ import java.util.Locale;
 public class EventDetailActivity extends BaseActivity implements PlatformTaskListener, View.OnClickListener {
 
     private EventTask eventTask;
-
     private ImageView backButton;
     private ImageView editButton;
     private ImageView toolbarAction;
@@ -72,7 +73,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-
         initView();
     }
 
@@ -107,6 +107,10 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
         btParticipants = findViewById(R.id.bt_participants);
         btCompleteTask = findViewById(R.id.bt_complete_task);
 
+        if(eventTask.getAddress().contains("https://")){
+            tvAddress.setOnClickListener(this);
+            tvAddress.setTextColor(getResources().getColor(R.color.color_db_tab_select));
+        }
         tvTitle.setText(eventTask.getTitle());
         tvDescription.setText(eventTask.getDescription());
         tvAddress.setText(eventTask.getAddress());
@@ -270,10 +274,18 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_address:
+                try {
+                    Intent viewIntent = new Intent("android.intent.action.VIEW",
+                                    Uri.parse(eventTask.getAddress()));
+                    startActivity(viewIntent);
+                } catch (Exception e) {
+                    //e.toString();
+                }
+                break;
             case R.id.toolbar_back_action:
                 onBackPressed();
                 break;
-
             case R.id.toolbar_edit_action:
                 Intent intentCreateEvent = new Intent(this, CreateEventTaskActivity.class);
                 intentCreateEvent.putExtra(Constants.Planner.TO_OPEN, toOpen);
@@ -307,7 +319,6 @@ public class EventDetailActivity extends BaseActivity implements PlatformTaskLis
                 snackbar.dismiss();
                 break;
             case R.id.event_pic:
-
                 showEnlargeImage(eventTask.getThumbnailImage());
                 break;
         }

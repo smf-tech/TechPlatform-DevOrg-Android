@@ -2,11 +2,6 @@ package com.octopusbjsindia.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.octopusbjsindia.R;
@@ -58,31 +57,6 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     }
 
     private void init() {
-//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getMouDetails()!=null) {
-//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                    getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
-//
-//            } else {
-//
-//            }
-//        }
-//        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
-//            if(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                    getMouDetails()!=null) {
-//                //getActivity().onBackPressed();
-//            } else {
-//                MouDetails mouDetails = new MouDetails();
-//                ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
-//                Date d = new Date();
-//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
-//                ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
-//                        (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
-//
-//                ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
-//            }
-//        } else {
             statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
             progressBarLayout = machineMouThirdFragmentView.findViewById(R.id.profile_act_progress_bar);
             progressBar = machineMouThirdFragmentView.findViewById(R.id.pb_profile_act);
@@ -113,7 +87,6 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
                     getMouDetails()!=null && statusCode!= Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
                 setUIvalues();
             }
-        //}
     }
 
     private void setUIvalues() {
@@ -151,7 +124,7 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.edt_contract_date:
-                Util.showAllDateDialog(getActivity(), edtContractDate);
+                Util.showDateDialog(getActivity(), edtContractDate);
                 break;
             case R.id.edt_mou_expiry_date:
                 if(edtContractDate.getText().toString().length()>0) {
@@ -263,7 +236,8 @@ public class MachineMouThirdFragment extends Fragment implements View.OnClickLis
             case R.id.btn_third_part_mou:
                 if(isAllDataValid()){
                     setMachineThirdData();
-                    ((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                    //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                    ((MachineMouActivity) getActivity()).uploadData();
                 }
                 break;
             case R.id.btn_previous_mou:

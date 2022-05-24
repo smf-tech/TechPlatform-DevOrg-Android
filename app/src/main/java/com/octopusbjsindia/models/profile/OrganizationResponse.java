@@ -6,6 +6,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class OrganizationResponse {
+
     @SerializedName("status")
     private int status;
 

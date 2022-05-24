@@ -6,6 +6,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class State {
+
     @SerializedName("_id")
     private String id;
 

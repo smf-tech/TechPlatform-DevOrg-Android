@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/lyMain"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_10dp"
+    android:layout_marginEnd="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_05dp"
+    android:layout_marginBottom="@dimen/dimen_05dp"
+    android:background="@color/white"
+    app:cardCornerRadius="@dimen/dimen_10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_05dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/tv_machine_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_05dp"
+                android:text="Hospital Name"
+                android:textSize="@dimen/text_size_16"
+                android:layout_weight="8"
+                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/btn_popmenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text=""
+                android:textSize="@dimen/text_size_12"
+                android:paddingStart="@dimen/dimen_10dp"
+                android:paddingEnd="@dimen/dimen_10dp"
+                android:paddingBottom="@dimen/dimen_02dp"
+                android:src="@drawable/ic_options_icon"
+                android:drawableEnd="@drawable/ic_options_icon" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="State"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_state_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maharashtra"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Taluka"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txtTaluka"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Concentrator model"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_model_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:text="Deployed Date" />
+
+                <TextView
+                    android:id="@+id/txt_deployed_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_12"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:text="Doner Name" />
+
+                <TextView
+                    android:id="@+id/txt_doner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/txt_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvLbl"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_05dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="District"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_district_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maharashtra"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hospital name"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_hospital_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incharge Name"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_incharge_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:text="Concentrator capacity"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_capacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Worked days"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_working_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Benefited Count"
+                    android:layout_marginTop="@dimen/dimen_02dp"
+                    android:textSize="@dimen/text_size_12"/>
+
+                <TextView
+                    android:id="@+id/txt_benefited_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="name"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
+
+

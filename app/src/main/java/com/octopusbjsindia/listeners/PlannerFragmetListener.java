@@ -6,6 +6,8 @@ public interface PlannerFragmetListener {
 
     void onPlannerDashboardDataFetched(String response);
 
+    void onAttendanceSubmited(String response);
+
     void onFailureListener(String message);
 
     void onErrorListener(VolleyError error);

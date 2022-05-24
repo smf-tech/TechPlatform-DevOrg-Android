@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -33,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
@@ -49,9 +51,11 @@ import com.soundcloud.android.crop.Crop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -60,28 +64,26 @@ import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class StructureCompletionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = StructurePripretionsActivity.class.getName();
+    private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
     final String STRUCTURE_STATUS = "StructureStatus";
-
-    ImageView selecteIV;
-    EditText etReason, etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays, etDieselConsumedAmount,
-            etDieselConsumedQuantity, etWorkDimension;
-
+    private ImageView selecteIV;
+    private TextInputLayout lyReason;
+    private EditText etReason;
+//    etSiltQantity, etWorkStartDate, etWorkCompletionDate, etOperationalDays, etDieselConsumedAmount,
+//            etDieselConsumedQuantity, etWorkDimension;
     private Uri outputUri;
     private Uri finalUri;
-
-    RelativeLayout progressBar;
-
+    private RelativeLayout progressBar;
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_COMPLETION;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
-    Map<String, String> requestData = new HashMap<>();
-    StructureData structureData;
-    int structureStatus;
-
-    String completion = "true";
+    private Map<String, String> requestData = new HashMap<>();
+    private StructureData structureData;
+    private int structureStatus;
+    private String completion = "true";
+    private String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,22 +97,23 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         initView();
         if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
             setTitle("Close Structure");
+            TextView tvLabel = findViewById(R.id.tv_photo_lbl);
+            tvLabel.setText("Certificate Images");
         } else {
             setTitle("Structure Completion");
         }
     }
 
     private void initView() {
-
         RadioGroup rgCompletion = findViewById(R.id.rg_completion);
-
-        etSiltQantity = findViewById(R.id.et_silt_qantity);
-        etWorkStartDate = findViewById(R.id.et_work_start_date);
-        etWorkCompletionDate = findViewById(R.id.et_work_completion_date);
-        etOperationalDays = findViewById(R.id.et_operational_days);
-        etDieselConsumedAmount = findViewById(R.id.et_diesel_consumed_amount);
-        etDieselConsumedQuantity = findViewById(R.id.et_diesel_consumed_quantity);
-        etWorkDimension = findViewById(R.id.et_work_dimension);
+//        etSiltQantity = findViewById(R.id.et_silt_qantity);
+//        etWorkStartDate = findViewById(R.id.et_work_start_date);
+//        etWorkCompletionDate = findViewById(R.id.et_work_completion_date);
+//        etOperationalDays = findViewById(R.id.et_operational_days);
+//        etDieselConsumedAmount = findViewById(R.id.et_diesel_consumed_amount);
+//        etDieselConsumedQuantity = findViewById(R.id.et_diesel_consumed_quantity);
+//        etWorkDimension = findViewById(R.id.et_work_dimension);
+        lyReason = findViewById(R.id.ly_reason);
         etReason = findViewById(R.id.et_reason);
 
         ImageView iv1 = findViewById(R.id.iv_structure1);
@@ -120,7 +123,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
         if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED
                 || structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
-            findViewById(R.id.ly_closer).setVisibility(View.VISIBLE);
+            //findViewById(R.id.ly_closer).setVisibility(View.VISIBLE);
             iv1.setImageResource(R.drawable.ic_certifict);
             iv2.setImageResource(R.drawable.ic_certifict);
 
@@ -136,7 +139,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             findViewById(R.id.tv_img3).setVisibility(View.GONE);
             findViewById(R.id.tv_img4).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.ly_closer).setVisibility(View.GONE);
+            //findViewById(R.id.ly_closer).setVisibility(View.GONE);
             findViewById(R.id.iv_structure3).setOnClickListener(this);
             findViewById(R.id.iv_structure4).setOnClickListener(this);
             rgCompletion.check(R.id.rb_completion_yes);
@@ -145,11 +148,11 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
                     switch (i) {
                         case R.id.rb_completion_yes:
-                            etReason.setVisibility(View.GONE);
+                            lyReason.setVisibility(View.GONE);
                             completion = "true";
                             break;
                         case R.id.rb_completion_no:
-                            etReason.setVisibility(View.VISIBLE);
+                            lyReason.setVisibility(View.VISIBLE);
                             completion = "false";
                             break;
                     }
@@ -158,8 +161,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         }
 
         findViewById(R.id.bt_submit).setOnClickListener(this);
-        etWorkStartDate.setOnClickListener(this);
-        etWorkCompletionDate.setOnClickListener(this);
+//        etWorkStartDate.setOnClickListener(this);
+//        etWorkCompletionDate.setOnClickListener(this);
 
     }
 
@@ -175,7 +178,6 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             case R.id.iv_structure1:
                 selecteIV = findViewById(R.id.iv_structure1);
                 onAddImageClick();
-
                 break;
             case R.id.iv_structure2:
                 selecteIV = findViewById(R.id.iv_structure2);
@@ -189,12 +191,12 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 selecteIV = findViewById(R.id.iv_structure4);
                 onAddImageClick();
                 break;
-            case R.id.et_work_start_date:
-                Util.showDateDialog(this, etWorkStartDate);
-                break;
-            case R.id.et_work_completion_date:
-                Util.showDateDialog(this, etWorkCompletionDate);
-                break;
+//            case R.id.et_work_start_date:
+//                Util.showDateDialog(this, etWorkStartDate);
+//                break;
+//            case R.id.et_work_completion_date:
+//                Util.showDateDialog(this, etWorkCompletionDate);
+//                break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
                     uploadImage();
@@ -223,53 +225,52 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED
                 || structureStatus == Constants.SSModule.STRUCTURE_PARTIALLY_COMPLETED) {
 
-            if (TextUtils.isEmpty(etSiltQantity.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Silt Qantity.", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etWorkStartDate.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Work Start Date.", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etWorkCompletionDate.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Work Completion Date.", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etOperationalDays.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Operational Days.", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etDieselConsumedAmount.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Amount of Diesel Consumed (Rs.).", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etDieselConsumedQuantity.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Diesel Consumed (Liters).", Snackbar.LENGTH_LONG);
-                return false;
-            } else if (TextUtils.isEmpty(etWorkDimension.getText().toString())) {
-                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                        "Please, enter Dimension of Work.", Snackbar.LENGTH_LONG);
-                return false;
-            } else {
-                requestData.put("etSiltQantity", etSiltQantity.getText().toString());
-                requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
-                requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
-                requestData.put("etOperationalDays", etOperationalDays.getText().toString());
-                requestData.put("etDieselConsumedAmount", etDieselConsumedAmount.getText().toString());
-                requestData.put("etDieselConsumedQuantity", etDieselConsumedQuantity.getText().toString());
-                requestData.put("etWorkDimension", etWorkDimension.getText().toString());
-            }
-
+//            if (TextUtils.isEmpty(etSiltQantity.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Silt Qantity.", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etWorkStartDate.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Work Start Date.", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etWorkCompletionDate.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Work Completion Date.", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etOperationalDays.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Operational Days.", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etDieselConsumedAmount.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Amount of Diesel Consumed (Rs.).", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etDieselConsumedQuantity.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Diesel Consumed (Liters).", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else if (TextUtils.isEmpty(etWorkDimension.getText().toString())) {
+//                Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+//                        "Please, enter Dimension of Work.", Snackbar.LENGTH_LONG);
+//                return false;
+//            } else {
+//                requestData.put("etSiltQantity", etSiltQantity.getText().toString());
+//                requestData.put("etWorkStartDate", etWorkStartDate.getText().toString());
+//                requestData.put("etWorkCompletionDate", etWorkCompletionDate.getText().toString());
+//                requestData.put("etOperationalDays", etOperationalDays.getText().toString());
+//                requestData.put("etDieselConsumedAmount", etDieselConsumedAmount.getText().toString());
+//                requestData.put("etDieselConsumedQuantity", etDieselConsumedQuantity.getText().toString());
+//                requestData.put("etWorkDimension", etWorkDimension.getText().toString());
+//            }
 
             if (imageCount < 2) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please, click images of structure.",
+                                .findViewById(android.R.id.content), "Please, attach images of structure.",
                         Snackbar.LENGTH_LONG);
                 return false;
             }
         } else {
-            if (etReason.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
+            if (lyReason.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etReason.getText().toString())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please, enter Reason.", Snackbar.LENGTH_LONG);
                 return false;
@@ -277,7 +278,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 requestData.put("etReason", etReason.getText().toString());
             }
 
-            if (imageCount < 4) {
+            if (imageCount < 2) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView()
                                 .findViewById(android.R.id.content), "Please, click images of structure.",
                         Snackbar.LENGTH_LONG);
@@ -327,18 +328,15 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(this, this.getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
@@ -349,26 +347,46 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         }
     }
 
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
-                if (imageFilePath == null) return;
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(this);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
-                    if (imageFilePath == null) return;
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -379,7 +397,8 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
                     if (Util.isValidImageSize(imageFile)) {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
                         selecteIV.setImageURI(finalUri);
                         imageHashmap.put("Structure" + imageCount, bitmap);
                         imageCount++;

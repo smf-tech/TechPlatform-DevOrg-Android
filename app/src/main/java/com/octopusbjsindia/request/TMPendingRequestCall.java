@@ -51,6 +51,9 @@ public class TMPendingRequestCall {
         Gson gson = new GsonBuilder().serializeNulls().create();
         final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_PENDING_APPROVAL_REQUESTS;
 
+        Log.d(TAG, "getAllPendingRequests - url: " + getPendingRequestsUrl);
+        Log.d(TAG, "getAllPendingRequests - req: " + jsonObject);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
                 getPendingRequestsUrl,

@@ -15,6 +15,8 @@ public class SSMasterDatabase {
     private int id;
     @ColumnInfo(name = "data")
     private String data;
+    @ColumnInfo(name = "type")
+    private String type;
     @ColumnInfo(name = "dateTime")
     private String dateTime;
 
@@ -32,6 +34,14 @@ public class SSMasterDatabase {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDateTime() {

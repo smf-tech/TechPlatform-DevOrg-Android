@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class CommonResponse {
+    @SerializedName("code")
+    @Expose
+    private int code;
     @SerializedName("status")
     @Expose
     private int status;
@@ -25,5 +28,13 @@ public class CommonResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

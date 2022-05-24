@@ -64,11 +64,11 @@
         <ImageView
             android:id="@+id/btn_filter_clear"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_30dp"
             android:layout_marginStart="@dimen/dimen_05dp"
             android:layout_weight="0.4"
             android:padding="@dimen/dimen_03dp"
-            android:src="@drawable/ic_cancel"
+            android:src="@drawable/ic_cancel_filter"
             android:visibility="gone" />
 
     </LinearLayout>
@@ -83,20 +83,37 @@
             android:id="@+id/rv_data_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ly_filter"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_below="@+id/ly_filter"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <TextView
-        android:id="@+id/tv_no_data_msg"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_create_operator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/no_data_available"
-        android:visibility="gone" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        android:src="@drawable/ic_add_operator"
+        app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -108,6 +125,27 @@
         app:fabSize="mini"
         app:tint="@color/white"
         tools:ignore="RelativeOverlap" />
+
+    <RelativeLayout
+        android:id="@+id/ly_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="@dimen/standard_240"
+            android:layout_height="@dimen/standard_240"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_data"/>
+        <TextView
+            android:layout_below="@+id/iv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="No Data"/>
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

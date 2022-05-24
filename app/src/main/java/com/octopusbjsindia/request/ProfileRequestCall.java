@@ -182,6 +182,40 @@ public class ProfileRequestCall {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
+    public void getUserProfile() {
+        Response.Listener<JSONObject> userProfileSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "getUserProfile - Resp: " + res);
+                    listener.onProfileFetched(res);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
+            }
+        };
+
+        Response.ErrorListener userProfileErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getProfileUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                userProfileSuccessListener,
+                userProfileErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
+
     public void submitUserProfile(UserInfo userInfo) {
         Response.Listener<JSONObject> profileSuccessListener = response -> {
             try {
@@ -202,6 +236,8 @@ public class ProfileRequestCall {
         final String submitProfileUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.SUBMIT_PROFILE, userInfo.getUserMobileNumber());
 
+        //Log.d(TAG, "submitUserProfile - url: " + submitProfileUrl);
+
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.PUT,
                 submitProfileUrl,
@@ -214,6 +250,10 @@ public class ProfileRequestCall {
 
         gsonRequest.setHeaderParams(Util.requestHeader(true));
         gsonRequest.setBodyParams(createBodyParams(userInfo));
+
+        String req = createBodyParams(userInfo).toString();
+        Log.d(TAG, "submitUserProfile - req: " + req);
+
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
@@ -299,6 +339,30 @@ public class ProfileRequestCall {
                         locationArray.add(clusters.getId());
                     }
                     locationObj.add(Constants.Location.CLUSTER, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getSchoolIds() != null) {
+                    for (JurisdictionType schools : userLocation.getSchoolIds()) {
+                        locationArray.add(schools.getId());
+                    }
+                    locationObj.add(Constants.Location.SCHOOL, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getGranpanchayatIds() != null) {
+                    for (JurisdictionType panchayat : userLocation.getGranpanchayatIds()) {
+                        locationArray.add(panchayat.getId());
+                    }
+                    locationObj.add(Constants.Location.GRAM_PANCHAYAT, locationArray);
+                }
+
+                locationArray = new JsonArray();
+                if (userLocation.getLearningCenterIds() != null) {
+                    for (JurisdictionType centers : userLocation.getLearningCenterIds()) {
+                        locationArray.add(centers.getId());
+                    }
+                    locationObj.add(Constants.Location.LEARNING_CENTER, locationArray);
                 }
 
                 body.add(Constants.Login.USER_LOCATION, locationObj);

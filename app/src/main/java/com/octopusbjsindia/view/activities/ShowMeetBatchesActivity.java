@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.MeetBatchesResponseModel;
 import com.octopusbjsindia.models.login.LoginInfo;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ShowBatchesPageRecyclerAdapter;
 import com.octopusbjsindia.view.fragments.ShowBachesDialogFragment;
 
@@ -47,17 +48,13 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
         }
         fManager = getSupportFragmentManager();
         Gson gson = new Gson();
-
         meetBatchesResponseModel = gson.fromJson(meetBatchesResponseString, MeetBatchesResponseModel.class);
-
         txtNoData = findViewById(R.id.txt_no_data);
         txtNoData.setText("No Batches available yet.");
         txtNoData.setVisibility(View.GONE);
         rvBaches = findViewById(R.id.rvLandingPageView);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
-
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         rvBaches.setLayoutManager(layoutManager);
-
         mAdapter = new ShowBatchesPageRecyclerAdapter(this, meetBatchesResponseModel.getData().getGroup(), this::onItemClicked);
         rvBaches.setAdapter(mAdapter);
 
@@ -95,19 +92,24 @@ public class ShowMeetBatchesActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void onItemClicked(int pos) {
+    public void onItemClicked(int pos, String title) {
         Bundle bundle = new Bundle();
         meetBatchesResponseModel.getData().getGroup().get(pos);
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(meetBatchesResponseModel.getData().getGroup().get(pos));
-        Log.e(TAG, "Exception :: OtpActivity : initView");
-        fragment = new ShowBachesDialogFragment();
-        bundle.putString("filter_type", "User Approval");
-        bundle.putString("bachesObjectString", jsonString);
-        fragment.setArguments(bundle);
-        openFragment();
+        if (meetBatchesResponseModel.getData().getGroup().get(pos).getMale().get(0).size()>0 ||
+                meetBatchesResponseModel.getData().getGroup().get(pos).getFemale().get(0).size()>0) {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(meetBatchesResponseModel.getData().getGroup().get(pos));
+            Log.e(TAG, "Exception :: OtpActivity : initView");
+            fragment = new ShowBachesDialogFragment();
+            bundle.putString("filter_type", "User Approval");
+            bundle.putString("bachesObjectString", jsonString);
+            fragment.setArguments(bundle);
+            openFragment();
 
-        toolbar_title.setText("Batch " + (pos + 1));
+            toolbar_title.setText(title);
+        }else {
+            Util.showToast("No profiles under this batch yet.",this);
+        }
 
 /*        FragmentManager fm = getSupportFragmentManager();
 //fragment class name : DFragment

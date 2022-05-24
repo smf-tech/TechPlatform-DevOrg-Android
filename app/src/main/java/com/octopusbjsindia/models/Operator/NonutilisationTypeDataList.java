@@ -3,29 +3,42 @@ package com.octopusbjsindia.models.Operator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class NonutilisationTypeDataList {
 
-    @SerializedName("_id")
+    @SerializedName("hi")
     @Expose
-    private String _id;
-    @SerializedName("value")
+    private List<Hi> hi = null;
+    @SerializedName("mr")
     @Expose
-    private String value;
+    private List<Mr> mr = null;
+    @SerializedName("en")
+    @Expose
+    private List<En> en = null;
 
-    public String get_id() {
-        return _id;
+    public List<Hi> getHi() {
+        return hi;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setHi(List<Hi> hi) {
+        this.hi = hi;
     }
 
-    public String getValue() {
-        return value;
+    public List<Mr> getMr() {
+        return mr;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setMr(List<Mr> mr) {
+        this.mr = mr;
+    }
+
+    public List<En> getEn() {
+        return en;
+    }
+
+    public void setEn(List<En> en) {
+        this.en = en;
     }
 
 }

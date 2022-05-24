@@ -51,6 +51,8 @@ public class TMPendingApprovalPageRecyclerAdapter extends RecyclerView.Adapter<T
                         .into(holder.user_profile_pic);
 
 
+            } else {
+                holder.user_profile_pic.setImageResource(R.drawable.ic_user_avatar);
             }
 
         }

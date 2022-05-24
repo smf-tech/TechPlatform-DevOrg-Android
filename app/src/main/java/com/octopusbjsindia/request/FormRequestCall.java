@@ -8,7 +8,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
@@ -237,20 +236,20 @@ public class FormRequestCall {
             requestObject.addProperty(key, value);
         }
 
-        for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
-            String outerKey = entry.getKey();
-            JsonArray jsonArray = new JsonArray();
-            for (int index = 0; index < entry.getValue().size(); index++) {
-                JsonObject innerObject = new JsonObject();
-                for (Map.Entry<String, String> innerEntry : entry.getValue().get(index).entrySet()) {
-                    String key = innerEntry.getKey();
-                    String value = innerEntry.getValue();
-                    innerObject.addProperty(key, value);
-                }
-                jsonArray.add(innerObject);
-            }
-            requestObject.add(outerKey, jsonArray);
-        }
+//        for (Map.Entry<String, List<HashMap<String, String>>> entry : matrixDynamicValuesMap.entrySet()) {
+//            String outerKey = entry.getKey();
+//            JsonArray jsonArray = new JsonArray();
+//            for (int index = 0; index < entry.getValue().size(); index++) {
+//                JsonObject innerObject = new JsonObject();
+//                for (Map.Entry<String, String> innerEntry : entry.getValue().get(index).entrySet()) {
+//                    String key = innerEntry.getKey();
+//                    String value = innerEntry.getValue();
+//                    innerObject.addProperty(key, value);
+//                }
+//                jsonArray.add(innerObject);
+//            }
+//            requestObject.add(outerKey, jsonArray);
+//        }
 
         if (imageUrls != null && !imageUrls.isEmpty()) {
             for (final Map<String, String> map : imageUrls) {

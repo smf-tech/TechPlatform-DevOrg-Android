@@ -100,6 +100,18 @@ public class StructureData implements Serializable {
     @SerializedName("isStructureComplete")
     @Expose
     private boolean isStructureComplete;
+    @ColumnInfo(name = "structureBoundary")
+    @SerializedName("structureBoundary")
+    @Expose
+    private boolean structureBoundary = false;
+    @ColumnInfo(name = "workStartDate")
+    @SerializedName("workStartDate")
+    @Expose
+    private String workStartDate;
+    @ColumnInfo(name = "workCompletedDate")
+    @SerializedName("workCompletedDate")
+    @Expose
+    private String workCompletedDate;
     @Ignore
     @SerializedName("deployedMachineDetails")
     @Expose
@@ -301,4 +313,29 @@ public class StructureData implements Serializable {
     public void setSavedOffine(boolean savedOffine) {
         isSavedOffine = savedOffine;
     }
+
+    public boolean isStructureBoundary() {
+        return structureBoundary;
+    }
+
+    public void setStructureBoundary(boolean structureBoundary) {
+        this.structureBoundary = structureBoundary;
+    }
+
+    public String getWorkStartDate() {
+        return workStartDate;
+    }
+
+    public void setWorkStartDate(String workStartDate) {
+        this.workStartDate = workStartDate;
+    }
+
+    public String getWorkCompletedDate() {
+        return workCompletedDate;
+    }
+
+    public void setWorkCompletedDate(String workCompletedDate) {
+        this.workCompletedDate = workCompletedDate;
+    }
+
 }

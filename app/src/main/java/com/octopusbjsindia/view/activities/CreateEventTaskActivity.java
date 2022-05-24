@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.events.AddForm;
@@ -50,7 +52,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class CreateEventTaskActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener, PlatformTaskListener, MultiSelectSpinner.MultiSpinnerListener {
+public class CreateEventTaskActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, PlatformTaskListener, MultiSelectSpinner.MultiSpinnerListener {
 
     private AddMembersListAdapter addMembersListAdapter;
 
@@ -88,18 +90,17 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     private String toOpen;
     private final String TAG = EditProfileActivity.class.getName();
 
+    String currentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
         initView();
     }
 
     private void initView() {
-
         formsList = new ArrayList<AddForm>();
-
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
         progressBar = findViewById(R.id.pb_profile_act);
         presenter = new CreateEventActivityPresenter(this);
@@ -136,7 +137,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         btEventSubmit.setText(getString(R.string.btn_submit));
         if (eventTask != null) {
             setAllData();
-
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 setActionbar(getString(R.string.edit_task));
                 cbIsAttendanceRequired.setVisibility(View.GONE);
@@ -154,18 +154,16 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             } else {
                 setActionbar(getString(R.string.create_event));
             }
-
         }
-
         setListeners();
     }
 
     private void setAllData() {
         etTitle.setText(eventTask.getTitle());
-        etStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.FORM_DATE));
-        etEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.FORM_DATE));
-        etStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(),Constants.TIME_FORMAT_));
-        etEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(),Constants.TIME_FORMAT_));
+        etStartDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.FORM_DATE));
+        etEndDate.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.FORM_DATE));
+        etStartTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getStartdatetime(), Constants.TIME_FORMAT_));
+        etEndTime.setText(Util.getDateFromTimestamp(eventTask.getSchedule().getEnddatetime(), Constants.TIME_FORMAT_));
         etDescription.setText(eventTask.getDescription());
         etAddress.setText(eventTask.getAddress());
         findViewById(R.id.rl_add_members).setVisibility(View.GONE);
@@ -174,15 +172,15 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 //            setAdapter(eventTask.getMembersList());
             cbIsAttendanceRequired.setChecked(eventTask.isMarkAttendanceRequired());
             cbIsRegistrationRequired.setChecked(eventTask.isRegistrationRequired());
-            if(eventTask.isRegistrationRequired()){
+            if (eventTask.isRegistrationRequired()) {
                 findViewById(R.id.tly_registration_start_date).setVisibility(View.VISIBLE);
                 findViewById(R.id.tly_registration_end_date).setVisibility(View.VISIBLE);
                 etRegistrationStartDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
-                        .getStartdatetime(),Constants.FORM_DATE));
+                        .getStartdatetime(), Constants.FORM_DATE));
                 etRegistrationEndDate.setText(Util.getDateFromTimestamp(eventTask.getRegistrationSchedule()
-                        .getEnddatetime(),Constants.FORM_DATE));
+                        .getEnddatetime(), Constants.FORM_DATE));
             }
-            if(eventTask.getThumbnailImage().equals("")){
+            if (eventTask.getThumbnailImage().equals("")) {
                 eventPic.setVisibility(View.VISIBLE);
             } else {
                 Glide.with(this)
@@ -309,7 +307,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
     }
 
     private void submitDetails() {
-        if(isAllInputsValid()){
+        if (isAllInputsValid()) {
             EventTask eventTask = new EventTask();
             if (toOpen.equalsIgnoreCase(Constants.Planner.TASKS_LABEL)) {
                 eventTask.setType(toOpen);
@@ -330,10 +328,10 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             eventTask.setRegistrationRequired(cbIsRegistrationRequired.isChecked());
             eventTask.setMarkAttendanceRequired(cbIsAttendanceRequired.isChecked());
 
-            if(cbIsRegistrationRequired.isChecked()){
+            if (cbIsRegistrationRequired.isChecked()) {
                 Schedule obj = new Schedule();
-                obj.setStartdatetime(dateTimeToTimeStamp(etRegistrationStartDate.getText().toString(),"00:00"));
-                obj.setEnddatetime(dateTimeToTimeStamp(etRegistrationEndDate.getText().toString(),"00:00"));
+                obj.setStartdatetime(dateTimeToTimeStamp(etRegistrationStartDate.getText().toString(), "00:00"));
+                obj.setEnddatetime(dateTimeToTimeStamp(etRegistrationEndDate.getText().toString(), "00:00"));
                 eventTask.setRegistrationSchedule(obj);
             }
 
@@ -343,7 +341,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
                 eventTask.setThumbnailImage(mUploadedImageUrl);
             } else {
                 // Set old image url if image unchanged
-                if (this.eventTask!=null && this.eventTask.getThumbnailImage()!= null) {
+                if (this.eventTask != null && this.eventTask.getThumbnailImage() != null) {
                     eventTask.setThumbnailImage(this.eventTask.getThumbnailImage());
                 }
             }
@@ -355,15 +353,14 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     private boolean isAllInputsValid() {
         String msg = "";
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
         Date currentDate = null;
         try {
-            startDate = formatter.parse(etStartDate.getText().toString().trim()+" "+etStartTime.getText().toString().trim());
-            endDate = formatter.parse(etEndDate.getText().toString().trim()+" "+etEndTime.getText().toString().trim());
+            startDate = formatter.parse(etStartDate.getText().toString().trim() + " " + etStartTime.getText().toString().trim());
+            endDate = formatter.parse(etEndDate.getText().toString().trim() + " " + etEndTime.getText().toString().trim());
             currentDate = Calendar.getInstance().getTime();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -383,7 +380,7 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             msg = getResources().getString(R.string.msg_enter_ned_date);
         } else if (startDate.getTime() > endDate.getTime()) {
             msg = getResources().getString(R.string.msg_enter_proper_date);
-        }else if (currentDate.getTime() > startDate.getTime()) {
+        } else if (currentDate.getTime() > startDate.getTime()) {
             msg = getResources().getString(R.string.msg_post_date);
         } else if (etAddress.getText().toString().trim().length() == 0) {
             msg = getResources().getString(R.string.msg_enter_address);
@@ -401,10 +398,10 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             } else if (etRegistrationEndDate.getText().toString().trim().length() == 0) {
                 msg = getResources().getString(R.string.msg_enter_registration_end_date);
             } else if (rStartDate.getTime() > endDate.getTime()) {
-                msg = "End Date for creating event is selected as "+etEndDate.getText().toString().trim()+
+                msg = "End Date for creating event is selected as " + etEndDate.getText().toString().trim() +
                         ". Please select valid Registration Start Date";
             } else if (rEndDate.getTime() > endDate.getTime()) {
-                msg = "End Date for creating event is selected as "+etEndDate.getText().toString().trim()+
+                msg = "End Date for creating event is selected as " + etEndDate.getText().toString().trim() +
                         ". Please select valid Registration End Date";
             } else if (rStartDate.getTime() > rEndDate.getTime()) {
                 msg = "Registration start date should not be greater than registration end date";
@@ -470,18 +467,15 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(this, getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
@@ -490,6 +484,29 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+
     }
 
     private String getImageName() {
@@ -516,25 +533,20 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rvAttendeesList.setLayoutManager(mLayoutManager);
             rvAttendeesList.setAdapter(addMembersListAdapter);
-            etAddMembers.setText(membersList.size()+" members selected");
+            etAddMembers.setText(membersList.size() + " members selected");
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
-                if (imageFilePath == null) return;
-
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(this);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
-                    if (imageFilePath == null) return;
-
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -556,7 +568,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
             }
         }
     }
-
 
 
     @Override
@@ -595,12 +606,22 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         ArrayList<String> displayFormList = new ArrayList<>();
         String CurrentLang = Locale.getDefault().getLanguage();
         for (AddForm obj : formsList) {
-            if (CurrentLang.equalsIgnoreCase("mr"))
-                displayFormList.add(obj.getName().getMr());
-            else if (CurrentLang.equalsIgnoreCase("hi"))
+            if (CurrentLang.equalsIgnoreCase("mr")) {
+                if (obj.getName().getMr() != null) {
+                    displayFormList.add(obj.getName().getMr());
+                } else {
+                    displayFormList.add(obj.getName().getDefault());
+                }
+            } else if (CurrentLang.equalsIgnoreCase("hi")) {
                 displayFormList.add(obj.getName().getHi());
-            else
+                if (obj.getName().getHi() != null) {
+                    displayFormList.add(obj.getName().getHi());
+                } else {
+                    displayFormList.add(obj.getName().getDefault());
+                }
+            } else {
                 displayFormList.add(obj.getName().getDefault());
+            }
         }
         spAddForms.setItems(displayFormList, getString(R.string.select_forms), this);
         if (eventTask != null) {
@@ -638,6 +659,6 @@ public class CreateEventTaskActivity extends BaseActivity implements CompoundBut
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_NEW_MEMBERS_LIST, true);
         intentAddMembersListActivity.putExtra(Constants.Planner.IS_DELETE_VISIBLE, false);
         intentAddMembersListActivity.putExtra(Constants.Planner.MEMBERS_LIST, data);
-        this.startActivityForResult(intentAddMembersListActivity,Constants.Planner.MEMBER_LIST);
+        this.startActivityForResult(intentAddMembersListActivity, Constants.Planner.MEMBER_LIST);
     }
 }

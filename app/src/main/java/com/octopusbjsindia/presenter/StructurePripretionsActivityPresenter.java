@@ -11,15 +11,15 @@ import com.octopusbjsindia.models.SujalamSuphalam.MasterDataResponse;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Urls;
-import com.octopusbjsindia.view.activities.StructurePripretionsActivity;
+import com.octopusbjsindia.view.activities.StructurePreparationActivity;
 
 import java.util.HashMap;
 
 public class StructurePripretionsActivityPresenter implements APIPresenterListener {
 
-    StructurePripretionsActivity activity;
+    StructurePreparationActivity activity;
 
-    public StructurePripretionsActivityPresenter(StructurePripretionsActivity activity) {
+    public StructurePripretionsActivityPresenter(StructurePreparationActivity activity) {
         this.activity=activity;
     }
 
@@ -44,7 +44,6 @@ public class StructurePripretionsActivityPresenter implements APIPresenterListen
     public void submitPripretion(StructurePripretionData requestData, HashMap<String, Bitmap> imageHashmap){
         activity.showProgressBar();
         Gson gson = new GsonBuilder().create();
-
         String paramjson =gson.toJson(requestData);
 
         final String checkProfileUrl = BuildConfig.BASE_URL

@@ -8,6 +8,8 @@ import androidx.room.Room;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.octopusbjsindia.dao.AccessibleLocationDataDao;
+import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
 import com.octopusbjsindia.dao.FormResultDao;
 import com.octopusbjsindia.dao.ModuleDao;
@@ -16,6 +18,7 @@ import com.octopusbjsindia.dao.OperatorRequestResponseModelDao;
 import com.octopusbjsindia.dao.ProcessDataDao;
 import com.octopusbjsindia.dao.ReportsDataDao;
 import com.octopusbjsindia.dao.SSMasterDatabaseDao;
+import com.octopusbjsindia.dao.StructureBoundaryDao;
 import com.octopusbjsindia.dao.StructureDataDao;
 import com.octopusbjsindia.dao.StructurePripretionDataDao;
 import com.octopusbjsindia.dao.StructureVisitMonitoringDataDao;
@@ -27,6 +30,7 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.reports.ReportData;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 
 import java.util.List;
 
@@ -41,6 +45,11 @@ public class DatabaseManager {
                     AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
                     .addMigrations(MIGRATION_OLD_TO_NEW)
+                    .addMigrations(MIGRATION_2_TO_3)
+                    .addMigrations(MIGRATION_3_TO_4)
+                    .addMigrations(MIGRATION_4_TO_5)
+                    .addMigrations(MIGRATION_5_TO_6)
+                    .addMigrations(MIGRATION_6_TO_7)
                     .build();
         }
 
@@ -54,8 +63,69 @@ public class DatabaseManager {
     private static final Migration MIGRATION_OLD_TO_NEW = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // Since we didn't alter the table, there's nothing else to do here.
-          //database.execSQL("CREATE TABLE IF NOT EXISTS `${Notifications}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `text` TEXT, `toOpen` TEXT, `unread` INTEGER, `dateTime` TEXT)");
+
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN structureBoundary INTEGER NOT NULL DEFAULT 0");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS `StructureBoundaryData`" +
+                    " (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `structureId` TEXT, `structureBoundary` TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_2_TO_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN workStartDate TEXT");
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN workCompletedDate TEXT");
+
+        }
+    };
+
+    private static final Migration MIGRATION_3_TO_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE StructurePripretionData ADD COLUMN beneficiary_id TEXT");
+            database.execSQL("ALTER TABLE FormData ADD COLUMN api_url TEXT");
+            database.execSQL("ALTER TABLE ProcessData ADD COLUMN api_url TEXT");
+        }
+    };
+
+    private static final Migration MIGRATION_4_TO_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN jurisdictions_ TEXT");
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN location_required_level TEXT");
+
+            database.execSQL("ALTER TABLE FormData ADD COLUMN location_required INTEGER");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS `JurisdictionLocation`" +
+                    " (`id` TEXT PRIMARY KEY NOT NULL, `name` TEXT, `parent_id` TEXT)");
+
+            database.execSQL("ALTER TABLE ProcessData ADD COLUMN project_id TEXT");
+
+            database.execSQL("ALTER TABLE FormResult ADD COLUMN rejection_reason TEXT");
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS ContentData (contentId TEXT PRIMARY KEY NOT NULL, category_id TEXT, category_name TEXT,content_title TEXT,file_type TEXT,file_size TEXT,downloadedFileName TEXT,languageDetailsString TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_5_TO_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("DROP TABLE JurisdictionLocation");
+            database.execSQL("CREATE TABLE IF NOT EXISTS JurisdictionLocationV3 (autoId INTEGER PRIMARY KEY autoincrement NOT NULL, id TEXT, name TEXT,parent_id TEXT)");
+        }
+    };
+
+    private static final Migration MIGRATION_6_TO_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+            database.execSQL("ALTER TABLE SSMasterDatabase ADD COLUMN type TEXT");
         }
     };
 
@@ -116,7 +186,7 @@ public class DatabaseManager {
 
     public List<ProcessData> getAllProcesses() {
         ProcessDataDao processDataDao = appDatabase.processDataDao();
-        return processDataDao.getAllProcesses();
+        return processDataDao.getAllProcesses(Util.getUserObjectFromPref().getProjectIds().get(0).getId());
     }
 
     public void deleteAllProcesses() {
@@ -148,6 +218,11 @@ public class DatabaseManager {
     public List<String> getAllFormResults(String formId, int formStatus) {
         FormResultDao formResultDao = appDatabase.formResultDao();
         return formResultDao.getAllFormResults(formId, formStatus);
+    }
+
+    public List<FormResult> getFormResults(String formId, int formStatus) {
+        FormResultDao formResultDao = appDatabase.formResultDao();
+        return formResultDao.getFormResults(formId, formStatus);
     }
 
     public List<String> getAllFormResults(String formId) {
@@ -203,39 +278,54 @@ public class DatabaseManager {
         Log.d(TAG, "insertModule");
     }
 
-    public UserAttendanceDao getAttendaceSchema(){
-        UserAttendanceDao userAttendanceDao=appDatabase.userAttendanceDao();
+    public UserAttendanceDao getAttendaceSchema() {
+        UserAttendanceDao userAttendanceDao = appDatabase.userAttendanceDao();
         return userAttendanceDao;
     }
 
-    public NotificationDataDao getNotificationDataDeo(){
-        NotificationDataDao notificationDataDao=appDatabase.notificationsDataDao();
+    public NotificationDataDao getNotificationDataDeo() {
+        NotificationDataDao notificationDataDao = appDatabase.notificationsDataDao();
         return notificationDataDao;
     }
 
-    public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao(){
-        OperatorRequestResponseModelDao notificationDataDao=appDatabase.operatorRequestResponseModelDao();
+    public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao() {
+        OperatorRequestResponseModelDao notificationDataDao = appDatabase.operatorRequestResponseModelDao();
         return notificationDataDao;
     }
 
-    public SSMasterDatabaseDao getSSMasterDatabaseDao(){
-        SSMasterDatabaseDao ssMasterDatabaseDao=appDatabase.ssMasterDatabaseDao();
+    public SSMasterDatabaseDao getSSMasterDatabaseDao() {
+        SSMasterDatabaseDao ssMasterDatabaseDao = appDatabase.ssMasterDatabaseDao();
         return ssMasterDatabaseDao;
     }
 
-    public StructureDataDao getStructureDataDao(){
-        StructureDataDao structureDataDao=appDatabase.structureDataDao();
+    public StructureDataDao getStructureDataDao() {
+        StructureDataDao structureDataDao = appDatabase.structureDataDao();
         return structureDataDao;
     }
 
-    public StructureVisitMonitoringDataDao getStructureVisitMonitoringDataDao(){
-        StructureVisitMonitoringDataDao structureVisitMonitoringDataDao=appDatabase.structureVisitMonitoringDataDao();
+    public StructureVisitMonitoringDataDao getStructureVisitMonitoringDataDao() {
+        StructureVisitMonitoringDataDao structureVisitMonitoringDataDao = appDatabase.structureVisitMonitoringDataDao();
         return structureVisitMonitoringDataDao;
     }
 
-    public StructurePripretionDataDao getStructurePripretionDataDao(){
-        StructurePripretionDataDao structurePripretionDataDao=appDatabase.structurePripretionDataDao();
+    public StructurePripretionDataDao getStructurePripretionDataDao() {
+        StructurePripretionDataDao structurePripretionDataDao = appDatabase.structurePripretionDataDao();
         return structurePripretionDataDao;
+    }
+
+    public StructureBoundaryDao getStructureBoundaryDao() {
+        StructureBoundaryDao structureBoundaryDao = appDatabase.structureBoundaryDao();
+        return structureBoundaryDao;
+    }
+
+    public ContentDataDao getContentDataDao() {
+        ContentDataDao contentDataDao = appDatabase.contentDataDao();
+        return contentDataDao;
+    }
+
+    public AccessibleLocationDataDao getAccessibleLocationData() {
+        AccessibleLocationDataDao ssMasterDatabaseDao = appDatabase.accessibleLocationDataDao();
+        return ssMasterDatabaseDao;
     }
 
 }

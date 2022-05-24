@@ -11,9 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import com.octopusbjsindia.database.DataConverter;
 import com.octopusbjsindia.models.LocaleData;
 import com.octopusbjsindia.models.common.Category;
-import com.octopusbjsindia.models.common.Entity;
 import com.octopusbjsindia.models.common.Microservice;
-import com.octopusbjsindia.models.common.Project;
 
 @SuppressWarnings("unused")
 @androidx.room.Entity
@@ -37,6 +35,19 @@ public class ProcessData {
     @Expose
     private String formTitle;
 
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    @ColumnInfo(name = "project_id")
+    @SerializedName("project_id")
+    @Expose
+    private String projectId;
+
     @ColumnInfo(name = "active")
     @SerializedName("active")
     @Expose
@@ -58,10 +69,15 @@ public class ProcessData {
     @Expose
     private Microservice microservice;
 
-    @Ignore
-    @SerializedName("project")
+    @ColumnInfo(name = "api_url")
+    @SerializedName("api_url")
     @Expose
-    private Project project;
+    private String api_url;
+
+//    @Ignore
+//    @SerializedName("project")
+//    @Expose
+//    private Project project;
 
     @ColumnInfo(name = "submit_count")
     @Expose
@@ -73,15 +89,19 @@ public class ProcessData {
     @Expose
     private Category category;
 
-    @Ignore
-    @SerializedName("entity")
-    @Expose
-    private Entity entity;
+//    @Ignore
+//    @SerializedName("entity")
+//    @Expose
+//    private Entity entity;
 
     @ColumnInfo(name = "form_approvalStatus")
     @SerializedName("form_approvalStatus")
     @Expose
     private String formApprovalStatus;
+
+    @Ignore
+    @Expose
+    private String formRejectionReason;
 
     @NonNull
     public String getId() {
@@ -140,13 +160,21 @@ public class ProcessData {
         this.microservice = microservice;
     }
 
-    public Project getProject() {
-        return project;
+    public String getApi_url() {
+        return api_url;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setApi_url(String api_url) {
+        this.api_url = api_url;
     }
+
+//    public Project getProject() {
+//        return project;
+//    }
+//
+//    public void setProject(Project project) {
+//        this.project = project;
+//    }
 
     public Category getCategory() {
         return category;
@@ -156,13 +184,13 @@ public class ProcessData {
         this.category = category;
     }
 
-    public Entity getEntity() {
-        return entity;
-    }
-
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
+//    public Entity getEntity() {
+//        return entity;
+//    }
+//
+//    public void setEntity(Entity entity) {
+//        this.entity = entity;
+//    }
 
     public String getFormTitle() {
         return formTitle;
@@ -178,5 +206,13 @@ public class ProcessData {
 
     public void setFormApprovalStatus(String formApprovalStatus) {
         this.formApprovalStatus = formApprovalStatus;
+    }
+
+    public String getFormRejectionReason() {
+        return formRejectionReason;
+    }
+
+    public void setFormRejectionReason(String formRejectionReason) {
+        this.formRejectionReason = formRejectionReason;
     }
 }

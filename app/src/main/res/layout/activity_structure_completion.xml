@@ -55,9 +55,11 @@
             <!-- not Completion Reason-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
+                android:id="@+id/ly_reason"
                 android:layout_margin="@dimen/dimen_03dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_reason"
@@ -66,8 +68,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Reason"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapWords"
-                    android:visibility="gone"/>
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -75,7 +76,8 @@
                 android:id="@+id/ly_closer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <!--Actual Silt Qantity Excavated(CuM)-->
                 <com.google.android.material.textfield.TextInputLayout
@@ -228,7 +230,10 @@
                         android:layout_width="@dimen/dimen_200dp"
                         android:layout_height="@dimen/dimen_200dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_margin="@dimen/dimen_03dp"
+                        android:layout_marginStart="@dimen/dimen_03dp"
+                        android:layout_marginTop="@dimen/dimen_03dp"
+                        android:layout_marginEnd="@dimen/dimen_03dp"
+                        android:layout_marginBottom="@dimen/dimen_03dp"
                         android:src="@drawable/ic_structure" />
 
                     <TextView
@@ -253,7 +258,10 @@
                         android:layout_width="@dimen/dimen_200dp"
                         android:layout_height="@dimen/dimen_200dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_margin="@dimen/dimen_03dp"
+                        android:layout_marginStart="@dimen/dimen_03dp"
+                        android:layout_marginTop="@dimen/dimen_03dp"
+                        android:layout_marginEnd="@dimen/dimen_03dp"
+                        android:layout_marginBottom="@dimen/dimen_03dp"
                         android:src="@drawable/ic_structure" />
 
                     <TextView
@@ -266,15 +274,14 @@
                         android:text="Side view*" />
 
                 </RelativeLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

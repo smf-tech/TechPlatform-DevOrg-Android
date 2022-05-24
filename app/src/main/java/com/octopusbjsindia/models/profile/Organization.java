@@ -7,6 +7,7 @@ import com.octopusbjsindia.utility.Constants;
 
 @SuppressWarnings("unused")
 public class Organization {
+
     @SerializedName("_id")
     private String id;
 

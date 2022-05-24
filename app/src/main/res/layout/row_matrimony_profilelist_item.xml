@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_05dp"
         android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_05dp"
         android:layout_marginBottom="@dimen/dimen_05dp"
 
         app:cardBackgroundColor="@color/white"
@@ -28,61 +28,136 @@
 
 
                 <ImageView
+                    android:id="@+id/user_profile_pic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:id="@+id/user_profile_pic"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/profileimagetest" />
 
-                <TextView
-                    android:layout_width="@dimen/dimen_75dp"
-                    android:text="Approved"
-                    android:id="@+id/tv_approval_status"
-                    android:layout_marginTop="@dimen/dimen_16dp"
-                    android:background="@drawable/ic_publish_ribbon"
-                    android:paddingEnd="@dimen/dimen_10dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/opensans_bold"
-                    android:textSize="@dimen/text_size_10"
-                    android:paddingStart="@dimen/dimen_05dp"
-                    android:layout_height="@dimen/dimen_25dp" />
-                <TextView
-                    android:layout_width="@dimen/dimen_75dp"
-                    android:text="Paid"
-                    android:id="@+id/tv_payment_status"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:background="@drawable/ic_publish_ribbon"
-                    android:paddingEnd="@dimen/dimen_10dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:visibility="invisible"
-                    android:layout_below="@+id/tv_approval_status"
-                    android:fontFamily="@font/opensans_bold"
-                    android:textSize="@dimen/text_size_10"
-                    android:paddingStart="@dimen/dimen_05dp"
-                    android:layout_height="@dimen/dimen_25dp" />
+                <LinearLayout
+                    android:id="@+id/ly_unick_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_02dp"
+                    >
 
-                <TextView
-                    android:layout_width="@dimen/dimen_75dp"
-                    android:layout_height="@dimen/dimen_25dp"
+                    <TextView
+                        android:id="@+id/tv_unick_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="BJS-XXX"
+                        android:textSize="@dimen/text_size_11"
+                        android:textColor="@color/white"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_premium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/ly_unick_id"
+                    android:padding="@dimen/dimen_02dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:src="@drawable/ic_premium" />
+
+                    <TextView
+                        android:id="@+id/tv_premium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Premium"
+                        android:textSize="@dimen/text_size_11"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_blocked_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_02dp"
+                    android:layout_below="@+id/ly_premium"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_blocked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="22"
+                        android:textSize="@dimen/text_size_14"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_blocked_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:text="Blocked Count"
+                        android:textSize="@dimen/text_size_11"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_meet_approved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:text="Premium"
-                    android:gravity="center_vertical"
-                    android:id="@+id/tv_premium"
-                    android:layout_marginTop="@dimen/dimen_25dp"
-                    android:textColor="@color/white"
-                    android:visibility="gone"
-                    android:fontFamily="@font/opensans_bold"
-                    android:textSize="@dimen/text_size_10"
-                    android:background="@drawable/ic_publish_ribbon_right"
-                    android:paddingStart="@dimen/dimen_16dp"
-                    />
+                    android:layout_margin="@dimen/dimen_05dp"
+                    android:background="@drawable/bg_circular_tsp_black_40"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_02dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_meet_approved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginEnd="@dimen/dimen_05dp"
+                        android:text="Approved in meet"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_11"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/iv_meet_approved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_05dp"
+                        android:src="@drawable/ic_varified" />
+                </LinearLayout>
 
                 <FrameLayout
+                    android:id="@+id/ly_gradient"
                     android:layout_width="match_parent"
                     android:background="@drawable/gradient_sample"
                     android:layout_alignParentBottom="true"
@@ -90,7 +165,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="vertical"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_10dp">
 
                         <TextView
                             android:id="@+id/tv_title"
@@ -112,38 +188,12 @@
                             android:fontFamily="@font/opensans"
                             android:layout_gravity="center_horizontal"
                             android:layout_below="@+id/tv_title"
-                            android:text="Captain"
+                            android:text=""
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_description_12"
                             android:textStyle="normal" />
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_height="wrap_content">
-                            <com.google.android.material.button.MaterialButton
-                                android:layout_width="wrap_content"
-                                style="@style/AppStyleBorderButton"
-                                android:textColor="@color/white"
-                                android:text="Reject"
-                                android:id="@+id/btn_reject"
-                                android:layout_margin="@dimen/dimen_05dp"
-                                android:layout_gravity="center_horizontal"
-                                android:gravity="center"
-                                app:strokeColor="@color/white"
-                                android:layout_height="wrap_content" />
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="wrap_content"
-                            style="@style/AppStyleBorderButton"
-                            android:textColor="@color/white"
-                            android:text="Approve"
-                            android:id="@+id/btn_approve"
-                            android:layout_margin="@dimen/dimen_05dp"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center"
-                            app:strokeColor="@color/white"
-                            android:layout_height="wrap_content" />
-                        </LinearLayout>
+
                     </LinearLayout>
                 </FrameLayout>
 

@@ -2,25 +2,36 @@ package com.octopusbjsindia.view.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.appconfig.AppConfigResponseModel;
+import com.octopusbjsindia.models.notifications.NotificationData;
 import com.octopusbjsindia.presenter.SplashActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppSignatureHelper;
@@ -28,23 +39,76 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
 public class SplashActivity extends AppCompatActivity {
-    private final static int SPLASH_TIME_OUT = 2000;
+
+    private RequestOptions requestOptions;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    private final static int SPLASH_TIME_OUT = 3000;
     private final String TAG = SplashActivity.class.getName();
     PreferenceHelper preferenceHelper;
     private SplashActivityPresenter splashActivityPresenter;
-    private TextView tv_versionname;
+    private TextView tv_powered,tv_app_version;
     private String appVersion = "";
-
+    String toOpen;
+    ImageView img_logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        tv_versionname = findViewById(R.id.powered);
+
+        preferences = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE);
+        editor = Platform.getInstance().getSharedPreferences(
+                "AppData", Context.MODE_PRIVATE).edit();
+
+        tv_powered = findViewById(R.id.powered);
+        tv_app_version  = findViewById(R.id.tv_app_version);
+        img_logo  =findViewById(R.id.img_logo);
+        //img_logo.setImageResource(R.drawable.ic_splash);
+        img_logo.setImageResource(R.drawable.rwb_splash);
+
+//        if (getUserObjectFromPref() != null) {
+//
+//            if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
+//                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+//                requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+//                Glide.with(this)
+//                        .applyDefaultRequestOptions(requestOptions)
+//                        .load(getUserObjectFromPref().getCurrent_project_logo())
+//                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+//                        .into(img_logo);
+//            } else {
+//                img_logo.setImageResource(R.drawable.ic_splash);
+//            }
+//        }else {
+//            img_logo.setImageResource(R.drawable.ic_splash);
+//        }
+
+
+        toOpen = getIntent().getStringExtra("toOpen");
+        if(toOpen != null){
+            Date crDate = Calendar.getInstance().getTime();
+            String strDate = Util.getDateFromTimestamp(crDate.getTime(), Constants.FORM_DATE_FORMAT);
+            NotificationData data = new NotificationData();
+            data.setDateTime(strDate);
+            data.setTitle(getIntent().getStringExtra("title"));
+            data.setText(getIntent().getStringExtra("message"));
+            data.setToOpen(toOpen);
+            data.setUnread(false);
+            DatabaseManager.getDBInstance(Platform.getInstance()).getNotificationDataDeo().insert(data);
+        }
 
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            tv_versionname.setText("Version"+" "+appVersion);
+            tv_powered.setText("Powered By");
+            tv_app_version.setText("Version -"+appVersion);
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -60,59 +124,28 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             GotoNextScreen();
         }
-        splashActivityPresenter.getAppConfig("");
-/*        new Handler().postDelayed(() -> {
-            Intent intent;
+//        splashActivityPresenter.getAppConfig("");
 
-            try {
-                // Check user has registered mobile number or not
-                if (Util.getLoginObjectFromPref() == null ||
-                        Util.getLoginObjectFromPref().getLoginData() == null ||
-                        TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
-                    intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())) {
-                    intent = new Intent(SplashActivity.this, EditProfileActivity.class);
-                } else {
-                    if (Util.getUserObjectFromPref().getRoleCode()== Constants.SSModule.ROLE_CODE_SS_OPERATOR){
-                         intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
-                        intent.putExtra("meetid","5d6f90c25dda765c2f0b5dd4");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        intent = new Intent(SplashActivity.this, HomeActivity.class);
-                    }
-                }
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }, SPLASH_TIME_OUT);*/
-
-        /*if (!preferenceHelper.getString(preferenceHelper.TOKEN).isEmpty()) {
-            if (!preferenceHelper.getString(preferenceHelper.TOKEN).equalsIgnoreCase(Util.getUserObjectFromPref().getFirebaseId())) {
-                checkAndUpdateFirebase();
-            }
-        }*/
     }
 
-    /*public void checkAndUpdateFirebase() {
-
-        JSONObject jsonObject = new JSONObject();
+    public String getSize(Context context, Uri uri) {
+        String fileSize = null;
+        Cursor cursor = context.getContentResolver()
+                .query(uri, null, null, null, null, null);
         try {
-            jsonObject.put("firebase_id", preferenceHelper.getString(preferenceHelper.TOKEN));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (jsonObject != null) {
-            Util.updateFirebaseIdRequests(jsonObject);
-        }
-    }*/
+            if (cursor != null && cursor.moveToFirst()) {
 
+                // get file size
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                if (!cursor.isNull(sizeIndex)) {
+                    fileSize = cursor.getString(sizeIndex);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return fileSize;
+    }
 
     public void checkForceUpdate(String requestID, String message, int code) {
         //if (requestID.equalsIgnoreCase(presenter.GET_APP_CONFIG))
@@ -124,6 +157,10 @@ public class SplashActivity extends AppCompatActivity {
                     {
                         AppConfigResponseModel appConfigResponseModel
                                 = new Gson().fromJson(message, AppConfigResponseModel.class);
+
+                        editor.putString(Constants.OperatorModule.APP_CONFIG_RESPONSE,message);
+                        editor.apply();
+
                         Gson gson = new Gson();
                         //Utils.setStringPref(Constants.Pref.PROFILE_CATEGORY, gson.toJson(appConfigResponseModel));
 
@@ -133,13 +170,14 @@ public class SplashActivity extends AppCompatActivity {
 //                            {
 //                                {
                             String currentVersion = appConfigResponseModel.getAppConfigResponse().getAppUpdate().getOctopusAppVersion();
+                            Log.d("CurrentLiveVersion","Current Live Version : "+currentVersion);
                             String appVersion = "";
                             try {
                                 appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+                                Log.d("ThisBuildVersion","This Build Version : "+currentVersion);
                             } catch (PackageManager.NameNotFoundException e) {
                                 e.printStackTrace();
                             }
-
 
                             float appV = 0, currentV = 0;
                             if (appVersion != null && appVersion.length() != 0)
@@ -170,8 +208,6 @@ public class SplashActivity extends AppCompatActivity {
 
         Dialog dialog;
         Button btnSubmit, btn_cancel;
-        TextView edt_reason;
-        Activity activity = context;
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -179,7 +215,6 @@ public class SplashActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
 
-        edt_reason = dialog.findViewById(R.id.tv_reason);
         btn_cancel = dialog.findViewById(R.id.btn_cancel);
         btnSubmit = dialog.findViewById(R.id.btn_submit);
         if (pos == 1) {
@@ -227,20 +262,22 @@ public class SplashActivity extends AppCompatActivity {
                 // Check user has registered mobile number or not
                 if (Util.getLoginObjectFromPref() == null ||
                         Util.getLoginObjectFromPref().getLoginData() == null ||
+                        Util.getUserObjectFromPref() == null ||
                         TextUtils.isEmpty(Util.getLoginObjectFromPref().getLoginData().getAccessToken())) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
-                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId())||TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
+                } else if (TextUtils.isEmpty(Util.getUserObjectFromPref().getId()) ||
+                        TextUtils.isEmpty(Util.getUserObjectFromPref().getOrgId())) {
                     intent = new Intent(SplashActivity.this, EditProfileActivity.class);
                 } else {
                     if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
-                        intent = new Intent(SplashActivity.this, OperatorMeterReadingActivity.class);
-                        intent.putExtra("meetid", "5d6f90c25dda765c2f0b5dd4");
+                        intent = new Intent(SplashActivity.this, OperatorActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     } else {
                         intent = new Intent(SplashActivity.this, HomeActivity.class);
+                        intent.putExtra("toOpen",toOpen);
                     }
                 }
 
@@ -252,4 +289,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
     }
+
 }

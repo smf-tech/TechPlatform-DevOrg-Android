@@ -1,11 +1,10 @@
 package com.octopusbjsindia.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,20 +14,48 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MachineDetailData;
+import com.octopusbjsindia.models.events.CommonResponse;
+import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.MachineMouActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.octopusbjsindia.view.fragments.MachineMouFirstFragment;
 import com.octopusbjsindia.view.fragments.MachineMouFourthFragment;
 import com.octopusbjsindia.view.fragments.MachineMouSecondFragment;
 import com.octopusbjsindia.view.fragments.MachineMouThirdFragment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class MachineMouActivity extends AppCompatActivity implements View.OnClickListener, APIDataListener {
     private ImageView ivBackIcon;
@@ -43,7 +70,9 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private MachineMouActivityPresenter machineMouActivityPresenter;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     public Uri chequeImageUri, operatorLicenseImageUri;
-
+    private RequestQueue rQueue;
+    private Location location;
+    private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +102,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                             Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                         toolbar_title.setText(R.string.machine_eligible_form_title);
                     } else {
-                        toolbar_title.setText(R.string.machine_mou_form);
+                        toolbar_title.setText("Machine Details");
                     }
                     machineId = getIntent().getStringExtra("machineId");
                     statusCode = getIntent().getIntExtra("statusCode",0);
@@ -123,6 +152,126 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         fragment = new MachineMouFirstFragment();
         FragmentTransaction fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
+    }
+
+    public void uploadData() {
+        showProgressBar();
+//        gpsTracker = new GPSTracker(this);
+//        if (gpsTracker.isGPSEnabled(this, this)) {
+//            location = gpsTracker.getLocation();
+//            if (location != null) {
+//                getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+//                getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+//            }
+//        }
+        String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
+                            hideProgressBar();
+                            if (responseOBJ.getStatus() == 200) {
+                                Util.showToast(responseOBJ.getMessage(), this);
+                                backToMachineList();
+                            } else if (responseOBJ.getStatus() == 300) {
+                                Util.showToast(responseOBJ.getMessage(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                            }
+                            Log.d("response -", jsonString);
+                        } catch (UnsupportedEncodingException e) {
+                            hideProgressBar();
+                            e.printStackTrace();
+                            Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hideProgressBar();
+                        Toast.makeText(getApplication(), getResources().getString(R.string.msg_failure),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(getMachineDetailData()));
+//                if (location != null) {
+//                    params.put("lat", String.valueOf(location.getLatitude()));
+//                    params.put("long ", String.valueOf(location.getLongitude()));
+//                }
+                params.put("imageArraySize", String.valueOf(getImageHashmap().size()));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                Iterator myVeryOwnIterator = getImageHashmap().keySet().iterator();
+                for (int i = 0; i < getImageHashmap().size(); i++) {
+                    String key = (String) myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), getImageHashmap().get(key));
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                }
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(this);
+        rQueue.add(volleyMultipartRequest);
+    }
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private void backToMachineList() {
+        finish();
+        Intent intent = new Intent(this, SSActionsActivity.class);
+        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+        intent.putExtra("viewType", 2);
+        intent.putExtra("title", "Machine List");
+        startActivity(intent);
     }
 
     @Override
@@ -180,16 +329,28 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void showProgressBar() {
-
+        this.runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-
+        this.runOnUiThread(() -> {
+            if (progressBarLayout != null && progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+                progressBarLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void closeCurrentActivity() {
-
+        if (this != null) {
+            this.onBackPressed();
+        }
     }
 }

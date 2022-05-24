@@ -29,6 +29,9 @@ public class TMApprovalRequestModel {
     @SerializedName("userId")
     @Expose
     private String userId;
+    @SerializedName("survey_id")
+    @Expose
+    private String survey_id;
 
 
     public String getType() {
@@ -93,5 +96,13 @@ public class TMApprovalRequestModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getSurvey_id() {
+        return survey_id;
+    }
+
+    public void setSurvey_id(String survey_id) {
+        this.survey_id = survey_id;
     }
 }

@@ -62,6 +62,11 @@ public class TMUserFormsApprovalRequest {
             @SerializedName("survey_name")
             @Expose
             private Survey_name survey_name;
+        @SerializedName("createdDateTime")
+        @Expose
+        private long createdDateTime;
+
+
 
         @SerializedName("entity_id")
         @Expose
@@ -121,6 +126,14 @@ public class TMUserFormsApprovalRequest {
 
         public void setEntity_id(String entity_id) {
             this.entity_id = entity_id;
+        }
+
+        public long getCreatedDateTime() {
+            return createdDateTime;
+        }
+
+        public void setCreatedDateTime(long createdDateTime) {
+            this.createdDateTime = createdDateTime;
         }
     }
 

@@ -5,21 +5,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/stories_dummy_text"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_feeds"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/tab_stories"
-        android:textSize="@dimen/text_size_20"
-        android:textStyle="bold" />
+        android:layout_margin="@dimen/dimen_05dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stories_dummy_text"
-        android:layout_centerHorizontal="true"
-        android:text="@string/coming_soon" />
+    <!--<TextView-->
+        <!--android:id="@+id/stories_dummy_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:text="@string/tab_stories"-->
+        <!--android:textSize="@dimen/text_size_20"-->
+        <!--android:textStyle="bold" />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/stories_dummy_text"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="@string/coming_soon" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_feed"
@@ -35,5 +41,44 @@
         app:backgroundTint="@color/tab_selector"
         app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
+
+    <RelativeLayout
+        android:id="@+id/ly_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_no_data"
+            android:layout_width="@dimen/standard_240"
+            android:layout_height="@dimen/standard_240"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_data"/>
+        <TextView
+            android:layout_below="@+id/iv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="No Data"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ly_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

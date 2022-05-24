@@ -3,9 +3,10 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Other_marital_information {
+public class Other_marital_information implements Serializable {
 
     @SerializedName("about_me")
     @Expose
@@ -29,7 +30,9 @@ public class Other_marital_information {
     @SerializedName("educational_url")
     @Expose
     private String educational_url;
-
+    @SerializedName("support_doc")
+    @Expose
+    private String support_doc;
     public String getAbout_me() {
         return about_me;
     }
@@ -79,6 +82,13 @@ public class Other_marital_information {
         this.educational_url = educational_url;
     }
 
+    public String getSupport_doc() {
+        return support_doc;
+    }
+
+    public void setSupport_doc(String support_doc) {
+        this.support_doc = support_doc;
+    }
     public ArrayList<String> getProfile_image() {
         return profile_image;
     }

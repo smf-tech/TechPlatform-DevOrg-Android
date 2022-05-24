@@ -330,7 +330,7 @@ public class LeaveDetailsFragment extends Fragment implements View.OnClickListen
                 MonthlyLeaveHolidayData monthlyLeaveHolidayData = monthlyLeaveDataAPIResponse.getData();
                 List<LeaveData> monthlyLeaveData = monthlyLeaveHolidayData.getLeaveData();
                 List<HolidayData> monthlyHolidayData = monthlyLeaveHolidayData.getHolidayData();
-                if(monthlyLeaveData.size()==0){
+                if (monthlyLeaveData.size() == 0) {
 //                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
 //                                    .findViewById(android.R.id.content), getString(R.string.no_leave_applied_msg),
 //                            Snackbar.LENGTH_LONG);

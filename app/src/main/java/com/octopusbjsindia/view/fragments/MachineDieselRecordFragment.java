@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -110,6 +111,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private GPSTracker gpsTracker;
     private Location location;
     private Date selectedDate;
+    private String currentPhotoPath = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,11 +165,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         setCalendar();
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         calendarView.getSelectedDate();
-//        selectedDate = yyyyFormat.format(calendarView.getSelectedDate().getDate())
-//                +"-"+MMFormat.format(calendarView.getSelectedDate().getDate())+"-"+
-//                ddFormat.format(calendarView.getSelectedDate().getDate());
         etMachineCode.setText(machineCode);
-        //etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
         if(!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -270,7 +268,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         Calendar instance = Calendar.getInstance();
         Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        instance1.set(2019, Calendar.JANUARY, 1);
         if (isMonth) {
             calendarView.state().edit()
                     .setMinimumDate(instance1.getTime())
@@ -325,18 +323,15 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
@@ -353,20 +348,17 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Util.getImageName();
-                if (imageFilePath == null) return;
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(getContext(), this);
+                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = Util.getImageName();
-                    if (imageFilePath == null) return;
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -392,6 +384,28 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 Log.e(TAG, e.getMessage());
             }
         }
+    }
+
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
     }
 
     private boolean isAllDataValid() {
@@ -495,11 +509,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 for (int i = 0;i<imageHashmap.size(); i++) {
                     String key=(String)myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
-//                    if(imageType.equals("dieselReceipt")) {
-//                        imageHashmap.put("diesel"+i, bitmap);
-//                    } else if(imageType.equals("registerImage")) {
-//                        imageHashmap.put("register"+i, bitmap);
-//                    }
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
                 }
@@ -565,8 +574,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         selectedDate = date.getDate();
-//        selectedDate = yyyyFormat.format(date.getDate())+"-"+MMFormat.format(date.getDate())+"-"+
-//                ddFormat.format(date.getDate());
         etDieselQuantity.setText("");
     }
 

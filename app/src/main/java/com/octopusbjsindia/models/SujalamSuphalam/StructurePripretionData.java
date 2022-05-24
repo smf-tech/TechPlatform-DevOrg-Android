@@ -53,6 +53,10 @@ public class StructurePripretionData {
     private String structureImg1;
     @ColumnInfo(name = "structureImg2")
     private String structureImg2;
+    @ColumnInfo(name = "beneficiary_id")
+    @SerializedName("beneficiary_id")
+    @Expose
+    private String beneficiary_id;
 
     public String getStructureId() {
         return structureId;
@@ -148,5 +152,13 @@ public class StructurePripretionData {
 
     public void setStructureImg2(String structureImg2) {
         this.structureImg2 = structureImg2;
+    }
+
+    public String getBeneficiary_id() {
+        return beneficiary_id;
+    }
+
+    public void setBeneficiary_id(String beneficiary_id) {
+        this.beneficiary_id = beneficiary_id;
     }
 }

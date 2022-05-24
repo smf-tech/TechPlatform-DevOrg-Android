@@ -1,0 +1,277 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_background_color"
+    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_05dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/et_state"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/state"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_district"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:hint="@string/district"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_taluka"
+                        style="@style/RegistrationEditTextLayout"
+                        android:focusable="false"
+                        android:hint="@string/taluka"
+                        android:longClickable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_village"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="@string/village"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:focusable="false"
+                    android:hint="Date"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_activity_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Type of activity"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_activity_purpose"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Purpose of activity" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_participant1"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Name of key participant 1"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_participant2"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Name of key participant 2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_participant3"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Name of key participant 3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_total_participant"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Total participant"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_discussion"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Discussion"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_meeting_feedback"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Meeting feedback / Outcome" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:text="Photo of activity" />
+
+            <ImageView
+                android:id="@+id/iv_activity_photo"
+                android:layout_width="@dimen/dimen_100dp"
+                android:layout_height="@dimen/dimen_100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_img" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:text="Photo of meeting" />
+
+            <ImageView
+                android:id="@+id/iv_meeting_photo"
+                android:layout_width="@dimen/dimen_100dp"
+                android:layout_height="@dimen/dimen_100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_img" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05dp"
+                android:text="Photo of Attendace sheet" />
+
+            <ImageView
+                android:id="@+id/iv_attendace_sheet_photo"
+                android:layout_width="@dimen/dimen_100dp"
+                android:layout_height="@dimen/dimen_100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_img" />
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/textinputstyle"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <EditText-->
+<!--                    android:id="@+id/et_remark"-->
+<!--                    style="@style/RegistrationEditTextLayout"-->
+<!--                    android:hint="Remark" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/AppStyleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_create_meet"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:text="@string/submit"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/profile_act_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -15,11 +15,13 @@ import com.octopusbjsindia.models.common.Entity;
 import com.octopusbjsindia.models.common.Microservice;
 import com.octopusbjsindia.models.common.Project;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 @androidx.room.Entity
-public class FormData {
+public class FormData implements Serializable {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("_id")
@@ -35,7 +37,7 @@ public class FormData {
 
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "components")
-    @SerializedName("json")
+    @SerializedName("json_result")
     @Expose
     private Components components;
 
@@ -70,6 +72,29 @@ public class FormData {
     @SerializedName("microservice")
     @Expose
     private Microservice microService;
+
+    @ColumnInfo(name = "api_url")
+    @SerializedName("api_url")
+    @Expose
+    private String api_url;
+
+    @ColumnInfo(name = "location_required")
+    @SerializedName("location_required")
+    @Expose
+    private Boolean locationRequired;
+
+    @ColumnInfo(name = "location_required_level")
+    @SerializedName("location_required_level")
+    @Expose
+    private String locationRequiredLevel;
+
+    @ColumnInfo(name = "jurisdictions_")
+    private String jurisdictions_;
+
+    @Ignore
+    @SerializedName("jurisdictions")
+    @Expose
+    private ArrayList<String> jurisdictions;
 
     @Ignore
     @SerializedName("project")
@@ -167,6 +192,13 @@ public class FormData {
         this.microService = microService;
     }
 
+    public String getApi_url() {
+        return api_url;
+    }
+
+    public void setApi_url(String api_url) {
+        this.api_url = api_url;
+    }
     public Entity getEntity() {
         return entity;
     }
@@ -183,4 +215,35 @@ public class FormData {
         this.formKeys = formKeys;
     }
 
+    public Boolean getLocationRequired() {
+        return locationRequired;
+    }
+
+    public void setLocationRequired(Boolean locationRequired) {
+        this.locationRequired = locationRequired;
+    }
+
+    public String getLocationRequiredLevel() {
+        return locationRequiredLevel;
+    }
+
+    public void setLocationRequiredLevel(String locationRequiredLevel) {
+        this.locationRequiredLevel = locationRequiredLevel;
+    }
+
+    public String getJurisdictions_() {
+        return jurisdictions_;
+    }
+
+    public void setJurisdictions_(String jurisdictions_) {
+        this.jurisdictions_ = jurisdictions_;
+    }
+
+    public ArrayList<String> getJurisdictions() {
+        return jurisdictions;
+    }
+
+    public void setJurisdictions(ArrayList<String> jurisdictions) {
+        this.jurisdictions = jurisdictions;
+    }
 }

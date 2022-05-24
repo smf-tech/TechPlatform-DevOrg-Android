@@ -23,7 +23,11 @@ import java.util.HashMap;
 public class MachineDeployStructureListFragmentPresenter implements APIPresenterListener {
     private WeakReference<MachineDeployStructureListFragment> fragmentWeakReference;
     private final String TAG = StructureMachineListFragmentPresenter.class.getName();
+    private static final String KEY_SELECTED_ID = "selected_location_id";
+    private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
+    private static final String KEY_LEVEL = "jurisdictionLevel";
     public static final String GET_MACHINE_DEPLOY_STRUCTURE_LIST ="getMachineDeployStructuresList";
+    private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_DISTRICT_ID = "district_id";
     private static final String KEY_TALUKA_ID = "taluka_id";
     private static final String KEY_VILLAGE_ID = "village_id";
@@ -31,6 +35,7 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
     public static final String DEPLOY_MACHINE ="deployMachine";
     private static final String KEY_STRUCTURE_ID = "structure_id";
     private static final String KEY_MACHINE_ID = "machine_id";
+    public static final String GET_DISTRICT = "getDistrict";
     public static final String GET_TALUKAS = "getTalukas";
 
     public MachineDeployStructureListFragmentPresenter(MachineDeployStructureListFragment tmFragment) {
@@ -69,8 +74,9 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
                 getMachineDeployableStructuresUrl);
     }
 
-    public void getTalukaDeployableStructuresList(String districtId, String talukaId, String type, String currentStructureId){
+    public void getTalukaDeployableStructuresList(String stateId, String districtId, String talukaId, String type, String currentStructureId){
         HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_STATE_ID, stateId);
         map.put(KEY_DISTRICT_ID, districtId);
         map.put(KEY_TALUKA_ID, talukaId);
         map.put(KEY_TYPE, type);
@@ -100,17 +106,37 @@ public class MachineDeployStructureListFragmentPresenter implements APIPresenter
         requestCall.postDataApiCall(DEPLOY_MACHINE, new JSONObject(map).toString(), machineDeployUrl);
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
+//    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        fragmentWeakReference.get().showProgressBar();
+//        final String getLocationUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+//        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+//        fragmentWeakReference.get().showProgressBar();
+//
+//        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+//            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+//        }
+//    }
+
+    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
         fragmentWeakReference.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         fragmentWeakReference.get().showProgressBar();
-
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
-            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(GET_DISTRICT, new JSONObject(map).toString(), getLocationUrl);
+        }else if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+            requestCall.postDataApiCall(GET_TALUKAS, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 

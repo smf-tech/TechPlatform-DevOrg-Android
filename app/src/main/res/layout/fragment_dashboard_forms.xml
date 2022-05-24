@@ -20,17 +20,77 @@
 
         </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/txt_view_all_forms"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/txt_view_all_forms"-->
+    <!--        style="@style/Widget.MaterialComponents.FloatingActionButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_margin="@dimen/dimen_20dp"-->
+    <!--        app:backgroundTint="@color/colorPrimary"-->
+    <!--        app:tint="@color/white"-->
+    <!--        android:src="@drawable/ic_form_category"/>-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/btn_new_form"-->
+    <!--        style="@style/Widget.MaterialComponents.FloatingActionButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_margin="@dimen/dimen_20dp"-->
+    <!--        app:backgroundTint="@color/colorPrimary"-->
+    <!--        app:tint="@color/white"-->
+    <!--        android:src="@drawable/ic_form_category" />-->
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_user_forms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        android:text="Your Forms"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_form_list_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fb_new_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini"
+        android:text="New Form"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_new_form_icon"
+        app:iconTint="@color/white"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/colorPrimary"
-        app:tint="@color/white"
-        android:src="@drawable/ic_form_category"/>
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
 
     <RelativeLayout
         android:id="@+id/gen_frag_progress_bar"

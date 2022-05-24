@@ -166,4 +166,41 @@ public class TMUserFormsApprovalRequestCall {
 
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
+
+    //get form details
+    public void getFormDetailsRequestAPI(JSONObject requestObject,String type) {
+        Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "form details Requests - Resp: " + res);
+                    listener.onSuccessListener(res,type);
+
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                listener.onFailureListener(e.getMessage());
+            }
+        };
+
+        Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.TM.GET_USER_FORM_RECORD;
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                getPendingRequestsUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                pendingRequestsResponseListener,
+                pendingRequestsErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        gsonRequest.setBodyParams(requestObject);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+    }
 }

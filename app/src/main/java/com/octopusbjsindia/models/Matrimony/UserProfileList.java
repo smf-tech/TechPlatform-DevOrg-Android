@@ -3,9 +3,10 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserProfileList {
+public class UserProfileList implements Serializable {
 
     @SerializedName("_id")
     @Expose
@@ -22,9 +23,51 @@ public class UserProfileList {
     @SerializedName("isApproved")
     @Expose
     private String isApproved;
+    @SerializedName("userMeetStatus")
+    @Expose
+    private String userMeetStatus;
     @SerializedName("isPremium")
     @Expose
     private boolean isPremium;
+    @SerializedName("isPaid")
+    @Expose
+    private boolean isPaid;
+    @SerializedName("markAttendance")
+    @Expose
+    private boolean markAttendance;
+    @SerializedName("interviewDone")
+    @Expose
+    private boolean interviewDone;
+    @SerializedName("paymentDone")
+    @Expose
+    private boolean paymentDone;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("createdDateTime")
+    @Expose
+    private int createdDateTime;
+    @SerializedName("updatedDateTime")
+    @Expose
+    private int updatedDateTime;
+    @SerializedName("updated_at")
+    @Expose
+    private String updated_at;
+    @SerializedName("created_at")
+    @Expose
+    private String created_at;
+    @SerializedName("blockCount")
+    @Expose
+    private int blockCount=0;
+
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
 
     public boolean isMarkAttendance() {
         return markAttendance;
@@ -49,34 +92,6 @@ public class UserProfileList {
     public void setPaymentDone(boolean paymentDone) {
         this.paymentDone = paymentDone;
     }
-
-    @SerializedName("markAttendance")
-    @Expose
-    private boolean markAttendance;
-
-    @SerializedName("interviewDone")
-    @Expose
-    private boolean interviewDone;
-
-    @SerializedName("paymentDone")
-    @Expose
-    private boolean paymentDone;
-
-    @SerializedName("phone")
-    @Expose
-    private String phone;
-    @SerializedName("createdDateTime")
-    @Expose
-    private int createdDateTime;
-    @SerializedName("updatedDateTime")
-    @Expose
-    private int updatedDateTime;
-    @SerializedName("updated_at")
-    @Expose
-    private String updated_at;
-    @SerializedName("created_at")
-    @Expose
-    private String created_at;
 
     public String get_id() {
         return _id;
@@ -166,4 +181,20 @@ public class UserProfileList {
         this.created_at = created_at;
     }
 
+
+    public String getUserMeetStatus() {
+        return userMeetStatus;
+    }
+
+    public void setUserMeetStatus(String userMeetStatus) {
+        this.userMeetStatus = userMeetStatus;
+    }
+
+    public int getBlockCount() {
+        return blockCount;
+    }
+
+    public void setBlockCount(int blockCount) {
+        this.blockCount = blockCount;
+    }
 }

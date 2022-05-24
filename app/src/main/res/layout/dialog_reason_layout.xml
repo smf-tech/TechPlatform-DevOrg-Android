@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/dimen_10dp"
-    android:layout_width="320dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
             android:layout_marginTop="10dp"
-            android:hint="Please write the reason for rejection."
+            android:hint="Please write the reason here."
             android:textColor="@color/black"
             android:textStyle="normal"
             android:fontFamily="@font/opensans_regular"

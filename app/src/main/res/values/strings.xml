@@ -56,10 +56,10 @@
     <string name="gender">Gender *</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="other">Other</string>
-    <string name="mandatory_organization">Organization *</string>
+    <string name="other">Other(please specify)</string>
+    <string name="mandatory_organization">Type organization name *</string>
     <string name="organization">Organization</string>
-    <string name="mandatory_project">Project *</string>
+    <string name="mandatory_project">Type project name *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
     <string name="role">Role</string>
@@ -76,8 +76,8 @@
     <string name="cluster">Cluster</string>
     <string name="mandatory_village">Village *</string>
     <string name="village">Village</string>
-    <string name="mandatory_school">Structure Name *</string>
-    <string name="school">Structure Name</string>
+    <string name="mandatory_school">School Name *</string>
+    <string name="school">School Name</string>
     <string name="profile_pic">Add profile picture</string>
     <string name="update_profile">Update Profile</string>
     <string name="update_profile_pic">Update profile picture</string>
@@ -265,7 +265,7 @@
     <string name="task_end_time">End Time</string>
     <string name="task_repeat">Repeat</string>
     <string name="task_description">Description</string>
-    <string name="task_address">Address</string>
+    <string name="task_address">Address or Training link</string>
     <string name="task_add_members">Members list</string>
     <string name="add_members">Add Members</string>
     <string name="my_events">Created by me</string>
@@ -374,7 +374,7 @@
     <string name="enter_proper_date_range">Please enter proper date range.</string>
     <string name="reason">Reason</string>
     <string name="rejected_reason">Rejected Reason</string>
-    <string name="holiday_list_title">Holiday List for 2019</string>
+    <string name="holiday_list_title">Holiday List</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="same_day">Same date for each month</string>
@@ -409,7 +409,7 @@
     <string name="msg_enter_end_date">Please enter the end date.</string>
     <string name="msg_enter_ned_date">Please enter the end time.</string>
     <string name="msg_enter_start_time">Please enter the start time.</string>
-    <string name="msg_enter_address">Please enter the address.</string>
+    <string name="msg_enter_address">Please enter the address or training link.</string>
     <string name="msg_enter_registration_start_date">Please enter the registration start date.</string>
     <string name="msg_enter_registration_end_date">Please enter the registration end date.</string>
     <string name="msg_title_length">Title length can not be greater than 50 characters.</string>
@@ -519,6 +519,10 @@
     <string name="birth_place">Birth Place</string>
     <string name="age">Age</string>
 
+    <string name="gender_not_able_to_modify">(You will not be able to modify gender later.)</string>
+    <string name="birth_date_not_able_to_modify">(You will not be able to modify birth date later.)</string>
+    <string name="marital_status_not_able_to_modify">(You will not be able to modify marital status later.)</string>
+
     <string name="meet_badges_allocated">Meet badges has been allocated.</string>
     <string name="meet_badges_allocated_finalized">Meet badges have been allocated and finalized.</string>
     <string name="meet_badges_allocated_not_finalized">Meet badges have been allocated but not finalized.</string>
@@ -590,7 +594,7 @@
     <string name="meter_stop">Stop</string>
     <string name="meter_pause">Pause</string>
     <string name="meter_resume">Resume</string>
-    <string name="machine_meter_reading">Machine meter reading</string>
+    <string name="machine_meter_reading">Machine Operation</string>
     <string name="update_data">Update Data</string>
     <string name="enter_expiry_date">Enter MOU Expiry date.</string>
     <string name="enter_mou_start_date">Enter MOU start date</string>
@@ -648,10 +652,10 @@
     <string name="host_village_pop">Host Village Population</string>
     <string name="catchment_villages">Catchment villages</string>
     <string name="catchment_villages_pop">Catchment Villages Population</string>
-    <string name="gat_no">Gat No.</string>
+    <string name="gat_no">Gat No./ Survey No.</string>
     <string name="water_shed">Water Shed No.</string>
     <string name="area">Area</string>
-    <string name="structure_name">Structure Name</string>
+    <string name="structure_name">Structure Name *</string>
     <string name="structure_owner_dep">Structure owner department</string>
     <string name="enter_proper_gst_no">Enter proper GST number value.</string>
     <string name="enter_proper_provider_contact">Enter proper value for provider\'s contact number</string>
@@ -659,6 +663,172 @@
     <string name="enter_proper_pan_no">Enter proper value for PAN</string>
     <string name="enter_proper_operator_contact">Enter proper value for Operator\'s contact number.</string>
     <string name="text_terms_service">By continuing you agree to the Terms of Service and Privacy Policy</string>
+    <string name="create_feed">Create Feed</string>
+    <string name="msg_select_org">Please select organization.</string>
+    <string name="msg_select_school">Please select school</string>
+    <string name="share_app">Share app</string>
+    <string name="enter_meter_reading">Enter meter reading</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="msg_images_limit">You can not attach more than 10 images.</string>
+    <string name="boundry_befor_satrt">Please click the start button and start walking..</string>
+    <string name="boundry_when_satrted">Recording your location..</string>
+    <string name="boundry_ended">Structure boundary\'s Recorded</string>
+    <string name="alert">Alert</string>
+    <string name="msg_structure_boundary_no_net">Due to no internet connectivity, structure boundry data will be saved offline and it will be synced when internet connectivity is available.</string>
+    <string name="msg_structure_boundary_discard">Are you sure you want to discard</string>
+    <string name="msg_structure_boundary">Waiting for location Accuracy</string>
+    <string name="meter_resume_alarm">Please resume the machine working.</string>
+    <string name="machine_signoff_alert_message">Are you sure, you want to send sign-off for this machine?</string>
+    <string name="release_opretor_alert_message">Are you sure you want to release the Field Associate from this machine?</string>
+    <string name="assign_opretor_alert_message">Are you sure you want to assign the Field Associate to this machine?</string>
+    <string name="event_content_screen_visit">Content Module Screen visited</string>
+    <string name="device_mismatch_msg">You are ruuning app from different or non-registered device. Please contact administration.</string>
+    <string name="title_activity_create_trainer_workshop">CreateTrainerWorkshop</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
 
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="machine_removed">Machine is not assigned for this  Operator number Please contact your TC.</string>
+    <string name="type_of_beneficiary">Type of beneficiary</string>
+    <string name="none">None</string>
+    <string name="select_max">Can select max</string>
+    <string name="answer">Answer</string>
+    <string name="select_locations">Please select locations</string>
+    <string name="required_error">Please  submit valid data.</string>
+    <string name="cant_submit_form_offline">This form can not be submitted offline as this form contains image. Please submit form online.</string>
+    <string name="offline_no_form_schema_msg">You are offline. You need to go online and fetch the form at least once.</string>
+    <string name="name">Name</string>
+    <string name="age_range">Select age range :</string>
+    <string name="occupation">Occupation</string>
+    <string name="qualification">Qualification/Degree</string>
+    <string name="marital_status">Marital status</string>
+    <string name="income">Annual income</string>
+    <string name="apply_filter">Apply filters</string>
+    <string name="status">Status</string>
+    <string name="gender_filter">Gender</string>
+    <string name="user_meet_status">User status in meet</string>
+    <string name="user_verification_status">User verification status</string>
+    <string name="meet_select_subordinates">Select team members</string>
+    <string name="msg_content_download_languages">Content available in below languages for download. Please select language.</string>
+    <string name="title_select_content_language">Select language</string>
+    <string name="msg_select_panchyt">Please select Gram Panchayat</string>
+    <string name="mandatory_panchayat">Gram Panchayat *</string>
+    <string name="mandatory_center">Learning Center *</string>
+    <string name="msg_select_center">Please select Learning Center</string>
+    <string name="find_by_mobile">Find by mobile number</string>
+    <string name="education_level">Education Level</string>
+    <string name="structure_type">Structure type</string>
+    <string name="structure_count">Structure count</string>
+    <string name="machine_hours_required">Machine hours required</string>
+    <string name="msg_select_struct_code">Please select structure code.</string>
+    <string name="select_stuct_type">Please select structure type.</string>
+    <string name="msg_irrigation_source">Please enter irrigation source.</string>
+    <string name="msg_enter_gat_no">Please enter gat number.</string>
+    <string name="msg_annual_income">Please enter annual income</string>
+    <string name="msg_numberof_crops">Please enter number of crops taken in year.</string>
+    <string name="msg_enter_remark">Please enter remark.</string>
+    <string name="structure_status">Structure status</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="fa_first_name">Field Associate First Name</string>
+    <string name="fa_last_name">Field Associate Last Name</string>
+    <string name="operator_first_name">Operator First Name</string>
+    <string name="operator_last_name">Operator Last Name</string>
+    <string name="enter_fa_first_name">Please enter Field Associate\'s first name</string>
+    <string name="enter_fa_last_name">Please enter Field Associate\'s last name</string>
+    <string name="enter_operator_first_name">Enter machine operator\'s first name</string>
+    <string name="enter_operator_last_name">Enter operator\'s last name</string>
+    <string name="fa_contact">Field Associate contact number</string>
+    <string name="enter_fa_contact">Enter Field Associate\'s contact number</string>
+    <string name="machine_operator_form">Operator Details</string>
+    <string name="order_ref_number">Order Reference Number</string>
+    <string name="enter_order_ref_number">Please enter order reference number</string>
 
 </resources>

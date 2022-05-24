@@ -12,72 +12,72 @@
             android:id="@+id/action_home_sync"
             android:icon="@drawable/ic_sync"
             android:title="@string/update_data" />
-        <item
-            android:id="@+id/action_menu_community"
-            android:icon="@drawable/ic_menu_community"
-            android:title="@string/menu_community"
-            android:visible="false" />
-        <item
-            android:id="@+id/action_menu_forms"
-            android:icon="@drawable/ic_menu_forms"
-            android:title="@string/menu_forms"
-            android:visible="false" />
-        <item
-            android:id="@+id/action_menu_calendar"
-            android:icon="@drawable/ic_menu_calendar"
-            android:title="@string/menu_calendar"
-            android:visible="false" />
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_community"-->
+        <!--            android:icon="@drawable/ic_menu_community"-->
+        <!--            android:title="@string/menu_community"-->
+        <!--            android:visible="false" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_forms"-->
+        <!--            android:icon="@drawable/ic_menu_forms"-->
+        <!--            android:title="@string/menu_forms"-->
+        <!--            android:visible="false" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_calendar"-->
+        <!--            android:icon="@drawable/ic_menu_calendar"-->
+        <!--            android:title="@string/menu_calendar"-->
+        <!--            android:visible="false" />-->
         <!--<item-->
             <!--android:id="@+id/action_menu_teams"-->
             <!--android:icon="@drawable/ic_menu_teams"-->
             <!--android:title="@string/approvals"-->
             <!--android:visible="false" />-->
-        <item
-            android:id="@+id/action_menu_assets"
-            android:icon="@drawable/ic_menu_assets"
-            android:title="@string/menu_assets"
-            android:visible="false" />
-        <item
-            android:id="@+id/action_menu_reports"
-            android:icon="@drawable/ic_menu_reports"
-            android:title="@string/menu_reports"
-            android:visible="false" />
-        <item
-            android:id="@+id/action_menu_webmodule"
-            android:icon="@drawable/ic_menu_reports"
-            android:title="@string/menu_reports"
-            android:visible="false" />
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_assets"-->
+        <!--            android:icon="@drawable/ic_menu_assets"-->
+        <!--            android:title="@string/menu_assets"-->
+        <!--            android:visible="false" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_reports"-->
+        <!--            android:icon="@drawable/ic_menu_reports"-->
+        <!--            android:title="@string/menu_reports"-->
+        <!--            android:visible="false" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/action_menu_webmodule"-->
+        <!--            android:icon="@drawable/ic_menu_reports"-->
+        <!--            android:title="@string/menu_reports"-->
+        <!--            android:visible="false" />-->
     </group>
 
-    <group
-        android:id="@+id/menu_group_2"
-        android:visible="false">
-        <item
-            android:id="@+id/action_menu_connect"
-            android:icon="@drawable/ic_menu_connect"
-            android:title="@string/menu_connect" />
-        <item
-            android:id="@+id/action_menu_ho_support"
-            android:icon="@drawable/ic_menu_ho_support"
-            android:title="@string/menu_ho_support" />
-        <item
-            android:id="@+id/action_menu_notice_board"
-            android:icon="@drawable/ic_menu_notice"
-            android:title="@string/menu_notice_board" />
-    </group>
+    <!--    <group-->
+    <!--        android:id="@+id/menu_group_2"-->
+    <!--        android:visible="false">-->
+    <!--        <item-->
+    <!--            android:id="@+id/action_menu_connect"-->
+    <!--            android:icon="@drawable/ic_menu_connect"-->
+    <!--            android:title="@string/menu_connect" />-->
+    <!--        <item-->
+    <!--            android:id="@+id/action_menu_ho_support"-->
+    <!--            android:icon="@drawable/ic_menu_ho_support"-->
+    <!--            android:title="@string/menu_ho_support" />-->
+    <!--        <item-->
+    <!--            android:id="@+id/action_menu_notice_board"-->
+    <!--            android:icon="@drawable/ic_menu_notice"-->
+    <!--            android:title="@string/menu_notice_board" />-->
+    <!--    </group>-->
 
-    <group
-        android:id="@+id/menu_group_3"
-        android:visible="false">
-        <item
-            android:id="@+id/action_menu_account"
-            android:icon="@drawable/ic_menu_account"
-            android:title="@string/menu_account" />
-        <item
-            android:id="@+id/action_menu_leaves_attendance"
-            android:icon="@drawable/ic_menu_attendance"
-            android:title="@string/menu_leaves_attendance" />
-    </group>
+    <!--    <group-->
+    <!--        android:id="@+id/menu_group_3"-->
+    <!--        android:visible="false">-->
+    <!--        <item-->
+    <!--            android:id="@+id/action_menu_account"-->
+    <!--            android:icon="@drawable/ic_menu_account"-->
+    <!--            android:title="@string/menu_account" />-->
+    <!--        <item-->
+    <!--            android:id="@+id/action_menu_leaves_attendance"-->
+    <!--            android:icon="@drawable/ic_menu_attendance"-->
+    <!--            android:title="@string/menu_leaves_attendance" />-->
+    <!--    </group>-->
 
     <group android:id="@+id/menu_group_4">
         <item
@@ -88,6 +88,10 @@
             android:id="@+id/action_menu_rate_us"
             android:icon="@drawable/ic_menu_rate_us"
             android:title="@string/menu_rate_us" />
+        <item
+            android:id="@+id/action_menu_share_app"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share_app" />
         <item
             android:id="@+id/action_menu_call_us"
             android:icon="@drawable/ic_menu_call"

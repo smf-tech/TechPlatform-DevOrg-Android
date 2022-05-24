@@ -111,6 +111,10 @@ public class TMUserAttendanceApprovalFragment extends Fragment implements TMUser
 
         Util.showSuccessFailureToast(response, getActivity(), getActivity().getWindow().getDecorView()
                 .findViewById(android.R.id.content));
+
+        if (tmUserAttendanceApplicationsList.size()<1) {
+            getActivity().finish();
+        }
     }
 
     @Override

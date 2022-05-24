@@ -7,12 +7,13 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class JurisdictionLevelResponse {
+
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("data")
     @Expose
-    private List<JurisdictionLocation> data = null;
+    private List<JurisdictionLocationV3> data = null;
     @SerializedName("message")
     @Expose
     private String message;
@@ -25,11 +26,11 @@ public class JurisdictionLevelResponse {
         this.status = status;
     }
 
-    public List<JurisdictionLocation> getData() {
+    public List<JurisdictionLocationV3> getData() {
         return data;
     }
 
-    public void setData(List<JurisdictionLocation> data) {
+    public void setData(List<JurisdictionLocationV3> data) {
         this.data = data;
     }
 

@@ -25,6 +25,8 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
 import com.octopusbjsindia.view.customs.CustomViewPager;
+import com.octopusbjsindia.view.fragments.MissionRahat.MissionRahatFragment;
+import com.octopusbjsindia.view.fragments.ssgp.SujalamSufalamGPFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +38,6 @@ public class DashboardFragment extends Fragment {
     private TabLayout tabLayout;
     private boolean isSyncRequired;
     private boolean isUserApproved;
-//    private final int[] tabIcons = {
-//            R.drawable.ic_form_icon_db,
-//            R.drawable.ic_planner_icon_db,
-//            R.drawable.ic_approvals,
-//            R.drawable.ic_reports_icon_db,
-//            R.drawable.ic_webview_icon_db,
-//            R.drawable.ic_webview_icon_db,
-//            R.drawable.ic_matrimony_icon_db
-//    };
     private final int[] disableTabIcons = {
             R.drawable.ic_lock
     };
@@ -78,7 +71,13 @@ public class DashboardFragment extends Fragment {
                             tabNames.get(i).getModuleType().equals(Constants.Home.WEBMODULE) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.CONTENT) ||
                             tabNames.get(i).getModuleType().equals(Constants.Home.MATRIMONY) ||
-                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM)) {
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUJALAM_SUPHALAM_GP) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SMARTGIRL) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.SUPPORT) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MV_SEL) ||
+                            tabNames.get(i).getModuleType().equals(Constants.Home.MISSION_RAHAT)) {
+
                         //do nothing
                     } else {
                         tabNames.remove(i);
@@ -86,7 +85,6 @@ public class DashboardFragment extends Fragment {
                         i--;
                     }
                 }
-                setMenuResourceId();
 
                 if (homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) ||
                         homeData.getUserApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED)) {
@@ -109,45 +107,6 @@ public class DashboardFragment extends Fragment {
             }
         }
         initViews();
-    }
-
-    private void setMenuResourceId() {
-        for (int i = 0; i < tabNames.size(); i++) {
-            switch (tabNames.get(i).getModuleType()) {
-                case Constants.Home.FORMS:
-                    tabNames.get(i).setResId(R.id.action_menu_forms);
-                    break;
-
-                case Constants.Home.PLANNER:
-                    tabNames.get(i).setResId(R.id.action_menu_calendar);
-                    break;
-
-//                case Constants.Home.APPROVALS:
-//                    tabNames.get(i).setResId(R.id.action_menu_teams);
-//                    break;
-
-//                case Constants.Home.REPORTS:
-//                    tabNames.get(i).setResId(R.id.action_menu_reports);
-//                    break;
-
-                case Constants.Home.WEBMODULE:
-                    tabNames.get(i).setResId(R.id.action_menu_reports);
-                    break;
-
-                case Constants.Home.CONTENT:
-                    tabNames.get(i).setResId(R.id.action_menu_reports);
-                    break;
-
-                case Constants.Home.MATRIMONY:
-                    tabNames.get(i).setResId(R.id.action_menu_reports);
-                    break;
-
-                case Constants.Home.SUJALAM_SUPHALAM:
-                    tabNames.get(i).setResId(R.id.action_menu_reports);
-                    break;
-                default:
-            }
-        }
     }
 
     private void initViews() {
@@ -200,8 +159,7 @@ public class DashboardFragment extends Fragment {
                     break;
 
                 case Constants.Home.CONTENT:
-                    ContentManagementFragment cmf = ContentManagementFragment.newInstance("con", "con");
-                    adapter.addFragment(cmf);
+                    adapter.addFragment(new ContentManagementFragment());
                     break;
 
                 case Constants.Home.MATRIMONY:
@@ -210,6 +168,27 @@ public class DashboardFragment extends Fragment {
 
                 case Constants.Home.SUJALAM_SUPHALAM:
                     adapter.addFragment(new SujalamSufalamFragment());
+                    break;
+
+                case Constants.Home.SUJALAM_SUPHALAM_GP:
+                    adapter.addFragment(new SujalamSufalamGPFragment());
+                    break;
+
+                case Constants.Home.SMARTGIRL:
+                    adapter.addFragment(new SmartGirlDashboardFragment());
+                    break;
+
+                case Constants.Home.MV_SEL:
+                    adapter.addFragment(new SELFragment());
+                    break;
+
+                case Constants.Home.SUPPORT:
+//                    adapter.addFragment(new SupportFragment());
+                    adapter.addFragment(new TicketListFragment());
+                    break;
+
+                case Constants.Home.MISSION_RAHAT:
+                    adapter.addFragment(new MissionRahatFragment());
                     break;
 
                 default:
@@ -271,44 +250,27 @@ public class DashboardFragment extends Fragment {
 
             switch (tabNames.get(i).getName().getDefaultValue()) {
                 case Constants.Home.FORMS:
-//                    resId = tabIcons[0];
                     pendingActionCount = getFormsPendingActionCount();
                     break;
-
-                case Constants.Home.PLANNER:
-//                    resId = tabIcons[1];
-                    break;
-
                 case Constants.Home.APPROVALS:
-//                    resId = tabIcons[2];
                     pendingActionCount = getApprovalCount();
                     break;
+//                case Constants.Home.PLANNER:
+//                    break;
+//                case Constants.Home.REPORTS:
+//                    break;
+//                case Constants.Home.WEBMODULE_NAME:
+//                    break;
+//                case Constants.Home.CONTENT:
+//                    break;
+//                case Constants.Home.MATRIMONY:
+//                    break;
+//                case Constants.Home.SUJALAM_SUPHALAM:
+//                    break;
 
-                case Constants.Home.REPORTS:
-//                    resId = tabIcons[3];
-                    break;
-
-                case Constants.Home.WEBMODULE_NAME:
-//                    resId = tabIcons[4];
-                    break;
-
-                case Constants.Home.CONTENT:
-//                    resId = tabIcons[4];
-                    break;
-
-                case Constants.Home.MATRIMONY:
-                    //resId = tabIcons[6];
-                    break;
-
-                case Constants.Home.SUJALAM_SUPHALAM:
-                    //resId = tabIcons[6];
-                    break;
                 default:
-//                    resId = R.drawable.bg_circle_default;
                     break;
             }
-
-//            tabView.setCompoundDrawablesWithIntrinsicBounds(resId, 0, 0, 0);
             if (pendingActionCount != 0) {
                 pendingActionsCountView.setText(String.valueOf(pendingActionCount));
                 pendingActionsCountView.setTextColor(getResources().getColor(R.color.black));

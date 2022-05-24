@@ -1,232 +1,155 @@
 package com.octopusbjsindia.presenter;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
-import com.octopusbjsindia.R;
-import com.octopusbjsindia.listeners.ImageRequestCallListener;
-import com.octopusbjsindia.listeners.ProfileRequestCallListener;
-import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
-import com.octopusbjsindia.models.profile.OrganizationProjectsResponse;
-import com.octopusbjsindia.models.profile.OrganizationResponse;
-import com.octopusbjsindia.models.profile.OrganizationRolesResponse;
+import com.octopusbjsindia.listeners.APIPresenterListener;
+import com.octopusbjsindia.models.login.Login;
+import com.octopusbjsindia.models.profile.MultyProjectData;
+import com.octopusbjsindia.models.profile.MultyProjectResponse;
 import com.octopusbjsindia.models.user.User;
-import com.octopusbjsindia.models.user.UserInfo;
-import com.octopusbjsindia.request.ImageRequestCall;
-import com.octopusbjsindia.request.ProfileRequestCall;
+import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GsonRequestFactory;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.EditProfileActivity;
+import com.octopusbjsindia.view.activities.ProfileActivity;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
-@SuppressWarnings("CanBeFinal")
-public class ProfileActivityPresenter implements ProfileRequestCallListener,
-        ImageRequestCallListener {
+import static com.octopusbjsindia.utility.Util.getAppVersion;
+import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
+import static com.octopusbjsindia.utility.Util.getStringFromPref;
 
-    private final String TAG = ProfileActivityPresenter.class.getName();
-    private WeakReference<EditProfileActivity> profileActivity;
+public class ProfileActivityPresenter implements APIPresenterListener {
 
-    public ProfileActivityPresenter(EditProfileActivity activity) {
-        profileActivity = new WeakReference<>(activity);
+    ProfileActivity activity;
+
+    public ProfileActivityPresenter(ProfileActivity activity) {
+        this.activity = activity;
     }
 
-    public void submitProfile(final UserInfo userInfo) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.submitUserProfile(userInfo);
+    @Override
+    public void onFailureListener(String requestID, String message) {
+        activity.hideProgressBar();
+        activity.onFailureListener(requestID, message);
     }
 
-    public void getOrganizations() {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.getOrganizations();
+    @Override
+    public void onErrorListener(String requestID, VolleyError error) {
+        activity.hideProgressBar();
+        activity.onErrorListener(requestID, error);
+        ;
     }
 
-    public void getOrganizationProjects(String orgId) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.getOrganizationProjects(orgId);
-    }
-
-    public void getOrganizationRoles(String orgId, String projectId) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.getOrganizationRoles(orgId, projectId);
-    }
-
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-        ProfileRequestCall requestCall = new ProfileRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    public void uploadProfileImage(File file, String type) {
-        ImageRequestCall requestCall = new ImageRequestCall();
-        requestCall.setListener(this);
-
-        profileActivity.get().showProgressBar();
-
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(final Void... voids) {
-                requestCall.uploadImageUsingHttpURLEncoded(file, type, null);
-                return null;
+    @Override
+    public void onSuccessListener(String requestID, String response) {
+        activity.hideProgressBar();
+        if (requestID.equals("multi_profile")) {
+            MultyProjectResponse multyProjectResponse = new Gson().fromJson(response, MultyProjectResponse.class);
+            activity.displayProjects(multyProjectResponse.getData());
+        } else if (requestID.equals("UserProfile")) {
+            User user = new Gson().fromJson(response, User.class);
+            if (response != null && user.getUserInfo() != null) {
+                Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
             }
-        }.execute();
-    }
-
-    @Override
-    public void onProfileUpdated(String response) {
-        User user = new Gson().fromJson(response, User.class);
-
-        // Save response
-        if (response != null && user.getUserInfo() != null) {
-            Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
+            activity.onSuccessListener(requestID, "");
         }
 
-        profileActivity.get().hideProgressBar();
-        profileActivity.get().showNextScreen(user);
     }
 
-    @Override
-    public void onOrganizationsFetched(String response) {
-        profileActivity.get().hideProgressBar();
-        if (!TextUtils.isEmpty(response)) {
-            Util.saveUserOrgInPref(response);
-            OrganizationResponse orgResponse = new Gson().fromJson(response, OrganizationResponse.class);
-            if (orgResponse != null && orgResponse.getData() != null
-                    && !orgResponse.getData().isEmpty()
-                    && orgResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizations(orgResponse.getData());
-            }
-        }
+    public void getMultProfile() {
+        activity.showProgressBar();
+        final String checkProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_MULTIPAL_PROFILE;
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall("multi_profile", checkProfileUrl);
     }
 
-    @Override
-    public void onJurisdictionFetched(String response, String level) {
-        profileActivity.get().hideProgressBar();
-
-        if (!TextUtils.isEmpty(response)) {
-            JurisdictionLevelResponse jurisdictionLevelResponse
-                    = new Gson().fromJson(response, JurisdictionLevelResponse.class);
-
-            if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
-                    && !jurisdictionLevelResponse.getData().isEmpty()
-                    && jurisdictionLevelResponse.getData().size() > 0) {
-
-                profileActivity.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(), level);
-            }
-        }
+    public void getUserProfile() {
+        activity.showProgressBar();
+        final String url = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        requestCall.getDataApiCall("UserProfile", url);
     }
 
-    @Override
-    public void onOrganizationProjectsFetched(String orgId, String response) {
-        profileActivity.get().hideProgressBar();
-
-        if (!TextUtils.isEmpty(response)) {
-            Util.saveUserProjectsInPref(orgId, response);
-            OrganizationProjectsResponse projectsResponse
-                    = new Gson().fromJson(response, OrganizationProjectsResponse.class);
-
-            if (projectsResponse != null && projectsResponse.getData() != null
-                    && !projectsResponse.getData().isEmpty() && projectsResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationProjects(projectsResponse.getData());
-            }
-        }
-    }
-
-    @Override
-    public void onOrganizationRolesFetched(String orgId, String response) {
-        profileActivity.get().hideProgressBar();
-
-        if (!TextUtils.isEmpty(response)) {
-            Util.saveUserRoleInPref(orgId, response);
-            OrganizationRolesResponse orgRolesResponse
-                    = new Gson().fromJson(response, OrganizationRolesResponse.class);
-
-            if (orgRolesResponse != null && orgRolesResponse.getData() != null &&
-                    !orgRolesResponse.getData().isEmpty() && orgRolesResponse.getData().size() > 0) {
-                profileActivity.get().showOrganizationRoles(orgRolesResponse.getData());
-            }
-        }
-    }
-
-    @Override
-    public void onFailureListener(String message) {
-        if (profileActivity != null && profileActivity.get() != null) {
-            profileActivity.get().hideProgressBar();
-            profileActivity.get().showErrorMessage(message);
-        }
-    }
-
-    @Override
-    public void onErrorListener(VolleyError error) {
-        if (profileActivity != null && profileActivity.get() != null) {
-            profileActivity.get().hideProgressBar();
-            if (error != null && error.networkResponse != null) {
-                if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
-                    if (error.networkResponse.data != null) {
-                        String json = new String(error.networkResponse.data);
-                        json = Util.trimMessage(json);
-                        if (json != null) {
-                            Util.showToast(json, profileActivity);
-                        } else {
-                            Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
-                                    profileActivity);
-                        }
-                    } else {
-                        Util.showToast(Platform.getInstance().getString(R.string.msg_slow_network),
-                                profileActivity);
-                    }
-                } else {
-                    profileActivity.get().showErrorMessage(error.getLocalizedMessage());
-                    Log.e("onErrorListener",
-                            "Unexpected response code " + error.networkResponse.statusCode);
+    public void getUserDetels(MultyProjectData multyProjectData) {
+        activity.showProgressBar();
+        Response.Listener<JSONObject> userProfileSuccessListener = response -> {
+            activity.hideProgressBar();
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d("getUserProfile - Resp:", res);
+                    activity.updateUI(res);
                 }
+            } catch (Exception e) {
+                Log.e("getUserProfile", e.getMessage());
+                activity.hideProgressBar();
+                activity.onFailureListener("getUserProfile", e.getMessage());
             }
-        }
+        };
+
+        Response.ErrorListener userProfileErrorListener = error -> {
+            activity.hideProgressBar();
+            activity.onErrorListener("requestID", error);
+        };
+
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        final String getProfileUrl = BuildConfig.BASE_URL + Urls.Profile.GET_PROFILE;
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.GET,
+                getProfileUrl,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                userProfileSuccessListener,
+                userProfileErrorListener
+        );
+
+        gsonRequest.setHeaderParams(requestHeader(multyProjectData));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-    @Override
-    public void onImageUploadedListener(final String response, final String formName) {
+    public static Map<String, String> requestHeader(MultyProjectData data) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json, text/plain, */*");
+        headers.put("Content-Type", "application/json;charset=UTF-8");
+//        headers.put("orgId", Util.getUserObjectFromPref().getOrgId());
 
-        Log.e(TAG, "onImageUploadedListener:\n" + response);
-//        profileActivity.get().runOnUiThread(() -> Util.showToast(
-//                profileActivity.get().getResources().getString(R.string.image_upload_success), profileActivity.get()));
-        profileActivity.get().hideProgressBar();
-
-        try {
-            if (new JSONObject(response).has("data")) {
-                JSONObject data = new JSONObject(response).getJSONObject("data");
-                String url = (String) data.get("url");
-                Log.e(TAG, "onPostExecute: Url: " + url);
-
-                profileActivity.get().onImageUploaded(url);
-            } else {
-                Log.e(TAG, "onPostExecute: Invalid response");
+        Login loginObj = getLoginObjectFromPref();
+        if (loginObj != null && loginObj.getLoginData() != null &&
+                loginObj.getLoginData().getAccessToken() != null) {
+            headers.put(Constants.Login.AUTHORIZATION,
+                    "Bearer " + loginObj.getLoginData().getAccessToken());
+            if (data.getOrgId() != null) {
+                headers.put("orgId", data.getOrgId());
             }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            if (data.getProjectId() != null) {
+                headers.put("projectId", data.getProjectId());
+            }
+            if (data.getRoleId() != null) {
+                headers.put("roleId", data.getRoleId());
+            }
+            headers.put("versionName", getAppVersion());
+            headers.put("deviceId", getStringFromPref(Constants.App.deviceId));
         }
+
+        return headers;
     }
+
 }

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.AddMemberActivity">
+
+    <include
+        android:id="@+id/ly_toolbar"
+        layout="@layout/app_toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_toolbar"
+        android:orientation="vertical">
+
+        <!--Profile Pic-->
+        <ImageView
+                android:id="@+id/user_profile_pic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_user_avatar"
+            android:visibility="gone"/>
+
+        <com.octopusbjsindia.view.customs.TextViewSemiBold
+            android:id="@+id/user_profile_pic_label"
+            style="@style/FormLabel"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="@string/profile_pic"
+            android:textSize="@dimen/text_size_title_14"
+            android:visibility="gone"/>
+
+        <!--First Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_first_name"
+            style="@style/textinputstyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_first_name"
+                style="@style/RegistrationEditTextLayout"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="@string/first_name"
+                android:inputType="text|textCapWords"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Middle Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_middle_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_middle_name"
+                style="@style/RegistrationEditTextLayout"
+                android:hint="@string/middle_name"
+                android:inputType="text|textCapWords"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Last Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_last_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_last_name"
+                style="@style/RegistrationEditTextLayout"
+                android:hint="@string/last_name"
+                android:inputType="text|textCapWords"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Birth Date-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_birth_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:visibility="gone"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_birth_date"
+                style="@style/RegistrationEditTextLayout"
+                android:focusable="false"
+                android:hint="@string/birth_date"
+                android:inputType="date"
+                android:longClickable="false"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Mobile Number-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_mobile_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_mobile_number"
+                style="@style/RegistrationEditTextLayout"
+                android:digits="0123456789"
+                android:hint="@string/mobile_no"
+                android:inputType="phone"
+                android:maxLength="10"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Email-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_user_email_id"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+            <EditText
+                android:id="@+id/et_user_email_id"
+                style="@style/RegistrationEditTextLayout"
+                android:hint="@string/email_id"
+                android:inputType="textEmailAddress"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Gender-->
+        <RelativeLayout
+            android:id="@+id/user_gender_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:padding="@dimen/dimen_10dp">
+
+            <com.octopusbjsindia.view.customs.TextViewRegular
+                android:id="@+id/tv_user_gender_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/text_size_12" />
+
+            <RadioGroup
+                android:id="@+id/user_gender_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_gender_label"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/gender_male"
+                    style="@style/GenderTypes"
+                    android:checked="true"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:id="@+id/gender_female"
+                    style="@style/GenderTypes"
+                    android:text="@string/female" />
+
+                <RadioButton
+                    android:id="@+id/gender_other"
+                    style="@style/GenderTypes"
+                    android:text="@string/other" />
+            </RadioGroup>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_profile_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppStyleButton"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_10dp"
+        android:text="@string/btn_submit" />
+
+    <RelativeLayout
+        android:id="@+id/lyProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_profile_act"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+</RelativeLayout>

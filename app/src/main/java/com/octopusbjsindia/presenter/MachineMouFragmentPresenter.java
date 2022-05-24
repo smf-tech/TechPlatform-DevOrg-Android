@@ -15,15 +15,22 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.fragments.MachineMouFirstFragment;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class MachineMouFragmentPresenter  implements APIPresenterListener {
     private WeakReference<MachineMouFirstFragment> fragmentWeakReference;
     private final String TAG = StructureMachineListFragmentPresenter.class.getName();
+    private static final String KEY_SELECTED_ID = "selected_location_id";
+    private static final String KEY_JURIDICTION_TYPE_ID = "jurisdictionTypeId";
+    private static final String KEY_LEVEL = "jurisdictionLevel";
     public static final String CREATE_MACHINE = "cretaeMachine";
     public static final String UPDATE_MACHINE_STATUS = "updateMachineStatus";
     public static final String UPDATE_STRUCTURE_STATUS = "updateStructureStatus";
     public static final String GET_TALUKAS = "getTalukas";
+    public static final String GET_DISTRICTS = "getDistricts";
 
     public MachineMouFragmentPresenter(MachineMouFirstFragment tmFragment) {
         fragmentWeakReference = new WeakReference<>(tmFragment);
@@ -61,17 +68,37 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
         }
     }
 
-    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
+//    public void getJurisdictionLevelData(String orgId, String jurisdictionTypeId, String levelName) {
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        fragmentWeakReference.get().showProgressBar();
+//        final String getLocationUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+//        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+//        fragmentWeakReference.get().showProgressBar();
+//
+//        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
+//            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+//        }
+//    }
+
+    public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
+        HashMap<String,String> map=new HashMap<>();
+        map.put(KEY_SELECTED_ID, selectedLocationId);
+        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+        map.put(KEY_LEVEL, levelName);
+
         fragmentWeakReference.get().showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_JURISDICTION_LEVEL_DATA, orgId, jurisdictionTypeId, levelName);
+                + String.format(Urls.Profile.GET_LOCATION_DATA);
         Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         fragmentWeakReference.get().showProgressBar();
-
-        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)){
-            requestCall.getDataApiCall(GET_TALUKAS, getLocationUrl);
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        if(levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
+            requestCall.postDataApiCall(GET_TALUKAS, new JSONObject(map).toString(), getLocationUrl);
+        } else if (levelName.equalsIgnoreCase(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
+            requestCall.postDataApiCall(GET_DISTRICTS, new JSONObject(map).toString(), getLocationUrl);
         }
     }
 
@@ -109,14 +136,20 @@ public class MachineMouFragmentPresenter  implements APIPresenterListener {
                     CommonResponse responseOBJ = new Gson().fromJson(response, CommonResponse.class);
                     fragmentWeakReference.get().showResponse(responseOBJ.getMessage(),
                             MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS, responseOBJ.getStatus());
-                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS)) {
+                } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS) ||
+                        requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
                         = new Gson().fromJson(response, JurisdictionLevelResponse.class);
                     if (jurisdictionLevelResponse != null && jurisdictionLevelResponse.getData() != null
                         && !jurisdictionLevelResponse.getData().isEmpty()
                         && jurisdictionLevelResponse.getData().size() > 0) {
-                    fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_TALUKAS)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+                        } else if (requestID.equalsIgnoreCase(MachineMouFragmentPresenter.GET_DISTRICTS)) {
+                            fragmentWeakReference.get().showJurisdictionLevel(jurisdictionLevelResponse.getData(),
+                                    Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+                        }
                 }
             }
         }

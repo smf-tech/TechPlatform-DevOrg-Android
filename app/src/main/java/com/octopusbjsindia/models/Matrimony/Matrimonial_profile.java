@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Matrimonial_profile {
+import java.io.Serializable;
+
+public class Matrimonial_profile implements Serializable {
 
     @SerializedName("personal_details")
     @Expose
@@ -23,6 +25,25 @@ public class Matrimonial_profile {
     @SerializedName("other_marital_information")
     @Expose
     private Other_marital_information other_marital_information;
+    @SerializedName("isBan")
+    @Expose
+    private boolean isBan;
+
+    @SerializedName("isVerified")
+    @Expose
+    private boolean isVerified;
+
+    @SerializedName("idApproved")
+    @Expose
+    private boolean idApproved;
+
+    @SerializedName("educationApproved")
+    @Expose
+    private boolean educationApproved;
+    @SerializedName("profile_unique_id")
+    @Expose
+    private String profile_unique_id;
+
 
     public Personal_details getPersonal_details() {
         return personal_details;
@@ -72,4 +93,44 @@ public class Matrimonial_profile {
         this.other_marital_information = other_marital_information;
     }
 
+    public boolean isBan() {
+        return isBan;
+    }
+
+    public void setBan(boolean ban) {
+        isBan = ban;
+    }
+
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    public boolean isIdApproved() {
+        return idApproved;
+    }
+
+    public void setIdApproved(boolean idApproved) {
+        this.idApproved = idApproved;
+    }
+
+    public boolean isEducationApproved() {
+        return educationApproved;
+    }
+
+    public void setEducationApproved(boolean educationApproved) {
+        this.educationApproved = educationApproved;
+    }
+
+    public String getProfile_unique_id() {
+        return profile_unique_id;
+    }
+
+    public void setProfile_unique_id(String profile_unique_id) {
+        this.profile_unique_id = profile_unique_id;
+    }
 }

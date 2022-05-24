@@ -3,7 +3,9 @@ package com.octopusbjsindia.models.Matrimony;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Personal_details {
+import java.io.Serializable;
+
+public class Personal_details implements Serializable {
 
     @SerializedName("first_name")
     @Expose
@@ -53,6 +55,18 @@ public class Personal_details {
     @SerializedName("marital_status")
     @Expose
     private String marital_status;
+
+    @SerializedName("is_divorced_legal")
+    @Expose
+    private String isDivorcedLegal;
+    @SerializedName("have_children")
+    @Expose
+    private String haveChildren;
+    @SerializedName("children_count")
+    @Expose
+    private String childrenCount;
+
+
     @SerializedName("match_patrika")
     @Expose
     private String match_patrika;
@@ -199,6 +213,31 @@ public class Personal_details {
     public void setMarital_status(String marital_status) {
         this.marital_status = marital_status;
     }
+
+    public String getIsDivorcedLegal() {
+        return isDivorcedLegal;
+    }
+
+    public void setIsDivorcedLegal(String isDivorcedLegal) {
+        this.isDivorcedLegal = isDivorcedLegal;
+    }
+
+    public String getHaveChildren() {
+        return haveChildren;
+    }
+
+    public void setHaveChildren(String haveChildren) {
+        this.haveChildren = haveChildren;
+    }
+
+    public String getChildrenCount() {
+        return childrenCount;
+    }
+
+    public void setChildrenCount(String childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
 
     public String getMatch_patrika() {
         return match_patrika;

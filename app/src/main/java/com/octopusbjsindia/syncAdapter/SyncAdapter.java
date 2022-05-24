@@ -26,22 +26,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
+import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureVisitMonitoringData;
-import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
-import com.octopusbjsindia.models.common.Microservice;
+import com.octopusbjsindia.models.attendance.AttendaceData;
+import com.octopusbjsindia.models.attendance.AttendanceResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.pm.ProcessData;
+import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
-import com.octopusbjsindia.utility.VolleyMultipartRequest;
+import com.octopusbjsindia.utility.GsonRequestFactory;
+import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
+import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.utility.VolleyMultipartRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +79,8 @@ import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 @SuppressWarnings({"unused", "CanBeFinal"})
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+    Gson gson = new Gson();
+
     private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
 
@@ -91,14 +101,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
 
-        Log.i(TAG, "onPerformSync: \n");
+        Log.i("onPerformSync", "onPerformSync: \n");
+
+
         syncSavedForms();
-        uploadImage("");
-
-
+        syncMachineOperatorData();
         syncStructureVisitMonitoring();
         syncStructurePripretion();
+        syncStructureBoundary();
+        syncAttendance();
     }
+
 
     private void syncSavedForms() {
         List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
@@ -114,7 +127,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void submitForm(final FormResult form) {
         try {
-            URL formUrl = new URL(getFormUrl(form));
+            //URL formUrl = new URL(getFormUrl(form));
+            URL formUrl = new URL(BuildConfig.BASE_URL + String.format(Urls.PM.SET_PROCESS_RESULT,
+                    form.getFormId()));
 
             Login loginObj = getLoginObjectFromPref();
             if (loginObj == null || loginObj.getLoginData() == null ||
@@ -130,6 +145,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             connection.setRequestProperty("Accept", "application/json, text/plain, */*");
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             connection.setRequestProperty(Constants.Login.AUTHORIZATION, accessToken);
+            connection.setRequestProperty("orgId", getUserObjectFromPref().getOrgId());
+            connection.setRequestProperty("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+            connection.setRequestProperty("roleId", getUserObjectFromPref().getRoleIds());
             connection.setChunkedStreamingMode(0);
             connection.connect();
 
@@ -166,17 +184,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String url = null;
 
         FormData formSchema = DatabaseManager.getDBInstance(getContext()).getFormSchema(formId);
-        if (formSchema != null && formSchema.getMicroService() != null) {
-            Microservice microService = formSchema.getMicroService();
-
-            String baseUrl = microService.getBaseUrl();
-            String route = microService.getRoute();
-            if (route.contains(Constants.FormDynamicKeys.FORM_ID))
-                route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
-            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
-                url = getContext().getResources().getString(R.string.form_field_mandatory,
-                        baseUrl, route);
-            }
+//        if (formSchema != null && formSchema.getMicroService() != null) {
+//            Microservice microService = formSchema.getMicroService();
+//
+//            String baseUrl = microService.getBaseUrl();
+//            String route = microService.getRoute();
+//            if (route.contains(Constants.FormDynamicKeys.FORM_ID))
+//                route = route.replace(Constants.FormDynamicKeys.FORM_ID, formSchema.getId());
+//            if (!TextUtils.isEmpty(baseUrl) && !TextUtils.isEmpty(route)) {
+//                url = getContext().getResources().getString(R.string.form_field_mandatory,
+//                        baseUrl, route);
+//            }
+//        }
+        if (formSchema != null && formSchema.getApi_url() != null) {
+            url = formSchema.getApi_url() + "/" + formId;
         }
         return url;
     }
@@ -192,34 +213,62 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 JSONObject dataObject = outerObject.getJSONObject(Constants.RESPONSE_DATA);
                 JSONObject idObject = dataObject.getJSONObject(Constants.FormDynamicKeys._ID);
 
-                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
-                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
-                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//                requestObject.put(Constants.FormDynamicKeys._ID, idObject);
+//                requestObject.put(Constants.FormDynamicKeys.FORM_TITLE,
+//                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//
+//                requestObject.put(Constants.FormDynamicKeys.FORM_ID, form.getFormId());
+//                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
+//                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+//
+//                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
+//                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
 
-                requestObject.put(Constants.FormDynamicKeys.FORM_ID, form.getFormId());
-                requestObject.put(Constants.FormDynamicKeys.UPDATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME));
+//                FormResult result = new FormResult();
+//                result.setFormName(form.getFormName());
+//                result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
+//                result.setFormId(form.getFormId());
+//                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+//                result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
+//                result.setResult(requestObject.toString());
+//
+//                result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
+//                result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+//
+//                DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
 
-                requestObject.put(Constants.FormDynamicKeys.CREATED_DATE_TIME,
-                        dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME));
+                //FormResult result = DatabaseManager.getDBInstance(getContext()).getFormResult(form.get_id());
+
+//                if (idObject.getString(Constants.FormDynamicKeys.OID) != null) {
+//                    FormResult formResult = DatabaseManager
+//                            .getDBInstance(getContext()).getFormResult(idObject.getString(Constants.FormDynamicKeys.OID));
+
+                if (form != null) {
+                    DatabaseManager.getDBInstance(getContext())
+                            .deleteFormResult(form);
+                }
+                //}
 
                 FormResult result = new FormResult();
-                result.setFormName(form.getFormName());
                 result.set_id(idObject.getString(Constants.FormDynamicKeys.OID));
                 result.setFormId(form.getFormId());
-                String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                //String date = dataObject.getString(Constants.FormDynamicKeys.CREATED_DATE_TIME);
+                String updatedDate = dataObject.getString(Constants.FormDynamicKeys.UPDATED_DATE_TIME);
+                result.setCreatedAt(Long.parseLong(updatedDate));
                 result.setFormTitle(dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE));
                 result.setResult(requestObject.toString());
-
                 result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                 result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
+                result.setFormApprovalStatus(dataObject.getString(Constants.FormDynamicKeys.STATUS));
 
                 DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
 
-                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
-                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
-            }
+                AppEvents.trackAppEvent(getContext().getString(R.string.event_form_submitted_success,
+                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
+//                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
+//                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);
+            }
 
             updateFormSubmittedCount(form);
 
@@ -280,109 +329,104 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-// operator record sync
+    private void syncMachineOperatorData() {
+
+        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+        for (final OperatorRequestResponseModel data : list) {
+            uploadMachineLog(data);
+        }
+    }
+
+    // operator record sync
 //api call to upload record -
-private void uploadImage(String receivedImage) {
+    private void uploadMachineLog(OperatorRequestResponseModel data) {
 
-    final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
+        final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
-    List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
-    if (list.size()>0){
-        Log.e("sync--", "---" + new Gson().toJson(list.get(0)));
-    OperatorRequestResponseModel operatorRequestResponseModel = list.get(0);
-    String imageToSend = operatorRequestResponseModel.getImage();
-    VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
-            new Response.Listener<NetworkResponse>() {
-                @Override
-                public void onResponse(NetworkResponse response) {
-                    rQueue.getCache().clear();
-                    try {
-                        String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                       // Toast.makeText(getContext(), jsonString, Toast.LENGTH_LONG).show();
-                        Log.d("response Received -", jsonString);
+        Log.e("sync--", "---" + new Gson().toJson(data));
+        String imageToSend = data.getImage();
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.d("response Received -", jsonString);
+                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                    deleteSinglSynccedOperatorRecord(data.get_id());
 
-                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().deleteSinglSynccedOperatorRecord(list.get(0).get_id());
-                        if (list.size() > 0) {
-                            uploadImage("");
-                        } else {
-                            Toast.makeText(getContext(), "Sync Complete", Toast.LENGTH_LONG).show();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
 
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(data));
+                params.put("imageArraySize", String.valueOf("1"));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }) {
-
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> params = new HashMap<>();
-            params.put("formData", new Gson().toJson(operatorRequestResponseModel));
-            params.put("imageArraySize", String.valueOf("1"));//add string parameters
-            return params;
-        }
-
-        @Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Accept", "application/json, text/plain, */*");
-            headers.put("Content-Type", getBodyContentType());
-
-            Login loginObj = getLoginObjectFromPref();
-            if (loginObj != null && loginObj.getLoginData() != null &&
-                    loginObj.getLoginData().getAccessToken() != null) {
-                headers.put(Constants.Login.AUTHORIZATION,
-                        "Bearer " + loginObj.getLoginData().getAccessToken());
-                if (getUserObjectFromPref().getOrgId()!=null) {
-                    headers.put("orgId", getUserObjectFromPref().getOrgId());
-                }
-                if (getUserObjectFromPref().getProjectIds()!=null) {
-                    headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
-                }
-                if (getUserObjectFromPref().getRoleIds()!=null) {
-                    headers.put("roleId", getUserObjectFromPref().getRoleIds());
-                }
+                return headers;
             }
-            return headers;
-        }
 
-        @Override
-        protected Map<String, DataPart> getByteData() {
-            Map<String, DataPart> params = new HashMap<>();
-            Drawable drawable = null;
-            //   Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
-            //for (int i = 0;i<imageHashmap.size(); i++)
-            {
-                // String key=(String)myVeryOwnIterator.next();
-                if (TextUtils.isEmpty(imageToSend)) {
-                    params.put("image0", new DataPart("image0", new byte[0],
-                            "image/jpeg"));
-                } else {
-                    drawable = new BitmapDrawable(getContext().getResources(), imageToSend);
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                {
+                    if (TextUtils.isEmpty(imageToSend)) {
+                        params.put("image0", new DataPart("image0", new byte[0],
+                                "image/jpeg"));
+                    } else {
+                        drawable = new BitmapDrawable(getContext().getResources(), imageToSend);
 
-                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
-                            "image/jpeg"));
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
                 }
+                return params;
             }
-            return params;
-        }
-    };
+        };
 
-    volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-            3000,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    rQueue = Volley.newRequestQueue(getContext());
-    rQueue.add(volleyMultipartRequest);
-}
-}
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                12000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(volleyMultipartRequest);
+    }
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -399,7 +443,6 @@ private void uploadImage(String receivedImage) {
         for (final StructureVisitMonitoringData data : structureVisitMonitoringList) {
             submitVisitData(data, 1);
         }
-
     }
 
     private void submitVisitData(StructureVisitMonitoringData requestData, int imageCount) {
@@ -455,13 +498,13 @@ private void uploadImage(String receivedImage) {
                         loginObj.getLoginData().getAccessToken() != null) {
                     headers.put(Constants.Login.AUTHORIZATION,
                             "Bearer " + loginObj.getLoginData().getAccessToken());
-                    if (getUserObjectFromPref().getOrgId()!=null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
                         headers.put("orgId", getUserObjectFromPref().getOrgId());
                     }
-                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                    if (getUserObjectFromPref().getProjectIds() != null) {
                         headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                     }
-                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                    if (getUserObjectFromPref().getRoleIds() != null) {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
@@ -528,7 +571,7 @@ private void uploadImage(String receivedImage) {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("STR_PREPARATION exp:", error.getMessage());
+                        Log.d("STR_PREPARATION exp:", " "+error.getMessage());
                     }
                 }) {
 
@@ -570,7 +613,7 @@ private void uploadImage(String receivedImage) {
                 Drawable drawable = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
                 params.put("Structure0", new DataPart("Structure0", getFileDataFromDrawable(drawable),
                         "image/jpeg"));
-                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg1());
+                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), requestData.getStructureImg2());
                 params.put("Structure1", new DataPart("Structure1", getFileDataFromDrawable(drawable1),
                         "image/jpeg"));
                 return params;
@@ -585,7 +628,140 @@ private void uploadImage(String receivedImage) {
         rQueue.add(volleyMultipartRequest);
     }
 
+    private void syncStructureBoundary() {
+        List<StructureBoundaryData> structureBoundaryDataList = new ArrayList<>();
+        structureBoundaryDataList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getStructureBoundaryDao().getAllStructure());
 
+        for (final StructureBoundaryData data : structureBoundaryDataList) {
+            submitBoundary(data);
+        }
+    }
 
+    private void submitBoundary(StructureBoundaryData data) {
+        Gson gson = new GsonBuilder().create();
+        String paramJson = gson.toJson(data);
+
+        final String url = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_BOUNDARY;
+
+        Log.d(TAG, " url : " + url);
+        Log.d(TAG, " request Jeson : " + paramJson);
+
+        Response.Listener<JSONObject> getModulesResponseListener = response -> {
+            try {
+                if (response != null) {
+                    Log.d(TAG, " Resp: " + response);
+                    String jsonString = response.toString();
+                    CommonResponse res = new Gson().fromJson(jsonString, CommonResponse.class);
+                    if (res.getStatus() == 200) {
+                        DatabaseManager.getDBInstance(Platform.getInstance()).getStructureBoundaryDao()
+                                .delete(data.getStructureId());
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+        };
+
+        Response.ErrorListener getModulesErrorListener = error -> {
+
+        };
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                getModulesResponseListener,
+                getModulesErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setBodyParams(createBodyParams(paramJson));
+        gsonRequest.setShouldCache(false);
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+
+    }
+
+    private void syncAttendance() {
+        String CHECK_IN = "checkin";
+        String CHECK_OUT = "checkout";
+        ArrayList<AttendaceData> unsyncAttendanceList = new ArrayList<>();
+        unsyncAttendanceList.addAll(DatabaseManager.getDBInstance(Platform.getInstance())
+                .getAttendaceSchema().getUnsyncAttendance(false));
+        if (unsyncAttendanceList.size() > 0) {
+            for (AttendaceData attendaceData : unsyncAttendanceList) {
+                if (attendaceData.getAttendanceType().equals(CHECK_OUT)) {
+
+                    AttendaceData attendaceCheckinData = DatabaseManager.getDBInstance(Platform.getInstance())
+                            .getAttendaceSchema().getUserAttendace(attendaceData.getAttendaceDate(), CHECK_IN);
+                    if (attendaceCheckinData.getAttendanceId() != null
+                            && !TextUtils.isEmpty(attendaceCheckinData.getAttendanceId())) {
+                        attendaceData.setAttendanceId(attendaceCheckinData.getAttendanceId());
+                        submitAttendance(attendaceData);
+                    }
+                } else {
+                    submitAttendance(attendaceData);
+                }
+            }
+            Util.removeSimpleProgressDialog();
+        }
+    }
+
+    private void submitAttendance(AttendaceData data) {
+
+        Response.Listener<JSONObject> orgSuccessListener = response -> {
+            try {
+                if (response != null) {
+                    String res = response.toString();
+                    Log.d(TAG, "submitAttendance - Resp: " + res);
+
+                    AttendanceResponse rspData = PlatformGson.getPlatformGsonInstance().fromJson(res, AttendanceResponse.class);
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getAttendaceSchema()
+                            .updateUserAttendace(rspData.getData().getAttendanceId(),
+                                    true,
+                                    rspData.getData().getData().getAttendaceDate(),
+                                    rspData.getData().getData().getAttendanceType());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                Log.d(TAG, "submitAttendance - Exception");
+            }
+        };
+
+        Response.ErrorListener orgErrorListener = error -> Log.d(TAG, "submitAttendance - error" + error);
+
+        final String url = BuildConfig.BASE_URL + Urls.Attendance.SUBMIT_ATTENDANCE;
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(data);
+        Log.d(TAG, "submitAttendance - url: " + url);
+        Log.d(TAG, "submitAttendance - req: " + json);
+
+        GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
+                Request.Method.POST,
+                url,
+                new TypeToken<JSONObject>() {
+                }.getType(),
+                gson,
+                orgSuccessListener,
+                orgErrorListener
+        );
+
+        gsonRequest.setHeaderParams(Util.requestHeader(true));
+        gsonRequest.setShouldCache(false);
+        gsonRequest.setBodyParams(createBodyParams(json));
+        Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
+
+    }
+
+    private JSONObject createBodyParams(String json) {
+        try {
+            return new JSONObject(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

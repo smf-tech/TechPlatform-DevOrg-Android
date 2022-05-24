@@ -37,6 +37,15 @@
                     android:visibility="invisible"
                     android:contentDescription="@string/content_description"
                     android:background="@drawable/ic_back_white" />
+                <ImageView
+                    android:id="@+id/toolbar_back_action_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:contentDescription="@string/content_description"
+                    android:background="@drawable/ic_back_white" />
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -64,7 +73,8 @@
                     android:contentDescription="@string/content_description"
                     android:padding="@dimen/dimen_10dp"
                     android:tint="@color/white"
-                    android:visibility="gone" />
+                    android:src="@drawable/ic_sync"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/toolbar_edit_action"
@@ -90,15 +100,59 @@
         android:text="Halt"
         android:textColor="#fff"
         android:visibility="gone" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_version_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:text=""
+            android:textColor="@color/red" />
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:text=""
+            android:textColor="@color/red" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/tv_machine_code"
+        android:id="@+id/tv_date_today"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_05dp"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         android:layout_gravity="center"
-        android:text="Machine Code"
-        android:textColor="@color/red" />
+        android:text=""
+        android:textColor="@color/dark_grey" />
+
+        <TextView
+            android:id="@+id/tv_machine_code_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dimen_05dp"
+            android:layout_marginTop="@dimen/dimen_05dp"
+            android:layout_marginEnd="@dimen/dimen_05dp"
+            android:layout_marginBottom="@dimen/dimen_05dp"
+            android:gravity="center_horizontal"
+            android:text="Machine Code"
+            android:textColor="@color/red" />
+    </RelativeLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,9 +189,9 @@
         android:id="@+id/tv_machine_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_margin="@dimen/dimen_03dp"
         android:text=""
-        android:textSize="@dimen/text_size_18"
+        android:textSize="@dimen/text_size_16"
         android:gravity="center_horizontal"
         android:fontFamily="@font/opensans_bold"
         android:textColor="@color/dark_grey" />

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +38,7 @@ import static com.octopusbjsindia.syncAdapter.SyncAdapterUtils.PARTIAL_FORM_REMO
 @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
 public class PendingFormsFragment extends Fragment {
 
-    private TextView mNoRecordsView;
+    private ImageView imgNoData;
     private ExpandableListView mExpandableListView;
     private Map<String, List<FormResult>> mFormResultMap;
 
@@ -56,8 +56,7 @@ public class PendingFormsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mNoRecordsView = view.findViewById(R.id.no_records_view);
-
+        imgNoData = view.findViewById(R.id.img_no_data);
         mExpandableListView = view.findViewById(R.id.forms_expandable_list);
         mExpandableListView.setGroupIndicator(null);
 
@@ -134,9 +133,9 @@ public class PendingFormsFragment extends Fragment {
                     new SavedFormsListAdapter(getContext(), mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
-                mNoRecordsView.setVisibility(View.GONE);
+                imgNoData.setVisibility(View.GONE);
             } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
+                imgNoData.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             Log.e("PendingForms", e.getMessage() + "", e);
@@ -172,9 +171,9 @@ public class PendingFormsFragment extends Fragment {
                     mFormResultMap, this));
 
             if (!mFormResultMap.isEmpty()) {
-                mNoRecordsView.setVisibility(View.GONE);
+                imgNoData.setVisibility(View.GONE);
             } else {
-                mNoRecordsView.setVisibility(View.VISIBLE);
+                imgNoData.setVisibility(View.VISIBLE);
             }
         }
     }

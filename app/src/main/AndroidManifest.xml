@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.octopusbjsindia">
-
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,12 +19,13 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" /> <!-- GPS location permissions -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:name=".Platform"
@@ -27,20 +33,116 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name_ss"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
-        <activity android:name=".view.activities.StructureCompletionActivity"
+        <activity
+            android:name=".view.activities.SiltTransportationRecordActivity"
+            android:exported="true"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.CommunityMobilizationActivity"
+        <activity
+            android:name=".view.activities.OperatorActivity"
+            android:exported="true"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.StructureVisitMonitoringActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.activities.StructurePripretionsActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activities.MissionRahat.FilterActivity" />
+        <activity android:name=".view.activities.MissionRahat.OxyMachinesAssignActivity" />
+        <activity android:name=".view.activities.MissionRahat.SearchListActivity" />
+        <activity android:name=".view.activities.MissionRahat.RequirementsListActivity" />
+        <activity android:name=".view.activities.MissionRahat.ConcentratorApprovalActivity" />
+        <activity android:name=".view.activities.MissionRahat.ConcentratorRequirementActivity" />
+        <activity android:name=".view.activities.TMFilterActivity" />
+        <activity android:name=".view.activities.MissionRahat.CreateHospitalActivity" />
+        <activity android:name=".view.activities.MissionRahat.CreateMachineActivity" />
+        <activity
+            android:name=".view.activities.SmartGirlDashboardListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activities.SupportActivity" />
+        <activity android:name=".view.activities.YouTubeVideoActivity" />
+        <activity
+            android:name=".view.activities.SELTrainingVideoActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".view.activities.SELTrainingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activities.SupportActivity" />
+        <activity android:name=".view.activities.TransactionDetailsActivity" />
+        <activity android:name=".view.activities.AddMemberActivity" />
+        <activity android:name=".view.activities.MyTeamActivity" />
+        <activity
+            android:name=".view.activities.MissingInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MatrimonyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.WebviewFormDisplayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".view.activities.CreateTrainerWorkshop"
+            android:label="@string/title_activity_create_trainer_workshop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activities.CreateWorkshopSmartgirlActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activities.TrainerBatchListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.activities.SmartGirlWorkshopListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.fragments.smartgirlfragment.WebActivityTest"
+            android:screenOrientation="portrait" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".view.activities.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.StructureBoundaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.CommentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.CreateFeedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.StructureCompletionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.CommunityMobilizationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.StructureVisitMonitoringActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.StructurePreparationActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.CreateStructureActivity"
             android:screenOrientation="portrait" />
@@ -49,6 +151,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.UserRegistrationMatrimonyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".matrimonyregistration.RegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activities.MatrimonyProfileListActivity"
@@ -81,10 +186,10 @@
         <activity
             android:name=".view.activities.SplashActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -100,17 +205,17 @@
             android:name=".view.activities.EditProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.soundcloud.android.crop.CropImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".view.activities.OtpActivity"
             android:screenOrientation="portrait"
@@ -172,14 +277,30 @@
             android:name=".view.activities.MatrimonyBookletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
-
-        <activity
-            android:name=".view.activities.FeedCreationActivity"
-            android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.activities.MachineWorkingDataListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.FormDisplayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity android:name=".view.activities.StoredContentActivity" />
+        <activity
+            android:name=".view.activities.ssgp.GPActionsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineMouActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineDailyReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.OxyMachineListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activities.MissionRahat.PatientInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activities.MissionRahat.ConcentratorTakeOverActivity" />
 
         <receiver
             android:name=".receivers.SmsReceiver"
@@ -191,19 +312,25 @@
         </receiver>
         <receiver
             android:name=".receivers.ConnectivityReceiver"
+            android:exported="true"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".receivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <service
             android:name=".services.MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name=".services.AttendanceService"
             android:enabled="true"
@@ -237,6 +364,7 @@
         </service>
         <service
             android:name=".syncAdapter.GenericAccountService"
+            android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -256,9 +384,11 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
-        <!--<meta-data
+        <!--
+<meta-data
             android:name="com.google.android.actions"
-            android:resource="@xml/circle_background" />-->
+            android:resource="@xml/circle_background" />
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

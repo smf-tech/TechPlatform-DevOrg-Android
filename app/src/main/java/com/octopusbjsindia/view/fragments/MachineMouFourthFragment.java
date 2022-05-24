@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -11,14 +12,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -35,6 +30,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -50,6 +51,7 @@ import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.listeners.ImageRequestCallListener;
 import com.octopusbjsindia.models.SujalamSuphalam.OperatorDetails;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
@@ -66,12 +68,17 @@ import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.soundcloud.android.crop.Crop;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -79,13 +86,12 @@ import static android.app.Activity.RESULT_OK;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
-public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener,
-        CustomSpinnerListener {
+public class MachineMouFourthFragment extends Fragment implements View.OnClickListener, APIDataListener, ImageRequestCallListener
+        , CustomSpinnerListener {
     private View machineMouFourthFragmentView;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     private Button btnFourthPartMou, btnPreviousMou;
-    //private MachineMouFourthFragmentPresenter machineMouFourthFragmentPresenter;
     private EditText etOperatorName, etOperatorLastName, etOperatorContact, etLicenseNumber, etOperatorTraining,
             etAppInstalled;
     private ImageView imgLicense;
@@ -100,6 +106,15 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private RequestQueue rQueue;
     private int statusCode;
     private int imgCount =0;
+    private String currentPhotoPath = "";
+    private Activity activity;
+    private String pdfURL="";
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        activity = getActivity();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,8 +173,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void setUIvalues() {
-//        edtContractDate.setText(Util.getDateFromTimestamp(((MachineMouActivity) getActivity()).getMachineDetailData().
-//                getMouDetails().getDateOfSigning(), DAY_MONTH_YEAR));
         etOperatorName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getOperatorDetails().getFirstName());
         etOperatorLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -261,6 +274,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             case R.id.img_license:
                 onAddImageClick();
                 break;
+//            case R.id.btn_pdf:
+//                Intent intent = new Intent();
+//                intent.setType("application/pdf");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Select PDF"), Constants.CHOOSE_PDF_FROM_STORAGE);
+//                break;
         }
     }
 
@@ -295,7 +314,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
             return false;
         }
-//        else if(imgCount == 0) {
+//        if(pdfURL != null && !TextUtils.isEmpty(pdfURL)) {
+//            ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMouURL(pdfURL);
+//        } else {
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.select_image), Snackbar.LENGTH_LONG);
 //            return false;
@@ -341,18 +362,15 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
             //display an error message
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
@@ -368,20 +386,17 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Util.getImageName();
-                if (imageFilePath == null) return;
-                finalUri = Util.getUri(imageFilePath);
-                Crop.of(outputUri, finalUri).start(getContext(), this);
+                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = Util.getImageName();
-                    if (imageFilePath == null) return;
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -402,7 +417,51 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        } else if (requestCode == Constants.CHOOSE_PDF_FROM_STORAGE && resultCode == RESULT_OK) {
+//            try {
+//                Uri path = data.getData();
+//                if (Util.isConnected(getActivity())) {
+//                    ImageRequestCall requestCall = new ImageRequestCall();
+//                    requestCall.setListener(this);
+//
+//                    new AsyncTask<Void, Void, Void>() {
+//                        @Override
+//                        protected Void doInBackground(final Void... voids) {
+//                            showProgressBar();
+//                            requestCall.uploadImageUsingHttpURLEncoded(null, Constants.Image.PDF, "MOU", path, getActivity());
+//                            return null;
+//                        }
+//                    }.execute();
+//                } else {
+//                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+//                }
+//            } catch (Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
         }
+    }
+
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+
     }
 
     private void backToMachineList(){
@@ -649,4 +708,29 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 break;
         }
     }
+
+    @Override
+    public void onImageUploadedListener(String response, String formName) {
+        hideProgressBar();
+        try {
+            if (new JSONObject(response).has("data")) {
+                JSONObject data = new JSONObject(response).getJSONObject("data");
+                pdfURL = (String) data.get("url");
+                Log.e(TAG, "PDF Url: " + pdfURL);
+
+            } else {
+                Log.e(TAG, "onPostExecute: Invalid response");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public void onFailureListener(String error) {
+        hideProgressBar();
+        Util.showToast(error,getActivity());
+    }
+
+
 }

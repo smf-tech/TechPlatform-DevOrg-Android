@@ -101,7 +101,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
         btnSubmit.setOnClickListener(this);
         gpsTracker = new GPSTracker(getActivity());
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getSSMasterDatabaseDao().getSSMasterData();
+                getSSMasterDatabaseDao().getSSMasterData("SS");
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
@@ -285,7 +285,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     }
 
     private void showDialog() {
-        Util.showDialog(getContext(), "Sujalam Suphalam", getResources().getString(R.string.machine_stop_alert_message),
+        Util.showDialog(getContext(), "RWB", getResources().getString(R.string.machine_stop_alert_message),
                 "OK", "");
     }
 

@@ -273,7 +273,6 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
                     .setMessage(getString(R.string.sure_to_delete))
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES!
                             presenter.deleteMember(userId,eventTaskID);
                             dialog.dismiss();
                         }
@@ -287,8 +286,6 @@ public class AddMembersListActivity extends BaseActivity implements SearchView.O
             // Create the AlertDialog object and return it
             alertDialog = builder.create();
             alertDialog.show();
-
-
     }
 
     @Override
