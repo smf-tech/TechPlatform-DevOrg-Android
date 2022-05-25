@@ -123,7 +123,6 @@ public class OperatorRequestResponseModel {
         this.totalHours = totalHours;
     }
 
-
     public int get_id() {
         return _id;
     }
