@@ -172,12 +172,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus_code("" + state_start);
                     operatorRequestResponseModel.setStatus("Working");
                     operatorRequestResponseModel.setMeter_reading(et_smeter_read.getText().toString());
+                    operatorRequestResponseModel.setStructureId(structure_id);
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "Working");
                     editor.putString("startReading", et_smeter_read.getText().toString());
                     editor.putString("startUri", startUri.toString());
                     Date current = Calendar.getInstance().getTime();
                     editor.putString("startDate", df.format(current));
+                    editor.putString("stopReading", "");
+                    editor.putString("stopUri", "");
+                    editor.putString("stopDate", "");
                     editor.apply();
                     machine_status = "Working";
 
@@ -202,6 +206,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus_code("" + state_stop);
                     operatorRequestResponseModel.setStatus("stop");
                     operatorRequestResponseModel.setMeter_reading(et_emeter_read.getText().toString());
+                    operatorRequestResponseModel.setStructureId(structure_id);
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "stop");
                     editor.putString("stopReading", et_emeter_read.getText().toString());
@@ -263,42 +268,79 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private void checkDate() {
 //        stopDate  startDate
         String startDateStr = preferences.getString("startDate", "");
-        String stopDateStr = preferences.getString("stopDate", "");
-        if (startDateStr.equals("")) {
-            setButtons();
-        } else if (stopDateStr.equals("")) {
-            setButtons();
-        } else {
+//        String stopDateStr = preferences.getString("stopDate", "");
+        machine_status = preferences.getString("machineStatus", "");
+        if (!(startDateStr.equals(""))) {
+//            setButtons();
+//        } else if (stopDateStr.equals("")) {
+//            setButtons();
+//        } else {
             Date current = Calendar.getInstance().getTime();
             Date startDate = null;
-            //Date stopDate = null;
+//            Date stopDate = null;
             Date currentDate = null;
             try {
                 currentDate = df.parse(df.format(current));
                 startDate = df.parse(startDateStr);
-                //stopDate = df.parse(stopDateStr);
+//                stopDate = df.parse(stopDateStr);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+//            if (startDate.getTime() != currentDate.getTime()) {
+//                editor.putString("machineStatus", "");
+//                editor.putString("stopDate", "");
+//                editor.putString("startDate", "");
+//                editor.putString("stopReading", "");
+//                editor.putString("stopUri", "");
+//                editor.putString("stopDate", "");
+//                editor.apply();
+//                setButtons();
+//            } else {
+//                editor.putString("machineStatus", "submit");
+//                editor.apply();
+//                setButtons();
+//            }
 
-//            if (startDate.getTime() == stopDate.getTime()) {
-            if (startDate.getTime() != currentDate.getTime()) {
-                editor.putString("machineStatus", "");
-                editor.putString("stopDate", "");
-                editor.putString("startDate", "");
-                editor.apply();
-                setButtons();
-            } else {
-                editor.putString("machineStatus", "submit");
-                editor.apply();
-                setButtons();
+//            if(machine_status.equals("")){
+//                setButtons();
+//            } else if(machine_status.equalsIgnoreCase("Working")){
+//
+//            } else
+            if (machine_status.equalsIgnoreCase("stop") |
+                    machine_status.equalsIgnoreCase("submit")){
+                if (!(startDate.equals(currentDate))) {
+                    editor.putString("machineStatus", "");
+                    editor.putString("stopDate", "");
+                    editor.putString("startDate", "");
+                    editor.putString("stopReading", "");
+                    editor.putString("stopUri", "");
+                    editor.putString("stopDate", "");
+                    editor.apply();
+                    machine_status = "";
+                    img_start_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_start_meter_reading));
+                    et_smeter_read.setText("");
+                    img_end_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_end_meter_reading));
+                    et_emeter_read.setText("");
+                } else {
+                    editor.putString("machineStatus", "submit");
+                    editor.apply();
+                    machine_status = "submit";
+                }
             }
         }
+        setButtons();
+    }
+
+    private void resetView() {
+
     }
 
     private void setButtons() {
-        machine_status = preferences.getString("machineStatus", "");
+//        machine_status = preferences.getString("machineStatus", "");
         if (machine_status.equals("")) {
+            img_start_meter.setEnabled(true);
+            et_smeter_read.setEnabled(true);
+            btnStartService.setEnabled(true);
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
@@ -328,7 +370,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_start_meter.setEnabled(false);
             et_smeter_read.setEnabled(false);
             btnStartService.setEnabled(false);
-
             img_end_meter.setEnabled(true);
             et_emeter_read.setEnabled(true);
             btnStopService.setEnabled(true);
@@ -419,7 +460,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         machine_id = operatorMachineData.getMachine_id();
         structure_id = operatorMachineData.getStructure_id();
         machine_code = operatorMachineData.getMachine_code();
-        tv_machine_code.setText(machine_code);
+        if(machine_code != null && !(machine_code.isEmpty())){
+            tv_machine_code.setText(machine_code);
+        } else {
+            tv_machine_code.setText("Not Assigned");
+            Util.showToast("Machine not assigned. Contact to DPM.",this);
+        }
+
 
         for (int i = 0; i < operatorMachineData.getNonutilisationTypeData().getEn().size(); i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());

@@ -49,7 +49,9 @@ public class OperatorRequestResponseModel {
     @SerializedName("reason_id")
     @Expose
     private String reasonId;
-
+    @SerializedName("structure_id")
+    @Expose
+    private String structureId;
 
     public String getMachine_id() {
         return machine_id;
@@ -145,5 +147,13 @@ public class OperatorRequestResponseModel {
 
     public void setReasonId(String reasonId) {
         this.reasonId = reasonId;
+    }
+
+    public String getStructureId() {
+        return structureId;
+    }
+
+    public void setStructureId(String structureId) {
+        this.structureId = structureId;
     }
 }
