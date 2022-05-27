@@ -163,9 +163,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             case R.id.buttonStartService:
                 if (startUri == null)
                     msg = "Please select Start meter reading photo";
-                else if (et_smeter_read.getText().toString().length() <= 0) {
+                else if (et_smeter_read.getText().toString().length() <= 0)
                     msg = "Please enter start meter reading";
-                }
+                else if (machine_code.isEmpty())
+                    msg = "Machine not assigned. Contact to DPM.";
                 if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
@@ -199,6 +200,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 } else if (Float.parseFloat(et_emeter_read.getText().toString()) <
                         Float.parseFloat(et_smeter_read.getText().toString())) {
                     msg = "Stop meter reading cannot be less than Start meter reading.";
+                }  else if (machine_code.isEmpty()) {
+                    msg = "Machine not assigned. Contact to DPM.";
                 }
                 if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
