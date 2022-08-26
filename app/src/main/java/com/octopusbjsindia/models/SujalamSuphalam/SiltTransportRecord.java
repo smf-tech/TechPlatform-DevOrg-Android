@@ -82,6 +82,14 @@ public class SiltTransportRecord implements Serializable {
 //    @Expose
 //    private String beneficiariesCount;
 
+    @SerializedName("lat")
+    @Expose
+    private double lat;
+
+    @SerializedName("log")
+    @Expose
+    private double log;
+
     public String getStructureId() {
         return structureId;
     }
@@ -233,6 +241,22 @@ public class SiltTransportRecord implements Serializable {
 
     public void setTipperTripsCount(String tipperTripsCount) {
         this.tipperTripsCount = tipperTripsCount;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLog() {
+        return log;
+    }
+
+    public void setLog(double log) {
+        this.log = log;
     }
 
 //    public String getFarmersCount() {

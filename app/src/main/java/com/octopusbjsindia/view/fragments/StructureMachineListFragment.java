@@ -802,7 +802,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredStructureListData.addAll(ssStructureListData);
             }
             ssStructureListAdapter.notifyDataSetChanged();
-            ((SSActionsActivity) context).setTitle("Structure List(" + filteredStructureListData.size() + ")");
+            ((SSActionsActivity) context).setTitle("Waterbody List(" + filteredStructureListData.size() + ")");
         }
         showNoDataMessage();
     }
@@ -966,7 +966,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 filteredStructureListData.clear();
                 filteredStructureListData.addAll(ssStructureListData);
                 ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity) context).setActivityTitle("Structure List(" + filteredStructureListData.size() + ")");
+                ((SSActionsActivity) context).setActivityTitle("Waterbody List(" + filteredStructureListData.size() + ")");
             } else {
                 filteredMachineListData.clear();
                 filteredMachineListData.addAll(ssMachineListData);
@@ -1097,7 +1097,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         }
                     }
                     ssStructureListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Waterbody List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {
@@ -1160,7 +1160,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         }
                     }
                     ssStructureListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Waterbody List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {
@@ -1220,7 +1220,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         }
                     }
                     ssStructureListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Structure List (" + filteredStructureListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Waterbody List (" + filteredStructureListData.size() + ")");
                 } else {
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {

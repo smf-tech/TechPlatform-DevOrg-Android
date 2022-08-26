@@ -451,7 +451,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
         if (Util.isConnected(getActivity())) {
-            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
                 if (location != null) {
                     ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));

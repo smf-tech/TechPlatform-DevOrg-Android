@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.presenter.SiltTransportationRecordFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -115,6 +117,8 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private ArrayList<CustomSpinnerObject> bTypeList = new ArrayList<>();
     private String selectedState, selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka,
             selectedTalukaId, selectedVillage, selectedVillageId, selectedBType, selectedBTypeId;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +139,10 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("structureId");
+        gpsTracker = new GPSTracker(getActivity());
+        if (gpsTracker.canGetLocation()) {
+            location = gpsTracker.getLocation();
+        }
         init();
     }
 
@@ -403,6 +411,10 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
                         siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
                         siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                        if (location != null) {
+                            siltTransportRecord.setLat(location.getLatitude());
+                            siltTransportRecord.setLog(location.getLongitude());
+                        }
 //                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
 //                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
                         uploadData(siltTransportRecord);
@@ -790,7 +802,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
         intent.putExtra("viewType", 1);
-        intent.putExtra("title", "Structure List");
+        intent.putExtra("title", "Waterbody List");
         getActivity().startActivity(intent);
     }
 

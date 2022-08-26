@@ -1439,7 +1439,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
 
     private void GetLocationofOperator(){
-        if (gpsTracker.isGPSEnabled(this, this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
             if (location != null) {
                 lat = String.valueOf(location.getLatitude());
@@ -1466,7 +1466,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         hour_of_day = operatorMachineData.getHour_of_day();
         minute_of_hour = operatorMachineData.getMinute_of_hour();
         minute_of_pause  = operatorMachineData.getMinute_of_pause();
-
 
         machine_id = operatorMachineData.getMachine_id();
         editor.putBoolean("isMachineRemoved",false);

@@ -1,8 +1,13 @@
 package com.octopusbjsindia.view.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,10 +46,12 @@ import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.CreateStructureActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreateStructureActivity extends AppCompatActivity implements APIDataListener, View.OnClickListener,
@@ -82,11 +94,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ArrayList<CustomSpinnerObject> structureTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> structureWorkTypeList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> interventionList = new ArrayList<>();
-
     private Structure structureData;
-
-    //private GPSTracker gpsTracker;
-    //private Location location;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +107,21 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         presenter = new CreateStructureActivityPresenter(this);
         setMasterData();
         initView();
-        setTitle("Create Structure");
-
-//        gpsTracker = new GPSTracker(this);
-//        if (gpsTracker.isGPSEnabled(this, this)) {
-//            location = gpsTracker.getLocation();
-//        }
+        setTitle("Create Waterbody");
     }
 
     private void initView() {
+
+        //get lat,long of location
+        gpsTracker = new GPSTracker(this);
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
+
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
         if (roleAccessList != null) {
@@ -156,7 +172,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
             }
         }
-
 
         structureData = new Structure();
 
@@ -308,7 +323,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             }
         }
 
-
         etHostVillage.setOnClickListener(this);
         etAdministrativeApprovalDate.setOnClickListener(this);
         etTechnicalSanctionDate.setOnClickListener(this);
@@ -334,6 +348,36 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         TextView tvTitle = findViewById(R.id.toolbar_title);
         tvTitle.setText(title);
         findViewById(R.id.toolbar_back_action).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -637,10 +681,20 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
             structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
             structureData.setPotentialSiltQuantity(etPotentialSiltQuantity.getText().toString());
-//            if (location != null) {
-//                structureData.setLat(location.getLatitude());
-//                structureData.setLog(location.getLongitude());
-//            }
+
+            //set location
+            if (location != null ) {
+                structureData.setLat(location.getLatitude());
+                structureData.setLog(location.getLongitude());
+            } else {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                    Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                }
+            }
+
             structureData.setFfId(Util.getUserObjectFromPref().getId());
             structureData.setRemark(etRemark.getText().toString());
         }

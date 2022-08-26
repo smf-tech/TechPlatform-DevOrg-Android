@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorActivityPresenter;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -106,6 +108,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private SharedPreferences.Editor editor;
     private SimpleDateFormat df;
     private String strReasonId = "";
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +146,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         img_start_meter.setOnClickListener(this);
         img_end_meter.setOnClickListener(this);
         toolbar_edit_action.setOnClickListener(this);
+
+        gpsTracker = new GPSTracker(this);
+        if (gpsTracker.canGetLocation()) {
+            location = gpsTracker.getLocation();
+        }
     }
 
     private void setDeviceInfo() {
@@ -174,6 +183,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus("Working");
                     operatorRequestResponseModel.setMeter_reading(et_smeter_read.getText().toString());
                     operatorRequestResponseModel.setStructureId(structure_id);
+                    if (location != null) {
+                        operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                        operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                    }
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "Working");
                     editor.putString("startReading", et_smeter_read.getText().toString());

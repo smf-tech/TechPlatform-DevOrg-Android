@@ -281,7 +281,7 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
         GPSTracker gpsTracker = new GPSTracker(this);
         Location location = null;
-        if (gpsTracker.isGPSEnabled(this, this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()

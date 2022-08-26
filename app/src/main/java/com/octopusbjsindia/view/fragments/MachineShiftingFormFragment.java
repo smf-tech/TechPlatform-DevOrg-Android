@@ -252,7 +252,7 @@ public class MachineShiftingFormFragment extends Fragment implements APIDataList
     }
 
     private void submitShiftingForm(){
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
             if (location != null) {
                 machineShiftingFormFragmentPresenter.shiftMachine(etIsDieselFilled.getText().toString().trim(),

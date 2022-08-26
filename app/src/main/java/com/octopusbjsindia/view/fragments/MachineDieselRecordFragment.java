@@ -236,7 +236,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 }
                     if (dateAlreadySelected == 1) {
                         if (etDieselQuantity.getText().toString() != null && etDieselQuantity.getText().toString().length() > 0) {
-                            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                            if (gpsTracker.canGetLocation()) {
                                 location = gpsTracker.getLocation();
                                 if (location != null) {
                                     MachineDieselRecord machineDieselRecord = new MachineDieselRecord();

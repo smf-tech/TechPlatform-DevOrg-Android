@@ -104,11 +104,11 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         super.onCreate(savedInstanceState);
 
         gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        //if (gpsTracker.isGPSEnabled(getActivity(), this)) {
             if (!gpsTracker.canGetLocation()) {
                 gpsTracker.showSettingsAlert();
             }
-        }
+        //}
     }
 
     @Override
@@ -735,7 +735,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
-                            Objects.requireNonNull(getActivity()).onBackPressed();
+                            requireActivity().onBackPressed();
                         }
                     }
                 }
@@ -944,7 +944,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         String processId = getArguments().getString(Constants.PM.PROCESS_ID);
         String formId = getArguments().getString(Constants.PM.FORM_ID);
         FormData formData = DatabaseManager.getDBInstance(
-                Objects.requireNonNull(getActivity()).getApplicationContext())
+                requireActivity().getApplicationContext())
                 .getFormSchema(processId);
 
         if (formData != null) {
@@ -982,7 +982,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         if (formModel.getData() == null) {
 
             formData = DatabaseManager.getDBInstance(
-                    Objects.requireNonNull(getActivity()).getApplicationContext())
+                    requireActivity().getApplicationContext())
                     .getFormSchema(formId);
 
             if (formData == null || formData.getComponents() == null) {

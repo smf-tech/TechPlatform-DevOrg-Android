@@ -199,7 +199,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 formAnswersMap.putAll(gson.fromJson(entry.getValue().getAsString(),
                         new TypeToken<HashMap<String, String>>() {
                         }.getType()));
-
             }
         }
     }
@@ -215,11 +214,11 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         });
 
         gpsTracker = new GPSTracker(this);
-        if (gpsTracker.isGPSEnabled(this, this)) {
+        //if (gpsTracker.isGPSEnabled(this, this)) {
             if (!gpsTracker.canGetLocation()) {
                 gpsTracker.showSettingsAlert();
             }
-        }
+        //}
 
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
             @Override

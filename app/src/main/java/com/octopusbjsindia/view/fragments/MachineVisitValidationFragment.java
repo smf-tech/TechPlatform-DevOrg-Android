@@ -175,7 +175,7 @@ public class MachineVisitValidationFragment extends Fragment implements APIDataL
         etMachineCode.setText(machineCode);
         //etStructureCode.setText(currentStructureId);
         gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
         }
         if(!Util.isConnected(getActivity())) {

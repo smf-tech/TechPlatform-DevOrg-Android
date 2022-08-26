@@ -286,7 +286,7 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
 
         GPSTracker gpsTracker = new GPSTracker(this);
         Location location = null;
-        if (gpsTracker.isGPSEnabled(this, this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
         } else {
             Util.snackBarToShowMsg(this.getWindow().getDecorView()

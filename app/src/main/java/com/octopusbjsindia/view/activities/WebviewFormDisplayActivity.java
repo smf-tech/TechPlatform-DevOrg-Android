@@ -48,10 +48,10 @@ public class WebviewFormDisplayActivity extends BaseActivity {
 
         webview = findViewById(R.id.webview);
         WebSettings settings = webview.getSettings();
-        settings.setJavaScriptEnabled(true);
+        //settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new WebviewFormDisplayActivity.WebAppInterface(this), "Android");
         settings.setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true);
+        //settings.setAppCacheEnabled(true);
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         // Set cache size to 8 mb by default. should be more than enough
         //settings.setAppCacheMaxSize(1024*1024*8);
@@ -128,7 +128,7 @@ public class WebviewFormDisplayActivity extends BaseActivity {
             return true;
         }
 
-        @TargetApi(Build.VERSION_CODES.N)
+        //@TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(request.getUrl().toString());

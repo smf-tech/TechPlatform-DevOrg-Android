@@ -71,8 +71,8 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     public Uri chequeImageUri, operatorLicenseImageUri;
     private RequestQueue rQueue;
-    private Location location;
-    private GPSTracker gpsTracker;
+//    private Location location;
+//    private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

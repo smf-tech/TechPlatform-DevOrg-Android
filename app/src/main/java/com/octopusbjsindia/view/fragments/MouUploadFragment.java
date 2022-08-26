@@ -131,7 +131,7 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
         rvMouUpload.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvMouUpload.setAdapter(mouUploadAdapter);
         gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
         }
         if(!Util.isConnected(getActivity())) {

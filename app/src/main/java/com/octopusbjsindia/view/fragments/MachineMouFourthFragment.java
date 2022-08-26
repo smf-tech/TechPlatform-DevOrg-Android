@@ -207,7 +207,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 setIsTrainingDone(selectedtrainingOption);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
                 setIsAppInstalled(selectedAppInstalledOption);
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
             if (location != null) {
                 ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
