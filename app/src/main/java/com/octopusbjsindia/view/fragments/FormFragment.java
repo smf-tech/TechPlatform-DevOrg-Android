@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +51,7 @@ import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormActivity;
@@ -74,7 +77,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         View.OnClickListener, FormActivity.DeviceBackButtonListener {
 
     private final String TAG = this.getClass().getSimpleName();
-
     private View formFragmentView;
     private LinearLayout customFormView;
     private ProgressBar progressBar;
@@ -97,18 +99,22 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
     private ImageView mFileImageView;
     private String mFormName;
     private GPSTracker gpsTracker;
+    private Location location;
     private List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
-        //if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-            if (!gpsTracker.canGetLocation()) {
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
                 gpsTracker.showSettingsAlert();
             }
-        //}
+        }
     }
 
     @Override
@@ -678,14 +684,20 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                     enableSubmitButton(false);
 
                     if (Util.isConnected(getActivity())) {
-                        Location location = gpsTracker.getLocation();
-                        String strLat, strLong;
+                        String strLat ="", strLong="";
                         if (location != null) {
                             strLat = String.valueOf(location.getLatitude());
                             strLong = String.valueOf(location.getLongitude());
                         } else {
-                            strLat = gpsTracker.getLatitude();
-                            strLong = gpsTracker.getLongitude();
+                            if(gpsTracker.canGetLocation()) {
+                                location = gpsTracker.getLocation();
+                                if (location != null ) {
+                                    strLat = String.valueOf(location.getLatitude());
+                                    strLong = String.valueOf(location.getLongitude());
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         HashMap<String, String> requestObject = formComponentCreator.getRequestObject();
@@ -1139,6 +1151,13 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -1152,9 +1171,17 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                 break;
 
             case Constants.GPS_REQUEST:
-                if (!gpsTracker.canGetLocation()) {
-                    gpsTracker.showSettingsAlert();
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    if(gpsTracker.canGetLocation()) {
+                        location = gpsTracker.getLocation();
+                    } else {
+                        gpsTracker.showSettingsAlert();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
                 }
+
                 break;
         }
     }

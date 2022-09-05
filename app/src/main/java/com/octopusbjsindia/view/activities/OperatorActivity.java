@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.activities;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -147,9 +148,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         img_end_meter.setOnClickListener(this);
         toolbar_edit_action.setOnClickListener(this);
 
+        //get lat,long of location
         gpsTracker = new GPSTracker(this);
-        if (gpsTracker.canGetLocation()) {
-            location = gpsTracker.getLocation();
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
         }
     }
 
@@ -183,10 +189,23 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus("Working");
                     operatorRequestResponseModel.setMeter_reading(et_smeter_read.getText().toString());
                     operatorRequestResponseModel.setStructureId(structure_id);
+                    //set location
                     if (location != null) {
                         operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
                         operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                    } else {
+                        if(gpsTracker.canGetLocation()) {
+                            location = gpsTracker.getLocation();
+                            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                            if (location != null ) {
+                                operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                                operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                            }
+                        } else {
+                            Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                        }
                     }
+
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "Working");
                     editor.putString("startReading", et_smeter_read.getText().toString());
@@ -223,6 +242,24 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus("stop");
                     operatorRequestResponseModel.setMeter_reading(et_emeter_read.getText().toString());
                     operatorRequestResponseModel.setStructureId(structure_id);
+
+                    //set location
+                    if (location != null) {
+                        operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                        operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                    } else {
+                        if(gpsTracker.canGetLocation()) {
+                            location = gpsTracker.getLocation();
+                            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                            if (location != null ) {
+                                operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                                operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                            }
+                        } else {
+                            Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "stop");
                     editor.putString("stopReading", et_emeter_read.getText().toString());
@@ -347,10 +384,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         setButtons();
     }
 
-    private void resetView() {
-
-    }
-
     private void setButtons() {
 //        machine_status = preferences.getString("machineStatus", "");
         if (machine_status.equals("")) {
@@ -422,6 +455,23 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -465,6 +515,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+            }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -717,6 +774,4 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 //        updateStatusAndProceed(state_halt);
 //        clearReadingImages();
     }
-
-
 }

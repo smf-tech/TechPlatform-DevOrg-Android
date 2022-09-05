@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -19,7 +20,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
@@ -45,6 +49,7 @@ import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -80,6 +85,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     public List<Map<String, String>> mUploadedImageUrlList = new ArrayList<>();
     public HashMap<String, String> selectedImageUriList = new HashMap<>();
     private GPSTracker gpsTracker;
+    private Location location;
     private final String TAG = this.getClass().getSimpleName();
     private boolean mIsPartiallySaved;
     private RelativeLayout progressBarLayout;
@@ -93,7 +99,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private FormResult formResult;
     public boolean isEditable = true;
     private ImageView imgNoData;
-
     private String batchId = "";
     private String trainerId = "";
     private String beneficiaryId = "";
@@ -101,6 +106,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private String workshopId = "";
     public boolean isForSmartGirl = false;
     public boolean isForWorkshop = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +146,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             if (workshopId!=null && !TextUtils.isEmpty(workshopId)) {
                 isForWorkshop = true;
             }
-
 
             mIsPartiallySaved = getIntent().getExtras().getBoolean(Constants.PM.PARTIAL_FORM);
             //boolean readOnly = getIntent().getExtras().getBoolean(Constants.PM.EDIT_MODE);
@@ -213,12 +218,15 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         });
 
+        //get lat,long of location
         gpsTracker = new GPSTracker(this);
-        //if (gpsTracker.isGPSEnabled(this, this)) {
-            if (!gpsTracker.canGetLocation()) {
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
                 gpsTracker.showSettingsAlert();
             }
-        //}
+        }
 
         findViewById(R.id.toolbar_back_action).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,6 +243,36 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 //                onBackPressed();
 //            }
 //        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -307,7 +345,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putSerializable("Element", element);
                         bundle.putBoolean("isFirstpage", isFirstpage);
                         bundle.putBoolean("isFromApproval", isFromApproval);
-
                         fileFragment.setArguments(bundle);
                         adapter.addFragment(fileFragment, "Question Title");
                         break;
@@ -611,15 +648,23 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (formResult != null && formResult.getOid() != null) {
             formAnswersMap.put(Constants.PM.PROCESS_ID, formResult.getOid());
         }
-        Location location = gpsTracker.getLocation();
-        String strLat, strLong;
-        if (location != null) {
+        //set location
+        String strLat = "", strLong = "";
+        if (location != null ) {
             strLat = String.valueOf(location.getLatitude());
             strLong = String.valueOf(location.getLongitude());
         } else {
-            strLat = gpsTracker.getLatitude();
-            strLong = gpsTracker.getLongitude();
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                if (location != null ) {
+                    strLat = String.valueOf(location.getLatitude());
+                    strLong = String.valueOf(location.getLongitude());
+                }
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+            }
         }
+
         //enableSubmitButton(false);
         formAnswersMap.put(Constants.Location.LATITUDE, strLat);
         formAnswersMap.put(Constants.Location.LONGITUDE, strLong);

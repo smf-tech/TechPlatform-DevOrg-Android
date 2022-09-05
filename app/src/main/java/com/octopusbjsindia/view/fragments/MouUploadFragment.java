@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -130,9 +131,14 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
         rvMouUpload = mouUploadFragmentView.findViewById(R.id.rv_mou_upload);
         rvMouUpload.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvMouUpload.setAdapter(mouUploadAdapter);
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.canGetLocation()) {
-            location = gpsTracker.getLocation();
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
         }
         if(!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
@@ -244,6 +250,30 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -322,10 +352,22 @@ public class MouUploadFragment extends Fragment implements APIDataListener, View
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("machineId", machineId);
-                if(location != null) {
+                //set location
+                if (location != null ) {
                     params.put("lat", String.valueOf(location.getLatitude()));
                     params.put("long ", String.valueOf(location.getLongitude()));
+                } else {
+                    if(gpsTracker.canGetLocation()) {
+                        location = gpsTracker.getLocation();
+                        if (location != null ) {
+                            params.put("lat", String.valueOf(location.getLatitude()));
+                            params.put("long ", String.valueOf(location.getLongitude()));
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
+                    }
                 }
+
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }

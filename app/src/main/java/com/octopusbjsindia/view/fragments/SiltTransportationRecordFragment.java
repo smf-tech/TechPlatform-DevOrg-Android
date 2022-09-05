@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -139,9 +140,14 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("structureId");
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
-        if (gpsTracker.canGetLocation()) {
-            location = gpsTracker.getLocation();
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
         }
         init();
     }
@@ -282,6 +288,37 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_date:
@@ -411,9 +448,20 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
                         siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
                         siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
-                        if (location != null) {
+                        //set location
+                        if (location != null ) {
                             siltTransportRecord.setLat(location.getLatitude());
                             siltTransportRecord.setLog(location.getLongitude());
+                        } else {
+                            if(gpsTracker.canGetLocation()) {
+                                location = gpsTracker.getLocation();
+                                if (location != null ) {
+                                    siltTransportRecord.setLat(location.getLatitude());
+                                    siltTransportRecord.setLog(location.getLongitude());
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
+                            }
                         }
 //                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
 //                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());

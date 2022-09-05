@@ -351,19 +351,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100) {
-            if(gpsTracker.canGetLocation()) {
-                location = gpsTracker.getLocation();
-                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.GPS_REQUEST) {
@@ -374,6 +361,19 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 } else {
                     gpsTracker.showSettingsAlert();
                 }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
@@ -689,7 +689,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             } else {
                 if(gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
-                    Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                    if (location != null ) {
+                        structureData.setLat(location.getLatitude());
+                        structureData.setLog(location.getLongitude());
+                    }
                 } else {
                     Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
                 }

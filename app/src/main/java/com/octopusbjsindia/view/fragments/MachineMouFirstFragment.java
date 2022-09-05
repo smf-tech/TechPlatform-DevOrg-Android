@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +41,7 @@ import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.MachineMouFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
+import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
@@ -215,7 +218,15 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         } else {
             setMachineFirstData();
         }
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
     }
 
     private void setMachineFirstData() {
@@ -417,6 +428,36 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         isMeterWorkingList.add(workingNo);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     private void setCreateMachineData() {
         MachineData machineData = new MachineData();
         ((MachineMouActivity) getActivity()).getMachineDetailData().setMachine(machineData);
@@ -451,13 +492,22 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
                 (etProviderContact.getText().toString().trim()));
         if (Util.isConnected(getActivity())) {
-            if (gpsTracker.canGetLocation()) {
-                location = gpsTracker.getLocation();
-                if (location != null) {
-                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
-                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+            //set location
+            if (location != null ) {
+                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+            } else {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                    if (location != null ) {
+                        ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+                        ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
                 }
             }
+
             machineMouFragmentPresenter.createMachine(((MachineMouActivity) getActivity()).getMachineDetailData());
         } else {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());

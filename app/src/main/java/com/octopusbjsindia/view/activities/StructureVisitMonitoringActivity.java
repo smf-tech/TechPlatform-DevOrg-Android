@@ -1,11 +1,14 @@
 package com.octopusbjsindia.view.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -79,30 +82,27 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
     private final String TAG = StructurePreparationActivity.class.getName();
     private final String STRUCTURE_DATA = "StructureData";
-
     private RelativeLayout progressBar;
     private StructureVisitMonitoringActivityPresenter presenter;
-
     private Uri outputUri;
     private Uri finalUri;
     boolean safetySignage = true, guidelines = true;
-    ImageView ivStructure;
-    EditText etStatus, etIssuesRelated, etIssuesDescription;
-
+    private ImageView ivStructure;
+    private EditText etStatus, etIssuesRelated, etIssuesDescription;
     private String selectedStatus, selectedStatusID, selectedIssue, selectedIssueID;
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> issueList = new ArrayList<>();
     private ArrayList<MasterDataList> masterDataLists = new ArrayList<>();
-
-
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.STRUCTURE_VISITE_MONITORING;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private ArrayList<Uri> imageUri = new ArrayList<>();
     private int imageCount = 0;
     private String currentPhotoPath;
-    StructureVisitMonitoringData requestData = new StructureVisitMonitoringData();
-    StructureData structureData;
+    private StructureVisitMonitoringData requestData = new StructureVisitMonitoringData();
+    private StructureData structureData;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +116,6 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
 //        setMasterData();
 
-        {// set list data
             CustomSpinnerObject object1 = new CustomSpinnerObject();
             object1.set_id("1");
             object1.setName("Regular");
@@ -139,12 +138,21 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             object5.setName("Machine");
             issueList.add(object5);
 
-        }
         initView();
         setTitle("Structure Visit and Monitoring");
     }
 
     private void initView() {
+
+        //get lat,long of location
+        gpsTracker = new GPSTracker(this);
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
 
         TextView tvStructureCode = findViewById(R.id.tv_structure_code);
         RadioGroup rgSafetySignage = findViewById(R.id.rg_safety_signage);
@@ -279,17 +287,6 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
 
     private boolean isAllDataValid() {
 
-        GPSTracker gpsTracker = new GPSTracker(this);
-        Location location = null;
-        if (gpsTracker.canGetLocation()) {
-            location = gpsTracker.getLocation();
-        } else {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
-
         if (location != null) {
             if (TextUtils.isEmpty(selectedStatusID)) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
@@ -315,6 +312,12 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);
+
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+            }
             return false;
         }
 
@@ -408,6 +411,23 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -440,6 +460,14 @@ public class StructureVisitMonitoringActivity extends AppCompatActivity implemen
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+            }
+        }
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -189,7 +189,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
             }
             if (flag) {
                 if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
-                    selectedStateId = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId();
+                    selectedCountryId = Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId();
                     hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL + "Id",
                             Util.getUserObjectFromPref().getUserLocation().getCountryId().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.COUNTRY_LEVEL,
@@ -210,34 +210,34 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                             Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CITY_LEVEL)) {
-                    selectedClusterId = Util.getUserObjectFromPref().getUserLocation().getClusterIds().get(0).getId();
+                    selectedCityId = Util.getUserObjectFromPref().getUserLocation().getCityIds().get(0).getId();
                     hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id",
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                            Util.getUserObjectFromPref().getUserLocation().getCityIds().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL,
                             Util.getUserObjectFromPref().getUserLocation().getCityIds().get(0).getName());
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
                     selectedTalukaId = Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId();
                     hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL + "Id",
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.TALUKA_LEVEL,
                             Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
                     hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL + "Id",
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                            Util.getUserObjectFromPref().getUserLocation().getClusterIds().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.CLUSTER_LEVEL,
                             Util.getUserObjectFromPref().getUserLocation().getClusterIds().get(0).getName());
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
                     hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL + "Id",
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                            Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.VILLAGE_LEVEL,
                             Util.getUserObjectFromPref().getUserLocation().getVillageIds().get(0).getName());
                     continue;
                 } else if (str.equalsIgnoreCase(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
                     hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL + "Id",
-                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getId());
+                            Util.getUserObjectFromPref().getUserLocation().getSchoolIds().get(0).getId());
                     hashMap.put(Constants.JurisdictionLevelName.SCHOOL_LEVEL,
                             Util.getUserObjectFromPref().getUserLocation().getSchoolIds().get(0).getName());
                 }
@@ -303,7 +303,7 @@ public class LocationFragment extends Fragment implements View.OnClickListener, 
                     }
                     if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL))) {
                         editText.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL));
-                        selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.DISTRICT_LEVEL + "Id");
+                        selectedDistrictId = ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL + "Id");
                         hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL + "Id",
                                 ((FormDisplayActivity) getActivity()).formAnswersMap.get(Constants.JurisdictionLevelName.CITY_LEVEL + "Id"));
                         hashMap.put(Constants.JurisdictionLevelName.CITY_LEVEL,
