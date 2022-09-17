@@ -218,6 +218,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
             JSONObject jsonObject = new JSONObject();
             try {
+                jsonObject.put("actionType", "updateFirebaseId");
                 jsonObject.put("firebase_id", token);
             } catch (JSONException e) {
                 e.printStackTrace();
