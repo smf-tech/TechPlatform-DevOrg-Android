@@ -17,7 +17,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.view.adapters.MutiselectDialogAdapter;
-import com.octopusbjsindia.view.fragments.CreateMeetSecondFragment;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ public class CustomSpinnerDialogClass extends BottomSheetDialog implements
         android.view.View.OnClickListener  {
 
     public Activity activity;
-    private CreateMeetSecondFragment fragment;
     public LinearLayout linear_dynamic_filterheight;
     public TextView toolbarTitle;
     public ImageView img_close;
