@@ -73,7 +73,7 @@ public class WebmoduleFragment extends Fragment {
         }
         webview = webModuleFragmentView.findViewById(R.id.webview);
         WebSettings settings = webview.getSettings();
-        settings.setJavaScriptEnabled(true);
+        //settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new WebAppInterface(getActivity()), "Android");
         webview.setWebContentsDebuggingEnabled(true);
         webview.setWebViewClient(new MyWebViewClient());
@@ -89,12 +89,8 @@ public class WebmoduleFragment extends Fragment {
 
         webview.loadUrl(weblink);
 
-        settings.setAppCacheEnabled(true);
-        if (Build.VERSION.SDK_INT >= 19) {
-            webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        //settings.setAppCacheEnabled(true);
+        webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 
     public class WebAppInterface {
@@ -132,7 +128,7 @@ public class WebmoduleFragment extends Fragment {
             return true;
         }
 
-        @TargetApi(Build.VERSION_CODES.N)
+        //@TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(request.getUrl().toString());
@@ -271,53 +267,27 @@ public class WebmoduleFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-            Uri[] results = null;
-            // Check that the response is a good one
-            if (resultCode == Activity.RESULT_OK) {
-                if (data == null) {
-                    // If there is not data, then we may have taken a photo
-                    if (mCameraPhotoPath != null) {
-                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
-                    }
-                } else {
-                    String dataString = data.getDataString();
-                    if (dataString != null) {
-                        results = new Uri[]{Uri.parse(dataString)};
-                    }
+        if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        Uri[] results = null;
+        // Check that the response is a good one
+        if (resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                // If there is not data, then we may have taken a photo
+                if (mCameraPhotoPath != null) {
+                    results = new Uri[]{Uri.parse(mCameraPhotoPath)};
                 }
-            }
-            mFilePathCallback.onReceiveValue(results);
-            mFilePathCallback = null;
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            if (requestCode != FILECHOOSER_RESULTCODE || mUploadMessage == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-            if (requestCode == FILECHOOSER_RESULTCODE) {
-                if (null == this.mUploadMessage) {
-                    return;
+            } else {
+                String dataString = data.getDataString();
+                if (dataString != null) {
+                    results = new Uri[]{Uri.parse(dataString)};
                 }
-                Uri result = null;
-                try {
-                    if (resultCode != RESULT_OK) {
-                        result = null;
-                    } else {
-                        // retrieve from the private variable if the intent is null
-                        result = data == null ? mCapturedImageURI : data.getData();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(getActivity(), "activity :" + e,
-                            Toast.LENGTH_LONG).show();
-                }
-                mUploadMessage.onReceiveValue(result);
-                mUploadMessage = null;
             }
         }
+        mFilePathCallback.onReceiveValue(results);
+        mFilePathCallback = null;
         return;
     }
 

@@ -342,7 +342,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 filteredStructureListData.addAll(structureListData);
                 rvStructureList.setAdapter(structureListAdapter);
                 structureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+                ((SSActionsActivity)context).setActivityTitle("Waterbody List("+filteredStructureListData.size()+")");
             }
         }
     }
@@ -387,7 +387,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             }
             rvStructureList.setAdapter(structureListAdapter);
             structureListAdapter.notifyDataSetChanged();
-            ((SSActionsActivity)context).setActivityTitle("Structure List("+filteredStructureListData.size()+")");
+            ((SSActionsActivity)context).setActivityTitle("Waterbody List("+filteredStructureListData.size()+")");
         }
     }
 

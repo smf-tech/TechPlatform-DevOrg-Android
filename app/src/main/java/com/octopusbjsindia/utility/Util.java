@@ -367,6 +367,17 @@ public class Util {
     public static void logOutUser(Activity activity) {
         // remove user related shared pref data
 //        Util.saveLoginObjectInPref("");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("actionType", "removeFirebaseId");
+            jsonObject.put("user_id", getUserObjectFromPref().getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            Util.updateFirebaseIdRequests(jsonObject);
+        }
+
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
 

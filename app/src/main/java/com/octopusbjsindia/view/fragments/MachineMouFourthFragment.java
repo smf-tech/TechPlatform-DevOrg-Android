@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -107,14 +108,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private int statusCode;
     private int imgCount =0;
     private String currentPhotoPath = "";
-    private Activity activity;
     private String pdfURL="";
 
-    @Override
-    public void onAttachFragment(@NonNull Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-        activity = getActivity();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +160,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         optionNo.setSelected(false);
         isTrainingDoneList.add(optionNo);
         isAppInstalledList.add(optionNo);
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
+
         if(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getOperatorDetails()!=null) {
             setUIvalues();
@@ -207,11 +211,19 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 setIsTrainingDone(selectedtrainingOption);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
                 setIsAppInstalled(selectedAppInstalledOption);
-        if (gpsTracker.isGPSEnabled(getActivity(), this)) {
-            location = gpsTracker.getLocation();
-            if (location != null) {
-                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
-                ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+        //set location
+        if (location != null ) {
+            ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+            ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+        } else {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                if (location != null ) {
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
+                }
+            } else {
+                Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -228,15 +240,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        if (machineMouFourthFragmentPresenter != null) {
-//            machineMouFourthFragmentPresenter.clearData();
-//            machineMouFourthFragmentPresenter = null;
-//        }
     }
 
     @Override
@@ -382,6 +385,23 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
@@ -438,6 +458,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 //            } catch (Exception e) {
 //                Log.e(TAG, e.getMessage());
 //            }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -731,6 +758,4 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         hideProgressBar();
         Util.showToast(error,getActivity());
     }
-
-
 }

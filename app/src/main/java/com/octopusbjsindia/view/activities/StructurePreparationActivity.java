@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -106,6 +109,8 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
     private ArrayList<CustomSpinnerObject> typeOfBeneficiaryList = new ArrayList<>();
     private StructurePripretionsActivityPresenter presenter;
     private String currentPhotoPath, selectedTypeOfBeneficiaryId, selectedTypeOfBeneficiary;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,13 +123,22 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
         structureData = (StructureData) getIntent().getSerializableExtra(STRUCTURE_DATA);
 
         setMasterData();
-
         initView();
         setTitle("Structure Preparation");
 
     }
 
     private void initView() {
+
+        //get lat,long of location
+        gpsTracker = new GPSTracker(this);
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
 
         TextView tvStructureCode = findViewById(R.id.tv_structure_code);
         ImageView ivStructureImg1 = findViewById(R.id.tv_structure_img1);
@@ -143,7 +157,6 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
 
         tvStructureCode.setText(structureData.getStructureCode());
         tv_machin_code.setText(structureData.getStructureMachineList());
-
 
         ivStructureImg1.setOnClickListener(this);
         ivStructureImg2.setOnClickListener(this);
@@ -208,7 +221,6 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
     }
 
     public void setMasterData() {
-
         List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
                 getSSMasterDatabaseDao().getSSMasterData("SS");
         String masterDbString = list.get(0).getData();
@@ -223,7 +235,6 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
             }
         }
     }
-
 
     @Override
     public void onClick(View view) {
@@ -283,17 +294,6 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
     }
 
     private boolean isAllDataValid() {
-
-        GPSTracker gpsTracker = new GPSTracker(this);
-        Location location = null;
-        if (gpsTracker.isGPSEnabled(this, this)) {
-            location = gpsTracker.getLocation();
-        } else {
-            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
         if (location != null) {
             if (ffIdentified) {
                 if (TextUtils.isEmpty(etFFName.getText().toString())) {
@@ -325,6 +325,12 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), "Location not available, Please check GPS setting.",
                     Snackbar.LENGTH_LONG);
+
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+            }
             return false;
         }
 
@@ -340,6 +346,23 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void uploadImage(StructurePripretionData structurePripretionData, int imageCount) {
@@ -646,6 +669,13 @@ public class StructurePreparationActivity extends AppCompatActivity implements V
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+            }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
     }

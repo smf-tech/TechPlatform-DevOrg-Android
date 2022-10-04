@@ -134,7 +134,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 intent = new Intent(context, SSActionsActivity.class);
                                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                                 intent.putExtra("viewType", 1);
-                                intent.putExtra("title", "Structure List");
+                                intent.putExtra("title", "Waterbody List");
                                 context.startActivity(intent);
                                 break;
                             case "machine":

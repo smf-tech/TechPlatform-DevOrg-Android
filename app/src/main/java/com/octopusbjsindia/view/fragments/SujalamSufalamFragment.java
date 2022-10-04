@@ -305,7 +305,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 if (viewType == 1) {
                     intent.putExtra("viewType", 1);
-                    intent.putExtra("title", "Structure List");
+                    intent.putExtra("title", "Waterbody List");
                 } else {
                     intent.putExtra("viewType", 2);
                     intent.putExtra("title", "Machine List");

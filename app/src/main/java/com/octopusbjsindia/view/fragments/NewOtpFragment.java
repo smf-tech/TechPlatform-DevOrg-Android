@@ -41,6 +41,7 @@ import com.octopusbjsindia.presenter.OtpFragmentPresenter;
 import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
+import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.EditProfileActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -513,6 +514,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
         try {
             Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
+            PreferenceHelper preferenceHelper = new PreferenceHelper(getActivity());
+            preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,true);
 
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);

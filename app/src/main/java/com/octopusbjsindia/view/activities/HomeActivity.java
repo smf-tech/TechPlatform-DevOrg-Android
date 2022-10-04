@@ -155,7 +155,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     intent = new Intent(this, SSActionsActivity.class);
                     intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                     intent.putExtra("viewType", 1);
-                    intent.putExtra("title", "Structure List");
+                    intent.putExtra("title", "Waterbody List");
                     this.startActivity(intent);
                     break;
                 case "machine":
@@ -218,6 +218,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
             JSONObject jsonObject = new JSONObject();
             try {
+                jsonObject.put("actionType", "updateFirebaseId");
                 jsonObject.put("firebase_id", token);
             } catch (JSONException e) {
                 e.printStackTrace();

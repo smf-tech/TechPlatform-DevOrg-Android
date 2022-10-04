@@ -3,9 +3,11 @@ package com.octopusbjsindia.view.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +65,7 @@ import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.presenter.SiltTransportationRecordFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -115,6 +118,8 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     private ArrayList<CustomSpinnerObject> bTypeList = new ArrayList<>();
     private String selectedState, selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka,
             selectedTalukaId, selectedVillage, selectedVillageId, selectedBType, selectedBTypeId;
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,15 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         super.onViewCreated(view, savedInstanceState);
         machineId = getActivity().getIntent().getStringExtra("machineId");
         currentStructureId = getActivity().getIntent().getStringExtra("structureId");
+        //get lat,long of location
+        gpsTracker = new GPSTracker(getActivity());
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
         init();
     }
 
@@ -274,6 +288,37 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_date:
@@ -403,6 +448,21 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
                         siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
                         siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                        //set location
+                        if (location != null ) {
+                            siltTransportRecord.setLat(location.getLatitude());
+                            siltTransportRecord.setLog(location.getLongitude());
+                        } else {
+                            if(gpsTracker.canGetLocation()) {
+                                location = gpsTracker.getLocation();
+                                if (location != null ) {
+                                    siltTransportRecord.setLat(location.getLatitude());
+                                    siltTransportRecord.setLog(location.getLongitude());
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
+                            }
+                        }
 //                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
 //                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
                         uploadData(siltTransportRecord);
@@ -790,7 +850,7 @@ public class SiltTransportationRecordFragment extends Fragment  implements APIDa
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
         intent.putExtra("viewType", 1);
-        intent.putExtra("title", "Structure List");
+        intent.putExtra("title", "Waterbody List");
         getActivity().startActivity(intent);
     }
 

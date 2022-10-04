@@ -68,7 +68,7 @@ public class WebActivityTest extends AppCompatActivity {
         if(Util.isConnected(this)) {
             webview = findViewById(R.id.webview);
             WebSettings settings = webview.getSettings();
-            settings.setJavaScriptEnabled(true);
+            //settings.setJavaScriptEnabled(true);
             settings.setAllowFileAccess(true);
             settings.setSupportZoom(true);
             settings.setAllowContentAccess(true);
@@ -82,12 +82,8 @@ public class WebActivityTest extends AppCompatActivity {
             webview.setWebChromeClient(new WebActivityTest.ChromeClient());
             webview.loadUrl("http://13.235.105.204/api/testPage");
 
-            settings.setAppCacheEnabled(true);
-            if (Build.VERSION.SDK_INT >= 19) {
-                webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            } else {
-                webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
+            //settings.setAppCacheEnabled(true);
+            webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         } else {
             txtNoInternet = findViewById(R.id.txt_no_internet);
@@ -111,7 +107,7 @@ public class WebActivityTest extends AppCompatActivity {
             return true;
         }
 
-        @TargetApi(Build.VERSION_CODES.N)
+        //@TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(request.getUrl().toString());
@@ -274,86 +270,60 @@ public class WebActivityTest extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-            Uri[] results = null;
+        if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        Uri[] results = null;
 
 //new
-            Uri[] results2 = null;
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            imagesEncodedList = new ArrayList<String>();
+        Uri[] results2 = null;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        imagesEncodedList = new ArrayList<String>();
 
-            // Check that the response is a good one
-            if (resultCode == Activity.RESULT_OK) {
-                if (data == null) {
-                    // If there is not data, then we may have taken a photo
-                    if (mCameraPhotoPath != null) {
-                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
-                    }
-                } else {
-                    //original
-                    /*String dataString = data.getDataString();
-                    if (dataString != null) {
-                        results = new Uri[]{Uri.parse(dataString)};
-                    }*/
-
-                    //------ new
-                    if (data.getClipData() != null) {
-                        ClipData mClipData = data.getClipData();
-                        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
-                        results2 = new Uri[mClipData.getItemCount()];
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
-
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            mArrayUri.add(uri);
-                            results2[i] = uri;
-                            // Get the cursor
-                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                            // Move to first row
-                            cursor.moveToFirst();
-
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            imageEncoded = cursor.getString(columnIndex);
-                            imagesEncodedList.add(imageEncoded);
-                            cursor.close();
-                        }
-                        Log.v("MainActivity", "Selected Images" + mArrayUri.size());
-                        Log.v("MainActivity", "Selected Images" + results2.length);
-                    }
+        // Check that the response is a good one
+        if (resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                // If there is not data, then we may have taken a photo
+                if (mCameraPhotoPath != null) {
+                    results = new Uri[]{Uri.parse(mCameraPhotoPath)};
                 }
-            }
-            //mFilePathCallback.onReceiveValue(results);
-            mFilePathCallback.onReceiveValue(results2);
-            mFilePathCallback = null;
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            if (requestCode != FILECHOOSER_RESULTCODE || mUploadMessage == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-            if (requestCode == FILECHOOSER_RESULTCODE) {
-                if (null == this.mUploadMessage) {
-                    return;
-                }
-                Uri result = null;
-                try {
-                    if (resultCode != RESULT_OK) {
-                        result = null;
-                    } else {
-                        // retrieve from the private variable if the intent is null
-                        result = data == null ? mCapturedImageURI : data.getData();
+            } else {
+                //original
+                /*String dataString = data.getDataString();
+                if (dataString != null) {
+                    results = new Uri[]{Uri.parse(dataString)};
+                }*/
+
+                //------ new
+                if (data.getClipData() != null) {
+                    ClipData mClipData = data.getClipData();
+                    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                    results2 = new Uri[mClipData.getItemCount()];
+                    for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                        ClipData.Item item = mClipData.getItemAt(i);
+                        Uri uri = item.getUri();
+                        mArrayUri.add(uri);
+                        results2[i] = uri;
+                        // Get the cursor
+                        Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                        // Move to first row
+                        cursor.moveToFirst();
+
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imageEncoded = cursor.getString(columnIndex);
+                        imagesEncodedList.add(imageEncoded);
+                        cursor.close();
                     }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "activity :" + e,
-                            Toast.LENGTH_LONG).show();
+                    Log.v("MainActivity", "Selected Images" + mArrayUri.size());
+                    Log.v("MainActivity", "Selected Images" + results2.length);
                 }
-                mUploadMessage.onReceiveValue(result);
-                mUploadMessage = null;
             }
         }
+        //mFilePathCallback.onReceiveValue(results);
+        mFilePathCallback.onReceiveValue(results2);
+        mFilePathCallback = null;
         return;
     }
 }

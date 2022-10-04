@@ -102,22 +102,21 @@ import static com.octopusbjsindia.receivers.ConnectivityReceiver.connectivityRec
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 import static com.octopusbjsindia.utility.Util.snackBarToShowMsg;
+// We dont use this activity. Now we use OpeartorActivity instead of this activity.
+// After some period we can delete this activity.
+// So, location code has not been modified in this activity.
 
-public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener, ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
-    //Alarm
-    Gson gson = new Gson();
+public class OperatorMeterReadingActivity extends BaseActivity implements APIDataListener,
+        ConnectivityReceiver.ConnectivityReceiverListener, SingleSelectBottomSheet.MultiSpinnerListener {
+
     Dialog alarmDialog;
-    private final long[] mVibratePattern = {0, 500, 500};
     private Ringtone mRingtone;
-    private Vibrator mVibrator;
     private int hour_of_day;
     private int minute_of_hour;
     private int minute_of_pause;
 
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
-    //------
-
     private ArrayList<AlarmRequest> alarmRequests = new ArrayList<AlarmRequest>();
     private long mLastClickTime = 0;
     private String strReasonId="";
@@ -132,15 +131,12 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private static final String TAG = OperatorMeterReadingActivity.class.getCanonicalName();
     private static final int REQUEST_CAPTURE_IMAGE = 100;
     Uri photoURI;
-    Uri finalUri;
     String currentPhotoPath = "";
     OperatorRequestResponseModel operatorRequestResponseModel;
     boolean flag = true;
     boolean isStartImage = true;
     ImageView img_start_meter, img_end_meter;
-    //------
     String machine_id = "";
-    String status = "";
     String workTime = "";
     String lat = "18.516726";
     String lon = "73.856255";
@@ -149,12 +145,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     String imageEndReading = "";
     String meter_reading = "";
     int hours = 0;
-    //int totalHours =0;
     int totalHours;
     int currentHours;
-    //---
-    String start_meter_reading = "";
-    String stop_meter_reading = "";
     Button btnStartService, btnStopService, buttonPauseService,buttonHaltService;
     EditText et_emeter_read, et_smeter_read;
     public TextView tv_text,tv_machine_code,tv_machine_state,tv_date_today;
@@ -162,8 +154,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     SharedPreferences.Editor editor;
     String imageFilePath;
     private RequestQueue rQueue;
-    private String upload_URL = "http://13.235.124.3/api/machineWorkLog";
-    //---
     private int state_start = 112;
     private int state_stop = 110;
     private int state_pause = 113;
@@ -278,101 +268,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             Log.e("alarm cancel","cancel Called"+e.getMessage());
             e.printStackTrace();
         }
-
     }
-
-    //  new
-    private void setAlarm()
-    {
-
-        Log.e("alarm Difference",String.valueOf(getDifferencebetweenAlarms()));
-        Gson gson = new Gson();
-        PendingIntent sender;
-        AlarmRequest alarmRequest = new AlarmRequest();
-        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-        Intent intent;
-        intent = new Intent(this, AlarmReceiver.class);
-
-        if (getDifferencebetweenAlarms()>31 ||getDifferencebetweenAlarms()<0){
-            alarmRequests.clear();
-            //alarm.toIntent(intent);
-            sender = PendingIntent.getBroadcast(this, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            //alarmMgr.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() +20*1000, sender);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                        Calendar.getInstance().getTimeInMillis() +
-                                preferences.getInt("minute_of_pause",0)*60*1000, sender);
-                Log.e("alarm SET-M","alarm SET");
-
-                alarmRequest.alarmid =1001;
-                alarmRequest.AlarmName ="testalarm";
-                alarmRequests.add(alarmRequest);
-
-                String stringValue = gson.toJson(alarmRequests);
-                editor.putString("alarmRequestsArray",stringValue);
-                editor.commit();
-            }else {
-                alarmMgr.set(AlarmManager.RTC_WAKEUP,
-                        SystemClock.elapsedRealtime() +
-                                preferences.getInt("minute_of_pause",0)*60*1000, sender);
-                Log.e("alarm SET","alarm SET");
-
-                alarmRequest.alarmid =1001;
-                alarmRequest.AlarmName ="testalarm";
-                alarmRequests.add(alarmRequest);
-
-                String stringValue = gson.toJson(alarmRequests);
-                editor.putString("alarmRequestsArray",stringValue);
-                editor.commit();
-            }
-        }else {
-            // setDailyAlarm();
-
-        }
-
-
-
-
-
-
-// With setInexactRepeating(), you have to use one of the AlarmManager interval
-// constants--in this case, AlarmManager.INTERVAL_DAY.
-
-
-        //-------
-
-            /*alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                    Calendar.getInstance().getTimeInMillis() +
-                            60*2000, sender);
-            alarmRequest = new AlarmRequest();
-            alarmRequest.alarmid =1002;
-            alarmRequest.AlarmName ="testalarm2";
-            alarmRequests.add(alarmRequest);*/
-
-
-        String receivedStringArray = preferences.getString("alarmRequestsArray","");
-        TypeToken<List<AlarmRequest>> token = new TypeToken<List<AlarmRequest>>() {};
-        List<AlarmRequest> AlarmRequestList = gson.fromJson(receivedStringArray, token.getType());
-        Log.e("alarm list","alarm list"+AlarmRequestList.size());
-        Log.e("alarm list","alarm list"+AlarmRequestList.get(0).AlarmName);
-
-
-    }
-
-    private int getDifferencebetweenAlarms() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, preferences.getInt("hour_of_day",0));
-        calendar.set(Calendar.MINUTE, preferences.getInt("minute_of_hour",0));
-        long diffInMs = (calendar.getTimeInMillis() - (new Date(System.currentTimeMillis()).getTime()));
-
-
-        Log.e("alarm curentmili","cureent"+calendar.getTimeInMillis());
-        Log.e("alarm aftermili","after"+(new Date(System.currentTimeMillis()).getTime()));
-        return (int) (diffInMs/(60*1000));
-    }
-
 
     private void cancelAlarm()
     {
@@ -400,12 +296,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         }
 
     }
-
-
-    public void UpdateAlarmData(){
-
-    }
-
 
     private void setWorkingAnime() {
         gear_action_stop.setVisibility(View.GONE);
@@ -442,7 +332,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         super.onNewIntent(intent);
         if (intent != null)
             setIntent(intent);
-
     }
 
     @Override
@@ -451,12 +340,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         setContentView(R.layout.activity_operator_meter_reading_new);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Log.i("oncreate", "oncreate called");
-        /*String toOpen = getIntent().getStringExtra("fromAlarm");
-        if(toOpen != null){
-            Log.i("toOpen", "toOpen called");
-            mRingtone = RingtoneManager.getRingtone(getApplicationContext(),RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
-            mRingtone.play();
-        }*/
         //CancelAlarm();
         tv_version_code = findViewById(R.id.tv_version_code);
         tv_device_name = findViewById(R.id.tv_device_name);
@@ -475,13 +358,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         // SyncAdapterUtils.periodicSyncRequest();
         GetLocationofOperator();
         initConnectivityReceiver();
-        if (Permissions.isCameraPermissionGranted(this, this)) {
-
-        }
         operatorMeterReadingActivityPresenter = new OperatorMeterReadingActivityPresenter(this);
         operatorMeterReadingActivityPresenter.getAllFiltersRequests();
-        //machine_id = "bjs3232334";
-
         currentState = state_start;
         preferences = Platform.getInstance().getSharedPreferences(
                 "AppData", Context.MODE_PRIVATE);
@@ -545,46 +423,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                     currentState = state_start;
                     updateStatusAndProceed(state_start);
                 }
-
-                //int systemTime = preferences.getInt("systemTime", 0);
-                //int systemClockTime = preferences.getInt("systemClockTime", 0);
-
             }
         });
-        /*buttonHaltService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GetLocationofOperator();
-                if (currentState != state_stop) {
-                    if (currentState == state_halt) {
-                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
-                    }   else {
-                        Util.showToast("Please stop meter reading", OperatorMeterReadingActivity.this);
-                    }
-                }else {
-                    if (currentState == state_halt) {
-                        Util.showToast("Machine is already in halt state.", OperatorMeterReadingActivity.this);
-                    } else {
-                        showMultiSelectBottomsheet("Halt Reason","halt",ListHaltReasons);
-
-                    *//*if (currentState==state_start){
-                        editor.putInt("State", state_pause);
-                        editor.apply();
-                        updateStatusAndProceed(state_pause);
-                        updateStatusAndProceed(state_halt);
-                        clearReadingImages();
-                    }else if (currentState==state_pause){
-                        *//**//*editor.putInt("State", state_pause);
-                        editor.apply();
-                        updateStatusAndProceed(state_pause);*//**//*
-                        updateStatusAndProceed(state_halt);
-                        clearReadingImages();
-                    }*//*
-                    }
-                }
-
-            }
-        });*/
 
         toolbar_action.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -596,14 +436,11 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-
-
                 toolbar_action.setEnabled(false);
                 Handler handler = new Handler();
                 handler.postDelayed(() -> {
                     toolbar_action.setEnabled(true);
                 }, 2000);
-
             }
         });
 
@@ -716,7 +553,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             }
         });
 
-
         btnStopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -754,9 +590,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                 }else {
                     Util.showToast("Please Start the machine.", OperatorMeterReadingActivity.this);
                 }
-
             }
-
         });
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 new BroadcastReceiver() {
@@ -769,12 +603,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
                         totalHours = intent.getIntExtra("TOTAL_HOURS", 0);
                         currentHours = intent.getIntExtra("CURRENT_HOURS", 0);
                         hours = currentHours;
-                        if (!TextUtils.isEmpty(timestr)) {
-                            //   Log.e("current Time", timestr);
-                            // Log.e("Total_hours", "" + totalHours);
-                            //  Log.e("current_hours", "" + currentHours);
-                        }
-
                     }
                 }, new IntentFilter(ForegroundService.ACTION_LOCATION_BROADCAST)
         );
@@ -792,8 +620,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //  setDailyAlarm();
     }
 
 
@@ -861,8 +687,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             handler.postDelayed(() -> {
                 btnStopService.setEnabled(true);
             }, 1000);
-
-            Log.e("currentstate--2", "----"+currentState);
         }
     }
 
@@ -872,7 +696,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             Intent serviceIntent = new Intent(this, ForegroundService.class);
             serviceIntent.putExtra("inputExtra", "Operator meter reading");
             ContextCompat.startForegroundService(this, serviceIntent);
-
         /*editor.putInt("State", state_start);
         editor.apply();*/
             //buttonPauseService.setVisibility(View.VISIBLE);
@@ -987,11 +810,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         }
 
         List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
-
-        Log.e("list--2","---"+list.size());
-        for (int i = 0; i < list.size(); i++) {
-            Log.e("list--2--2","---"+list.get(i).getStatus()+" "+list.get(i).getWorkTime());
-        }
 
         //List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
         /*for (int i = 0; i < list.size(); i++) {
@@ -1435,11 +1253,8 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         }
     }
 
-
-
-
     private void GetLocationofOperator(){
-        if (gpsTracker.isGPSEnabled(this, this)) {
+        if (gpsTracker.canGetLocation()) {
             location = gpsTracker.getLocation();
             if (location != null) {
                 lat = String.valueOf(location.getLatitude());
@@ -1466,7 +1281,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         hour_of_day = operatorMachineData.getHour_of_day();
         minute_of_hour = operatorMachineData.getMinute_of_hour();
         minute_of_pause  = operatorMachineData.getMinute_of_pause();
-
 
         machine_id = operatorMachineData.getMachine_id();
         editor.putBoolean("isMachineRemoved",false);
@@ -1596,9 +1410,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
         if (isConnected){
             //SyncAdapterUtils.periodicSyncRequest();
             SyncAdapterUtils.manualRefresh();
-
-        }else {
-
         }
     }
 
@@ -1645,99 +1456,9 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
 
 
     private class AlarmRequest {
-        public int getAlarmid() {
-            return alarmid;
-        }
-
-        public void setAlarmid(int alarmid) {
-            this.alarmid = alarmid;
-        }
-
-        public String getAlarmName() {
-            return AlarmName;
-        }
-
-        public void setAlarmName(String alarmName) {
-            AlarmName = alarmName;
-        }
-
         int alarmid;
         String AlarmName;
     }
-
-    public void setDailyAlarm(){
-
-        Gson gson = new Gson();
-        PendingIntent sender;
-        AlarmRequest alarmRequest = new AlarmRequest();
-        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-        Intent intent;
-        intent = new Intent(this, AlarmReceiver.class);
-
-        sender = PendingIntent.getBroadcast(this, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmRequests.clear();
-        // 8pm alarm
-        // Set the alarm to start at approximately 2:00 p.m.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, preferences.getInt("hour_of_day",0));
-        calendar.set(Calendar.MINUTE, preferences.getInt("minute_of_hour",0));
-
-        if (Calendar.getInstance().after(calendar)) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        // sender = PendingIntent.getBroadcast(this, 1002, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, sender);
-
-        Log.e("alarm SET 2","alarm SET");
-        Log.e("alarm hour_of_day","cureent"+preferences.getInt("hour_of_day",0));
-        Log.e("alarm minute_of_hour","cureent"+preferences.getInt("minute_of_hour",0));
-        Log.e("alarm minute_of_pause","cureent"+preferences.getInt("minute_of_pause",0));
-
-        alarmRequest = new AlarmRequest();
-        alarmRequest.alarmid =1001;
-        alarmRequest.AlarmName ="testalarm2";
-        alarmRequests.add(alarmRequest);
-
-        String stringValue = gson.toJson(alarmRequests);
-        editor.putString("alarmRequestsArray",stringValue);
-        editor.commit();
-    }
-
-    //Alarm dismiss dialog
-    public String showAlarmDialog(final Activity context, int pos){
-
-        Button btnSubmit,btn_cancel;
-        EditText edt_reason;
-        Activity activity =context;
-
-        alarmDialog = new Dialog(context);
-        alarmDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alarmDialog.setContentView(R.layout.dialog_alarm_dismiss_layout);
-        alarmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-
-        btnSubmit = alarmDialog.findViewById(R.id.btn_submit);
-
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                cancelAlarm();
-                alarmDialog.dismiss();
-
-            }
-        });
-        alarmDialog.show();
-
-
-        return "";
-    }
-
 
     //-----
 //Alarm dismiss dialog
@@ -1766,8 +1487,6 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             }
         });
         alarmDialog.show();
-
-
         return "";
     }
 

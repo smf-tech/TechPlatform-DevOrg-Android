@@ -63,10 +63,10 @@ public class FormWebviewFragment extends Fragment {
         webview = webModuleFragmentView.findViewById(R.id.webview);
         webview.loadUrl(weblink);
         WebSettings settings = webview.getSettings();
-        settings.setJavaScriptEnabled(true);
+        //settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new FormWebviewFragment.WebAppInterface(getActivity()), "Android");
         settings.setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true);
+        //settings.setAppCacheEnabled(true);
         if (!(Util.isConnected(getActivity())))
             settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webview.setWebContentsDebuggingEnabled(true);
@@ -114,7 +114,7 @@ public class FormWebviewFragment extends Fragment {
             return true;
         }
 
-        @TargetApi(Build.VERSION_CODES.N)
+        //@TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(request.getUrl().toString());

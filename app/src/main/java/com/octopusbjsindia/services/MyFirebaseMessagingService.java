@@ -185,7 +185,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         intent = new Intent(getApplicationContext(), SSActionsActivity.class);
                         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                         intent.putExtra("viewType", 1);
-                        intent.putExtra("title", "Structure List");
+                        intent.putExtra("title", "Waterbody List");
                         break;
                     case "machine":
                         intent = new Intent(getApplicationContext(), SSActionsActivity.class);

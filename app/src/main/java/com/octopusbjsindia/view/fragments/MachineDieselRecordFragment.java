@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -88,17 +89,13 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
     String machineId, machineCode, currentStructureId;
-    private EditText etMachineCode, etStructureCode, etDieselQuantity;
+    private EditText etMachineCode, etDieselQuantity;
     private Button btnAdd, btnSubmit;
-    //private MachineDieselRecordFragmentPresenter machineDieselRecordFragmentPresenter;
     private RecyclerView rvDieselRecords;
     private ImageView ivCalendarMode, imgDieselReceipt, imgRegisterOne, imgRegisterTwo;
     private boolean isMonth = true;
     private MaterialCalendarView calendarView;
     private final ArrayList<MachineDieselRecord> machineDieselRecordsList = new ArrayList<>();
-    SimpleDateFormat ddFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
-    SimpleDateFormat MMFormat = new SimpleDateFormat("MM", Locale.ENGLISH);
-    SimpleDateFormat yyyyFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
     private MachineDieselRecordsAdapter machineDieselRecordsAdapter;
     private Uri outputUri;
     private Uri finalUri;
@@ -106,7 +103,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int dieselImageCount = 0, registerImageCount = 0;
-    private String imageType;//, selectedDate;
+    private String imageType;
     private ImageView clickedImageView;
     private GPSTracker gpsTracker;
     private Location location;
@@ -166,7 +163,15 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
         calendarView.setSelectedDate(Calendar.getInstance().getTime());
         calendarView.getSelectedDate();
         etMachineCode.setText(machineCode);
+        //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
+        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
         if(!Util.isConnected(getActivity())) {
             Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
         }
@@ -180,10 +185,6 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     @Override
     public void onDetach() {
         super.onDetach();
-//        if (machineDieselRecordFragmentPresenter != null) {
-//            machineDieselRecordFragmentPresenter.clearData();
-//            machineDieselRecordFragmentPresenter = null;
-//        }
     }
 
     @Override
@@ -236,7 +237,7 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 }
                     if (dateAlreadySelected == 1) {
                         if (etDieselQuantity.getText().toString() != null && etDieselQuantity.getText().toString().length() > 0) {
-                            if (gpsTracker.isGPSEnabled(getActivity(), this)) {
+                            if (gpsTracker.canGetLocation()) {
                                 location = gpsTracker.getLocation();
                                 if (location != null) {
                                     MachineDieselRecord machineDieselRecord = new MachineDieselRecord();
@@ -343,6 +344,23 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -382,6 +400,13 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
                 }
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
+            }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -471,8 +496,22 @@ public class MachineDieselRecordFragment extends Fragment implements APIDataList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(machineDieselRecordsList));
-                params.put("lat", String.valueOf(location.getLatitude()));
-                params.put("long ", String.valueOf(location.getLongitude()));
+
+//set location
+                if (location != null ) {
+                    params.put("lat", String.valueOf(location.getLatitude()));
+                    params.put("long ", String.valueOf(location.getLongitude()));
+                } else {
+                    if(gpsTracker.canGetLocation()) {
+                        location = gpsTracker.getLocation();
+                        if (location != null ) {
+                            params.put("lat", String.valueOf(location.getLatitude()));
+                            params.put("long ", String.valueOf(location.getLongitude()));
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Not able to get location.", Toast.LENGTH_LONG).show();
+                    }
+                }
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
                 return params;
             }

@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.activities;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,6 +64,7 @@ import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorActivityPresenter;
 import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -82,7 +85,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class OperatorActivity extends AppCompatActivity implements APIDataListener,SingleSelectBottomSheet.MultiSpinnerListener, View.OnClickListener {
+public class OperatorActivity extends AppCompatActivity implements APIDataListener,
+        SingleSelectBottomSheet.MultiSpinnerListener, View.OnClickListener {
 
     private final String TAG = "OperatorActivity";
     private ImageView img_start_meter, img_end_meter, clickedImageView;
@@ -104,7 +108,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private SimpleDateFormat df;
-    private String strReasonId="";
+    private String strReasonId = "";
+    private GPSTracker gpsTracker;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,15 +147,25 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         img_start_meter.setOnClickListener(this);
         img_end_meter.setOnClickListener(this);
         toolbar_edit_action.setOnClickListener(this);
+
+        //get lat,long of location
+        gpsTracker = new GPSTracker(this);
+        if(Permissions.isLocationPermissionGranted(this, this)) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+            } else {
+                gpsTracker.showSettingsAlert();
+            }
+        }
     }
 
     private void setDeviceInfo() {
         try {
-            String appVersion  = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            tvVersionCode.setText("Version-"+appVersion);
+            String appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            tvVersionCode.setText("Version-" + appVersion);
             String deviceName = android.os.Build.MODEL;
             String deviceMake = Build.MANUFACTURER;
-            tvDeviceName.setText(deviceMake+" "+deviceName);
+            tvDeviceName.setText(deviceMake + " " + deviceName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -160,23 +176,45 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         String msg = "";
         switch (view.getId()) {
             case R.id.buttonStartService:
-                if(startUri == null)
+                if (startUri == null)
                     msg = "Please select Start meter reading photo";
-                else if(et_smeter_read.getText().toString().length() <= 0) {
+                else if (et_smeter_read.getText().toString().length() <= 0)
                     msg = "Please enter start meter reading";
-                }
+                else if (machine_code.isEmpty())
+                    msg = "Machine not assigned. Contact to DPM.";
                 if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
                     operatorRequestResponseModel.setMachine_id(machine_id);
                     operatorRequestResponseModel.setStatus_code("" + state_start);
                     operatorRequestResponseModel.setStatus("Working");
                     operatorRequestResponseModel.setMeter_reading(et_smeter_read.getText().toString());
+                    operatorRequestResponseModel.setStructureId(structure_id);
+                    //set location
+                    if (location != null) {
+                        operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                        operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                    } else {
+                        if(gpsTracker.canGetLocation()) {
+                            location = gpsTracker.getLocation();
+                            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                            if (location != null ) {
+                                operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                                operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                            }
+                        } else {
+                            Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "Working");
                     editor.putString("startReading", et_smeter_read.getText().toString());
                     editor.putString("startUri", startUri.toString());
                     Date current = Calendar.getInstance().getTime();
                     editor.putString("startDate", df.format(current));
+                    editor.putString("stopReading", "");
+                    editor.putString("stopUri", "");
+                    editor.putString("stopDate", "");
                     editor.apply();
                     machine_status = "Working";
 
@@ -187,13 +225,15 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                 break;
             case R.id.buttonStopService:
-                if(stopUri == null) {
+                if (stopUri == null) {
                     msg = "Please select Stop meter reading photo";
-                } else if(et_emeter_read.getText().toString().length() <= 0) {
+                } else if (et_emeter_read.getText().toString().length() <= 0) {
                     msg = "Please Enter Stop meter reading";
-                } else if(Integer.parseInt(et_emeter_read.getText().toString()) <
-                        Integer.parseInt(et_smeter_read.getText().toString())) {
+                } else if (Float.parseFloat(et_emeter_read.getText().toString()) <
+                        Float.parseFloat(et_smeter_read.getText().toString())) {
                     msg = "Stop meter reading cannot be less than Start meter reading.";
+                }  else if (machine_code.isEmpty()) {
+                    msg = "Machine not assigned. Contact to DPM.";
                 }
                 if (msg.length() <= 0) {
                     OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
@@ -201,6 +241,25 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     operatorRequestResponseModel.setStatus_code("" + state_stop);
                     operatorRequestResponseModel.setStatus("stop");
                     operatorRequestResponseModel.setMeter_reading(et_emeter_read.getText().toString());
+                    operatorRequestResponseModel.setStructureId(structure_id);
+
+                    //set location
+                    if (location != null) {
+                        operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                        operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                    } else {
+                        if(gpsTracker.canGetLocation()) {
+                            location = gpsTracker.getLocation();
+                            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                            if (location != null ) {
+                                operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                                operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                            }
+                        } else {
+                            Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                     uploadMachineLog(operatorRequestResponseModel);
                     editor.putString("machineStatus", "stop");
                     editor.putString("stopReading", et_emeter_read.getText().toString());
@@ -228,15 +287,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             case R.id.toolbar_edit_action:
                 PopupMenu popup = new PopupMenu(OperatorActivity.this, toolbar_edit_action);
                 popup.getMenuInflater().inflate(R.menu.opretor_popup_menu, popup.getMenu());
-//                MenuPopupHelper menuHelper = new MenuPopupHelper(OperatorActivity.this, (MenuBuilder) popup.getMenu(), toolbar_edit_action);
-//                menuHelper.setForceShowIcon(true);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getTitle().toString().equalsIgnoreCase("Halt Reason")){
+                        if (item.getTitle().toString().equalsIgnoreCase("Halt Reason")) {
                             if (machine_status.equals("Working")) {
                                 Util.showToast("Machine is in Working state.", OperatorActivity.this);
                             } else {
-                                strReasonId="";
+                                strReasonId = "";
                                 String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
                                 Gson gson = new Gson();
                                 OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr, OperatorMachineCodeDataModel.class);
@@ -246,10 +303,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 }
                                 showMultiSelectBottomsheet("Halt Reason", "halt", ListHaltReasons);
                             }
-                        } else{
+                        } else {
                             Intent i = new Intent(OperatorActivity.this, SiltTransportationRecordActivity.class);
-                            i.putExtra("machineId",machine_id);
-                            i.putExtra("structureId",structure_id);
+                            i.putExtra("machineId", machine_id);
+                            i.putExtra("structureId", structure_id);
                             startActivity(i);
                         }
                         return true;
@@ -257,57 +314,82 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 });
 
                 popup.show(); //showing popup menu
-
                 break;
-
         }
     }
 
     private void checkDate() {
 //        stopDate  startDate
         String startDateStr = preferences.getString("startDate", "");
-        String stopDateStr = preferences.getString("stopDate", "");
-        if (startDateStr.equals("")) {
-            setButtons();
-        } else if (stopDateStr.equals("")) {
-            setButtons();
-        } else {
-
+//        String stopDateStr = preferences.getString("stopDate", "");
+        machine_status = preferences.getString("machineStatus", "");
+        if (!(startDateStr.equals(""))) {
+//            setButtons();
+//        } else if (stopDateStr.equals("")) {
+//            setButtons();
+//        } else {
             Date current = Calendar.getInstance().getTime();
-
             Date startDate = null;
-            Date stopDate = null;
+//            Date stopDate = null;
             Date currentDate = null;
             try {
                 currentDate = df.parse(df.format(current));
                 startDate = df.parse(startDateStr);
-                stopDate = df.parse(stopDateStr);
+//                stopDate = df.parse(stopDateStr);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-//            if (startDate.getTime() == stopDate.getTime()) {
-            if (startDate.getTime() != currentDate.getTime()) {
-                editor.putString("machineStatus", "");
-                editor.putString("stopDate", "");
-                editor.putString("startDate", "");
-                editor.apply();
-                setButtons();
-            } else {
-                editor.putString("machineStatus", "submit");
-                editor.apply();
-                setButtons();
-            }
+//            if (startDate.getTime() != currentDate.getTime()) {
+//                editor.putString("machineStatus", "");
+//                editor.putString("stopDate", "");
+//                editor.putString("startDate", "");
+//                editor.putString("stopReading", "");
+//                editor.putString("stopUri", "");
+//                editor.putString("stopDate", "");
+//                editor.apply();
+//                setButtons();
 //            } else {
-//
+//                editor.putString("machineStatus", "submit");
+//                editor.apply();
+//                setButtons();
 //            }
-        }
 
+//            if(machine_status.equals("")){
+//                setButtons();
+//            } else if(machine_status.equalsIgnoreCase("Working")){
+//
+//            } else
+            if (machine_status.equalsIgnoreCase("stop") |
+                    machine_status.equalsIgnoreCase("submit")){
+                if (!(startDate.equals(currentDate))) {
+                    editor.putString("machineStatus", "");
+                    editor.putString("stopDate", "");
+                    editor.putString("startDate", "");
+                    editor.putString("stopReading", "");
+                    editor.putString("stopUri", "");
+                    editor.putString("stopDate", "");
+                    editor.apply();
+                    machine_status = "";
+                    img_start_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_start_meter_reading));
+                    et_smeter_read.setText("");
+                    img_end_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_end_meter_reading));
+                    et_emeter_read.setText("");
+                } else {
+                    editor.putString("machineStatus", "submit");
+                    editor.apply();
+                    machine_status = "submit";
+                }
+            }
+        }
+        setButtons();
     }
 
     private void setButtons() {
-        machine_status = preferences.getString("machineStatus", "");
+//        machine_status = preferences.getString("machineStatus", "");
         if (machine_status.equals("")) {
+            img_start_meter.setEnabled(true);
+            et_smeter_read.setEnabled(true);
+            btnStartService.setEnabled(true);
             img_end_meter.setEnabled(false);
             et_emeter_read.setEnabled(false);
             btnStopService.setEnabled(false);
@@ -337,7 +419,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             img_start_meter.setEnabled(false);
             et_smeter_read.setEnabled(false);
             btnStartService.setEnabled(false);
-
             img_end_meter.setEnabled(true);
             et_emeter_read.setEnabled(true);
             btnStopService.setEnabled(true);
@@ -364,13 +445,30 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         }
     }
 
-    private void showMultiSelectBottomsheet(String Title,String selectedOption, ArrayList<String> List) {
+    private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
 
         bottomSheetDialogFragment = new SingleSelectBottomSheet(this, selectedOption, List, this::onValuesSelected);
         bottomSheetDialogFragment.show();
         bottomSheetDialogFragment.toolbarTitle.setText(Title);
         bottomSheetDialogFragment.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.GPS_REQUEST) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(gpsTracker.canGetLocation()) {
+                    location = gpsTracker.getLocation();
+                } else {
+                    gpsTracker.showSettingsAlert();
+                }
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -400,7 +498,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-//                clickedImageView.setImageURI(finalUri);
                 Glide.with(this)
                         .load(new File(finalUri.getPath()))
                         .placeholder(new ColorDrawable(Color.RED))
@@ -419,32 +516,42 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        } else if(requestCode == 100) {
+            if(gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
+            }
         }
 
     }
 
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
         Gson gson = new Gson();
-        editor.putString("operatorMachineData",gson.toJson(operatorMachineData));
+        editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
         machine_id = operatorMachineData.getMachine_id();
-        structure_id  = operatorMachineData.getStructure_id();
+        structure_id = operatorMachineData.getStructure_id();
         machine_code = operatorMachineData.getMachine_code();
-        tv_machine_code.setText(machine_code);
+        if(machine_code != null && !(machine_code.isEmpty())){
+            tv_machine_code.setText(machine_code);
+        } else {
+            tv_machine_code.setText("Not Assigned");
+            Util.showToast("Machine not assigned. Contact to DPM.",this);
+        }
+
 
         for (int i = 0; i < operatorMachineData.getNonutilisationTypeData().getEn().size(); i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
         }
-
         editor.putString("machine_id", machine_id);
         editor.putString("machine_code", machine_code);
-
         editor.apply();
     }
 
     public void removeMachineid() {
         editor.putBoolean("isMachineRemoved", true);
         editor.apply();
-
     }
 
     private void onAddImageClick() {
@@ -457,7 +564,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.title_choose_picture));
         String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
-
         dialog.setItems(items, (dialog1, which) -> {
             switch (which) {
                 case 0:
@@ -542,13 +648,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             Log.d("response Received -", jsonString);
-                            //Util.showToast("Sync response->"+ jsonString, this);
-//                            DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-//                                    deleteSinglSynccedOperatorRecord(data.get_id());
-//                            if (id == data.get_id()){
-                                Util.showToast("Submitted Successfully.", OperatorActivity.this);
-//                            }
-
+                            Util.showToast("Submitted Successfully.", OperatorActivity.this);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(OperatorActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -599,16 +699,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
                 {
-//                    if (TextUtils.isEmpty(imageToSend)) {
-//                        params.put("image0", new DataPart("image0", new byte[0],
-//                                "image/jpeg"));
-//                    } else {
-
-                        //drawable = new BitmapDrawable(getResources(), imageToSend);
-                        drawable = new BitmapDrawable(getResources(), imageHashmap.get("image"));
-                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
-                                "image/jpeg"));
-                    //}
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get("image"));
+                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
                 }
                 return params;
             }
@@ -663,7 +756,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
         String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
         Gson gson = new Gson();
-        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,OperatorMachineCodeDataModel.class);
+        OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr, OperatorMachineCodeDataModel.class);
 //        if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_MARATHI)) {
 //            strReasonId = operatorMachineData.getNonutilisationTypeData().getMr().get(selectedPosition).get_id();
 //        }else if (Util.getLocaleLanguageCode().equalsIgnoreCase(Constants.App.LANGUAGE_HINDI)) {
@@ -674,13 +767,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         strReasonId = operatorMachineData.getNonutilisationTypeData().getEn().get(selectedPosition).get_id();
         OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
         operatorRequestResponseModel.setMachine_id(machine_id);
-        operatorRequestResponseModel.setStatus_code(""+state_halt);
+        operatorRequestResponseModel.setStatus_code("" + state_halt);
         operatorRequestResponseModel.setStatus("halt");
         operatorRequestResponseModel.setReasonId(strReasonId);
         uploadMachineLog(operatorRequestResponseModel);
 //        updateStatusAndProceed(state_halt);
 //        clearReadingImages();
     }
-
-
 }
