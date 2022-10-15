@@ -90,8 +90,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                    intent, PendingIntent.FLAG_ONE_SHOT);
+            final int flag =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_UPDATE_CURRENT |
+                    PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, flag);
+
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
             NotificationCompat.Builder notificationBuilder;
@@ -121,12 +123,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (notificationManager != null) {
                 notificationManager.notify(0, notificationBuilder.build());
             }
-
-            // Create an explicit intent for an Activity in your app
-//            Intent intent = new Intent(this, AlertDetails.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
         }
     }
 

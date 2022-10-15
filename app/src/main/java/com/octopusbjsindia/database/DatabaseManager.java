@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import com.octopusbjsindia.dao.AccessibleLocationDataDao;
 import com.octopusbjsindia.dao.ContentDataDao;
 import com.octopusbjsindia.dao.FormDataDao;
@@ -50,6 +49,7 @@ public class DatabaseManager {
                     .addMigrations(MIGRATION_4_TO_5)
                     .addMigrations(MIGRATION_5_TO_6)
                     .addMigrations(MIGRATION_6_TO_7)
+                    .addMigrations(MIGRATION_7_TO_8)
                     .build();
         }
 
@@ -126,6 +126,13 @@ public class DatabaseManager {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
             database.execSQL("ALTER TABLE SSMasterDatabase ADD COLUMN type TEXT");
+        }
+    };
+
+    private static final Migration MIGRATION_7_TO_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
         }
     };
 

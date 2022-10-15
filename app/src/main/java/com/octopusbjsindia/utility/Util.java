@@ -365,8 +365,7 @@ public class Util {
     }
 
     public static void logOutUser(Activity activity) {
-        // remove user related shared pref data
-//        Util.saveLoginObjectInPref("");
+        //before log out, we should remove firebase_id from backend.
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("actionType", "removeFirebaseId");
@@ -376,11 +375,14 @@ public class Util {
         }
         if (jsonObject != null) {
             Util.updateFirebaseIdRequests(jsonObject);
-        }
 
+        }
+        Util.setSubmittedFormsLoaded(false);
+        Util.removeDatabaseRecords(false);
+
+        // remove user related shared pref data
         SharedPreferences preferences = Platform.getInstance().getSharedPreferences(
                 Constants.App.APP_DATA, Context.MODE_PRIVATE);
-
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(Constants.Login.USER_OBJ);
         editor.remove(Constants.Login.LOGIN_OBJ);
