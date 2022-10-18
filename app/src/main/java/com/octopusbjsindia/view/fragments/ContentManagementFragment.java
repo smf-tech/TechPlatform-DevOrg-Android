@@ -301,7 +301,7 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                     Toast.makeText(getActivity(), "Download completed.", Toast.LENGTH_LONG).show();
                 }
                 // call api to update backend about downloaded file with content_id for this user.
-                if(context instanceof HomeActivity) {
+                if (context instanceof HomeActivity) {
                     presenter.sendDownloadedContentDetails(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
                 }
                 if (groupPosition != -1 && childPosition != -1) {
@@ -378,12 +378,16 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     }
 
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
@@ -394,8 +398,8 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fb_select) {
-                Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
-                startActivity(storedContentIntent);
+            Intent storedContentIntent = new Intent(getActivity(), StoredContentActivity.class);
+            startActivity(storedContentIntent);
         }
     }
 }

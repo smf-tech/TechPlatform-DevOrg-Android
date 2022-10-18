@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
@@ -38,7 +39,11 @@ public class AttendanceService extends IntentService {
 
 
         final AlarmManager manager= (AlarmManager) getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent=PendingIntent.getService(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final int flag =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_UPDATE_CURRENT |
+                PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+
+        PendingIntent pendingIntent=PendingIntent.getService(this,0,intent,flag);
         final Bundle bundle=intent.getExtras();
         String jsonBody=null;
         if(bundle!=null){

@@ -60,9 +60,13 @@ public class ForegroundService extends Service {
         preferences = Platform.getInstance().getSharedPreferences(
                 "AppData", Context.MODE_PRIVATE);
         mHandler = new Handler();
+
+        final int flag =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_UPDATE_CURRENT |
+                PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+
         Intent notificationIntent = new Intent(this, OperatorMeterReadingActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                0, notificationIntent, flag);
 
         final Builder builder = new Builder(this, CHANNEL_ID)
                 .setContentTitle("Operator Machine Reading")

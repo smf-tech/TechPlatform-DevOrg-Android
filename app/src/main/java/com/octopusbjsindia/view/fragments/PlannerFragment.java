@@ -314,12 +314,16 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
 
     @Override
     public void hideProgressBar() {
-        mContext.runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (mContext != null) {
+            mContext.runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
