@@ -133,12 +133,12 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
     private void updateModuleAccessList() {
         isModuleCompleted.clear();
         //isModuleCompleted.add(true);
-        for (int i=0; i<selContentList.size(); i++) {
+        for (int i = 0; i < selContentList.size(); i++) {
             boolean isAccessible = false;
-            if(selContentList.get(i).getAssignmentList()!= null && selContentList.get(i).
-                    getAssignmentList().size()>0) {
-                for (SELAssignmentData selAssignmentData: selContentList.get(i).getAssignmentList()) {
-                    if(selAssignmentData.isFormSubmitted()) {
+            if (selContentList.get(i).getAssignmentList() != null && selContentList.get(i).
+                    getAssignmentList().size() > 0) {
+                for (SELAssignmentData selAssignmentData : selContentList.get(i).getAssignmentList()) {
+                    if (selAssignmentData.isFormSubmitted()) {
                         isAccessible = true;
                     } else {
                         isAccessible = false;
@@ -153,11 +153,11 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
 
         selFragmentAdapter.notifyDataSetChanged();
 
-        for (Boolean isCompleted: isModuleCompleted) {
-            if(isCompleted) {
+        for (Boolean isCompleted : isModuleCompleted) {
+            if (isCompleted) {
                 isAllModulesCompleted = true;
             } else {
-                isAllModulesCompleted =  false;
+                isAllModulesCompleted = false;
                 break;
             }
         }
@@ -178,12 +178,16 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
@@ -200,12 +204,12 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
     }
 
     public void onReceiveEmailId(String strEmailId) {
-        if (TextUtils.isEmpty(strEmailId)){
+        if (TextUtils.isEmpty(strEmailId)) {
             Util.showToast("Please enter valid email", getActivity());
         } else {
-            if(Util.getUserObjectFromPref().getUserLocation().getDistrictIds()!= null) {
-                if(Util.getUserObjectFromPref().getUserLocation().getTalukaIds()!= null) {
-                    if(Util.getUserObjectFromPref().getUserLocation().getSchoolIds()!= null) {
+            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null) {
+                if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null) {
+                    if (Util.getUserObjectFromPref().getUserLocation().getSchoolIds() != null) {
                         presenter.sendSELCertificateOnMail(strEmailId,
                                 Util.getUserObjectFromPref().getUserName(),
                                 Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName(),
@@ -218,7 +222,7 @@ public class SELFragment extends Fragment implements APIDataListener, View.OnCli
     }
 
     public void showResponse(String message) {
-        if(message!=null) {
+        if (message != null) {
             Util.showToast(message, getActivity());
         }
     }

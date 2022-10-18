@@ -108,7 +108,7 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
         edtReason = view.findViewById(R.id.edt_reason);
         edtRejectedReason = view.findViewById(R.id.edt_rejected_reason);
-        elyRejectedReason= view.findViewById(R.id.tly_rejected_reason);
+        elyRejectedReason = view.findViewById(R.id.tly_rejected_reason);
         tvCategoryLabel = view.findViewById(R.id.tv_category);
 
         rbGroup = view.findViewById(R.id.radio_group_filter);
@@ -234,18 +234,18 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
 
             case R.id.btn_apply_leave:
-                if (Util.isConnected(getActivity())){
+                if (Util.isConnected(getActivity())) {
                     if (applyType.equalsIgnoreCase("Leave")) {
                         if (Util.isConnected(getActivity()))
                             applyForLeave();
                     } else if (applyType.equalsIgnoreCase("Comp-Off")) {
                         applyForCompOff();
                     }
-                }else {
-                        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                        .findViewById(android.R.id.content), getString(R.string.msg_no_network),
-                                Snackbar.LENGTH_LONG);
-                    }
+                } else {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), getString(R.string.msg_no_network),
+                            Snackbar.LENGTH_LONG);
+                }
 
                 break;
 
@@ -507,12 +507,16 @@ public class LeaveApplyFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
