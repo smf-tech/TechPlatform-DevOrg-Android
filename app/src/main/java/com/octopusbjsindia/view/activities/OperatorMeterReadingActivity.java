@@ -243,9 +243,10 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     }
 
     private void setHalfHourReminder() {
+        final int flag =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0;
         alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, flag);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
@@ -283,7 +284,9 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
             PendingIntent sender;
             Intent intent;
             intent = new Intent(this, AlarmReceiver.class);
-            sender = PendingIntent.getBroadcast(this,Requestcode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final int flag =  Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_UPDATE_CURRENT |
+                    PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+            sender = PendingIntent.getBroadcast(this,Requestcode, intent, flag);
             alarmMgr.cancel(sender);
             mRingtone.stop();
             AlarmRequestList.remove(0);
