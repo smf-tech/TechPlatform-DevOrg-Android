@@ -127,11 +127,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             dashboardFragment.setArguments(bundle);
         }
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
-        adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
-        adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
-        viewPager.setAdapter(adapter);
+        if(getActivity() != null && isAdded()) {
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+            adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
+            adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
+            adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
+            viewPager.setAdapter(adapter);
+        }
     }
 
     private void getUserData() {
