@@ -10,7 +10,11 @@ android {
             storePassword 'ss@123'
         }
     }
+
     compileSdkVersion 33
+
+    def dateFormat = new Date().format('ddMMYYYY')
+
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 33
@@ -24,6 +28,8 @@ android {
                                      "$projectDir/schemas".toString()]
             }
         }
+        //For changing app bundle name (.aab file)
+        setProperty("archivesBaseName", "Octopus" +"_v" + versionName  + "_"+ dateFormat)
     }
     sourceSets {
         androidTest.assets.srcDirs +=
@@ -35,6 +41,14 @@ android {
             shrinkResources false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def variantName = variant.name
+            def versionName = variant.versionName
+            def formattedDate = new Date().format('ddMMYYYY')
+            outputFileName = "Octopus_${variantName}_v${versionName}_${formattedDate}.apk"
         }
     }
     compileOptions {
