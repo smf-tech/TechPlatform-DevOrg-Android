@@ -180,7 +180,8 @@ public class TicketDetailFragment extends Fragment implements APIListener, View.
 
     @Override
     public void hideProgressBar() {
-        lyProgressBar.setVisibility(View.GONE);
+        if (lyProgressBar != null)
+            lyProgressBar.setVisibility(View.GONE);
     }
 
     public void setRoles(List<OrganizationRole> data) {

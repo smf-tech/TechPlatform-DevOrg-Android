@@ -510,11 +510,13 @@ public class VDCSMFormFragment extends Fragment implements APIDataListener, Cust
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     public void setMasterData() {
