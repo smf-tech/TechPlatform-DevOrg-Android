@@ -387,6 +387,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         rvMeetAnalytics.setLayoutManager(mLayoutManagerLeave);
         rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
         meetContactsListAdapter.notifyDataSetChanged();
+
     }
 
     @Override
