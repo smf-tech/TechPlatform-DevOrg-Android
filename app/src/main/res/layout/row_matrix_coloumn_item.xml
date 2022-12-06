@@ -1,37 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:padding="@dimen/dimen_10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:visibility="visible"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:id="@+id/row_title"
-                android:text="Row"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/dimen_05dp"
+    android:padding="@dimen/dimen_10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/dimen_10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:padding="@dimen/dimen_12dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -40,17 +20,6 @@
                     android:text="Coloumn"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
-
-                <ToggleButton
-                    android:id="@+id/toggleButton"
-                    style="@style/AppStyleButton"
-                    android:layout_marginBottom="20dp"
-                    android:text="ToggleButton"
-                    android:textOn="Light ON"
-                    android:textOff="Light OFF"
-                    android:visibility="gone"
-                    android:layout_width="@dimen/dimen_100dp"
-                    android:layout_height="@dimen/dimen_50dp" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleGroup2"
@@ -75,12 +44,20 @@
                         android:text="No" />
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_shape_down_arrow">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Select" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
-
-        </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
-
-</LinearLayout>
 

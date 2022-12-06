@@ -70,6 +70,9 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             if (isFirstpage) {
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
+            matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
+                    MatrixQuestionFragment.this, getActivity(), elements, this);
+            rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
         }
 
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName()))) {
@@ -80,24 +83,22 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }        // set quetion at top
-        text_title.setText(elements.getTitle().getLocaleValue());
-        if (getActivity() != null && getArguments() != null) {
-            if (getArguments().containsKey("Element")) {
-                elements = (Elements) getArguments().getSerializable("Element");
-                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
-                        MatrixQuestionFragment.this, getActivity(), elements, this);
-                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
-            }
         }
+        text_title.setText(elements.getTitle().getLocaleValue());
+//        if (getActivity() != null && getArguments() != null) {
+//            if (getArguments().containsKey("Element")) {
+//                elements = (Elements) getArguments().getSerializable("Element");
+//                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
+//                        MatrixQuestionFragment.this, getActivity(), elements, this);
+//                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
+//            }
+//        }
         return view;
     }
 
     public void jsonToMap(String str) throws JSONException {
-
         HashMap<String, String> map = new HashMap<String, String>();
         Gson g = new Gson();
-
         tempHashMap.clear();
         tempHashMap.putAll(g.fromJson(str,
                 new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {

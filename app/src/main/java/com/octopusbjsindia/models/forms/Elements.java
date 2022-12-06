@@ -66,7 +66,9 @@ public class Elements implements Serializable {
     @SerializedName("rows")
     @Expose
     private List<Row> rowsList = null;
-
+    @SerializedName("cellType")
+    @Expose
+    private String cellType;
     @SerializedName("columns")
     @Expose
     private List<Column> columns;
@@ -399,6 +401,14 @@ public class Elements implements Serializable {
 
     public void setFutureAllowedDays(Integer futureAllowedDays) {
         this.futureAllowedDays = futureAllowedDays;
+    }
+
+    public String getCellType() {
+        return cellType;
+    }
+
+    public void setCellType(String cellType) {
+        this.cellType = cellType;
     }
 }
 
