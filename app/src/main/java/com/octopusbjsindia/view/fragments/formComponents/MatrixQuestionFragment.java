@@ -129,13 +129,13 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
+                ((FormDisplayActivity) requireActivity()).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
                 hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
                 ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goPrevious();
+                ((FormDisplayActivity) requireActivity()).goPrevious();
                 break;
         }
     }

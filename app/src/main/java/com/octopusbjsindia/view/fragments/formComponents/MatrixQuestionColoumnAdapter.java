@@ -22,7 +22,8 @@ import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter<MatrixQuestionColoumnAdapter.EmployeeViewHolder> {
+public class MatrixQuestionColoumnAdapter extends RecyclerView.Adapter
+        <MatrixQuestionColoumnAdapter.EmployeeViewHolder> {
 
     Context mContext;
     private Elements dataList;

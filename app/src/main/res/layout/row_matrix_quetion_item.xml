@@ -35,7 +35,10 @@
                     android:id="@+id/rv_matrix_question"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/dimen_05dp" />
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_marginBottom="@dimen/dimen_05dp" />
             </RelativeLayout>
 
         </LinearLayout>

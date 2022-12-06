@@ -21,30 +21,34 @@ import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import java.util.List;
 
-public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQuestionFragmentAdapter.EmployeeViewHolder> implements MatrixQuestionColoumnAdapter.OnRequestItemClicked {
+public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
+        <MatrixQuestionFragmentAdapter.EmployeeViewHolder>
+        implements MatrixQuestionColoumnAdapter.OnRequestItemClicked {
 
     Context mContext;
     MatrixQuestionColoumnAdapter matrixQuestionFragmentAdapter;
-    private Elements dataList;
-    private JsonObject requestJsonObject = new JsonObject();
-    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
-    private List<Column> columnList;
-    private OnRequestItemClicked clickListener;
-    private PreferenceHelper preferenceHelper;
-    private MatrixQuestionFragment fragment;
+    private final Elements dataList;
+    private final JsonObject requestJsonObject = new JsonObject();
+    private final JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
+    //private List<Column> columnList;
+    private final OnRequestItemClicked clickListener;
+    //private final PreferenceHelper preferenceHelper;
+    private final MatrixQuestionFragment fragment;
 
-    public MatrixQuestionFragmentAdapter(MatrixQuestionFragment fragment, Context context, Elements elements, final OnRequestItemClicked clickListener) {
+    public MatrixQuestionFragmentAdapter(MatrixQuestionFragment fragment, Context context,
+                                         Elements elements, final OnRequestItemClicked clickListener) {
         mContext = context;
         this.dataList = elements;
         this.clickListener = clickListener;
         this.fragment = fragment;
-        preferenceHelper = new PreferenceHelper(Platform.getInstance());
+        //preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
         for (int i = 0; i < elements.getRowsList().size(); i++) {
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < elements.getColumns().size(); j++) {
                 if (fragment.rowMap != null) {
-                    String str = String.valueOf(fragment.rowMap.get(elements.getRowsList().get(i).getValue()).get(elements.getColumns().get(j).getName()));
+                    String str = String.valueOf(fragment.rowMap.get(elements.getRowsList().get(i).
+                            getValue()).get(elements.getColumns().get(j).getName()));
                     ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), str);
                 }else {
                     ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), "Yes");
@@ -82,9 +86,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter<MatrixQu
 
     @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
-        if (!((FormDisplayActivity) mContext).isEditable) {
-
-        }else {
+        if (((FormDisplayActivity) mContext).isEditable) {
             Log.d("onItemClicked", "onItemClicked-->" + pos);
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < dataList.getColumns().size(); j++) {
