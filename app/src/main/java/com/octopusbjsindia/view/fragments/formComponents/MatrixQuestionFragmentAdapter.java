@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +15,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
@@ -30,9 +36,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     private final Elements dataList;
     private final JsonObject requestJsonObject = new JsonObject();
     private final JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
-    //private List<Column> columnList;
     private final OnRequestItemClicked clickListener;
-    //private final PreferenceHelper preferenceHelper;
     private final MatrixQuestionFragment fragment;
 
     public MatrixQuestionFragmentAdapter(MatrixQuestionFragment fragment, Context context,
@@ -73,8 +77,18 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.row_title.setText(dataList.getRowsList().get(position).getText().getLocaleValue());
 
-        matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
-                this, dataList.getRowsList().get(position).getValue(), position, dataList.getCellType());
+        if(dataList.getCellType()!=null && dataList.getCellType().equalsIgnoreCase("Boolean")) {
+            matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
+                    this, dataList.getRowsList().get(position).getValue(), position, dataList.getCellType());
+        } else if (dataList.getCellType()!=null){
+            matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
+                    this, dataList.getRowsList().get(position).getValue(), position, dataList.getCellType(),
+                    dataList.getChoices());
+        } else {
+            matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
+                    this, dataList.getRowsList().get(position).getValue(), position, "Dropdown",
+                    dataList.getChoices());
+        }
         holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
 
     }
@@ -106,7 +120,6 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
             this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
         }
     }
-
 
     public interface OnRequestItemClicked {
         void onItemClicked(int pos);

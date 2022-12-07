@@ -8,16 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
+import com.octopusbjsindia.models.forms.MatrixChoice;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +33,19 @@ import java.util.List;
 public class MatrixQuestionColoumnAdapter extends
         RecyclerView.Adapter<MatrixQuestionColoumnAdapter.ColumnViewHolder> {
 
-    Context mContext;
+    private Context mContext;
+    private final MatrixQuestionFragment fragment;
     private Elements dataList;
     private List<Column> columnList;
     private List<Boolean> columnListAnswers = new ArrayList<>();
+    private List<Choice> choiceList = new ArrayList<>();
     private OnRequestItemClicked clickListener;
     private String RowName;
     private int rowPosition;
     private String cellType;
+    private ArrayList<SelectionListObject> dropdownChoicesList = new ArrayList<>();
+    private Boolean isMutliselectAllowed;
+    private String selectedChoices;
 
     public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context,
                                         List<Column> columnList, final OnRequestItemClicked clickListener,
@@ -43,6 +56,7 @@ public class MatrixQuestionColoumnAdapter extends
         this.columnList = columnList;
         this.clickListener = clickListener;
         this.cellType = cellType;
+        this.fragment = fragment;
 
         //add prefilled data
         if (fragment.rowMap != null) {
@@ -61,6 +75,28 @@ public class MatrixQuestionColoumnAdapter extends
         }
     }
 
+    public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context,
+                                        List<Column> columnList, final OnRequestItemClicked clickListener,
+                                        String s, int position, String cellType, List<Choice> choicesList) {
+        mContext = context;
+        RowName = s;
+        rowPosition = position;
+        this.columnList = columnList;
+        this.clickListener = clickListener;
+        this.cellType = cellType;
+        this.choiceList = choicesList;
+        this.fragment = fragment;
+
+        dropdownChoicesList.clear();
+        for (Choice choice : choicesList) {
+            dropdownChoicesList.add(new SelectionListObject(
+                    String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
+                    false, false));
+        }
+        if (cellType.equalsIgnoreCase("checkbox")) isMutliselectAllowed = true;
+        else isMutliselectAllowed = false;
+    }
+
     @Override
     public ColumnViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -71,38 +107,40 @@ public class MatrixQuestionColoumnAdapter extends
     @Override
     public void onBindViewHolder(ColumnViewHolder holder, int position) {
         holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
-        if (columnListAnswers.get(position).booleanValue()) {
-            holder.toggleGroup2.check(R.id.btn_yes);
-        } else {
-            holder.toggleGroup2.check(R.id.btn_no);
-        }
+        if (cellType.equalsIgnoreCase("Boolean")) {
+            if (columnListAnswers.get(position).booleanValue()) {
+                holder.toggleGroup.check(R.id.btn_yes);
+            } else {
+                holder.toggleGroup.check(R.id.btn_no);
+            }
 
-        holder.toggleGroup2.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-            }
-        });
-        holder.btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.toggleGroup2.check(R.id.btn_no);
-                columnListAnswers.set(position, false);
-                clickListener.onItemClicked(rowPosition, columnListAnswers);
-            }
-        });
-        holder.btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.toggleGroup2.check(R.id.btn_yes);
-                columnListAnswers.set(position, true);
-                clickListener.onItemClicked(rowPosition, columnListAnswers);
-            }
-        });
+//            holder.toggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+//                @Override
+//                public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+//                }
+//            });
+            holder.btn_no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.toggleGroup.check(R.id.btn_no);
+                    columnListAnswers.set(position, false);
+                    clickListener.onItemClicked(rowPosition, columnListAnswers);
+                }
+            });
+            holder.btn_yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.toggleGroup.check(R.id.btn_yes);
+                    columnListAnswers.set(position, true);
+                    clickListener.onItemClicked(rowPosition, columnListAnswers);
+                }
+            });
 
-        if (!((FormDisplayActivity) mContext).isEditable) {
-            holder.toggleGroup2.setEnabled(false);
-            holder.btn_yes.setEnabled(false);
-            holder.btn_no.setEnabled(false);
+            if (!((FormDisplayActivity) mContext).isEditable) {
+                holder.toggleGroup.setEnabled(false);
+                holder.btn_yes.setEnabled(false);
+                holder.btn_no.setEnabled(false);
+            }
         }
     }
 
@@ -113,23 +151,63 @@ public class MatrixQuestionColoumnAdapter extends
 
     public interface OnRequestItemClicked {
         void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
+        //void onDropdownOptionClciked(int position, ArrayList<SelectionListObject> columnListAnswers, Boolean isMutliselectAllowed);
     }
 
-    class ColumnViewHolder extends RecyclerView.ViewHolder {
+    class ColumnViewHolder extends RecyclerView.ViewHolder implements CustomBottomSheetDialogInterface {
         TextView column_name;
-        MaterialButtonToggleGroup toggleGroup2;
+        MaterialButtonToggleGroup toggleGroup;
         Button btn_yes, btn_no;
+        TextInputLayout textDropdown;
+        TextInputEditText etDropdown;
+
         ColumnViewHolder(View itemView) {
             super(itemView);
-            column_name = itemView.findViewById(R.id.column_name);
-            toggleGroup2 = itemView.findViewById(R.id.toggleGroup2);
 
+            column_name = itemView.findViewById(R.id.column_name);
+            toggleGroup = itemView.findViewById(R.id.toggle_group);
             btn_yes = itemView.findViewById(R.id.btn_yes);
             btn_no = itemView.findViewById(R.id.btn_no);
+            textDropdown = itemView.findViewById(R.id.text_dropdown);
+            etDropdown = itemView.findViewById(R.id.et_dropdown);
+            if (cellType.equalsIgnoreCase("Boolean")) {
+                toggleGroup.setVisibility(View.VISIBLE);
+                textDropdown.setVisibility(View.GONE);
+            } else {
+                toggleGroup.setVisibility(View.GONE);
+                textDropdown.setVisibility(View.VISIBLE);
 
+                etDropdown.setOnClickListener(v -> {
+                    //clickListener.onDropdownOptionClciked(getAdapterPosition(), dropdownChoicesList, isMutliselectAllowed);
+                    //dropdownChoicesList.clear();
+                    CustomBottomSheetDialogFragment customBottomSheetDialogFragment =
+                            new CustomBottomSheetDialogFragment(this, "Select choice", dropdownChoicesList,
+                                    isMutliselectAllowed);
+                    customBottomSheetDialogFragment.show(fragment.getParentFragmentManager(), CustomBottomSheetDialogFragment.TAG);
+                });
+            }
             itemView.setOnClickListener(v -> {
                 clickListener.onItemClicked(getAdapterPosition(), columnListAnswers);
             });
+        }
+
+        @Override
+        public void onCustomBottomSheetSelection(@NonNull String s) {
+            switch (s) {
+                case "Select choice":
+                    selectedChoices = "";
+                    for (SelectionListObject choice : dropdownChoicesList) {
+                        if (choice.isSelected()) {
+                            if (selectedChoices != "") {
+                                selectedChoices = selectedChoices + "," + choice.getValue();
+                            } else {
+                                selectedChoices = choice.getValue();
+                            }
+                        }
+                    }
+                    etDropdown.setText(selectedChoices);
+                    break;
+            }
         }
     }
 }

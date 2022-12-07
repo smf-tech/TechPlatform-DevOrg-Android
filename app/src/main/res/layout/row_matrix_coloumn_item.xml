@@ -19,15 +19,17 @@
                     android:id="@+id/column_name"
                     android:text="Coloumn"
                     android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/dimen_08dp"
                     android:layout_height="wrap_content" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggleGroup2"
+                    android:id="@+id/toggle_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     app:checkedButton="@id/btn_yes"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    android:visibility="visible">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_yes"
@@ -46,16 +48,21 @@
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_shape_down_arrow">
+                    android:layout_marginHorizontal="@dimen/dimen_16dp"
+                    app:endIconDrawable="@drawable/ic_shape_down_arrow"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Select" />
+                        android:hint="Select"
+                        android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
