@@ -27,7 +27,9 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
+public class MatrixQuestionFragment extends Fragment implements
+        MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
+
     public HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> tempHashMap = new HashMap<>();
     public HashMap<String, HashMap<String, HashMap<String, String>>> rowMap;
     boolean isFirstpage = false;

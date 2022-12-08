@@ -121,6 +121,15 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
         }
     }
 
+    @Override
+    public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
+        requestJsonObject.add(this.dataList.getRowsList().get(rowPosition).getValue(), jsonObject);
+        Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
+        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
+        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+    }
+
     public interface OnRequestItemClicked {
         void onItemClicked(int pos);
     }

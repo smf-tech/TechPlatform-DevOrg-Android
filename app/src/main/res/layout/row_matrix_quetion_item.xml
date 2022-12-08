@@ -3,46 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white">
+    android:background="@color/google_in"
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/row_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:fontFamily="@font/opensans_semibold"
+        android:gravity="center"
+        android:text="Row"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18sp" />
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:padding="@dimen/dimen_10dp"
-        app:cardBackgroundColor="@color/white">
+        android:visibility="visible">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_matrix_question"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/row_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:padding="@dimen/dimen_05dp"
-                android:text="Row" />
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_matrix_question"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/dimen_05dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:layout_marginEnd="@dimen/dimen_05dp"
-                    android:layout_marginBottom="@dimen/dimen_05dp" />
-            </RelativeLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
+            android:layout_height="match_parent"
+            android:background="@color/google_in"
+            android:clipToPadding="false" />
+    </RelativeLayout>
 </LinearLayout>
 

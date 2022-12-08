@@ -119,6 +119,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
+
         presenter = new FormDisplayActivityPresenter(this);
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);

@@ -105,6 +105,11 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 
+    @Override
+    public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
+
+    }
+
 
     public interface OnRequestItemClicked {
         void onItemClicked(int pos);

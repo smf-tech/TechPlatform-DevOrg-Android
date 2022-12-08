@@ -32,8 +32,10 @@ public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
         mFragmentTitleList.add(title);
     }
 
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
+
 }
