@@ -18,13 +18,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionColoumnAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePickerQuestionAdapter.EmployeeViewHolder> implements MatrixQuestionColoumnAdapter.OnRequestItemClicked {
@@ -102,6 +105,11 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 
+    @Override
+    public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
+
+    }
+
 
     public interface OnRequestItemClicked {
         void onItemClicked(int pos);
@@ -116,8 +124,6 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
             super(itemView);
             row_title = itemView.findViewById(R.id.row_title);
             img_quetion_image = itemView.findViewById(R.id.img_quetion_image);
-
-
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
         }

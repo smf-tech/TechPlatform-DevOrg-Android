@@ -13,9 +13,11 @@
             android:layout_width="match_parent"
             android:id="@+id/text_title"
             android:visibility="visible"
-            android:layout_margin="@dimen/dimen_05dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensans_semibold"
+            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/text_size_16"
             android:text="matrix_question fragment" />
 
@@ -25,10 +27,9 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
                 android:id="@+id/rv_matrix_question"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimen_05dp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </RelativeLayout>
 
         <LinearLayout
@@ -36,28 +37,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:paddingVertical="5dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadprevious"
-                style="@style/AppStyleBorderButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_weight="1"
                 android:text="@string/previous"
                 android:textColor="@color/medium_grey" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"
-                style="@style/AppStyleBorderButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_weight="1"
                 android:text="@string/next" />
         </LinearLayout>

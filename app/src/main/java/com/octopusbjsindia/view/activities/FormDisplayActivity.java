@@ -119,6 +119,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
+
         presenter = new FormDisplayActivityPresenter(this);
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
@@ -218,7 +219,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         });
 
-        //get lat,long of location
+        //get lat,long of location - commented
         gpsTracker = new GPSTracker(this);
         if(Permissions.isLocationPermissionGranted(this, this)) {
             if(gpsTracker.canGetLocation()) {

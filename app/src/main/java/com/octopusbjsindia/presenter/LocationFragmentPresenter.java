@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
+//import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
 
 public class LocationFragmentPresenter implements APIPresenterListener {
 
@@ -61,7 +61,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         mContext.showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_LOCATION_DATA);
-        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        //Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         mContext.showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);
@@ -82,7 +82,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         mContext.showProgressBar();
         final String getLocationUrl = BuildConfig.BASE_URL
                 + String.format(Urls.Profile.GET_LOCATION_DATA3);
-        Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
+        //Log.d(TAG, "getLocationUrl: url" + getLocationUrl);
         mContext.showProgressBar();
         APIRequestCall requestCall = new APIRequestCall();
         requestCall.setApiPresenterListener(this);

@@ -43,13 +43,14 @@ public class DatabaseManager {
             appDatabase = Room.databaseBuilder(context.getApplicationContext(),
                     AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_OLD_TO_NEW)
+                    /*.addMigrations(MIGRATION_OLD_TO_NEW)
                     .addMigrations(MIGRATION_2_TO_3)
                     .addMigrations(MIGRATION_3_TO_4)
                     .addMigrations(MIGRATION_4_TO_5)
                     .addMigrations(MIGRATION_5_TO_6)
                     .addMigrations(MIGRATION_6_TO_7)
-                    .addMigrations(MIGRATION_7_TO_8)
+                    .addMigrations(MIGRATION_7_TO_8)*/
+                    .fallbackToDestructiveMigration()
                     .build();
         }
 

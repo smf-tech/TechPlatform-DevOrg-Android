@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     private AlertDialog dialogNotApproved;
     private Object mSyncObserverHandle;
     private boolean isSyncRequired;
+    private FragmentManager childFragmentManager;
+
     @SuppressWarnings("CanBeFinal")
     private
     SyncStatusObserver mSyncStatusObserver = which -> {
@@ -95,7 +98,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        childFragmentManager = getChildFragmentManager();
         getUserData();
     }
 
@@ -128,7 +131,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
         }
 
         if(getActivity() != null && isAdded()) {
-            ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+            ViewPagerAdapter adapter = new ViewPagerAdapter(childFragmentManager);
             adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
             adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
             adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
