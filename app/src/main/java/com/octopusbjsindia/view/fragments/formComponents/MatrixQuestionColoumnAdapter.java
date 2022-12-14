@@ -60,7 +60,12 @@ public class MatrixQuestionColoumnAdapter extends
         //add prefilled data
         if (fragment.rowMap != null) {
             for (int i = 0; i < columnList.size(); i++) {
-                String str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getName()));
+                String str = "";
+                if (fragment.rowMap.containsKey(RowName)) {
+                    str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getName()));
+                } else {
+                    columnListAnswers.add(true);
+                }
                 if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
                     columnListAnswers.add(true);
                 } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
@@ -123,7 +128,7 @@ public class MatrixQuestionColoumnAdapter extends
     public void onBindViewHolder(ColumnViewHolder holder, int position) {
         holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
         if (cellType.equalsIgnoreCase("Boolean")) {
-            if (columnListAnswers.get(position).booleanValue()) {
+            if (columnListAnswers.size()>0 && columnListAnswers.get(position).booleanValue()) {
                 holder.toggleGroup.check(R.id.btn_yes);
             } else {
                 holder.toggleGroup.check(R.id.btn_no);
@@ -153,7 +158,7 @@ public class MatrixQuestionColoumnAdapter extends
                 holder.btn_no.setEnabled(false);
             }
         } else {
-            if (selectedChoicesList.size()>0) {
+            if (selectedChoicesList.size() > 0) {
                 holder.etDropdown.setText(selectedChoicesList.get(position));
                 if (!((FormDisplayActivity) mContext).isEditable) {
                     holder.textDropdown.setEnabled(false);
