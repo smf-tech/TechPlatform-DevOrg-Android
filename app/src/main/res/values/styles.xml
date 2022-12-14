@@ -42,7 +42,7 @@
 
     <style name="textinputstyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">@dimen/text_size_14</item>
-        <item name="boxStrokeColor">@color/colorPrimary</item>
+
     </style>
 
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">

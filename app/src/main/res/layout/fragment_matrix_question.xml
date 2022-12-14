@@ -18,8 +18,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensans_semibold"
             android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/text_size_16"
+            android:textSize="@dimen/text_size_18"
             android:text="matrix_question fragment" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?dividerHorizontal"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
