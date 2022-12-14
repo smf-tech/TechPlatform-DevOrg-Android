@@ -26,7 +26,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MatrixQuestionFragment extends Fragment implements
         MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
@@ -40,7 +39,7 @@ public class MatrixQuestionFragment extends Fragment implements
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
+    private JsonObject matrixQuestionRequestJsonObject = new JsonObject();
     private TextView text_title;
     private View view;
     private Elements elements;
@@ -83,7 +82,9 @@ public class MatrixQuestionFragment extends Fragment implements
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName()))) {
             String str = ((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName());
             try {
-                jsonToMap(str);
+                if (str != null) {
+                    jsonToMap(str);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -97,8 +98,8 @@ public class MatrixQuestionFragment extends Fragment implements
         if (elements.getCellType().equalsIgnoreCase("Boolean")) { // for boolean matrix question
             tempHashMap.clear();
             tempHashMap.putAll(g.fromJson(str,
-                new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
-                }.getType()));
+                    new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
+                    }.getType()));
 
             rowMap = new HashMap<>();
             rowMap.clear();
@@ -111,7 +112,6 @@ public class MatrixQuestionFragment extends Fragment implements
             rowMapDropdown = new HashMap<>();
             rowMapDropdown.clear();
             rowMapDropdown.putAll(tempDropdownHashMap.get(elements.getName()));
-            int i=0;
         }
     }
 
@@ -127,7 +127,7 @@ public class MatrixQuestionFragment extends Fragment implements
     }
 
     public void receiveAnswerJson(String receivedJsonObjectString) {
-        MatrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+        matrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
     }
 
     @Override
@@ -135,13 +135,15 @@ public class MatrixQuestionFragment extends Fragment implements
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
-                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+                if(matrixQuestionRequestJsonObject.size()>0) {
+                    hashMap.put(elements.getName(), new Gson().toJson(matrixQuestionRequestJsonObject));
+                }
                 ((FormDisplayActivity) requireActivity()).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
-                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
+//                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+//                ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
                 ((FormDisplayActivity) requireActivity()).goPrevious();
                 break;
         }
