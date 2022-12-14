@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -17,23 +17,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
-import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.models.forms.MatrixChoice;
-import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MatrixQuestionColoumnAdapter extends
@@ -43,7 +36,6 @@ public class MatrixQuestionColoumnAdapter extends
     private final MatrixQuestionFragment fragment;
     private List<Column> columnList;
     private List<Boolean> columnListAnswers = new ArrayList<>();
-    //private List<Choice> choiceList = new ArrayList<>();
     private OnRequestItemClicked clickListener;
     private String RowName;
     private int rowPosition;
@@ -51,7 +43,7 @@ public class MatrixQuestionColoumnAdapter extends
     private ArrayList<SelectionListObject> dropdownChoicesList = new ArrayList<>();
     private Boolean isMutliselectAllowed;
     private String selectedChoices;
-    //private ArrayList<String> selectedDropdownChoices = new ArrayList<>();
+    private ArrayList<String> selectedChoicesList = new ArrayList<>();
     private JsonObject selectedDropdownChoicesJsonObject = new JsonObject();
 
     public MatrixQuestionColoumnAdapter(MatrixQuestionFragment fragment, Context context,
@@ -91,17 +83,33 @@ public class MatrixQuestionColoumnAdapter extends
         this.columnList = columnList;
         this.clickListener = clickListener;
         this.cellType = cellType;
-        //this.choiceList = choicesList;
         this.fragment = fragment;
 
+        if (fragment.rowMapDropdown != null) {
+            HashMap<String, ArrayList<String>> hashmapAnswers = new HashMap<>();
+            for (int i = 0; i < columnList.size(); i++) {
+                if (fragment.rowMapDropdown.get(RowName) != null) {
+                    if (fragment.rowMapDropdown.get(RowName).get(columnList.get(i).getName()) != null) {
+                        hashmapAnswers.put(columnList.get(i).getName(), fragment.rowMapDropdown.get(RowName).
+                                get(columnList.get(i).getName()));
+                        selectedChoicesList.add(TextUtils.join(",", fragment.rowMapDropdown.
+                                get(RowName).get(columnList.get(i).getName())));
+                    } else {
+                        selectedChoicesList.add("");
+                    }
+                } else {
+                    selectedChoicesList.add("");
+                }
+            }
+        }
         dropdownChoicesList.clear();
         for (Choice choice : choicesList) {
             dropdownChoicesList.add(new SelectionListObject(
                     String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
                     false, false));
         }
-        if (cellType.equalsIgnoreCase("checkbox")) isMutliselectAllowed = true;
-        else isMutliselectAllowed = false;
+        if (cellType.equalsIgnoreCase("RadioGroup")) isMutliselectAllowed = false;
+        else isMutliselectAllowed = true;
     }
 
     @Override
@@ -144,6 +152,11 @@ public class MatrixQuestionColoumnAdapter extends
                 holder.btn_yes.setEnabled(false);
                 holder.btn_no.setEnabled(false);
             }
+        } else {
+            holder.etDropdown.setText(selectedChoicesList.get(position));
+            if (!((FormDisplayActivity) mContext).isEditable) {
+                holder.textDropdown.setEnabled(false);
+            }
         }
     }
 
@@ -154,6 +167,7 @@ public class MatrixQuestionColoumnAdapter extends
 
     public interface OnRequestItemClicked {
         void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
+
         void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject);
     }
 
@@ -182,17 +196,12 @@ public class MatrixQuestionColoumnAdapter extends
                 textDropdown.setVisibility(View.VISIBLE);
 
                 etDropdown.setOnClickListener(v -> {
-                    //clickListener.onDropdownOptionClciked(getAdapterPosition(), dropdownChoicesList, isMutliselectAllowed);
-                    //dropdownChoicesList.clear();
                     CustomBottomSheetDialogFragment customBottomSheetDialogFragment =
                             new CustomBottomSheetDialogFragment(this, "Select choice", dropdownChoicesList,
                                     isMutliselectAllowed);
                     customBottomSheetDialogFragment.show(fragment.getParentFragmentManager(), CustomBottomSheetDialogFragment.TAG);
                 });
             }
-           /* itemView.setOnClickListener(v -> {
-                clickListener.onItemClicked(getAdapterPosition(), columnListAnswers);
-            });*/
         }
 
         @Override

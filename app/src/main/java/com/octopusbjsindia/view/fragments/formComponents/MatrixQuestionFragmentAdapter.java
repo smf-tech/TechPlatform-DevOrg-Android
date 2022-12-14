@@ -45,25 +45,6 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
         this.dataList = elements;
         this.clickListener = clickListener;
         this.fragment = fragment;
-        //preferenceHelper = new PreferenceHelper(Platform.getInstance());
-
-//        for (int i = 0; i < elements.getRowsList().size(); i++) {
-//            JsonObject ColumnJsonObject = new JsonObject();
-//            for (int j = 0; j < elements.getColumns().size(); j++) {
-//                if (fragment.rowMap != null) {
-//                    String str = String.valueOf(fragment.rowMap.get(elements.getRowsList().get(i).
-//                            getValue()).get(elements.getColumns().get(j).getName()));
-//                    ColumnJsonObject.addProperty(elements.getColumns().get(j).getName(), str);
-//                } else {
-//                    ColumnJsonObject.addProperty(elements.getColumns().get(j).getName(), "Yes");
-//                }
-//            }
-//            requestJsonObject.add(elements.getRowsList().get(i).getValue(), ColumnJsonObject);
-//        }
-//        Log.d("JsonObject->", new Gson().toJson(requestJsonObject));
-//        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-//        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
-//        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 
     @Override
@@ -90,7 +71,6 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
                     dataList.getChoices());
         }
         holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
-
     }
 
     @Override
@@ -101,7 +81,6 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
         if (((FormDisplayActivity) mContext).isEditable) {
-            Log.d("onItemClicked", "onItemClicked-->" + pos);
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < dataList.getColumns().size(); j++) {
                 if (columnListAnswers.get(j)) {
@@ -110,13 +89,8 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
                     ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
                 }
             }
-            Log.d("JsonObjectAdapter->", new Gson().toJson(columnListAnswers));
-            //clickListener.onItemClicked(pos);
-
             requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), ColomJsonObject);
-            Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
             MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-            Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
             this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
         }
     }
@@ -124,9 +98,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     @Override
     public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
         requestJsonObject.add(this.dataList.getRowsList().get(rowPosition).getValue(), jsonObject);
-        Log.d("JsonObjectfinal->", new Gson().toJson(requestJsonObject));
         MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-        Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
 

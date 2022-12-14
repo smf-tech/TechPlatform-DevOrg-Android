@@ -24,6 +24,7 @@ import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -31,7 +32,9 @@ public class MatrixQuestionFragment extends Fragment implements
         MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
 
     public HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> tempHashMap = new HashMap<>();
+    public HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> tempDropdownHashMap = new HashMap<>();
     public HashMap<String, HashMap<String, HashMap<String, String>>> rowMap;
+    public HashMap<String, HashMap<String, ArrayList<String>>> rowMapDropdown;
     boolean isFirstpage = false;
     //views
     private RecyclerView rv_matrix_question;
@@ -79,7 +82,6 @@ public class MatrixQuestionFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName()))) {
             String str = ((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName());
-            //String str1 = ((FormDisplayActivity)getActivity()).formAnswersMap.get("question9");
             try {
                 jsonToMap(str);
             } catch (JSONException e) {
@@ -87,28 +89,30 @@ public class MatrixQuestionFragment extends Fragment implements
             }
         }
         text_title.setText(elements.getTitle().getLocaleValue());
-//        if (getActivity() != null && getArguments() != null) {
-//            if (getArguments().containsKey("Element")) {
-//                elements = (Elements) getArguments().getSerializable("Element");
-//                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
-//                        MatrixQuestionFragment.this, getActivity(), elements, this);
-//                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
-//            }
-//        }
         return view;
     }
 
     public void jsonToMap(String str) throws JSONException {
-        HashMap<String, String> map = new HashMap<String, String>();
         Gson g = new Gson();
-        tempHashMap.clear();
-        tempHashMap.putAll(g.fromJson(str,
+        if (elements.getCellType().equalsIgnoreCase("Boolean")) { // for boolean matrix question
+            tempHashMap.clear();
+            tempHashMap.putAll(g.fromJson(str,
                 new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
                 }.getType()));
 
-        rowMap = new HashMap<>();
-        rowMap.clear();
-        rowMap.putAll(tempHashMap.get(elements.getName()));
+            rowMap = new HashMap<>();
+            rowMap.clear();
+            rowMap.putAll(tempHashMap.get(elements.getName()));
+        } else { // for radioGroup and checkbox matrix question
+            tempDropdownHashMap.clear();
+            tempDropdownHashMap.putAll(g.fromJson(str,
+                    new TypeToken<HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>>>() {
+                    }.getType()));
+            rowMapDropdown = new HashMap<>();
+            rowMapDropdown.clear();
+            rowMapDropdown.putAll(tempDropdownHashMap.get(elements.getName()));
+            int i=0;
+        }
     }
 
     @Override
