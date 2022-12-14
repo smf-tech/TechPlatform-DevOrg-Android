@@ -153,9 +153,11 @@ public class MatrixQuestionColoumnAdapter extends
                 holder.btn_no.setEnabled(false);
             }
         } else {
-            holder.etDropdown.setText(selectedChoicesList.get(position));
-            if (!((FormDisplayActivity) mContext).isEditable) {
-                holder.textDropdown.setEnabled(false);
+            if (selectedChoicesList.size()>0) {
+                holder.etDropdown.setText(selectedChoicesList.get(position));
+                if (!((FormDisplayActivity) mContext).isEditable) {
+                    holder.textDropdown.setEnabled(false);
+                }
             }
         }
     }
