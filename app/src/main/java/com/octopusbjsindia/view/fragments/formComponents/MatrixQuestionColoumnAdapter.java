@@ -90,29 +90,52 @@ public class MatrixQuestionColoumnAdapter extends
         this.cellType = cellType;
         this.fragment = fragment;
 
-        if (fragment.rowMapDropdown != null) {
-            HashMap<String, ArrayList<String>> hashmapAnswers = new HashMap<>();
-            for (int i = 0; i < columnList.size(); i++) {
-                if (fragment.rowMapDropdown.get(RowName) != null) {
-                    if (fragment.rowMapDropdown.get(RowName).get(columnList.get(i).getName()) != null) {
-                        hashmapAnswers.put(columnList.get(i).getName(), fragment.rowMapDropdown.get(RowName).
-                                get(columnList.get(i).getName()));
-                        selectedChoicesList.add(TextUtils.join(",", fragment.rowMapDropdown.
-                                get(RowName).get(columnList.get(i).getName())));
-                    } else {
-                        selectedChoicesList.add("");
-                    }
-                } else {
-                    selectedChoicesList.add("");
-                }
-            }
-        }
-        dropdownChoicesList.clear();
+        //dropdownChoicesList.clear();
         for (Choice choice : choicesList) {
             dropdownChoicesList.add(new SelectionListObject(
                     String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
                     false, false));
         }
+
+        if (fragment.rowMapDropdown != null) {
+            //HashMap<String, ArrayList<String>> hashmapAnswers = new HashMap<>();
+            //for (int i = 0; i < columnList.size(); i++) {
+            if (fragment.rowMapDropdown.get(RowName) != null) {
+
+                for (int i = 0; i < columnList.size(); i++) {
+                    JsonArray array = new JsonArray();
+                    if (fragment.rowMapDropdown.get(RowName).get(columnList.get(i).getName()) != null) {
+//                        hashmapAnswers.put(columnList.get(i).getName(), fragment.rowMapDropdown.get(RowName).
+//                                get(columnList.get(i).getName()));
+                        ArrayList<String> temp = fragment.rowMapDropdown.
+                                get(RowName).get(columnList.get(i).getName());
+                        selectedChoicesList.add(TextUtils.join(",", temp));
+
+                        for (SelectionListObject object : dropdownChoicesList) {
+                            if (temp.contains(object.getValue())) {
+                                array.add(object.getValue());
+                            }
+                        }
+                        selectedDropdownChoicesJsonObject.add(columnList.get(i).getName(), array);
+                        clickListener.onDropdownOptionsSelected(rowPosition, selectedDropdownChoicesJsonObject);
+                    } else {
+                        selectedChoicesList.add("");
+                    }
+                }
+            }
+//            else {
+//                selectedChoicesList.add("");
+//            }
+        //}
+        }
+//        else {
+//            dropdownChoicesList.clear();
+//            for (Choice choice : choicesList) {
+//                dropdownChoicesList.add(new SelectionListObject(
+//                        String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
+//                        false, false));
+//            }
+//        }
         if (cellType.equalsIgnoreCase("RadioGroup")) isMutliselectAllowed = false;
         else isMutliselectAllowed = true;
     }
@@ -128,7 +151,7 @@ public class MatrixQuestionColoumnAdapter extends
     public void onBindViewHolder(ColumnViewHolder holder, int position) {
         holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
         if (cellType.equalsIgnoreCase("Boolean")) {
-            if (columnListAnswers.size()>0 && columnListAnswers.get(position).booleanValue()) {
+            if (columnListAnswers.size() > 0 && columnListAnswers.get(position).booleanValue()) {
                 holder.toggleGroup.check(R.id.btn_yes);
             } else {
                 holder.toggleGroup.check(R.id.btn_no);
