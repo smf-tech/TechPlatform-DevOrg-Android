@@ -63,15 +63,16 @@ public class MatrixQuestionColoumnAdapter extends
                 String str = "";
                 if (fragment.rowMap.containsKey(RowName)) {
                     str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getName()));
+                    if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
+                        columnListAnswers.add(true);
+                    } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
+                        columnListAnswers.add(false);
+                    }
                 } else {
                     columnListAnswers.add(true);
                 }
-                if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
-                    columnListAnswers.add(true);
-                } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
-                    columnListAnswers.add(false);
-                }
             }
+            clickListener.onItemClicked(rowPosition, columnListAnswers);
         } else {
             for (int i = 0; i < columnList.size(); i++) {
                 columnListAnswers.add(true);
@@ -90,7 +91,6 @@ public class MatrixQuestionColoumnAdapter extends
         this.cellType = cellType;
         this.fragment = fragment;
 
-        //dropdownChoicesList.clear();
         for (Choice choice : choicesList) {
             dropdownChoicesList.add(new SelectionListObject(
                     String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
@@ -98,15 +98,11 @@ public class MatrixQuestionColoumnAdapter extends
         }
 
         if (fragment.rowMapDropdown != null) {
-            //HashMap<String, ArrayList<String>> hashmapAnswers = new HashMap<>();
-            //for (int i = 0; i < columnList.size(); i++) {
             if (fragment.rowMapDropdown.get(RowName) != null) {
 
                 for (int i = 0; i < columnList.size(); i++) {
                     JsonArray array = new JsonArray();
                     if (fragment.rowMapDropdown.get(RowName).get(columnList.get(i).getName()) != null) {
-//                        hashmapAnswers.put(columnList.get(i).getName(), fragment.rowMapDropdown.get(RowName).
-//                                get(columnList.get(i).getName()));
                         ArrayList<String> temp = fragment.rowMapDropdown.
                                 get(RowName).get(columnList.get(i).getName());
                         selectedChoicesList.add(TextUtils.join(",", temp));
@@ -123,19 +119,7 @@ public class MatrixQuestionColoumnAdapter extends
                     }
                 }
             }
-//            else {
-//                selectedChoicesList.add("");
-//            }
-        //}
         }
-//        else {
-//            dropdownChoicesList.clear();
-//            for (Choice choice : choicesList) {
-//                dropdownChoicesList.add(new SelectionListObject(
-//                        String.valueOf(choice.getValue()), choice.getText().getDefaultValue(),
-//                        false, false));
-//            }
-//        }
         if (cellType.equalsIgnoreCase("RadioGroup")) isMutliselectAllowed = false;
         else isMutliselectAllowed = true;
     }
