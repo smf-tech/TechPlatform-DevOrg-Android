@@ -167,9 +167,9 @@ public class MatrixQuestionColoumnAdapter extends
         } else {
             if (selectedChoicesList.size() > 0) {
                 holder.etDropdown.setText(selectedChoicesList.get(position));
-                if (!((FormDisplayActivity) mContext).isEditable) {
-                    holder.textDropdown.setEnabled(false);
-                }
+            }
+            if (!((FormDisplayActivity) mContext).isEditable) {
+                holder.textDropdown.setEnabled(false);
             }
         }
     }
@@ -234,8 +234,14 @@ public class MatrixQuestionColoumnAdapter extends
                             }
                         }
                     }
-                    selectedDropdownChoicesJsonObject.add(columnList.get
-                            (getAdapterPosition()).getName(), array);
+                    if(array.size()>0) {
+                        selectedDropdownChoicesJsonObject.add(columnList.get
+                                (getAdapterPosition()).getName(), array);
+                    } else {
+                        selectedDropdownChoicesJsonObject.remove(columnList.get
+                                (getAdapterPosition()).getName());
+                    }
+
                     etDropdown.setText(selectedChoices);
                     clickListener.onDropdownOptionsSelected(rowPosition, selectedDropdownChoicesJsonObject);
                     break;

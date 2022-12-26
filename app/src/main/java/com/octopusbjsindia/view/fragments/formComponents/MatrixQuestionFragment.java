@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import org.json.JSONException;
@@ -126,8 +127,9 @@ public class MatrixQuestionFragment extends Fragment implements
         Log.d("onItemClickedfragment", "onItemClicked-->" + pos);
     }
 
-    public void receiveAnswerJson(String receivedJsonObjectString) {
-        matrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+    public void receiveAnswerJson(JsonObject receivedJsonObjectString) {
+        //matrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+        matrixQuestionRequestJsonObject = receivedJsonObjectString;
     }
 
     @Override
@@ -135,10 +137,20 @@ public class MatrixQuestionFragment extends Fragment implements
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
-                if(matrixQuestionRequestJsonObject.size()>0) {
-                    hashMap.put(elements.getName(), new Gson().toJson(matrixQuestionRequestJsonObject));
-                }
-                ((FormDisplayActivity) requireActivity()).goNext(hashMap);
+                        if(matrixQuestionRequestJsonObject.size()>0) {
+                            hashMap.put(elements.getName(), new Gson().toJson(matrixQuestionRequestJsonObject));
+                            ((FormDisplayActivity) requireActivity()).goNext(hashMap);
+                        } else {
+                            if(elements.isRequired()) {
+                                if (elements.getRequiredErrorText() != null) {
+                                    Util.showToast(elements.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                            } else {
+                                ((FormDisplayActivity) requireActivity()).goNext(hashMap);
+                            }
+                        }
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment

@@ -91,15 +91,30 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
             }
             requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), ColomJsonObject);
             MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-            this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+            //this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+            this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
         }
     }
 
     @Override
     public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
-        requestJsonObject.add(this.dataList.getRowsList().get(rowPosition).getValue(), jsonObject);
-        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
-        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+        if(jsonObject.size()>0) {
+            requestJsonObject.add(this.dataList.getRowsList().get(rowPosition).getValue(), jsonObject);
+            MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+            this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
+        } else {
+            if(requestJsonObject.has(this.dataList.getRowsList().get(rowPosition).getValue())) {
+                requestJsonObject.remove(this.dataList.getRowsList().get(rowPosition).getValue());
+                if(requestJsonObject.size()>0) {
+                    MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+                } else {
+                    if(MatrixQuestionRequestJsonObject.has(this.dataList.getName())) {
+                        MatrixQuestionRequestJsonObject.remove(this.dataList.getName());
+                    }
+                }
+                this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
+            }
+        }
     }
 
     public interface OnRequestItemClicked {
