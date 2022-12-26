@@ -234,14 +234,13 @@ public class MatrixQuestionColoumnAdapter extends
                             }
                         }
                     }
-                    if(array.size()>0) {
+                    if (array.size() > 0) {
                         selectedDropdownChoicesJsonObject.add(columnList.get
                                 (getAdapterPosition()).getName(), array);
                     } else {
                         selectedDropdownChoicesJsonObject.remove(columnList.get
                                 (getAdapterPosition()).getName());
                     }
-
                     etDropdown.setText(selectedChoices);
                     clickListener.onDropdownOptionsSelected(rowPosition, selectedDropdownChoicesJsonObject);
                     break;

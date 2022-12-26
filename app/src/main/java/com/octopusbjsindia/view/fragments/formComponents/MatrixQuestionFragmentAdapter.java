@@ -80,7 +80,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
 
     @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
-        if (((FormDisplayActivity) mContext).isEditable) {
+        //if (((FormDisplayActivity) mContext).isEditable) {
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < dataList.getColumns().size(); j++) {
                 if (columnListAnswers.get(j)) {
@@ -93,7 +93,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
             MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
             //this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
             this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
-        }
+        //}
     }
 
     @Override
