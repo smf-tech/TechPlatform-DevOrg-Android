@@ -100,14 +100,6 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     @Override
     public void onItemClicked(int pos, JsonObject columnListAnswers) {
         //if (((FormDisplayActivity) mContext).isEditable) {
-       /* JsonObject ColomJsonObject = new JsonObject();
-        for (int j = 0; j < dataList.getColumns().size(); j++) {
-            if (columnListAnswers.get(j)) {
-                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
-            } else {
-                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
-            }
-        }*/
 
         requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), columnListAnswers);
         MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
