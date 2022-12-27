@@ -50,9 +50,9 @@ import static com.octopusbjsindia.utility.Constants.RequestStatus.DEFAULT_MODULE
 public class HomeFragment extends Fragment implements PlatformTaskListener, APIDataListener, HomeActivity.OnSyncClicked {
 
     private final int[] tabIcons = {
-            R.drawable.ic_home_icon_tab,
-            R.drawable.ic_stories_icon_tab,
-            R.drawable.ic_connect_icon_tab
+            R.drawable.ic_home_24,
+            R.drawable.ic_newspaper_24,
+            R.drawable.ic_globe_24
     };
     private Home homeData;
     private Context context;

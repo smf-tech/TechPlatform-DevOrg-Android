@@ -15,6 +15,7 @@
     <color name="grey_medium">#aaaaaa</color>
     <color name="google_in">#EBEBEB</color>
     <color name="grey">#a0a0a0</color>
+    <color name="tab_grey">#99FFFFFF</color>
     <color name="light_grey">#909090</color>
     <color name="grey_light">#cccccc</color>
     <color name="lighter_grey">#eeeeee</color>

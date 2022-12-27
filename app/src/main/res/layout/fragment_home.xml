@@ -7,17 +7,20 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/home_tabs"
         android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/tab_selector"
         app:tabMode="fixed"
-        app:tabTextColor="@color/grey"
-        app:tabSelectedTextColor="@color/white"
-        app:tabIconTint="@android:color/white"
         app:tabInlineLabel="true"
-        app:tabTextAppearance="@style/HomeTabLayoutTextStyle"/>
+        app:tabTextAppearance="@style/HomeTabLayoutTextStyle"
+        app:tabIndicatorColor="@color/tab_selector"/>
+      <!--  app:tabIndicatorColor="@color/tab_selector"
+        android:background="@color/colorPrimary"
+        app:tabTextColor="@color/tab_grey"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIconTint="@android:color/white"-->
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/home_view_pager"

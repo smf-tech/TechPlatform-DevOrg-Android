@@ -735,12 +735,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void onNetworkConnectionChanged(boolean isConnected) {
         ImageView sync = findViewById(R.id.home_sync_icon);
         if (isConnected) {
-            sync.setImageResource(R.drawable.ic_internet_connected);
+            sync.setImageResource(R.drawable.ic_wifi_24);
 //            Util.snackBarToShowMsg(getWindow().getDecorView()
 //                            .findViewById(android.R.id.content), "Internet connection is available.",
 //                    Snackbar.LENGTH_LONG);
         } else {
-            sync.setImageResource(R.drawable.ic_internet_not_connected);
+            sync.setImageResource(R.drawable.ic_wifi_off_24);
             Util.snackBarToShowMsg(getWindow().getDecorView()
                             .findViewById(android.R.id.content), "No internet connection.",
                     Snackbar.LENGTH_LONG);
