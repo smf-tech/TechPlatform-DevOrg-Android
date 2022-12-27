@@ -35,7 +35,9 @@ public class MatrixQuestionColoumnAdapter extends
     private Context mContext;
     private final MatrixQuestionFragment fragment;
     private List<Column> columnList;
-    private List<Boolean> columnListAnswers = new ArrayList<>();
+    private JsonObject booleanHashMap = new JsonObject();
+    //private List<Boolean> columnListAnswers = new ArrayList<>();
+    private ArrayList<String> columnListAnswersTemp = new ArrayList<>(); // true means has value & false means empty
     private OnRequestItemClicked clickListener;
     private String RowName;
     private int rowPosition;
@@ -63,19 +65,25 @@ public class MatrixQuestionColoumnAdapter extends
                 String str = "";
                 if (fragment.rowMap.containsKey(RowName)) {
                     str = String.valueOf(fragment.rowMap.get(RowName).get(columnList.get(i).getName()));
-                    if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
-                        columnListAnswers.add(true);
-                    } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
-                        columnListAnswers.add(false);
+                    if (fragment.rowMap.get(RowName).get(columnList.get(i).getName()) != null) {
+                        if (str.equalsIgnoreCase("true") || str.equalsIgnoreCase("yes")) {
+                            columnListAnswersTemp.add("true");
+                            booleanHashMap.addProperty(columnList.get(i).getName(), "Yes");
+                        } else if (str.equalsIgnoreCase("false") || str.equalsIgnoreCase("no")) {
+                            columnListAnswersTemp.add("false");
+                            booleanHashMap.addProperty(columnList.get(i).getName(), "No");
+                        }
+                    } else {
+                        columnListAnswersTemp.add("null");
                     }
                 } else {
-                    columnListAnswers.add(true);
+                    columnListAnswersTemp.add("null");
                 }
             }
-            clickListener.onItemClicked(rowPosition, columnListAnswers);
+            clickListener.onItemClicked(rowPosition, booleanHashMap);
         } else {
             for (int i = 0; i < columnList.size(); i++) {
-                columnListAnswers.add(true);
+                columnListAnswersTemp.add("null");
             }
         }
     }
@@ -135,18 +143,30 @@ public class MatrixQuestionColoumnAdapter extends
     public void onBindViewHolder(ColumnViewHolder holder, int position) {
         holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
         if (cellType.equalsIgnoreCase("Boolean")) {
-            if (columnListAnswers.size() > 0 && columnListAnswers.get(position).booleanValue()) {
+            /*if (columnListAnswers.size() > 0 && columnListAnswers.get(position).booleanValue()) {
                 holder.toggleGroup.check(R.id.btn_yes);
             } else {
                 holder.toggleGroup.check(R.id.btn_no);
+            }*/
+
+            if (columnListAnswersTemp.size() > 0) {
+                if (columnListAnswersTemp.get(position).equalsIgnoreCase("true")) {
+                    holder.toggleGroup.check(R.id.btn_yes);
+                } else if (columnListAnswersTemp.get(position).equalsIgnoreCase("false")) {
+                    holder.toggleGroup.check(R.id.btn_no);
+                } else {
+                    holder.toggleGroup.uncheck(R.id.btn_yes);
+                    holder.toggleGroup.uncheck(R.id.btn_no);
+                }
             }
+
 
             holder.btn_no.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     holder.toggleGroup.check(R.id.btn_no);
-                    columnListAnswers.set(position, false);
-                    clickListener.onItemClicked(rowPosition, columnListAnswers);
+                    booleanHashMap.addProperty(columnList.get(position).getName(), "No");
+                    clickListener.onItemClicked(rowPosition, booleanHashMap);
                 }
             });
 
@@ -154,8 +174,8 @@ public class MatrixQuestionColoumnAdapter extends
                 @Override
                 public void onClick(View view) {
                     holder.toggleGroup.check(R.id.btn_yes);
-                    columnListAnswers.set(position, true);
-                    clickListener.onItemClicked(rowPosition, columnListAnswers);
+                    booleanHashMap.addProperty(columnList.get(position).getName(), "Yes");
+                    clickListener.onItemClicked(rowPosition, booleanHashMap);
                 }
             });
 
@@ -180,7 +200,7 @@ public class MatrixQuestionColoumnAdapter extends
     }
 
     public interface OnRequestItemClicked {
-        void onItemClicked(int rowPosition, List<Boolean> columnListAnswers);
+        void onItemClicked(int rowPosition, JsonObject columnListAnswers);
 
         void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject);
     }

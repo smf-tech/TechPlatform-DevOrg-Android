@@ -1,6 +1,6 @@
 package com.octopusbjsindia.view.fragments.formComponents;
 
-import android.os.Bundle;
+/*import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +23,7 @@ import com.octopusbjsindia.view.adapters.formComponents.ImagePickerQuestionAdapt
 
 import java.util.HashMap;
 import java.util.Objects;
+
 
 public class ImagePickerQuestionFragment extends Fragment implements ImagePickerQuestionAdapter.OnRequestItemClicked, View.OnClickListener {
     //views
@@ -107,4 +108,4 @@ public class ImagePickerQuestionFragment extends Fragment implements ImagePicker
                 break;
         }
     }
-}
+}*/

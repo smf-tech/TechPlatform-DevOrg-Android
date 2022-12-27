@@ -25,6 +25,7 @@ import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottom
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
@@ -58,10 +59,10 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
         holder.row_title.setText(dataList.getRowsList().get(position).getText().getLocaleValue());
 
-        if(dataList.getCellType()!=null && dataList.getCellType().equalsIgnoreCase("Boolean")) {
+        if (dataList.getCellType() != null && dataList.getCellType().equalsIgnoreCase("Boolean")) {
             matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
                     this, dataList.getRowsList().get(position).getValue(), position, dataList.getCellType());
-        } else if (dataList.getCellType()!=null){
+        } else if (dataList.getCellType() != null) {
             matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),
                     this, dataList.getRowsList().get(position).getValue(), position, dataList.getCellType(),
                     dataList.getChoices());
@@ -78,7 +79,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
         return dataList.getRowsList().size();
     }
 
-    @Override
+  /*  @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
         //if (((FormDisplayActivity) mContext).isEditable) {
             JsonObject ColomJsonObject = new JsonObject();
@@ -94,21 +95,41 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
             //this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
             this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
         //}
+    }*/
+
+    @Override
+    public void onItemClicked(int pos, JsonObject columnListAnswers) {
+        //if (((FormDisplayActivity) mContext).isEditable) {
+       /* JsonObject ColomJsonObject = new JsonObject();
+        for (int j = 0; j < dataList.getColumns().size(); j++) {
+            if (columnListAnswers.get(j)) {
+                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "Yes");
+            } else {
+                ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), "No");
+            }
+        }*/
+
+        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), columnListAnswers);
+        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+        //this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+        this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
+        //}
     }
+
 
     @Override
     public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
-        if(jsonObject.size()>0) {
+        if (jsonObject.size() > 0) {
             requestJsonObject.add(this.dataList.getRowsList().get(rowPosition).getValue(), jsonObject);
             MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
             this.fragment.receiveAnswerJson(MatrixQuestionRequestJsonObject);
         } else {
-            if(requestJsonObject.has(this.dataList.getRowsList().get(rowPosition).getValue())) {
+            if (requestJsonObject.has(this.dataList.getRowsList().get(rowPosition).getValue())) {
                 requestJsonObject.remove(this.dataList.getRowsList().get(rowPosition).getValue());
-                if(requestJsonObject.size()>0) {
+                if (requestJsonObject.size() > 0) {
                     MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
                 } else {
-                    if(MatrixQuestionRequestJsonObject.has(this.dataList.getName())) {
+                    if (MatrixQuestionRequestJsonObject.has(this.dataList.getName())) {
                         MatrixQuestionRequestJsonObject.remove(this.dataList.getName());
                     }
                 }
