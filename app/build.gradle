@@ -10,12 +10,16 @@ android {
             storePassword 'ss@123'
         }
     }
+
     compileSdkVersion 33
+
+    def dateFormat = new Date().format('ddMMYYYY')
+
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 33
-        versionCode 28
-        versionName "1.28"
+        versionCode 32
+        versionName "1.32"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationId 'com.octopusbjsindia'
         javaCompileOptions {
@@ -24,6 +28,8 @@ android {
                                      "$projectDir/schemas".toString()]
             }
         }
+        //For changing app bundle name (.aab file)
+        setProperty("archivesBaseName", "Octopus" +"_v" + versionName  + "_"+ dateFormat)
     }
     sourceSets {
         androidTest.assets.srcDirs +=
@@ -35,6 +41,14 @@ android {
             shrinkResources false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def variantName = variant.name
+            def versionName = variant.versionName
+            def formattedDate = new Date().format('ddMMYYYY')
+            outputFileName = "Octopus_${variantName}_v${versionName}_${formattedDate}.apk"
         }
     }
     compileOptions {
@@ -84,14 +98,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0-beta02'
-    implementation 'androidx.media:media:1.1.0-rc01'
-    implementation 'androidx.mediarouter:mediarouter:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
+    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
@@ -122,7 +136,8 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.navigation:navigation-fragment:2.4.1'
     implementation 'androidx.navigation:navigation-ui:2.4.1'
@@ -138,6 +153,7 @@ dependencies {
     //age selection range view library
     implementation 'me.bendik.simplerangeview:simplerangeview:0.2.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.github.sagar98:SelectiveRecycleViewInBottomSheetDialog:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

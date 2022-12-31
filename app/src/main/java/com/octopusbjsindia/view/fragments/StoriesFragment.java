@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"EmptyMethod", "WeakerAccess"})
-    public class StoriesFragment extends Fragment implements APIDataListener {
+public class StoriesFragment extends Fragment implements APIDataListener {
 
     View view;
     Context mContext;
@@ -51,14 +51,14 @@ import java.util.List;
     FeedsAdapter adapter;
 
     private RecyclerView rvFeeds;
-    int position=0;
+    int position = 0;
 
-    boolean isCreateFeed = false,isDalete = false;
+    boolean isCreateFeed = false, isDalete = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mContext=context;
+        mContext = context;
     }
 
     @Override
@@ -82,7 +82,7 @@ import java.util.List;
 
         RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
         RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
-        if(roleAccessList != null){
+        if (roleAccessList != null) {
             List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
             for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
                 if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_CREATE_FEED)) {
@@ -100,12 +100,12 @@ import java.util.List;
         rvFeeds.setNestedScrollingEnabled(false);
 
         feedList = new ArrayList<FeedData>();
-        adapter = new FeedsAdapter(this, feedList, presentr,isDalete);
+        adapter = new FeedsAdapter(this, feedList, presentr, isDalete);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         rvFeeds.setLayoutManager(mLayoutManager);
         rvFeeds.setAdapter(adapter);
 
-        if(isCreateFeed){
+        if (isCreateFeed) {
             FloatingActionButton fabAddFeed = view.findViewById(R.id.fab_add_feed);
             fabAddFeed.setVisibility(View.VISIBLE);
             fabAddFeed.setOnClickListener(new View.OnClickListener() {
@@ -142,21 +142,21 @@ import java.util.List;
     @Override
     public void onResume() {
         super.onResume();
-        if(Util.isConnected(getContext())){
+        if (Util.isConnected(getContext())) {
             presentr.getFeedLest();
         } else {
-            Util.showToast(getResources().getString(R.string.msg_no_network),mContext);
+            Util.showToast(getResources().getString(R.string.msg_no_network), mContext);
         }
     }
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        if(TextUtils.isEmpty(message)){
-            Util.showToast(getResources().getString(R.string.msg_something_went_wrong),mContext );
+        if (TextUtils.isEmpty(message)) {
+            Util.showToast(getResources().getString(R.string.msg_something_went_wrong), mContext);
         } else {
-            Util.showToast(message,mContext );
+            Util.showToast(message, mContext);
         }
-        if(feedList.size()>0){
+        if (feedList.size() > 0) {
             view.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
             view.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);
@@ -179,7 +179,8 @@ import java.util.List;
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -191,7 +192,7 @@ import java.util.List;
         feedList.clear();
         feedList.addAll(responseData.getData());
         adapter.notifyDataSetChanged();
-        if(feedList.size()>0){
+        if (feedList.size() > 0) {
             view.findViewById(R.id.ly_no_data).setVisibility(View.GONE);
         } else {
             view.findViewById(R.id.ly_no_data).setVisibility(View.VISIBLE);

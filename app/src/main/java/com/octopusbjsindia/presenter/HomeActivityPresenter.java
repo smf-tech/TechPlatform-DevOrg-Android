@@ -1,5 +1,6 @@
 package com.octopusbjsindia.presenter;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -120,19 +121,25 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
     @Override
     public void onFailureListener(String requestID, String message) {
         if (homeFragment != null && homeFragment.get() != null) {
-            homeFragment.get().initiateViewPager();
-            homeFragment.get().hideProgressBar();
-            homeFragment.get().onFailureListener(requestID,message);
+            Activity activity = homeFragment.get().getActivity();
+            if(activity != null && homeFragment.get().isAdded()) {
+                homeFragment.get().initiateViewPager();
+                homeFragment.get().hideProgressBar();
+                homeFragment.get().onFailureListener(requestID,message);
+            }
         }
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
         if (homeFragment != null && homeFragment.get() != null) {
-            homeFragment.get().hideProgressBar();
-            homeFragment.get().initiateViewPager();
-            if (error != null) {
-                homeFragment.get().onErrorListener(requestID,error);
+            Activity activity = homeFragment.get().getActivity();
+            if(activity != null && homeFragment.get().isAdded()) {
+                homeFragment.get().hideProgressBar();
+                homeFragment.get().initiateViewPager();
+                if (error != null) {
+                    homeFragment.get().onErrorListener(requestID,error);
+                }
             }
         }
     }

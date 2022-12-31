@@ -119,6 +119,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vpFormElements.setAdapter(adapter);
+
         presenter = new FormDisplayActivityPresenter(this);
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PM.PROCESS_ID);
@@ -218,7 +219,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
             }
         });
 
-        //get lat,long of location
+        //get lat,long of location - commented
         gpsTracker = new GPSTracker(this);
         if(Permissions.isLocationPermissionGranted(this, this)) {
             if(gpsTracker.canGetLocation()) {
@@ -387,7 +388,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (isEditable) {
             toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
             toolbar_edit_action.setVisibility(View.VISIBLE);
-            toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
+            toolbar_edit_action.setImageResource(R.drawable.ic_save_24);
             toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

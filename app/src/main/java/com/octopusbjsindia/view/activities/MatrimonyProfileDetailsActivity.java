@@ -63,14 +63,14 @@ import me.relex.circleindicator.CircleIndicator;
 
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener,
-        PopupMenu.OnMenuItemClickListener, APIDataListener,MeetListBottomSheet.MultiSpinnerListener {
+        PopupMenu.OnMenuItemClickListener, APIDataListener, MeetListBottomSheet.MultiSpinnerListener {
     private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
     private final String PROFILE_ID = "profileId";
     private RequestOptions docRequestOptions;
     private RequestOptions certificateRequestOptions;
     private UserProfileList userProfileList;
-    ProfileDetailData matrimonialProfileReceived ;
+    ProfileDetailData matrimonialProfileReceived;
     ProfileDetailResponse profileResponse;
     public MatrimonialProfile matrimonialProfile = new MatrimonialProfile();
     private MatrimonyProfilesDetailsActivityPresenter presenter;
@@ -83,7 +83,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     //personal
     private TextView tv_gender, tv_name, tv_birth_date, tv_birth_time, tv_age,
             tv_birth_place, tv_blood_group, tv_marital_status, tv_height, tv_weight_tile, tv_skin_tone,
-            tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink,tv_unique_id;
+            tv_manglik, tv_tv_sampraday, tv_disability, tv_smoke, tv_drink, tv_unique_id;
     //educational and fammily
     private TextView tv_education, tv_occupation, tv_company, tv_business_job, tv_annual_income, tv_degree,
             tv_family_type, tv_sakha_gotra_1, tv_sakha_gotra_2, tv_sakha_gotra_3, tv_sakha_gotra_4,
@@ -95,7 +95,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private TextView tv_about_me, tv_expectations, tv_activity_chievements, tv_other, tv_myproof_title;
     private ImageView iv_aadhar, iv_education_certificates, iv_myproof_certificate, toolbar_edit_action;
     private Button btn_mark_attendance, btn_interview_done, btnReject, btnApprove, btn_verify_ids, btn_verify_edu, btn_verify_profile;
-    private TextView tv_approval_status, tv_premium,registered_meet_list,registered_meet_list_title;
+    private TextView tv_approval_status, tv_premium, registered_meet_list, registered_meet_list_title;
     private String meetIdReceived = "";
     private RelativeLayout progressBar, ly_myproof;
     private boolean isBlock;
@@ -130,7 +130,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         super.onResume();
         //initViews();
         //tmFilterListActivityPresenter.getAllFiltersRequests();
-        if (Util.isConnected(this)){
+        if (Util.isConnected(this)) {
             presenter.getProfile(userProfileList.get_id(), "");
         } else {
             //Util.showToast(getString(R.string.msg_no_network), this);
@@ -139,6 +139,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                     Snackbar.LENGTH_LONG);
         }
     }
+
     /*public void onProfileReceived(ProfileDetailData matrimonialProfileReceived) {
         matrimonialProfileReceived = matrimonialProfileReceived;
         matrimonialProfile = matrimonialProfileReceived.getMatrimonialProfile();
@@ -159,28 +160,28 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 //        approvalType = matrimonialProfile.getIsApproved();
         //for(int i=0;i<IMAGES.length;i++)
 //        {
-            if (matrimonialProfile.getOtherMaritalInformation().getProfileImage() != null
-                    && matrimonialProfile.getOtherMaritalInformation().getProfileImage().size() > 0) {
-                ProfileImageList.clear();
-                ProfileImageList.addAll(matrimonialProfile.getOtherMaritalInformation().getProfileImage());
-            }
+        if (matrimonialProfile.getOtherMaritalInformation().getProfileImage() != null
+                && matrimonialProfile.getOtherMaritalInformation().getProfileImage().size() > 0) {
+            ProfileImageList.clear();
+            ProfileImageList.addAll(matrimonialProfile.getOtherMaritalInformation().getProfileImage());
+        }
 //        }
 
         TextView title = findViewById(R.id.toolbar_title);
         title.setText("Profile Details");
-        cv_meetlist_details  = findViewById(R.id.cv_meetlist_details);
+        cv_meetlist_details = findViewById(R.id.cv_meetlist_details);
         registered_meet_list = findViewById(R.id.registered_meet_list);
 
-        if (profileResponse.getData().getMeetList()!=null) {
-            if (profileResponse.getData().getMeetList().size()>0) {
+        if (profileResponse.getData().getMeetList() != null) {
+            if (profileResponse.getData().getMeetList().size() > 0) {
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < profileResponse.getData().getMeetList().size(); i++) {
-                    builder.append((i+1)+". "+profileResponse.getData().getMeetList().get(i));
+                    builder.append((i + 1) + ". " + profileResponse.getData().getMeetList().get(i));
                     builder.append("\n");
                 }
                 //registered_meet_list_title.setText("Meets Registered :");
                 registered_meet_list.setText(builder.toString().trim());
-            }else {
+            } else {
                 cv_meetlist_details.setVisibility(View.GONE);
                 registered_meet_list.setVisibility(View.GONE);
             }
@@ -222,7 +223,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         btn_verify_ids = findViewById(R.id.btn_verify_ids);
         btn_verify_edu = findViewById(R.id.btn_verify_edu);
         //Personal details -
-        tv_unique_id  = findViewById(R.id.tv_unique_id);
+        tv_unique_id = findViewById(R.id.tv_unique_id);
         tv_name = findViewById(R.id.tv_name);
         tv_gender = findViewById(R.id.tv_gender);
         tv_birth_date = findViewById(R.id.tv_birth_date);
@@ -426,7 +427,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
                         .into(iv_myproof_certificate);
 
 
-            }else {
+            } else {
                 if (userProfileList.getMatrimonial_profile().getPersonal_details().getMarital_status().equalsIgnoreCase("Unmarried")) {
                     tv_myproof_title.setVisibility(View.GONE);
                     ly_myproof.setVisibility(View.GONE);
@@ -503,7 +504,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
             //findViewById(R.id.ly_meet_verified).setOnClickListener(this);
         }
 
-        if (userProfileList.getIsApproved()!=null
+        if (userProfileList.getIsApproved() != null
                 && userProfileList.getIsApproved().equalsIgnoreCase("approved")) {
             if (!TextUtils.isEmpty(meetIdReceived)) {
                 if (userProfileList.isMarkAttendance()) {
@@ -892,7 +893,8 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -1162,13 +1164,13 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
 
     @Override
     public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {
-        Log.e("onMeetSelected","selected meet number is-"+selectedPosition);
-        presenter.RegisterUserInMeet(profileResponse.getData().getMatrimonialProfile().getResidentialDetails().getPrimaryPhone(),profileResponse.getData().getId(),meetListReceived.get(selectedPosition).getId());
+        Log.e("onMeetSelected", "selected meet number is-" + selectedPosition);
+        presenter.RegisterUserInMeet(profileResponse.getData().getMatrimonialProfile().getResidentialDetails().getPrimaryPhone(), profileResponse.getData().getId(), meetListReceived.get(selectedPosition).getId());
     }
 
     public void setMatrimonyMeets(List<MatrimonyMeet> data, String earliestMeetId) {
         meetListReceived = data;
-        showMultiSelectBottomsheet("Select Meet","usermeetregistration",data);
+        showMultiSelectBottomsheet("Select Meet", "usermeetregistration", data);
     }
 
     public void showResponseRegisterUser(String message, int status) {

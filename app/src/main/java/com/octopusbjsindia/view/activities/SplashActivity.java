@@ -59,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
     ImageView img_logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Transparant);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 

@@ -190,12 +190,16 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.VolleyError;
@@ -49,9 +50,9 @@ import static com.octopusbjsindia.utility.Constants.RequestStatus.DEFAULT_MODULE
 public class HomeFragment extends Fragment implements PlatformTaskListener, APIDataListener, HomeActivity.OnSyncClicked {
 
     private final int[] tabIcons = {
-            R.drawable.ic_home_icon_tab,
-            R.drawable.ic_stories_icon_tab,
-            R.drawable.ic_connect_icon_tab
+            R.drawable.ic_home_24,
+            R.drawable.ic_newspaper_24,
+            R.drawable.ic_globe_24
     };
     private Home homeData;
     private Context context;
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     private AlertDialog dialogNotApproved;
     private Object mSyncObserverHandle;
     private boolean isSyncRequired;
+    private FragmentManager childFragmentManager;
+
     @SuppressWarnings("CanBeFinal")
     private
     SyncStatusObserver mSyncStatusObserver = which -> {
@@ -95,7 +98,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        childFragmentManager = getChildFragmentManager();
         getUserData();
     }
 
@@ -127,11 +130,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             dashboardFragment.setArguments(bundle);
         }
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
-        adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
-        adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
-        viewPager.setAdapter(adapter);
+        if(getActivity() != null && isAdded()) {
+            ViewPagerAdapter adapter = new ViewPagerAdapter(childFragmentManager);
+            adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
+            adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
+            adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
+            viewPager.setAdapter(adapter);
+        }
     }
 
     private void getUserData() {

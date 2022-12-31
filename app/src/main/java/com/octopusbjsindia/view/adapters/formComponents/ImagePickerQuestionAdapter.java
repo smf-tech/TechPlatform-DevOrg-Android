@@ -1,6 +1,6 @@
 package com.octopusbjsindia.view.adapters.formComponents;
 
-import android.content.Context;
+/*import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -18,13 +18,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionColoumnAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePickerQuestionAdapter.EmployeeViewHolder> implements MatrixQuestionColoumnAdapter.OnRequestItemClicked {
@@ -46,7 +49,7 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         this.fragment = fragment;
         preferenceHelper = new PreferenceHelper(Platform.getInstance());
 
-        /*for (int i = 0; i < elements.getRowsList().size(); i++) {
+        *//*for (int i = 0; i < elements.getRowsList().size(); i++) {
             JsonObject ColomJsonObject = new JsonObject();
             for (int j = 0; j < elements.getColumns().size(); j++) {
                 ColomJsonObject.addProperty(elements.getColumns().get(j).getName(), true);
@@ -56,7 +59,7 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         Log.d("JsonObject->", new Gson().toJson(requestJsonObject));
         MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
         Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
-        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));*/
+        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));*//*
     }
 
     @Override
@@ -74,9 +77,9 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         holder.img_quetion_image.setImageBitmap(decodedBitmap);
         holder.img_quetion_image.setImageResource(R.drawable.ic_splash);
-        /*matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(mContext, dataList.getColumns(),
+        *//*matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(mContext, dataList.getColumns(),
                 this, dataList.getRowsList().get(position).getValue(), position);
-        holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);*/
+        holder.rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);*//*
 
     }
 
@@ -85,6 +88,9 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         return dataList.getChoices().size();
     }
 
+
+
+*//*
     @Override
     public void onItemClicked(int pos, List<Boolean> columnListAnswers) {
         Log.d("onItemClicked", "onItemClicked-->" + pos);
@@ -101,6 +107,26 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
         Log.d("finalJsonObj->", new Gson().toJson(MatrixQuestionRequestJsonObject));
         this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
     }
+*//*
+
+    @Override
+    public void onItemClicked(int pos, JsonObject columnListAnswers) {
+       *//* JsonObject ColomJsonObject = new JsonObject();
+        for (int j = 0; j < dataList.getColumns().size(); j++) {
+            ColomJsonObject.addProperty(dataList.getColumns().get(j).getName(), columnListAnswers.get(j));
+        }*//*
+        //clickListener.onItemClicked(pos);
+
+        requestJsonObject.add(this.dataList.getRowsList().get(pos).getValue(), columnListAnswers);
+        MatrixQuestionRequestJsonObject.add(this.dataList.getName(), requestJsonObject);
+        this.fragment.receiveAnswerJson(new Gson().toJson(MatrixQuestionRequestJsonObject));
+    }
+
+
+    @Override
+    public void onDropdownOptionsSelected(int rowPosition, JsonObject jsonObject) {
+
+    }
 
 
     public interface OnRequestItemClicked {
@@ -116,10 +142,8 @@ public class ImagePickerQuestionAdapter extends RecyclerView.Adapter<ImagePicker
             super(itemView);
             row_title = itemView.findViewById(R.id.row_title);
             img_quetion_image = itemView.findViewById(R.id.img_quetion_image);
-
-
             itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
         }
     }
-}
+}*/

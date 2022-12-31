@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
-        android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_14"
+        android:textColor="@color/selector_tab_text_deafult"
         android:fontFamily="@font/opensans_bold"
         tools:ignore="RelativeOverlap"
         android:text="forms"/>

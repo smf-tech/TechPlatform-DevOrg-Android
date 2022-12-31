@@ -145,7 +145,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                 String approvalType = intent.getStringExtra("approvalType");
                 userProfileListsFiltered.get(position).setIsApproved(approvalType);
                 userProfileListsFiltered.get(position).setUserMeetStatus(approvalType);
-                boolean setVerified = intent.getBooleanExtra("setVerified",false);
+                boolean setVerified = intent.getBooleanExtra("setVerified", false);
                 userProfileListsFiltered.get(position).getMatrimonial_profile().setVerified(setVerified);
                 matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
 
@@ -317,7 +317,7 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.VERIFICATION_PENDING_SECTION);
                 } else if (toOpen.equals("AllUserList")) {
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.ALL_USERS_SECTION);
-                }  else if (toOpen.equals("BlockedUsers")) {
+                } else if (toOpen.equals("BlockedUsers")) {
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.BLOCKED_USER_SECTION);
                 } else if (toOpen.equals("BangUsers")) {
                     matrimonyUserFilterData.setSection_type(Constants.MatrimonyModule.BANGED_USER_SECTION);
@@ -406,7 +406,8 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
     }
 
     @Override

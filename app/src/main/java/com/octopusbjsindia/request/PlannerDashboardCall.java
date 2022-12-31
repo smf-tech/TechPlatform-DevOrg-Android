@@ -19,7 +19,7 @@ import com.octopusbjsindia.utility.Util;
 
 import org.json.JSONObject;
 
-import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
+//import static androidx.constraintlayout.motion.widget.MotionScene.TAG;
 
 public class PlannerDashboardCall {
     private Gson gson;
@@ -34,11 +34,11 @@ public class PlannerDashboardCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "GET_PLANNER_DASHBOARD - Resp: " + res);
+                    //Log.d(TAG, "GET_PLANNER_DASHBOARD - Resp: " + res);
                     plannerFragmetListener.onPlannerDashboardDataFetched(res);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                //Log.e(TAG, e.getMessage());
                 plannerFragmetListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
@@ -47,7 +47,7 @@ public class PlannerDashboardCall {
 
         final String getOrgUrl = BuildConfig.BASE_URL + String.format(Urls.PlannerDashboard.GET_PLANNER_DASHBOARD);
 
-        Log.d(TAG, "GET_PLANNER_DASHBOARD: " + getOrgUrl);
+        //Log.d(TAG, "GET_PLANNER_DASHBOARD: " + getOrgUrl);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
@@ -68,11 +68,11 @@ public class PlannerDashboardCall {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "GET_PLANNER_DASHBOARD - Resp: " + res);
+                    //Log.d(TAG, "GET_PLANNER_DASHBOARD - Resp: " + res);
                     plannerFragmetListener.onAttendanceSubmited(res);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                //Log.e(TAG, e.getMessage());
                 plannerFragmetListener.onFailureListener(Platform.getInstance().getString(R.string.msg_failure));
             }
         };
@@ -82,8 +82,8 @@ public class PlannerDashboardCall {
         final String url = BuildConfig.BASE_URL + Urls.Attendance.SUBMIT_ATTENDANCE;
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(data);
-        Log.d(TAG, "submitAttendance - url: " + url);
-        Log.d(TAG, "submitAttendance - req: " + json);
+//        Log.d(TAG, "submitAttendance - url: " + url);
+//        Log.d(TAG, "submitAttendance - req: " + json);
 
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.POST,
@@ -103,7 +103,7 @@ public class PlannerDashboardCall {
 
     private JSONObject createBodyParams(String json) {
 
-        Log.d(TAG, "Request json: " + json);
+        //Log.d(TAG, "Request json: " + json);
         try {
             return new JSONObject(json);
         } catch (Exception e) {

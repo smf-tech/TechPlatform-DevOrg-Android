@@ -22,7 +22,6 @@
         android:layout_below="@+id/tv_form_title"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
         android:background="@color/lighter_grey"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

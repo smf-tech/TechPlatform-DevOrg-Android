@@ -20,22 +20,27 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
-public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
+public class MatrixQuestionFragment extends Fragment implements
+        MatrixQuestionFragmentAdapter.OnRequestItemClicked, View.OnClickListener {
+
     public HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> tempHashMap = new HashMap<>();
+    public HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>> tempDropdownHashMap = new HashMap<>();
     public HashMap<String, HashMap<String, HashMap<String, String>>> rowMap;
+    public HashMap<String, HashMap<String, ArrayList<String>>> rowMapDropdown;
     boolean isFirstpage = false;
     //views
     private RecyclerView rv_matrix_question;
     private MatrixQuestionFragmentAdapter matrixQuestionFragmentAdapter;
     private HashMap<String, String> hashMap = new HashMap<>();
-    private JsonObject MatrixQuestionRequestJsonObject = new JsonObject();
+    private JsonObject matrixQuestionRequestJsonObject = new JsonObject();
     private TextView text_title;
     private View view;
     private Elements elements;
@@ -70,42 +75,45 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
             if (isFirstpage) {
                 view.findViewById(R.id.btn_loadprevious).setVisibility(View.INVISIBLE);
             }
+            matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
+                    MatrixQuestionFragment.this, getActivity(), elements, this);
+            rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
         }
 
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName()))) {
             String str = ((FormDisplayActivity) getActivity()).formAnswersMap.get(elements.getName());
-            //String str1 = ((FormDisplayActivity)getActivity()).formAnswersMap.get("question9");
             try {
-                jsonToMap(str);
+                if (str != null) {
+                    jsonToMap(str);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }        // set quetion at top
-        text_title.setText(elements.getTitle().getLocaleValue());
-        if (getActivity() != null && getArguments() != null) {
-            if (getArguments().containsKey("Element")) {
-                elements = (Elements) getArguments().getSerializable("Element");
-                matrixQuestionFragmentAdapter = new MatrixQuestionFragmentAdapter(
-                        MatrixQuestionFragment.this, getActivity(), elements, this);
-                rv_matrix_question.setAdapter(matrixQuestionFragmentAdapter);
-            }
         }
+        text_title.setText(elements.getTitle().getLocaleValue());
         return view;
     }
 
     public void jsonToMap(String str) throws JSONException {
-
-        HashMap<String, String> map = new HashMap<String, String>();
         Gson g = new Gson();
+        if (elements.getCellType().equalsIgnoreCase("Boolean")) { // for boolean matrix question
+            tempHashMap.clear();
+            tempHashMap.putAll(g.fromJson(str,
+                    new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
+                    }.getType()));
 
-        tempHashMap.clear();
-        tempHashMap.putAll(g.fromJson(str,
-                new TypeToken<HashMap<String, HashMap<String, HashMap<String, String>>>>() {
-                }.getType()));
-
-        rowMap = new HashMap<>();
-        rowMap.clear();
-        rowMap.putAll(tempHashMap.get(elements.getName()));
+            rowMap = new HashMap<>();
+            rowMap.clear();
+            rowMap.putAll(tempHashMap.get(elements.getName()));
+        } else { // for radioGroup and checkbox matrix question
+            tempDropdownHashMap.clear();
+            tempDropdownHashMap.putAll(g.fromJson(str,
+                    new TypeToken<HashMap<String, HashMap<String, HashMap<String, ArrayList<String>>>>>() {
+                    }.getType()));
+            rowMapDropdown = new HashMap<>();
+            rowMapDropdown.clear();
+            rowMapDropdown.putAll(tempDropdownHashMap.get(elements.getName()));
+        }
     }
 
     @Override
@@ -119,8 +127,9 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
         Log.d("onItemClickedfragment", "onItemClicked-->" + pos);
     }
 
-    public void receiveAnswerJson(String receivedJsonObjectString) {
-        MatrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+    public void receiveAnswerJson(JsonObject receivedJsonObjectString) {
+        //matrixQuestionRequestJsonObject = new Gson().fromJson(receivedJsonObjectString, JsonObject.class);
+        matrixQuestionRequestJsonObject = receivedJsonObjectString;
     }
 
     @Override
@@ -128,14 +137,26 @@ public class MatrixQuestionFragment extends Fragment implements MatrixQuestionFr
         switch (view.getId()) {
             case R.id.btn_loadnext:
                 //set json object and go to next fragment
-                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
+                        if(matrixQuestionRequestJsonObject.size()>0) {
+                            hashMap.put(elements.getName(), new Gson().toJson(matrixQuestionRequestJsonObject));
+                            ((FormDisplayActivity) requireActivity()).goNext(hashMap);
+                        } else {
+                            if(elements.isRequired()) {
+                                if (elements.getRequiredErrorText() != null) {
+                                    Util.showToast(elements.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                            } else {
+                                ((FormDisplayActivity) requireActivity()).goNext(hashMap);
+                            }
+                        }
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
-                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
-                ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goPrevious();
+//                hashMap.put(elements.getName(), new Gson().toJson(MatrixQuestionRequestJsonObject));
+//                ((FormDisplayActivity) getActivity()).formAnswersMap.putAll(hashMap);
+                ((FormDisplayActivity) requireActivity()).goPrevious();
                 break;
         }
     }

@@ -185,7 +185,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
-                        if(TextUtils.isEmpty( error.getMessage())){
+                        if (TextUtils.isEmpty(error.getMessage())) {
                             Toast.makeText(CreateFeedActivity.this, getResources().getString(
                                     R.string.msg_something_went_wrong), Toast.LENGTH_SHORT).show();
                         } else {
@@ -198,8 +198,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(requestData));
-                params.put("description",etDescription.getText().toString());
-                params.put("external_url",etUrl.getText().toString());
+                params.put("description", etDescription.getText().toString());
+                params.put("external_url", etUrl.getText().toString());
                 params.put("imageArraySize", String.valueOf(imageHashmap.size()));
                 return params;
             }
@@ -256,7 +256,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
     }
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
@@ -356,7 +357,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                 try {
                     getImageFile();
                     outputUri = data.getData();
-                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -406,30 +407,30 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogs_leave_layout);
 
-            TextView title = dialog.findViewById(R.id.tv_dialog_title);
-            title.setText("Alert");
-            title.setVisibility(View.VISIBLE);
+        TextView title = dialog.findViewById(R.id.tv_dialog_title);
+        title.setText("Alert");
+        title.setVisibility(View.VISIBLE);
 
-            TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
-            text.setText("Are you sure you want to discard.");
-            text.setVisibility(View.VISIBLE);
+        TextView text = dialog.findViewById(R.id.tv_dialog_subtext);
+        text.setText("Are you sure you want to discard.");
+        text.setVisibility(View.VISIBLE);
 
-            Button button = dialog.findViewById(R.id.btn_dialog);
-            button.setText("Yes");
-            button.setVisibility(View.VISIBLE);
-            button.setOnClickListener(v -> {
-                //Close dialog
-                dialog.dismiss();
-                super.onBackPressed();
-            });
+        Button button = dialog.findViewById(R.id.btn_dialog);
+        button.setText("Yes");
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(v -> {
+            //Close dialog
+            dialog.dismiss();
+            super.onBackPressed();
+        });
 
-            Button button1 = dialog.findViewById(R.id.btn_dialog_1);
-            button1.setText("No");
-            button1.setVisibility(View.VISIBLE);
-            button1.setOnClickListener(v -> {
-                //Close dialog
-                dialog.dismiss();
-            });
+        Button button1 = dialog.findViewById(R.id.btn_dialog_1);
+        button1.setText("No");
+        button1.setVisibility(View.VISIBLE);
+        button1.setOnClickListener(v -> {
+            //Close dialog
+            dialog.dismiss();
+        });
 
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

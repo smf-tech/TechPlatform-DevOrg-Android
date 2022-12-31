@@ -1,6 +1,8 @@
 package com.octopusbjsindia.view.activities;
 
 
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -90,7 +92,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //Log.d("Rolecode","" + Util.getUserObjectFromPref().getRoleCode());
-        if (Util.getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
+        if (getUserObjectFromPref().getRoleCode() == Constants.SSModule.ROLE_CODE_SS_OPERATOR) {
             Intent intent = new Intent(HomeActivity.this, OperatorActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -189,8 +191,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
     private void subscribedToFirebaseTopics() {
         FirebaseMessaging.getInstance().subscribeToTopic("Test");
-        String userProject = Util.getUserObjectFromPref().getProjectIds().get(0).getName();
-        String userRoll = Util.getUserObjectFromPref().getRoleNames();
+        String userProject = getUserObjectFromPref().getProjectIds().get(0).getName();
+        String userRoll = getUserObjectFromPref().getRoleNames();
         userProject = userProject.replaceAll(" ", "_");
         userRoll = userRoll.replaceAll(" ", "_");
 
@@ -287,7 +289,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         TextView userName = headerLayout.findViewById(R.id.menu_user_name);
         ImageView userPic = headerLayout.findViewById(R.id.menu_user_profile_photo);
 
-        UserInfo user = Util.getUserObjectFromPref();
+        UserInfo user = getUserObjectFromPref();
         if (user != null) {
             if (!TextUtils.isEmpty(user.getProfilePic())) {
                 loadProfileImage(userPic, user.getProfilePic());
@@ -383,9 +385,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         Platform.getInstance().setConnectivityListener(this);
         updateUnreadNotificationsCount();
         TextView userProject = headerLayout.findViewById(R.id.menu_user_project);
-        userProject.setText(Util.getUserObjectFromPref().getProjectIds().get(0).getName());
+        userProject.setText(getUserObjectFromPref().getProjectIds().get(0).getName());
         TextView userRole = headerLayout.findViewById(R.id.menu_user_role);
-        userRole.setText(Util.getUserObjectFromPref().getRoleNames());
+        userRole.setText(getUserObjectFromPref().getRoleNames());
 
         // Start data sync
         SyncAdapterUtils.manualRefresh();
@@ -597,13 +599,25 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
-                (dialog, which) -> logOutUser());
+                (dialog, which) -> Util.logOutUser(this));
 
         // Showing Alert Message
         alertDialog.show();
     }
 
-    private void logOutUser() {
+    /*private void logOutUser() {
+        //before logout, we should remove firebase_id from backend.
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("actionType", "removeFirebaseId");
+            jsonObject.put("user_id", getUserObjectFromPref().getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (jsonObject != null) {
+            Util.updateFirebaseIdRequests(jsonObject);
+
+        }
         // remove user related shared pref data
         Util.saveLoginObjectInPref("");
         Util.saveUserObjectInPref("");
@@ -617,7 +631,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -721,12 +735,12 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void onNetworkConnectionChanged(boolean isConnected) {
         ImageView sync = findViewById(R.id.home_sync_icon);
         if (isConnected) {
-            sync.setImageResource(R.drawable.ic_internet_connected);
+            sync.setImageResource(R.drawable.ic_wifi_24);
 //            Util.snackBarToShowMsg(getWindow().getDecorView()
 //                            .findViewById(android.R.id.content), "Internet connection is available.",
 //                    Snackbar.LENGTH_LONG);
         } else {
-            sync.setImageResource(R.drawable.ic_internet_not_connected);
+            sync.setImageResource(R.drawable.ic_wifi_off_24);
             Util.snackBarToShowMsg(getWindow().getDecorView()
                             .findViewById(android.R.id.content), "No internet connection.",
                     Snackbar.LENGTH_LONG);

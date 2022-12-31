@@ -106,9 +106,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     private final String TAG = MachineMouFourthFragment.class.getName();
     private RequestQueue rQueue;
     private int statusCode;
-    private int imgCount =0;
+    private int imgCount = 0;
     private String currentPhotoPath = "";
-    private String pdfURL="";
+    private String pdfURL = "";
 
 
     @Override
@@ -131,7 +131,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void init() {
-        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
+        statusCode = getActivity().getIntent().getIntExtra("statusCode", 0);
         progressBarLayout = machineMouFourthFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouFourthFragmentView.findViewById(R.id.pb_profile_act);
         btnFourthPartMou = machineMouFourthFragmentView.findViewById(R.id.btn_fourth_part_mou);
@@ -162,16 +162,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         isAppInstalledList.add(optionNo);
         //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
-        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
-            if(gpsTracker.canGetLocation()) {
+        if (Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
             } else {
                 gpsTracker.showSettingsAlert();
             }
         }
 
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getOperatorDetails()!=null) {
+        if (((MachineMouActivity) getActivity()).getMachineDetailData().
+                getOperatorDetails() != null) {
             setUIvalues();
         }
     }
@@ -188,7 +188,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         selectedtrainingOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
                 getOperatorDetails().getIsTrainingDone();
         etOperatorTraining.setText(selectedtrainingOption);
-        if(((MachineMouActivity) getActivity()).operatorLicenseImageUri!= null) {
+        if (((MachineMouActivity) getActivity()).operatorLicenseImageUri != null) {
             imgLicense.setImageURI(((MachineMouActivity) getActivity()).operatorLicenseImageUri);
         }
         selectedAppInstalledOption = ((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -212,13 +212,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().
                 setIsAppInstalled(selectedAppInstalledOption);
         //set location
-        if (location != null ) {
+        if (location != null) {
             ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
             ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
         } else {
-            if(gpsTracker.canGetLocation()) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
-                if (location != null ) {
+                if (location != null) {
                     ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
                     ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
                 }
@@ -228,7 +228,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         }
 
         //machineMouFourthFragmentPresenter.submitMouData(((MachineMouActivity) getActivity()).getMachineDetailData());
-        if(isDataUpload) {
+        if (isDataUpload) {
             if (Util.isConnected(getActivity())) {
                 uploadData();
             } else {
@@ -244,9 +244,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_fourth_part_mou:
-                if(Util.isConnected(getActivity())) {
+                if (Util.isConnected(getActivity())) {
                     if (isAllDataValid()) {
                         setMachineFourthData(true);
                     }
@@ -287,19 +287,19 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())){
+        if (TextUtils.isEmpty(etOperatorName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etOperatorContact.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_contact), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etLicenseNumber.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_license_number), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etOperatorTraining.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_training_option), Snackbar.LENGTH_LONG);
             return false;
@@ -307,12 +307,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_install_option), Snackbar.LENGTH_LONG);
             return false;
-        } else if(((MachineMouActivity) getActivity()).operatorLicenseImageUri == null) {
+        } else if (((MachineMouActivity) getActivity()).operatorLicenseImageUri == null) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.select_image), Snackbar.LENGTH_LONG);
             return false;
         }
-        if (etOperatorContact.getText().toString().trim().length() != 10){
+        if (etOperatorContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
             return false;
@@ -388,9 +388,9 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.GPS_REQUEST) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                if(gpsTracker.canGetLocation()) {
+                if (gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
                 } else {
                     gpsTracker.showSettingsAlert();
@@ -406,7 +406,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -416,7 +416,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 try {
                     getImageFile();
                     outputUri = data.getData();
-                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
                     Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -458,8 +458,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 //            } catch (Exception e) {
 //                Log.e(TAG, e.getMessage());
 //            }
-        } else if(requestCode == 100) {
-            if(gpsTracker.canGetLocation()) {
+        } else if (requestCode == 100) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
                 Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
             } else {
@@ -491,7 +491,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private void backToMachineList(){
+    private void backToMachineList() {
         getActivity().finish();
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
@@ -500,7 +500,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         getActivity().startActivity(intent);
     }
 
-    private void uploadData(){
+    private void uploadData() {
         showProgressBar();
         String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.MACHINE_MOU_FORM;
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
@@ -512,19 +512,19 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
-                            if(responseOBJ.getStatus() == 200){
+                            if (responseOBJ.getStatus() == 200) {
                                 backToMachineList();
                                 Util.showToast(responseOBJ.getMessage(), getActivity());
-                            } else if(responseOBJ.getStatus() == 300){
+                            } else if (responseOBJ.getStatus() == 300) {
                                 Util.showToast(responseOBJ.getMessage(), getActivity());
                             } else {
                                 Util.showToast(getResources().getString(R.string.msg_something_went_wrong), getActivity());
                             }
-                            Log.d("response -",jsonString);
+                            Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
                             hideProgressBar();
                             e.printStackTrace();
-                            Toast.makeText(getActivity().getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -541,7 +541,7 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(((MachineMouActivity) getActivity()).getMachineDetailData()));
-                if(location != null) {
+                if (location != null) {
                     params.put("lat", String.valueOf(location.getLatitude()));
                     params.put("long ", String.valueOf(location.getLongitude()));
                 }
@@ -560,13 +560,13 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                         loginObj.getLoginData().getAccessToken() != null) {
                     headers.put(Constants.Login.AUTHORIZATION,
                             "Bearer " + loginObj.getLoginData().getAccessToken());
-                    if (getUserObjectFromPref().getOrgId()!=null) {
+                    if (getUserObjectFromPref().getOrgId() != null) {
                         headers.put("orgId", getUserObjectFromPref().getOrgId());
                     }
-                    if (getUserObjectFromPref().getProjectIds()!=null) {
+                    if (getUserObjectFromPref().getProjectIds() != null) {
                         headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
                     }
-                    if (getUserObjectFromPref().getRoleIds()!=null) {
+                    if (getUserObjectFromPref().getRoleIds() != null) {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
@@ -578,8 +578,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
                 Iterator myVeryOwnIterator = ((MachineMouActivity) getActivity()).getImageHashmap().keySet().iterator();
-                for (int i = 0;i<((MachineMouActivity) getActivity()).getImageHashmap().size(); i++) {
-                    String key=(String)myVeryOwnIterator.next();
+                for (int i = 0; i < ((MachineMouActivity) getActivity()).getImageHashmap().size(); i++) {
+                    String key = (String) myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), ((MachineMouActivity) getActivity()).getImageHashmap().get(key));
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
@@ -649,8 +649,8 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
         Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
                 Snackbar.LENGTH_LONG);
-        if(requestId.equals(MachineMouFourthFragmentPresenter.SUBMIT_MOU)){
-            if(status == 200){
+        if (requestId.equals(MachineMouFourthFragmentPresenter.SUBMIT_MOU)) {
+            if (status == 200) {
                 getActivity().finish();
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
@@ -699,12 +699,16 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void hideProgressBar() {
-        getActivity().runOnUiThread(() -> {
-            if (progressBarLayout != null && progressBar != null) {
-                progressBar.setVisibility(View.GONE);
-                progressBarLayout.setVisibility(View.GONE);
-            }
-        });
+        //your background thread is still running. By the time that thread reaches the getActivity().runOnUiThread()
+        // code,the activity no longer exists. So check if the activity still exists.
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (progressBarLayout != null && progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
@@ -756,6 +760,6 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     @Override
     public void onFailureListener(String error) {
         hideProgressBar();
-        Util.showToast(error,getActivity());
+        Util.showToast(error, getActivity());
     }
 }

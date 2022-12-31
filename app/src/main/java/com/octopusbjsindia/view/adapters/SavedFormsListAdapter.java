@@ -175,6 +175,7 @@ public class SavedFormsListAdapter extends BaseExpandableListAdapter {
         if (processData != null) {
             processData.remove(finalFormResult);
         }
+
         notifyDataSetChanged();
         Util.showToast(mContext.getString(R.string.form_deleted), mContext);
 

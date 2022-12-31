@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/list_category"
+    android:background="@color/google_in"
     android:gravity="center_horizontal">
 
     <include
         android:id="@+id/profile_toolbar"
         layout="@layout/app_toolbar" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_below="@+id/profile_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,7 +23,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_10dp">
+                android:layout_marginVertical="@dimen/dimen_12dp">
 
                 <ImageView
                     android:id="@+id/user_profile_pic"
@@ -41,7 +41,7 @@
                     android:layout_toEndOf="@+id/user_profile_pic"
                     android:fontFamily="@font/opensans_semibold"
                     android:text="name"
-                    android:textColor="@color/profile_name"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/text_size_20" />
 
                 <TextView
@@ -49,12 +49,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_profile_name"
-                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_02dp"
                     android:layout_toEndOf="@+id/user_profile_pic"
                     android:fontFamily="@font/opensans"
                     android:text="profile_mobile"
-                    android:textColor="@color/profile_name"
-                    android:textSize="@dimen/text_size_13" />
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/user_profile_email"
@@ -63,10 +63,10 @@
                     android:layout_below="@+id/user_profile_mobile"
                     android:layout_toEndOf="@+id/user_profile_pic"
                     android:fontFamily="@font/opensans"
-                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_02dp"
                     android:text="profile_email"
-                    android:textColor="@color/profile_name"
-                    android:textSize="@dimen/text_size_12" />
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/user_profile_org_label"
@@ -75,10 +75,10 @@
                     android:layout_below="@+id/user_profile_email"
                     android:layout_toEndOf="@+id/user_profile_pic"
                     android:fontFamily="@font/opensans"
-                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginTop="@dimen/dimen_08dp"
                     android:text="@string/organization"
-                    android:textColor="@color/profile_label"
-                    android:textSize="@dimen/text_size_11" />
+                    android:textColor="@color/freq_used_form_color"
+                    android:textSize="@dimen/text_size_12" />
 
                 <TextView
                     android:id="@+id/user_profile_org"
@@ -87,8 +87,8 @@
                     android:layout_below="@+id/user_profile_org_label"
                     android:layout_toEndOf="@+id/user_profile_pic"
                     android:fontFamily="@font/opensans"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_12" />
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/user_profile_project_label"
@@ -96,10 +96,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_profile_org"
                     android:layout_toEndOf="@+id/user_profile_pic"
-                    android:layout_marginTop="@dimen/dimen_05dp"
+                    android:layout_marginTop="4dp"
                     android:text="@string/project"
-                    android:textColor="@color/profile_label"
-                    android:textSize="@dimen/text_size_11" />
+                    android:textColor="@color/freq_used_form_color"
+                    android:textSize="@dimen/text_size_12"  />
 
                 <TextView
                     android:id="@+id/user_profile_project"
@@ -107,8 +107,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_profile_project_label"
                     android:layout_toEndOf="@+id/user_profile_pic"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_12" />
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/text_size_14" />
 
 
             </RelativeLayout>
@@ -207,18 +207,24 @@
                     android:id="@+id/user_multy_profile_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_25dp"
+                    android:layout_marginStart="@dimen/dimen_16dp"
                     android:layout_marginBottom="@dimen/dimen_05dp"
                     android:text="Your Profiles"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/text_size_14" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_projects"
                     android:layout_width="match_parent"
+                    android:paddingHorizontal="4dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingBottom="16dp"
+                    android:clipToPadding="false"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/ly_progress_bar"

@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/dimen_25dp"
         android:paddingEnd="@dimen/dimen_10dp"
-        android:textColor="@color/profile_label"
-        android:textSize="@dimen/text_size_11" />
+        android:textColor="@color/freq_used_form_color"
+        android:textSize="@dimen/text_size_12" />
 
     <TextView
         android:id="@+id/user_profile_text"
@@ -20,9 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dimen_10dp"
         android:paddingStart="@dimen/dimen_25dp"
-        android:paddingEnd="@dimen/dimen_10dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_12" />
+        android:fontFamily="@font/opensans_semibold"
+        android:paddingEnd="@dimen/dimen_12dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_14" />
 
     <View
         android:layout_width="match_parent"

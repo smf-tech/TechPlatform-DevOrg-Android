@@ -4,18 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:layout_margin="4dp"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
         <LinearLayout
             android:id="@+id/ly_main"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="12dp"
             android:orientation="vertical">
 
 
@@ -23,73 +25,61 @@
                 android:id="@+id/tv_organization_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
                 android:text="@string/organization"
-                android:textColor="@color/profile_label"
-                android:textSize="@dimen/text_size_11" />
+                android:textColor="@color/freq_used_form_color"
+                android:textSize="@dimen/text_size_12" />
 
             <TextView
                 android:id="@+id/tv_organization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_05dp"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="2dp"
+
                 android:text="BJS"
                 android:textColor="@color/black"
                 android:fontFamily="@font/opensans_semibold"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_14" />
 
             <TextView
                 android:id="@+id/tv_project_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/project"
-                android:textColor="@color/profile_label"
-                android:textSize="@dimen/text_size_11" />
+                android:textColor="@color/freq_used_form_color"
+                android:textSize="@dimen/text_size_12" />
 
             <TextView
                 android:id="@+id/tv_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_05dp"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="2dp"
+
                 android:text="Sujlam Suflam"
                 android:fontFamily="@font/opensans_semibold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_14" />
 
             <TextView
                 android:id="@+id/tv_role_lbl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/role"
-                android:textColor="@color/profile_label"
-                android:textSize="@dimen/text_size_11" />
+                android:textColor="@color/freq_used_form_color"
+                android:textSize="@dimen/text_size_12" />
 
             <TextView
                 android:id="@+id/tv_role"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_05dp"
-                android:paddingStart="@dimen/dimen_25dp"
-                android:paddingEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="2dp"
+
                 android:text="TC"
                 android:fontFamily="@font/opensans_semibold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_14" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_01dp"
-                android:layout_marginTop="@dimen/dimen_03dp"
-                android:background="@color/profile_divider" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

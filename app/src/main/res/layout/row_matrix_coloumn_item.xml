@@ -1,86 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white">
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dimen_16dp"
+    android:paddingVertical="12dp">
 
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/column_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Coloumn"
+        android:gravity="center"
+        android:fontFamily="@font/opensans_semibold"
+        android:textColor="?android:textColorPrimary" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/btn_yes"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            app:backgroundTint="@color/mtrl_toggle_btn_bg_color_selector"
+            android:layout_height="wrap_content"
+            android:text="Yes" />
+
+        <Button
+            android:id="@+id/btn_no"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            app:backgroundTint="@color/mtrl_toggle_btn_bg_color_selector"
+            android:layout_height="wrap_content"
+            android:text="No" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_dropdown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:padding="@dimen/dimen_10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:layout_marginHorizontal="@dimen/dimen_16dp"
+        android:layout_marginTop="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/white"
+        app:endIconDrawable="@drawable/ic_shape_down_arrow"
+        app:endIconMode="custom"
+        tools:visibility="visible">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:visibility="visible"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:id="@+id/row_title"
-                android:text="Row"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:id="@+id/column_name"
-                    android:text="Coloumn"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-
-                <ToggleButton
-                    android:id="@+id/toggleButton"
-                    style="@style/AppStyleButton"
-                    android:layout_marginBottom="20dp"
-                    android:text="ToggleButton"
-                    android:textOn="Light ON"
-                    android:textOff="Light OFF"
-                    android:visibility="gone"
-                    android:layout_width="@dimen/dimen_100dp"
-                    android:layout_height="@dimen/dimen_50dp" />
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggleGroup2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    app:checkedButton="@id/btn_yes"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_yes"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Yes" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_no"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No" />
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
+            android:focusable="false"
+            android:hint="Select" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
 
