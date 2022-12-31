@@ -388,7 +388,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
         if (isEditable) {
             toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
             toolbar_edit_action.setVisibility(View.VISIBLE);
-            toolbar_edit_action.setImageResource(R.drawable.ic_saved_icon_db);
+            toolbar_edit_action.setImageResource(R.drawable.ic_save_24);
             toolbar_edit_action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
