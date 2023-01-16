@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.activities;
 
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,11 +13,14 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,11 +32,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -45,6 +53,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -169,7 +180,87 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     break;
             }
         }
+
+        boolean showNotificationDialog =  Platform.getInstance().getSharedPreferences(Constants.App.FIRST_TIME_KEY, Context.MODE_PRIVATE).getBoolean("notificationPermissionDialogShown", false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+                if (!showNotificationDialog) {
+                    showNotificationPermissionNeededDialog();
+                    Platform.getInstance().getSharedPreferences(Constants.App.FIRST_TIME_KEY,
+                            Context.MODE_PRIVATE).edit().putBoolean("notificationPermissionDialogShown",true).apply();
+                }
+            } else {
+                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
+            }
+        }
+
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                        //showNotificationPermissionNeededDialog();
+                        // Snackbar.make(view,"Permission denied",Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        showManualNotificationPermissionRequiredDialog();
+                    }
+                }
+            });
+
+    private void showManualNotificationPermissionRequiredDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Notification permission request")
+                .setMessage("Since you have denied the notification permission earlier, now you have enable it manually from app setting. Click on open setting button to go to app setting")
+                .setCancelable(false)
+                .setPositiveButton("Open setting", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+
+    void showNotificationPermissionNeededDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.notification_permission_dialog, null);
+
+        bottomSheetDialog.setCancelable(false);
+        MaterialButton btNext = bottomSheetView.findViewById(R.id.bt_next);
+        MaterialButton btSkip = bottomSheetView.findViewById(R.id.bt_skip);
+        ImageView close = bottomSheetView.findViewById(R.id.ic_close);
+        TextView title = bottomSheetView.findViewById(R.id.txt_title);
+
+        //title.setText("");
+
+        close.setOnClickListener(v1 -> bottomSheetDialog.dismiss());
+
+        btNext.setOnClickListener(v1 -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                }
+            }
+            bottomSheetDialog.dismiss();
+        });
+
+        btSkip.setOnClickListener(v1 -> {
+            bottomSheetDialog.dismiss();
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
 
     private void initConnectivityReceiver() {
         connectionReceiver = new ConnectivityReceiver();
@@ -391,6 +482,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
         // Start data sync
         SyncAdapterUtils.manualRefresh();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
+            }else findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -714,8 +813,20 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.home_bell_icon:
             case R.id.unread_notification_count:
-                Intent intent = new Intent(this, NotificationsActivity.class);
-                this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+              /*  Intent intent = new Intent(this, NotificationsActivity.class);
+                this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);*/
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        showNotificationPermissionNeededDialog();
+                    }else {
+                        Intent intent = new Intent(this, NotificationsActivity.class);
+                        this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+                    }
+                }else {
+                    Intent intent = new Intent(this, NotificationsActivity.class);
+                    this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
+                }
 
 
                 break;

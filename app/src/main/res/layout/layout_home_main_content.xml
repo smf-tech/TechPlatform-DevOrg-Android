@@ -56,16 +56,16 @@
 
             <TextView
                 android:id="@+id/unread_notification_count"
-                android:layout_width="@dimen/dimen_12dp"
-                android:layout_height="@dimen/dimen_12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/bg_circle_red"
+                android:fontFamily="@font/opensans"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_10"
-                android:fontFamily="@font/opensans"
                 android:visibility="visible" />
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
