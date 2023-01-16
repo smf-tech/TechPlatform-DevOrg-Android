@@ -165,7 +165,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                     e.printStackTrace();
                 }
             }
-            else if (processId != null && processId != "") {
+            else if (processId != null && !processId.equals("")) {
                 formResult = DatabaseManager.getDBInstance(this).getFormResult(processId);
                 if (formResult != null) {
                     try {
