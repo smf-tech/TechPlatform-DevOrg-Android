@@ -69,7 +69,8 @@ public class Constants {
         public static final String REFRESH_TOKEN = "refresh_token";
         public static final String SCOPE = "scope";
 
-        static final String FIRST_TIME_KEY = "FirstTimeKey";
+        public static final String FIRST_TIME_KEY = "FirstTimeKey";
+
         static final String FIRST_TIME_CODE = "FirstTimeCode";
 
         static final String LANGUAGE_LOCALE = "LanguageLocale";

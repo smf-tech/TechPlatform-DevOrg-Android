@@ -38,7 +38,8 @@ public class LoginRequestCall {
                     }
                     listener.onSuccessListener(res);
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 Log.e(TAG, e.getMessage());
                 listener.onFailureListener(e.getMessage());
             }

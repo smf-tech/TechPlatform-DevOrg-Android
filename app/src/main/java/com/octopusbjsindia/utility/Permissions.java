@@ -17,8 +17,20 @@ public class Permissions {
     public static <T> boolean isCameraPermissionGranted(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED &&
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    return true;
+                } else {
+                    if (objectInstance instanceof Fragment) {
+                        ((Fragment) objectInstance).requestPermissions(new String[]{Manifest.permission.CAMERA}, Constants.CAMERA_REQUEST);
+                    } else {
+                        ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.CAMERA}, Constants.CAMERA_REQUEST);
+                    }
+                    return false;
+                }
+            }
+
+            if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                     context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED) {
                 return true;
