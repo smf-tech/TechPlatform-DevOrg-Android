@@ -202,10 +202,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (!isGranted) {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                        //showNotificationPermissionNeededDialog();
-                        // Snackbar.make(view,"Permission denied",Snackbar.LENGTH_SHORT).show();
-                    } else {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                         showManualNotificationPermissionRequiredDialog();
                     }
                 }
@@ -214,9 +211,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private void showManualNotificationPermissionRequiredDialog() {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Notification permission request")
-                .setMessage("Since you have denied the notification permission earlier, now you have enable it manually from app setting. Click on open setting button to go to app setting")
+                .setMessage("Since you have denied the notification permission earlier, now you have to enable it manually from app settings. Click on open settings to enable permissions manually.")
                 .setCancelable(false)
-                .setPositiveButton("Open setting", (dialog, which) -> {
+                .setPositiveButton("Open settings", (dialog, which) -> {
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     Uri uri = Uri.fromParts("package", getPackageName(), null);
                     intent.setData(uri);
@@ -237,10 +234,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         MaterialButton btNext = bottomSheetView.findViewById(R.id.bt_next);
         MaterialButton btSkip = bottomSheetView.findViewById(R.id.bt_skip);
         ImageView close = bottomSheetView.findViewById(R.id.ic_close);
-        TextView title = bottomSheetView.findViewById(R.id.txt_title);
-
-        //title.setText("");
-
         close.setOnClickListener(v1 -> bottomSheetDialog.dismiss());
 
         btNext.setOnClickListener(v1 -> {
@@ -255,7 +248,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         btSkip.setOnClickListener(v1 -> {
             bottomSheetDialog.dismiss();
         });
-
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();

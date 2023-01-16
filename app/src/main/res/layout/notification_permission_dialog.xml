@@ -23,26 +23,26 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:fontFamily="@font/opensans_regular"
         android:text="Get  notified!"
         android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ic_close" />
+        app:layout_constraintTop_toTopOf="@+id/ic_close" />
 
     <TextView
         android:id="@+id/txt_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:text="Get notified when an user views your profile"
         android:fontFamily="@font/opensans_regular"
-        android:textColor="?android:textColorPrimary"
         android:gravity="center"
+        android:text="Get notified for your completed or pending  actions by allowing notifications."
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
