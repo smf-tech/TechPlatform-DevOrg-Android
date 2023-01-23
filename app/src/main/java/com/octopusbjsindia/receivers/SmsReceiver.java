@@ -9,9 +9,6 @@ import android.util.Log;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;
-import com.octopusbjsindia.Platform;
-import com.octopusbjsindia.R;
-import com.octopusbjsindia.utility.AppEvents;
 
 public class SmsReceiver extends BroadcastReceiver {
 
@@ -79,11 +76,7 @@ public class SmsReceiver extends BroadcastReceiver {
                             // Handle the error ...
                             break;
                     }
-                } else {
-                    AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
                 }
-            } else {
-                AppEvents.trackAppEvent(Platform.getInstance().getString(R.string.event_auto_read_failure));
             }
         }
     }

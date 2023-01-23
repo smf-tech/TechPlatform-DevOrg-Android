@@ -102,7 +102,7 @@
                 android:contentDescription="@string/content_description"
                 android:padding="@dimen/dimen_07dp"
                 android:visibility="gone"
-                android:src="@drawable/ic_non_sync_icon"
+                android:src="@drawable/ic_sync_disabled_24"
                 android:layout_weight="1"/>
 
             <ImageView

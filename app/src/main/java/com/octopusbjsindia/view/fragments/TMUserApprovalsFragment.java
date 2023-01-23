@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
@@ -41,7 +40,6 @@ public class TMUserApprovalsFragment extends Fragment {
             }
         }
 
-        AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
     @Override

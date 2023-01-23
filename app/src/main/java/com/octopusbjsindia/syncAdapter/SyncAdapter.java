@@ -30,7 +30,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
-import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.SujalamSuphalam.StructureBoundaryData;
@@ -43,7 +42,6 @@ import com.octopusbjsindia.models.forms.FormData;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.pm.ProcessData;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GsonRequestFactory;
 import com.octopusbjsindia.utility.PlatformGson;
@@ -263,8 +261,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 DatabaseManager.getDBInstance(getContext()).insertFormResult(result);
 
-                AppEvents.trackAppEvent(getContext().getString(R.string.event_form_submitted_success,
-                        dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
 //                form.setFormStatus(SyncAdapterUtils.FormStatus.DELETED);
 //                DatabaseManager.getDBInstance(getContext()).updateFormResult(form);

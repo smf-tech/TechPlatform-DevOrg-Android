@@ -65,7 +65,6 @@ import com.octopusbjsindia.models.planner.SubmoduleData;
 import com.octopusbjsindia.models.planner.attendanceData;
 import com.octopusbjsindia.presenter.PlannerFragmentPresenter;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.PreferenceHelper;
@@ -157,7 +156,6 @@ public class PlannerFragment extends Fragment implements PlatformTaskListener,
             }
         }
         timer = new Timer();
-        AppEvents.trackAppEvent(getString(R.string.event_meetings_screen_visit));
     }
 
     @Override

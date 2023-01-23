@@ -41,7 +41,6 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.SujalamSuphalamFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -93,7 +92,6 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }
-        AppEvents.trackAppEvent(getString(R.string.ss_screen_visit));
     }
 
     @Override

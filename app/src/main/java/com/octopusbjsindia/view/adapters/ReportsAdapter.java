@@ -16,7 +16,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.reports.ReportData;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 
 import java.util.ArrayList;
@@ -140,7 +139,6 @@ public class ReportsAdapter extends BaseExpandableListAdapter {
             return;
         }
 
-        AppEvents.trackAppEvent(context.getString(R.string.event_report_click, name));
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
         customTabsIntent.intent.setData(uri);
         final String EXTRA_CUSTOM_TABS_TOOLBAR_COLOR = "android.support.customtabs.extra.TOOLBAR_COLOR";

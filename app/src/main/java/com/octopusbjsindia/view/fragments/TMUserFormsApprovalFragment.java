@@ -16,13 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.appoval_forms_detail.FeedbackFormHistoryData;
 import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.tm.TMUserFormsApprovalRequest;
 import com.octopusbjsindia.presenter.TMUserFormsApprovalFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
@@ -58,7 +56,6 @@ public class TMUserFormsApprovalFragment extends Fragment implements TMUserForms
                 e.printStackTrace();
             }
         }
-        AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
     @Override

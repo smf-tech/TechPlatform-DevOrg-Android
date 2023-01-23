@@ -44,7 +44,6 @@ import com.octopusbjsindia.models.Matrimony.MeetBatchesResponseModel;
 import com.octopusbjsindia.models.Matrimony.SubordinateData;
 import com.octopusbjsindia.presenter.MatrimonyMeetDetailFragmentPresenter;
 import com.octopusbjsindia.presenter.MatrimonyMeetFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.LoginActivity;
 import com.octopusbjsindia.view.activities.MatrimonyBookletActivity;
@@ -97,7 +96,6 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         super.onCreate(savedInstanceState);
         instance = this;
         presenter = new MatrimonyMeetDetailFragmentPresenter(this);
-        AppEvents.trackAppEvent(getString(R.string.event_matrimony_screen_visit));
     }
 
     public static MatrimonyMeetDetailFragment getInstance() {

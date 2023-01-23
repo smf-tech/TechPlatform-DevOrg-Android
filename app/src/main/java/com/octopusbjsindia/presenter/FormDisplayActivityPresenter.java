@@ -30,7 +30,6 @@ import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.request.FormRequestCall;
 import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
@@ -179,7 +178,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
         try {
             if (fragmentWeakReference != null && fragmentWeakReference != null) {
                 fragmentWeakReference.get().hideProgressBar();
-                AppEvents.trackAppEvent(fragmentWeakReference.get().getString(R.string.event_form_submitted_fail));
 
                 //fragmentWeakReference.get().enableSubmitButton(true);
             }
@@ -198,7 +196,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
 
         if (fragmentWeakReference != null && fragmentWeakReference.get() != null) {
             fragmentWeakReference.get().hideProgressBar();
-            AppEvents.trackAppEvent(fragmentWeakReference.get().getString(R.string.event_form_submitted_fail));
 
             if (error != null && error.networkResponse != null) {
                 if (error.networkResponse.statusCode == 400) {
@@ -308,9 +305,6 @@ public class FormDisplayActivityPresenter implements APIPresenterListener, FormR
                         result.setFormApprovalStatus(dataObject.getString(Constants.FormDynamicKeys.STATUS));
 
                         DatabaseManager.getDBInstance(fragmentWeakReference.get()).insertFormResult(result);
-
-                        AppEvents.trackAppEvent(fragmentWeakReference.get().getString(R.string.event_form_submitted_success,
-                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
                         if (Constants.ONLINE_SUBMIT_FORM_TYPE.equals(callType)) {
                             String countStr = DatabaseManager.getDBInstance(

@@ -39,7 +39,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
-import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
@@ -57,7 +56,6 @@ import com.octopusbjsindia.models.profile.UserLocation;
 import com.octopusbjsindia.models.user.RoleData;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.EditProfileActivityPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
@@ -1721,7 +1719,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 //        if (Permissions.isCameraPermissionGranted(this, this)) {
 //            Util.downloadAndLoadIcon(EditProfileActivity.this);
 //        }
-        AppEvents.trackAppEvent(getString(R.string.event_update_profile_success));
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
@@ -1729,7 +1726,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     @Override
     public void showErrorMessage(String result) {
-        AppEvents.trackAppEvent(getString(R.string.event_update_profile_fail));
         runOnUiThread(() -> Util.showToast(result, this));
     }
 

@@ -19,7 +19,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 
@@ -50,7 +49,6 @@ public class FormsFragment extends Fragment {
             }
         }
 
-        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
     }
 
     @Override

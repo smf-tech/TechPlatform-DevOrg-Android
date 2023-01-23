@@ -32,11 +32,9 @@ import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.HomeActivityPresenter;
 import com.octopusbjsindia.syncAdapter.GenericAccountService;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
-import com.octopusbjsindia.view.activities.EditProfileActivity;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ViewPagerAdapter;
 
@@ -83,7 +81,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
         //String str = getResources().getString(R.string.task_title) + Util.getLocaleLanguageCode();
         dialogNotApproved = new AlertDialog.Builder(context).create();
-        AppEvents.trackAppEvent(getString(R.string.event_home_screen_visit));
     }
 
     @Override

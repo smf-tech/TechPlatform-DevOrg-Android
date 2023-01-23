@@ -26,7 +26,6 @@ import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.tm.TMUserProfileApprovalRequest;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.TMUserProfileApprovalFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.TMUserProfileListActivity;
@@ -84,7 +83,6 @@ public class TMUserProfileApprovalFragment extends Fragment {
         }
         requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
-        AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
     @Override

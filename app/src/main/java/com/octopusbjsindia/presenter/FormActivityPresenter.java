@@ -26,7 +26,6 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.request.FormRequestCall;
 import com.octopusbjsindia.request.ImageRequestCall;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
@@ -163,7 +162,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
         try {
             if (formFragment != null && formFragment.get() != null) {
                 formFragment.get().hideProgressBar();
-                AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
 
                 formFragment.get().enableSubmitButton(true);
             }
@@ -182,7 +180,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
 
         if (formFragment != null && formFragment.get() != null) {
             formFragment.get().hideProgressBar();
-            AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_fail));
 
             if (error != null && error.networkResponse != null) {
                 if (error.networkResponse.statusCode == 400) {
@@ -288,9 +285,6 @@ public class FormActivityPresenter implements FormRequestCallListener,
                         result.setFormStatus(SyncAdapterUtils.FormStatus.SYNCED);
                         result.setOid(idObject.getString(Constants.FormDynamicKeys.OID));
                         DatabaseManager.getDBInstance(formFragment.get().getContext()).insertFormResult(result);
-
-                        AppEvents.trackAppEvent(formFragment.get().getString(R.string.event_form_submitted_success,
-                                dataObject.getString(Constants.FormDynamicKeys.FORM_TITLE)));
 
                         if (Constants.ONLINE_SUBMIT_FORM_TYPE.equals(callType)) {
                             String countStr = DatabaseManager.getDBInstance(

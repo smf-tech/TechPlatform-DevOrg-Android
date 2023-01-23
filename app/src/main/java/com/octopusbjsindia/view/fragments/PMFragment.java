@@ -23,7 +23,6 @@ import com.octopusbjsindia.models.forms.FormStatusCount;
 import com.octopusbjsindia.models.forms.FormStatusCountData;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.PMFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
@@ -54,7 +53,6 @@ public class PMFragment extends Fragment implements View.OnClickListener, Platfo
         if (getActivity() != null) {
             ((HomeActivity) getActivity()).setSyncButtonVisibility(true);
         }
-        AppEvents.trackAppEvent(getString(R.string.event_forms_screen_visit));
     }
 
     @Override
