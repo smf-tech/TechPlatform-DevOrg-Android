@@ -43,6 +43,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     private TextView tvQuetion;
     private EditText etAnswer, et_answer_name;
     boolean isFirstpage = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 etAnswer.setEnabled(false);
 
             }
-            if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
@@ -87,7 +88,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             }
             etAnswer = view.findViewById(R.id.et_answer_date);
-            if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
@@ -102,69 +103,66 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 view.findViewById(R.id.et_answer_date).setOnClickListener(this);
             }
             etAnswer = view.findViewById(R.id.et_answer_date);
-            if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
         } else if (element.getInputType().equals("number")) {
-            if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
-                etAnswer = view.findViewById(R.id.et_answer);
+            etAnswer = view.findViewById(R.id.et_answer);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                etAnswer.setFocusable(false);
+                etAnswer.setEnabled(false);
+            }
+            if (element.getMaxLength() != null) {
+                element.setMaxLength(element.getMaxLength());
+            }
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+            etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            et_answer_name = view.findViewById(R.id.et_answer_name);
+            et_answer_name.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+            }
+        } else if (element.getInputType().equals("tel")) {
+            etAnswer = view.findViewById(R.id.et_answer);
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                etAnswer.setFocusable(false);
+                view.findViewById(R.id.et_answer_date).setEnabled(false);
+            }
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+            etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
+            et_answer_name = view.findViewById(R.id.et_answer_name);
+            et_answer_name.setVisibility(View.VISIBLE);
+            etAnswer.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int count, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
+                    if (count >= 9) {
+                        textFragmentPresenter.GET_MV_USER_INFO(String.valueOf(charSequence));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
+            }
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
+                et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
                 if (!((FormDisplayActivity) getActivity()).isEditable) {
-                    etAnswer.setFocusable(false);
-                    view.findViewById(R.id.et_answer_date).setEnabled(false);
-                }
-                if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                    etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
-                etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
-                et_answer_name = view.findViewById(R.id.et_answer_name);
-                et_answer_name.setVisibility(View.VISIBLE);
-                etAnswer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int count, int i2) {
-                        //Log.d("mvUserName_Phone", String.valueOf(charSequence));
-                    }
+                    et_answer_name.setFocusable(false);
+                    et_answer_name.setEnabled(false);
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int count, int i, int i2) {
-                        //Log.d("mvUserName_Phone", String.valueOf(charSequence));
-                        if (count >= 9) {
-
-                            textFragmentPresenter.GET_MV_USER_INFO(String.valueOf(charSequence));
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
-
-                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
-                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
-                }
-                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
-                    et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
-                    if (!((FormDisplayActivity) getActivity()).isEditable) {
-                        et_answer_name.setFocusable(false);
-                        et_answer_name.setEnabled(false);
-
-                    }
-                }
-
-            } else {
-                etAnswer = view.findViewById(R.id.et_answer);
-                if (!((FormDisplayActivity) getActivity()).isEditable) {
-                    etAnswer.setFocusable(false);
-                    etAnswer.setEnabled(false);
-                }
-                if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                    etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
-                etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER);
-                et_answer_name = view.findViewById(R.id.et_answer_name);
-                et_answer_name.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
                 }
             }
         } else {
@@ -173,7 +171,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 etAnswer.setFocusable(false);
                 etAnswer.setEnabled(false);
             }
-            if (element.getPlaceHolder()!=null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
+            if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
@@ -213,7 +211,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.et_answer_date:
-                if(element.getInputType().equalsIgnoreCase("date")){
+                if (element.getInputType().equalsIgnoreCase("date")) {
                     if (element.getMinDate() != null || element.getMaxDate() != null) {
                         if (element.getMinDate() != null && element.getMaxDate() != null) {
                             String minDate = Util.getDateFromTimestamp(element.getMinDate(), FORM_DATE);
@@ -260,12 +258,85 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-                if (element.getInputType() != null && element.getInputType().equals("number")) {
+                if(element.getInputType() != null) {
+                    if(element.getInputType().equals("number")) {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        if (element.getMaxLength() != null) {
+                            if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                                if (element.isRequired()) {
+                                    if (element.getRequiredErrorText() != null) {
+                                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                    } else {
+                                        Util.showToast(getResources().getString(R.string.required_error), this);
+                                    }
+                                    return;
+                                }
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            } else {
+                                if (isMaxLengthValid(element.getMaxLength())) {
+                                    hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                                }
+                            }
+                        } else {
+                            if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                                if (element.isRequired()) {
+                                    if (element.getRequiredErrorText() != null) {
+                                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                    } else {
+                                        Util.showToast(getResources().getString(R.string.required_error), this);
+                                    }
+                                    return;
+                                }
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            } else {
+                                hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            }
+                        }
+                    } else if(element.getInputType().equals("tel")) {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                            if (element.isRequired()) {
+                                if (element.getRequiredErrorText() != null) {
+                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                                return;
+                            }
+                            ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                        } else {
+                            if (isAllInputsValid()) {
+                                hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            }
+                        }
+                    }
+                } else {
+                    HashMap<String, String> hashMap = new HashMap<String, String>();
+                    if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                        if (element.isRequired()) {
+                            if (element.getRequiredErrorText() != null) {
+                                Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                            } else {
+                                Util.showToast(getResources().getString(R.string.required_error), this);
+                            }
+                            return;
+                        }
+                    } else {
+                        hashMap.put(element.getName(), etAnswer.getText().toString());
+                    }
+                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                }
+                /////////////////
+                /*if (element.getInputType() != null && element.getInputType().equals("number")) {
                     if (element.getMaxLength() != null && element.getMaxLength() >= 10) {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (TextUtils.isEmpty(etAnswer.getText().toString())) {
                             if (element.isRequired()) {
-                                if(element.getRequiredErrorText()!=null){
+                                if (element.getRequiredErrorText() != null) {
                                     Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                                 } else {
                                     Util.showToast(getResources().getString(R.string.required_error), this);
@@ -314,7 +385,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     if (TextUtils.isEmpty(etAnswer.getText().toString())) {
                         if (element.isRequired()) {
-                            if(element.getRequiredErrorText()!=null){
+                            if (element.getRequiredErrorText() != null) {
                                 Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
                             } else {
                                 Util.showToast(getResources().getString(R.string.required_error), this);
@@ -325,20 +396,22 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                         hashMap.put(element.getName(), etAnswer.getText().toString());
                     }
                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
-                }
+                }*/
                 break;
         }
     }
 
-
+    private boolean isMaxLengthValid(int maxLength) {
+        boolean isInputValid = true;
+        if (getTextInputValue().trim().length() != maxLength) {
+            Util.setError(etAnswer, "Not a valid number.");
+            isInputValid = false;
+        }
+        return isInputValid;
+    }
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
-//        if (TextUtils.isEmpty(getUserMobileNumber())) {
-//            Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_empty));
-//            isInputValid = false;
-//        } else
-
-        if (getUserMobileNumber().trim().length() < 10 || getUserMobileNumber().trim().length() > 10) {
+        if (getTextInputValue().trim().length() != 10) {
             Util.setError(etAnswer, getResources().getString(R.string.msg_mobile_number_is_invalid));
             isInputValid = false;
         } else if (et_answer_name.getText().toString().trim().length() == 0) {
@@ -348,7 +421,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         return isInputValid;
     }
 
-    private String getUserMobileNumber() {
+    private String getTextInputValue() {
         if (etAnswer != null) {
             return String.valueOf(etAnswer.getText());
         }

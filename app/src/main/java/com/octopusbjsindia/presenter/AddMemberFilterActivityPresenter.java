@@ -60,6 +60,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
 //        requestCall.getJurisdictionLevelData(orgId, jurisdictionTypeId, levelName);
 //    }
 
+/*
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         HashMap<String,String> map=new HashMap<>();
         map.put(KEY_SELECTED_ID, selectedLocationId);
@@ -85,6 +86,7 @@ public class AddMemberFilterActivityPresenter implements AddMemberRequestCallLis
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.CLUSTER_LEVEL, new JSONObject(map).toString(), getLocationUrl);
         }
     }
+*/
 
     public void getLocationDataV3(String stateId, String districtId, String talukaId, String jurisdictionTypeId, String levelName) {
         HashMap<String, String> map = new HashMap<>();

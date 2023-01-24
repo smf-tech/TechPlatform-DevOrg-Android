@@ -686,10 +686,6 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 } else {
                     if (selectedProjects != null && selectedProjects.size() > 0 &&
                             !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
-//                        profilePresenter.getProfileLocationData("",
-//                                jurisdictionId,
-//                                Constants.JurisdictionLevelName.COUNTRY_LEVEL, selectedOrg.getId(),
-//                                selectedProjects.get(0).getId(), selectedRole.getId());
                         profilePresenter.getProfileLocationDataV3("", "",
                                 "", "", "",
                                 jurisdictionId,

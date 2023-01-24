@@ -80,6 +80,7 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
         requestCall.getOrganizationRoles(orgId, projectId);
     }
 
+/*
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         HashMap<String, String> map = new HashMap<>();
         map.put(KEY_SELECTED_ID, selectedLocationId);
@@ -115,7 +116,9 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
             requestCall.postDataApiCall(Constants.JurisdictionLevelName.LEARNING_CENTER, new JSONObject(map).toString(), getLocationUrl);
         }
     }
+*/
 
+/*
     public void getProfileLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName, String orgId,
                                        String projectId, String roleId) {
         HashMap<String, String> map = new HashMap<>();
@@ -162,6 +165,7 @@ public class EditProfileActivityPresenter implements ProfileRequestCallListener,
                     new JSONObject(map).toString(), getLocationUrl, orgId, projectId, roleId);
         }
     }
+*/
 
     public void getProfileLocationDataV3(String stateId, String districtId, String talukaId, String clusterId,
                                          String villageId, String jurisdictionTypeId, String levelName, String orgId,

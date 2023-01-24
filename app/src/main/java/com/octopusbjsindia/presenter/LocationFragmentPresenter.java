@@ -52,6 +52,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         }
     }
 
+/*
     public void getLocationData(String selectedLocationId, String jurisdictionTypeId, String levelName) {
         HashMap<String, String> map = new HashMap<>();
         map.put(KEY_SELECTED_ID, selectedLocationId);
@@ -67,6 +68,7 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(levelName, new JSONObject(map).toString(), getLocationUrl);
     }
+*/
 
     public void getLocationData3(String stateId, String districtId, String talukaId, String clusterId,
                                  String villageId, String jurisdictionTypeId, String levelName) {
@@ -89,20 +91,20 @@ public class LocationFragmentPresenter implements APIPresenterListener {
         requestCall.postDataApiCall(levelName, new JSONObject(map).toString(), getLocationUrl);
     }
 
-    public void getAllLocationData(String selectedId, String jurisdictionTypeId, String levelName) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(KEY_SELECTED_ID, selectedId);
-        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
-        map.put(KEY_LEVEL, levelName);
-
-        mContext.showProgressBar();
-        final String getLocationUrl = BuildConfig.BASE_URL
-                + String.format(Urls.Profile.GET_ALL_LOCATION_DATA);
-        mContext.showProgressBar();
-        APIRequestCall requestCall = new APIRequestCall();
-        requestCall.setApiPresenterListener(this);
-        requestCall.postDataApiCall("AllLocation", new JSONObject(map).toString(), getLocationUrl);
-    }
+//    public void getAllLocationData(String selectedId, String jurisdictionTypeId, String levelName) {
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put(KEY_SELECTED_ID, selectedId);
+//        map.put(KEY_JURIDICTION_TYPE_ID, jurisdictionTypeId);
+//        map.put(KEY_LEVEL, levelName);
+//
+//        mContext.showProgressBar();
+//        final String getLocationUrl = BuildConfig.BASE_URL
+//                + String.format(Urls.Profile.GET_ALL_LOCATION_DATA);
+//        mContext.showProgressBar();
+//        APIRequestCall requestCall = new APIRequestCall();
+//        requestCall.setApiPresenterListener(this);
+//        requestCall.postDataApiCall("AllLocation", new JSONObject(map).toString(), getLocationUrl);
+//    }
 
     public void getAllLocationDataV2(String stateId, String districtId, String talukaId, String clusterId,
                                      String villageId, String jurisdictionTypeId, String levelName) {
