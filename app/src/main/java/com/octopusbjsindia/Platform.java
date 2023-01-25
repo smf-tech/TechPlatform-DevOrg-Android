@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.utility.Config;
@@ -30,8 +29,6 @@ public class Platform extends Application {
     private static Platform mPlatformInstance;
 
     private RequestQueue mRequestQueue;
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     public static Platform getInstance() {
         return mPlatformInstance;
     }
@@ -44,10 +41,6 @@ public class Platform extends Application {
         FirebaseApp.initializeApp(this);
         initFireBase();
         //SyncAdapterUtils.periodicSyncRequest();
-
-        if (mFirebaseAnalytics == null) {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        }
 
         mPlatformInstance = this;
         Util.makeDirectory(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Octopus/Image");
@@ -62,13 +55,13 @@ public class Platform extends Application {
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_URL, Constants.playStoreLink);
 
         final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
+        firebaseRemoteConfig.setDefaultsAsync(remoteConfigDefaults);
         firebaseRemoteConfig.fetch(1000 * 60) // fetch every minutes
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "remote config is fetched.");
                         //noinspection deprecation
-                        firebaseRemoteConfig.activateFetched();
+                        firebaseRemoteConfig.activate();
                     }
                 });
     }
@@ -80,13 +73,6 @@ public class Platform extends Application {
         }
 
         return mRequestQueue;
-    }
-
-    public FirebaseAnalytics getFirebaseAnalyticsInstance() {
-        if (mFirebaseAnalytics == null) {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        }
-        return mFirebaseAnalytics;
     }
 
     public String getAppMode() {

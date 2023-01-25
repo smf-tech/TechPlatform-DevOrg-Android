@@ -17,7 +17,6 @@ import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.reports.ReportData;
 import com.octopusbjsindia.models.reports.Reports;
 import com.octopusbjsindia.presenter.ReportsFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.ReportsAdapter;
@@ -52,7 +51,6 @@ public class ReportsFragment extends Fragment implements PlatformTaskListener, V
             mShowAllReportsText = getArguments().getBoolean("SHOW_ALL", true);
         }
 
-        AppEvents.trackAppEvent(getString(R.string.event_reports_screen_visit));
     }
 
     @Override

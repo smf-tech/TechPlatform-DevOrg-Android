@@ -49,8 +49,9 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_non_sync_icon"
-            android:visibility="gone" />
+            android:src="@drawable/ic_sync_disabled_24"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <ImageView
             android:id="@+id/form_image"

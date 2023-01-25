@@ -39,7 +39,6 @@ import com.octopusbjsindia.listeners.PlatformTaskListener;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.presenter.LoginActivityPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
@@ -70,7 +69,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         initViews();
         loginInfo = new LoginInfo();
         loginPresenter = new LoginActivityPresenter(this);
-        AppEvents.trackAppEvent(getString(R.string.event_login_screen_visit));
     }
 
     private void initViews() {
@@ -247,7 +245,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         if (data != null && ((Login) data).getLoginData() != null) {
             loginInfo.setOneTimePassword(((Login) data).getLoginData().getOtp());
             addDeviceId();
-            AppEvents.trackAppEvent(getString(R.string.event_login_success));
             try {
                 Intent intent = new Intent(this, OtpActivity.class);
                 intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, loginInfo);
@@ -283,7 +280,6 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public void showErrorMessage(String result) {
         Util.showToast(result, this);
-        AppEvents.trackAppEvent(getString(R.string.event_login_failure));
     }
 
     private String getUserMobileNumber() {

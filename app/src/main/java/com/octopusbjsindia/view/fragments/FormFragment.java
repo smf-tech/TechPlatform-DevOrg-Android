@@ -48,7 +48,6 @@ import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.forms.Page;
 import com.octopusbjsindia.presenter.FormActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
@@ -742,8 +741,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
                             LocalBroadcastManager.getInstance(getContext().getApplicationContext())
                                     .sendBroadcast(intent);
 
-                            AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
-                                    formModel.getData().getName()));
 
                             Util.showToast(getResources().getString(R.string.form_saved_offline), getActivity());
                             Log.d(TAG, "Form saved " + formModel.getData().getId());
@@ -755,7 +752,6 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
 
             case R.id.btn_save:
                 if (formModel != null && formModel.getData() != null) {
-                    AppEvents.trackAppEvent(getString(R.string.event_form_saved, formModel.getData().getName()));
                     if (formFragmentView.findViewById(R.id.btn_submit).getVisibility() == View.VISIBLE) {
                         storePartiallySavedForm();
                     }

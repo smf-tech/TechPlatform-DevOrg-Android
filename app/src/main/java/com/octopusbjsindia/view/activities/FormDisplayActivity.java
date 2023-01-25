@@ -46,7 +46,6 @@ import com.octopusbjsindia.models.forms.VisibleIf;
 import com.octopusbjsindia.models.forms.VisibleIfListObject;
 import com.octopusbjsindia.presenter.FormDisplayActivityPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
@@ -703,9 +702,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                 Intent intent = new Intent(SyncAdapterUtils.PARTIAL_FORM_ADDED);
                 LocalBroadcastManager.getInstance(getApplicationContext())
                         .sendBroadcast(intent);
-
-                AppEvents.trackAppEvent(getString(R.string.event_form_saved_offline,
-                        formData.getName()));
 
                 Util.showToast(getResources().getString(R.string.form_saved_offline), this);
                 Log.d(TAG, "Form saved " + formData.getId());

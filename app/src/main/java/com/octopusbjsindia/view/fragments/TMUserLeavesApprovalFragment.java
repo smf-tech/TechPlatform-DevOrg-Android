@@ -20,7 +20,6 @@ import com.octopusbjsindia.models.tm.TMApprovalRequestModel;
 import com.octopusbjsindia.models.tm.TMUserLeaveApplications;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.TMUserLeavesApprovalFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.TMUserLeavesApprovalRecyclerAdapter;
 
@@ -55,7 +54,6 @@ public class TMUserLeavesApprovalFragment extends Fragment implements TMUserLeav
                 e.printStackTrace();
             }
         }
-        AppEvents.trackAppEvent(getString(R.string.event_approvals_screen_visit));
     }
 
     @Override

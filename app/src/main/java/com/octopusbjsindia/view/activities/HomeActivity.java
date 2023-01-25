@@ -58,7 +58,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
@@ -69,15 +68,11 @@ import com.octopusbjsindia.models.home.Modules;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.receivers.ConnectivityReceiver;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.ForceUpdateChecker;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.HomeFragment;
-import com.octopusbjsindia.view.fragments.PMFragment;
-import com.octopusbjsindia.view.fragments.PlannerFragment;
-import com.octopusbjsindia.view.fragments.ReportsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,11 +109,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         subscribedToFirebaseTopics();
         initConnectivityReceiver();
 
-        // get Firebase tokan
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
-            String newToken = instanceIdResult.getToken();
-            Log.d("Token", newToken);
-        });
         toOpen = getIntent().getStringExtra("toOpen");
         if (toOpen != null) {
             Intent intent;
@@ -181,7 +171,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             }
         }
 
-        boolean showNotificationDialog =  Platform.getInstance().getSharedPreferences(Constants.App.FIRST_TIME_KEY, Context.MODE_PRIVATE).getBoolean("notificationPermissionDialogShown", false);
+        boolean showNotificationDialog = Platform.getInstance().getSharedPreferences(Constants.App.FIRST_TIME_KEY, Context.MODE_PRIVATE).getBoolean("notificationPermissionDialogShown", false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -189,7 +179,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 if (!showNotificationDialog) {
                     showNotificationPermissionNeededDialog();
                     Platform.getInstance().getSharedPreferences(Constants.App.FIRST_TIME_KEY,
-                            Context.MODE_PRIVATE).edit().putBoolean("notificationPermissionDialogShown",true).apply();
+                            Context.MODE_PRIVATE).edit().putBoolean("notificationPermissionDialogShown", true).apply();
                 }
             } else {
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
@@ -299,7 +289,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             Util.setStringInPref(Constants.App.FirebaseTopicProjectRoleWise, userProject + "_" + userRoll);
         }
         PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
-        if(preferenceHelper.getCheckOutStatus(PreferenceHelper.TOKEN_KEY)){
+        if (preferenceHelper.getCheckOutStatus(PreferenceHelper.TOKEN_KEY)) {
             String token = preferenceHelper.getString(PreferenceHelper.TOKEN);
             JSONObject jsonObject = new JSONObject();
             try {
@@ -384,7 +374,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         String appVersion;
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            tvAppVersion.setText("Version"+" "+appVersion);
+            tvAppVersion.setText("Version" + " " + appVersion);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -479,7 +469,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED) {
                 findViewById(R.id.unread_notification_count).setVisibility(View.GONE);
-            }else findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
+            } else findViewById(R.id.unread_notification_count).setVisibility(View.VISIBLE);
         }
 
     }
@@ -528,17 +518,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (menuId) {
             case R.id.action_menu_home:
                 loadHomePage();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_home_click));
                 break;
 
             case R.id.action_home_sync:
                 showUpdateDataPopup();
-                AppEvents.trackAppEvent(getString(R.string.event_sync_button_click));
                 break;
 
             case R.id.action_menu_change_language:
                 showLanguageChangeDialog();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_change_lang_click));
                 break;
 
             case R.id.action_menu_share_app:
@@ -553,12 +540,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } catch (Exception e) {
                     //e.toString();
                 }
-                AppEvents.trackAppEvent(getString(R.string.share_app));
                 break;
 
             case R.id.action_menu_rate_us:
                 rateTheApp();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_rate_us_click));
                 break;
 
             case R.id.action_menu_call_us:
@@ -580,7 +565,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 } catch (Exception e) {
                     Log.e("Calling Phone", "" + e.getMessage());
                 }
-                AppEvents.trackAppEvent(getString(R.string.event_menu_call_us_click));
                 break;
 
             case R.id.action_menu_settings:
@@ -588,7 +572,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
 
             case R.id.action_menu_logout:
                 showLogoutPopUp();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_logout_click));
                 break;
         }
 
@@ -798,7 +781,6 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (view.getId()) {
             case R.id.menu_user_profile_layout:
                 showProfileScreen();
-                AppEvents.trackAppEvent(getString(R.string.event_menu_profile_click));
                 DrawerLayout drawer = findViewById(R.id.home_drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
@@ -811,11 +793,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                         showNotificationPermissionNeededDialog();
-                    }else {
+                    } else {
                         Intent intent = new Intent(this, NotificationsActivity.class);
                         this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
                     }
-                }else {
+                } else {
                     Intent intent = new Intent(this, NotificationsActivity.class);
                     this.startActivityForResult(intent, Constants.Home.NEVIGET_TO);
                 }

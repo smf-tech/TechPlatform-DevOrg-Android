@@ -47,7 +47,6 @@ import com.octopusbjsindia.models.content.ContentData;
 import com.octopusbjsindia.models.content.DownloadLanguageSelection;
 import com.octopusbjsindia.models.content.LanguageDetail;
 import com.octopusbjsindia.presenter.ContentFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.LoginActivity;
@@ -108,7 +107,6 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }
-        AppEvents.trackAppEvent(getString(R.string.event_content_screen_visit));
     }
 
     @Override

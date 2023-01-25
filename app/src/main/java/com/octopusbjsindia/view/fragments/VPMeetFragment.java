@@ -33,9 +33,7 @@ public class VPMeetFragment extends Fragment implements View.OnClickListener{
     private RelativeLayout progressBar;
     boolean regFlag;
     String status;
-    public TextView tvRegistered,tvStatus;
     int pos;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,28 +67,24 @@ public class VPMeetFragment extends Fragment implements View.OnClickListener{
         TextView tvTitle = view.findViewById(R.id.tv_title);
         TextView tvAddress = view.findViewById(R.id.tv_address);
         TextView tvDate = view.findViewById(R.id.tv_date);
-        tvRegistered = view.findViewById(R.id.tv_registered);
-        tvStatus = view.findViewById(R.id.tv_stetus);
+        TextView txtMeetType = view.findViewById(R.id.txt_meet_type);
+        TextView txtMeetFee = view.findViewById(R.id.txt_meet_fee);
 
         regFlag = false;
-//        for(Contact user : meetData.getContacts()){
-//            if(user.getUserId().equals(Utils.getLoginObjectFromPref().getUserDetails().getId())){
-//        if(meetData.getStatus()!=null && !TextUtils.isEmpty(meetData.getStatus())){
-
-//                tvRegistered.setText("Registered");
-//                tvRegistered.setVisibility(View.VISIBLE);
-//            status= "Your Profile "+meetData.getStatus();
-//            tvStatus.setText(status);
-//            tvStatus.setVisibility(View.VISIBLE);
-//            regFlag = true;
-//                break;
-//        }
-//        }
 
         tvTitle.setText(meetData.getTitle());
         tvAddress.setText(meetData.getLocation().getCity() + ", " + meetData.getLocation().getState());
         tvDate.setText(Util.getDateFromTimestamp(meetData.getSchedule().getDateTime(), Constants.DAY_MONTH_YEAR)+" @ "+
                 Util.getFormattedDatee(meetData.getSchedule().getMeetStartTime(),"hh:mm aaa","HH:mm"));
+
+        txtMeetType.setText(meetData.getMeetType());
+
+        if (meetData.getIsRegPaid()) {
+            txtMeetFee.setText("Paid Meet - Rs." + meetData.getRegAmount());
+        } else {
+            txtMeetFee.setText("Free Meet");
+        }
+
     }
 
     @Override

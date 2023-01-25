@@ -34,7 +34,6 @@ import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.models.smartgirl.SgDashboardResponseModel;
 import com.octopusbjsindia.models.smartgirl.SgDashboardResponseModelList;
 import com.octopusbjsindia.presenter.SmartgirlDashboardFragmentPresenter;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Util;
@@ -44,7 +43,6 @@ import com.octopusbjsindia.view.activities.SmartGirlWorkshopListActivity;
 import com.octopusbjsindia.view.activities.TrainerBatchListActivity;
 import com.octopusbjsindia.view.adapters.smartGirlAdapters.SmartGirlAnalyticsAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
-import com.octopusbjsindia.view.fragments.smartgirlfragment.WebActivityTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +91,6 @@ public class SmartGirlDashboardFragment extends Fragment implements View.OnClick
                 ((HomeActivity) getActivity()).showBackArrow();
             }
         }
-        AppEvents.trackAppEvent(getString(R.string.ss_screen_visit));
     }
 
     @Override

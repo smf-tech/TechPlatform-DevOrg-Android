@@ -32,7 +32,6 @@ import com.octopusbjsindia.models.pm.ProcessData;
 import com.octopusbjsindia.models.pm.Processes;
 import com.octopusbjsindia.presenter.FormStatusFragmentPresenter;
 import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
@@ -84,7 +83,6 @@ public class AllFormsFragment extends Fragment implements FormStatusCallListener
             }
         }
 
-        AppEvents.trackAppEvent(getString(R.string.event_all_forms_screen_visit));
     }
 
     @Override

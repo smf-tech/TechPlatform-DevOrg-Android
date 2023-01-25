@@ -20,7 +20,6 @@ import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.models.forms.FormResult;
 import com.octopusbjsindia.models.home.Home;
 import com.octopusbjsindia.models.home.Modules;
-import com.octopusbjsindia.utility.AppEvents;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.SmartFragmentStatePagerAdapter;
@@ -232,7 +231,6 @@ public class DashboardFragment extends Fragment {
             child.setEnabled(tabNames.get(i).isActive());
             child.setOnClickListener(view -> {
                 ((HomeActivity) DashboardFragment.this.getActivity()).setActionBarTitle(child.getContentDescription().toString());
-                AppEvents.trackAppEvent(DashboardFragment.this.getString(R.string.event_forms_tab_click));
             });
         }
     }
