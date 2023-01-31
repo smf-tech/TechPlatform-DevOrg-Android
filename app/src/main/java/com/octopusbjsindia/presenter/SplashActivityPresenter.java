@@ -57,7 +57,6 @@ public class SplashActivityPresenter implements APIDataListener {
     }*/
 
     public void getAppConfig(String mobileNumber) {
-
         //mContext.showProgressBar();
         final String url = BuildConfig.BASE_URL + String.format(Urls.Configuration.API_CONFIG);
         SplashActivityRequestCall requestCall = new SplashActivityRequestCall();
