@@ -211,12 +211,7 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
     private void initView() {
         progressBarLayout = findViewById(R.id.gen_frag_progress_bar);
         progressBar = findViewById(R.id.pb_gen_form_fragment);
-        vpFormElements.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        vpFormElements.setOnTouchListener((v, event) -> true);
 
         //get lat,long of location - commented
         gpsTracker = new GPSTracker(this);
