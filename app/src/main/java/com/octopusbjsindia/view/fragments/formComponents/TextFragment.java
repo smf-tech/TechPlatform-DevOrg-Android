@@ -258,8 +258,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 ((FormDisplayActivity) getActivity()).goPrevious();
                 break;
             case R.id.bt_next:
-                if(element.getInputType() != null) {
-                    if(element.getInputType().equals("number")) {
+                if (element.getInputType() != null) {
+                    if (element.getInputType().equals("number")) {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (element.getMaxLength() != null) {
                             if (TextUtils.isEmpty(etAnswer.getText().toString())) {
@@ -294,7 +294,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             }
                         }
-                    } else if(element.getInputType().equals("tel")) {
+                    } else if (element.getInputType().equals("tel")) {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (TextUtils.isEmpty(etAnswer.getText().toString())) {
                             if (element.isRequired()) {
@@ -313,6 +313,21 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             }
                         }
+                    } else {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                            if (element.isRequired()) {
+                                if (element.getRequiredErrorText() != null) {
+                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                } else {
+                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                                }
+                                return;
+                            }
+                        } else {
+                            hashMap.put(element.getName(), etAnswer.getText().toString());
+                        }
+                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
                     }
                 } else {
                     HashMap<String, String> hashMap = new HashMap<String, String>();
@@ -409,6 +424,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         }
         return isInputValid;
     }
+
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
         if (getTextInputValue().trim().length() != 10) {

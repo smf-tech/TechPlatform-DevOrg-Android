@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".view.activities.MissingInfoActivity">
 
@@ -34,6 +35,8 @@
             style="@style/textinputstyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
             android:layout_margin="@dimen/dimen_05dp">
 
             <com.google.android.material.textfield.TextInputEditText
