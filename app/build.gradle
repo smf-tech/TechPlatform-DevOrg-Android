@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 33
-        versionCode 32
-        versionName "1.32"
+        versionCode 34
+        versionName "1.34"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationId 'com.octopusbjsindia'
         javaCompileOptions {

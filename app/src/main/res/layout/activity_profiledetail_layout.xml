@@ -54,7 +54,7 @@
                         <RelativeLayout
                             android:id="@+id/frame_top"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen_300dp">
+                            android:layout_height="400dp">
 
 
                             <androidx.viewpager.widget.ViewPager

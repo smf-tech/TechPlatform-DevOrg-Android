@@ -52,6 +52,7 @@ import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.soundcloud.android.crop.Crop;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -75,7 +76,7 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private int imageCount = 0;
-    Map<String,String> requestData = new HashMap<>();
+    Map<String, String> requestData = new HashMap<>();
     private Uri outputUri;
     private Uri finalUri;
     RelativeLayout progressBar;
@@ -130,8 +131,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
 
     private boolean isAllDataValid() {
 
-        if(!TextUtils.isEmpty(etUrl.getText().toString().trim())) {
-            if(!URLUtil.isValidUrl(etUrl.getText().toString().trim())){
+        if (!TextUtils.isEmpty(etUrl.getText().toString().trim())) {
+            if (!URLUtil.isValidUrl(etUrl.getText().toString().trim())) {
                 Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                         "Please enter valid Url.", Snackbar.LENGTH_LONG);
                 return false;
@@ -142,13 +143,13 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter title.", Snackbar.LENGTH_LONG);
             return false;
-        } else if(TextUtils.isEmpty(etDescription.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(etDescription.getText().toString().trim())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please enter description.", Snackbar.LENGTH_LONG);
             return false;
         } else {
-            requestData.put("title",etTitle.getText().toString());
-            requestData.put("is_published","true");
+            requestData.put("title", etTitle.getText().toString());
+            requestData.put("is_published", "true");
         }
 
         return true;
@@ -348,7 +349,8 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(this);
+                //Crop.of(finalUri, finalUri).start(this);
+                Util.openCropActivityFreeCrop(this, finalUri, finalUri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -358,12 +360,18 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
                     getImageFile();
                     outputUri = data.getData();
                     finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(this);
+
+                    //Crop.of(outputUri, finalUri).start(this);
+
+                    Util.openCropActivityFreeCrop(this, outputUri, finalUri);
+
+
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        }
+       /* else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 if (Util.isConnected(this)) {
@@ -383,6 +391,28 @@ public class CreateFeedActivity extends AppCompatActivity implements View.OnClic
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        }*/
+
+        //ucrop
+        else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+                final Uri resultUri = UCrop.getOutput(data);
+                final File imageFile = new File(Objects.requireNonNull(resultUri).getPath());
+                if (Util.isConnected(this)) {
+                    if (Util.isValidImageSize(imageFile)) {
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), finalUri);
+                        ivFeedImage.setImageURI(finalUri);
+                        imageHashmap.put("image" + imageCount, bitmap);
+                        imageCount++;
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                }
+
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
     }
 

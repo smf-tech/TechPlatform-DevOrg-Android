@@ -812,7 +812,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
     private void enlargePhoto(String photoUrl) {
         // stop the video if playing
 
-        final Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar);
         LayoutInflater factory = LayoutInflater.from(this);
         final View enlargePhotoView = factory.inflate(
                 R.layout.enlarge_photo_layout, null);

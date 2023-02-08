@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -33,14 +36,17 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static com.octopusbjsindia.utility.Util.isPhotoPickerAvailable;
 
 public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.OnClickListener {
     private final String TAG = ProfileMatrimonyAboutmeFragment.class.getName();
+    public final static int PICK_PHOTO_CODE = 1046;
     private View fragmentview;
     private String uploadImageType = "";
     private Button btn_load_next, btn_loadprevious;
@@ -213,23 +219,31 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                 break;
             case R.id.img_user_profle:
                 uploadImageType = Constants.Image.IMAGE_TYPE_PROFILE;
-                isSquare = true;
-                onAddImageClick();
+                //isSquare = true;
+                if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                    launchPhotoPicker();
+                }
                 break;
             case R.id.img_education_cert:
                 uploadImageType = Constants.Image.IMAGE_TYPE_EDUCATION;
-                isSquare = true;
-                onAddImageClick();
+                //isSquare = true;
+                if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                    launchPhotoPicker();
+                }
                 break;
             case R.id.img_adhar:
                 uploadImageType = Constants.Image.IMAGE_TYPE_ADHARCARD;
-                isSquare = true;
-                onAddImageClick();
+                //isSquare = true;
+                if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                    launchPhotoPicker();
+                }
                 break;
             case R.id.img_marital_status_certificate:
                 uploadImageType = Constants.Image.IMAGE_TYPE_MARITAL_CERTIFICATE;
-                isSquare = true;
-                onAddImageClick();
+                //isSquare = true;
+                if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                    launchPhotoPicker();
+                }
                 break;
         }
     }
@@ -249,6 +263,39 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
             }
         }
     }
+
+    public void launchPhotoPicker() {
+        if (isPhotoPickerAvailable()) {
+            pickVisualMediaActivityResultLauncher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        } else {
+            // Consider implementing fallback functionality so that users can still select images and videos.
+            onPickPhoto();
+        }
+    }
+
+    ActivityResultLauncher<PickVisualMediaRequest> pickVisualMediaActivityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                if (uri != null) {
+                    Util.openCropActivityFreeCropWithFragment(getActivity(),this,uri,
+                            Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+                } else {
+                    Log.d("PhotoPicker", "No media selected");
+                }
+            });
+
+    public void onPickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+
 
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
@@ -315,7 +362,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+      /*  if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
@@ -359,85 +406,65 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                 }
 
             }
+        }*/
+
+        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri photoUri = data.getData();
+                    Util.openCropActivityFreeCropWithFragment(getActivity(), this, photoUri,
+                            Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+            } else { // Result was a failure
+                Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+            }
         }
 
-//        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
-//            try {
-//                String imageFilePath = getImageName();
-//                if (imageFilePath == null) return;
-//
-//                finalUri = Utils.getUri(imageFilePath);
-//
-//                if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
-//                    Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
-//                } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
-//                    Crop.of(outputUri, finalUri).start(getContext(), this);
-//                } else if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(uploadImageType)) {
-//                    Crop.of(outputUri, finalUri).start(getContext(), this);
-//                }
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-//            if (data != null) {
-//                try {
-//                    String imageFilePath = getImageName();
-//                    if (imageFilePath == null) return;
-//
-//                    outputUri = data.getData();
-//                    finalUri = Utils.getUri(imageFilePath);
-//
-//                    if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
-//                        Crop.of(outputUri, finalUri).asSquare().start(getContext(), this);
-//                    } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
-//                        Crop.of(outputUri, finalUri).start(getContext(), this);
-//                    } else if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(uploadImageType)) {
-//                        Crop.of(outputUri, finalUri).start(getContext(), this);
-//                    }
-//
-//                } catch (Exception e) {
-//                    Log.e(TAG, e.getMessage());
-//                }
-//            }
-//        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-//            try {
-//                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-//                if (Utils.isConnected(getActivity())) {
-//                    if (Utils.isValidImageSize(imageFile)) {
-//                        //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
-//                        ((RegistrationActivity)getActivity()).presenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
-//                        if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
-////                            img_user_profle.setImageURI(finalUri);
-//                            Glide.with(getActivity())
-//                                    .applyDefaultRequestOptions(requestOptions)
-//                                    .load(finalUri)
-//                                    .into(img_user_profle);
-//                        } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
-////                            img_adhar.setImageURI(finalUri);
-//                            Glide.with(getActivity())
-//                                    .applyDefaultRequestOptions(requestOptions)
-//                                    .load(finalUri)
-//                                    .into(img_adhar);
-//                        }
-//                        if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(uploadImageType)) {
-////                            img_education_cert.setImageURI(finalUri);
-//                            Glide.with(getActivity())
-//                                    .applyDefaultRequestOptions(requestOptions)
-//                                    .load(finalUri)
-//                                    .into(img_education_cert);
-//                        }
-//
-//                    } else {
-//                        Utils.showToast(getActivity(),getString(R.string.msg_big_image));
-//                    }
-//                } else {
-//                    Utils.showToast(getActivity(),getResources().getString(R.string.msg_no_network));
-//                }
-//
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
+
+        //ucrop
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+                final Uri resultUri = UCrop.getOutput(data);
+                if (Util.isConnected(getActivity())) {
+                    if (Util.isValidImageSize(new File(resultUri.getPath()))) {
+                        //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+                        ((RegistrationActivity) getActivity()).presenter.uploadProfileImage
+                                (new File(resultUri.getPath()), Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
+
+                        if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
+//                            img_user_profle.setImageURI(finalUri);
+                            Glide.with(getActivity())
+                                    .applyDefaultRequestOptions(requestOptions)
+                                    .load(resultUri)
+                                    .into(img_user_profle);
+                        } else if (uploadImageType.equalsIgnoreCase(Constants.Image.IMAGE_TYPE_ADHARCARD)) {
+//                            img_adhar.setImageURI(finalUri);
+                            Glide.with(getActivity())
+                                    .applyDefaultRequestOptions(requestOptions_adhar)
+                                    .load(resultUri)
+                                    .into(img_adhar);
+                        } else if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(uploadImageType)) {
+//                            img_education_cert.setImageURI(finalUri);
+                            Glide.with(getActivity())
+                                    .applyDefaultRequestOptions(requestOptions_edu)
+                                    .load(resultUri)
+                                    .into(img_education_cert);
+                        } else if (uploadImageType.equalsIgnoreCase(Constants.Image.IMAGE_TYPE_MARITAL_CERTIFICATE)) {
+                            Glide.with(getActivity())
+                                    .applyDefaultRequestOptions(requestOptions_adhar)
+                                    .load(resultUri)
+                                    .into(imgMaritalStatusCerificate);
+                        }
+
+                    } else {
+                        Util.showToast(getActivity(), getString(R.string.msg_big_image));
+                    }
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+            }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        }
     }
 
     private String getImageName() {
@@ -459,16 +486,17 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
         mUploadedImageUrl = uploadedImageUrl;
     }*/
 
-    @Override
+  /*  @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.CAMERA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                onAddImageClick();
+                //onAddImageClick();
+                launchPhotoPicker();
             }
         }
-    }
+    }*/
 
 
     //set selected data for request

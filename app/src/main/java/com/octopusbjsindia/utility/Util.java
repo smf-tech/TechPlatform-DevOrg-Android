@@ -1,5 +1,7 @@
 package com.octopusbjsindia.utility;
 
+import static android.os.ext.SdkExtensions.getExtensionVersion;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -12,17 +14,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -45,6 +51,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -82,6 +89,8 @@ import com.octopusbjsindia.view.fragments.TMUserFormsApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserLeavesApprovalFragment;
 import com.octopusbjsindia.view.fragments.TMUserProfileApprovalFragment;
 import com.octopusbjsindia.view.fragments.smartgirlfragment.MemberListFragment;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,6 +132,9 @@ public class Util {
     private String todayAsString;
     private ProgressDialog pd;
 
+    public static final int SIZE_MATRIMONY_PROFILE = 1080; //used for -> matrimony profile images
+    public static final int SIZE_USER_PROFILE = 600; // used for -> basic profile, business profile
+    public static final int SIZE_DOCUMENT = 960; // used for -> matrimony document, business images
     public static void setError(final EditText inputEditText, String errorMessage) {
         final int padding = 10;
         inputEditText.setCompoundDrawablePadding(padding);
@@ -1446,7 +1458,7 @@ public class Util {
 //            String imageFilePath = Util.getImageName();
 //            File imageFile = new File(imageFilePath);
             FileOutputStream out = new FileOutputStream(f);
-            b.compress(Bitmap.CompressFormat.PNG, 40, out);
+            b.compress(Bitmap.CompressFormat.PNG, 70, out);
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -2026,4 +2038,140 @@ public class Util {
 
         return "";
     }
+
+    public static void openCropActivityFreeCrop(Activity activity,Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setFreeStyleCropEnabled(true);
+        options.setAllowedGestures(UCropActivity.SCALE,UCropActivity.SCALE,UCropActivity.SCALE);
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .start(activity);
+    }
+
+    public static void openCropActivityFreeCropWithFragment(Activity activity,Fragment fragment,Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setFreeStyleCropEnabled(true);
+        options.setAllowedGestures(UCropActivity.SCALE,UCropActivity.SCALE,UCropActivity.SCALE);
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .start(activity,fragment);
+    }
+
+    public static void openCropActivityFixCrop5_5_6(Activity activity,Fragment fragment,Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+        UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(5f, 5.6f)
+                .withOptions(options)
+                .start(activity,fragment);
+    }
+
+    public static boolean isPhotoPickerAvailable() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return true;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return getExtensionVersion(Build.VERSION_CODES.R) >= 2;
+        } else
+            return false;
+    }
+
+    public static Bitmap rotateBitmapOrientation(String photoFilePath) {
+        // Create and configure BitmapFactory
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath, bounds);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+        // Read EXIF Data
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(photoFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+        int rotationAngle = 0;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+        // Rotate Bitmap
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+        // Return result
+        return rotatedBitmap;
+    }
+
+    public static Bitmap resizeCompressBitmap(Bitmap bitmapImage,int maxSize) {
+        // resize bitmap
+        int outWidth;
+        int outHeight;
+        int inWidth = bitmapImage.getWidth();
+        int inHeight = bitmapImage.getHeight();
+        if (inWidth > inHeight) {
+            outWidth = maxSize;
+            outHeight = (inHeight * maxSize) / inWidth;
+        } else {
+            outHeight = maxSize;
+            outWidth = (inWidth * maxSize) / inHeight;
+        }
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmapImage, outWidth, outHeight, false);
+        // Compress the image further
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 70, bytes);
+
+        return resizedBitmap;
+    }
+
+    public static File convertBitmapToFile(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+        File compressedFile = getPhotoFileUri(context, "photo_resized.jpg");
+        try {
+            compressedFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(compressedFile);
+            // Write the bytes of the bitmap to file
+            fos.write(bytes.toByteArray());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return compressedFile;
+    }
+
+    public static File getPhotoFileUri(Context context, String fileName) {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "TAG");
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(TAG, "failed to create directory");
+        }
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
+    }
+
+    public static String getRealPathFromURI(Context context, Uri contentURI) {
+        String result;
+        Cursor cursor = context.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+
 }

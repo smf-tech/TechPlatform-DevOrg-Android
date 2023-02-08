@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:padding="10dp"
+        android:paddingHorizontal="16dp"
         android:orientation="vertical">
 
         <TextView
@@ -95,7 +95,7 @@
         <ImageView
             android:layout_width="@dimen/dimen_300dp"
             android:layout_height="@dimen/dimen_25dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginEnd="2dp"
             android:src="@drawable/ic_active3" />
@@ -105,14 +105,17 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
             app:cardCornerRadius="@dimen/dimen_10dp">
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbarThumbVertical="@null"
-                android:layout_margin="20dp">
+                android:padding="16dp"
+                android:clipToPadding="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -359,31 +362,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-
-        android:gravity="center"
-
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_loadprevious"
             style="@style/AppStyleBorderButton"
-            android:layout_gravity="center"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Previous"
-            android:textColor="@color/grey_medium" />
+            android:text="Previous" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_loadnext"
-            style="@style/AppStyleBorderButton"
-            android:layout_gravity="center"
+            style="@style/AppStylePrimaryButton"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="Next" />
     </LinearLayout>

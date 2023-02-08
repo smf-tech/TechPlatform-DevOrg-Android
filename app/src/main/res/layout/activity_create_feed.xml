@@ -79,17 +79,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_200dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:adjustViewBounds="true"
                 android:padding="2dp"
-                android:src="@drawable/ic_img" />
+                android:src="@drawable/image_placeholder" />
 
             <Button
                 android:id="@+id/bt_publish"
                 style="@style/AppStyleButton"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_16dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_weight="1"
                 android:text="Publish" />
