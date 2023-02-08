@@ -56,29 +56,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:paddingVertical="@dimen/dimen_05dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadprevious"
-                style="@style/AppStyleBorderButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dimen_10dp"
                 android:layout_weight="1"
                 android:text="@string/previous"
-                android:textColor="@color/medium_grey"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"
-                style="@style/AppStyleBorderButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="@dimen/dimen_10dp"
                 android:layout_weight="1"
                 android:text="@string/next"
                 />
