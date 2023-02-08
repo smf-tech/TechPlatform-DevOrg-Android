@@ -1351,7 +1351,6 @@ public class Util {
                 dialog.dismiss();
             });
         }
-
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -1397,12 +1396,10 @@ public class Util {
     public static void snackBarToShowMsg(@NonNull View view, @NonNull CharSequence text, int duration) {
         Snackbar snackbar = Snackbar.make(view, text, duration);
         snackbar.show();
-        //return snackbar;
     }
 
     public static boolean isUserApproved() {
         UserInfo userInfo = getUserObjectFromPref();
-//        return true;
         return !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.PENDING) &&
                 !userInfo.getApproveStatus().equalsIgnoreCase(Constants.RequestStatus.REJECTED);
     }
@@ -1455,8 +1452,6 @@ public class Util {
             e.printStackTrace();
         }
         try {
-//            String imageFilePath = Util.getImageName();
-//            File imageFile = new File(imageFilePath);
             FileOutputStream out = new FileOutputStream(f);
             b.compress(Bitmap.CompressFormat.PNG, 70, out);
             out.flush();
@@ -1496,7 +1491,6 @@ public class Util {
                 Log.e(TAG, e.getMessage());
             }
         }
-
         return false;
     }
 
@@ -1882,36 +1876,6 @@ public class Util {
            }
        }*/
    }
-    private static String saveImage(Bitmap image, SharedPreferences.Editor editor, SharedPreferences preferences, Context context) {
-        String currentPhotoPath = null;
-        File storageDir = getImageFile(); // 1
-        currentPhotoPath = storageDir.getPath();
-        boolean success = true;
-
-        if (success) {
-            try {
-                OutputStream fOut = new FileOutputStream(storageDir);
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                fOut.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // Add the image to the system gallery
-            Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID.concat(".file_provider"), storageDir);
-            /*editor.putString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO,uri.toString());
-            editor.apply();
-
-            String path = preferences.getString(Constants.OperatorModule.PROJECT_RELEVENT_LOGO, "");*/
-            /*if (path.equalsIgnoreCase("")){
-
-            }else {
-                img_logo.setImageURI(null);
-                img_logo.setImageURI(Uri.parse(path));
-            }*/
-
-        }
-        return currentPhotoPath;
-    }
     //-------
     private static File getImageFile() {
         // External sdcard location
@@ -1930,7 +1894,7 @@ public class Util {
                 Locale.getDefault()).format(new Date());
         File file;
         file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + "logo" + ".png");
+                + "IMG_" + timeStamp + ".png");
 
         return file;
     }

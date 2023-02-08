@@ -3,8 +3,8 @@ package com.octopusbjsindia.view.fragments.formComponents;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.Constants;
@@ -32,7 +34,6 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.soundcloud.android.crop.Crop;
-import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -49,7 +50,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     private boolean isFirstpage = false;
     private View view;
     private ImageView imageView;
-    private RelativeLayout progressBar;
     private Uri outputUri;
     private Uri finalUri;
     private Elements element;
@@ -64,8 +64,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_file_question, container, false);
         return view;
@@ -95,13 +94,9 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         }
         if (((FormDisplayActivity) getActivity()).isFromApproval) {
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                Glide.with(getActivity())
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))
-                        .into(imageView);
+                Glide.with(getActivity()).applyDefaultRequestOptions(requestOptions).load(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName())).into(imageView);
             }
-        }else
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
+        } else if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"))) {
             Uri imageUri = Uri.parse(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "Uri"));
             imageView.setImageURI(imageUri);
             ((FormDisplayActivity) getActivity()).isImageUploadPending = false;
@@ -127,13 +122,8 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                     onAddImageClick();
                 } else {
                     ((FormDisplayActivity) getActivity()).isImageUploadPending = true;
-//                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-//                            "To upload image, you need internet connectivity. If you do not have internet, " +
-//                                    "you can skip this question and save the form.", Snackbar.LENGTH_LONG);
 
-                    Util.showDialog(getActivity(), "Alert", "To upload image, you " +
-                            "need internet connectivity. If you do not have internet,you can skip this" +
-                            " question and save the form.", "OK", "");
+                    Util.showDialog(getActivity(), "Alert", "To upload image, you " + "need internet connectivity. If you do not have internet,you can skip this" + " question and save the form.", "OK", "");
                 }
                 break;
             case R.id.bt_previous:
@@ -145,8 +135,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                 } else {
                     if (isImageSelected) {
-                        hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.
-                                get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
+                        hashMap.put(element.getName(), (((FormDisplayActivity) getActivity()).mUploadedImageUrlList.get(((FormDisplayActivity) getActivity()).mUploadedImageUrlList.size() - 1).get(element.getName())));
 
                         hashMap.put(element.getName() + "Uri", finalUri.toString());
                         ((FormDisplayActivity) getActivity()).goNext(hashMap);
@@ -157,7 +146,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                             ((FormDisplayActivity) getActivity()).goNext(hashMap);
                         }
                     }
-
                 }
                 break;
         }
@@ -179,7 +167,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 case 0:
                     choosePhotoFromGallery();
                     break;
-
                 case 1:
                     takePhotoFromCamera();
                     break;
@@ -199,31 +186,25 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
 
     private void takePhotoFromCamera() {
         try {
-            //use standard intent to capture an image
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/Octopus/Image/picture.jpg";
-
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName()
-                    + ".file_provider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException e) {
-            Util.showToast(getString(R.string.msg_image_capture_not_support), this);
+            //display an error message
+            Toast.makeText(getContext(), getResources().getString(R.string.msg_image_capture_not_support), Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
-            Util.showToast(getString(R.string.msg_take_photo_error), this);
+            Toast.makeText(getContext(), getResources().getString(R.string.msg_take_photo_error), Toast.LENGTH_SHORT).show();
         }
     }
 
     private File getImageFile() {
         // External sdcard location
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), Constants.Image.IMAGE_STORAGE_DIRECTORY);
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -231,11 +212,9 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
             }
         }
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         File file;
-        file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+        file = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
         currentPhotoPath = file.getPath();
         return file;
     }
@@ -246,35 +225,23 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = getImageName();
-                if (imageFilePath == null) {
-                    return;
-                }
-                finalUri = Util.getUri(imageFilePath);
-                //Crop.of(outputUri, finalUri).start(getContext(), this);
-                Util.openCropActivityFreeCropWithFragment(getActivity(),this, outputUri, finalUri);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        }
-        else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
-                    String imageFilePath = getImageName();
-                    if (imageFilePath == null) {
-                        return;
-                    }
+                    getImageFile();
                     outputUri = data.getData();
-                    finalUri = Util.getUri(imageFilePath);
-                    //Crop.of(outputUri, finalUri).start(getContext(), this);
-                    Util.openCropActivityFreeCropWithFragment(getActivity(),this, outputUri, finalUri);
-
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        }
-    /*    else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 imageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
@@ -282,12 +249,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
                 isImageSelected = true;
                 if (Util.isConnected(getContext())) {
                     if (Util.isValidImageSize(compressedImageFile)) {
-//                        HashMap<String, String> hashMap = new HashMap<String, String>();
-//                        ((FormDisplayActivity) getActivity()).selectedImageUriList.put(element.getName(), finalUri.toString());
-
-                        //((FormDisplayActivity) getActivity()).selectedImageUriList.add(hashMap);
-                        ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile,
-                                Constants.Image.IMAGE_TYPE_FILE, element.getName());
+                        ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile, Constants.Image.IMAGE_TYPE_FILE, element.getName());
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
                     }
@@ -298,33 +260,6 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        }*/
-
-        //ucrop
-        else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
-            if (data != null) {
-                imageView.setImageURI(finalUri);
-                final Uri resultUri = UCrop.getOutput(data);
-                final File imageFile = new File(Objects.requireNonNull(resultUri).getPath());
-                final File compressedImageFile = Util.compressFile(imageFile);
-                if (Util.isConnected(getContext())) {
-                    if (Util.isValidImageSize(compressedImageFile)) {
-//                        HashMap<String, String> hashMap = new HashMap<String, String>();
-//                        ((FormDisplayActivity) getActivity()).selectedImageUriList.put(element.getName(), finalUri.toString());
-
-                        //((FormDisplayActivity) getActivity()).selectedImageUriList.add(hashMap);
-                        ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile,
-                                Constants.Image.IMAGE_TYPE_FILE, element.getName());
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
-                }
-            }
-        }
-        else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
         }
     }
 }
