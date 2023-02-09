@@ -75,7 +75,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     private TextView tvMeetType, tvMeetCountry, tvMeetState, tvMeetCity, tvCriteria, tvMinAge, tvMaxAge;
     private Button btnFirstPartMeet;
-    private ImageView ivBanner;
+    //private ImageView ivBanner;
     private ArrayList<CustomSpinnerObject> meetTypesList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetCountryList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> meetStateList = new ArrayList<>();
@@ -161,7 +161,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         rgOnlinePayment.setOnCheckedChangeListener(this);
         rbOnlineYes = view.findViewById(R.id.rb_online_yes);
         rbOnlineNo = view.findViewById(R.id.rb_online_no);
-        ivBanner = view.findViewById(R.id.ivBanner);
+        //ivBanner = view.findViewById(R.id.ivBanner);
         etEducation = view.findViewById(R.id.etEducation);
         etMaritalStatus = view.findViewById(R.id.etMaritalStatus);
         tvCriteria = view.findViewById(R.id.tvCriteria);
@@ -215,7 +215,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             matrimonyMeetFirstFragmentPresenter.getMeetTypes();
             matrimonyMeetFirstFragmentPresenter.getFilterMasterData();
         }
-        view.findViewById(R.id.ivBanner).setOnClickListener(this);
+       // view.findViewById(R.id.ivBanner).setOnClickListener(this);
         etEducation.setOnClickListener(this);
         etMaritalStatus.setOnClickListener(this);
         tvCriteria.setOnClickListener(this);
@@ -378,9 +378,9 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                             Snackbar.LENGTH_LONG);
                 }
                 break;
-            case R.id.ivBanner:
+           /* case R.id.ivBanner:
                 onAddImageClick();
-                break;
+                break;*/
             case R.id.etEducation:
                 CustomSpinnerDialogClass qualificationDegree = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select education", qualificationDegreeList, true);
@@ -638,7 +638,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+        /*if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
                 Crop.of(finalUri, finalUri).start(getContext(), this);
@@ -681,7 +681,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        }
+        }*/
     }
 
     private File getImageFile() {

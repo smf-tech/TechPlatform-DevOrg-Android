@@ -88,13 +88,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/profile_toolbar"
-        android:padding="@dimen/dimen_10dp">
+        android:layout_below="@+id/profile_toolbar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_matrimonyprofileview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"
             android:layout_above="@+id/btn_clear_filters" />
 
         <!--        <ExpandableListView-->
