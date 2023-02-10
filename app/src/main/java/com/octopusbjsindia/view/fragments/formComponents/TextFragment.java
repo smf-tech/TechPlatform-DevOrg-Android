@@ -71,7 +71,6 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
                 etAnswer.setEnabled(false);
-
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());

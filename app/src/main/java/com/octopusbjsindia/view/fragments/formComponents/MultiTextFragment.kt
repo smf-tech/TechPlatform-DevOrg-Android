@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
+import com.octopusbjsindia.utility.Util
+import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.adapter.MultiTextAdapter
 
 class MultiTextFragment : Fragment(), View.OnClickListener {
@@ -54,11 +57,12 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bt_previous -> {
-                //todo
+                (activity as FormDisplayActivity).goPrevious()
             }
 
             R.id.bt_next -> {
-                //todo
+                //todo check for isRequired and answersHashMap has value for any one question
+
             }
         }
     }
