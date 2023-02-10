@@ -1,32 +1,18 @@
-package com.octopusbjsindia.view.fragments.formComponents;
+package com.octopusbjsindia.view.fragments.formComponents.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
-import com.octopusbjsindia.models.forms.Choice;
-import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
-import com.octopusbjsindia.utility.PreferenceHelper;
-import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
-import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
-import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 
 public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
         <MatrixQuestionFragmentAdapter.EmployeeViewHolder>

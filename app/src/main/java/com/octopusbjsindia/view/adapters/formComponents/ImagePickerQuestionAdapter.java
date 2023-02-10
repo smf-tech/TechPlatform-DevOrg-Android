@@ -23,7 +23,7 @@ import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.view.fragments.formComponents.ImagePickerQuestionFragment;
-import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionColoumnAdapter;
+import com.octopusbjsindia.view.fragments.formComponents.adapter.MatrixQuestionColoumnAdapter;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 

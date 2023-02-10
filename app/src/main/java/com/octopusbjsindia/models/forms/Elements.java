@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
+import kotlin.jvm.JvmField;
+
 @SuppressWarnings("unused")
 public class Elements implements Serializable {
     @ColumnInfo(name = "choices_by_url_response_path")
@@ -50,6 +52,10 @@ public class Elements implements Serializable {
     @SerializedName("choices")
     @Expose
     private List<Choice> choices = null;
+
+    @SerializedName("items")
+    @Expose
+    private List<MultiTextItem> items = null;
     @SerializedName("choicesByUrl")
     @Expose
     private ChoicesByUrl choicesByUrl;
@@ -250,6 +256,14 @@ public class Elements implements Serializable {
 
     public List<Validator> getValidators() {
         return validators;
+    }
+
+    public List<MultiTextItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<MultiTextItem> items) {
+        this.items = items;
     }
 
     public void setValidators(List<Validator> validators) {
