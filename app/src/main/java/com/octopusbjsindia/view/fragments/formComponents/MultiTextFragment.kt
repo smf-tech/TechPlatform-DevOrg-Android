@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
+import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.adapter.MultiTextAdapter
 
@@ -23,7 +25,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     private var isFirstpage = false
 
     private val valueHashMap = HashMap<String, String>()  //
-    private val valuesJsonObject = JsonObject()  //to store answers
+    private var valuesJsonObject = JsonObject()  //to store answers
 
     /** form answers submitting format
      *{
@@ -68,6 +70,11 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    fun receiveAnswerJson(receivedJsonObjectString: JsonObject) {
+        valuesJsonObject = receivedJsonObjectString
+    }
+
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bt_previous -> {
@@ -77,10 +84,20 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             R.id.bt_next -> {
                 //todo check for isRequired and answersHashMap has value for any one question else get value from edittext and save in hashmap
 
-                for (i in 0 until rvMultiText.childCount) {
-
+                if (valuesJsonObject.size() > 0) {
+                    valueHashMap.put(element.name, Gson().toJson(valuesJsonObject))
+                    (requireActivity() as FormDisplayActivity).goNext(valueHashMap)
+                }else{
+                    if (element.isRequired) {
+                        if (element.requiredErrorText != null) {
+                            Util.showToast(element.requiredErrorText.localeValue, this)
+                        } else {
+                            Util.showToast(resources.getString(R.string.required_error), this)
+                        }
+                    } else {
+                        (requireActivity() as FormDisplayActivity).goNext(valueHashMap)
+                    }
                 }
-
             }
         }
     }

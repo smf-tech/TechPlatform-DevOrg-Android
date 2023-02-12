@@ -1,6 +1,9 @@
 package com.octopusbjsindia.view.fragments.formComponents.adapter
 
-import android.text.*
+import android.text.Editable
+import android.text.InputFilter
+import android.text.InputType
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -186,6 +189,7 @@ class MultiTextAdapter(
                     //todo save value on hashmap/jsonObject
                     valuesJsonObject.addProperty(item.name,etValue.text.toString())
                     //todo call listener from here in fragment and save these value in another hashmap their
+                    fragment.receiveAnswerJson(valuesJsonObject)
                 }
 
             })
