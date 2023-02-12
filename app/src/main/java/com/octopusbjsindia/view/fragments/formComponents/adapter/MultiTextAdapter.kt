@@ -1,14 +1,13 @@
 package com.octopusbjsindia.view.fragments.formComponents.adapter
 
-import android.text.InputFilter
-import android.text.InputType
-import android.text.TextUtils
+import android.text.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.JsonObject
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
 import com.octopusbjsindia.models.forms.MultiTextItem
@@ -23,6 +22,12 @@ class MultiTextAdapter(
 ) : RecyclerView.Adapter<MultiTextAdapter.ViewHolder>() {
 
     private val dataList: List<MultiTextItem> = element.items
+    private val valuesJsonObject = JsonObject()  //to store answers
+
+    init {
+        //todo add prefill data
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiTextAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,8 +44,8 @@ class MultiTextAdapter(
     override fun getItemCount(): Int = dataList.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtTitle: TextView = itemView.findViewById(R.id.txt_q_title)
-        val etValue: TextInputEditText = itemView.findViewById(R.id.et_value)
+        private val txtTitle: TextView = itemView.findViewById(R.id.txt_q_title)
+        private val etValue: TextInputEditText = itemView.findViewById(R.id.et_value)
 
         fun bind(item: MultiTextItem) {
 
@@ -61,8 +66,8 @@ class MultiTextAdapter(
                     etValue.isFocusable = false
                     etValue.isEnabled = true
 
-                    /* if (!TextUtils.isEmpty((fragment.activity as FormDisplayActivity).formAnswersMap[element.getName()])) {
-                         etAnswer.setText((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])
+                    /* if (!TextUtils.isEmpty((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])) {
+                         etValue.setText((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])
                      }*/
                 }
                 "time" -> {
@@ -106,10 +111,8 @@ class MultiTextAdapter(
                 if (item.inputType.equals("date", ignoreCase = true)) {
                     if (item.minDate != null || item.maxDate != null) {
                         if (item.minDate != null && item.maxDate != null) {
-                            val minDate =
-                                Util.getDateFromTimestamp(item.minDate, Constants.FORM_DATE)
-                            val maxDate =
-                                Util.getDateFromTimestamp(item.maxDate, Constants.FORM_DATE)
+                            val minDate = Util.getDateFromTimestamp(item.minDate, Constants.FORM_DATE)
+                            val maxDate = Util.getDateFromTimestamp(item.maxDate, Constants.FORM_DATE)
                             Util.showDateDialogEnableBetweenMinMax(
                                 fragment.activity, etValue,
                                 minDate, maxDate
@@ -169,6 +172,23 @@ class MultiTextAdapter(
                     Util.showTimeDialogTwelveHourFormat(fragment.context, etValue)
                 }
             }
+
+            etValue.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    //TODO
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    //TODO
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    //todo save value on hashmap/jsonObject
+                    valuesJsonObject.addProperty(item.name,etValue.text.toString())
+                    //todo call listener from here in fragment and save these value in another hashmap their
+                }
+
+            })
         }
 
     }

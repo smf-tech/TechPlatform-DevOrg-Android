@@ -1,7 +1,6 @@
 package com.octopusbjsindia.view.fragments.formComponents
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.JsonObject
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
-import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.adapter.MultiTextAdapter
 
@@ -22,6 +21,21 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     private lateinit var multiTextAdapter: MultiTextAdapter
     private lateinit var element: Elements
     private var isFirstpage = false
+
+    private val valueHashMap = HashMap<String, String>()  //
+    private val valuesJsonObject = JsonObject()  //to store answers
+
+    /** form answers submitting format
+     *{
+    "question1":[{
+    "item1":"value1"
+    },{
+    "item2":"value2"
+    },{
+    "item3":"value3"
+    }]
+    }
+     **/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +51,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         element = arguments?.getSerializable("Element") as Elements
         isFirstpage = arguments?.getBoolean("isFirstpage") ?: false
         val tvQuestion = view.findViewById<TextView>(R.id.tv_question)
-        rvMultiText = view.findViewById(R.id.rv_checkbox)
+        rvMultiText = view.findViewById(R.id.rv_multitext)
 
         tvQuestion.text = element.title?.localeValue
 
@@ -61,7 +75,11 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.bt_next -> {
-                //todo check for isRequired and answersHashMap has value for any one question
+                //todo check for isRequired and answersHashMap has value for any one question else get value from edittext and save in hashmap
+
+                for (i in 0 until rvMultiText.childCount) {
+
+                }
 
             }
         }
