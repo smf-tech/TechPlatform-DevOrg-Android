@@ -31,11 +31,8 @@ class MultiTextAdapter(
 
         //add prefilled data
         if (fragment.tempHashMap.isNotEmpty()) {
-
-        } else {
-
+            answersHashMap.putAll(fragment.tempHashMap)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiTextAdapter.ViewHolder {
@@ -58,7 +55,6 @@ class MultiTextAdapter(
 
         fun bind(item: MultiTextItem) {
 
-
             if (fragment.tempHashMap.isNotEmpty() && fragment.tempHashMap.containsKey(item.name)){
                 etValue.setText(fragment.tempHashMap[item.name])
             }
@@ -73,45 +69,22 @@ class MultiTextAdapter(
                 etValue.isFocusable = true
             }
 
-
-
             when (item.inputType) {
                 "date" -> {
                     etValue.isFocusable = false
-                    etValue.isEnabled = true
-
-                    /*if (!TextUtils.isEmpty((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])) {
-                        etValue.setText((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])
-                    }*/
-
                 }
                 "time" -> {
                     etValue.isFocusable = false
-                    etValue.isEnabled = true
-                    /*if (!TextUtils.isEmpty((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])) {
-                        etAnswer.setText((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])
-                    }*/
                 }
 
                 "number" -> {
-                    etValue.isFocusable = true
-                    etValue.isEnabled = true
                     etValue.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
                     if (item.maxLength != null) {
                         etValue.filters = arrayOf(InputFilter.LengthFilter(item.maxLength))
                     }
-                    /*if (!TextUtils.isEmpty((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])) {
-                        etAnswer.setText((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])
-                    }*/
                 }
                 else -> {
-                    etValue.isFocusable = true
-                    etValue.isEnabled = true
                     etValue.inputType = InputType.TYPE_CLASS_TEXT
-
-                    /*if (!TextUtils.isEmpty((getActivity() as FormDisplayActivity).formAnswersMap[element.name])) {
-                        etAnswer.setText((getActivity() as FormDisplayActivity).formAnswersMap[element.name])
-                    }*/
                 }
             }
 
@@ -122,7 +95,8 @@ class MultiTextAdapter(
             etValue.setOnClickListener {
                 if (item.inputType.equals("date", ignoreCase = true)) {
                     Util.hideKeyboard(etValue)
-                    if (item.minDate != null || item.maxDate != null) {
+                    Util.showAllDateDialog(fragment.context, etValue)
+                   /* if (item.minDate != null || item.maxDate != null) {
                         if (item.minDate != null && item.maxDate != null) {
                             val minDate =
                                 Util.getDateFromTimestamp(item.minDate, Constants.FORM_DATE)
@@ -145,7 +119,8 @@ class MultiTextAdapter(
                                 Util.getDateFromTimestamp(item.maxDate, Constants.FORM_DATE)
                             Util.showDateDialogEnableBeforeMax(fragment.activity, etValue, maxDate)
                         }
-                    } else if (item.pastAllowedDays != null || item.futureAllowedDays != null) {
+                    }
+                    else if (item.pastAllowedDays != null || item.futureAllowedDays != null) {
                         if (item.pastAllowedDays != null && item.futureAllowedDays != null) {
                             val pastAllowedDate = Util.getPastFutureDateStringFromToday(
                                 -item.pastAllowedDays!!,
@@ -180,9 +155,10 @@ class MultiTextAdapter(
                                 futureAllowedDate
                             )
                         }
-                    } else {
-                        Util.showAllDateDialog(fragment.context, etValue)
                     }
+                    else {
+                        Util.showAllDateDialog(fragment.context, etValue)
+                    }*/
                 }
                 else if (item.inputType.equals("time", ignoreCase = true)) {
                     Util.hideKeyboard(etValue)
@@ -205,12 +181,13 @@ class MultiTextAdapter(
 
             })
 
-            etValue.setOnEditorActionListener { v, actionId, _ ->
+          /*  etValue.setOnEditorActionListener { v, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Util.hideKeyboard(v)
                     true
                 } else false
-            }
+            }*/
+
         }
 
     }

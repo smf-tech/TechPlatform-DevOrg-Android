@@ -10,10 +10,10 @@ data class MultiTextItem(
     val placeHolder: String? = null,
     val requiredErrorText: String? = null,
     val title: String,
-    val minDate: Long? = null,
+    /*val minDate: Long? = null,
     val maxDate: Long? = null,
     @SerializedName("minDays")
     var pastAllowedDays: Int? = null,
     @SerializedName("maxDays")
-    val futureAllowedDays: Int? = null
+    val futureAllowedDays: Int? = null*/
 )
