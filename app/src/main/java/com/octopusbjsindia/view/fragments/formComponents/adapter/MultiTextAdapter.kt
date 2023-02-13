@@ -1,16 +1,13 @@
 package com.octopusbjsindia.view.fragments.formComponents.adapter
 
-import android.text.Editable
-import android.text.InputFilter
-import android.text.InputType
-import android.text.TextWatcher
+import android.text.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
-import com.google.gson.JsonObject
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
 import com.octopusbjsindia.models.forms.MultiTextItem
@@ -18,6 +15,7 @@ import com.octopusbjsindia.utility.Constants
 import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.MultiTextFragment
+import java.util.*
 
 class MultiTextAdapter(
     private val fragment: MultiTextFragment,
@@ -25,10 +23,18 @@ class MultiTextAdapter(
 ) : RecyclerView.Adapter<MultiTextAdapter.ViewHolder>() {
 
     private val dataList: List<MultiTextItem> = element.items
-    private val valuesJsonObject = JsonObject()  //to store answers
+    val answersHashMap = HashMap<String,String>()
 
     init {
-        //todo add prefill data in @valuesJsonObject
+        //todo add prefill data in @answersHashMap
+        //add prefilled data
+
+        //add prefilled data
+        if (fragment.tempHashMap.isNotEmpty()) {
+
+        } else {
+
+        }
 
     }
 
@@ -52,6 +58,11 @@ class MultiTextAdapter(
 
         fun bind(item: MultiTextItem) {
 
+
+            if (fragment.tempHashMap.isNotEmpty() && fragment.tempHashMap.containsKey(item.name)){
+                etValue.setText(fragment.tempHashMap[item.name])
+            }
+
             txtTitle.text = item.title
 
             if (!(fragment.activity as FormDisplayActivity).isEditable) {
@@ -62,20 +73,19 @@ class MultiTextAdapter(
                 etValue.isFocusable = true
             }
 
+
+
             when (item.inputType) {
                 "date" -> {
-                    //todo disable cursor visibility and open date picker on click
-
                     etValue.isFocusable = false
                     etValue.isEnabled = true
 
-                    /* if (!TextUtils.isEmpty((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])) {
-                         etValue.setText((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])
-                     }*/
+                    /*if (!TextUtils.isEmpty((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])) {
+                        etValue.setText((fragment.activity as FormDisplayActivity).formAnswersMap[element.name])
+                    }*/
+
                 }
                 "time" -> {
-                    //TODO disable cursor visibility and open time picker on click
-
                     etValue.isFocusable = false
                     etValue.isEnabled = true
                     /*if (!TextUtils.isEmpty((getActivity() as FormDisplayActivity).formAnswersMap[element.getName()])) {
@@ -95,7 +105,6 @@ class MultiTextAdapter(
                     }*/
                 }
                 else -> {
-                    //todo if input type is null -> "text"
                     etValue.isFocusable = true
                     etValue.isEnabled = true
                     etValue.inputType = InputType.TYPE_CLASS_TEXT
@@ -112,10 +121,13 @@ class MultiTextAdapter(
 
             etValue.setOnClickListener {
                 if (item.inputType.equals("date", ignoreCase = true)) {
+                    Util.hideKeyboard(etValue)
                     if (item.minDate != null || item.maxDate != null) {
                         if (item.minDate != null && item.maxDate != null) {
-                            val minDate = Util.getDateFromTimestamp(item.minDate, Constants.FORM_DATE)
-                            val maxDate = Util.getDateFromTimestamp(item.maxDate, Constants.FORM_DATE)
+                            val minDate =
+                                Util.getDateFromTimestamp(item.minDate, Constants.FORM_DATE)
+                            val maxDate =
+                                Util.getDateFromTimestamp(item.maxDate, Constants.FORM_DATE)
                             Util.showDateDialogEnableBetweenMinMax(
                                 fragment.activity, etValue,
                                 minDate, maxDate
@@ -171,7 +183,9 @@ class MultiTextAdapter(
                     } else {
                         Util.showAllDateDialog(fragment.context, etValue)
                     }
-                } else {
+                }
+                else if (item.inputType.equals("time", ignoreCase = true)) {
+                    Util.hideKeyboard(etValue)
                     Util.showTimeDialogTwelveHourFormat(fragment.context, etValue)
                 }
             }
@@ -186,13 +200,17 @@ class MultiTextAdapter(
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    //todo save value on hashmap/jsonObject
-                    valuesJsonObject.addProperty(item.name,etValue.text.toString())
-                    //todo call listener from here in fragment and save these value in another hashmap their
-                    fragment.receiveAnswerJson(valuesJsonObject)
+                    answersHashMap.put(item.name, etValue.text.toString())
                 }
 
             })
+
+            etValue.setOnEditorActionListener { v, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Util.hideKeyboard(v)
+                    true
+                } else false
+            }
         }
 
     }
