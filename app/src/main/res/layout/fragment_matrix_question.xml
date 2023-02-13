@@ -53,8 +53,7 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_weight="1"
-                android:text="@string/previous"
-                android:textColor="@color/medium_grey" />
+                android:text="@string/previous" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"

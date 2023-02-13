@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginTop="10dp"
-
+            android:layout_marginTop="16dp"
             android:textColor="@color/black"
             android:textStyle="normal"
             android:fontFamily="@font/opensans_regular"
@@ -66,7 +65,7 @@
                 <!--/>-->
 
             <com.google.android.material.button.MaterialButton
-                style="@style/AppStyleBorderButton"
+                style="@style/AppStylePrimaryButton"
                 android:layout_width="wrap_content"
                 android:text="Submit"
                 android:layout_weight="1"

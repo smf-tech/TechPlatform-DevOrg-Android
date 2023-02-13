@@ -34,6 +34,7 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
 import com.soundcloud.android.crop.Crop;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -226,22 +227,27 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(), this);
+                //Crop.of(finalUri, finalUri).start(getContext(), this);
+                Util.openCropActivityFreeCropWithFragment(getActivity(),this, finalUri, finalUri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+        }
+        else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 try {
                     getImageFile();
                     outputUri = data.getData();
                     finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                   // Crop.of(outputUri, finalUri).start(getContext(), this);
+                    Util.openCropActivityFreeCropWithFragment(getActivity(),this, outputUri, finalUri);
+
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        }
+        /*else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 imageView.setImageURI(finalUri);
                 final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
@@ -260,6 +266,28 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
+        }*/
+        else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+                imageView.setImageURI(finalUri);
+                final Uri resultUri = UCrop.getOutput(data);
+                final File imageFile = new File(Objects.requireNonNull(resultUri).getPath());
+                final File compressedImageFile = Util.compressFile(imageFile);
+                isImageSelected = true;
+                if (Util.isConnected(getContext())) {
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        ((FormDisplayActivity) getActivity()).uploadImage(compressedImageFile,
+                                Constants.Image.IMAGE_TYPE_FILE, element.getName());
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
+
     }
 }

@@ -54,6 +54,7 @@ import com.octopusbjsindia.view.fragments.formComponents.CheckboxFragment;
 import com.octopusbjsindia.view.fragments.formComponents.FileQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.LocationFragment;
 import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
+import com.octopusbjsindia.view.fragments.formComponents.MultiTextFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
@@ -338,6 +339,14 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         bundle.putBoolean("isFromApproval", isFromApproval);
                         fileFragment.setArguments(bundle);
                         adapter.addFragment(fileFragment, "Question Title");
+                        break;
+
+                    case Constants.FormsFactory.MULTI_TEXT_TEMPLATE:
+                        Fragment multiTextFragment = new MultiTextFragment();
+                        bundle.putSerializable("Element", element);
+                        bundle.putBoolean("isFirstpage", isFirstpage);
+                        multiTextFragment.setArguments(bundle);
+                        adapter.addFragment(multiTextFragment, "Question multi text");
                         break;
                 }
             }

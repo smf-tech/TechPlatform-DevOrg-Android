@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Elements;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.octopusbjsindia.view.fragments.formComponents.adapter.MatrixQuestionFragmentAdapter;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -114,11 +115,11 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 //set json object and go to next fragment
                 hashMap.put(elements.getName(), String.valueOf(ratingBar.getRating()));
                 Log.d("btn_loadnext", "Clicked-->"+new Gson().toJson(ratingJsonObject));
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goNext(hashMap);
+                ((FormDisplayActivity) requireActivity()).goNext(hashMap);
                 break;
             case R.id.btn_loadprevious:
                 //Go to previous fragment
-                ((FormDisplayActivity) Objects.requireNonNull(getActivity())).goPrevious();
+                ((FormDisplayActivity) requireActivity()).goPrevious();
                 break;
         }
     }

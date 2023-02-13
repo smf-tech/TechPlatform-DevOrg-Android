@@ -71,14 +71,14 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
                 etAnswer.setEnabled(false);
-
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
-        } else if (element.getInputType().equals("date")) {
+        }
+        else if (element.getInputType().equals("date")) {
             view.findViewById(R.id.ti_answer).setVisibility(View.GONE);
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
@@ -93,7 +93,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
-        } else if (element.getInputType().equals("time")) {
+        }
+        else if (element.getInputType().equals("time")) {
             view.findViewById(R.id.ti_answer).setVisibility(View.GONE);
             view.findViewById(R.id.ti_answer_date).setVisibility(View.VISIBLE);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
@@ -108,7 +109,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
-        } else if (element.getInputType().equals("number")) {
+        }
+        else if (element.getInputType().equals("number")) {
             etAnswer = view.findViewById(R.id.et_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
@@ -125,7 +127,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
                 etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
             }
-        } else if (element.getInputType().equals("tel")) {
+        }
+        else if (element.getInputType().equals("tel")) {
             etAnswer = view.findViewById(R.id.et_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
@@ -165,7 +168,8 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
                 }
             }
-        } else {
+        }
+        else {
             etAnswer = view.findViewById(R.id.et_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);

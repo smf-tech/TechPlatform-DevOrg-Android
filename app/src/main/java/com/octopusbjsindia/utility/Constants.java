@@ -237,6 +237,8 @@ public class Constants {
         public static final String RADIO_GROUP_TEMPLATE = "radiogroup";
         public static final String CHECKBOX_TEMPLATE = "checkbox";
         public static final String FILE_TEMPLATE = "file";
+
+        public static final String MULTI_TEXT_TEMPLATE = "multipletext";
         public static final String PANEL = "panel";
         public static final String MATRIX_DYNAMIC = "matrixdynamic";
         public static final String MATRIX_DROPDOWN = "matrixdropdown";

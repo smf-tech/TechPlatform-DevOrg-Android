@@ -3,12 +3,15 @@ package com.octopusbjsindia.matrimonyregistration;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +22,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.Matrimony.MatrimonyMasterRequestModel;
 import com.octopusbjsindia.utility.Constants;
@@ -34,6 +42,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ShowImagesPageRecyclerAdapter;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +50,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.octopusbjsindia.utility.Util.isPhotoPickerAvailable;
 
 public class ProfilePhotosUploadFragment extends Fragment implements View.OnClickListener, ShowImagesPageRecyclerAdapter.OnRequestItemClicked, ShowImagesPageRecyclerAdapter.OnRequestItemRemoval {
     private static final String TAG = ProfilePhotosUploadFragment.class.getName();
@@ -51,6 +61,8 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     private RecyclerView rvBaches;
     private TextView txtNoData;
     //private Profile profile;
+
+    private boolean fixRatioCrop = false;
     private ImageView toolbar_back_action, iv_toolbar_action2;
     private TextView toolbar_title;
     private String uploadImageType = "";
@@ -60,8 +72,10 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     private RelativeLayout pbLayout;
 
     private int sizeBefore = 0;
+    public final static int PICK_PHOTO_CODE = 1046;
     private View fragmentview;
     private Button btn_load_next, btn_loadprevious;
+    private File photoFile;
 
     public static ProfilePhotosUploadFragment newInstance() {
         return new ProfilePhotosUploadFragment();
@@ -156,7 +170,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
 
     @Override
     public void onItemClicked(int pos) {
-        if (datalist.size() < 1) {
+       /* if (datalist.size() < 1) {
             if (pos == 0) {
                 currentSelectedItem = pos;
                 uploadImageType = "Profile";
@@ -176,6 +190,26 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
             } else {
                 onAddImageClick(pos);
             }
+        }*/
+
+        if (datalist.size() < 1) {
+            if (pos == 0) {
+                fixRatioCrop = true;
+                currentSelectedItem = pos;
+                uploadImageType = "Profile";
+                if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                    launchPhotoPicker();
+                }
+            } else {
+                Util.showToast(getActivity(), "Upload first profile Image.");
+            }
+        } else {
+            fixRatioCrop = pos == 0;
+            currentSelectedItem = pos;
+            uploadImageType = "Profile";
+            if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+                launchPhotoPicker();
+            }
         }
     }
 
@@ -183,7 +217,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+    /*    if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
@@ -215,8 +249,58 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
                 }
 
             }
+        }*/
+
+
+        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            if (resultCode == RESULT_OK) {
+                Uri photoUri = data.getData();
+                if (fixRatioCrop) {
+                    Util.openCropActivityFixCrop5_5_6(getActivity(), this, photoUri,
+                            Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+                } else {
+                    Util.openCropActivityFreeCropWithFragment(getActivity(), this, photoUri,
+                            Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+                }
+            } else { // Result was a failure
+                Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+            }
         }
 
+        //ucrop
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+                final Uri resultUri = UCrop.getOutput(data);
+
+                if (Util.isConnected(getActivity())) {
+                    if (Util.isValidImageSize(new File(resultUri.getPath()))) {
+                        //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
+
+                        //presenter.uploadProfileImage(new File(resultUri.getPath()), Constants.Image.IMAGE_TYPE_PROFILE, uploadImageType);
+                        ((RegistrationActivity) getActivity()).presenter.uploadProfileImage(
+                                new File(resultUri.getPath()), Constants.Image.IMAGE_TYPE_PROFILE,
+                                uploadImageType);
+
+                        if (Constants.Image.IMAGE_TYPE_PROFILE.equalsIgnoreCase(uploadImageType)) {
+                            //img_user_profle.setImageURI(finalUri);
+                        } else if (Constants.Image.IMAGE_TYPE_ADHARCARD.equalsIgnoreCase(uploadImageType)) {
+                            //img_adhar.setImageURI(finalUri);
+                        }
+                        if (Constants.Image.IMAGE_TYPE_EDUCATION.equalsIgnoreCase(uploadImageType)) {
+                            //img_education_cert.setImageURI(finalUri);
+                        }
+
+                    } else {
+                        Util.showToast(getActivity(), getString(R.string.msg_big_image));
+                    }
+                } else {
+                    Util.showToast(getActivity(), getResources().getString(R.string.msg_no_network));
+                }
+            }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        }
 
     }
 
@@ -229,6 +313,43 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
                     "Yes", "No");
         }
     }*/
+
+    public void launchPhotoPicker() {
+        if (isPhotoPickerAvailable()) {
+            pickVisualMediaActivityResultLauncher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        } else {
+            onPickPhoto();
+        }
+    }
+
+    public void onPickPhoto() {
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    ActivityResultLauncher<PickVisualMediaRequest> pickVisualMediaActivityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                if (uri != null) {
+                    Log.d("PhotoPicker", "Selected URI: " + uri);
+                    if (fixRatioCrop) {
+                        Util.openCropActivityFixCrop5_5_6(getActivity(), this, uri,
+                                Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+                    } else {
+                        Util.openCropActivityFreeCropWithFragment(getActivity(), this, uri,
+                                Uri.fromFile(new File(requireContext().getCacheDir(), System.currentTimeMillis() + ".jpg")));
+                    }
+                } else {
+                    Log.d("PhotoPicker", "No media selected");
+                }
+            });
+
 
     private void onAddImageClick(int position) {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
@@ -268,6 +389,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         }
     }
 
+/*
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.title_choose_picture));
@@ -293,6 +415,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
 
         dialog.show();
     }
+*/
 
 
     public void showProgressBar() {
@@ -327,7 +450,8 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
     public void showMessage(String requestID, String message, int i) {
     }
 
-    public void saveMasterData(List<MatrimonyMasterRequestModel.DataList.Master_data> master_data) {
+    public void saveMasterData
+            (List<MatrimonyMasterRequestModel.DataList.Master_data> master_data) {
     }
 
     public void profileCreatedSuccessfully(String response) {
@@ -350,8 +474,9 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
         }
     }
 
-    public void showDialog(Context context, String dialogTitle, String message, String btn1String, String
-            btn2String) {
+    public void showDialog(Context context, String dialogTitle, String message, String
+            btn1String, String
+                                   btn2String) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(context));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_alert_dialog);

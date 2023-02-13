@@ -46,11 +46,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_dialog"
-                    style="@style/AppStyleBorderButton"
+                    style="@style/AppStylePrimaryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_40dp"
                     android:layout_margin="@dimen/dimen_05dp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/white"
                     android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton

@@ -1,8 +1,7 @@
-package com.octopusbjsindia.view.fragments.formComponents;
+package com.octopusbjsindia.view.fragments.formComponents.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,12 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.forms.Choice;
 import com.octopusbjsindia.models.forms.Column;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
+import com.octopusbjsindia.view.fragments.formComponents.MatrixQuestionFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MatrixQuestionColoumnAdapter extends

@@ -34,30 +34,27 @@
     </ScrollView>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dimen_05dp"
+        android:paddingVertical="@dimen/dimen_05dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
         <Button
             android:id="@+id/bt_previous"
-            style="@style/AppStyleBorderButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_marginHorizontal="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="@string/previous" />
 
         <Button
             android:id="@+id/bt_next"
-            style="@style/AppStyleBorderButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
+            android:layout_marginHorizontal="@dimen/dimen_10dp"
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>

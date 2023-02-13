@@ -80,7 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="10dp"
             android:orientation="vertical">
 
             <include
@@ -105,7 +104,7 @@
             <ImageView
                 android:layout_width="@dimen/dimen_300dp"
                 android:layout_height="@dimen/dimen_25dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="2dp"
                 android:src="@drawable/ic_active5" />
@@ -114,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_below="@+id/profile_toolbar"
                 android:id="@+id/rvLandingPageView"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_marginTop="12dp"
                 android:layout_height="match_parent" />
 
 
@@ -185,31 +184,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-
-            android:gravity="center"
-
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadprevious"
                 style="@style/AppStyleBorderButton"
-                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:text="Previous"
-                android:textColor="@color/light_grey" />
+                android:text="Previous" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"
-                style="@style/AppStyleBorderButton"
-                android:layout_gravity="center"
+                style="@style/AppStylePrimaryButton"
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:text="Submit" />
         </LinearLayout>

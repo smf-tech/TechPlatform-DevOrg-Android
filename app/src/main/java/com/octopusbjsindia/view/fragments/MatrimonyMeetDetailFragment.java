@@ -328,7 +328,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             view.findViewById(R.id.tv_reg_free).setVisibility(View.VISIBLE);
         } else {
             tvRegAmt.setVisibility(View.VISIBLE);
-            tvRegAmt.setText(String.valueOf(meetData.getRegAmount()));
+            tvRegAmt.setText("₹ "+String.valueOf(meetData.getRegAmount()));
             view.findViewById(R.id.tv_reg_free).setVisibility(View.GONE);
         }
 

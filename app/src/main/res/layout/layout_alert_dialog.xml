@@ -40,7 +40,7 @@
                     android:layout_margin="@dimen/dimen_20dp"
                     android:fontFamily="@font/opensans_semibold"
                     android:gravity="center"
-                    android:textColor="@color/tsp_black"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="@dimen/text_size_14"
                     android:visibility="gone" />
 
@@ -55,11 +55,10 @@
 
                     <Button
                         android:id="@+id/btn_dialog"
-                        style="@style/AppStyleBorderButton"
+                        style="@style/AppStylePrimaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dimen_05dp"
-                        android:textColor="@color/colorPrimary"
                         android:visibility="gone" />
 
                     <Button

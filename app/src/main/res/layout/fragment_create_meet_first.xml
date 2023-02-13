@@ -44,6 +44,7 @@
                         android:adjustViewBounds="true"
                         android:background="@drawable/edittext_border"
                         android:padding="2dp"
+                        android:visibility="gone"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_img" />
 
@@ -52,6 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_05dp"
                         android:gravity="center_horizontal"
+                        android:visibility="gone"
                         android:text="Add meet banner" />
 
                     <!--Title-->
@@ -183,13 +185,14 @@
                         android:layout_marginStart="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_15dp"
                         android:layout_marginEnd="@dimen/dimen_10dp"
+                        app:endIconDrawable="@drawable/ic_today_24"
+                        app:endIconMode="custom"
                         app:hintTextAppearance="@style/TextInputLayoutHint">
 
                         <EditText
                             android:id="@+id/edt_meet_date"
                             style="@style/RegistrationEditTextLayout"
                             android:clickable="false"
-                            android:drawableEnd="@drawable/ic_cal_event"
                             android:focusable="false"
                             android:hint="@string/meet_date"
                             android:inputType="date"
@@ -216,13 +219,14 @@
                             android:layout_marginStart="@dimen/dimen_10dp"
                             android:layout_marginEnd="@dimen/dimen_10dp"
                             android:layout_weight="5"
+                            app:endIconDrawable="@drawable/ic_time_24"
+                            app:endIconMode="custom"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
                             <EditText
                                 android:id="@+id/edt_start_time"
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
                                 android:hint="@string/task_start_time"
                                 android:inputType="time"
@@ -239,13 +243,14 @@
                             android:layout_marginStart="@dimen/dimen_10dp"
                             android:layout_marginEnd="@dimen/dimen_10dp"
                             android:layout_weight="5"
+                            app:endIconDrawable="@drawable/ic_time_24"
+                            app:endIconMode="custom"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
                             <EditText
                                 android:id="@+id/edt_end_time"
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_clock"
                                 android:focusable="false"
                                 android:hint="@string/task_end_time"
                                 android:inputType="time"
@@ -280,13 +285,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dimen_10dp"
                             android:layout_weight="5"
+                            app:endIconDrawable="@drawable/ic_calendar_today_24"
+                            app:endIconMode="custom"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
                             <EditText
                                 android:id="@+id/edt_meet_reg_date"
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_cal_event"
                                 android:focusable="false"
                                 android:hint="@string/task_start_date"
                                 android:inputType="date"
@@ -303,13 +309,14 @@
                             android:layout_marginStart="@dimen/dimen_10dp"
                             android:layout_marginEnd="@dimen/dimen_10dp"
                             android:layout_weight="5"
+                            app:endIconDrawable="@drawable/ic_calendar_today_24"
+                            app:endIconMode="custom"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
                             <EditText
                                 android:id="@+id/edt_meet_reg_end_date"
                                 style="@style/RegistrationEditTextLayout"
                                 android:clickable="false"
-                                android:drawableEnd="@drawable/ic_clock"
                                 android:focusable="false"
                                 android:hint="@string/task_end_date"
                                 android:inputType="time"
