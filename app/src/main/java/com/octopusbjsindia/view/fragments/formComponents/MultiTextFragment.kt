@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments.formComponents
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.octopusbjsindia.R
 import com.octopusbjsindia.models.forms.Elements
 import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.adapter.MultiTextAdapter
+import org.json.JSONException
+import java.lang.reflect.Type
 
 class MultiTextFragment : Fragment(), View.OnClickListener {
 
@@ -24,8 +29,9 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     private lateinit var element: Elements
     private var isFirstpage = false
 
-    private val valueHashMap = HashMap<String, String>()  //
-    private var valuesJsonObject = JsonObject()  //to store answers
+    private val valueJsonArray = JsonArray()
+    var valueHashMap = HashMap<String, String>()  //
+    var tempHashMap = HashMap<String, String>()
 
     /** form answers submitting format
      *{
@@ -68,10 +74,41 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         if (isFirstpage) {
             view.findViewById<View>(R.id.bt_previous).visibility = View.GONE
         }
+
+        if (!TextUtils.isEmpty((activity as FormDisplayActivity).formAnswersMap[element.name])) {
+            val str = (activity as FormDisplayActivity).formAnswersMap[element.name]
+            try {
+                str?.let {
+                    jsonToMap(it)
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
+
     }
 
-    fun receiveAnswerJson(receivedJsonObjectString: JsonObject) {
-        valuesJsonObject = receivedJsonObjectString
+
+    private fun jsonToMap(str: String?) {
+        tempHashMap.clear()
+       /* tempHashMap.putAll(
+            g.fromJson<Map<out String, HashMap<String,String>>>(str, object :
+                    TypeToken<HashMap<String, String>> {}.type
+            )
+        )
+        rowMap =
+            java.util.HashMap<String, java.util.HashMap<String, java.util.HashMap<String, String>>>()
+        rowMap.clear()
+        rowMap.putAll(tempHashMap.get(elements.getName()))*/
+
+       //var arrayList = ArrayList<JsonObject>()
+        var jsonArray = JsonArray()
+       // arrayList = Gson().fromJson(str, object : TypeToken<ArrayList<JsonObject>>() {}.type )
+       jsonArray = Gson().fromJson(str, object : TypeToken<JsonArray>() {}.type )
+        tempHashMap = Gson().fromJson(str, object : TypeToken<HashMap<String, String>>() {}.type)
+       val a =0
+
+
     }
 
 
@@ -83,12 +120,21 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.bt_next -> {
-                //todo check for isRequired and answersHashMap has value for any one question else get value from edittext and save in hashmap
                 Util.hideKeyboard(v)
-                if (valuesJsonObject.size() > 0) {
-                    valueHashMap.put(element.name, Gson().toJson(valuesJsonObject))
+
+                if (multiTextAdapter.answersHashMap.isNotEmpty()) {
+                    for (i in multiTextAdapter.answersHashMap) {
+                        val jsonObject = JsonObject()
+                        jsonObject.addProperty(i.key, i.value)
+                        valueJsonArray.add(jsonObject)
+                    }
+                    val gson = Gson()
+                    valueHashMap.put(element.name, gson.toJson(valueJsonArray))
+                }
+
+                if (valueHashMap.size > 0) {
                     (requireActivity() as FormDisplayActivity).goNext(valueHashMap)
-                }else{
+                } else {
                     if (element.isRequired) {
                         if (element.requiredErrorText != null) {
                             Util.showToast(element.requiredErrorText.localeValue, this)
