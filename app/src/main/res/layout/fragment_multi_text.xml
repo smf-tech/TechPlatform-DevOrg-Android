@@ -17,7 +17,11 @@
             android:id="@+id/tv_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_16dp"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginStart="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
             android:fontFamily="@font/opensans_semibold"
             android:textSize="@dimen/text_size_16" />
 
@@ -27,6 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_question"
             android:layout_centerVertical="true"
+            android:paddingBottom="64dp"
+            android:scrollbars="vertical"
+            android:clipToPadding="false"
              />
 
     </RelativeLayout>
@@ -38,6 +45,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:paddingVertical="@dimen/dimen_05dp"
+        android:background="@color/white"
         android:weightSum="2">
 
         <Button

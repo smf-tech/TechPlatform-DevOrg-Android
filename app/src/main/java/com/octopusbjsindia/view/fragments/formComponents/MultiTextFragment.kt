@@ -78,12 +78,13 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bt_previous -> {
+                Util.hideKeyboard(v)
                 (activity as FormDisplayActivity).goPrevious()
             }
 
             R.id.bt_next -> {
                 //todo check for isRequired and answersHashMap has value for any one question else get value from edittext and save in hashmap
-
+                Util.hideKeyboard(v)
                 if (valuesJsonObject.size() > 0) {
                     valueHashMap.put(element.name, Gson().toJson(valuesJsonObject))
                     (requireActivity() as FormDisplayActivity).goNext(valueHashMap)

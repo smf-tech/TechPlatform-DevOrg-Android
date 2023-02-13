@@ -28,7 +28,7 @@ class MultiTextAdapter(
     private val valuesJsonObject = JsonObject()  //to store answers
 
     init {
-        //todo add prefill data
+        //todo add prefill data in @valuesJsonObject
 
     }
 

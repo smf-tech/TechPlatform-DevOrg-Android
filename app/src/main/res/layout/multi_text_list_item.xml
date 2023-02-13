@@ -13,14 +13,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Question title text"
-        android:textAppearance="?android:textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/textinputstyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginVertical="4dp"
+        app:hintTextAppearance="@style/TextInputLayoutHint"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_q_title">
@@ -29,6 +32,7 @@
             android:id="@+id/et_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enter your answer here" />
+            android:longClickable="false" />
     </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
