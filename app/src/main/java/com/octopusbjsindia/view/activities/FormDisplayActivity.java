@@ -61,6 +61,7 @@ import com.octopusbjsindia.view.fragments.formComponents.MultiTextFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RadioButtonFragment;
 import com.octopusbjsindia.view.fragments.formComponents.RatingQuestionFragment;
 import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
+import com.octopusbjsindia.widgets.NonSwipeableViewPager;
 
 import org.json.JSONException;
 
@@ -76,7 +77,7 @@ import java.util.UUID;
 public class FormDisplayActivity extends BaseActivity implements APIDataListener {
 
     private FormData formData;
-    private ViewPager vpFormElements;
+    private NonSwipeableViewPager vpFormElements;
     private ViewPagerAdapter adapter;
     private List<Elements> formDataArrayList = new ArrayList<Elements>();
     private FormDisplayActivityPresenter presenter;
