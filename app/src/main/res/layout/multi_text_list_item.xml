@@ -13,11 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Question title text"
+        android:fontFamily="@font/opensans_regular"
         android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/il_value"
         style="@style/textinputstyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,7 +34,8 @@
             android:id="@+id/et_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:longClickable="false" />
+            android:maxHeight="150dp"
+            android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

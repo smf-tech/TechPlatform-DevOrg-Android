@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -14,72 +14,84 @@
         android:layout_width="match_parent"
         android:id="@+id/text_title"
         android:visibility="visible"
-        android:layout_margin="@dimen/dimen_05dp"
         android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@color/color_primary_level3"
+        android:textColor="?android:textColorPrimary"
         android:fontFamily="@font/opensans_semibold"
         android:textSize="@dimen/text_size_16"
         android:text="matrix_question fragment" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:numStars="5"
+                android:stepSize="1" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/txt_min_text"
-                android:text="Minimun is 1 Star"
-                android:layout_above="@+id/ratingBar"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/dimen_50dp"
-                android:layout_height="wrap_content"/>
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="1"
-            android:layout_centerInParent="true"
-            android:rating="5"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/txt_max_text"
-                android:text="Minimun is all Stars"
+                android:layout_width="match_parent"
+                android:id="@+id/txt_description"
+                tools:text="desciption note"
                 android:layout_marginTop="@dimen/dimen_50dp"
-                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="24dp"
+                android:textColor="?android:textColorPrimary"
                 android:layout_below="@+id/ratingBar"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center"
-            android:paddingVertical="@dimen/dimen_05dp"
-            android:orientation="horizontal">
+            android:background="@color/white"
+            android:paddingBottom="2dp">
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?dividerHorizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadprevious"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/dimen_10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:text="@string/previous"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_loadnext"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_loadnext"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/dimen_10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:text="@string/next"
-                />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn_loadprevious"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

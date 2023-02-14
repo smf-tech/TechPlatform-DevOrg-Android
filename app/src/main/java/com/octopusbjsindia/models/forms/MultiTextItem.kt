@@ -1,6 +1,6 @@
 package com.octopusbjsindia.models.forms
 
-import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class MultiTextItem(
@@ -16,4 +16,4 @@ data class MultiTextItem(
     var pastAllowedDays: Int? = null,
     @SerializedName("maxDays")
     val futureAllowedDays: Int? = null*/
-)
+) : Serializable

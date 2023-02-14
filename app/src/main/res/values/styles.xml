@@ -52,7 +52,7 @@
 
     <style name="textinputstyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">@dimen/text_size_14</item>
-
+        <item name="android:fontFamily">@font/opensans</item>
     </style>
 
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">

@@ -86,7 +86,6 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             view.findViewById<View>(R.id.bt_previous).visibility = View.GONE
         }
 
-
     }
 
 
@@ -126,7 +125,8 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
 
                 if (valueHashMap.size > 0) {
                     (requireActivity() as FormDisplayActivity).goNext(valueHashMap)
-                } else {
+                }
+                else {
                     if (element.isRequired) {
                         if (element.requiredErrorText != null) {
                             Util.showToast(element.requiredErrorText.localeValue, this)

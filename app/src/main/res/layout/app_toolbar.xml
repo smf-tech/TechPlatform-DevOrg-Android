@@ -18,9 +18,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="@dimen/dimen_10dp"
+                android:padding="8dp"
+                android:clickable="true"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_marginStart="8dp"
+                app:tint="@color/white"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_back_white" />
+                android:src="@drawable/ic_arrow_back_24" />
 
             <TextView
                 android:id="@+id/toolbar_title"

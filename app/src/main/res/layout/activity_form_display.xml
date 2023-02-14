@@ -15,17 +15,12 @@
         android:textSize="@dimen/text_size_14"
         android:fontFamily="@font/opensans_semibold"
         android:textColor="@color/black"
-        android:padding="@dimen/dimen_10dp"
+        android:padding="12dp"
+        android:background="@color/color_primary_level2"
         android:gravity="center" />
-    <View
-        android:id="@+id/line"
-        android:layout_below="@+id/tv_form_title"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lighter_grey"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
-        android:layout_below="@+id/line"
+        android:layout_below="@+id/tv_form_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -35,7 +35,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
     private View view;
     private Elements elements;
     private RatingBar ratingBar;
-    private TextView txt_min_text,txt_max_text;
+    private TextView txt_description;
     private JsonObject ratingJsonObject  = new JsonObject();
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_rating_question, container, false);
         text_title = view.findViewById(R.id.text_title);
-        txt_min_text = view.findViewById(R.id.txt_min_text);
-        txt_max_text = view.findViewById(R.id.txt_max_text);
+        txt_description = view.findViewById(R.id.txt_description);
         Button btn_loadnext = view.findViewById(R.id.btn_loadnext);
         Button btn_loadprevious = view.findViewById(R.id.btn_loadprevious);
         rv_matrix_question = view.findViewById(R.id.rv_matrix_question);
@@ -69,8 +68,9 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 }
                 ratingBar.setStepSize(1);
 
-                txt_min_text.setText(elements.getMinRateDescription().getDe());
-                txt_max_text.setText(elements.getMaxRateDescription().getDe());
+                if (elements.getDescription() != null){
+                    txt_description.setText(elements.getDescription());
+                }
                 ratingJsonObject = new JsonObject();
                 ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());
             }

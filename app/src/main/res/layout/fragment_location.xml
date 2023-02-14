@@ -10,18 +10,21 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dimen_60dp">
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/dimen_60dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_question"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_10dp"
+                android:padding="12dp"
+                android:background="@color/color_primary_level3"
+                android:textColor="?android:textColorPrimary"
                 android:fontFamily="@font/opensans_semibold"
                 android:textSize="@dimen/text_size_16"
                 android:text="@string/select_locations" />
@@ -32,10 +35,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+               android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -53,10 +56,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -74,10 +77,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -95,10 +98,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -116,10 +119,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -137,10 +140,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -158,10 +161,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -179,10 +182,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -197,31 +200,57 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingVertical="@dimen/dimen_05dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:background="@color/white"
+        android:paddingBottom="2dp">
 
-        <Button
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?dividerHorizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_previous"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/dimen_10dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:text="@string/previous" />
+            android:text="@string/previous"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bt_next"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_next"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/dimen_10dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:text="@string/next" />
-    </LinearLayout>
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bt_previous"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <RelativeLayout
         android:id="@+id/progress_bar"
