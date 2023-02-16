@@ -40,8 +40,10 @@
                 tools:text="desciption note"
                 android:layout_marginTop="@dimen/dimen_50dp"
                 android:layout_marginHorizontal="24dp"
+                android:fontFamily="@font/opensans"
                 android:textColor="?android:textColorPrimary"
-                android:layout_below="@+id/ratingBar"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
