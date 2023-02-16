@@ -8,14 +8,15 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="@dimen/dimen_05dp"
         android:id="@+id/layout_title"
+        android:background="@color/color_primary_level3"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="center"
+            android:paddingVertical="8dp"
             android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
@@ -30,15 +31,20 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginStart="-5dp"
-            android:drawablePadding="@dimen/dimen_05dp"
+            android:drawablePadding="8dp"
             android:drawableStart="@drawable/ic_user_male"
             android:layout_height="match_parent"/>
         </LinearLayout>
+        <View
+            android:layout_width="@dimen/dimen_01dp"
+            android:layout_height="match_parent"
+            android:background="?dividerVertical"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"
+        android:paddingVertical="8dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
@@ -53,7 +59,7 @@
             android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="left"
-            android:drawablePadding="@dimen/dimen_05dp"
+            android:drawablePadding="8dp"
             android:drawableStart="@drawable/ic_user_female"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -67,15 +73,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/rvLandingPageView"
-        android:layout_margin="@dimen/dimen_05dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
         android:gravity="center"
         android:layout_weight="1"
         android:layout_height="match_parent"/>
 
+        <View
+            android:layout_width="@dimen/dimen_01dp"
+            android:layout_height="match_parent"
+            android:background="?dividerVertical"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/rvfemalebatchView"
-            android:layout_margin="@dimen/dimen_05dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_height="match_parent"/>

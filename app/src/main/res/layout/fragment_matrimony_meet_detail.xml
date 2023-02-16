@@ -169,7 +169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="16dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -448,8 +448,20 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
+                                tools:text="@tools:sample/lorem/random"
                                 android:fontFamily="@font/opensans_regular"
                                 android:textColor="?android:textColorPrimary" />
+
+                            <TextView
+                                android:id="@+id/see_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Show more"
+                                android:clickable="true"
+                                android:background="?selectableItemBackground"
+                                android:layout_gravity="end"
+                                android:textColor="@color/colorPrimary"/>
+
                             <!--Marital status-->
                             <TextView
                                 android:layout_width="wrap_content"

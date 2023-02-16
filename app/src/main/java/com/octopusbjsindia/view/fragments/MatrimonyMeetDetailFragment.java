@@ -21,12 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +66,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private MatrimonyMeet meetData;
     private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue,
             tvMeetWebLink, tvRegAmt, tvRegPeriod, tvBadgesInfo, btnViewProfiles, btnRegisterProfile,
-            tvPaymentInfo, tvMinMaxAge, tvEducation, tvMaritalStatus, tvNote,tv_referallink_label,tv_referallink;
+            tvPaymentInfo, tvMinMaxAge, tvEducation,seeMore, tvMaritalStatus, tvNote,tv_referallink_label,tv_referallink;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<SubordinateData> contactsList = new ArrayList<>();
@@ -142,6 +142,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         tvPaymentInfo = view.findViewById(R.id.tvPaymentInfo);
         tvMinMaxAge = view.findViewById(R.id.tvMinMaxAge);
         tvEducation = view.findViewById(R.id.tvEducation);
+        seeMore = view.findViewById(R.id.see_more);
         tvMaritalStatus = view.findViewById(R.id.tvMaritalStatus);
         tvNote = view.findViewById(R.id.tvNote);
 
@@ -226,14 +227,14 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
 
     @Override
     public void onFailureListener(String requestID, String message) {
-        ScrollView svMatrimonyFragment = view.findViewById(R.id.sv_matrimony_fragment);
+        NestedScrollView svMatrimonyFragment = view.findViewById(R.id.sv_matrimony_fragment);
         svMatrimonyFragment.setVisibility(View.GONE);
 //        showResponse(getResources().getString(R.string.msg_something_went_wrong));
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
-        ScrollView svMatrimonyFragment = view.findViewById(R.id.sv_matrimony_fragment);
+        NestedScrollView svMatrimonyFragment = view.findViewById(R.id.sv_matrimony_fragment);
         svMatrimonyFragment.setVisibility(View.GONE);
 //        showResponse(getResources().getString(R.string.msg_something_went_wrong));
     }
@@ -346,8 +347,19 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvMinMaxAge.setText(meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
             if (meetData.getMeetCriteria().getQualificationCriteria() != null && meetData.getMeetCriteria().getQualificationCriteria().size() > 0) {
                 tvEducation.setText( TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
+
+                tvEducation.post(() -> {
+                    if (tvEducation.getLineCount() > 4) {
+                        seeMore.setVisibility(View.VISIBLE);
+                        tvEducation.setMaxLines(4);
+                    } else {
+                        seeMore.setVisibility(View.GONE);
+                    }
+                });
+
             } else {
                 tvEducation.setVisibility(View.GONE);
+                seeMore.setVisibility(View.GONE);
             }
             if (meetData.getMeetCriteria().getMaritalCriteria() != null && meetData.getMeetCriteria().getMaritalCriteria().size() > 0) {
                 tvMaritalStatus.setText(TextUtils.join(",", meetData.getMeetCriteria().getMaritalCriteria()));
@@ -385,6 +397,17 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         rvMeetAnalytics.setLayoutManager(mLayoutManagerLeave);
         rvMeetAnalytics.setAdapter(meetAnalyticsAdapter);
         meetContactsListAdapter.notifyDataSetChanged();
+
+        seeMore.setOnClickListener(v -> {
+            if (seeMore.getText().toString().equalsIgnoreCase("Show more")) {
+                tvEducation.setMaxLines(Integer.MAX_VALUE);//your TextView
+                seeMore.setText("Show less");
+            } else {
+                tvEducation.setMaxLines(4);//your TextView
+                seeMore.setText("Show more");
+            }
+        });
+
     }
 
     @Override
