@@ -53,7 +53,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     @NonNull
     @Override
     public FeedsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_feed2,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_each_feed,
                 parent, false);
         return new FeedsAdapter.ViewHolder(v);
     }
@@ -108,7 +108,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivUserProfilePic, ivFeedPic, ivLike, ivDelete;
+        ImageView ivUserProfilePic, ivFeedPic, ivDelete;
         TextView tvUserName, tvTime, tvTitle, tvDescription, tvCommentCount, tvShareCount, tvLikeCount,
                 tvExternalUrl, seeMore;
         RelativeLayout lyMain;
@@ -117,7 +117,6 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             super(itemView);
             ivUserProfilePic = itemView.findViewById(R.id.iv_user_profile_pic);
             ivFeedPic = itemView.findViewById(R.id.iv_feed_pic);
-            ivLike = itemView.findViewById(R.id.iv_like);
             ivDelete = itemView.findViewById(R.id.iv_delete);
             tvUserName = itemView.findViewById(R.id.tv_user_name);
             tvTime = itemView.findViewById(R.id.tv_time);
