@@ -142,11 +142,13 @@ public class MatrimonyProfileListFragment extends Fragment implements View.OnCli
                     }
 
                 }
-                String approvalType = intent.getStringExtra("approvalType");
-                userProfileListsFiltered.get(position).setIsApproved(approvalType);
-                userProfileListsFiltered.get(position).setUserMeetStatus(approvalType);
-                boolean setVerified = intent.getBooleanExtra("setVerified", false);
-                userProfileListsFiltered.get(position).getMatrimonial_profile().setVerified(setVerified);
+                if (userProfileListsFiltered.size() > position) {
+                    String approvalType = intent.getStringExtra("approvalType");
+                    userProfileListsFiltered.get(position).setIsApproved(approvalType);
+                    userProfileListsFiltered.get(position).setUserMeetStatus(approvalType);
+                    boolean setVerified = intent.getBooleanExtra("setVerified", false);
+                    userProfileListsFiltered.get(position).getMatrimonial_profile().setVerified(setVerified);
+                }
                 matrimonyProfileListRecyclerAdapter.notifyDataSetChanged();
 
             }
