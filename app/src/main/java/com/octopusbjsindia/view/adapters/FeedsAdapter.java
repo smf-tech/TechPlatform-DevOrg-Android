@@ -69,11 +69,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
                     .into(holder.ivUserProfilePic);
         }
         if (feedList.get(position).getMediaUrl() != null && feedList.get(position).getMediaUrl().size() > 0) {
-            holder.ivFeedPic.setVisibility(View.VISIBLE);
+
+            //holder.ivFeedPic.layout(0, 0, 0, 0);
             Glide.with(mContext)
                     .load(feedList.get(position).getMediaUrl().get(0))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.ivFeedPic);
+            holder.ivFeedPic.setVisibility(View.VISIBLE);
         } else {
             holder.ivFeedPic.setVisibility(View.GONE);
         }
@@ -111,7 +113,6 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
         ImageView ivUserProfilePic, ivFeedPic, ivDelete;
         TextView tvUserName, tvTime, tvTitle, tvDescription, tvCommentCount, tvShareCount, tvLikeCount,
                 tvExternalUrl, seeMore;
-        RelativeLayout lyMain;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,13 +126,13 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
             tvCommentCount = itemView.findViewById(R.id.tv_comment_count);
             tvShareCount = itemView.findViewById(R.id.tv_share_count);
             tvLikeCount = itemView.findViewById(R.id.tv_like_count);
-            lyMain = itemView.findViewById(R.id.ly_main);
             seeMore = itemView.findViewById(R.id.see_more);
             tvExternalUrl = itemView.findViewById(R.id.tv_external_url);
 
             if (isDeleteFeed) {
                 ivDelete.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else {
                 ivDelete.setVisibility(View.GONE);
             }
 
@@ -170,7 +171,7 @@ public class FeedsAdapter extends RecyclerView.Adapter<FeedsAdapter.ViewHolder> 
                 public void onClick(View view) {
                     mContext.setPosition(getAdapterPosition());
                     if(Util.isConnected(mContext.getActivity())){
-//                        presentr.setShare(feedList.get(getAdapterPosition()).getId());
+                        //presentr.setShare(feedList.get(getAdapterPosition()).getId());
                     } else {
                         Util.showToast(mContext.getResources().getString(R.string.msg_no_network),mContext.getActivity());
                     }

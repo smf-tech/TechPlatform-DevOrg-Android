@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
     private final int[] tabIcons = {
             R.drawable.ic_home_24,
-            R.drawable.ic_newspaper_24,
-            R.drawable.ic_globe_24
+            R.drawable.ic_newspaper_24
+          /*  R.drawable.ic_globe_24*/
     };
     private Home homeData;
     private Context context;
@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
             ViewPagerAdapter adapter = new ViewPagerAdapter(childFragmentManager);
             adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
             adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
-            adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
+            //adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
             viewPager.setAdapter(adapter);
         }
     }
@@ -213,7 +213,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                             Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
-            viewPager.setOffscreenPageLimit(3);
+            viewPager.setOffscreenPageLimit(2);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
@@ -221,7 +221,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
             tabLayout.getTabAt(0).setIcon(tabIcons[0]);
             tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+           // tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -235,9 +235,9 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                             ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.STORIES);
                             break;
 
-                        case 2:
+                       /* case 2:
                             ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONNECT);
-                            break;
+                            break;*/
 
                     }
                 }
