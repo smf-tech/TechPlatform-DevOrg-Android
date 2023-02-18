@@ -18,6 +18,7 @@ public class OtpActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Transparant);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
         initView();

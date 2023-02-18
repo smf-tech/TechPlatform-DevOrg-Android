@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     tools:context=".view.activities.SplashActivity">
 
@@ -11,68 +12,74 @@
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/img_logo"
-        android:layout_marginTop="@dimen/dimen_150dp"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/ic_splash" />
+        android:src="@drawable/bjs_logo"
+        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:id="@+id/img_logo"-->
-<!--        android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--        android:layout_marginBottom="@dimen/dimen_100dp"-->
-<!--        android:contentDescription="@string/content_description"-->
-<!--        android:src="@drawable/ic_splash" />-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:scaleType="centerCrop"
+        app:lottie_colorFilter="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/powered"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="splash_loading.json"
+        app:lottie_loop="true" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+
+    <TextView
+        android:id="@+id/powered"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_above="@+id/powered_by_logo"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:text="Powered By"
+        android:textSize="12sp"
+        android:textColor="?android:textColorSecondary"
+        app:layout_constraintBottom_toTopOf="@+id/powered_by_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.octopusbjsindia.view.customs.TextViewSemiBold
-            android:id="@+id/powered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/powered_by_logo"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:text="Powered By"
-            android:textSize="@dimen/text_size_14" />
+    <ImageView
+        android:id="@+id/powered_by_logo"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/tv_app_version"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:src="@drawable/ic_splash"
+        app:layout_constraintBottom_toTopOf="@+id/tv_app_version"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/powered_by_logo"
-            android:layout_width="@dimen/dimen_100dp"
-            android:layout_height="@dimen/dimen_50dp"
-            android:layout_above="@+id/tv_app_version"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:src="@drawable/ic_splash" />
+    <TextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/opensans_regular"
+        android:gravity="center_horizontal"
+        android:text="v2.3 (Staging debug)"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/tv_app_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:text="Version"
-            android:textSize="@dimen/text_size_10" />
-
-        <TextView
-            android:id="@+id/by"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/dimen_05dp"
-            android:layout_toRightOf="@+id/powered"
-            android:gravity="center_horizontal"
-            android:text="Octopus"
-            android:textSize="@dimen/text_size_20"
-            android:textStyle="bold"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

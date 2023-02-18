@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +33,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
@@ -39,6 +43,8 @@ import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.models.user.User;
 import com.octopusbjsindia.presenter.OtpFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.OtpKeyEvent;
+import com.octopusbjsindia.utility.OtpTextWatcher;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
@@ -59,15 +65,16 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private BroadcastReceiver mIntentReceiver;
 
     private CountDownTimer timer;
-    private Button mBtnVerify;
+    private MaterialButton mBtnVerify;
     private TextView tvOtpTimer;
-    private TextView tvOtpMessage;
-    private TextView tvResendOtp;
-    private EditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
+    private TextView tvOtpMessage,txtError;
+    private MaterialButton tvResendOtp;
+    private TextInputEditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
+    private LinearLayout lytResendTimer;
 
-    private StringBuilder sb;
+    //private StringBuilder sb;
     private String mMobileNumber;
 
     private final String TAG = NewOtpFragment.class.getSimpleName();
@@ -98,9 +105,28 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         mOtp4 = view.findViewById(R.id.otp_4);
         mOtp5 = view.findViewById(R.id.otp_5);
         mOtp6 = view.findViewById(R.id.otp_6);
+        txtError = view.findViewById(R.id.txt_error_msg);
+        lytResendTimer = view.findViewById(R.id.lyt_resend_otp);
 
-        sb = new StringBuilder();
-        mOtp1.addTextChangedListener(new TextWatcher() {
+       // sb = new StringBuilder();
+
+
+        mOtp1.requestFocus();
+        mOtp1.addTextChangedListener(new OtpTextWatcher(mOtp2, mOtp1, txtError));
+        mOtp2.addTextChangedListener(new OtpTextWatcher(mOtp3, mOtp1, txtError));
+        mOtp3.addTextChangedListener(new OtpTextWatcher(mOtp4, mOtp2, txtError));
+        mOtp4.addTextChangedListener(new OtpTextWatcher(mOtp5, mOtp3, txtError));
+        mOtp5.addTextChangedListener(new OtpTextWatcher(mOtp6, mOtp4, txtError));
+        mOtp6.addTextChangedListener(new OtpTextWatcher(mOtp6, mOtp5, txtError));
+
+        mOtp1.setOnKeyListener(new OtpKeyEvent(mOtp1, null));
+        mOtp2.setOnKeyListener(new OtpKeyEvent(mOtp2, mOtp1));
+        mOtp3.setOnKeyListener(new OtpKeyEvent(mOtp3, mOtp2));
+        mOtp4.setOnKeyListener(new OtpKeyEvent(mOtp4, mOtp3));
+        mOtp5.setOnKeyListener(new OtpKeyEvent(mOtp5, mOtp4));
+        mOtp6.setOnKeyListener(new OtpKeyEvent(mOtp6, mOtp5));
+
+   /*     mOtp1.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (sb.length() == 0 & mOtp1.length() == 1) {
@@ -124,7 +150,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             }
         });
-
         mOtp2.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -150,7 +175,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             }
         });
-
         mOtp3.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -176,7 +200,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             }
         });
-
         mOtp4.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -202,7 +225,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             }
         });
-
         mOtp5.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -228,7 +250,6 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             }
         });
-
         mOtp6.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -251,14 +272,15 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                     mOtp5.requestFocus();
                 }
             }
-        });
+        });*/
 
         tvResendOtp = view.findViewById(R.id.tv_resend_otp);
         tvResendOtp.setVisibility(View.GONE);
         tvResendOtp.setOnClickListener(this);
 
         tvOtpTimer = view.findViewById(R.id.tv_otp_timer);
-        tvOtpTimer.setVisibility(View.VISIBLE);
+        lytResendTimer.setVisibility(View.VISIBLE);
+        //tvOtpTimer.setVisibility(View.VISIBLE);
 
         mBtnVerify = view.findViewById(R.id.btn_verify);
         mBtnVerify.setOnClickListener(this);
@@ -280,16 +302,33 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                if (Util.isConnected(getActivity())) {
+                Util.hideKeyboardWithView(requireContext(),view);
+                if (mOtp1.getText().toString().trim().equals("") || mOtp2.getText().toString().trim().equals("") ||
+                        mOtp3.getText().toString().trim().equals("") || mOtp4.getText().toString().trim().equals("") ||
+                        mOtp5.getText().toString().trim().equals("") || mOtp6.getText().toString().trim().equals("")) {
+                    txtError.setVisibility(View.VISIBLE);
+                    txtError.setTextColor(getResources().getColor(R.color.red));
+                    txtError.setText("Please enter 6 digit OTP");
+                }else {
+                    txtError.setVisibility(View.GONE);
+                    if (Util.isConnected(getActivity())) {
+                        verifyUser();
+                    } else {
+                        Util.showToast(getString(R.string.msg_no_network), this);
+                    }
+                }
+
+               /* if (Util.isConnected(getActivity())) {
                     verifyUser();
                 } else {
                     Util.showToast(getString(R.string.msg_no_network), this);
-                }
+                }*/
 
                 break;
 
             case R.id.tv_resend_otp:
-                clearOtp();
+                //clearOtp();
+                clearAllEditText();
                 startOtpTimer();
                 enableSmsReceiver();
 
@@ -301,6 +340,22 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 break;
         }
     }
+
+    private void clearAllEditText() {
+        mOtp1.setText(null);
+        mOtp2.setText(null);
+        mOtp3.setText(null);
+        mOtp4.setText(null);
+        mOtp5.setText(null);
+        mOtp6.setText(null);
+        mOtp1.requestFocus();
+        mOtp2.clearFocus();
+        mOtp3.clearFocus();
+        mOtp4.clearFocus();
+        mOtp5.clearFocus();
+        mOtp6.clearFocus();
+    }
+
 
     private void verifyUser() {
         String otp = getOtp();
@@ -322,6 +377,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     }
 
     //get device id for token api
+    @SuppressLint("HardwareIds")
     private void getDeviceId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
@@ -360,7 +416,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             tvResendOtp.setVisibility(View.VISIBLE);
 
             tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
-            tvOtpTimer.setVisibility(View.GONE);
+           // tvOtpTimer.setVisibility(View.GONE);
+            lytResendTimer.setVisibility(View.GONE);
 
             // Verify user automatically once OTP received
             verifyUser();
@@ -370,7 +427,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         }
     }
 
-    private void clearOtp() {
+   /* private void clearOtp() {
         mOtp1.setText("");
         mOtp2.setText("");
         mOtp3.setText("");
@@ -382,7 +439,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (sb != null) {
             sb = new StringBuilder();
         }
-    }
+    }*/
 
     private String getOtp() {
         return mOtp1.getText().toString() +
@@ -401,8 +458,9 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         if (timer != null) {
             timer.cancel();
 
+            lytResendTimer.setVisibility(View.VISIBLE);
             showProgressBar();
-            tvOtpTimer.setVisibility(View.VISIBLE);
+            //tvOtpTimer.setVisibility(View.VISIBLE);
             tvResendOtp.setVisibility(View.GONE);
             timer = null;
         }
@@ -412,8 +470,11 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             @Override
             public void onTick(long l) {
                 if (getActivity() != null) {
-                    currentSec = l / 1000;
-                    tvOtpTimer.setText(getString(R.string.otp_timeout_text, "" + currentSec));
+                    /*currentSec = l / 1000;
+                    tvOtpTimer.setText(getString(R.string.otp_timeout_text, "" + currentSec));*/
+                    int remaining = (int) (l / 1000);
+                    String countDown = String.format("%01d:%02d", remaining / 60, remaining % 60);
+                    tvOtpTimer.setText(countDown);
                     if (isSmsPermissionNotDenied) {
                         tvOtpMessage.setText(R.string.msg_waiting_for_otp_text);
                     }
@@ -425,6 +486,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 if (getActivity() != null) {
                     if (isSmsPermissionNotDenied) {
                         tvResendOtp.setVisibility(View.VISIBLE);
+                        lytResendTimer.setVisibility(View.GONE);
                         tvOtpMessage.setText(R.string.msg_otp_verification_timeout);
                     }
                     resetTimer();
@@ -435,7 +497,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     private void resetTimer() {
         tvOtpTimer.setText("");
-        tvOtpTimer.setVisibility(View.GONE);
+       // tvOtpTimer.setVisibility(View.GONE);
+        lytResendTimer.setVisibility(View.GONE);
         deRegisterOtpSmsReceiver();
         currentSec = 0;
     }

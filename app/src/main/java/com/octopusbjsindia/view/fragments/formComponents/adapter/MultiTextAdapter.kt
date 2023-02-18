@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Scroller
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -46,9 +47,15 @@ class MultiTextAdapter(
     override fun onBindViewHolder(holder: MultiTextAdapter.ViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.bind(currentItem)
+
     }
 
     override fun getItemCount(): Int = dataList.size
+
+    //need this method because the adapter is replacing the values of views
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val txtTitle: TextView = itemView.findViewById(R.id.txt_q_title)
@@ -67,7 +74,8 @@ class MultiTextAdapter(
             if (!(fragment.activity as FormDisplayActivity).isEditable) {
                 etValue.isFocusable = false
                 etValue.isEnabled = false
-            } else {
+            }
+            else {
                 etValue.isEnabled = true
                 etValue.isFocusable = true
             }
@@ -75,20 +83,34 @@ class MultiTextAdapter(
             when (item.inputType) {
                 "date" -> {
                     etValue.isFocusable = false
+                    ilValue.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    ilValue.setEndIconActivated(true)
+                    ilValue.endIconDrawable = ResourcesCompat.getDrawable(fragment.resources,
+                        R.drawable.ic_arrow_drop_down_24,null)
                 }
                 "time" -> {
                     etValue.isFocusable = false
+                    ilValue.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    ilValue.setEndIconActivated(true)
+                    ilValue.endIconDrawable = ResourcesCompat.getDrawable(fragment.resources,
+                        R.drawable.ic_arrow_drop_down_24,null)
                 }
-
                 "number" -> {
-                    etValue.inputType =
-                        InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+                   /* etValue.isFocusable = true
+                    ilValue.endIconMode = TextInputLayout.END_ICON_NONE
+                    ilValue.setEndIconActivated(false)
+                    ilValue.endIconDrawable = null*/
+                    etValue.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
                     if (item.maxLength != null) {
                         etValue.filters = arrayOf(InputFilter.LengthFilter(item.maxLength))
                         ilValue.helperText = "Max length is ${item.maxLength}"
                     }
                 }
                 else -> {
+                   /* ilValue.setEndIconActivated(false)
+                    ilValue.endIconMode = TextInputLayout.END_ICON_NONE
+                    ilValue.endIconDrawable = null
+                    etValue.isFocusable = true*/
                     etValue.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
                 }
             }
@@ -167,8 +189,12 @@ class MultiTextAdapter(
                 } else if (item.inputType.equals("time", ignoreCase = true)) {
                     Util.hideKeyboard(etValue)
                     Util.showTimeDialogTwelveHourFormat(fragment.context, etValue)
+                }else {
+                    etValue.requestFocus()
+                    etValue.isFocusable = true
                 }
             }
+
 
             etValue.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
@@ -188,7 +214,7 @@ class MultiTextAdapter(
                   } else false
               }*/
 
-            etValue.setOnTouchListener { v, event ->
+           /* etValue.setOnTouchListener { v, event ->
                 if (etValue.hasFocus()) {
                     v.parent.requestDisallowInterceptTouchEvent(true)
                     when (event.action and MotionEvent.ACTION_MASK) {
@@ -198,7 +224,7 @@ class MultiTextAdapter(
                     }
                 }
                 false
-            }
+            }*/
         }
 
     }

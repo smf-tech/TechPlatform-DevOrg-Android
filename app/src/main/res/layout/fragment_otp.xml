@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/dimen_15dp"
@@ -14,77 +15,86 @@
         <LinearLayout
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dimen_80dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.octopusbjsindia.view.customs.TextViewBold
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_marginBottom="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_semibold"
                 android:text="@string/verification_code"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_16"
-                android:fontFamily="@font/opensans_regular"
-                android:textStyle="bold" />
+                android:textColor="?android:textColorPrimary"
+                android:textSize="24sp" />
 
-            <com.octopusbjsindia.view.customs.TextViewRegular
+            <TextView
                 android:id="@+id/enter_mobile_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24sp"
                 android:layout_marginTop="@dimen/dimen_10dp"
+                android:fontFamily="@font/opensans_regular"
                 android:gravity="center"
                 android:text="@string/please_type_the_verification_code_n_sent_to"
-                android:textSize="@dimen/text_size_14"
-                android:fontFamily="@font/opensans_regular"/>
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/text_size_14" />
 
             <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginTop="36dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_varification_msg">
 
-                <EditText
+
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_1"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@+id/otp_2"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_2"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@+id/otp_3"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_3"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@+id/otp_4"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_4"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@id/btn_verify"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_5"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@id/otp_4"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/otp_6"
-                    style="@style/OtpEditBox"
+                    style="@style/EditTextOTP"
                     android:nextFocusRight="@id/btn_verify"
                     tools:ignore="Autofill,LabelFor,UnusedAttribute" />
             </LinearLayout>
 
-           <!-- <com.google.android.material.button.MaterialButton
+            <!-- <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_verify"
                 style="@style/AppStyleButton"
                 android:padding="@dimen/dimen_05dp"
@@ -97,55 +107,107 @@
                 android:text="@string/verify"
                  />-->
 
+            <TextView
+                android:id="@+id/txt_error_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                tools:text="Incorrect verification code"
+                tools:visibility="gone" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_verify"
-                android:layout_width="fill_parent"
-                style="@style/AppStyleButton"
-                android:padding="@dimen/dimen_05dp"
+                android:layout_width="200dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="54dp"
+                android:fontFamily="@font/opensans_semibold"
                 android:gravity="center_horizontal|center_vertical"
-                android:singleLine="true"
-                android:text="@string/verify"
-                android:textAllCaps="true"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_16" />
+                android:text="Verify"
+                android:textAllCaps="false"
+                app:cornerRadius="32dp" />
+
 
             <TextView
-                android:id="@+id/tv_otp_timer"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:drawableStart="@drawable/ic_alarm_clock"
-                android:drawablePadding="@dimen/dimen_10dp"
-                android:gravity="center_horizontal"
-                android:text="@string/label_time"
-                android:fontFamily="@font/opensans"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_16"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_resend_otp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_15dp"
-                android:background="@drawable/selector_resend_otp"
-                android:text="@string/resend"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/text_size_16"
+                android:layout_gravity="center"
+                android:layout_marginTop="28dp"
                 android:fontFamily="@font/opensans_regular"
-                android:visibility="visible" />
+                android:text="Didn’t receive a code?"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_error_msg" />
+
+            <LinearLayout
+                android:id="@+id/lyt_resend_otp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/textView8"
+                tools:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_regular"
+                    android:text="@string/otp_timeout_text" />
+
+                <TextView
+                    android:id="@+id/tv_otp_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+
+                    android:fontFamily="@font/opensans_regular"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/textView8"
+                    app:layout_constraintStart_toStartOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8"
+                    tools:text="0:59" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_resend_otp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="Resend SMS"
+                android:textAllCaps="false"
+                android:visibility="visible"
+                app:cornerRadius="@dimen/dimen_32dp" />
+
         </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/login_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/layout_main"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_main"
+            tools:visibility="visible">
 
             <ProgressBar
                 android:id="@+id/pb_login"
@@ -156,7 +218,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:indeterminateOnly="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
         </RelativeLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

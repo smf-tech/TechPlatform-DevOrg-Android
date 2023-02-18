@@ -34,7 +34,6 @@
             android:id="@+id/et_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="150dp"
             android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
 

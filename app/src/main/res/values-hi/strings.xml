@@ -32,7 +32,7 @@
     <string name="label_time">पहर</string>
     <string name="resend"> <u>OTP को फिर से भेजें</u></string>
     <!--<string name="check_otp">कृपया OTP जांचें</string>-->
-    <string name="otp_timeout_text">समय आउट %1$s सेकंड</string>
+    <string name="otp_timeout_text">कृपया प्रतीक्षा करें</string>
     <string name="msg_otp_verification_timeout">OTP प्राप्त नहीं कर सका, कृपया OTP फिर से भेजने का प्रयास करें।</string>
     <string name="msg_waiting_for_otp_text">ऑटो-रीड ओटीपी जारी है, कृपया प्रतीक्षा करें ...</string>
     <string name="msg_verify_otp_text">अपना मोबाइल नंबर सत्यापित करने के लिए सत्यापन बटन पर क्लिक करें।</string>

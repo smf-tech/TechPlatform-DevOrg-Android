@@ -51,6 +51,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_multi_text, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

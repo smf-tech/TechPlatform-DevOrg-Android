@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -72,14 +73,14 @@ public class SplashActivity extends AppCompatActivity {
 
         if (getUserObjectFromPref() != null) {
             if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
-                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = new RequestOptions().placeholder(R.drawable.bjs_logo);
                 requestOptions = requestOptions.apply(RequestOptions.noTransformation());
                 Glide.with(this).applyDefaultRequestOptions(requestOptions).load(getUserObjectFromPref().getCurrent_project_logo()).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(img_logo);
             } else {
-                img_logo.setImageResource(R.drawable.ic_splash);
+                img_logo.setImageResource(R.drawable.bjs_logo);
             }
         } else {
-            img_logo.setImageResource(R.drawable.ic_splash);
+            img_logo.setImageResource(R.drawable.bjs_logo);
         }
 
         toOpen = getIntent().getStringExtra("toOpen");
@@ -98,7 +99,10 @@ public class SplashActivity extends AppCompatActivity {
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             tv_powered.setText("Powered By");
-            tv_app_version.setText("Version -" + appVersion);
+            if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")){
+                tv_app_version.setText("v" + appVersion + "  (" + BuildConfig.FLAVOR +
+                        " "+BuildConfig.BUILD_TYPE + ")");
+            }else tv_app_version.setText("v" + appVersion);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
