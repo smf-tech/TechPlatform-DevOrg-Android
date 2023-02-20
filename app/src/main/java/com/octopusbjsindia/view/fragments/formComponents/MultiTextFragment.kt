@@ -92,7 +92,11 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
 
     private fun jsonToMap(str: String?) {
         tempHashMap.clear()
-        arrayList = Gson().fromJson(str, object : TypeToken<ArrayList<JsonObject>>() {}.type)
+        val jsonObj : JsonObject = Gson().fromJson(str, object : TypeToken<JsonObject>() {}.type)
+        //arrayList = Gson().fromJson(str, object : TypeToken<ArrayList<JsonObject>>() {}.type)
+
+        val elementArray = jsonObj.get("AnswerArray")
+        arrayList = Gson().fromJson(elementArray.toString(),object : TypeToken<ArrayList<JsonObject>>() {}.type)
 
         for (i in arrayList) {
             val key: String = i.get("questionKey").asString
@@ -121,7 +125,10 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
                         valueJsonArray.add(jsonObject)
                     }
                     val gson = Gson()
-                    valueHashMap.put(element.name, gson.toJson(valueJsonArray))
+                    val responseJsonObj = JsonObject()
+                    responseJsonObj.addProperty("QuestionType",element.type)
+                    responseJsonObj.add("AnswerArray",valueJsonArray)
+                    valueHashMap.put(element.name, gson.toJson(responseJsonObj))
                 }
 
                 if (valueHashMap.size > 0) {
