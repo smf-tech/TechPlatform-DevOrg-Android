@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_10dp"
             android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_reports"
+            android:src="@drawable/ic_stacked_bar_chart_24"
             android:tint="@color/dark_green"
             android:visibility="gone" />
 

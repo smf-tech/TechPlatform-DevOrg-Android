@@ -151,7 +151,7 @@
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_12</item>
-        <item name="android:textColor">@color/medium_blue</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/opensans</item>
         <item name="android:paddingTop">@dimen/dimen_08dp</item>
         <item name="android:paddingBottom">@dimen/dimen_08dp</item>

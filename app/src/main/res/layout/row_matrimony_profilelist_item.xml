@@ -30,8 +30,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/profileimagetest" />
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:id="@+id/ly_unick_id"

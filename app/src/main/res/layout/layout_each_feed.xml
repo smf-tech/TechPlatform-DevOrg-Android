@@ -63,8 +63,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_user_profile_pic"
-        app:srcCompat="@drawable/profileimagetest" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_user_profile_pic" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

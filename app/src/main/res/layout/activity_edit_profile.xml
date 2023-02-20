@@ -203,7 +203,7 @@
                     android:layout_marginEnd="@dimen/dimen_20dp"
                     android:layout_weight="2"
                     android:contentDescription="@string/content_description"
-                    android:src="@drawable/ic_refresh" />
+                    android:src="@drawable/ic_refresh_24" />
             </LinearLayout>
 
             <!--Address-->

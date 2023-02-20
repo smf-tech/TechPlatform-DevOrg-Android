@@ -64,6 +64,6 @@
         android:contentDescription="@string/content_description"
         android:rotation="90"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_right_arrow_grey"
+        android:src="@drawable/ic_arrow_forward_24"
         android:tint="@color/black" />
 </RelativeLayout>

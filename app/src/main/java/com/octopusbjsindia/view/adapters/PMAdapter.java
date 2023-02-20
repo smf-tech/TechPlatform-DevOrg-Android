@@ -90,7 +90,7 @@ public class PMAdapter extends BaseExpandableListAdapter {
             if (isExpanded) {
                 arrowIndicator.setImageResource(R.drawable.ic_down_arrow_light_blue);
             } else {
-                arrowIndicator.setImageResource(R.drawable.ic_right_arrow_light_blue);
+                arrowIndicator.setImageResource(R.drawable.ic_arrow_forward_24);
             }
 
             String headerTitle = (String) getGroup(groupPosition);

@@ -187,12 +187,12 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             Glide.with(this)
                     .load(meetData.getMeetImageUrl())
                     .into(ivMeetImage);
-        } else {
+        } /*else {
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
             Glide.with(this)
                     .load(R.drawable.matrimony_meet_bg)
                     .into(ivMeetImage);
-        }
+        }*/
         ImageView btnPopupMenu = view.findViewById(R.id.btn_popmenu);
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override

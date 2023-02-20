@@ -63,7 +63,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/content_description"
             android:rotation="90"
-            android:src="@drawable/ic_right_arrow_grey" />
+            android:src="@drawable/ic_arrow_forward_24" />
 
     </LinearLayout>
 

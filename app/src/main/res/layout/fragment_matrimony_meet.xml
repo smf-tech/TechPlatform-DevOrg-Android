@@ -29,8 +29,7 @@
                 android:id="@+id/iv_meet_image"
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/matrimony_meet_bg"/>
+                android:scaleType="fitXY" />
 
              <ImageView
                  android:layout_width="match_parent"
