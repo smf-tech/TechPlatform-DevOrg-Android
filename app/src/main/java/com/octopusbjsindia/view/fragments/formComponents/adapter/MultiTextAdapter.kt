@@ -116,7 +116,7 @@ class MultiTextAdapter(
             }
 
             if (item.placeHolder != null) {
-                etValue.hint = item.placeHolder
+                etValue.hint = item.placeHolder.localeValue
             }
 
             etValue.setOnClickListener {

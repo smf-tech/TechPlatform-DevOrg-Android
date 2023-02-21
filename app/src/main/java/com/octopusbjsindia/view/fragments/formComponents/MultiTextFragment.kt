@@ -127,6 +127,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
                     val gson = Gson()
                     val responseJsonObj = JsonObject()
                     responseJsonObj.addProperty("QuestionType",element.type)
+                    responseJsonObj.addProperty("QuestionTitle",element.title.defaultValue)
                     responseJsonObj.add("AnswerArray",valueJsonArray)
                     valueHashMap.put(element.name, gson.toJson(responseJsonObj))
                 }
