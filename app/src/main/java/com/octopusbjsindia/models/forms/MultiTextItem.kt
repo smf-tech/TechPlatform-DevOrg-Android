@@ -1,5 +1,6 @@
 package com.octopusbjsindia.models.forms
 
+import com.octopusbjsindia.models.LocaleData
 import java.io.Serializable
 
 
@@ -9,7 +10,7 @@ data class MultiTextItem(
     val name: String,
     val placeHolder: String? = null,
     val requiredErrorText: String? = null,
-    val title: String,
+    val title: LocaleData,
     /*val minDate: Long? = null,
     val maxDate: Long? = null,
     @SerializedName("minDays")

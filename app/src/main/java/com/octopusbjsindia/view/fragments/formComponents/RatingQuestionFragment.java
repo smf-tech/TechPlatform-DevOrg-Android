@@ -69,7 +69,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
                 ratingBar.setStepSize(1);
 
                 if (elements.getDescription() != null){
-                    txt_description.setText(elements.getDescription());
+                    txt_description.setText(elements.getDescription().getLocaleValue());
                 }
                 ratingJsonObject = new JsonObject();
                 ratingJsonObject.addProperty(elements.getName(),elements.getRateMax());

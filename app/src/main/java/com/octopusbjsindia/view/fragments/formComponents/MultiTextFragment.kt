@@ -110,12 +110,12 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.bt_previous -> {
-                Util.hideKeyboard(v)
+               // Util.hideKeyboard(v)
                 (activity as FormDisplayActivity).goPrevious()
             }
 
             R.id.bt_next -> {
-                Util.hideKeyboard(v)
+                //Util.hideKeyboard(v)
 
                 if (multiTextAdapter.answersHashMap.isNotEmpty()) {
                     for (i in multiTextAdapter.answersHashMap) {

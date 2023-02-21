@@ -77,14 +77,14 @@ public class SplashActivity extends AppCompatActivity {
 
         if (getUserObjectFromPref() != null) {
             if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
-                requestOptions = new RequestOptions().placeholder(R.drawable.bjs_logo);
+                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
                 requestOptions = requestOptions.apply(RequestOptions.noTransformation());
                 Glide.with(this).applyDefaultRequestOptions(requestOptions).load(getUserObjectFromPref().getCurrent_project_logo()).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(img_logo);
             } else {
-                img_logo.setImageResource(R.drawable.bjs_logo);
+                img_logo.setImageResource(R.drawable.ic_splash);
             }
         } else {
-            img_logo.setImageResource(R.drawable.bjs_logo);
+            img_logo.setImageResource(R.drawable.ic_splash);
         }
 
         toOpen = getIntent().getStringExtra("toOpen");

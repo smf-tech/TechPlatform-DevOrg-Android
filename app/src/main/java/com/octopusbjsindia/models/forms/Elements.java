@@ -31,7 +31,7 @@ public class Elements implements Serializable {
 
     @SerializedName("description")
     @Expose
-    private String description;
+    private LocaleData description;
 
     @SerializedName("defaultValue")
     @Expose
@@ -179,11 +179,11 @@ public class Elements implements Serializable {
         this.choicesByUrlResponsePath = choicesByUrlResponsePath;
     }
 
-    public String getDescription() {
+    public LocaleData getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(LocaleData description) {
         this.description = description;
     }
 

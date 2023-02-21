@@ -69,7 +69,7 @@ class MultiTextAdapter(
                 etValue.setText(fragment.tempHashMap[item.name])
             }
 
-            txtTitle.text = item.title
+            txtTitle.text = item.title.localeValue
 
             if (!(fragment.activity as FormDisplayActivity).isEditable) {
                 etValue.isFocusable = false
