@@ -92,7 +92,7 @@ public class CheckboxFragment extends Fragment implements CompoundButton.OnCheck
             etOther.setFocusable(false);
             etOther.setEnabled(false);
         }
-        tvQuetion.setText(element.getTitle().getLocaleValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue().trim());
 
         // set data logic
         selectedList.clear();

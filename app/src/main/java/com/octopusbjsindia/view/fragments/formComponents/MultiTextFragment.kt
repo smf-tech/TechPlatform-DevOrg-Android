@@ -62,7 +62,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         val tvQuestion = view.findViewById<TextView>(R.id.tv_question)
         rvMultiText = view.findViewById(R.id.rv_multitext)
 
-        tvQuestion.text = element.title?.localeValue
+        tvQuestion.text = element.title?.localeValue?.trim()
 
         if (!TextUtils.isEmpty((activity as FormDisplayActivity).formAnswersMap[element.name])) {
             val str = (activity as FormDisplayActivity).formAnswersMap[element.name]
@@ -117,17 +117,19 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             R.id.bt_next -> {
                 //Util.hideKeyboard(v)
 
-                if (multiTextAdapter.answersHashMap.isNotEmpty()) {
+                if (multiTextAdapter.answersHashMap.isNotEmpty() ) {
                     for (i in multiTextAdapter.answersHashMap) {
                         val jsonObject = JsonObject()
                         jsonObject.addProperty("questionKey", i.key)
                         jsonObject.addProperty("answerKey", i.value)
+                        if (multiTextAdapter.questionHashMap.containsKey(i.key)){
+                            jsonObject.addProperty("questionTitle", multiTextAdapter.questionHashMap[i.key])
+                        }
                         valueJsonArray.add(jsonObject)
                     }
                     val gson = Gson()
                     val responseJsonObj = JsonObject()
                     responseJsonObj.addProperty("QuestionType",element.type)
-                    responseJsonObj.addProperty("QuestionTitle",element.title.defaultValue)
                     responseJsonObj.add("AnswerArray",valueJsonArray)
                     valueHashMap.put(element.name, gson.toJson(responseJsonObj))
                 }

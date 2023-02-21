@@ -35,7 +35,7 @@ public class RadioButtonAdapter extends RecyclerView.Adapter<RadioButtonAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RadioButtonAdapter.ViewHolder holder, int position) {
-        holder.radioButton.setText(list.get(position).getText());
+        holder.radioButton.setText(list.get(position).getText().trim());
         if (list.get(position).isSelected()) {
             holder.radioButton.setChecked(true);
         } else {

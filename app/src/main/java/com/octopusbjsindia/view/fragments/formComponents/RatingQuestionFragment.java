@@ -98,7 +98,7 @@ public class RatingQuestionFragment extends Fragment implements View.OnClickList
 //            }
 //        });
         // set quetion at top
-        text_title.setText(elements.getTitle().getLocaleValue());
+        text_title.setText(elements.getTitle().getLocaleValue().trim());
 
         return view;
     }

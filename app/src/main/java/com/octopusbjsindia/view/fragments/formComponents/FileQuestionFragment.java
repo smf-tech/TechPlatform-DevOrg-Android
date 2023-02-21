@@ -81,7 +81,7 @@ public class FileQuestionFragment extends Fragment implements View.OnClickListen
         if (((FormDisplayActivity) getActivity()).isEditable) {
             imageView.setOnClickListener(this);
         }
-        tvQuetion.setText(element.getTitle().getLocaleValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue().trim());
         isFirstpage = getArguments().getBoolean("isFirstpage");
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);

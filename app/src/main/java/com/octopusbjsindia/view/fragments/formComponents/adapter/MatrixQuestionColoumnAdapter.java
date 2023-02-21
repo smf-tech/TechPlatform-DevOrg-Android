@@ -140,7 +140,7 @@ public class MatrixQuestionColoumnAdapter extends
 
     @Override
     public void onBindViewHolder(ColumnViewHolder holder, int position) {
-        holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue());
+        holder.column_name.setText(columnList.get(position).getTitle().getLocaleValue().trim());
         if (cellType.equalsIgnoreCase("Boolean")) {
             /*if (columnListAnswers.size() > 0 && columnListAnswers.get(position).booleanValue()) {
                 holder.toggleGroup.check(R.id.btn_yes);

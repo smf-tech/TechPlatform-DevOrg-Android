@@ -43,7 +43,7 @@ public class MatrixQuestionFragmentAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(EmployeeViewHolder holder, int position) {
-        holder.row_title.setText(dataList.getRowsList().get(position).getText().getLocaleValue());
+        holder.row_title.setText(dataList.getRowsList().get(position).getText().getLocaleValue().trim());
 
         if (dataList.getCellType() != null && dataList.getCellType().equalsIgnoreCase("Boolean")) {
             matrixQuestionFragmentAdapter = new MatrixQuestionColoumnAdapter(fragment, mContext, dataList.getColumns(),

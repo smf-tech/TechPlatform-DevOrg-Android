@@ -29,6 +29,7 @@ class MultiTextAdapter(
 
     private val dataList: List<MultiTextItem> = element.items
     val answersHashMap = HashMap<String, String>()
+    val questionHashMap = HashMap<String, String>()
 
     init {
         //add prefilled data
@@ -66,10 +67,12 @@ class MultiTextAdapter(
         fun bind(item: MultiTextItem) {
 
             if (fragment.tempHashMap.isNotEmpty() && fragment.tempHashMap.containsKey(item.name)) {
-                etValue.setText(fragment.tempHashMap[item.name])
+                etValue.setText(fragment.tempHashMap[item.name]?.trim())
             }
 
-            txtTitle.text = item.title.localeValue
+            questionHashMap.put(item.name, item.title.defaultValue)
+
+            txtTitle.text = item.title.localeValue.trim()
 
             if (!(fragment.activity as FormDisplayActivity).isEditable) {
                 etValue.isFocusable = false
@@ -116,7 +119,7 @@ class MultiTextAdapter(
             }
 
             if (item.placeHolder != null) {
-                etValue.hint = item.placeHolder.localeValue
+                etValue.hint = item.placeHolder.localeValue.trim()
             }
 
             etValue.setOnClickListener {
@@ -202,7 +205,7 @@ class MultiTextAdapter(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable?) {
-                    answersHashMap.put(item.name, etValue.text.toString())
+                    answersHashMap.put(item.name, etValue.text.toString().trim())
                 }
 
             })

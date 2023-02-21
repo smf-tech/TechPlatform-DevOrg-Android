@@ -77,9 +77,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 etAnswer.setEnabled(false);
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim()));
             }
         }
         else if (element.getInputType().equals("date")) {
@@ -93,9 +93,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
             etAnswer = view.findViewById(R.id.et_answer_date);
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim()));
             }
         }
         else if (element.getInputType().equals("time")) {
@@ -109,9 +109,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
             etAnswer = view.findViewById(R.id.et_answer_date);
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim()));
             }
         }
         else if (element.getInputType().equals("number")) {
@@ -126,12 +126,12 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 tiAnswer.setHelperText("Max length is "+ element.getMaxLength());
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             etAnswer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             et_answer_name = view.findViewById(R.id.et_answer_name);
             et_answer_name.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim()));
             }
         }
         else if (element.getInputType().equals("tel")) {
@@ -141,7 +141,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 view.findViewById(R.id.et_answer_date).setEnabled(false);
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             etAnswer.setInputType(InputType.TYPE_CLASS_PHONE);
             et_answer_name = view.findViewById(R.id.et_answer_name);
             et_answer_name.setVisibility(View.VISIBLE);
@@ -164,10 +164,10 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             });
 
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "phone"));
             }
-            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
-                et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"))) {
+                et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"));
                 if (!((FormDisplayActivity) getActivity()).isEditable) {
                     et_answer_name.setFocusable(false);
                     et_answer_name.setEnabled(false);
@@ -182,19 +182,19 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 etAnswer.setEnabled(false);
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
-                etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
+                etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
             if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()));
+                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim()));
             }
         }
 
-        tvQuetion.setText(element.getTitle().getLocaleValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue().trim());
 
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
-            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"));
+            etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "phone"));
         }
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
-            et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"));
+            et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"));
         }
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
@@ -474,7 +474,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         MvUserNameResponseModel mvUserNameResponseModel = gson.fromJson(response, MvUserNameResponseModel.class);
         if (mvUserNameResponseModel != null) {
             if (!TextUtils.isEmpty(mvUserNameResponseModel.getMvUserNameResponses().get(0).getName())) {
-                et_answer_name.setText(mvUserNameResponseModel.getMvUserNameResponses().get(0).getName());
+                et_answer_name.setText(mvUserNameResponseModel.getMvUserNameResponses().get(0).getName().trim());
                 et_answer_name.setEnabled(false);
             } else {
                 et_answer_name.setEnabled(true);

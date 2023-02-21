@@ -26,13 +26,13 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
 
                     if (Constants.App.LANGUAGE_DEFAULT.equals(fieldName)) {
                         //move to next token
-                        String en = (reader.nextString());
+                        String en = (reader.nextString().trim());
                         localeData = new LocaleData(en);
                     }
 
                     if (Constants.App.LANGUAGE_HINDI.equals(fieldName)) {
                         //move to next token
-                        String hi = (reader.nextString());
+                        String hi = (reader.nextString().trim());
                         if (localeData != null) {
                             localeData.setHi(hi);
                         }
@@ -40,7 +40,7 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
 
                     if (Constants.App.LANGUAGE_MARATHI.equals(fieldName)) {
                         //move to next token
-                        String mr = (reader.nextString());
+                        String mr = (reader.nextString().trim());
                         if (localeData != null) {
                             localeData.setMr(mr);
                         }
@@ -50,7 +50,7 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
             reader.endObject();
         } catch (IllegalStateException jse) {
             // We have to consume JSON document fully.
-            String def = reader.nextString();
+            String def = reader.nextString().trim();
             localeData = new LocaleData(def);
         }
         return localeData;
@@ -61,7 +61,7 @@ public class LocaleDataAdapter extends TypeAdapter<LocaleData> {
         if (localeData == null) {
             writer.value("");
         } else {
-            writer.value(localeData.getLocaleValue());
+            writer.value(localeData.getLocaleValue().trim());
         }
     }
 }
