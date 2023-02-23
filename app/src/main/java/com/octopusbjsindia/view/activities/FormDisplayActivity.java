@@ -12,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -21,13 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
-
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -64,7 +61,6 @@ import com.octopusbjsindia.view.fragments.formComponents.TextFragment;
 import com.octopusbjsindia.widgets.NonSwipeableViewPager;
 
 import org.json.JSONException;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -353,7 +349,6 @@ public class FormDisplayActivity extends BaseActivity implements APIDataListener
                         multiTextFragment.setArguments(bundle);
                         adapter.addFragment(multiTextFragment, "Question multi text");
                         break;
-
                 }
             }
         }
