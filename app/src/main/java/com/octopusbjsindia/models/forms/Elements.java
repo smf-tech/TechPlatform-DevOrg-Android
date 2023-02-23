@@ -28,6 +28,11 @@ public class Elements implements Serializable {
     @SerializedName("title")
     @Expose
     private LocaleData title;
+
+    @SerializedName("description")
+    @Expose
+    private String description;
+
     @SerializedName("defaultValue")
     @Expose
     private String defaultValue;
@@ -172,6 +177,14 @@ public class Elements implements Serializable {
 
     public void setChoicesByUrlResponsePath(String choicesByUrlResponsePath) {
         this.choicesByUrlResponsePath = choicesByUrlResponsePath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getEnableIf() {

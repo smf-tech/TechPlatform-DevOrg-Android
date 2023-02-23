@@ -21,12 +21,12 @@
             <RelativeLayout
                 android:id="@+id/ly_upcoming_meets"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_277dp">
+                android:layout_height="220dp">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/vp_upcoming_meets"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_277dp" />
+                    android:layout_height="220dp" />
 
                 <TextView
                     android:id="@+id/tv_msg"

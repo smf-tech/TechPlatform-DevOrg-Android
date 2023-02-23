@@ -15,18 +15,23 @@ import android.os.Handler;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -72,14 +77,14 @@ public class SplashActivity extends AppCompatActivity {
 
         if (getUserObjectFromPref() != null) {
             if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
-                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = new RequestOptions().placeholder(R.drawable.bjs_logo);
                 requestOptions = requestOptions.apply(RequestOptions.noTransformation());
                 Glide.with(this).applyDefaultRequestOptions(requestOptions).load(getUserObjectFromPref().getCurrent_project_logo()).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(img_logo);
             } else {
-                img_logo.setImageResource(R.drawable.ic_splash);
+                img_logo.setImageResource(R.drawable.bjs_logo);
             }
         } else {
-            img_logo.setImageResource(R.drawable.ic_splash);
+            img_logo.setImageResource(R.drawable.bjs_logo);
         }
 
         toOpen = getIntent().getStringExtra("toOpen");
@@ -98,7 +103,10 @@ public class SplashActivity extends AppCompatActivity {
         try {
             appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             tv_powered.setText("Powered By");
-            tv_app_version.setText("Version -" + appVersion);
+            if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")){
+                tv_app_version.setText("v" + appVersion + "  (" + BuildConfig.FLAVOR +
+                        " "+BuildConfig.BUILD_TYPE + ")");
+            }else tv_app_version.setText("v" + appVersion);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -136,7 +144,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void checkForceUpdate(String requestID, String message, int code) {
-        {
             Log.e("RESPOSEN COFn", "@@@" + message);
             if (!TextUtils.isEmpty(message)) {
 
@@ -176,12 +183,11 @@ public class SplashActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }
     }
 
     public String showForceupdateDialog(final Activity context, int pos) {
 
-        Dialog dialog;
+        /*Dialog dialog;
         Button btnSubmit, btn_cancel;
 
         dialog = new Dialog(context);
@@ -219,6 +225,42 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         });
+        dialog.show();
+        return "";*/
+
+        //MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this,R.style.MaterialAlertDialog_rounded);
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_forceupdate_layout, null);
+        dialog.setView(dialogView);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        MaterialButton btn_cancel =  dialogView.findViewById(R.id.btn_cancel);
+        MaterialButton btnSubmit = dialogView.findViewById(R.id.btn_submit);
+
+        if (pos == 1) {
+            btn_cancel.setVisibility(View.GONE);
+            dialog.setCancelable(false);
+        } else {
+            dialog.setCancelable(true);
+        }
+
+        btn_cancel.setOnClickListener(v -> {
+            dialog.dismiss();
+            GotoNextScreen();
+        });
+
+        btnSubmit.setOnClickListener(v -> {
+            final String appPackageName = getPackageName();
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            }
+            finish();
+        });
+
         dialog.show();
         return "";
     }

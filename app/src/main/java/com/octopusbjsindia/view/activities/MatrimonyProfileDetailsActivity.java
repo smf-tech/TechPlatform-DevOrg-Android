@@ -64,7 +64,7 @@ import me.relex.circleindicator.CircleIndicator;
 @SuppressWarnings("CanBeFinal")
 public class MatrimonyProfileDetailsActivity extends BaseActivity implements View.OnClickListener,
         PopupMenu.OnMenuItemClickListener, APIDataListener, MeetListBottomSheet.MultiSpinnerListener {
-    private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
+   // private static final Integer[] IMAGES = {R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest, R.drawable.profileimagetest};
     //MatrimonyProfileListRecyclerAdapter.OnRequestItemClicked, MatrimonyProfileListRecyclerAdapter.OnApproveRejectClicked {
     private final String PROFILE_ID = "profileId";
     private RequestOptions docRequestOptions;

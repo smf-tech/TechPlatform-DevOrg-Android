@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,17 +13,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
@@ -52,8 +59,10 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     private final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar pbVerifyLogin;
     private RelativeLayout pbVerifyLoginLayout;
-    private PlatformEditTextView etUserMobileNumber;
-//    private EditText etUserMobileNumber;
+
+    private TextInputEditText etMobileNo;
+    private TextInputLayout lytMobileNo;
+    private ScrollView scrollView;
     TextView txtTermService;
     private ImageView img_logo;
     private LoginInfo loginInfo;
@@ -62,6 +71,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Transparant);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         preferences = Platform.getInstance().getSharedPreferences(
@@ -72,35 +82,57 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void initViews() {
+        scrollView = findViewById(R.id.scrollView);
+        etMobileNo = findViewById(R.id.et_mobile_no);
+        lytMobileNo = findViewById(R.id.ly_mobile_no);
+
         pbVerifyLogin = findViewById(R.id.pb_login);
         pbVerifyLoginLayout = findViewById(R.id.login_progress_bar);
-        etUserMobileNumber = findViewById(R.id.edt_mobile_number);
-        etUserMobileNumber.setOnEditorActionListener(this);
+
         txtTermService = findViewById(R.id.txtTermService);
-        img_logo  =findViewById(R.id.img_logo);
+        //img_logo  =findViewById(R.id.img_logo);
         findViewById(R.id.txtTermService).setOnClickListener(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            txtTermService.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
-                    "Terms of Service and Privacy Policy</u></h7></p>", Html.FROM_HTML_MODE_COMPACT));
+            txtTermService.setText(Html.fromHtml("By continuing you agree to the<br><a href=\"http://bjsindia.org/PrivacyPolicy.html\">Terms of Service and Privacy Policy</a>", Html.FROM_HTML_MODE_COMPACT));
         } else {
-            txtTermService.setText(Html.fromHtml("By continuing you agree to the<p><h7><u>" +
-                    "Terms of Service and Privacy Policy</u></h7></p>"));
+            txtTermService.setText(Html.fromHtml("By continuing you agree to the<br><a href=\"http://bjsindia.org/PrivacyPolicy.html\">Terms of Service and Privacy Policy</a>"));
         }
-        TextView label = findViewById(R.id.enter_mobile_label);
-        label.setText(getResources().getString(R.string.msg_enter_mobile));
-        Button loginButton = findViewById(R.id.btn_login);
+
+        Button loginButton = findViewById(R.id.bt_login);
         loginButton.setOnClickListener(this);
-        TextView resendOTP = findViewById(R.id.tv_resend_otp);
-        resendOTP.setOnClickListener(this);
+       /* TextView resendOTP = findViewById(R.id.tv_resend_otp);
+        resendOTP.setOnClickListener(this);*/
         if (Util.isFirstTimeLaunch(true)) {
             showLanguageSelectionDialog();
         }
 
+        etMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        if (getUserObjectFromPref() != null) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                lytMobileNo.setError(null);
+                lytMobileNo.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String number = editable.toString();
+                if (number.length() == 10) {
+                    Util.hideKeyboardWithView(LoginActivity.this, etMobileNo);
+                    lytMobileNo.clearFocus();
+                }
+            }
+        });
+
+
+        /*if (getUserObjectFromPref() != null) {
             if (getUserObjectFromPref().getCurrent_project_logo() != null && !TextUtils.isEmpty(getUserObjectFromPref().getCurrent_project_logo())) {
-                requestOptions = new RequestOptions().placeholder(R.drawable.ic_splash);
+                requestOptions = new RequestOptions().placeholder(R.drawable.login_hero_image);
                 requestOptions = requestOptions.apply(RequestOptions.noTransformation());
                 Glide.with(this)
                         .applyDefaultRequestOptions(requestOptions)
@@ -108,11 +140,11 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .into(img_logo);
             } else {
-                img_logo.setImageResource(R.drawable.ic_splash);
+                img_logo.setImageResource(R.drawable.login_hero_image);
             }
         } else {
-            img_logo.setImageResource(R.drawable.ic_splash);
-        }
+            img_logo.setImageResource(R.drawable.login_hero_image);
+        }*/
 
     }
 
@@ -192,9 +224,9 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private void goToVerifyOtpScreen() {
-        if (etUserMobileNumber != null) {
+        if (etMobileNo != null) {
             loginInfo = new LoginInfo();
-            loginInfo.setMobileNumber(String.valueOf(etUserMobileNumber.getText()).trim());
+            loginInfo.setMobileNumber(String.valueOf(etMobileNo.getText()).trim());
             loginPresenter.getOtp(loginInfo);
         }
     }
@@ -271,6 +303,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         Constants.READ_PHONE_STORAGE);
             } else {
+                @SuppressLint("HardwareIds")
                 String deviceId = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
                 loginInfo.setDeviceId(deviceId);
             }
@@ -283,8 +316,8 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     }
 
     private String getUserMobileNumber() {
-        if (etUserMobileNumber != null) {
-            return String.valueOf(etUserMobileNumber.getText());
+        if (etMobileNo != null) {
+            return String.valueOf(etMobileNo.getText());
         }
         return "";
     }
@@ -292,10 +325,10 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     private boolean isAllInputsValid() {
         boolean isInputValid = true;
         if (TextUtils.isEmpty(getUserMobileNumber())) {
-            Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_empty));
+            Util.setError(etMobileNo, getResources().getString(R.string.msg_mobile_number_is_empty));
             isInputValid = false;
         } else if (getUserMobileNumber().trim().length() < 10) {
-            Util.setError(etUserMobileNumber, getResources().getString(R.string.msg_mobile_number_is_invalid));
+            Util.setError(etMobileNo, getResources().getString(R.string.msg_mobile_number_is_invalid));
             isInputValid = false;
         }
         return isInputValid;
@@ -304,17 +337,30 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_login:
-                if(Util.isConnected(this)) {
+            case R.id.bt_login:
+                /*if(Util.isConnected(this)) {
                     onLoginClick();
                 }else{
                     Util.showToast(getString(R.string.msg_no_network), this);
+                }*/
+
+                if (etMobileNo.getText().toString().equals("")) {
+                    lytMobileNo.setError("Please enter mobile number");
+                } else if (etMobileNo.getText().toString().trim().length() != 10) {
+                    lytMobileNo.setError("Please enter valid mobile number");
+                } else {
+                    if (Util.isConnected(this)) {
+                        Util.hideKeyboardWithView(this, this.getCurrentFocus());
+                        goToVerifyOtpScreen();
+                    } else {
+                        Util.showToast(getString(R.string.msg_no_network), this);
+                    }
                 }
                 break;
 
-            case R.id.tv_resend_otp:
+           /* case R.id.tv_resend_otp:
                 onResendOTPClick();
-                break;
+                break;*/
 
             case R.id.txtTermService:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://13.235.105.204/privacypolicy.html"));
@@ -326,7 +372,7 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE) {
-            Util.hideKeyboard(etUserMobileNumber);
+            Util.hideKeyboard(etMobileNo);
             if (isAllInputsValid()) {
                 goToVerifyOtpScreen();
             }

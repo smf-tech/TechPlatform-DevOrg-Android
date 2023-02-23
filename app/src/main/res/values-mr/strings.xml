@@ -32,7 +32,7 @@
     <string name="label_time">वेळ</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <!--<string name="check_otp">कृपया OTP तपासा</string>-->
-    <string name="otp_timeout_text">उर्वरित सेकंद %1$s</string>
+    <string name="otp_timeout_text">कृपया थांबा</string>
     <string name="msg_otp_verification_timeout"> OTP प्राप्त नहीं कर सका, कृपया OTP फिर से भेजने का प्रयास करें।</string>
     <string name="msg_waiting_for_otp_text">स्वयं-वाचन ओटीपी प्रगतीपथावर आहे, कृपया प्रतीक्षा करा ...</string>
     <string name="msg_verify_otp_text">आपला मोबाइल नंबर सत्यापित करण्यासाठी सत्यापित बटणावर क्लिक करा.</string>

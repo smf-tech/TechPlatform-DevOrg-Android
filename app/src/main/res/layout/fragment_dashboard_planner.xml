@@ -14,15 +14,17 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:paddingVertical="6dp"
+            android:clipToPadding="false">
 
             <!-- Attendance tab -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ly_cv_attendance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
                 android:elevation="2dp"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
@@ -30,18 +32,13 @@
                     android:id="@+id/ly_attendance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_05dp"
-                    android:visibility="gone">
-
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <RelativeLayout
                         android:id="@+id/lin_attendance"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/tv_attendance_title"
@@ -50,6 +47,8 @@
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/opensans"
                             android:text="@string/attendance"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
@@ -60,7 +59,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="16dp"
                             android:gravity="center_vertical"
                             android:text="@string/see_details" />
 
@@ -70,7 +70,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lin_attendance"
-                        android:layout_margin="@dimen/dimen_05dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginHorizontal="12dp"
                         android:background="@drawable/bg_circular_border"
                         android:orientation="vertical">
 
@@ -89,17 +91,16 @@
                                 android:layout_weight="2.5"
                                 android:background="@drawable/bg_circular_rect_pink"
                                 android:padding="@dimen/dimen_05dp"
-                                android:layout_margin="@dimen/dimen_05dp">
+                                android:layout_margin="8dp">
 
                                 <ImageView
                                     android:id="@+id/iv_clock"
-                                    android:layout_width="@dimen/dimen_20dp"
-                                    android:layout_height="@dimen/dimen_20dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:layout_marginTop="5dp"
-                                    android:src="@drawable/clock_shape"
-                                    android:tint="@color/black" />
+                                    android:layout_marginTop="4dp"
+                                    android:src="@drawable/ic_time_24"
+                                    app:tint="@color/black" />
 
                                 <TextView
                                     android:id="@+id/tv_time_label"
@@ -107,7 +108,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/iv_clock"
                                     android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="@dimen/dimen_20dp"
+                                    android:layout_marginTop="16dp"
                                     android:gravity="center"
                                     android:text="@string/total_hours"
                                     android:textColor="@color/dark_grey"
@@ -119,8 +120,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/tv_time_label"
                                     android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="@dimen/dimen_05dp"
-                                    android:layout_marginBottom="@dimen/dimen_05dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginBottom="8dp"
                                     android:gravity="center"
                                     android:text="00:00"
                                     android:textColor="@color/dark_grey"
@@ -130,7 +131,7 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
+                                android:layout_marginEnd="12dp"
                                 android:layout_weight="7.5"
                                 android:layout_gravity="center_vertical"
                                 android:orientation="horizontal"
@@ -138,16 +139,15 @@
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/bt_check_in"
-                                    style="@style/AppStyleButton"
                                     android:layout_width="0dp"
-                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="5dp"
                                     android:layout_weight="1"
                                     android:baselineAligned="false"
                                     android:gravity="center"
                                     android:text="@string/check_in"
                                     android:textAllCaps="false"
+                                    app:cornerRadius="24dp"
                                     android:textColor="@drawable/text_color_on_selection"
                                     android:textSize="@dimen/text_size_10"
                                     android:textStyle="bold"
@@ -155,14 +155,14 @@
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/bt_checkout"
-                                    style="@style/AppStyleButton"
+                                    android:layout_height="wrap_content"
                                     android:layout_width="0dp"
-                                    android:layout_height="@dimen/dimen_50dp"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="5dp"
+                                    android:layout_marginStart="8dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:text="@string/check_out"
+                                    app:cornerRadius="24dp"
                                     android:textAllCaps="false"
                                     android:textColor="@drawable/text_color_on_selection"
                                     android:textSize="@dimen/text_size_10"
@@ -173,31 +173,30 @@
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Event tab -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ly_cv_events"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_cv_attendance"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
                 android:elevation="2dp"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
                     android:id="@+id/ly_events"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_120dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/event_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
                         android:weightSum="10">
 
                         <TextView
@@ -206,6 +205,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="8"
+                            android:layout_marginStart="16dp"
                             android:fontFamily="@font/opensans"
                             android:text="@string/today_events"
                             android:textColor="@color/dark_grey"
@@ -217,7 +217,8 @@
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:text="@string/all_events" />
 
@@ -227,6 +228,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/add_event" />
                     </LinearLayout>
 
@@ -235,12 +238,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/event_header"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginHorizontal="12dp"
                         android:background="@drawable/bg_circular_border"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/tv_no_events_msg"
@@ -259,35 +262,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/event_header"
-                        android:layout_marginStart="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_05dp" />
+                        tools:visibility="gone"/>
 
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Task tab -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ly_cv_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_cv_events"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
                 android:elevation="5dp"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
                 <RelativeLayout
                     android:id="@+id/ly_task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_120dp"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/task_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
                         android:weightSum="10">
 
                         <TextView
@@ -298,6 +299,7 @@
                             android:layout_weight="8"
                             android:fontFamily="@font/opensans"
                             android:text="@string/today_tasks"
+                            android:layout_marginStart="16dp"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_16"
                             android:textStyle="bold" />
@@ -307,7 +309,8 @@
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:text="@string/all_tasks" />
 
@@ -317,6 +320,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/add_task" />
                     </LinearLayout>
 
@@ -325,12 +330,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@+id/task_header"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
                         android:background="@drawable/bg_circular_border"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/tv_no_task_msg"
@@ -361,15 +366,16 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Leaves tab -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ly_cv_leaves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_cv_task"
-                android:layout_margin="@dimen/dimen_05dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
                 android:elevation="2dp"
                 app:cardCornerRadius="@dimen/dimen_10dp">
 
@@ -377,16 +383,13 @@
                     android:id="@+id/ly_leave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_05dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/leaves_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginEnd="@dimen/dimen_10dp"
                         android:weightSum="10">
 
                         <TextView
@@ -394,6 +397,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="8"
+                            android:layout_marginStart="16dp"
+                            android:layout_gravity="center_vertical"
                             android:text="@string/leave_details"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/text_size_16"
@@ -404,7 +409,8 @@
                             style="@style/StyleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dimen_05dp"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:text="@string/link_leave_apply" />
 
@@ -414,6 +420,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginVertical="12dp"
+                            android:layout_marginEnd="16dp"
                             android:text="@string/apply_leave" />
                     </LinearLayout>
 
@@ -421,15 +429,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/leaves_header"
-                        android:layout_margin="@dimen/dimen_10dp"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
                         android:orientation="vertical">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_leave_balance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:layout_marginBottom="@dimen/dimen_10dp"
                             android:orientation="horizontal"
                             android:visibility="gone" />
 
@@ -439,6 +447,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="3"
+                            tools:visibility="visible"
                             android:visibility="gone">
 
                             <TextView
@@ -471,9 +480,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/ly_lebal"
-                            android:layout_marginTop="@dimen/dimen_05dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal"
                             android:weightSum="3"
+                            tools:visibility="visible"
                             android:visibility="gone">
 
                             <RelativeLayout
@@ -586,7 +596,7 @@
 
                     </RelativeLayout>
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </RelativeLayout>
 
     </ScrollView>

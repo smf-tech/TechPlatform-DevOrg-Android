@@ -22,6 +22,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_reports" />
+            android:src="@drawable/ic_stacked_bar_chart_24" />
     </item>
 </layer-list>

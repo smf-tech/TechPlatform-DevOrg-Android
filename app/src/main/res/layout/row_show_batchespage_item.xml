@@ -8,9 +8,9 @@
         android:layout_width="@dimen/dimen_145dp"
         android:layout_height="@dimen/dimen_145dp"
         android:layout_gravity="center_vertical"
-        app:cardBackgroundColor="@color/white"
-        android:backgroundTint="@color/white"
-        android:layout_margin="@dimen/dimen_05dp"
+        app:cardBackgroundColor="@color/light_blue"
+        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="8dp"
         app:cardCornerRadius="@dimen/dimen_75dp">
 
         <RelativeLayout
@@ -36,10 +36,9 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:padding="@dimen/dimen_02dp"
-                android:fontFamily="@font/opensans_regular"
-                android:textColor="@color/light_grey"
+                android:fontFamily="@font/opensans_semibold"
+                android:textColor="?android:textColorPrimary"
                 android:text="adshadh adjakjd askdjakd asdjna"
-                android:textSize="@dimen/text_size_12"
                 android:textStyle="bold" />
 
             <TextView

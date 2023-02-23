@@ -38,6 +38,32 @@
         <item name="android:fontFamily">@font/opensans</item>
     </style>
 
+    <style name="EditTextOTP">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:fontFamily">@font/opensans_semibold</item>
+    </style>
+
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 
     <style name="textinputstyleoperator" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:textSize">@dimen/text_size_10</item>
@@ -52,7 +78,7 @@
 
     <style name="textinputstyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">@dimen/text_size_14</item>
-
+        <item name="android:fontFamily">@font/opensans</item>
     </style>
 
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
@@ -125,7 +151,7 @@
         <item name="android:background">@drawable/bg_circular_border</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_12</item>
-        <item name="android:textColor">@color/medium_blue</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/opensans</item>
         <item name="android:paddingTop">@dimen/dimen_08dp</item>
         <item name="android:paddingBottom">@dimen/dimen_08dp</item>

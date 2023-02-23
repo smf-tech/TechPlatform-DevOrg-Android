@@ -42,8 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_277dp"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_matrimonial"/>
+            android:scaleType="centerCrop" />
         <!--             />-->
 
         <TextView

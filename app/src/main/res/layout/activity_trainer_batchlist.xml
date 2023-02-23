@@ -71,7 +71,7 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dimen_25dp"
-                android:src="@drawable/ic_refresh"/>
+                android:src="@drawable/ic_refresh_24"/>
         </RelativeLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fb_email_data"

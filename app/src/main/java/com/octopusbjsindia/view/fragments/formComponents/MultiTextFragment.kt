@@ -20,7 +20,6 @@ import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.view.activities.FormDisplayActivity
 import com.octopusbjsindia.view.fragments.formComponents.adapter.MultiTextAdapter
 import org.json.JSONException
-import java.lang.reflect.Type
 
 class MultiTextFragment : Fragment(), View.OnClickListener {
 
@@ -32,6 +31,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
     private val valueJsonArray = JsonArray()
     var valueHashMap = HashMap<String, String>()  //
     var tempHashMap = HashMap<String, String>()
+    var arrayList = ArrayList<JsonObject>()
 
     /** form answers submitting format
      *{
@@ -51,6 +51,7 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_multi_text, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +63,17 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
         rvMultiText = view.findViewById(R.id.rv_multitext)
 
         tvQuestion.text = element.title?.localeValue
+
+        if (!TextUtils.isEmpty((activity as FormDisplayActivity).formAnswersMap[element.name])) {
+            val str = (activity as FormDisplayActivity).formAnswersMap[element.name]
+            try {
+                str?.let {
+                    jsonToMap(it)
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }
 
         multiTextAdapter = MultiTextAdapter(this, element)
 
@@ -75,39 +87,22 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
             view.findViewById<View>(R.id.bt_previous).visibility = View.GONE
         }
 
-        if (!TextUtils.isEmpty((activity as FormDisplayActivity).formAnswersMap[element.name])) {
-            val str = (activity as FormDisplayActivity).formAnswersMap[element.name]
-            try {
-                str?.let {
-                    jsonToMap(it)
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
-
     }
 
 
     private fun jsonToMap(str: String?) {
         tempHashMap.clear()
-       /* tempHashMap.putAll(
-            g.fromJson<Map<out String, HashMap<String,String>>>(str, object :
-                    TypeToken<HashMap<String, String>> {}.type
-            )
-        )
-        rowMap =
-            java.util.HashMap<String, java.util.HashMap<String, java.util.HashMap<String, String>>>()
-        rowMap.clear()
-        rowMap.putAll(tempHashMap.get(elements.getName()))*/
+        val jsonObj : JsonObject = Gson().fromJson(str, object : TypeToken<JsonObject>() {}.type)
+        //arrayList = Gson().fromJson(str, object : TypeToken<ArrayList<JsonObject>>() {}.type)
 
-       //var arrayList = ArrayList<JsonObject>()
-        var jsonArray = JsonArray()
-       // arrayList = Gson().fromJson(str, object : TypeToken<ArrayList<JsonObject>>() {}.type )
-       jsonArray = Gson().fromJson(str, object : TypeToken<JsonArray>() {}.type )
-        tempHashMap = Gson().fromJson(str, object : TypeToken<HashMap<String, String>>() {}.type)
-       val a =0
+        val elementArray = jsonObj.get("AnswerArray")
+        arrayList = Gson().fromJson(elementArray.toString(),object : TypeToken<ArrayList<JsonObject>>() {}.type)
 
+        for (i in arrayList) {
+            val key: String = i.get("questionKey").asString
+            val value: String = i.get("answerKey").asString
+            tempHashMap.put(key, value)
+        }
 
     }
 
@@ -125,16 +120,21 @@ class MultiTextFragment : Fragment(), View.OnClickListener {
                 if (multiTextAdapter.answersHashMap.isNotEmpty()) {
                     for (i in multiTextAdapter.answersHashMap) {
                         val jsonObject = JsonObject()
-                        jsonObject.addProperty(i.key, i.value)
+                        jsonObject.addProperty("questionKey", i.key)
+                        jsonObject.addProperty("answerKey", i.value)
                         valueJsonArray.add(jsonObject)
                     }
                     val gson = Gson()
-                    valueHashMap.put(element.name, gson.toJson(valueJsonArray))
+                    val responseJsonObj = JsonObject()
+                    responseJsonObj.addProperty("QuestionType",element.type)
+                    responseJsonObj.add("AnswerArray",valueJsonArray)
+                    valueHashMap.put(element.name, gson.toJson(responseJsonObj))
                 }
 
                 if (valueHashMap.size > 0) {
                     (requireActivity() as FormDisplayActivity).goNext(valueHashMap)
-                } else {
+                }
+                else {
                     if (element.isRequired) {
                         if (element.requiredErrorText != null) {
                             Util.showToast(element.requiredErrorText.localeValue, this)

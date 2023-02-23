@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -41,7 +43,9 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
     TextFragmentPresenter textFragmentPresenter;
     private Elements element;
     private TextView tvQuetion;
-    private EditText etAnswer, et_answer_name;
+    private TextInputEditText etAnswer, et_answer_name;
+
+    private TextInputLayout tiAnswer;
     boolean isFirstpage = false;
 
     @Override
@@ -112,12 +116,14 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
         }
         else if (element.getInputType().equals("number")) {
             etAnswer = view.findViewById(R.id.et_answer);
+            tiAnswer = view.findViewById(R.id.ti_answer);
             if (!((FormDisplayActivity) getActivity()).isEditable) {
                 etAnswer.setFocusable(false);
                 etAnswer.setEnabled(false);
             }
             if (element.getMaxLength() != null) {
                 element.setMaxLength(element.getMaxLength());
+                tiAnswer.setHelperText("Max length is "+ element.getMaxLength());
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue());
