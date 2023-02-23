@@ -471,7 +471,7 @@
     <string name="meter_pause">ब्रेक साठी थांबा</string>
     <string name="meter_resume">पुन्हा सुरू करा</string>
     <string name="machine_meter_reading">मशीन मीटर रीडिंग</string>
-    <string name="update_data">Update Data</string>
+    <string name="update_data">डेटा अपडेट करा</string>
     <string name="enter_expiry_date">Enter MOU Expiry date.</string>
     <string name="enter_mou_start_date">Enter MOU start date</string>
     <string name="enter_rate1_end_date">Enter rate 1 end date.</string>
@@ -542,7 +542,7 @@
     <string name="create_feed">Create Feed</string>
     <string name="msg_select_org">Please select organization.</string>
     <string name="msg_select_school">Please select school</string>
-    <string name="share_app">Share app</string>
+    <string name="share_app">App शेअर करा</string>
     <string name="enter_meter_reading">मीटर रीडिंग टाकावे</string>
     <string name="msg_images_limit">You can not attach more than 10 images.</string>
     <string name="boundry_befor_satrt">Please click the start button and start walking..</string>
@@ -610,6 +610,8 @@
     <string name="machine_operator_form">Operator Details</string>
     <string name="order_ref_number">Order Reference Number</string>
     <string name="enter_order_ref_number">Please enter order reference number</string>
+    <string name="your_forms">तुमचे फॉर्म</string>
+    <string name="new_form">नवीन फॉर्म</string>
 
 
 </resources>

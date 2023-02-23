@@ -53,7 +53,7 @@ public class RadioButtonFragment extends Fragment implements View.OnClickListene
         TextView tvQuetion = view.findViewById(R.id.tv_question);
         isFirstpage = getArguments().getBoolean("isFirstpage");
         rvRadiobutton = view.findViewById(R.id.rv_radiobutton);
-        tvQuetion.setText(element.getTitle().getLocaleValue());
+        tvQuetion.setText(element.getTitle().getLocaleValue().trim());
         list.clear();
         for (Choice obj : element.getChoices()) {
             RadioButtonData temp = new RadioButtonData(obj.getValue(), obj.getText().getLocaleValue(), false);

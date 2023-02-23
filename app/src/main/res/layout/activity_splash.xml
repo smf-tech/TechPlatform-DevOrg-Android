@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/img_logo"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/bjs_logo"
+        android:src="@drawable/ic_splash"
         app:layout_constraintVertical_bias="0.25"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

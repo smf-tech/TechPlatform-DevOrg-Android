@@ -13,7 +13,6 @@
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorHeight="@dimen/dimen_05dp"
         app:tabMode="fixed"
-        app:tabTextColor="@color/light_grey"
         app:tabTextAppearance="@style/FormsStatusTabLayoutTextStyle"/>
 
     <androidx.viewpager.widget.ViewPager

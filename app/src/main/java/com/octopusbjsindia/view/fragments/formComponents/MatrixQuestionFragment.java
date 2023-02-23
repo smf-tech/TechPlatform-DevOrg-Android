@@ -91,7 +91,7 @@ public class MatrixQuestionFragment extends Fragment implements
                 e.printStackTrace();
             }
         }
-        text_title.setText(elements.getTitle().getLocaleValue());
+        text_title.setText(elements.getTitle().getLocaleValue().trim());
         return view;
     }
 

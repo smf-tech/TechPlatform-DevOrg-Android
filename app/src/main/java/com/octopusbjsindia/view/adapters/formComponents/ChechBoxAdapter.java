@@ -37,7 +37,7 @@ public class ChechBoxAdapter extends RecyclerView.Adapter<ChechBoxAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ChechBoxAdapter.ViewHolder holder, int position) {
-        holder.checkBox.setText(list.get(position).getText().getLocaleValue());
+        holder.checkBox.setText(list.get(position).getText().getLocaleValue().trim());
         if (mContext.selectedList.size() > 0 && mContext.selectedList.contains(list.get(position).getValue())) {
             holder.checkBox.setChecked(true);
         } else {

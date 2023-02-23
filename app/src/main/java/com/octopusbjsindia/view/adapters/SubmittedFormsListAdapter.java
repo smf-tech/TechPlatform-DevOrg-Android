@@ -93,7 +93,7 @@ public class SubmittedFormsListAdapter extends BaseExpandableListAdapter {
             size = processData.size();
         }
 
-        ((TextView) view.findViewById(R.id.form_title)).setText(cat);
+        ((TextView) view.findViewById(R.id.form_title)).setText(cat.trim());
         ((TextView) view.findViewById(R.id.form_count))
                 .setText(String.format("%s %s", String.valueOf(size), mContext.getString(R.string.forms)));
 
