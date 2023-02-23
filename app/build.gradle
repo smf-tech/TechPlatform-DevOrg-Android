@@ -136,7 +136,7 @@ dependencies {
     implementation 'com.budiyev.android:circular-progress-bar:1.2.2'  //circular progress bar
     implementation 'me.bendik.simplerangeview:simplerangeview:0.2.0'  //age selection range view library
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-    implementation 'com.github.sagar98:SelectiveRecycleViewInBottomSheetDialog:1.0.2'
+    implementation 'com.github.sagar98:SelectiveRecycleViewInBottomSheetDialog:1.0.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
