@@ -35,12 +35,15 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.adapters.MeetOrganizersReferencesAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener,CustomSpinnerListener {
+public class CreateMeetSecondFragment extends Fragment implements View.OnClickListener, APIDataListener, CustomBottomSheetDialogInterface {
 
     private CreateMeetSecondFragmentPresenter createMeetSecondFragmentPresenter;
     private TextView tvMeetSubordinates; //tvMeetOrganizers,
@@ -51,7 +54,7 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     private RelativeLayout progressBarLayout;
     private final String TAG = CreateMeetSecondFragment.class.getName();
     //private ArrayList<CustomSpinnerObject> organizersSpinnerList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> subordinatesSpinnerList = new ArrayList<>();
+    private ArrayList<SelectionListObject> subordinatesSpinnerList = new ArrayList<>();
     //private ArrayList<MatrimonyUserDetails> organizersList = new ArrayList<>();
     private ArrayList<SubordinateData> subordinatesList = new ArrayList<>();
     //ArrayList<MatrimonyUserDetails> selectedOrganizersList = new ArrayList<>();
@@ -109,34 +112,39 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_save_meet:
-                if(isAllDataValid()) {
+                if (isAllDataValid()) {
                     updateMeetData(false);
                 }
                 break;
 
             case R.id.btn_publish_meet:
-                if(isAllDataValid()) {
+                if (isAllDataValid()) {
                     updateMeetData(true);
                 }
                 break;
-
-//            case R.id.tv_meet_organizers:
-//                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList,
-//                        true);
-//                cdd.show();
-//                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT);
-//                break;
-            case R.id.tv_meet_subordinates:
-                CustomSpinnerDialogClass cdd1 = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Team Members", subordinatesSpinnerList,
+/*            case R.id.tv_meet_organizers:
+                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Organizers", organizersSpinnerList,
                         true);
-                cdd1.show();
-                cdd1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                cdd.show();
+                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+                break;*/
+            case R.id.tv_meet_subordinates:
+
+                CustomBottomSheetDialogFragment customBottomsheet = null;
+                showSelectiveBottomSheet(customBottomsheet, "Team Members", subordinatesSpinnerList, true);
+
                 break;
         }
     }
+
+    private void showSelectiveBottomSheet(CustomBottomSheetDialogFragment bottomSheet, String Title, ArrayList<SelectionListObject> List, Boolean isMultiSelect) {
+        bottomSheet = new CustomBottomSheetDialogFragment(
+                this, Title, List, isMultiSelect);
+        bottomSheet.show(requireActivity().getSupportFragmentManager(),
+                CustomBottomSheetDialogFragment.TAG);
+    }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -212,33 +220,22 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
 
     public void setMatrimonyUsers(List<SubordinateData> matrimonySubordinatesList) {
         if (matrimonySubordinatesList.size() > 0) {
+
+            ArrayList<SelectionListObject> tempList = new ArrayList<>();
             for (SubordinateData subordinateData : matrimonySubordinatesList) {
-//                for (MatrimonyUserDetails matrimonySubordinateDetails : matrimonyRole.getUserDetails()) {
-//                    matrimonySubordinateDetails.setRoleName(matrimonyRole.getDisplayName());
-
-                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                customSpinnerObject.set_id(subordinateData.getUser_id());
-                customSpinnerObject.setName(subordinateData.getName());
-                    customSpinnerObject.setSelected(false);
-
-//                    if (matrimonyRole.getId().equals("5d4129ba5dda7642de492a72")) {
-//                        //if (matrimonyRole.getId().equals("5d983ed5ee061868395d03c2")) {
-//                        organizersList.add(matrimonySubordinateDetails);
-//                        organizersSpinnerList.add(customSpinnerObject);
-//                    } else {
-//                        nonOrganizersList.add(matrimonySubordinateDetails);
-//                        nonOrganizersSpinnerList.add(customSpinnerObject);
-//                    }
+                tempList.add(new SelectionListObject(subordinateData.getUser_id(),
+                        subordinateData.getName(), false, false));
                 subordinatesList.add(subordinateData);
-                    subordinatesSpinnerList.add(customSpinnerObject);
-                //}
             }
+            subordinatesSpinnerList.addAll(tempList);
+
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "No members found in your team." +
                             "You need to add members.",
                     Snackbar.LENGTH_LONG);
         }
+
     }
 
     public void showDataMessage(String message) {
@@ -248,44 +245,14 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
                 Snackbar.LENGTH_LONG);
     }
 
-    @Override
-    public void onCustomSpinnerSelection(String type) {
-//        if (type.equalsIgnoreCase("Organizers")) {
-//            selectedOrganizersList.clear();
-//            for (CustomSpinnerObject c : organizersSpinnerList) {
-//                if (c.isSelected()) {
-//                    for (MatrimonyUserDetails m : organizersList) {
-//                        if (m.getId().equals(c.get_id())) {
-//                            selectedOrganizersList.add(m);
-//                        }
-//                    }
-//                }
-//            }
-//            meetOrganizersListAdapter.notifyDataSetChanged();
-//        } else
-        if (type.equalsIgnoreCase("Team Members")) {
-            selectedSubordinatesList.clear();
-            for (CustomSpinnerObject cReference : subordinatesSpinnerList) {
-                if (cReference.isSelected()) {
-                    for (SubordinateData mReference : subordinatesList) {
-                        if (mReference.getUser_id().equals(cReference.get_id())) {
-                            selectedSubordinatesList.add(mReference);
-                        }
-                    }
-                }
-            }
-            meetSubordinatesAdapter.notifyDataSetChanged();
-        }
-    }
-
     private void updateMeetData(boolean isPublish) {
         //((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetOrganizers(selectedOrganizersList);
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetSubordinators(selectedSubordinatesList);
-        if(isPublish){
+        if (isPublish) {
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(true);
             showPublishApiDialog("Confirmation", "This meet will be visible to users. " +
                     "Are you sure you want to publish?", "YES", "No");
-        }else{
+        } else {
             ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setIs_published(false);
             createMeetSecondFragmentPresenter.submitMeet(((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet());
         }
@@ -389,4 +356,24 @@ public class CreateMeetSecondFragment extends Fragment implements View.OnClickLi
         dialog.show();
     }
 
+    @Override
+    public void onCustomBottomSheetSelection(@NonNull String type) {
+        if (type.equalsIgnoreCase("Team Members")) {
+
+            selectedSubordinatesList.clear();
+            for (SelectionListObject obj : subordinatesSpinnerList) {
+                if (obj.isSelected()) {
+                    //selectedQualificationDegreeList.add(obj.getValue());
+                    for (SubordinateData mReference : subordinatesList) {
+                        if (mReference.getUser_id().equals(obj.getId())) {
+                            selectedSubordinatesList.add(mReference);
+                        }
+                    }
+                }
+            }
+            meetSubordinatesAdapter.notifyDataSetChanged();
+
+        }
+
+    }
 }

@@ -53,6 +53,9 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateMatrimonyMeetActivity;
 import com.octopusbjsindia.view.activities.UserRegistrationMatrimonyActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 import com.soundcloud.android.crop.Crop;
 
 import org.jetbrains.annotations.NotNull;
@@ -71,20 +74,20 @@ import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.TAG;
 
 public class CreateMeetFirstFragment extends Fragment implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener, APIDataListener, CustomSpinnerListener {
+        RadioGroup.OnCheckedChangeListener, APIDataListener/*, CustomSpinnerListener*/, CustomBottomSheetDialogInterface {
 
     private TextView tvMeetType, tvMeetCountry, tvMeetState, tvMeetCity, tvCriteria, tvMinAge, tvMaxAge;
     private Button btnFirstPartMeet;
     //private ImageView ivBanner;
-    private ArrayList<CustomSpinnerObject> meetTypesList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> meetCountryList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> meetStateList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> meetCityList = new ArrayList<>();
+    private ArrayList<SelectionListObject> meetTypesList = new ArrayList<>();
+    private ArrayList<SelectionListObject> meetCountryList = new ArrayList<>();
+    private ArrayList<SelectionListObject> meetStateList = new ArrayList<>();
+    private ArrayList<SelectionListObject> meetCityList = new ArrayList<>();
     private CreateMeetFirstFragmentPresenter matrimonyMeetFirstFragmentPresenter;
     private String selectedMeetType, selectedCountry, selectedState, selectedCity,
             selectedCountryId, selectedStateId, selectedCityId;
     private EditText edtMeetName, edtMeetVenue, etMeetWebLink, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
-            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo ,etNote;
+            edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo, etNote;
     private TextInputLayout lyRegAmt, lyPaymentInfo;
     private SimpleRangeView rangeView;
     private RadioGroup rgPaidFree, rgOnlinePayment;
@@ -101,8 +104,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private Uri finalUri;
     private String currentPhotoPath = "";
 
-    ArrayList<CustomSpinnerObject> maritalStatusList = new ArrayList<>();
-    ArrayList<CustomSpinnerObject> qualificationDegreeList = new ArrayList<>();
+    ArrayList<SelectionListObject> maritalStatusList = new ArrayList<>();
+    ArrayList<SelectionListObject> qualificationDegreeList = new ArrayList<>();
 
     ArrayList<String> selectedMaritalStatusList = new ArrayList<>();
     ArrayList<String> selectedQualificationDegreeList = new ArrayList<>();
@@ -178,19 +181,19 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         rangeView.setEnd(48);
         rangeView.setStartFixed(0);
         rangeView.setEndFixed(48);
-        tvMinAge.setText(String.valueOf(rangeView.getStart()+18));
-        tvMaxAge.setText(String.valueOf(rangeView.getEnd()+18));
+        tvMinAge.setText(String.valueOf(rangeView.getStart() + 18));
+        tvMaxAge.setText(String.valueOf(rangeView.getEnd() + 18));
 
         rangeView.setOnTrackRangeListener(new SimpleRangeView.OnTrackRangeListener() {
             @Override
             public void onStartRangeChanged(@NotNull SimpleRangeView rangeView, int start) {
-                start = start + 18 ;
+                start = start + 18;
                 tvMinAge.setText(String.valueOf(start));
             }
 
             @Override
             public void onEndRangeChanged(@NotNull SimpleRangeView rangeView, int end) {
-                end = end + 18 ;
+                end = end + 18;
                 tvMaxAge.setText(String.valueOf(end));
             }
         });
@@ -215,7 +218,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             matrimonyMeetFirstFragmentPresenter.getMeetTypes();
             matrimonyMeetFirstFragmentPresenter.getFilterMasterData();
         }
-       // view.findViewById(R.id.ivBanner).setOnClickListener(this);
+        // view.findViewById(R.id.ivBanner).setOnClickListener(this);
         etEducation.setOnClickListener(this);
         etMaritalStatus.setOnClickListener(this);
         tvCriteria.setOnClickListener(this);
@@ -223,7 +226,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
 
     public void setMatrimonyMeetTypes(List<MeetType> responseMeetTypesList) {
         //meetTypes.clear();
-        for (MeetType m : responseMeetTypesList) {
+       /* for (MeetType m : responseMeetTypesList) {
             CustomSpinnerObject cMeetType = new CustomSpinnerObject();
             cMeetType.setName(m.getType());
             cMeetType.set_id(m.getId());
@@ -234,17 +237,28 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         UserInfo userInfo = Util.getUserObjectFromPref();
         matrimonyMeetFirstFragmentPresenter.getLocationData("",
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),  //5d98330bee061834d23798b2
-                Constants.JurisdictionLevelName.COUNTRY_LEVEL);
+                Constants.JurisdictionLevelName.COUNTRY_LEVEL);*/
 
+        meetTypesList.clear();
+        ArrayList<SelectionListObject> tempMeetTypeList = new ArrayList<>();
+        for (MeetType meet : responseMeetTypesList) {
+            tempMeetTypeList.add(new SelectionListObject(meet.getId(),
+                    meet.getType(), false, false));
+        }
+        meetTypesList.addAll(tempMeetTypeList);
+
+        UserInfo userInfo = Util.getUserObjectFromPref();
+        matrimonyMeetFirstFragmentPresenter.getLocationData("",
+                Util.getUserObjectFromPref().getJurisdictionTypeId(),  //5d98330bee061834d23798b2
+                Constants.JurisdictionLevelName.COUNTRY_LEVEL);
     }
 
     public void showJurisdictionLevel(List<JurisdictionLocationV3> jurisdictionLevels, String levelName) {
         switch (levelName) {
             case Constants.JurisdictionLevelName.COUNTRY_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
-                    meetCountryList.clear();
+                   /* meetCountryList.clear();
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
-
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCountry = new CustomSpinnerObject();
@@ -252,7 +266,17 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                         meetCountry.setName(location.getName());
                         meetCountry.setSelected(false);
                         meetCountryList.add(meetCountry);
+                    }*/
+
+                    meetCountryList.clear();
+                    ArrayList<SelectionListObject> tempCountryList = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        tempCountryList.add(new SelectionListObject(location.getId(),
+                                location.getName(), false, false));
                     }
+                    meetCountryList.addAll(tempCountryList);
+
                 }
 
                 break;
@@ -261,14 +285,24 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     meetStateList.clear();
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getState().getName().compareTo(j2.getState().getName()));
 
-                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                   /* for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetState = new CustomSpinnerObject();
                         meetState.set_id(location.getId());
                         meetState.setName(location.getName());
                         meetState.setSelected(false);
                         meetStateList.add(meetState);
+                    }*/
+
+                    ArrayList<SelectionListObject> tempStateList = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        tempStateList.add(new SelectionListObject(location.getId(),
+                                location.getName(), false, false));
                     }
+                    meetStateList.addAll(tempStateList);
+
+
                 }
 
                 break;
@@ -278,14 +312,22 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     meetCityList.clear();
                     //Collections.sort(jurisdictionLevels, (j1, j2) -> j1.getCity().getName().compareTo(j2.getCity().getName()));
 
-                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                   /* for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject meetCity = new CustomSpinnerObject();
                         meetCity.set_id(location.getId());
                         meetCity.setName(location.getName());
                         meetCity.setSelected(false);
                         meetCityList.add(meetCity);
+                    }*/
+
+                    ArrayList<SelectionListObject> tempCityList = new ArrayList<>();
+                    for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        tempCityList.add(new SelectionListObject(location.getId(),
+                                location.getName(), false, false));
                     }
+                    meetCityList.addAll(tempCityList);
                 }
                 break;
 
@@ -304,25 +346,19 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.tv_meet_types:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this, "Select Meet Type", meetTypesList,
-                        false);
-                cdd.show();
-                cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                CustomBottomSheetDialogFragment customBottomsheet = null;
+                showSelectiveBottomSheet(customBottomsheet, "Select Meet Type", meetTypesList, false);
+
                 break;
             case R.id.tv_meet_country:
-                CustomSpinnerDialogClass cddCountry = new CustomSpinnerDialogClass(getActivity(), this, "Select Country", meetCountryList,
-                        false);
-                cddCountry.show();
-                cddCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                CustomBottomSheetDialogFragment customBottomsheet2 = null;
+                showSelectiveBottomSheet(customBottomsheet2, "Select Country", meetCountryList, false);
                 break;
             case R.id.tv_meet_state:
                 if (selectedCountryId != null && selectedCountryId.length() > 0) {
-                    CustomSpinnerDialogClass cddState = new CustomSpinnerDialogClass(getActivity(), this, "Select State", meetStateList,
-                            false);
-                    cddState.show();
-                    cddState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+
+                    CustomBottomSheetDialogFragment customBottomsheet3 = null;
+                    showSelectiveBottomSheet(customBottomsheet3, "Select State", meetStateList, false);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Please select Country.",
@@ -331,11 +367,8 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.tv_meet_city:
                 if (selectedStateId != null && selectedStateId.length() > 0) {
-                    CustomSpinnerDialogClass cddCity = new CustomSpinnerDialogClass(getActivity(), this, "Select City", meetCityList,
-                            false);
-                    cddCity.show();
-                    cddCity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    CustomBottomSheetDialogFragment customBottomsheet4 = null;
+                    showSelectiveBottomSheet(customBottomsheet4, "Select City", meetCityList, false);
                 } else {
                     Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                                     .findViewById(android.R.id.content), "Please select State.",
@@ -378,20 +411,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                             Snackbar.LENGTH_LONG);
                 }
                 break;
-           /* case R.id.ivBanner:
-                onAddImageClick();
-                break;*/
             case R.id.etEducation:
-                CustomSpinnerDialogClass qualificationDegree = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select education", qualificationDegreeList, true);
-                qualificationDegree.show();
-                qualificationDegree.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                CustomBottomSheetDialogFragment customBottomsheet5 = null;
+                showSelectiveBottomSheet(customBottomsheet5, "Select education", qualificationDegreeList, true);
                 break;
             case R.id.etMaritalStatus:
-                CustomSpinnerDialogClass maritalStatus = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select marital status", maritalStatusList, true);
-                maritalStatus.show();
-                maritalStatus.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                CustomBottomSheetDialogFragment customBottomsheet6 = null;
+                showSelectiveBottomSheet(customBottomsheet6, "Select marital status", maritalStatusList, true);
                 break;
             case R.id.tvCriteria:
                 if (lyCriteria.getVisibility() == View.VISIBLE) {
@@ -498,29 +524,29 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                 return false;
             }
         }
-//        if(lyCriteria.getVisibility() == View.VISIBLE){
-//        if (TextUtils.isEmpty(tvMinAge.getText().toString())) {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Please add Minimum age in meet criteria",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        } else if (TextUtils.isEmpty(etMinAge.getText().toString())) {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Please add Maximum age in meet criteria",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        }  else if (18 > Integer.parseInt(etMinAge.getText().toString())) {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Minimum age should be 18 or greater.",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        } else if (Integer.parseInt(etMaxAge.getText().toString()) < Integer.parseInt(etMinAge.getText().toString())) {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Minimum age should be minimum than maximum age",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        }
-//        }
+/*        if(lyCriteria.getVisibility() == View.VISIBLE){
+        if (TextUtils.isEmpty(tvMinAge.getText().toString())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please add Minimum age in meet criteria",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etMinAge.getText().toString())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Please add Maximum age in meet criteria",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }  else if (18 > Integer.parseInt(etMinAge.getText().toString())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Minimum age should be 18 or greater.",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        } else if (Integer.parseInt(etMaxAge.getText().toString()) < Integer.parseInt(etMinAge.getText().toString())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content), "Minimum age should be minimum than maximum age",
+                    Snackbar.LENGTH_LONG);
+            return false;
+        }
+        }*/
         return true;
     }
 
@@ -579,133 +605,6 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void onAddImageClick() {
-        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-            showPictureDialog();
-        }
-    }
-
-    private void showPictureDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle(getString(R.string.title_choose_picture));
-        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
-
-        dialog.setItems(items, (dialog1, which) -> {
-            switch (which) {
-                case 0:
-                    choosePhotoFromGallery();
-                    break;
-
-                case 1:
-                    takePhotoFromCamera();
-                    break;
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void choosePhotoFromGallery() {
-        try {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void takePhotoFromCamera() {
-        try {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = getImageFile(); // 1
-            Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-            else
-                uri = Uri.fromFile(file); // 3
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-        } catch (ActivityNotFoundException e) {
-            //display an error message
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
-                    Toast.LENGTH_SHORT).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
-            try {
-                finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(), this);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-            if (data != null) {
-                try {
-                    getImageFile();
-                    outputUri = data.getData();
-                    finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            try {
-
-                final File imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-
-                if (Util.isConnected(getActivity())) {
-                    if (Util.isValidImageSize(imageFile)) {
-                        //profilePresenter.uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE);
-                        ((CreateMatrimonyMeetActivity) getActivity()).presenter
-                                .uploadProfileImage(imageFile, Constants.Image.IMAGE_TYPE_PROFILE,
-                                        "meetBanner");
-
-                        ivBanner.setImageURI(finalUri);
-                        ((UserRegistrationMatrimonyActivity) getActivity()).showProgressBar();
-
-                    } else {
-                        Util.showToast(getString(R.string.msg_big_image), this);
-                    }
-                } else {
-                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }*/
-    }
-
-    private File getImageFile() {
-        // External sdcard location
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Constants.Image.IMAGE_STORAGE_DIRECTORY);
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        File file;
-        file = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
-        currentPhotoPath = file.getPath();
-        return file;
-    }
-
     @Override
     public void onFailureListener(String requestID, String message) {
 
@@ -752,88 +651,11 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onCustomSpinnerSelection(String type) {
-        switch (type) {
-            case "Select Meet Type":
-                for (CustomSpinnerObject mType : meetTypesList) {
-                    if (mType.isSelected()) {
-                        selectedMeetType = mType.getName();
-                        break;
-                    }
-                }
-                tvMeetType.setText(selectedMeetType);
-                break;
-            case "Select Country":
-                tvMeetState.setText("");
-                selectedState = "";
-                selectedStateId = "";
-                tvMeetCity.setText("");
-                selectedCity = "";
-                selectedCityId = "";
-                for (CustomSpinnerObject mCountry : meetCountryList) {
-                    if (mCountry.isSelected()) {
-                        selectedCountry = mCountry.getName();
-                        selectedCountryId = mCountry.get_id();
-                        break;
-                    }
-                }
-                tvMeetCountry.setText(selectedCountry);
-                if (selectedCountry != "" && selectedCountry != "Country") {
-                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedCountryId,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.STATE_LEVEL);
-                }
-                break;
-            case "Select State":
-                tvMeetCity.setText("");
-                selectedCity = "";
-                selectedCityId = "";
-                for (CustomSpinnerObject mState : meetStateList) {
-                    if (mState.isSelected()) {
-                        selectedState = mState.getName();
-                        selectedStateId = mState.get_id();
-                        break;
-                    }
-                }
-                tvMeetState.setText(selectedState);
-                if (selectedState != "" && selectedState != "State") {
-                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedStateId,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.CITY_LEVEL);
-                }
-                break;
-            case "Select City":
-                for (CustomSpinnerObject mCity : meetCityList) {
-                    if (mCity.isSelected()) {
-                        selectedCity = mCity.getName();
-                        selectedCityId = mCity.get_id();
-                        break;
-                    }
-                }
-                tvMeetCity.setText(selectedCity);
-                break;
-            case "Select education":
-                selectedQualificationDegreeList.clear();
-                for (CustomSpinnerObject mCity : qualificationDegreeList) {
-                    if (mCity.isSelected()) {
-                        selectedQualificationDegreeList.add(mCity.getName());
-//                        selectedCityId = mCity.get_id();
-                    }
-                }
-                etEducation.setText(android.text.TextUtils.join(",", selectedQualificationDegreeList));
-                break;
-            case "Select marital status":
-                selectedMaritalStatusList.clear();
-                for (CustomSpinnerObject mCity : maritalStatusList) {
-                    if (mCity.isSelected()) {
-                        selectedMaritalStatusList.add(mCity.getName());
-//                        selectedCityId = mCity.get_id();
-                    }
-                }
-                etMaritalStatus.setText(android.text.TextUtils.join(",", selectedMaritalStatusList));
-                break;
-        }
+    private void showSelectiveBottomSheet(CustomBottomSheetDialogFragment bottomSheet, String Title, ArrayList<SelectionListObject> List, Boolean isMultiSelect) {
+        bottomSheet = new CustomBottomSheetDialogFragment(
+                this, Title, List, isMultiSelect);
+        bottomSheet.show(requireActivity().getSupportFragmentManager(),
+                CustomBottomSheetDialogFragment.TAG);
     }
 
     @Override
@@ -873,23 +695,123 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             switch (masterData.getKey()) {
                 case "marital_status":
                     maritalStatusList.clear();
-                    for (String status : masterData.getValues()) {
-                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                        customSpinnerObject.setName(status);
-                        maritalStatusList.add(customSpinnerObject);
+                    ArrayList<SelectionListObject> tempList = new ArrayList<>();
+                    for (String maritalStatus : masterData.getValues()) {
+                        tempList.add(new SelectionListObject(
+                                String.valueOf(masterData.getValues().indexOf(maritalStatus + 1)),
+                                maritalStatus, false, false));
                     }
+                    maritalStatusList.addAll(tempList);
+
                     break;
                 case "qualification_degree":
-                    qualificationDegreeList.clear();
 
-                    for (String status : masterData.getValues()) {
-                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                        customSpinnerObject.setName(status);
-                        qualificationDegreeList.add(customSpinnerObject);
+                    qualificationDegreeList.clear();
+                    ArrayList<SelectionListObject> tempQualificationList = new ArrayList<>();
+                    for (String qualification : masterData.getValues()) {
+                        tempQualificationList.add(new SelectionListObject(
+                                String.valueOf(masterData.getValues().indexOf(qualification + 1)),
+                                qualification, false, false));
                     }
+                    qualificationDegreeList.addAll(tempQualificationList);
+
                     break;
             }
         }
 
+    }
+
+    @Override
+    public void onCustomBottomSheetSelection(@NonNull String type) {
+        switch (type) {
+            case "Select Meet Type":
+                selectedMeetType = null;
+                for (SelectionListObject obj : meetTypesList) {
+                    if (obj.isSelected()) {
+                        selectedMeetType = obj.getValue();
+                        break;
+                    }
+                }
+                tvMeetType.setText(selectedMeetType);
+
+                break;
+            case "Select Country":
+                tvMeetState.setText("");
+                selectedState = "";
+                selectedStateId = "";
+                tvMeetCity.setText("");
+                selectedCity = "";
+                selectedCityId = "";
+                selectedCountry= null;
+                selectedCountryId = null;
+                for (SelectionListObject obj : meetCountryList) {
+                    selectedCountryId = obj.getId();
+                    selectedCountry = obj.getValue();
+                    break;
+                }
+                tvMeetCountry.setText(selectedCountry);
+                if (selectedCountry != "" && selectedCountry != "Country") {
+                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedCountryId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.STATE_LEVEL);
+                }
+
+                break;
+            case "Select State":
+
+                tvMeetCity.setText("");
+                selectedCity = "";
+                selectedCityId = "";
+                selectedState = null;
+                selectedStateId = null;
+                for (SelectionListObject obj : meetStateList) {
+                    if (obj.isSelected()) {
+                        selectedStateId = obj.getId();
+                        selectedState = obj.getValue();
+                        break;
+                    }
+                }
+                tvMeetState.setText(selectedState);
+
+                if (selectedState != "" && selectedState != "State") {
+                    matrimonyMeetFirstFragmentPresenter.getLocationData(selectedStateId,
+                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                            Constants.JurisdictionLevelName.CITY_LEVEL);
+                }
+
+                break;
+            case "Select City":
+                selectedCity = null;
+                selectedCityId = null;
+                for (SelectionListObject obj : meetCityList) {
+                    if (obj.isSelected()) {
+                        selectedCityId = obj.getId();
+                        selectedCity = obj.getValue();
+                        break;
+                    }
+                }
+                tvMeetCity.setText(selectedCity);
+                break;
+            case "Select education":
+                selectedQualificationDegreeList.clear();
+                for (SelectionListObject obj : qualificationDegreeList) {
+                    if (obj.isSelected()) {
+                        selectedQualificationDegreeList.add(obj.getValue());
+                    }
+                }
+                etEducation.setText(android.text.TextUtils.join(",", selectedQualificationDegreeList));
+
+                break;
+            case "Select marital status":
+                selectedMaritalStatusList.clear();
+                for (SelectionListObject obj : maritalStatusList) {
+                    if (obj.isSelected()) {
+                        selectedMaritalStatusList.add(obj.getValue());
+                    }
+                }
+                etMaritalStatus.setText(android.text.TextUtils.join(",", selectedMaritalStatusList));
+
+                break;
+        }
     }
 }

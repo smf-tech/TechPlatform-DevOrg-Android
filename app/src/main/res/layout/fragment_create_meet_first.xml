@@ -82,12 +82,14 @@
                         android:layout_marginBottom="@dimen/dimen_10dp"
                         android:background="@drawable/bg_blue_box"
                         android:editable="false"
+                        android:textColor="?android:textColorPrimary"
                         android:fontFamily="@font/opensans"
                         android:gravity="center_vertical"
                         android:hint="@string/select_meet_type"
                         android:longClickable="false"
-                        android:paddingStart="@dimen/dimen_10dp"
-                        android:textColorHint="@color/medium_grey" />
+                        android:paddingHorizontal="12dp"
+                        android:textColorHint="@color/medium_grey"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down_24" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -107,7 +109,9 @@
                             android:gravity="center_vertical"
                             android:hint="@string/country"
                             android:longClickable="false"
-                            android:paddingStart="@dimen/dimen_10dp"
+                            android:paddingHorizontal="12dp"
+                            android:textColor="?android:textColorPrimary"
+                            app:drawableEndCompat="@drawable/ic_arrow_drop_down_24"
                             android:textColorHint="@color/medium_grey" />
 
                         <TextView
@@ -122,7 +126,9 @@
                             android:gravity="center_vertical"
                             android:hint="@string/state"
                             android:longClickable="false"
-                            android:paddingStart="@dimen/dimen_10dp"
+                            android:paddingHorizontal="12dp"
+                            android:textColor="?android:textColorPrimary"
+                            app:drawableEndCompat="@drawable/ic_arrow_drop_down_24"
                             android:textColorHint="@color/medium_grey" />
                     </LinearLayout>
 
@@ -138,7 +144,9 @@
                         android:gravity="center_vertical"
                         android:hint="@string/city"
                         android:longClickable="false"
-                        android:paddingStart="@dimen/dimen_10dp"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="?android:textColorPrimary"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down_24"
                         android:textColorHint="@color/medium_grey" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -443,6 +451,7 @@
                         android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/bg_border_dark_grey"
                         android:orientation="vertical"
+                        android:paddingBottom="8dp"
                         android:visibility="visible">
 
 
@@ -491,6 +500,8 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:endIconMode="custom"
+                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                             android:layout_margin="@dimen/dimen_10dp">
 
                             <EditText
@@ -509,6 +520,8 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:endIconMode="custom"
+                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                             android:layout_margin="@dimen/dimen_10dp">
 
                             <EditText
