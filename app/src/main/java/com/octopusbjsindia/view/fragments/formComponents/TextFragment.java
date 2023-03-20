@@ -123,7 +123,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
             }
             if (element.getMaxLength() != null) {
                 element.setMaxLength(element.getMaxLength());
-                tiAnswer.setHelperText("Max length is "+ element.getMaxLength());
+                tiAnswer.setHelperText("Max length is " + element.getMaxLength());
             }
             if (element.getPlaceHolder() != null && !TextUtils.isEmpty(element.getPlaceHolder().getLocaleValue()))
                 etAnswer.setHint(element.getPlaceHolder().getLocaleValue().trim());
@@ -190,12 +190,12 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
 
         tvQuetion.setText(element.getTitle().getLocaleValue().trim());
 
-        if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
+      /*  if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) { // removed appended phone text at the end as per MIS team
             etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "phone"));
         }
         if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "name"))) {
             et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"));
-        }
+        }*/
 
         view.findViewById(R.id.bt_previous).setOnClickListener(this);
         view.findViewById(R.id.bt_next).setOnClickListener(this);
@@ -284,7 +284,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             } else {
                                 if (isMaxLengthValid(element.getMaxLength())) {
-                                    hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                    hashMap.put(element.getName(), etAnswer.getText().toString()); // removed appended phone text at the end as per MIS team
                                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                                 }
                             }
@@ -300,44 +300,47 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 }
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             } else {
-                                hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
+                                hashMap.put(element.getName(), etAnswer.getText().toString());
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             }
                         }
-                    } else if (element.getInputType().equals("tel")) {
+                    }
+                    else {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
-                        if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                            if (element.isRequired()) {
-                                if (element.getRequiredErrorText() != null) {
-                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
-                                } else {
-                                    Util.showToast(getResources().getString(R.string.required_error), this);
+                        if (element.getInputType().equals("tel")) {
+                            if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                                if (element.isRequired()) {
+                                    if (element.getRequiredErrorText() != null) {
+                                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                    } else {
+                                        Util.showToast(getResources().getString(R.string.required_error), this);
+                                    }
+                                    return;
                                 }
-                                return;
+                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                            } else {
+                                if (isAllInputsValid()) {
+                                    hashMap.put(element.getName() + "phone", etAnswer.getText().toString());  // removed appended phone text at the end as per MIS team
+                                    hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
+                                    ((FormDisplayActivity) getActivity()).goNext(hashMap);
+                                }
+                            }
+                        }
+                        else {
+                            if (TextUtils.isEmpty(etAnswer.getText().toString())) {
+                                if (element.isRequired()) {
+                                    if (element.getRequiredErrorText() != null) {
+                                        Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
+                                    } else {
+                                        Util.showToast(getResources().getString(R.string.required_error), this);
+                                    }
+                                    return;
+                                }
+                            } else {
+                                hashMap.put(element.getName(), etAnswer.getText().toString());
                             }
                             ((FormDisplayActivity) getActivity()).goNext(hashMap);
-                        } else {
-                            if (isAllInputsValid()) {
-                                hashMap.put(element.getName() + "phone", etAnswer.getText().toString());
-                                hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
-                                ((FormDisplayActivity) getActivity()).goNext(hashMap);
-                            }
                         }
-                    } else {
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                        if (TextUtils.isEmpty(etAnswer.getText().toString())) {
-                            if (element.isRequired()) {
-                                if (element.getRequiredErrorText() != null) {
-                                    Util.showToast(element.getRequiredErrorText().getLocaleValue(), this);
-                                } else {
-                                    Util.showToast(getResources().getString(R.string.required_error), this);
-                                }
-                                return;
-                            }
-                        } else {
-                            hashMap.put(element.getName(), etAnswer.getText().toString());
-                        }
-                        ((FormDisplayActivity) getActivity()).goNext(hashMap);
                     }
                 } else {
                     HashMap<String, String> hashMap = new HashMap<String, String>();
