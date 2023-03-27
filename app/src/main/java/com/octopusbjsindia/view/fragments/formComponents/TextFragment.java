@@ -163,16 +163,23 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                 }
             });
 
-            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
-                etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "phone"));
-            }
-            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"))) {
-                et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"));
-                if (!((FormDisplayActivity) getActivity()).isEditable) {
-                    et_answer_name.setFocusable(false);
-                    et_answer_name.setEnabled(false);
-
+            if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName()))){
+                String[] phoneAndName = ((FormDisplayActivity) getActivity()).formAnswersMap
+                        .get(element.getName().trim())
+                        .split(",");
+                etAnswer.setText(phoneAndName[0]);
+                et_answer_name.setText(phoneAndName[1]);
+            }else {
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName() + "phone"))) {
+                    etAnswer.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "phone"));
                 }
+                if (!TextUtils.isEmpty(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"))) {
+                    et_answer_name.setText(((FormDisplayActivity) getActivity()).formAnswersMap.get(element.getName().trim() + "name"));
+                }
+            }
+            if (!((FormDisplayActivity) getActivity()).isEditable) {
+                et_answer_name.setFocusable(false);
+                et_answer_name.setEnabled(false);
             }
         }
         else {
@@ -284,7 +291,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             } else {
                                 if (isMaxLengthValid(element.getMaxLength())) {
-                                    hashMap.put(element.getName(), etAnswer.getText().toString()); // removed appended phone text at the end as per MIS team
+                                    hashMap.put(element.getName(), etAnswer.getText().toString());
                                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                                 }
                             }
@@ -304,8 +311,7 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         if (element.getInputType().equals("tel")) {
                             if (TextUtils.isEmpty(etAnswer.getText().toString())) {
@@ -320,13 +326,12 @@ public class TextFragment extends Fragment implements View.OnClickListener, APID
                                 ((FormDisplayActivity) getActivity()).goNext(hashMap);
                             } else {
                                 if (isAllInputsValid()) {
-                                    hashMap.put(element.getName() + "phone", etAnswer.getText().toString());  // removed appended phone text at the end as per MIS team
-                                    hashMap.put(element.getName() + "name", et_answer_name.getText().toString());
+                                    hashMap.put(element.getName(), etAnswer.getText().toString() + ","
+                                            + et_answer_name.getText().toString());
                                     ((FormDisplayActivity) getActivity()).goNext(hashMap);
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             if (TextUtils.isEmpty(etAnswer.getText().toString())) {
                                 if (element.isRequired()) {
                                     if (element.getRequiredErrorText() != null) {

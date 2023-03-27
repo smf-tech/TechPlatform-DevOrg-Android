@@ -48,8 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rv_checkbox"
-                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginHorizontal="12dp"
                     android:text="@string/none"
+                    tools:visibility="visible"
                     android:visibility="gone" />
 
                 <CheckBox
@@ -57,7 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/cb_none"
-                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_marginHorizontal="12dp"
+                    tools:visibility="visible"
                     android:text="@string/other"
                     android:visibility="gone" />
 
@@ -68,9 +70,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/cb_other"
-                    android:layout_marginStart="@dimen/dimen_10dp"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_marginHorizontal="16dp"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     app:hintTextAppearance="@style/TextInputLayoutHint">
 
                     <EditText
