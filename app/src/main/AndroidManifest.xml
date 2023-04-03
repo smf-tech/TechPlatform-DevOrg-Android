@@ -28,6 +28,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
 
     <application
         android:name=".Platform"
@@ -41,7 +43,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        android:dataExtractionRules="@xml/data_extraction_rules">
 
         <activity
             android:name=".view.activities.SplashActivity"
@@ -93,7 +96,6 @@
         <activity
             android:name=".view.activities.SELTrainingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activities.SupportActivity" />
         <activity android:name=".view.activities.TransactionDetailsActivity" />
         <activity android:name=".view.activities.AddMemberActivity" />
         <activity android:name=".view.activities.MyTeamActivity" />
