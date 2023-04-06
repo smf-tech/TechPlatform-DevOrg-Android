@@ -273,7 +273,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
-                structureMachineListFragmentPresenter.getLocationData(userDistrictIds,
+                structureMachineListFragmentPresenter.getLocationData(selectedDistrictId,
                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
@@ -311,6 +311,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 if (i == 0) {
                     userDistricts = j.getName();
                     userDistrictIds = j.getId();
+                    selectedDistrictId = j.getId();
                 } else {
                     userDistricts = userDistricts + "," + j.getName();
                     userDistrictIds = userDistrictIds + "," + j.getId();
@@ -866,7 +867,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select District", machineDistrictList,
-                        true);
+                        false);
                 cddDistrict.show();
                 cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
@@ -920,7 +921,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                     "Select State",
                     machineStateList,
-                    true);
+                    false);
             cdd.show();
             cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
