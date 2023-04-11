@@ -23,12 +23,12 @@ public class OperatorActivityPresenter implements TMFilterListRequestCallListene
         this.fragmentWeakReference = new WeakReference<>(fragmentWeakReference);;
     }
 
-    public void getAllFiltersRequests() {
+    public void getAllFiltersRequests(String machineCode) {
         OperatorMeterReadingRequestCall requestCall = new OperatorMeterReadingRequestCall();
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
+        requestCall.getAllPendingRequests(machineCode);
     }
 
     @Override

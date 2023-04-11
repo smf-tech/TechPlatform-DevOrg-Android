@@ -56,4 +56,9 @@
         android:title="Release Field Associate"
         android:visible="false" />
 
+    <item
+        android:id="@+id/action_daily_machine_record"
+        android:title="Daily Machine Record"
+        android:visible="false" />
+
 </menu>

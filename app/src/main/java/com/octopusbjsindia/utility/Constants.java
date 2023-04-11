@@ -4,10 +4,8 @@ public class Constants {
     public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
     public static final String MARK_INTERVIEW = "Interview";
-
     public static final String APPROVE = "approved";
     public static final String REJECT = "rejected";
-
     public static final int GPS_REQUEST = 1;
     public static final int CAMERA_REQUEST = 2;
     public static final int IS_ROLE_CHANGE = 3;
@@ -26,9 +24,7 @@ public class Constants {
     public static final Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static final Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
     public static final Integer CHOOSE_PDF_FROM_STORAGE = 111;
-
     public static final Integer TIMEOUT_ERROR_CODE = 504;
-
     public static final String PUSH_NOTIFICATION = "pushNotification";
     public static final String AND = "and";
     public static final String AND_CHARACTER = "&";
@@ -445,6 +441,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_DALLY_PROGRESS = 159;
         public static final Integer ACCESS_CODE_DALLY_PROGRESS_VALIDATION = 160;
         public static final Integer ACCESS_CODE_STRUCTURE_MASTER_GP = 161;
+        public static final Integer ACCESS_CODE_DAILY_MACHINE_RECORD = 162;
     }
 
     public static class OperatorModule {

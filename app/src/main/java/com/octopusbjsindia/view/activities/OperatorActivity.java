@@ -118,7 +118,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         setContentView(R.layout.activity_operator);
 
         OperatorActivityPresenter presenter = new OperatorActivityPresenter(this);
-        presenter.getAllFiltersRequests();
+        machine_code = getIntent().getStringExtra("machineCode");
+        if(machine_code!="") {
+            presenter.getAllFiltersRequests(machine_code);
+        } else {
+            presenter.getAllFiltersRequests("");
+        }
 
         preferences = getPreferences(Context.MODE_PRIVATE);
         editor = preferences.edit();
@@ -139,8 +144,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         checkDate();
         setDeviceInfo();
 
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
-        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+//        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
+//        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
 
         btnStartService.setOnClickListener(this);
         btnStopService.setOnClickListener(this);
