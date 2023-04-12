@@ -58,8 +58,8 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
             tvMachineCode = itemView.findViewById(R.id.tv_machin_code);
             tvMachineStatus = itemView.findViewById(R.id.tv_machin_status);
             tvMachineUpdate = itemView.findViewById(R.id.tv_machin_update);
+            btnDailyRecord = itemView.findViewById(R.id.btn_daily_record);
             if(isDailyMachineRecord) {
-                btnDailyRecord = itemView.findViewById(R.id.btn_daily_record);
                 btnDailyRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -69,7 +69,7 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
                     }
                 });
             } else {
-                btnDailyRecord.setVisibility(View.GONE);
+                btnDailyRecord.setVisibility(View.INVISIBLE);
             }
         }
     }
