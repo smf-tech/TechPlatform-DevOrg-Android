@@ -8,10 +8,13 @@ import com.google.gson.GsonBuilder;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.listeners.APIPresenterListener;
 import com.octopusbjsindia.models.SujalamSuphalam.Structure;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureAPIResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureListAPIResponse;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.profile.JurisdictionLevelResponse;
 import com.octopusbjsindia.request.APIRequestCall;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
 
@@ -24,6 +27,7 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
 
     final String STRUCTURE_MASTER = "structureMasterData";
     final String CREATE_STRUCTURE = "createStructure";
+    final String GET_STRUCTURE = "getStructure";
     final String GET_DISTRICT = "getDistrict";
     final String GET_TALUKA = "getTaluka";
     final String GET_VILLAGE = "getvillage";
@@ -94,6 +98,14 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
                                     Constants.JurisdictionLevelName.VILLAGE_LEVEL);
                         }
                     }
+                }  if (requestID.equalsIgnoreCase(GET_STRUCTURE)) {
+                    StructureAPIResponse structureData = PlatformGson.getPlatformGsonInstance().fromJson(response, StructureAPIResponse.class);
+                    if(structureData.getStatus()==200){
+                        mContext.get().setPreviousStructureData(requestID,structureData);
+                    } else {
+                        mContext.get().onFailureListener(GET_STRUCTURE,structureData.getMessage());
+                    }
+
                 }
             }
         } catch (Exception e) {
@@ -151,4 +163,17 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
         requestCall.setApiPresenterListener(this);
         requestCall.postDataApiCall(CREATE_STRUCTURE, params, getMatrimonyMeetTypesUrl);
     }
+
+    public void getStructureById(String structureId) {
+        mContext.get().showProgressBar();
+        APIRequestCall requestCall = new APIRequestCall();
+        requestCall.setApiPresenterListener(this);
+        String getStructureById = BuildConfig.BASE_URL +
+                String.format(Urls.SSModule.GET_STRUCTURE_BY_ID,structureId);
+        Log.d(GET_STRUCTURE, " url: " + getStructureById);
+
+        requestCall.getDataApiCall(GET_STRUCTURE, getStructureById);
+    }
+
+
 }

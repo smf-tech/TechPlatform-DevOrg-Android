@@ -56,7 +56,7 @@
                 <EditText
                     android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/state"/>
+                    android:hint="@string/mandatory_state"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -76,7 +76,7 @@
                     <EditText
                         android:id="@+id/et_machine_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/district"/>
+                        android:hint="@string/mandatory_district"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -89,7 +89,7 @@
                     <EditText
                         android:id="@+id/et_machine_taluka"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/taluka"/>
+                        android:hint="@string/mandatory_taluka"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

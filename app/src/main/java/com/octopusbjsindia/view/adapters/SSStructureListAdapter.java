@@ -42,6 +42,7 @@ import com.octopusbjsindia.models.home.RoleAccessObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
+import com.octopusbjsindia.view.activities.CreateStructureActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
@@ -324,6 +325,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 case R.id.action_structure_close:
                                     showDialog(activity, "Alert", "Are you sure, want to Close Structure?",
                                             "Yes", "No", getAdapterPosition(), 2);
+                                    break;
+                                case R.id.action_edit_structure:
+                                    if (Util.isConnected(activity)) {
+                                        Intent i = new Intent(activity, CreateStructureActivity.class);
+                                        i.putExtra("structure_id",ssDataList.get(getAdapterPosition()).getStructureId());
+                                        activity.startActivity(i);
+                                    } else {
+                                        Util.showToast(activity.getResources().getString(R.string.msg_no_network), activity);
+                                    }
                                     break;
                                 case R.id.action_structure_boundary:
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
