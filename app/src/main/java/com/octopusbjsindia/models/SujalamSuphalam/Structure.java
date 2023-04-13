@@ -42,7 +42,9 @@ public class Structure implements Serializable {
     @SerializedName("department_id")
     @Expose
     private String departmentId;
-
+    @SerializedName("structureId")
+    @Expose
+    private String structureId;
     @SerializedName("department_name")
     @Expose
     private String departmentName;
@@ -95,10 +97,10 @@ public class Structure implements Serializable {
     @Expose
     private String apprxEstimateQunty;
 
-    @SerializedName("structure_image_1")
+    @SerializedName("structure_image_0")
     @Expose
     private String structureImage1;
-    @SerializedName("structure_image_2")
+    @SerializedName("structure_image_1")
     @Expose
     private String structureImage2;
 
@@ -305,6 +307,14 @@ public class Structure implements Serializable {
 
     public void setTotalPopulation(String totalPopulation) {
         this.totalPopulation = totalPopulation;
+    }
+
+    public String getStructureId() {
+        return structureId;
+    }
+
+    public void setStructureId(String structureId) {
+        this.structureId = structureId;
     }
 
     public String getWaterStorage() {

@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/color_db_tab_select" />
-    <corners android:radius="@dimen/dimen_05dp" />
+    <corners android:radius="32dp" />
 </shape>

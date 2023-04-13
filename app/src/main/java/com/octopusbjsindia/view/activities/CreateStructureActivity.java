@@ -159,11 +159,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         structureId = getIntent().getStringExtra("structure_id");
 
+        structureData = new Structure();
+
         if (structureId != null && !TextUtils.isEmpty(structureId)) {
             presenter.getStructureById(structureId);
+            structureData.setStructureId(structureId);
         }
-
-        structureData = new Structure();
 
         setMasterData();
         initView();
@@ -598,11 +599,11 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                         if (isFirstStructureImage) {
                             imageUri1 = resultUri;
-                            imageHashmap.put("structure_image_1" , bitmap);
+                            imageHashmap.put("structure_image_0" , bitmap);
                         }
                         else {
                             imageUri2 = resultUri;
-                            imageHashmap.put("structure_image_2" , bitmap);
+                            imageHashmap.put("structure_image_1" , bitmap);
                         }
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
@@ -1144,6 +1145,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                districtList.clear();
                 break;
             case "Select District":
                 for (CustomSpinnerObject obj : districtList) {
@@ -1160,6 +1162,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                talukaList.clear();
+                villageList.clear();
                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject obj : talukaList) {
@@ -1173,6 +1177,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                villageList.clear();
                 //get Taluka
                 if (!TextUtils.isEmpty(selectedTalukaId)) {
                     presenter.getLocationData(selectedTalukaId,

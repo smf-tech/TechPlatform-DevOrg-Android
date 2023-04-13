@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/base_background_color"
+    android:background="@color/google_in"
     android:orientation="vertical"
     tools:context="com.octopusbjsindia.view.fragments.StructureMachineListFragment">
 
@@ -28,6 +28,7 @@
             android:hint="@string/state"
             android:paddingStart="@dimen/dimen_10dp"
             android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
             android:textColorHint="@color/medium_grey" />
 
         <TextView
@@ -44,6 +45,7 @@
             android:hint="@string/district"
             android:paddingStart="@dimen/dimen_10dp"
             android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
             android:textColorHint="@color/medium_grey" />
 
         <TextView
@@ -59,6 +61,7 @@
             android:hint="@string/taluka"
             android:paddingStart="@dimen/dimen_10dp"
             android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
             android:textColorHint="@color/medium_grey" />
 
         <ImageView
@@ -73,16 +76,27 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ly_filter"
+        android:background="?dividerHorizontal" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ly_filter">
+        android:layout_below="@+id/divider">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_data_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:clipToPadding="false"
+            android:paddingBottom="48dp"
+            tools:listitem="@layout/ss_structure_item_layout"
             android:layout_below="@+id/ly_filter"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -91,25 +105,29 @@
         android:id="@+id/fb_create_operator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/fb_select"
+        android:layout_alignTop="@+id/fb_select"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/colorPrimary"
-        app:fabSize="mini"
         android:src="@drawable/ic_add_operator"
+        app:fabSize="normal"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/fb_create_operator"
+        android:layout_alignTop="@+id/fb_create_operator"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/colorPrimary"
-        app:fabSize="mini"
+        app:fabSize="normal"
         app:tint="@color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -118,11 +136,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:src="@android:drawable/ic_input_add"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_add_24"
         app:backgroundTint="@color/colorPrimary"
-        app:fabSize="mini"
+        app:fabSize="normal"
         app:tint="@color/white"
         tools:ignore="RelativeOverlap" />
 

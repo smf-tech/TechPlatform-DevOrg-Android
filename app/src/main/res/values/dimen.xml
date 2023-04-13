@@ -65,7 +65,9 @@
     <dimen name="form_item_status_indicator_width">6dp</dimen>
 
     <dimen name="standard_60">60dp</dimen>
+    <dimen name="standard_65">65dp</dimen>
     <dimen name="standard_120">120dp</dimen>
+    <dimen name="standard_130">130dp</dimen>
     <dimen name="standard_180">180dp</dimen>
     <dimen name="standard_240">240dp</dimen>
     <dimen name="standard_300">300dp</dimen>

@@ -51,6 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_marginEnd="@dimen/dimen_05dp">
 
                 <EditText
@@ -71,6 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                     android:layout_marginEnd="@dimen/dimen_05dp">
 
                     <EditText
@@ -84,6 +88,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                     android:layout_marginStart="@dimen/dimen_05dp">
 
                     <EditText
@@ -97,6 +103,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -120,6 +128,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content">
 
                 <EditText
