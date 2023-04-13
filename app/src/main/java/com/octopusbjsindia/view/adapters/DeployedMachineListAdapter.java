@@ -1,9 +1,11 @@
 package com.octopusbjsindia.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,18 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.SujalamSuphalam.DeployedMachine;
+import com.octopusbjsindia.view.activities.OperatorActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMachineListAdapter.ViewHolder> {
 
-    ArrayList<DeployedMachine> dataList;
-    Context mContext;
+    private ArrayList<DeployedMachine> dataList;
+    private Context mContext;
+    private boolean isDailyMachineRecord;
 
-    public DeployedMachineListAdapter(List<DeployedMachine> dataList, Context mContext) {
+    public DeployedMachineListAdapter(List<DeployedMachine> dataList, Context mContext, boolean isDailyMachineRecord) {
         this.dataList = (ArrayList<DeployedMachine>)dataList;
         this.mContext = mContext;
+        this.isDailyMachineRecord = isDailyMachineRecord;
     }
 
     @NonNull
@@ -35,9 +40,9 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvMachinCode.setText(dataList.get(position).getCode());
-        holder.tvMachinStatus.setText(dataList.get(position).getStatus());
-        holder.tvMachinUpdate.setText(dataList.get(position).getMachineUpdatedDate());
+        holder.tvMachineCode.setText(dataList.get(position).getCode());
+        holder.tvMachineStatus.setText(dataList.get(position).getStatus());
+        holder.tvMachineUpdate.setText(dataList.get(position).getMachineUpdatedDate());
     }
 
     @Override
@@ -46,12 +51,26 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMachinCode, tvMachinStatus, tvMachinUpdate;
+        TextView tvMachineCode, tvMachineStatus, tvMachineUpdate;
+        Button btnDailyRecord;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvMachinCode = itemView.findViewById(R.id.tv_machin_code);
-            tvMachinStatus = itemView.findViewById(R.id.tv_machin_status);
-            tvMachinUpdate = itemView.findViewById(R.id.tv_machin_update);
+            tvMachineCode = itemView.findViewById(R.id.tv_machin_code);
+            tvMachineStatus = itemView.findViewById(R.id.tv_machin_status);
+            tvMachineUpdate = itemView.findViewById(R.id.tv_machin_update);
+            btnDailyRecord = itemView.findViewById(R.id.btn_daily_record);
+            if(isDailyMachineRecord) {
+                btnDailyRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent dailyRecordIntent = new Intent(mContext, OperatorActivity.class);
+                        dailyRecordIntent.putExtra("machineCode", dataList.get(getAdapterPosition()).getCode());
+                        mContext.startActivity(dailyRecordIntent);
+                    }
+                });
+            } else {
+                btnDailyRecord.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

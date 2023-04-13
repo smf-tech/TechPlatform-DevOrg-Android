@@ -30,6 +30,7 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.MachineWorkingDataListActivity;
+import com.octopusbjsindia.view.activities.OperatorActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.fragments.StructureMachineListFragment;
 
@@ -104,8 +105,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Next Step");
                 }
-            }
-            else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+            } else if (ssDataList.get(position).getStatusCode() == Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                 if (fragment.isMachineEligible) {
                     holder.btAction.setVisibility(View.VISIBLE);
                     holder.btAction.setText("Set Eligibility");
@@ -219,19 +219,24 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 //                        }
                     }
 
-                    if (fragment.isReleaseOperator) {
-                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
+                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                            Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                    Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
+                        if(fragment.isDailyMachineRecord) {
+                            popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(true);
+                        } else {
+                            popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(false);
+                        }
+                        if (fragment.isReleaseOperator) {
                             if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
                                 popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(true);
                             } else {
@@ -242,6 +247,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
+                        popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
@@ -428,6 +434,12 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                                         }
                                         break;
+                                    case R.id.action_daily_machine_record:
+                                        Intent dailyRecordIntent = new Intent(activity, OperatorActivity.class);
+                                        dailyRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        dailyRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+                                        activity.startActivity(dailyRecordIntent);
+                                        activity.finish();
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);

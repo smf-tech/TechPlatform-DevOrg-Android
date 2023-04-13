@@ -55,13 +55,12 @@ import java.util.Objects;
 
 public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureListAdapter.ViewHolder> {
 
-    final String STRUCTURE_DATA = "StructureData";
-    final String STRUCTURE_STATUS = "StructureStatus";
-
+    private final String STRUCTURE_DATA = "StructureData";
+    private final String STRUCTURE_STATUS = "StructureStatus";
     private ArrayList<StructureData> ssDataList;
-    Activity activity;
-    boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
-            isVisitMonitoring, isStructureComplete, isStructureClose, isStructureBoundary;
+    private Activity activity;
+    private boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
+            isVisitMonitoring, isStructureComplete, isStructureClose, isStructureBoundary, isDailyMachineRecord;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
@@ -96,6 +95,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
                     isStructureBoundary = true;
                     continue;
+                } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DAILY_MACHINE_RECORD)) {
+                    isDailyMachineRecord = true;
                 }
             }
         }
@@ -157,7 +158,6 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         } else {
             holder.lyStartData.setVisibility(View.GONE);
         }
-
 //        holder.tvReason.setVisibility(View.GONE);
 //        holder.tvContact.setText(ssDataList.get(position).get());
     }
@@ -168,7 +168,6 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
                 tvBoundary, tvStartDate, tvEndDate;
@@ -425,7 +424,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 @Override
                 public void onClick(View view) {
                     if (ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().size() > 0)
-                        dialogMachinList(getAdapterPosition());
+                        dialogMachineList(getAdapterPosition());
                 }
             });
         }
@@ -498,18 +497,18 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         dialog.show();
     }
 
-    void dialogMachinList(int adapterPosition) {
+    void dialogMachineList(int adapterPosition) {
         final Dialog dialog = new Dialog(Objects.requireNonNull(activity));
         dialog.setContentView(R.layout.dialog_deployed_machine_list);
 
         TextView title = dialog.findViewById(R.id.toolbar_title);
         title.setText("Deployed Machine List");
 
-        RecyclerView rvDeployedMachin = dialog.findViewById(R.id.rv_deployed_machin);
-        rvDeployedMachin.setLayoutManager(new LinearLayoutManager(activity));
+        RecyclerView rvDeployedMachine = dialog.findViewById(R.id.rv_deployed_machin);
+        rvDeployedMachine.setLayoutManager(new LinearLayoutManager(activity));
         DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
-                ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity);
-        rvDeployedMachin.setAdapter(adapter);
+                ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity, isDailyMachineRecord);
+        rvDeployedMachine.setAdapter(adapter);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);
         ivClose.setOnClickListener(v -> {

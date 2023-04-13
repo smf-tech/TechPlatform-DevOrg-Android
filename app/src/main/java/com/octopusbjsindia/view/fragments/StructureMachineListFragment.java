@@ -91,7 +91,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     public boolean isMachineAdd, isOperatorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
-            isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator;
+            isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator, isDailyMachineRecord;
     private FloatingActionButton fbSelect, fbCreate, fbCreateOperator;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
@@ -205,6 +205,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ASSIGN_OPERATOR)) {
                     isAssignOperator = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DAILY_MACHINE_RECORD)) {
+                    isDailyMachineRecord = true;
                 }
             }
         }
@@ -804,13 +806,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     }
 
     public void populateStructureData(String requestID, StructureListAPIResponse structureListData) {
-
         if (structureListData != null) {
             ssStructureListData.clear();
             filteredStructureListData.clear();
 
             //For RWB project, structure offline save functionality removed. So following code commented.
-
 //            ArrayList<StructureData> offlineStructureListData = new ArrayList<StructureData>();
 //            offlineStructureListData.addAll(DatabaseManager.getDBInstance(Platform.getInstance()).getStructureDataDao().getAllStructure());
 

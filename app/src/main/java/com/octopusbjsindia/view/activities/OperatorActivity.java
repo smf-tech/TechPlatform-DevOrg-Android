@@ -62,7 +62,6 @@ import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorActivityPresenter;
-import com.octopusbjsindia.presenter.OperatorMeterReadingActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
@@ -118,7 +117,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         setContentView(R.layout.activity_operator);
 
         OperatorActivityPresenter presenter = new OperatorActivityPresenter(this);
-        presenter.getAllFiltersRequests();
+        machine_code = getIntent().getStringExtra("machineCode");
+        if(machine_code!="") {
+            presenter.getAllFiltersRequests(machine_code);
+        } else {
+            presenter.getAllFiltersRequests("");
+        }
 
         preferences = getPreferences(Context.MODE_PRIVATE);
         editor = preferences.edit();
@@ -139,8 +143,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         checkDate();
         setDeviceInfo();
 
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
-        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
+//        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_meter);
+//        requestOptions = requestOptions.apply(RequestOptions.noTransformation());
 
         btnStartService.setOnClickListener(this);
         btnStopService.setOnClickListener(this);

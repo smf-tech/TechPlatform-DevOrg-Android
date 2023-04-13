@@ -32,12 +32,12 @@ public class OperatorMeterReadingRequestCall {
         this.listener = listener;
     }
 
-    public void getAllPendingRequests() {
+    public void getAllPendingRequests(String machineCode) {
         Response.Listener<JSONObject> pendingRequestsResponseListener = response -> {
             try {
                 if (response != null) {
                     String res = response.toString();
-                    Log.d(TAG, "getMAchineData -> Resp: " + res);
+                    Log.d(TAG, "getMachineData -> Resp: " + res);
                     listener.onFilterListRequestsFetched(res);
                 }
             } catch (Exception e) {
@@ -49,8 +49,8 @@ public class OperatorMeterReadingRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_DATA;
-        Log.d(TAG, "getMAchineData -> Url: " + getPendingRequestsUrl);
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_DATA, machineCode);
+        Log.d(TAG, "getMachineData -> Url: " + getPendingRequestsUrl);
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
                 getPendingRequestsUrl,

@@ -39,7 +39,7 @@ public class OperatorMeterReadingActivityPresenter implements TMFilterListReques
         requestCall.setListener(this);
 
         //fragmentWeakReference.get().showProgressBar();
-        requestCall.getAllPendingRequests();
+        //requestCall.getAllPendingRequests();
     }
 
     /*public void approveRejectRequest(String requestStatus, PendingRequest pendingRequest) {
