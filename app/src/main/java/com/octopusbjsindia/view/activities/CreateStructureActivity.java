@@ -1052,10 +1052,15 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         rQueue.getCache().clear();
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-//                            Toast.makeText(StructurePripretionsActivity.this, jsonString, Toast.LENGTH_LONG).show();
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
                             Log.d("response -", jsonString);
-                            Util.showToast("Structure created", this);
-                            finish();
+                            if (commonResponse.getStatus() == 200) {
+                                Toast.makeText(CreateStructureActivity.this,
+                                        commonResponse.getMessage(), Toast.LENGTH_SHORT).show();                                finish();
+                            } else {
+                                Toast.makeText(CreateStructureActivity.this,
+                                        commonResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(CreateStructureActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
