@@ -53,6 +53,18 @@ public class OperatorRequestResponseModel {
     @Expose
     private String structureId;
 
+    public String getMeterReadingDate() {
+        return meterReadingDate;
+    }
+
+    public void setMeterReadingDate(String meterReadingDate) {
+        this.meterReadingDate = meterReadingDate;
+    }
+
+    @SerializedName("meter_reading_date")
+    @Expose
+    private String meterReadingDate;
+
     public String getMachine_id() {
         return machine_id;
     }

@@ -29,6 +29,14 @@ public class OperatorMachineCodeDataModel {
     @SerializedName("machine_code")
     @Expose
     private String machine_code;
+
+    public Long getCurrentTimeStamp() {
+        return currentTimeStamp;
+    }
+
+    @SerializedName("current_time_stamp")
+    @Expose
+    private Long currentTimeStamp;
     @SerializedName("nonutilisationTypeData")
     @Expose
     private NonutilisationTypeDataList nonutilisationTypeData;

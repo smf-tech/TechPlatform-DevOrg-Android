@@ -168,6 +168,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private RequestOptions requestOptions,requestOptionsjcb;
     private Toolbar toolbar;
     private ImageView toolbar_edit_action,toolbar_action;
+
     private void updateStatusAndProceed(int currentStateReceived) {
         Log.e("currentstate--3", "----"+currentState);
         currentState  =currentStateReceived;
