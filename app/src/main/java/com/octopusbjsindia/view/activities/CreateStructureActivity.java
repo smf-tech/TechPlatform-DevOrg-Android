@@ -1,19 +1,30 @@
 package com.octopusbjsindia.view.activities;
 
+import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +32,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -37,42 +61,61 @@ import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.SujalamSuphalam.Structure;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureAPIResponse;
+import com.octopusbjsindia.models.SujalamSuphalam.StructureData;
+import com.octopusbjsindia.models.SujalamSuphalam.StructurePripretionData;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
+import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
 import com.octopusbjsindia.models.home.RoleAccessList;
 import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
 import com.octopusbjsindia.models.profile.JurisdictionType;
 import com.octopusbjsindia.presenter.CreateStructureActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
+import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class CreateStructureActivity extends AppCompatActivity implements APIDataListener, View.OnClickListener,
         CustomSpinnerListener {
 
     private RelativeLayout progressBar;
     private CreateStructureActivityPresenter presenter;
-
+    private String structureId;
+    private ImageView structureImg1, structureImg2;
     private EditText etState, etDistrict, etTaluka, etHostVillage,
-            //etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
-            etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, etStructureWorkType, etStructureOwnerDepartment,
-            //etNotaDetail, etSubStructureOwnerDepartment,
-                    etAdministrativeApprovalNo, etAdministrativeApprovalDate,
+    //etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
+    etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, /*etStructureWorkType,*/ etStructureOwnerDepartment,
+    //etNotaDetail, etSubStructureOwnerDepartment,
+    etAdministrativeApprovalNo, etAdministrativeApprovalDate,
             etTechnicalSanctionNo, etTechnicalSanctionDate, etIntervention, etAdministrativeEstimateAmount,
-                    //etApproximateWorkingHours, etApproximateDieselConsumptionAmount, etApproximateDieselLiters,
-                    etApproximateEstimateQuantity, etPotentialSiltQuantity, etRemark;
+    //etApproximateWorkingHours, etApproximateDieselConsumptionAmount, etApproximateDieselLiters,
+    etSanctionedSiltQuantity, etPotentialSiltQuantity, etRemark;
     private Button btSubmit;
 
     private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka,
             selectedHostVillageId, selectedHostVillage, selectedStructureTypeId, selectedIntervention, selectedInterventionId,
-            selectedStructureType, selectedStructureWorkTypeId, selectedStructureWorkType, selectedStructureOwnerDepartmentId,
+            selectedStructureType, /*selectedStructureWorkTypeId, selectedStructureWorkType,*/ selectedStructureOwnerDepartmentId,
             selectedStructureOwnerDepartment, selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
 
     private boolean isStateFilter, isDistrictFilter, isTalukaFilter;
@@ -97,6 +140,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private Structure structureData;
     private GPSTracker gpsTracker;
     private Location location;
+    private Uri imageUri1, imageUri2;
+    private String currentPhotoPath;
+    private boolean isFirstStructureImage = true;
+    private Uri finalUri, outputUri;
+    private ImageView selectedIV;
+    private RequestQueue rQueue;
+    private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.CREATE_STRUCTURE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,17 +156,149 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
         progressBar = findViewById(R.id.ly_progress_bar);
         presenter = new CreateStructureActivityPresenter(this);
+
+        structureId = getIntent().getStringExtra("structure_id");
+
+        structureData = new Structure();
+
+        if (structureId != null && !TextUtils.isEmpty(structureId)) {
+            presenter.getStructureById(structureId);
+            structureData.setStructureId(structureId);
+        }
+
         setMasterData();
         initView();
         setTitle("Create Waterbody");
+
+    }
+
+    //in edit structure case
+    public void setPreviousStructureData(String requestID, StructureAPIResponse structureApiData) {
+        Structure structure = structureApiData.getData();
+        if (structure == null) {
+            return;
+        }
+
+        //state
+        if (structure.getState() != null && structure.getStateId() != null) {
+            etState.setText(structure.getState());
+            selectedState = structure.getState();
+            selectedStateId = structure.getStateId();
+        }
+        //district
+        if (structure.getDistrict() != null && structure.getDistrictId() != null) {
+            etDistrict.setText(structure.getDistrict());
+            selectedDistrict = structure.getDistrict();
+            selectedDistrictId = structure.getDistrictId();
+        }
+        //taluka
+        if (structure.getTaluka() != null && structure.getTalukaId() != null) {
+            etTaluka.setText(structure.getTaluka());
+            selectedTaluka = structure.getTaluka();
+            selectedTalukaId = structure.getTalukaId();
+        }
+        //host village
+        if (structure.getVillage() != null && structure.getVillageId() != null) {
+            etHostVillage.setText(structure.getVillage());
+            selectedHostVillage = structure.getVillage();
+            selectedHostVillageId = structure.getVillageId();
+        }
+        //gat no./survey no.
+        if (structure.getGatNo() != null) {
+            etGatNo.setText(structure.getGatNo());
+        }
+        //water shed no.
+        if (structure.getWaterShedNo() != null) {
+            etWaterShedNo.setText(structure.getWaterShedNo());
+        }
+        //area
+        if (structure.getArea() != null) {
+            etArea.setText(structure.getArea());
+        }
+        //structure name
+        if (structure.getName() != null) {
+            etStructureName.setText(structure.getName());
+        }
+        //struc owner depart.
+        if (structure.getDepartmentId() != null && structure.getDepartmentName() != null) {
+            etStructureOwnerDepartment.setText(structure.getDepartmentName());
+            selectedStructureOwnerDepartment = structure.getDepartmentName();
+            selectedStructureOwnerDepartmentId = structure.getDepartmentId();
+        }
+        //intervention
+        if (structure.getInterventionName() != null && structure.getInterventionId() != null) {
+            etIntervention.setText(structure.getInterventionName());
+            selectedIntervention = structure.getInterventionName();
+            selectedInterventionId = structure.getInterventionId();
+        }
+        //struc type
+        if (structure.getStructureTypeName() != null && structure.getStructureType() != null) {
+            etStructureType.setText(structure.getStructureTypeName());
+            selectedStructureType = structure.getStructureTypeName();
+            selectedStructureTypeId = structure.getStructureType();
+        }
+        //work type
+       /* if (structure.getWorkTypeName() != null && structure.getWorkType() != null) {
+            etStructureWorkType.setText(structure.getWorkTypeName());
+            selectedStructureWorkType = structure.getWorkTypeName();
+            selectedStructureWorkTypeId = structure.getWorkType();
+        }*/
+        //tech. sanction no.
+        if (structure.getTechnicalSectionNumber() != null) {
+            etTechnicalSanctionNo.setText(structure.getTechnicalSectionNumber());
+        }
+        //tech. sanc. date
+        if (structure.getTechnicalSectionDate() != null) {
+            etTechnicalSanctionDate.setText(structure.getTechnicalSectionDate());
+        }
+        //admin approval no.
+        if (structure.getAdministrativeApprovalNo() != null) {
+            etAdministrativeApprovalNo.setText(structure.getAdministrativeApprovalNo());
+        }
+        //admin approval date
+        if (structure.getAdministrativeApprovalDate() != null) {
+            etAdministrativeApprovalDate.setText(structure.getAdministrativeApprovalDate());
+        }
+        //admin estimate amt
+        if (structure.getAdministrativeEstimateAmount() != null) {
+            etAdministrativeEstimateAmount.setText(structure.getAdministrativeEstimateAmount());
+        }
+        //sanctioned silt quantity
+        if (structure.getApprxEstimateQunty() != null) {
+            etSanctionedSiltQuantity.setText(structure.getApprxEstimateQunty());
+        }
+        //approx. potential silt quanti.
+        if (structure.getPotentialSiltQuantity() != null) {
+            etPotentialSiltQuantity.setText(structure.getPotentialSiltQuantity());
+        }
+        //remark
+        if (structure.getRemark() != null) {
+            etRemark.setText(structure.getRemark());
+        }
+        //structure image 1
+        if (structure.getStructureImage1() != null) {
+            structureData.setStructureImage1(structure.getStructureImage1());
+            Glide.with(this)
+                    .load(structure.getStructureImage1())
+                    .placeholder(R.drawable.ic_add_img)
+                    .into(structureImg1);
+        }
+        //structure image 1
+        if (structure.getStructureImage2() != null) {
+            structureData.setStructureImage2(structure.getStructureImage2());
+            Glide.with(this)
+                    .load(structure.getStructureImage2())
+                    .placeholder(R.drawable.ic_add_img)
+                    .into(structureImg2);
+        }
     }
 
     private void initView() {
 
         //get lat,long of location
         gpsTracker = new GPSTracker(this);
-        if(Permissions.isLocationPermissionGranted(this, this)) {
-            if(gpsTracker.canGetLocation()) {
+        if (Permissions.isLocationPermissionGranted(this, this)) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
             } else {
                 gpsTracker.showSettingsAlert();
@@ -173,12 +356,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             }
         }
 
-        structureData = new Structure();
+
 
         etState = findViewById(R.id.et_state);
         etDistrict = findViewById(R.id.et_district);
         etTaluka = findViewById(R.id.et_taluka);
         etHostVillage = findViewById(R.id.et_host_village);
+        structureImg1 = findViewById(R.id.structure_img1);
+        structureImg2 = findViewById(R.id.structure_img2);
 //        etHostVillagePopulation = findViewById(R.id.et_host_village_population);
 //        etCatchmentVillage = findViewById(R.id.et_catchment_village);
 //        etCatchmentVillagePopulation = findViewById(R.id.et_catchment_village_population);
@@ -190,7 +375,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //        etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
 //        etNotaDetail = findViewById(R.id.et_nota_detail);
         etStructureType = findViewById(R.id.et_structure_type);
-        etStructureWorkType = findViewById(R.id.et_structure_work_type);
+       // etStructureWorkType = findViewById(R.id.et_structure_work_type);
         etAdministrativeApprovalNo = findViewById(R.id.et_administrative_approval_no);
         etAdministrativeApprovalDate = findViewById(R.id.et_administrative_approval_date);
         etTechnicalSanctionNo = findViewById(R.id.et_technical_sanction_no);
@@ -200,7 +385,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //        etApproximateWorkingHours = findViewById(R.id.et_approximate_working_hours);
 //        etApproximateDieselConsumptionAmount = findViewById(R.id.et_approximate_diesel_consumption_amount);
 //        etApproximateDieselLiters = findViewById(R.id.et_approximate_diesel_liters);
-        etApproximateEstimateQuantity = findViewById(R.id.et_approximate_estimate_quantity);
+        etSanctionedSiltQuantity = findViewById(R.id.et_approximate_estimate_quantity);
         etPotentialSiltQuantity = findViewById(R.id.et_potential_silt_quantity);
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
@@ -329,10 +514,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         //etCatchmentVillage.setOnClickListener(this);
         etIntervention.setOnClickListener(this);
         etStructureType.setOnClickListener(this);
-        etStructureWorkType.setOnClickListener(this);
+        //etStructureWorkType.setOnClickListener(this);
         etStructureOwnerDepartment.setOnClickListener(this);
         //etSubStructureOwnerDepartment.setOnClickListener(this);
         btSubmit.setOnClickListener(this);
+        structureImg1.setOnClickListener(this);
+        structureImg2.setOnClickListener(this);
+
 
         //get District
 //        presenter.getJurisdictionLevelData(Util.getUserObjectFromPref().getOrgId(),
@@ -342,6 +530,18 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         presenter.getLocationData(selectedTalukaId,
                 Util.getUserObjectFromPref().getJurisdictionTypeId(),
                 Constants.JurisdictionLevelName.VILLAGE_LEVEL);
+
+
+        /*if (masterDataLists != null) {
+            for (int i = 0; i < masterDataLists.size(); i++) {
+                if (masterDataLists.get(i).getField().equalsIgnoreCase("work_type")) {
+                    MasterDataValue data = masterDataLists.get(i).getData().get(0);
+                    selectedStructureWorkType = data.getValue();
+                    selectedStructureWorkTypeId = data.getId();
+                    etStructureWorkType.setText(selectedStructureWorkType);
+                }
+            }
+        }*/
     }
 
     public void setTitle(String title) {
@@ -354,9 +554,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.GPS_REQUEST) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                if(gpsTracker.canGetLocation()) {
+                if (gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
                 } else {
                     gpsTracker.showSettingsAlert();
@@ -370,14 +570,59 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100) {
-            if(gpsTracker.canGetLocation()) {
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Util.openCropActivityFreeCrop(this, finalUri, finalUri);
+            } catch (Exception e) {
+                Log.e("TAG", e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+                    getImageFile();
+                    outputUri = data.getData();
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
+                    Util.openCropActivityFreeCrop(this, outputUri, finalUri);
+                } catch (Exception e) {
+                    Log.e("TAG", e.getMessage());
+                }
+            }
+        } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+                final Uri resultUri = UCrop.getOutput(data);
+                final File imageFile = new File(Objects.requireNonNull(resultUri).getPath());
+                final File compressedImageFile = Util.compressFile(imageFile);
+                if (Util.isConnected(this)) {
+                    if (Util.isValidImageSize(compressedImageFile)) {
+                        selectedIV.setImageURI(resultUri);
+                        Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                        if (isFirstStructureImage) {
+                            imageUri1 = resultUri;
+                            imageHashmap.put("structure_image_0" , bitmap);
+                        }
+                        else {
+                            imageUri2 = resultUri;
+                            imageHashmap.put("structure_image_1" , bitmap);
+                        }
+                    } else {
+                        Util.showToast(getString(R.string.msg_big_image), this);
+                    }
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        } else if (requestCode == 100) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
                 Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     @Override
@@ -517,7 +762,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdStructerType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 break;
-            case R.id.et_structure_work_type:
+           /* case R.id.et_structure_work_type:
                 structureWorkTypeList.clear();
                 for (int i = 0; i < masterDataLists.size(); i++) {
                     if (masterDataLists.get(i).getField().equalsIgnoreCase("work_type"))
@@ -534,19 +779,100 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 csdStructerWorkType.show();
                 csdStructerWorkType.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-                break;
+                break;*/
             case R.id.et_administrative_approval_date:
                 Util.showDateDialog(this, etAdministrativeApprovalDate);
                 break;
             case R.id.et_technical_sanction_date:
                 Util.showDateDialog(this, etTechnicalSanctionDate);
                 break;
+            case R.id.structure_img1:
+                selectedIV = findViewById(R.id.structure_img1);
+                isFirstStructureImage = true;
+                onAddImageClick();
+                break;
+            case R.id.structure_img2:
+                selectedIV = findViewById(R.id.structure_img2);
+                isFirstStructureImage = false;
+                onAddImageClick();
+                break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
-                    presenter.submitStructure(structureData);
+                   // presenter.submitStructure(structureData);
+                    uploadImage(structureData);
                 }
                 break;
         }
+    }
+
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(this, this)) {
+            showPictureDialog();
+        }
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Util.showToast(getString(R.string.msg_error_in_photo_gallery), this);
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            Toast.makeText(this, getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(this, getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
     }
 
     private boolean isAllDataValid() {
@@ -580,21 +906,23 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Gat No.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etWaterShedNo.getText().toString())) {
+        } /*else if (TextUtils.isEmpty(etWaterShedNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Water Shed No.", Snackbar.LENGTH_LONG);
             return false;
-        } /*else if (TextUtils.isEmpty(etArea.getText().toString())) {
+        }*/
+        else if (TextUtils.isEmpty(etArea.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Area.", Snackbar.LENGTH_LONG);
+                    "Please, fill structure area.", Snackbar.LENGTH_LONG);
             return false;
-        } */else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
+        }
+        else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
+                    "Please, fill Structure Name.", Snackbar.LENGTH_LONG);
             return false;
         } else if (TextUtils.isEmpty(selectedStructureOwnerDepartmentId)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-                    "Please, fill Structure Name.", Snackbar.LENGTH_LONG);
+                    "Please, fill Structure Owner Department.", Snackbar.LENGTH_LONG);
             return false;
         }
 //        else if (TextUtils.isEmpty(selectedSubStructureOwnerDepartmentId)) {
@@ -611,11 +939,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Structure Type.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(selectedStructureWorkType)) {
+        } /*else if (TextUtils.isEmpty(selectedStructureWorkType)) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, select Structure Work Type.", Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())) {
+        }*/
+        /*else if (TextUtils.isEmpty(etAdministrativeApprovalNo.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Administrative Approval No.", Snackbar.LENGTH_LONG);
             return false;
@@ -631,23 +960,29 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Administrative Estimate Amount.", Snackbar.LENGTH_LONG);
             return false;
-        }
-//        else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
-//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-//                    "Please, fill Approximate Working Hours.", Snackbar.LENGTH_LONG);
-//            return false;
-//        } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
-//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-//                    "Please, fill Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
-//            return false;
-//        } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
-//            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
-//                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
-//            return false;
-//        }
-        else if (TextUtils.isEmpty(etApproximateEstimateQuantity.getText().toString())) {
+        }*/
+      /*  else if (TextUtils.isEmpty(etApproximateWorkingHours.getText().toString())) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, fill Approximate Working Hours.", Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etApproximateDieselConsumptionAmount.getText().toString())) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, fill Approximate Diesel Consumption Amount.", Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etApproximateDieselLiters.getText().toString())) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, fill proper information.", Snackbar.LENGTH_LONG);
+            return false;
+        }*/
+       /* else if (TextUtils.isEmpty(etSanctionedSiltQuantity.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, Fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
+            return false;
+        }*/
+        else if (imageHashmap.isEmpty() && structureData.getStructureImage1()==null
+                &&  structureData.getStructureImage2()==null) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
+                    "Please, upload at least one structure image", Snackbar.LENGTH_LONG);
             return false;
         } else {
             structureData.setStateId(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getId());
@@ -669,7 +1004,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             structureData.setSubDepartmentId(selectedSubStructureOwnerDepartmentId);
             //structureData.setNotaDetail(etNotaDetail.getText().toString());
             structureData.setStructureType(selectedStructureTypeId);
-            structureData.setWorkType(selectedStructureWorkTypeId);
+            //structureData.setWorkType(selectedStructureWorkTypeId);
             structureData.setAdministrativeApprovalNo(etAdministrativeApprovalNo.getText().toString());
             structureData.setAdministrativeApprovalDate(etAdministrativeApprovalDate.getText().toString());
             structureData.setTechnicalSectionNumber(etTechnicalSanctionNo.getText().toString());
@@ -679,17 +1014,17 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //            structureData.setApprxWorkingHrs(etApproximateWorkingHours.getText().toString());
 //            structureData.setApprxDieselConsumptionRs(etApproximateDieselConsumptionAmount.getText().toString());
 //            structureData.setApprxDieselConsumptionLt(etApproximateDieselLiters.getText().toString());
-            structureData.setApprxEstimateQunty(etApproximateEstimateQuantity.getText().toString());
+            structureData.setApprxEstimateQunty(etSanctionedSiltQuantity.getText().toString());
             structureData.setPotentialSiltQuantity(etPotentialSiltQuantity.getText().toString());
 
             //set location
-            if (location != null ) {
+            if (location != null) {
                 structureData.setLat(location.getLatitude());
                 structureData.setLog(location.getLongitude());
             } else {
-                if(gpsTracker.canGetLocation()) {
+                if (gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
-                    if (location != null ) {
+                    if (location != null) {
                         structureData.setLat(location.getLatitude());
                         structureData.setLog(location.getLongitude());
                     }
@@ -700,9 +1035,94 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
             structureData.setFfId(Util.getUserObjectFromPref().getId());
             structureData.setRemark(etRemark.getText().toString());
+
         }
         return true;
     }
+
+    private void uploadImage(Structure structure) {
+
+        showProgressBar();
+        Log.d("request -", new Gson().toJson(structure));
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        hideProgressBar();
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+//                            Toast.makeText(StructurePripretionsActivity.this, jsonString, Toast.LENGTH_LONG).show();
+                            Log.d("response -", jsonString);
+                            Util.showToast("Structure created", this);
+                            finish();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(CreateStructureActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                error -> {
+                    hideProgressBar();
+                    Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(structure));
+                params.put("imageArraySize", String.valueOf(imageHashmap.size()));//add string parameters
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = null;
+                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+                for (int i = 0; i < imageHashmap.size(); i++) {
+                    String key = (String) myVeryOwnIterator.next();
+                    drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
+                    params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
+                    Log.d("TAG", "getByteData: "+params);
+                }
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(this);
+        rQueue.add(volleyMultipartRequest);
+    }
+
 
     @Override
     public void onCustomSpinnerSelection(String type) {
@@ -725,6 +1145,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                districtList.clear();
                 break;
             case "Select District":
                 for (CustomSpinnerObject obj : districtList) {
@@ -741,6 +1162,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                talukaList.clear();
+                villageList.clear();
                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject obj : talukaList) {
@@ -754,6 +1177,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 etHostVillage.setText("");
                 selectedHostVillage = "";
                 selectedHostVillageId = "";
+                villageList.clear();
                 //get Taluka
                 if (!TextUtils.isEmpty(selectedTalukaId)) {
                     presenter.getLocationData(selectedTalukaId,
@@ -839,7 +1263,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 }
                 etStructureType.setText(selectedStructureType);
                 break;
-            case "Select Structure Work Type":
+            /*case "Select Structure Work Type":
                 for (CustomSpinnerObject obj : structureWorkTypeList) {
                     if (obj.isSelected()) {
                         selectedStructureWorkType = obj.getName();
@@ -847,7 +1271,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     }
                 }
                 etStructureWorkType.setText(selectedStructureWorkType);
-                break;
+                break;*/
         }
     }
 
@@ -896,7 +1320,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         String masterDbString = list.get(0).getData();
 
         Gson gson = new Gson();
-        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {};
+        TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
+        };
         ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (MasterDataList obj : masterDataList) {
@@ -990,4 +1415,12 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 break;
         }
     }
+
+    private byte[] getFileDataFromDrawable(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
 }

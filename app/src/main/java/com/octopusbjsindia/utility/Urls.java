@@ -166,6 +166,7 @@ public class Urls {
         public static final String DEPLOY_MACHINE = "api/machineDeployed";
         public static final String SHIFT_MACHINE = "api/machineShift";
         public static final String CREATE_STRUCTURE = "api/createStructure";
+        public static final String GET_STRUCTURE_BY_ID = "api/getStructureDetails/%1$s";
         public static final String STRUCTURE_VISITE_MONITORING = "api/structureVisit";
         public static final String STRUCTURE_PREPARATION = "api/prepareStructure";
         public static final String STRUCTURE_COMPLETION = "api/sowStructure";

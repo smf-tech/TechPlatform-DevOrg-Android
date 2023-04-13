@@ -51,12 +51,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_marginEnd="@dimen/dimen_05dp">
 
                 <EditText
                     android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/state"/>
+                    android:hint="@string/mandatory_state"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -71,12 +73,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                     android:layout_marginEnd="@dimen/dimen_05dp">
 
                     <EditText
                         android:id="@+id/et_machine_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/district"/>
+                        android:hint="@string/mandatory_district"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -84,12 +88,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                     android:layout_marginStart="@dimen/dimen_05dp">
 
                     <EditText
                         android:id="@+id/et_machine_taluka"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/taluka"/>
+                        android:hint="@string/mandatory_taluka"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -97,6 +103,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -120,6 +128,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content">
 
                 <EditText

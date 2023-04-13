@@ -42,6 +42,21 @@ public class Structure implements Serializable {
     @SerializedName("department_id")
     @Expose
     private String departmentId;
+    @SerializedName("structureId")
+    @Expose
+    private String structureId;
+    @SerializedName("department_name")
+    @Expose
+    private String departmentName;
+    @SerializedName("intervention_name")
+    @Expose
+    private String interventionName;
+    @SerializedName("structure_type_name")
+    @Expose
+    private String structureTypeName;
+    @SerializedName("work_type_name")
+    @Expose
+    private String workTypeName;
     @SerializedName("sub_department_id")
     @Expose
     private String subDepartmentId;
@@ -81,6 +96,14 @@ public class Structure implements Serializable {
     @SerializedName("apprx_estimate_qunty")
     @Expose
     private String apprxEstimateQunty;
+
+    @SerializedName("structure_image_0")
+    @Expose
+    private String structureImage1;
+    @SerializedName("structure_image_1")
+    @Expose
+    private String structureImage2;
+
     @SerializedName("potential_silt_quantity")
     @Expose
     private String potentialSiltQuantity;
@@ -222,6 +245,22 @@ public class Structure implements Serializable {
         this.subDepartmentId = subDepartmentId;
     }
 
+    public String getStructureImage1() {
+        return structureImage1;
+    }
+
+    public void setStructureImage1(String structureImage1) {
+        this.structureImage1 = structureImage1;
+    }
+
+    public String getStructureImage2() {
+        return structureImage2;
+    }
+
+    public void setStructureImage2(String structureImage2) {
+        this.structureImage2 = structureImage2;
+    }
+
     public String getCatchmentVillagesIds() {
         return catchmentVillagesIds;
     }
@@ -238,6 +277,22 @@ public class Structure implements Serializable {
         this.catchmentVillages = catchmentVillages;
     }
 
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public String getInterventionName() {
+        return interventionName;
+    }
+
+    public String getStructureTypeName() {
+        return structureTypeName;
+    }
+
+    public String getWorkTypeName() {
+        return workTypeName;
+    }
+
     public String getWorkType() {
         return workType;
     }
@@ -252,6 +307,14 @@ public class Structure implements Serializable {
 
     public void setTotalPopulation(String totalPopulation) {
         this.totalPopulation = totalPopulation;
+    }
+
+    public String getStructureId() {
+        return structureId;
+    }
+
+    public void setStructureId(String structureId) {
+        this.structureId = structureId;
     }
 
     public String getWaterStorage() {

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,6 +71,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     private SujalamSuphalamFragmentPresenter sujalamSuphalamFragmentPresenter;
     private boolean isStructureView, isMachineView, isStateFilter, isDistrictFilter, isTalukaFilter;
     private TextView tvStateFilter, tvDistrictFilter, tvTalukaFilter;
+    private Chip chipStructure,chipMachine;
     private ImageView btnFilter;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
             userTalukas = "", userTalukaIds = "";
@@ -116,11 +118,16 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     private void init(){
         progressBarLayout = sujalamSufalamFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = sujalamSufalamFragmentView.findViewById(R.id.pb_profile_act);
-        tvStructureView = sujalamSufalamFragmentView.findViewById(R.id.tv_structure_view);
-        tvMachineView = sujalamSufalamFragmentView.findViewById(R.id.tv_machine_view);
+        //tvStructureView = sujalamSufalamFragmentView.findViewById(R.id.tv_structure_view);
+        //tvMachineView = sujalamSufalamFragmentView.findViewById(R.id.tv_machine_view);
+        chipStructure = sujalamSufalamFragmentView.findViewById(R.id.chip_structure);
+        chipMachine = sujalamSufalamFragmentView.findViewById(R.id.chip_machine);
         tvToggle = sujalamSufalamFragmentView.findViewById(R.id.tv_toggle);
-        tvStructureView.setOnClickListener(this);
-        tvMachineView.setOnClickListener(this);
+        //tvStructureView.setOnClickListener(this);
+        //tvMachineView.setOnClickListener(this);
+        chipStructure.setOnClickListener(this);
+        chipMachine.setOnClickListener(this);
+
         btnSsView = sujalamSufalamFragmentView.findViewById(R.id.btn_ss_view);
         btnSsView.setOnClickListener(this);
         btnSsView.setOnLongClickListener(this);
@@ -291,10 +298,16 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.tv_structure_view:
+           /* case R.id.tv_structure_view:
                 setStructureView();
                 break;
             case R.id.tv_machine_view:
+                setMachineView();
+                break;*/
+            case R.id.chip_structure:
+                setStructureView();
+                break;
+            case R.id.chip_machine:
                 setMachineView();
                 break;
             case R.id.btn_ss_view:
@@ -386,11 +399,13 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
 
     private void setMachineView(){
         viewType = 2;
-        tvMachineView.setTextColor(getResources().getColor(R.color.dark_grey));
+      /*  tvMachineView.setTextColor(getResources().getColor(R.color.dark_grey));
         tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.BOLD);
         tvStructureView.setTextColor(getResources().getColor(R.color.text_lite_grey));
         tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.NORMAL);
-        tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);
+        tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);*/
+        chipStructure.setChipStrokeWidth(3f);
+        chipMachine.setChipStrokeWidth(0f);
         rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
         machineAnalyticsAdapter.notifyDataSetChanged();
         if(isMachineView) {
@@ -404,11 +419,13 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
 
     private void setStructureView(){
         viewType = 1;
-        tvStructureView.setTextColor(getResources().getColor(R.color.dark_grey));
+       /* tvStructureView.setTextColor(getResources().getColor(R.color.dark_grey));
         tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.BOLD);
         tvMachineView.setTextColor(getResources().getColor(R.color.text_lite_grey));
         tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.NORMAL);
-        tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);
+        tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);*/
+        chipStructure.setChipStrokeWidth(0f);
+        chipMachine.setChipStrokeWidth(3f);
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
         if(isStructureView) {
@@ -600,7 +617,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
 
     @Override
     public boolean onLongClick(View view) {
-        Util.showToast("long click",this);
+        //Util.showToast("long click",this);
         return false;
     }
 

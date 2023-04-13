@@ -3,6 +3,7 @@ package com.octopusbjsindia.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -62,7 +63,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             etExcavationCapacity, etDieselCapacity, etOrderRefNumber, etProviderName, etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
-    private int statusCode;
+    private int statusCode, selectedMachineTypeCode;
     private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTypesList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> makeModelList = new ArrayList<>();
@@ -220,8 +221,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         }
         //get lat,long of location
         gpsTracker = new GPSTracker(getActivity());
-        if(Permissions.isLocationPermissionGranted(getActivity(), this)) {
-            if(gpsTracker.canGetLocation()) {
+        if (Permissions.isLocationPermissionGranted(getActivity(), this)) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
             } else {
                 gpsTracker.showSettingsAlert();
@@ -397,11 +398,17 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
                     getField().equals("machineMake")) {
                 for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
-                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                    customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                    if (selectedMachineTypeCode == masterDataList.get(i).getData().get(j).getTypeCode()) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                        customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                        customSpinnerObject.setSelected(false);
+                        makeModelList.add(customSpinnerObject);
+                    }
+                  /*  customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
-                    customSpinnerObject.setSelected(false);
-                    makeModelList.add(customSpinnerObject);
+                    customSpinnerObject.setSelected(false);*/
+
                 }
             }
             if (masterDataList.get(i).getForm().equals("machine_mou") && masterDataList.get(i).
@@ -432,9 +439,9 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.GPS_REQUEST) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                if(gpsTracker.canGetLocation()) {
+                if (gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
                 } else {
                     gpsTracker.showSettingsAlert();
@@ -448,8 +455,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100) {
-            if(gpsTracker.canGetLocation()) {
+        if (requestCode == 100) {
+            if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
                 Toast.makeText(getActivity(), "Location permission granted.", Toast.LENGTH_LONG).show();
             } else {
@@ -493,13 +500,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 (etProviderContact.getText().toString().trim()));
         if (Util.isConnected(getActivity())) {
             //set location
-            if (location != null ) {
+            if (location != null) {
                 ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
                 ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
             } else {
-                if(gpsTracker.canGetLocation()) {
+                if (gpsTracker.canGetLocation()) {
                     location = gpsTracker.getLocation();
-                    if (location != null ) {
+                    if (location != null) {
                         ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLat(String.valueOf(location.getLatitude()));
                         ((MachineMouActivity) getActivity()).getMachineDetailData().setFormLong(String.valueOf(location.getLongitude()));
                     }
@@ -706,13 +713,14 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 break;
         }
     }
+
     public boolean isAllDataValid() {
 //        if (selectedOwnerId == null || selectedOwnerId.length() == 0) {
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.select_ownership_field), Snackbar.LENGTH_LONG);
 //            return false;
 //        } else
-            if (TextUtils.isEmpty(etMachineState.getText().toString().trim())) {
+        if (TextUtils.isEmpty(etMachineState.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.msg_select_state), Snackbar.LENGTH_LONG);
             return false;
@@ -739,11 +747,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     getString(R.string.select_machine_make_model), Snackbar.LENGTH_LONG);
             return false;
         }
+
 //        else if (selectedIsMeterWorking.length() == 0) {
 //            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
 //                    getString(R.string.select_meter_working_option), Snackbar.LENGTH_LONG);
 //            return false;
 //        }
+
         else if (TextUtils.isEmpty(etRtoNumber.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_rto_number), Snackbar.LENGTH_LONG);
@@ -760,16 +770,17 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOrderRefNumber.getText().toString().trim())) {
-                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.enter_order_ref_number), Snackbar.LENGTH_LONG);
-                return false;
+        }/* else if (TextUtils.isEmpty(etOrderRefNumber.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_order_ref_number), Snackbar.LENGTH_LONG);
+            return false;
+        }*/
+
+        else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
+            return false;
         }
-//        else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
-//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-//                    getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
-//            return false;
-//        }
         else if (etProviderContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
@@ -835,6 +846,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     if (accountType.isSelected()) {
                         selectedMachine = accountType.getName();
                         selectedMachineId = accountType.get_id();
+                        selectedMachineTypeCode = accountType.getTypeCode();
                         break;
                     }
                 }

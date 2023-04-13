@@ -212,10 +212,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
         rvDataList = structureMachineListFragmentView.findViewById(R.id.rv_data_list);
         rvDataList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         ssMachineListAdapter = new SSMachineListAdapter(getActivity(), this, filteredMachineListData);
         rvDataList.setAdapter(ssMachineListAdapter);
+
         ssStructureListAdapter = new SSStructureListAdapter(getActivity(), filteredStructureListData, true);
         rvDataList.setAdapter(ssStructureListAdapter);
+
         structureMachineListFragmentPresenter = new StructureMachineListFragmentPresenter(this);
 
         if (isStateFilter) {
@@ -266,6 +269,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             @Override
             public void onRefresh() {
                 onResume();
+                clearFilter();
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -281,6 +285,38 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             }
         }
 
+    }
+
+    private void clearFilter() {
+        if (viewType == 1) {
+            filteredStructureListData.clear();
+            filteredStructureListData.addAll(ssStructureListData);
+            ssStructureListAdapter.notifyDataSetChanged();
+            ((SSActionsActivity) context).setActivityTitle("Waterbody List(" + filteredStructureListData.size() + ")");
+        } else {
+            filteredMachineListData.clear();
+            filteredMachineListData.addAll(ssMachineListData);
+            rvDataList.setAdapter(ssMachineListAdapter);
+            ssMachineListAdapter.notifyDataSetChanged();
+            ((SSActionsActivity) context).setActivityTitle("Machine List(" + filteredMachineListData.size() + ")");
+        }
+        tvStateFilter.setText("");
+        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
+            tvStateFilter.setText("");
+            tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
+        }
+        tvDistrictFilter.setText("");
+        if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
+            tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
+        }
+        tvTalukaFilter.setText("");
+        if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
+                Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
+            tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
+        }
+        btnFilterClear.setVisibility(View.GONE);
     }
 
     private void setUserLocation() {
@@ -763,7 +799,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
                 rvDataList.setAdapter(ssMachineListAdapter);
                 ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
+                ((SSActionsActivity) context).setTitle("Machine List(" + filteredMachineListData.size() + ")");
             }
         }
         showNoDataMessage();
@@ -934,18 +970,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //                csdTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //            } else {
-                if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
-                    isTalukaApiFirstCall = false;
-                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
-                                    ? selectedDistrictId : userDistrictIds,
-                            Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.TALUKA_LEVEL);
+            if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
+                isTalukaApiFirstCall = false;
+                structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedDistrictId))
+                                ? selectedDistrictId : userDistrictIds,
+                        Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.TALUKA_LEVEL);
 
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Please select District first.",
-                            Snackbar.LENGTH_LONG);
-                }
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please select District first.",
+                        Snackbar.LENGTH_LONG);
+            }
             //}
         } else if (view.getId() == R.id.tv_district_filter) {
 //            if (machineDistrictList.size() > 0) {
@@ -955,47 +991,19 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 //                csdDisttrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //            } else {
-                if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
-                    structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
-                                    ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
-                            Constants.JurisdictionLevelName.DISTRICT_LEVEL);
-                } else {
-                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "Your State is not available in your profile." +
-                                    "Please update your profile.",
-                            Snackbar.LENGTH_LONG);
-                }
+            if (tvStateFilter.getText() != null && tvStateFilter.getText().toString().length() > 0) {
+                structureMachineListFragmentPresenter.getLocationData((!TextUtils.isEmpty(selectedStateId))
+                                ? selectedStateId : userStateIds, Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                        Constants.JurisdictionLevelName.DISTRICT_LEVEL);
+            } else {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Your State is not available in your profile." +
+                                "Please update your profile.",
+                        Snackbar.LENGTH_LONG);
+            }
             //}
         } else if (view.getId() == R.id.btn_filter_clear) {
-            if (viewType == 1) {
-                filteredStructureListData.clear();
-                filteredStructureListData.addAll(ssStructureListData);
-                ssStructureListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity) context).setActivityTitle("Waterbody List(" + filteredStructureListData.size() + ")");
-            } else {
-                filteredMachineListData.clear();
-                filteredMachineListData.addAll(ssMachineListData);
-                rvDataList.setAdapter(ssMachineListAdapter);
-                ssMachineListAdapter.notifyDataSetChanged();
-                ((SSActionsActivity) context).setActivityTitle("Machine List(" + filteredMachineListData.size() + ")");
-            }
-            tvStateFilter.setText("");
-            if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0) {
-                tvStateFilter.setText("");
-                tvStateFilter.setText(Util.getUserObjectFromPref().getUserLocation().getStateId().get(0).getName());
-            }
-            tvDistrictFilter.setText("");
-            if (Util.getUserObjectFromPref().getUserLocation().getDistrictIds() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size() > 0) {
-                tvDistrictFilter.setText(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(0).getName());
-            }
-            tvTalukaFilter.setText("");
-            if (Util.getUserObjectFromPref().getUserLocation().getTalukaIds() != null &&
-                    Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size() > 0) {
-                tvTalukaFilter.setText(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(0).getName());
-            }
-            btnFilterClear.setVisibility(View.GONE);
+            clearFilter();
         }
     }
 
@@ -1004,13 +1012,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         if (viewType == 1) {
             if (isStructureAdd) {
                 fbCreate.setImageResource(R.drawable.ic_create_structure);
-                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
             } else {
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 } else {
                     fbCreateOperator.setVisibility(View.GONE);
                     fbCreate.setVisibility(View.GONE);
@@ -1020,13 +1028,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         } else {
             if (isMachineAdd) {
                 fbCreate.setImageResource(R.drawable.ic_create_machine);
-                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_120));
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
             } else {
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_60));
+                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 } else {
                     fbCreateOperator.setVisibility(View.GONE);
                     fbCreate.setVisibility(View.GONE);
@@ -1121,7 +1129,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     rvDataList.setAdapter(ssMachineListAdapter);
                     ssMachineListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Machine List(" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);
             }
@@ -1184,7 +1192,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     rvDataList.setAdapter(ssMachineListAdapter);
                     ssMachineListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Machine List(" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);
             }
@@ -1244,7 +1252,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     rvDataList.setAdapter(ssMachineListAdapter);
                     ssMachineListAdapter.notifyDataSetChanged();
-                    ((SSActionsActivity) context).setTitle("Machine List (" + filteredMachineListData.size() + ")");
+                    ((SSActionsActivity) context).setTitle("Machine List(" + filteredMachineListData.size() + ")");
                 }
                 btnFilterClear.setVisibility(View.VISIBLE);
             }
