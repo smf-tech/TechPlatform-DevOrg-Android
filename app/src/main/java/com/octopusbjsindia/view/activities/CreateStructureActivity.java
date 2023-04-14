@@ -291,6 +291,13 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     .placeholder(R.drawable.ic_add_img)
                     .into(structureImg2);
         }
+
+        //disable adding & updating structure image
+        // below check is check on image on click listener
+        /*if (structureId != null && !TextUtils.isEmpty(structureId)) {
+            structureImg1.setEnabled(false);
+            structureImg2.setEnabled(false);
+        }*/
     }
 
     private void initView() {
@@ -787,11 +794,19 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 Util.showDateDialog(this, etTechnicalSanctionDate);
                 break;
             case R.id.structure_img1:
+                if (structureId != null && !TextUtils.isEmpty(structureId)) {
+                    Snackbar.make(view,"Structure image edit not allowed",Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
                 selectedIV = findViewById(R.id.structure_img1);
                 isFirstStructureImage = true;
                 onAddImageClick();
                 break;
             case R.id.structure_img2:
+                if (structureId != null && !TextUtils.isEmpty(structureId)) {
+                    Snackbar.make(view,"Structure image edit not allowed",Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
                 selectedIV = findViewById(R.id.structure_img2);
                 isFirstStructureImage = false;
                 onAddImageClick();
