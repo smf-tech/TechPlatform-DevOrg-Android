@@ -105,6 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -163,7 +164,9 @@
                 android:layout_below="@+id/jcb"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_calendar">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_date"
@@ -171,6 +174,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:longClickable="false"
+                    android:hint="Select meter reading date"
                     tools:ignore="Autofill" />
             </com.google.android.material.textfield.TextInputLayout>
 

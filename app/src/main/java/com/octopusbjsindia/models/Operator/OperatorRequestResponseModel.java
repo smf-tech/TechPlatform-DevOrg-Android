@@ -18,37 +18,55 @@ public class OperatorRequestResponseModel {
     @Expose
     private String machine_id;
 
+    @SerializedName("meter_reading_date")
+    @Expose
+    private String meterReadingDate;
+
     @SerializedName("status")
     @Expose
     private String status;
+
     @SerializedName("status_code")
     @Expose
     private String status_code;
 
-    @SerializedName("workTime")
-    @Expose
-    private String workTime;
+//    @SerializedName("workTime")
+//    @Expose
+//    private String workTime;
     @SerializedName("lat")
     @Expose
     private String lat;
     @SerializedName("long")
     @Expose
     private String _long;
-    @SerializedName("image")
+
+    @SerializedName("start_image")
     @Expose
-    private String image;
-    @SerializedName("meter_reading")
+    private String startImage;
+
+    @SerializedName("stop_image")
     @Expose
-    private String meter_reading;
-    @SerializedName("hours")
+    private String stopImage;
+
+    @SerializedName("start_meter_reading")
     @Expose
-    private Integer hours;
-    @SerializedName("totalHours")
+    private String start_meter_reading;
+
+    @SerializedName("stop_meter_reading")
     @Expose
-    private Integer totalHours;
+    private String stop_meter_reading;
+
+//    @SerializedName("hours")
+//    @Expose
+//    private Integer hours;
+//    @SerializedName("totalHours")
+//    @Expose
+//    private Integer totalHours;
+
     @SerializedName("reason_id")
     @Expose
     private String reasonId;
+
     @SerializedName("structure_id")
     @Expose
     private String structureId;
@@ -60,10 +78,6 @@ public class OperatorRequestResponseModel {
     public void setMeterReadingDate(String meterReadingDate) {
         this.meterReadingDate = meterReadingDate;
     }
-
-    @SerializedName("meter_reading_date")
-    @Expose
-    private String meterReadingDate;
 
     public String getMachine_id() {
         return machine_id;
@@ -81,14 +95,14 @@ public class OperatorRequestResponseModel {
         this.status = status;
     }
 
-    public String getWorkTime() {
-        return workTime;
-    }
-
-    public void setWorkTime(String workTime) {
-        this.workTime = workTime;
-    }
-
+//    public String getWorkTime() {
+//        return workTime;
+//    }
+//
+//    public void setWorkTime(String workTime) {
+//        this.workTime = workTime;
+//    }
+//
     public String getLat() {
         return lat;
     }
@@ -104,38 +118,38 @@ public class OperatorRequestResponseModel {
     public void setLong(String _long) {
         this._long = _long;
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getMeter_reading() {
-        return meter_reading;
-    }
-
-    public void setMeter_reading(String meter_reading) {
-        this.meter_reading = meter_reading;
-    }
-
-    public Integer getHours() {
-        return hours;
-    }
-
-    public void setHours(Integer hours) {
-        this.hours = hours;
-    }
-
-    public Integer getTotalHours() {
-        return totalHours;
-    }
-
-    public void setTotalHours(Integer totalHours) {
-        this.totalHours = totalHours;
-    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
+//
+//    public String getMeter_reading() {
+//        return meter_reading;
+//    }
+//
+//    public void setMeter_reading(String meter_reading) {
+//        this.meter_reading = meter_reading;
+//    }
+//
+//    public Integer getHours() {
+//        return hours;
+//    }
+//
+//    public void setHours(Integer hours) {
+//        this.hours = hours;
+//    }
+//
+//    public Integer getTotalHours() {
+//        return totalHours;
+//    }
+//
+//    public void setTotalHours(Integer totalHours) {
+//        this.totalHours = totalHours;
+//    }
 
     public int get_id() {
         return _id;
@@ -151,6 +165,38 @@ public class OperatorRequestResponseModel {
 
     public void setStatus_code(String status_code) {
         this.status_code = status_code;
+    }
+
+    public String getStartImage() {
+        return startImage;
+    }
+
+    public void setStartImage(String startImage) {
+        this.startImage = startImage;
+    }
+
+    public String getStopImage() {
+        return stopImage;
+    }
+
+    public void setStopImage(String stopImage) {
+        this.stopImage = stopImage;
+    }
+
+    public String getStart_meter_reading() {
+        return start_meter_reading;
+    }
+
+    public void setStart_meter_reading(String start_meter_reading) {
+        this.start_meter_reading = start_meter_reading;
+    }
+
+    public String getStop_meter_reading() {
+        return stop_meter_reading;
+    }
+
+    public void setStop_meter_reading(String stop_meter_reading) {
+        this.stop_meter_reading = stop_meter_reading;
     }
 
     public String getReasonId() {

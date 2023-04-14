@@ -26,6 +26,7 @@ public class OperatorMachineCodeDataModel {
     @SerializedName("machine_id")
     @Expose
     private String machine_id;
+
     @SerializedName("machine_code")
     @Expose
     private String machine_code;

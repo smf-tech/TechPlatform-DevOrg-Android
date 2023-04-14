@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "3b4982a5adb9f2d68be6e6d4005a385b",
+    "identityHash": "07d3d690030f314f4083296844dc7c24",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -52,10 +52,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -138,10 +138,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -188,10 +188,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -256,10 +256,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -354,10 +354,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "result_id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -440,10 +440,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -520,10 +520,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "uid"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -600,10 +600,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "uid"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -650,17 +650,17 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "OperatorRequestResponseModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `status_code` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER, `reasonId` TEXT, `structureId` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `machine_id` TEXT, `status` TEXT, `status_code` TEXT, `workTime` TEXT, `lat` TEXT, `_long` TEXT, `image` TEXT, `meter_reading` TEXT, `hours` INTEGER, `totalHours` INTEGER, `reasonId` TEXT, `structureId` TEXT, `meterReadingDate` TEXT)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -739,13 +739,19 @@
             "columnName": "structureId",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "meterReadingDate",
+            "columnName": "meterReadingDate",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "_id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -780,10 +786,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -938,10 +944,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "structureId"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1000,10 +1006,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1092,10 +1098,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1124,10 +1130,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1192,10 +1198,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "contentId"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1230,10 +1236,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "autoId"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -1242,7 +1248,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b4982a5adb9f2d68be6e6d4005a385b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '07d3d690030f314f4083296844dc7c24')"
     ]
   }
 }

@@ -340,7 +340,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
         Log.e("sync--", "---" + new Gson().toJson(data));
-        String imageToSend = data.getImage();
+      //  String imageToSend = data.getImage();
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -402,7 +402,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
                 {
-                    if (TextUtils.isEmpty(imageToSend)) {
+                  /*  if (TextUtils.isEmpty(imageToSend)) {
                         params.put("image0", new DataPart("image0", new byte[0],
                                 "image/jpeg"));
                     } else {
@@ -410,7 +410,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                         params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
                                 "image/jpeg"));
-                    }
+                    }*/
                 }
                 return params;
             }
