@@ -129,7 +129,7 @@ public class OxyMachineDailyReportActivity extends AppCompatActivity implements 
 
                 } else {
                     //Util.showDateDialogMin(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate);
-                    Util.showDateDialogEnableMAxDateFromSelected(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate, dailyReportBinding.etStartDate.getText().toString());
+                    Util.showDateDialogEnableMaxDateFromSelected(OxyMachineDailyReportActivity.this, dailyReportBinding.etEndDate, dailyReportBinding.etStartDate.getText().toString());
                 }
             }
         });

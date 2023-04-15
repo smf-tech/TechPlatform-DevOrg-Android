@@ -50,7 +50,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -103,7 +102,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -119,6 +117,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.octopusbjsindia.utility.Constants.BATCH_CREATED_DATE;
 import static com.octopusbjsindia.utility.Constants.DATE_FORMAT;
@@ -602,20 +601,35 @@ public class Util {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public static long getNextDayTimestamp(long timestamp){
+        Date d = new Date(timestamp);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.add(Calendar.DATE,1);
+        d = c.getTime();
+        return d.getTime();
+    }
+
+    public static long getPreviousDayTimestamp(long timestamp){
+        Date d = new Date(timestamp);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.add(Calendar.DATE,-1);
+        d = c.getTime();
+        return d.getTime();
+    }
+
     public static Long getDateInLong(String dateString) {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInLong(new Date().toString());
         }
-
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.FORM_DATE, Locale.getDefault());
             Date date = sdf.parse(dateString);
             return date.getTime();
-
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
         }
-
         return 0L;
     }
 
@@ -623,18 +637,15 @@ public class Util {
         if (TextUtils.isEmpty(dateString)) {
             return getDateInepoch(new Date().toString());
         }
-
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(DAY_MONTH_YEAR, Locale.getDefault());
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
             int test = (int) (epoch / 1000);
             return epoch;
-
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
         }
-
         return 0;
     }
 
@@ -751,7 +762,6 @@ public class Util {
         } catch (ParseException e) {
             Log.e("TAG", e.getMessage());
         }
-
         return 0L;
     }
 
@@ -771,6 +781,23 @@ public class Util {
             }
         }
         return "";
+    }
+
+    public static Date getDateFromTimestamp2(Long timeStamp, String dateTimeFormat) {
+        if (timeStamp > 0) {
+            try {
+                int length = (int) (Math.log10(timeStamp) + 1);
+                if (length == 10) {
+                    timeStamp = timeStamp * 1000;
+                }
+                Date d = new Timestamp(timeStamp);
+
+                return d;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return new Date();
     }
 
     public static String getFormattedDatee(String date, String opFormat, String ipFormat) {
@@ -805,6 +832,21 @@ public class Util {
         }
         return "";
     }
+
+//    public static String getPastFutureDateStringFromSpecificDate(Integer pastFutureCount, long currentTimeStamp,
+//                                                                 String dateFormat) {
+//        try {
+//            Calendar cal = Calendar.getInstance();
+//            cal.add(currentTimeStamp, pastFutureCount);
+//            Date d = cal.getTime();
+//            DateFormat dateFormatting = new SimpleDateFormat(dateFormat);
+//            String pastFutureDate = dateFormatting.format(d);
+//            return pastFutureDate;
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//        return "";
+//    }
 
     public static String getAmPmTimeStringFromTimeString(String time) {
 
@@ -1172,7 +1214,8 @@ public class Util {
         dateDialog.show();
     }
 
-    public static void showDateDialogEnableBetweenMinMax(Context context, final EditText editText, String minDate, String maxDate) {
+    public static void showDateDialogEnableBetweenMinMax(Context context, final EditText editText,
+                                                         String minDate, String maxDate) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
@@ -1195,7 +1238,8 @@ public class Util {
         dateDialog.getDatePicker().setMaxDate(maxDateLong);
         dateDialog.show();
     }
-    public static void showDateDialogEnableMAxDateFromSelected(Context context, final EditText editText, String selectedDate)
+
+    public static void showDateDialogEnableMaxDateFromSelected(Context context, final EditText editText, String selectedDate)
     {
         final Calendar today = Calendar.getInstance();
         final int mYear = today.get(Calendar.YEAR);

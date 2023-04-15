@@ -48,6 +48,7 @@ import com.octopusbjsindia.utility.PlatformGson;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
+import com.octopusbjsindia.view.activities.OperatorActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,6 +67,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +83,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private RequestQueue rQueue;
     private static final String TAG = SyncAdapter.class.getSimpleName();
-
 
     SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -101,7 +102,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i("onPerformSync", "onPerformSync: \n");
 
-
         syncSavedForms();
         syncMachineOperatorData();
         syncStructureVisitMonitoring();
@@ -109,7 +109,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         syncStructureBoundary();
         syncAttendance();
     }
-
 
     private void syncSavedForms() {
         List<FormResult> savedForms = getAllNonSyncedSavedForms(getContext());
@@ -327,20 +326,135 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void syncMachineOperatorData() {
 
-        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+        List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).
+                getOperatorRequestResponseModelDao().getAllProcesses();
         for (final OperatorRequestResponseModel data : list) {
             uploadMachineLog(data);
         }
     }
 
+    // Updated uploadMachineLog()
+    private void uploadMachineLog(OperatorRequestResponseModel data) {
+        final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        rQueue.getCache().clear();
+                        try {
+                            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
+                            if (commonResponse.getStatus() == 200) {
+                                Util.showToast(commonResponse.getMessage(), getContext());
+
+                                if (data.getStatus().equalsIgnoreCase("Stop")) {
+                                    //todo check for next day entry in db if exist then delete this entry from db
+
+                                    Long submittedRecordTimestamp = data.getMeterReadingTimestamp();
+                                    Long nextDayTimeStamp = Util.getNextDayTimestamp(submittedRecordTimestamp);
+                                    Long previousDayTimeStamp = Util.getPreviousDayTimestamp(submittedRecordTimestamp);
+
+                                    boolean rowIdNext = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            getRecordForGivenTimestamp(data.getMachine_id(), nextDayTimeStamp);
+
+                                    boolean rowIdPrevious = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            getRecordForGivenTimestamp(data.getMachine_id(), previousDayTimeStamp);
+
+                                    if (rowIdNext) {
+                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                                deleteMachineRecord(data);
+                                    }
+                                    if (rowIdPrevious) {
+                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                                deleteSpecificMachineRecord(data.getMachine_id(), previousDayTimeStamp);
+                                    }
+                                }
+                            } else {
+                                Util.showToast(commonResponse.getMessage(), getContext());
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("formData", new Gson().toJson(data));
+                params.put("imageArraySize", "1");
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json, text/plain, */*");
+                headers.put("Content-Type", getBodyContentType());
+
+                Login loginObj = getLoginObjectFromPref();
+                if (loginObj != null && loginObj.getLoginData() != null &&
+                        loginObj.getLoginData().getAccessToken() != null) {
+                    headers.put(Constants.Login.AUTHORIZATION,
+                            "Bearer " + loginObj.getLoginData().getAccessToken());
+                    if (getUserObjectFromPref().getOrgId() != null) {
+                        headers.put("orgId", getUserObjectFromPref().getOrgId());
+                    }
+                    if (getUserObjectFromPref().getProjectIds() != null) {
+                        headers.put("projectId", getUserObjectFromPref().getProjectIds().get(0).getId());
+                    }
+                    if (getUserObjectFromPref().getRoleIds() != null) {
+                        headers.put("roleId", getUserObjectFromPref().getRoleIds());
+                    }
+                }
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+//                Map<String, DataPart> params = new HashMap<>();
+//                Drawable drawable = null;
+//                {
+//                    drawable = new BitmapDrawable(getResources(), imageHashmap.get("image"));
+//                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+//                            "image/jpeg"));
+//                }
+//                return params;
+
+                Map<String, DataPart> params = new HashMap<>();
+                Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
+                params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                        "image/jpeg"));
+                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
+                params.put("image1", new DataPart("image1", getFileDataFromDrawable(drawable1),
+                        "image/jpeg"));
+                return params;
+            }
+        };
+
+        volleyMultipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                12000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(volleyMultipartRequest);
+    }
+
+
     // operator record sync
 //api call to upload record -
-    private void uploadMachineLog(OperatorRequestResponseModel data) {
+    private void uploadMachineLogOld(OperatorRequestResponseModel data) {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
-        Log.e("sync--", "---" + new Gson().toJson(data));
-        String imageToSend = data.getImage();
+      //  String imageToSend = data.getImage();
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -402,7 +516,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
                 {
-                    if (TextUtils.isEmpty(imageToSend)) {
+                  /*  if (TextUtils.isEmpty(imageToSend)) {
                         params.put("image0", new DataPart("image0", new byte[0],
                                 "image/jpeg"));
                     } else {
@@ -410,7 +524,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                         params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
                                 "image/jpeg"));
-                    }
+                    }*/
                 }
                 return params;
             }

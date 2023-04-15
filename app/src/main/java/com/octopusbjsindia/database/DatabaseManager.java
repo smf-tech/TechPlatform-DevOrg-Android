@@ -297,8 +297,8 @@ public class DatabaseManager {
     }
 
     public OperatorRequestResponseModelDao getOperatorRequestResponseModelDao() {
-        OperatorRequestResponseModelDao notificationDataDao = appDatabase.operatorRequestResponseModelDao();
-        return notificationDataDao;
+        OperatorRequestResponseModelDao machineRecordDataDao = appDatabase.operatorRequestResponseModelDao();
+        return machineRecordDataDao;
     }
 
     public SSMasterDatabaseDao getSSMasterDatabaseDao() {

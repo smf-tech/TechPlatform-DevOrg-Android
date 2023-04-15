@@ -15,6 +15,13 @@ public class DeployedMachine implements Serializable {
     @SerializedName("machineUpdatedDate")
     @Expose
     private String machineUpdatedDate;
+    @SerializedName("machine_id")
+    @Expose
+    private String machineId;
+
+    public String getMachineId() {
+        return machineId;
+    }
 
 
     public String getCode() {

@@ -39,12 +39,11 @@ import static com.octopusbjsindia.utility.Util.showDateDialogEnableBetweenMinTod
 
 public class TextFragment extends Fragment implements View.OnClickListener, APIDataListener {
 
-    View view;
-    TextFragmentPresenter textFragmentPresenter;
+    private View view;
+    private TextFragmentPresenter textFragmentPresenter;
     private Elements element;
     private TextView tvQuetion;
     private TextInputEditText etAnswer, et_answer_name;
-
     private TextInputLayout tiAnswer;
     boolean isFirstpage = false;
 

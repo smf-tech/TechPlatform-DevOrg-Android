@@ -105,6 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -155,13 +156,34 @@
                 android:src="@drawable/jcb_stopped"
                 android:visibility="visible" />
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl_date"
+                style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/jcb"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@style/TextInputLayoutHint"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_calendar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:longClickable="false"
+                    android:hint="Select meter reading date"
+                    tools:ignore="Autofill" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tl_date"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
