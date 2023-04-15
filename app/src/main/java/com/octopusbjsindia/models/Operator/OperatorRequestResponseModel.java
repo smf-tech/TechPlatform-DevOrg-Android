@@ -1,26 +1,34 @@
 package com.octopusbjsindia.models.Operator;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-@Entity
+@Entity(primaryKeys = {"machine_id", "meterReadingDate"})
 public class OperatorRequestResponseModel {
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     private int _id;
 
     @ColumnInfo(name ="machine_id")
     @SerializedName("machine_id")
     @Expose
+    @NonNull
     private String machine_id;
 
     @SerializedName("meter_reading_date")
     @Expose
+    @NonNull
     private String meterReadingDate;
+
+    @SerializedName("meter_reading_timestamp")
+    @Expose
+    @NonNull
+    private long meterReadingTimestamp;
 
     @SerializedName("status")
     @Expose
@@ -105,6 +113,14 @@ public class OperatorRequestResponseModel {
 //
     public String getLat() {
         return lat;
+    }
+
+    public long getMeterReadingTimestamp() {
+        return meterReadingTimestamp;
+    }
+
+    public void setMeterReadingTimestamp(long meterReadingTimestamp) {
+        this.meterReadingTimestamp = meterReadingTimestamp;
     }
 
     public void setLat(String lat) {

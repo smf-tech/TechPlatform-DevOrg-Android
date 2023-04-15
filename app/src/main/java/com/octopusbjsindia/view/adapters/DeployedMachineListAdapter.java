@@ -65,6 +65,7 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
                     public void onClick(View v) {
                         Intent dailyRecordIntent = new Intent(mContext, OperatorActivity.class);
                         dailyRecordIntent.putExtra("machineCode", dataList.get(getAdapterPosition()).getCode());
+                        dailyRecordIntent.putExtra("machineId", dataList.get(getAdapterPosition()).getMachineId());
                         mContext.startActivity(dailyRecordIntent);
                     }
                 });

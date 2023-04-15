@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.viewmodel.CreationExtras;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -81,6 +82,8 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -119,6 +122,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private static final String STATUS_WORKING = "Working";
     private static final String STATUS_STOP = "Stop";
     private OperatorRequestResponseModel lastWorkingRecordData;
+    private OperatorRequestResponseModel previousLatestRecord;
+    private OperatorRequestResponseModel submittedStopRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +151,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         OperatorActivityPresenter presenter = new OperatorActivityPresenter(this);
         machine_code = getIntent().getStringExtra("machineCode");
         machine_id = getIntent().getStringExtra("machineId");
-        //checkDate();
         setDeviceInfo();
 
         etDate.setFocusable(false);
@@ -157,20 +161,32 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         img_end_meter.setOnClickListener(this);
         toolbar_edit_action.setOnClickListener(this);
 
-        // TODO for now this code is called after machine details api
-        if(machine_id!=null) {
+        // TODO for now this code is called after machine details api.
+        if (machine_id != null) { // For NON-FA roles
             lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                     getLastWorkingRecord(machine_id);
-            if (lastWorkingRecordData!=null) {
+            tv_machine_code.setText(machine_code);
+            if (lastWorkingRecordData != null) {
                 setWorkingMachineData(lastWorkingRecordData);
             }
-        } else {
-              if (machine_code != null && !(machine_code.isEmpty())) {
-            tv_machine_code.setText(machine_code);
-            presenter.getAllFiltersRequests(machine_code);
-        } else {
-            presenter.getAllFiltersRequests("");
-        }
+        } else {   // For FA/Operator roles
+            String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+            Gson gson = new Gson();
+            OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,
+                    OperatorMachineCodeDataModel.class);
+            if (operatorMachineData != null && !operatorMachineData.getMachine_id().isEmpty()) {
+                machine_id = operatorMachineData.getMachine_id();
+                machine_code = operatorMachineData.getMachine_code();
+                tv_machine_code.setText(machine_code);
+
+                lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                        getLastWorkingRecord(machine_id);
+                if (lastWorkingRecordData != null) {
+                    setWorkingMachineData(lastWorkingRecordData);
+                }
+            } else {
+                presenter.getAllFiltersRequests("no_machine");
+            }
         }
 
         //get lat,long of location
@@ -207,37 +223,27 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     msg = "Please enter start meter reading";
                 else if (machine_code.isEmpty())
                     msg = "Machine not assigned. Contact to DPM.";
+                else if (etDate.getText().toString().isEmpty()) {
+                    msg = "Please select meter reading date.";
+                }
                 if (msg.length() <= 0) {
-                    OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
-                    operatorRequestResponseModel.setMachine_id(machine_id);
-                    operatorRequestResponseModel.setMeterReadingDate(etDate.getText().toString());
-                    operatorRequestResponseModel.setStatus(STATUS_WORKING);
-                    operatorRequestResponseModel.setStatus_code("" + state_start);
-                    operatorRequestResponseModel.setStart_meter_reading(et_smeter_read.getText().toString());
-                    operatorRequestResponseModel.setStartImage(startUri.getPath());
-                    operatorRequestResponseModel.setStructureId(structure_id);
-                    //set location
-                    if (location != null) {
-                        operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-                        operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
-                    } else {
-                        if (gpsTracker.canGetLocation()) {
-                            location = gpsTracker.getLocation();
-                            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
-                            if (location != null) {
-                                operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-                                operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
-                            }
+                    // Get previous machine reading entry for validation
+                    Long selectedTimestamp = Util.getDateInLong(etDate.getText().toString());
+                    previousLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getPreviousLatestRecord(machine_id, selectedTimestamp);
+
+                    if (previousLatestRecord != null) {
+                        if (Integer.parseInt(et_smeter_read.getText().toString()) >= Integer.parseInt(
+                                previousLatestRecord.getStop_meter_reading())) {
+                            addStartMeterRecord();
                         } else {
-                            Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Start meter reading should be greater than " +
+                                    "previous record's stop reading", Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        // This section means previous entry for this machine is not available.
+                        addStartMeterRecord();
                     }
-
-                    // TODO Database entry code
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                            insert(operatorRequestResponseModel);
-
-                    uploadMachineLog(operatorRequestResponseModel);
 
 //                    editor.putString("machineStatus", STATUS_WORKING);
 //                    editor.putString("startReading", et_smeter_read.getText().toString());
@@ -248,13 +254,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 //                    editor.putString("stopUri", "");
 //                    editor.putString("stopDate", "");
 //                    editor.apply();
-//                    machine_status = STATUS_WORKING;
+                    machine_status = STATUS_WORKING;
 
                     //checkDate();
                 } else {
                     Util.showToast(msg, OperatorActivity.this);
                 }
-
                 break;
             case R.id.buttonStopService:
                 if (stopUri == null) {
@@ -264,31 +269,35 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 } else if (Float.parseFloat(et_emeter_read.getText().toString()) <
                         Float.parseFloat(et_smeter_read.getText().toString())) {
                     msg = "Stop meter reading cannot be less than Start meter reading.";
+                } else if ((Float.parseFloat(et_emeter_read.getText().toString()) -
+                        Float.parseFloat(et_smeter_read.getText().toString()) > 24)) {
+                    msg = "Difference between start and end meter readings can not exceed 24.";
                 } else if (machine_code.isEmpty()) {
                     msg = "Machine not assigned. Contact to DPM.";
                 }
                 if (msg.length() <= 0) {
                     String status = STATUS_STOP;
-                    String status_code = ""+state_stop;
+                    String status_code = "" + state_stop;
                     String stopImage = stopUri.getPath();
                     String stopMeterReading = et_emeter_read.getText().toString();
                     String meterReadingDate = etDate.getText().toString();
                     String latitude = "";
                     String longitude = "";
 
-                    OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
-                    operatorRequestResponseModel.setMachine_id(machine_id);
-                    operatorRequestResponseModel.setMeterReadingDate(meterReadingDate);
-                    operatorRequestResponseModel.setStatus(status);
-                    operatorRequestResponseModel.setStatus_code(status_code);
-                    operatorRequestResponseModel.setStopImage(stopImage);
-                    operatorRequestResponseModel.setStop_meter_reading(stopMeterReading);
-                    operatorRequestResponseModel.setStructureId(structure_id);
+                    submittedStopRecord = new OperatorRequestResponseModel();
+                    submittedStopRecord.setMachine_id(machine_id);
+                    submittedStopRecord.setMeterReadingDate(meterReadingDate);
+                    submittedStopRecord.setMeterReadingTimestamp(Util.getDateInLong(etDate.getText().toString()));
+                    submittedStopRecord.setStatus(status);
+                    submittedStopRecord.setStatus_code(status_code);
+                    submittedStopRecord.setStopImage(stopImage);
+                    submittedStopRecord.setStop_meter_reading(stopMeterReading);
+                    submittedStopRecord.setStructureId(structure_id);
 
                     //set location
                     if (location != null) {
-                      //  operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-                      //  operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                        //  operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                        //  operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
                         latitude = String.valueOf(location.getLatitude());
                         longitude = String.valueOf(location.getLongitude());
                     } else {
@@ -296,8 +305,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             location = gpsTracker.getLocation();
                             Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
                             if (location != null) {
-                               // operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-                              //  operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
                                 latitude = String.valueOf(location.getLatitude());
                                 longitude = String.valueOf(location.getLongitude());
                             }
@@ -306,24 +313,25 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         }
                     }
 
-                    /*DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                            insert(operatorRequestResponseModel);*/
-
-                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                            updateMachineRecord(status,status_code,stopImage,stopMeterReading,latitude,
+                    int rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            updateMachineRecord(status, status_code, stopImage, stopMeterReading, latitude,
                                     longitude, machine_id, meterReadingDate);
 
-                    uploadMachineLog(operatorRequestResponseModel);
+                    if (rowId != -1) {
+                        etDate.setEnabled(true);
+                        etDate.setText(null);
+                        et_smeter_read.setEnabled(false);
+                        et_emeter_read.setEnabled(false);
+                        et_smeter_read.setText(null);
+                        et_emeter_read.setText(null);
+                        img_start_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_start_meter_reading));
+                        img_end_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_end_meter_reading));
+                        btnStartService.setEnabled(false);
+                        btnStopService.setEnabled(false);
 
-//                    editor.putString("machineStatus", STATUS_STOP);
-//                    editor.putString("stopReading", et_emeter_read.getText().toString());
-//                    editor.putString("stopUri", stopUri.toString());
-//                    Date current = Calendar.getInstance().getTime();
-//                    editor.putString("stopDate", df.format(current));
-//                    editor.apply();
+                        uploadMachineLog(submittedStopRecord);
+                    }
                     machine_status = STATUS_STOP;
-
-                    //checkDate();
                 } else {
                     Util.showToast(msg, OperatorActivity.this);
                 }
@@ -379,6 +387,44 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                 popup.show(); //showing popup menu
                 break;
+        }
+    }
+
+    private void addStartMeterRecord() {
+        OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
+        operatorRequestResponseModel.setMachine_id(machine_id);
+        operatorRequestResponseModel.setMeterReadingDate(etDate.getText().toString());
+        operatorRequestResponseModel.setMeterReadingTimestamp(Util.getDateInLong(etDate.getText().toString()));
+        operatorRequestResponseModel.setStatus(STATUS_WORKING);
+        operatorRequestResponseModel.setStatus_code("" + state_start);
+        operatorRequestResponseModel.setStart_meter_reading(et_smeter_read.getText().toString());
+        operatorRequestResponseModel.setStartImage(startUri.getPath());
+        operatorRequestResponseModel.setStructureId(structure_id);
+        //set location
+        if (location != null) {
+            operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+            operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+        } else {
+            if (gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                if (location != null) {
+                    operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                    operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                }
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        long rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                insert(operatorRequestResponseModel);
+        // on successful data entry, it returns rowId. After this entry, we disable respective UI.
+        if (rowId != -1) {
+            etDate.setEnabled(false);
+            et_smeter_read.setEnabled(false);
+            img_start_meter.setEnabled(false);
+            btnStartService.setEnabled(false);
+            uploadMachineLog(operatorRequestResponseModel);
         }
     }
 
@@ -562,7 +608,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
         Gson gson = new Gson();
-        //editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
+        editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
         machine_id = operatorMachineData.getMachine_id();
         structure_id = operatorMachineData.getStructure_id();
         machine_code = operatorMachineData.getMachine_code();
@@ -573,18 +619,17 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             tv_machine_code.setText("Not Assigned");
             Util.showToast("Machine not assigned. Contact to DPM.", this);
         }
-
         for (int i = 0; i < operatorMachineData.getNonutilisationTypeData().getEn().size(); i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
         }
-        // TODO this code added temporary
+        // GET Working machine record
         lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                 getLastWorkingRecord(machine_id);
         setWorkingMachineData(lastWorkingRecordData);
-        
+
 //        editor.putString("machine_id", machine_id);
 //        editor.putString("machine_code", machine_code);
-//        editor.apply();
+        editor.apply();
     }
 
     private void setWorkingMachineData(OperatorRequestResponseModel lastWorkingRecordData) {
@@ -692,8 +737,31 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         try {
                             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
-                            if(commonResponse.getStatus()==200) {
+                            if (commonResponse.getStatus() == 200) {
                                 Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
+
+                                if (machine_status.equalsIgnoreCase(STATUS_STOP)) {
+                                    //todo check for next day entry in db if exist then delete this entry from db
+
+                                    Long submittedRecordTimestamp = submittedStopRecord.getMeterReadingTimestamp();
+                                    Long nextDayTimeStamp = Util.getNextDayTimestamp(submittedRecordTimestamp);
+                                    Long previousDayTimeStamp = Util.getPreviousDayTimestamp(submittedRecordTimestamp);
+
+                                    boolean rowIdNext = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            getRecordForGivenTimestamp(machine_id, nextDayTimeStamp);
+
+                                    boolean rowIdPrevious = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            getRecordForGivenTimestamp(machine_id, previousDayTimeStamp);
+
+                                    if (rowIdNext) {
+                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                                deleteMachineRecord(submittedStopRecord);
+                                    }
+                                    if (rowIdPrevious) {
+                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                                deleteSpecificMachineRecord(machine_id, previousDayTimeStamp);
+                                    }
+                                }
                             } else {
                                 Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                             }
@@ -748,8 +816,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Drawable drawable = null;
                 {
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get("image"));
-                    params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
-                            "image/jpeg"));
+                    if(machine_status.equalsIgnoreCase(STATUS_STOP)) {
+                        params.put("image1", new DataPart("image1", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    } else {
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
                 }
                 return params;
             }
