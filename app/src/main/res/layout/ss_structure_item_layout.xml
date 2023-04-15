@@ -62,7 +62,7 @@
                     <TextView
                         android:id="@+id/tv_structure_name"
                         style="@style/TextViewRegularStyle"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="24dp"
                         android:layout_below="@+id/tv_structure_lable" />
 
                     <ImageView

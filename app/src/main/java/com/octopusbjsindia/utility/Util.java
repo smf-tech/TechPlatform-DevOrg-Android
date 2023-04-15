@@ -2158,5 +2158,9 @@ public class Util {
         return result;
     }
 
+    public static boolean isBlankOrNull(String value){
+        return value != null && !TextUtils.isEmpty(value.trim());
+    }
+
 
 }

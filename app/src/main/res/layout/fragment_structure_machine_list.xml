@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_10dp"
         android:orientation="horizontal"
+        android:gravity="center"
+        android:animateLayoutChanges="true"
         android:weightSum="10">
 
         <TextView

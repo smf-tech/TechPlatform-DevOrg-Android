@@ -557,6 +557,13 @@
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_add_img" />
 
+                    <ProgressBar
+                        android:id="@+id/progress_1"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -577,6 +584,12 @@
                         android:layout_height="@dimen/dimen_160dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_add_img" />
+                    <ProgressBar
+                        android:id="@+id/progress_2"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:layout_width="wrap_content"

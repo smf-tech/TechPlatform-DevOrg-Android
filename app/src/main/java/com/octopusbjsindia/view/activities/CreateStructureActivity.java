@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -105,7 +110,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ImageView structureImg1, structureImg2;
     private EditText etState, etDistrict, etTaluka, etHostVillage,
     //etCatchmentVillage, etHostVillagePopulation, etCatchmentVillagePopulation,
-    etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, /*etStructureWorkType,*/ etStructureOwnerDepartment,
+    etGatNo, etWaterShedNo, etArea, etStructureName, etStructureType, /*etStructureWorkType,*/
+            etStructureOwnerDepartment,
     //etNotaDetail, etSubStructureOwnerDepartment,
     etAdministrativeApprovalNo, etAdministrativeApprovalDate,
             etTechnicalSanctionNo, etTechnicalSanctionDate, etIntervention, etAdministrativeEstimateAmount,
@@ -115,7 +121,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 
     private String selectedStateId, selectedState, selectedDistrictId, selectedDistrict, selectedTalukaId, selectedTaluka,
             selectedHostVillageId, selectedHostVillage, selectedStructureTypeId, selectedIntervention, selectedInterventionId,
-            selectedStructureType, /*selectedStructureWorkTypeId, selectedStructureWorkType,*/ selectedStructureOwnerDepartmentId,
+            selectedStructureType, /*selectedStructureWorkTypeId, selectedStructureWorkType,*/
+            selectedStructureOwnerDepartmentId,
             selectedStructureOwnerDepartment, selectedSubStructureOwnerDepartmentId, selectedSubStructureOwnerDepartment;
 
     private boolean isStateFilter, isDistrictFilter, isTalukaFilter;
@@ -147,6 +154,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     private ImageView selectedIV;
     private RequestQueue rQueue;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private ProgressBar progressStructureImage1, progressStructureImage2;
     final String upload_URL = BuildConfig.BASE_URL + Urls.SSModule.CREATE_STRUCTURE;
 
     @Override
@@ -164,7 +172,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         if (structureId != null && !TextUtils.isEmpty(structureId)) {
             presenter.getStructureById(structureId);
             structureData.setStructureId(structureId);
-        }
+        } else structureData.setStructureId(""); //empty field needed for backend
 
         setMasterData();
         initView();
@@ -276,20 +284,58 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             etRemark.setText(structure.getRemark());
         }
         //structure image 1
-        if (structure.getStructureImage1() != null) {
+        if (Util.isBlankOrNull(structure.getStructureImage1())) {
             structureData.setStructureImage1(structure.getStructureImage1());
-            Glide.with(this)
+            progressStructureImage1.setVisibility(View.VISIBLE);
+            /*Glide.with(this)
                     .load(structure.getStructureImage1())
                     .placeholder(R.drawable.ic_add_img)
+                    .into(structureImg1);*/
+
+            Glide.with(this)
+                    .load(structure.getStructureImage1())
+                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.ic_add_img)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            progressStructureImage1.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressStructureImage1.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(structureImg1);
         }
         //structure image 1
-        if (structure.getStructureImage2() != null) {
+        if (Util.isBlankOrNull(structure.getStructureImage2())) {
             structureData.setStructureImage2(structure.getStructureImage2());
-            Glide.with(this)
+            progressStructureImage2.setVisibility(View.VISIBLE);
+           /* Glide.with(this)
                     .load(structure.getStructureImage2())
                     .placeholder(R.drawable.ic_add_img)
+                    .into(structureImg2);*/
+            Glide.with(this)
+                    .load(structure.getStructureImage2())
+                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.ic_add_img)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            progressStructureImage2.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressStructureImage2.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(structureImg2);
+
         }
 
         //disable adding & updating structure image
@@ -364,7 +410,6 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         }
 
 
-
         etState = findViewById(R.id.et_state);
         etDistrict = findViewById(R.id.et_district);
         etTaluka = findViewById(R.id.et_taluka);
@@ -382,7 +427,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
 //        etSubStructureOwnerDepartment = findViewById(R.id.et_sub_structure_owner_department);
 //        etNotaDetail = findViewById(R.id.et_nota_detail);
         etStructureType = findViewById(R.id.et_structure_type);
-       // etStructureWorkType = findViewById(R.id.et_structure_work_type);
+        // etStructureWorkType = findViewById(R.id.et_structure_work_type);
         etAdministrativeApprovalNo = findViewById(R.id.et_administrative_approval_no);
         etAdministrativeApprovalDate = findViewById(R.id.et_administrative_approval_date);
         etTechnicalSanctionNo = findViewById(R.id.et_technical_sanction_no);
@@ -396,6 +441,9 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
         etPotentialSiltQuantity = findViewById(R.id.et_potential_silt_quantity);
         etRemark = findViewById(R.id.et_remark);
         btSubmit = findViewById(R.id.bt_submit);
+        progressStructureImage1 = findViewById(R.id.progress_1);
+        progressStructureImage2 = findViewById(R.id.progress_2);
+
 
 //        if (Util.getUserObjectFromPref().getUserLocation().getStateId() != null &&
 //                Util.getUserObjectFromPref().getUserLocation().getStateId().size() > 0 ){
@@ -606,11 +654,10 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                         Bitmap bitmap = Util.compressImageToBitmap(imageFile);
                         if (isFirstStructureImage) {
                             imageUri1 = resultUri;
-                            imageHashmap.put("structure_image_0" , bitmap);
-                        }
-                        else {
+                            imageHashmap.put("structure_image_0", bitmap);
+                        } else {
                             imageUri2 = resultUri;
-                            imageHashmap.put("structure_image_1" , bitmap);
+                            imageHashmap.put("structure_image_1", bitmap);
                         }
                     } else {
                         Util.showToast(getString(R.string.msg_big_image), this);
@@ -795,7 +842,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 break;
             case R.id.structure_img1:
                 if (structureId != null && !TextUtils.isEmpty(structureId)) {
-                    Snackbar.make(view,"Structure image edit not allowed",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Structure image edit not allowed", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 selectedIV = findViewById(R.id.structure_img1);
@@ -804,7 +851,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 break;
             case R.id.structure_img2:
                 if (structureId != null && !TextUtils.isEmpty(structureId)) {
-                    Snackbar.make(view,"Structure image edit not allowed",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Structure image edit not allowed", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 selectedIV = findViewById(R.id.structure_img2);
@@ -813,7 +860,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                 break;
             case R.id.bt_submit:
                 if (isAllDataValid()) {
-                   // presenter.submitStructure(structureData);
+                    // presenter.submitStructure(structureData);
                     uploadImage(structureData);
                 }
                 break;
@@ -925,13 +972,11 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Water Shed No.", Snackbar.LENGTH_LONG);
             return false;
-        }*/
-        else if (TextUtils.isEmpty(etArea.getText().toString())) {
+        }*/ else if (TextUtils.isEmpty(etArea.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill structure area.", Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
+        } else if (TextUtils.isEmpty(etStructureName.getText().toString())) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, fill Structure Name.", Snackbar.LENGTH_LONG);
             return false;
@@ -994,8 +1039,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     "Please, Fill Approximate Estimate Quantity.", Snackbar.LENGTH_LONG);
             return false;
         }*/
-        else if (imageHashmap.isEmpty() && structureData.getStructureImage1()==null
-                &&  structureData.getStructureImage2()==null) {
+        else if (imageHashmap.isEmpty() && structureData.getStructureImage1() == null
+                && structureData.getStructureImage2() == null) {
             Util.snackBarToShowMsg(this.getWindow().getDecorView().findViewById(android.R.id.content),
                     "Please, upload at least one structure image", Snackbar.LENGTH_LONG);
             return false;
@@ -1071,7 +1116,8 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                             Log.d("response -", jsonString);
                             if (commonResponse.getStatus() == 200) {
                                 Toast.makeText(CreateStructureActivity.this,
-                                        commonResponse.getMessage(), Toast.LENGTH_SHORT).show();                                finish();
+                                        commonResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                finish();
                             } else {
                                 Toast.makeText(CreateStructureActivity.this,
                                         commonResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1129,7 +1175,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
-                    Log.d("TAG", "getByteData: "+params);
+                    Log.d("TAG", "getByteData: " + params);
                 }
                 return params;
             }

@@ -63,7 +63,9 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             etExcavationCapacity, etDieselCapacity, etOrderRefNumber, etProviderName, etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
-    private int statusCode, selectedMachineTypeCode;
+    private int statusCode, selectedMachineTypeCode = 1 ;
+
+    private ArrayList<MasterDataList> masterDataList;
     private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> machineTypesList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> makeModelList = new ArrayList<>();
@@ -372,7 +374,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         Gson gson = new Gson();
         TypeToken<ArrayList<MasterDataList>> token = new TypeToken<ArrayList<MasterDataList>>() {
         };
-        ArrayList<MasterDataList> masterDataList = gson.fromJson(masterDbString, token.getType());
+        masterDataList = gson.fromJson(masterDbString, token.getType());
 
         for (int i = 0; i < masterDataList.size(); i++) {
             if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
@@ -391,6 +393,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
                     customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
                     customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                    customSpinnerObject.setTypeCode(masterDataList.get(i).getData().get(j).getTypeCode());
                     customSpinnerObject.setSelected(false);
                     machineTypesList.add(customSpinnerObject);
                 }
@@ -774,14 +777,11 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_order_ref_number), Snackbar.LENGTH_LONG);
             return false;
-        }*/
-
-        else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
+        }*/ else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
             return false;
-        }
-        else if (etProviderContact.getText().toString().trim().length() != 10) {
+        } else if (etProviderContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);
@@ -851,6 +851,20 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                     }
                 }
                 etMachineType.setText(selectedMachine);
+                for (int i = 0; i < masterDataList.size(); i++) {
+                    if (masterDataList.get(i).getForm().equals("machine_create") && masterDataList.get(i).
+                            getField().equals("machineMake")) {
+                        for (int j = 0; j < masterDataList.get(i).getData().size(); j++) {
+                            if (selectedMachineTypeCode == masterDataList.get(i).getData().get(j).getTypeCode()) {
+                                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                                customSpinnerObject.setName(masterDataList.get(i).getData().get(j).getValue());
+                                customSpinnerObject.set_id(masterDataList.get(i).getData().get(j).getId());
+                                customSpinnerObject.setSelected(false);
+                                makeModelList.add(customSpinnerObject);
+                            }
+                        }
+                    }
+                }
                 break;
             case "Select Machine Make-Model":
                 for (CustomSpinnerObject accountType : makeModelList) {
