@@ -606,7 +606,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             case R.id.btn_eligible:
                 if (Util.isConnected(getActivity())) {
                     machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
-                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                                    getActivity()).getMachineDetailData().getMachine().getMachineId(),
                             ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
                             Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
                 } else {
@@ -616,7 +616,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             case R.id.btn_not_eligible:
                 if (Util.isConnected(getActivity())) {
                     machineMouFragmentPresenter.updateMachineStructureStatus(((MachineMouActivity)
-                                    getActivity()).getMachineDetailData().getMachine().getId(),
+                                    getActivity()).getMachineDetailData().getMachine().getMachineId(),
                             ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getMachineCode(),
                             Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
                 } else {
