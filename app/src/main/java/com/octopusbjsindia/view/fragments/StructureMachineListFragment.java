@@ -451,7 +451,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getId(),
+            structureMachineListFragmentPresenter.updateMachineStatus(filteredMachineListData.get(position).getMachineId(),
                     filteredMachineListData.get(position).getMachineCode(),
                     Constants.SSModule.MACHINE_REALEASED_STATUS_CODE, Constants.SSModule.MACHINE_TYPE);
             dialog.dismiss();
@@ -543,8 +543,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         getActivity().startActivity(intent);
                     } else if (shiftAction == 2) {
                         structureMachineListFragmentPresenter.updateMachineStatusToAvailable
-                                (filteredMachineListData.get(position).getId(),
-                                        filteredMachineListData.get(position).getDeployedStrutureId(),
+                                (filteredMachineListData.get(position).getMachineId(),
+                                        filteredMachineListData.get(position).getDeployedStructureId(),
                                         Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE);
                     }
                     dialog.dismiss();
@@ -579,7 +579,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         button.setVisibility(View.VISIBLE);
         button.setOnClickListener(v -> {
             // Close dialog
-            structureMachineListFragmentPresenter.sendMachineSignOff(filteredMachineListData.get(position).getId());
+            structureMachineListFragmentPresenter.sendMachineSignOff(filteredMachineListData.get(position).getMachineId());
             dialog.dismiss();
         });
 
@@ -665,7 +665,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     }
                     if (selectedDeployTalukaId != null && selectedDeployTalukaId != "") {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineId(),
                                 filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE,
                                 selectedDeployTalukaId);
@@ -677,7 +677,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 } else if (mouAction == 2) {
                     if (editTerminateReason.getText().toString() != null && editTerminateReason.getText().toString().length() > 0) {
                         structureMachineListFragmentPresenter.terminateSubmitMou(
-                                filteredMachineListData.get(position).getId(),
+                                filteredMachineListData.get(position).getMachineId(),
                                 filteredMachineListData.get(position).getMachineCode(),
                                 Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE,
                                 editTerminateReason.getText().toString());

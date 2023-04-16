@@ -74,7 +74,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         setTextElseDash(holder.tvSupervisorContact,machineData.getMachineMobileNumber());
         holder.tvTaluka.setText(machineData.getMachineLocation());
         //holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
-        setTextElseDash(holder.tvStructureCode,machineData.getDeployedStrutureCode());
+        setTextElseDash(holder.tvStructureCode,machineData.getDeployedStructureCode());
         if (machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE &&
@@ -422,10 +422,10 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         Intent operatorIntent = new Intent(activity, SSActionsActivity.class);
                                         operatorIntent.putExtra("SwitchToFragment", "SupervisorList");
                                         operatorIntent.putExtra("title", "Field Associates List");
-                                        operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getMachineId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);
-                                        activity.finish();
+                                       // activity.finish();
                                         break;
                                     case R.id.action_release_supervisor:
                                         if (Util.isConnected(activity)) {
@@ -436,10 +436,11 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         break;
                                     case R.id.action_daily_machine_record:
                                         Intent dailyRecordIntent = new Intent(activity, OperatorActivity.class);
-                                        dailyRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getId());
+                                        dailyRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getMachineId());
                                         dailyRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
+                                        dailyRecordIntent.putExtra("structureId", ssDataList.get(getAdapterPosition()).getDeployedStructureId());
                                         activity.startActivity(dailyRecordIntent);
-                                        activity.finish();
+                                       // activity.finish();
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);
@@ -462,7 +463,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                             mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                    getId());
+                                    getMachineId());
                             if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
                                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
@@ -482,7 +483,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                             Intent mouIntent = new Intent(activity, MachineMouActivity.class);
                             mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
                             mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                    getId());
+                                    getMachineId());
                             mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
                             activity.startActivity(mouIntent);
                         } else {

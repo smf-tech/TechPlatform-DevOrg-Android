@@ -341,9 +341,10 @@
                     android:id="@+id/ly_action"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="0dp"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
                     <Button
@@ -352,6 +353,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="invisible"
+                        android:layout_centerInParent="true"
+                        tools:visibility="visible"
+                        tools:text="Deploy Machine"
                         android:textAllCaps="false"/>
 
                 </RelativeLayout>

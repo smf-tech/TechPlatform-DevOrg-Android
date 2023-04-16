@@ -4,52 +4,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dimen_10dp"
-    android:layout_marginEnd="@dimen/dimen_10dp"
-    android:layout_marginTop="@dimen/dimen_10dp"
-    app:cardCornerRadius="@dimen/dimen_05dp"
-    android:background="@color/white">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginTop="12dp"
+    android:background="@color/white"
+    app:cardCornerRadius="6dp">
 
     <LinearLayout
         android:id="@+id/ly_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen_05dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/StyleTextViewLabel"
+                android:fontFamily="@font/opensans_regular"
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/TextViewRegularStyle"
+                android:layout_below="@+id/tv_tc_label"
+                android:fontFamily="@font/opensans_semibold" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical">
+        <TextView
+            style="@style/StyleTextViewLabel"
             android:fontFamily="@font/opensans_regular"
-            android:text="Name"
-            android:textSize="@dimen/dimen_10dp" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_tc_label"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:fontFamily="@font/opensans_semibold"
-            android:textSize="@dimen/text_size_13" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:fontFamily="@font/opensans_regular"
-            android:text="Phone"
-            android:textSize="@dimen/dimen_10dp" />
+            android:text="Phone" />
 
         <TextView
             android:id="@+id/tv_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewRegularStyle"
             android:layout_below="@+id/tv_tc_label"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:fontFamily="@font/opensans_semibold"
-            android:textSize="@dimen/text_size_13" />
+            android:fontFamily="@font/opensans_semibold" />
+    </LinearLayout>
 
 
     </LinearLayout>

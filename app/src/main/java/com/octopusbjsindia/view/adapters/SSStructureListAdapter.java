@@ -28,10 +28,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.database.DatabaseManager;
@@ -124,10 +126,16 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         if (isSave) {
             if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
                 holder.tvMachinCount.setText("None");
+                holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
+                        R.color.textPrimary,null));
             } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
+                holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
+                        R.color.colorPrimary,null));
             } else {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
+                holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
+                        R.color.colorPrimary,null));
             }
         }
         // commented for RWB
@@ -171,6 +179,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
                 tvBoundary, tvStartDate, tvEndDate;
+
         ImageView btnPopupMenu;
         LinearLayout lyStartData;
         PopupMenu popup;
@@ -507,7 +516,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         RecyclerView rvDeployedMachine = dialog.findViewById(R.id.rv_deployed_machin);
         rvDeployedMachine.setLayoutManager(new LinearLayoutManager(activity));
         DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
-                ssDataList.get(adapterPosition).getDeployedMachineDetails(), activity, isDailyMachineRecord);
+                ssDataList.get(adapterPosition).getDeployedMachineDetails(),ssDataList.get(adapterPosition).getStructureId(),
+                activity, isDailyMachineRecord);
         rvDeployedMachine.setAdapter(adapter);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);

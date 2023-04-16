@@ -329,7 +329,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).
                 getOperatorRequestResponseModelDao().getAllProcesses();
         for (final OperatorRequestResponseModel data : list) {
-            uploadMachineLog(data);
+           uploadMachineLog(data);
         }
     }
 
@@ -389,7 +389,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                params.put("imageArraySize", "1");
+                params.put("imageArraySize","2");
                 return params;
             }
 
@@ -427,7 +427,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 //                            "image/jpeg"));
 //                }
 //                return params;
-
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
                 params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),

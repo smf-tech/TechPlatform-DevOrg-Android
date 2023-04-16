@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="12dp"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
@@ -38,7 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:padding="8dp"
+                    android:layout_marginStart="8dp"
                     android:background="@drawable/ic_back_white"
                     android:backgroundTint="@color/white" />
 
@@ -48,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="8dp"
                     android:background="@drawable/ic_check_mark"
                     android:backgroundTint="@color/white" />
 
@@ -59,14 +63,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ly_toolbar"
-                android:layout_marginStart="@dimen/dimen_20dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/opensans_semibold"
                 android:text="What would you like to do?" />
 
             <RadioGroup
                 android:id="@+id/rg_mou_action"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_rg_title"
                 android:layout_marginStart="@dimen/dimen_10dp"
@@ -75,9 +79,9 @@
 
                 <RadioButton
                     android:id="@+id/rb_deploy"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="@font/opensans"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Allocate machine in taluka"
@@ -85,7 +89,7 @@
 
                 <RadioButton
                     android:id="@+id/rb_terminate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:fontFamily="@font/opensans"
@@ -100,7 +104,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rg_mou_action"
-                android:layout_marginBottom="@dimen/dimen_05dp" />
+                android:clipToPadding="false"
+                tools:listitem="@layout/row_filterdialog_item"
+                android:padding="12dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tly_terminate_reason"
@@ -108,7 +114,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rg_mou_action"
-                android:layout_margin="@dimen/dimen_10dp"
+               android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="16dp"
                 android:visibility="gone"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 

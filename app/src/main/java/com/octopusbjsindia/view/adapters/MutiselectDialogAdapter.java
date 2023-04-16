@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,13 +58,15 @@ import java.util.ArrayList;
 
         TextView txtTitle;
         ImageView btSelectFilter;
+        LinearLayout lytSelectFilter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.setIsRecyclable(false);
             txtTitle = itemView.findViewById(R.id.tv_filters);
             btSelectFilter = itemView.findViewById(R.id.bt_select_filter);
-            btSelectFilter.setOnClickListener(new View.OnClickListener() {
+            lytSelectFilter = itemView.findViewById(R.id.lyt_select_filter);
+            lytSelectFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (isMultiselectionAllowed) {

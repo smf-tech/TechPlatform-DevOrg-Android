@@ -12,6 +12,9 @@ public class MachineData implements Serializable {
     @SerializedName("_id")
     @Expose
     private String id;
+    @SerializedName("machine_id")
+    @Expose
+    private String machineId;
     @SerializedName("make_model")
     @Expose
     private String makeModel;
@@ -74,12 +77,13 @@ public class MachineData implements Serializable {
     @SerializedName("statusCode")
     @Expose
     private int statusCode;
-    @SerializedName("deployedStrutureId")
+    @SerializedName("deployedStructureId")
     @Expose
-    private String deployedStrutureId;
-    @SerializedName("deployedStrutureCode")
+    private String deployedStructureId;
+
+    @SerializedName("deployedStructureCode")
     @Expose
-    private String deployedStrutureCode;
+    private String deployedStructureCode;
     @SerializedName("haltReason")
     @Expose
     private String haltReason;
@@ -191,9 +195,18 @@ public class MachineData implements Serializable {
         this.excavationCapacity = excavationCapacity;
     }
 
+    public String getMachineId() {
+        return machineId;
+    }
+
     public String getId() {
         return id;
     }
+
+    public String getDeployedStructureId() {
+        return deployedStructureId;
+    }
+
 
     public void setId(String id) {
         this.id = id;
@@ -229,6 +242,10 @@ public class MachineData implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getDeployedStructureCode() {
+        return deployedStructureCode;
     }
 
     public String getDistrict() {
@@ -325,22 +342,6 @@ public class MachineData implements Serializable {
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public String getDeployedStrutureId() {
-        return deployedStrutureId;
-    }
-
-    public void setDeployedStrutureId(String deployedStrutureId) {
-        this.deployedStrutureId = deployedStrutureId;
-    }
-
-    public String getDeployedStrutureCode() {
-        return deployedStrutureCode;
-    }
-
-    public void setDeployedStrutureCode(String deployedStrutureCode) {
-        this.deployedStrutureCode = deployedStrutureCode;
     }
 
     public String getProviderName() {

@@ -60,7 +60,7 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
     private EditText editOwnerType, etMachineState, etMachineDistrict, etMachineTaluka,
             etMachineType, etYear, etMachineMakeModel, etMeterWorking, etRtoNumber, etChasisNumber,
-            etExcavationCapacity, etDieselCapacity, etOrderRefNumber, etProviderName, etProviderContact;
+            etExcavationCapacity, etDieselCapacity, etOrderRefNumber,/* etProviderName,*/ etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
     private int statusCode, selectedMachineTypeCode = 1 ;
@@ -777,11 +777,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_order_ref_number), Snackbar.LENGTH_LONG);
             return false;
-        }*/ else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
+        }*/
+        /*else if (TextUtils.isEmpty(etProviderName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (etProviderContact.getText().toString().trim().length() != 10) {
+        }*/
+        else if (etProviderContact.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_provider_contact),
                     Snackbar.LENGTH_LONG);

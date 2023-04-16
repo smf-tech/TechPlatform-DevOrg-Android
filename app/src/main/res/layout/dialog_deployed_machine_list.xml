@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_10dp"
-        android:background="@color/white"
         app:cardCornerRadius="@dimen/dimen_10dp">
 
         <LinearLayout
@@ -36,13 +36,22 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dimen_10dp"
-                    android:src="@drawable/ic_dialog_close_dark" />
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="8dp"
+                    app:tint="@color/white"
+                    android:src="@drawable/ic_close_24" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_deployed_machin"
                 android:layout_width="match_parent"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+
+                android:clipToPadding="false"
+                tools:listitem="@layout/row_deployed_machine"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

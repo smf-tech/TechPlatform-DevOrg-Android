@@ -1,60 +1,56 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardElevation="0dp">
+    android:clickable="true"
+    android:id="@+id/lyt_select_filter"
+    android:background="?selectableItemBackground"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/linear_row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/linear_row"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_filters"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/text_size_title_14"
+            tools:text="sample title text" />
+        <!--<CheckBox-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:checked="true"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:id="@+id/cb_select_filter"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:buttonTint="@color/colorPrimary"-->
+        <!--android:layout_marginStart="@dimen/dimen_10dp"-->
+        <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
+        <!--android:layout_marginTop="@dimen/dimen_05dp"-->
+        <!--android:layout_marginBottom="@dimen/dimen_05dp"-->
+        <!--android:layout_height="wrap_content" />-->
+        <ImageView
+            android:id="@+id/bt_select_filter"
+            android:layout_width="30dp"
+            android:layout_height="@dimen/dimen_30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/dimen_05dp"
+            android:background="@drawable/ic_custom_unchecked" />
+    </LinearLayout>
 
-            <com.octopusbjsindia.view.customs.TextViewSemiBold
-                android:id="@+id/tv_filters"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:text="text"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_title_14" />
-            <!--<CheckBox-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:checked="true"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:id="@+id/cb_select_filter"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:buttonTint="@color/colorPrimary"-->
-            <!--android:layout_marginStart="@dimen/dimen_10dp"-->
-            <!--android:layout_marginEnd="@dimen/dimen_10dp"-->
-            <!--android:layout_marginTop="@dimen/dimen_05dp"-->
-            <!--android:layout_marginBottom="@dimen/dimen_05dp"-->
-            <!--android:layout_height="wrap_content" />-->
-            <ImageView
-                android:id="@+id/bt_select_filter"
-                android:layout_width="30dp"
-                android:layout_height="@dimen/dimen_30dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_custom_unchecked"
-                android:layout_margin="@dimen/dimen_05dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_below="@+id/linear_row"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:background="@drawable/dotted_line" />
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:background="@drawable/dotted_line" />
+</LinearLayout>

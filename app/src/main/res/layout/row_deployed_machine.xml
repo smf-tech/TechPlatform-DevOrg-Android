@@ -2,75 +2,65 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dimen_05dp"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dimen_05dp"
-        android:layout_marginTop="@dimen/dimen_05dp"
-        android:layout_marginEnd="@dimen/dimen_05dp"
-        android:layout_marginBottom="@dimen/dimen_05dp">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/google_in"
+       android:layout_marginHorizontal="6dp"
+        android:layout_marginVertical="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp">
 
                     <TextView
                         android:id="@+id/tv_machin_code_lable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Machin Code"
-                        android:textSize="@dimen/dimen_10dp" />
+                        style="@style/StyleTextViewLabel"
+                        android:text="Machin Code" />
 
                     <TextView
                         android:id="@+id/tv_machin_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/TextViewRegularStyle"
+
                         android:layout_below="@+id/tv_machin_code_lable"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_13" />
+                        android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
                     android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/tv_machin_status_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Machine Status"
-                        android:textSize="@dimen/dimen_10dp" />
+                        style="@style/StyleTextViewLabel"
+                        android:text="Machine Status" />
 
                     <TextView
                         android:id="@+id/tv_machin_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/TextViewRegularStyle"
                         android:layout_below="@+id/tv_machin_status_label"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_13" />
+                        android:fontFamily="@font/opensans_semibold" />
 
                 </RelativeLayout>
 
@@ -79,32 +69,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_05dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp">
 
                     <TextView
                         android:id="@+id/tv_machin_update_lable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:text="Last Updated"
-                        android:textSize="@dimen/dimen_10dp" />
+                        style="@style/StyleTextViewLabel"
+                        android:text="Last Updated" />
 
                     <TextView
                         android:id="@+id/tv_machin_update"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/TextViewRegularStyle"
                         android:layout_below="@+id/tv_machin_update_lable"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_05dp"
-                        android:fontFamily="@font/opensans_semibold"
-                        android:textSize="@dimen/text_size_13" />
+                        android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -112,13 +96,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_daily_record"
                         android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_10dp"
                         android:text="Daily Record"
-                        android:textSize="@dimen/dimen_10dp" />
+                        app:cornerRadius="24dp"
+                        android:textSize="12sp" />
 
                 </RelativeLayout>
 

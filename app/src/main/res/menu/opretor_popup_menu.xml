@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:icon="@drawable/ic_halt"
         android:id="@+id/halt"
+        app:showAsAction="ifRoom"
         android:title="Halt Reason"/>
 
     <item
-        android:icon="@drawable/ic_halt"
         android:id="@+id/dpr"
-        android:title="Beneficiary Record"
+        app:showAsAction="never"
+        android:title="Silt Beneficiary Record"
         />
 </menu>

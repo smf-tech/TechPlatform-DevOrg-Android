@@ -185,7 +185,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                             "",
                     (machineData.getTalukaId() != null) ?
                             machineData.getTalukaId() :
-                            "", "machineShiftStructures", machineData.getDeployedStrutureId());
+                            "", "machineShiftStructures", machineData.getDeployedStructureId());
         }
     }
 
@@ -200,8 +200,8 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "MachineShiftingFormFragment");
         intent.putExtra("title", "Machine Shifting");
-        intent.putExtra("machineId", machineData.getId());
-        intent.putExtra("currentStructureId", machineData.getDeployedStrutureId());
+        intent.putExtra("machineId", machineData.getMachineId());
+        intent.putExtra("currentStructureId", machineData.getDeployedStructureId());
         intent.putExtra("newStructureId", filteredStructureListData.get(position).getStructureId());
         intent.putExtra("newStructureCode", filteredStructureListData.get(position).getStructureCode());
         startActivity(intent);
@@ -464,7 +464,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
             button.setOnClickListener(v -> {
                 if(Util.isConnected(getActivity())) {
                     machineDeployStructureListFragmentPresenter.deployMachine(filteredStructureListData.get
-                            (selectedPosition).getStructureId(), machineData.getId());
+                            (selectedPosition).getStructureId(), machineData.getMachineId());
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), getActivity());
                 }

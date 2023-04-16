@@ -231,6 +231,7 @@
                         android:id="@+id/tv_machin_count"
                         style="@style/TextViewRegularStyle"
                         android:clickable="true"
+                        tools:text="None"
                         android:background="?selectableItemBackground"
                         android:layout_below="@+id/tv_machin_count_label"
                         android:textColor="@color/colorPrimary" />

@@ -34,6 +34,10 @@ public interface OperatorRequestResponseModelDao {
             "meterReadingTimestamp<:selectedTimestamp ORDER BY meterReadingTimestamp DESC LIMIT 1")
     OperatorRequestResponseModel getPreviousLatestRecord(String machine_id, Long selectedTimestamp);
 
+    @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +
+            "meterReadingTimestamp>:selectedTimestamp ORDER BY meterReadingTimestamp ASC LIMIT 1")
+    OperatorRequestResponseModel getPreviousLatestRecordAfter(String machine_id, Long selectedTimestamp);
+
     @Query("SELECT EXISTS(SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND" +
             " meterReadingTimestamp=:nextDayTimeStamp)")
     boolean getRecordForGivenTimestamp(String machine_id, Long nextDayTimeStamp);

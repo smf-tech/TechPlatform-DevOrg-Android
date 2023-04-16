@@ -1,189 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.activities.OperatorActivity">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/operator_toolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/opretor_popup_menu"
+            app:navigationIcon="@drawable/ic_arrow_back_24"
+            app:title="@string/machine_meter_reading"
+            app:titleCentered="true" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/white"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:elevation="0dp">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/operator_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    android:paddingStart="@dimen/dimen_10dp"
-                    android:paddingEnd="5dp"
-                    app:titleTextColor="@android:color/white">
-
-                    <LinearLayout
-                        android:id="@+id/toolbar_action_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <ImageView
-                            android:id="@+id/toolbar_back_action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@drawable/ic_back_white"
-                            android:contentDescription="@string/content_description"
-                            android:visibility="invisible" />
-
-                        <ImageView
-                            android:id="@+id/toolbar_back_action_two"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/dimen_05dp"
-                            android:background="@drawable/ic_back_white"
-                            android:contentDescription="@string/content_description"
-                            android:visibility="invisible" />
-
-                        <TextView
-                            android:id="@+id/toolbar_title"
-                            android:layout_width="247dp"
-                            android:layout_height="27dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/dimen_10dp"
-                            android:layout_marginBottom="1dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/opensans"
-                            android:gravity="center"
-                            android:lines="2"
-                            android:text="@string/machine_meter_reading"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/toolbar_action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="2dp"
-                            android:contentDescription="@string/content_description"
-                            android:padding="@dimen/dimen_10dp"
-                            android:src="@drawable/ic_sync_24"
-                            android:tint="@color/white"
-                            android:visibility="invisible" />
-
-                        <ImageView
-                            android:id="@+id/toolbar_edit_action"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="2dp"
-                            android:contentDescription="@string/content_description"
-                            android:padding="@dimen/dimen_07dp"
-                            android:src="@drawable/ic_popup_menu"
-                            android:visibility="visible" />
-                    </LinearLayout>
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.AppBarLayout>
-
             <LinearLayout
                 android:id="@+id/ly_device_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_alignParentTop="true"
+                android:background="@color/color_primary_level3"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/tv_version_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_gravity="start"
                     android:layout_weight="1"
-                    android:gravity="left"
-                    android:textColor="@color/colorPrimary" />
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimary"
+                    android:drawableStart="@drawable/ic_android_24"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    tools:text="v 3.7" />
 
                 <TextView
                     android:id="@+id/tv_device_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_gravity="end"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@color/colorPrimary" />
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_vertical|end"
+                    android:drawableTint="@color/colorPrimary"
+                    android:drawablePadding="8dp"
+                    android:drawableEnd="@drawable/ic_device_information_24"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    tools:text="POCO F1" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_machine_code_new"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_device_details"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_10dp"
                 android:gravity="center_horizontal"
-                android:text="Machine Code"
-                android:textColor="@color/colorPrimary" />
+                android:background="@color/white"
+                android:layout_below="@+id/ly_device_details"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/jcb"
-                android:layout_width="@dimen/dimen_145dp"
-                android:layout_height="@dimen/dimen_130dp"
-                android:layout_below="@+id/tv_machine_code_new"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:src="@drawable/jcb_stopped"
-                android:visibility="visible" />
+                <TextView
+                    android:id="@+id/tv_machine_code_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:text="Machine Code"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/jcb"
+                    android:layout_width="@dimen/dimen_145dp"
+                    android:layout_height="@dimen/dimen_130dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:src="@drawable/jcb_stopped"
+                    android:visibility="visible" />
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tl_date"
-                style="@style/textinputstyle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/jcb"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                app:hintTextAppearance="@style/TextInputLayoutHint"
+                android:layout_below="@+id/linearLayout"
+
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:endIconDrawable="@drawable/ic_calendar_today_24"
                 app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_calendar">
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:longClickable="false"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="Select meter reading date"
-                    tools:ignore="Autofill" />
+                    android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_below="@+id/tl_date"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp">
+                app:strokeColor="@color/grey"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -198,26 +155,32 @@
                         android:orientation="horizontal"
                         android:weightSum="2">
 
-                        <ImageView
+                        <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/img_start_meter"
-                            android:layout_width="@dimen/dimen_200dp"
-                            android:layout_height="@dimen/dimen_200dp"
-                            android:layout_margin="@dimen/dimen_05dp"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_margin="12dp"
                             android:layout_weight="1"
                             android:longClickable="false"
-                            android:padding="@dimen/dimen_01dp"
-                            android:scaleType="fitXY"
+                            app:strokeWidth="1dp"
+                            app:shapeAppearanceOverlay="@style/Rounded_ImageView_12dp"
+                            android:background="@color/google_in"
+                            app:strokeColor="@color/google_in"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/ic_start_meter_reading" />
 
-                        <ImageView
+                        <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/img_end_meter"
-                            android:layout_width="@dimen/dimen_200dp"
-                            android:layout_height="@dimen/dimen_200dp"
-                            android:layout_margin="@dimen/dimen_05dp"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_margin="12dp"
                             android:layout_weight="1"
                             android:longClickable="false"
-                            android:padding="@dimen/dimen_01dp"
-                            android:scaleType="fitXY"
+                            app:strokeWidth="1dp"
+                            app:shapeAppearanceOverlay="@style/Rounded_ImageView_12dp"
+                            android:background="@color/google_in"
+                            app:strokeColor="@color/google_in"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/ic_end_meter_reading" />
                         <!--android:drawableEnd="@drawable/ic_cal_event"-->
 
@@ -227,16 +190,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
                         <!--Start Date-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tly_start_date1"
-                            style="@style/textinputstyleoperator"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginVertical="4dp"
                             android:layout_weight="1"
                             app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
@@ -252,10 +215,11 @@
                         <!--End Date-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tly_end_date1"
-                            style="@style/textinputstyleoperator"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginVertical="4dp"
                             android:layout_weight="1"
                             app:hintTextAppearance="@style/TextInputLayoutHintoperator">
 
@@ -272,40 +236,42 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_05dp"
-                        android:layout_marginBottom="10dp">
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/buttonStartService"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_margin="12dp"
                                 android:layout_weight="1"
-
                                 android:text="@string/meter_start"
-                                android:textColor="#fff" />
+                                android:textColor="#fff"
+                                app:cornerRadius="24dp" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/buttonStopService"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
+                                android:layout_margin="12dp"
                                 android:layout_weight="1"
                                 android:text="@string/meter_stop"
-                                android:textColor="#fff" />
+                                android:textColor="#fff"
+                                app:cornerRadius="24dp" />
                         </LinearLayout>
 
                     </RelativeLayout>
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </RelativeLayout>
-    </ScrollView>
-</RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
