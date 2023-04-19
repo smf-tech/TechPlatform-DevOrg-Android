@@ -968,9 +968,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 //Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                                 Snackbar.make(toolbar, commonResponse.getMessage(), Snackbar.LENGTH_SHORT).show();
 
-                                if (machine_status.equalsIgnoreCase(STATUS_STOP)) {
-                                    //todo check for next day entry in db if exist then delete this entry from db
-
+                                //todo check for next day entry in db if exist then delete this entry from db
+                              /*  if (machine_status.equalsIgnoreCase(STATUS_STOP)) {
                                     Long submittedRecordTimestamp = submittedStopRecord.getMeterReadingTimestamp();
                                     Long nextDayTimeStamp = Util.getNextDayTimestamp(submittedRecordTimestamp);
                                     Long previousDayTimeStamp = Util.getPreviousDayTimestamp(submittedRecordTimestamp);
@@ -989,7 +988,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                                 deleteSpecificMachineRecord(machine_id, previousDayTimeStamp);
                                     }
-                                }
+                                }*/
                             } else {
                                 Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                             }

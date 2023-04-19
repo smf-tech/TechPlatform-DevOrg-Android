@@ -347,9 +347,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             if (commonResponse.getStatus() == 200) {
                                 Util.showToast(commonResponse.getMessage(), getContext());
 
-                                if (data.getStatus().equalsIgnoreCase("Stop")) {
-                                    //todo check for next day entry in db if exist then delete this entry from db
-
+                                //todo check for next day entry in db if exist then delete this entry from db
+                                /*if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     Long submittedRecordTimestamp = data.getMeterReadingTimestamp();
                                     Long nextDayTimeStamp = Util.getNextDayTimestamp(submittedRecordTimestamp);
                                     Long previousDayTimeStamp = Util.getPreviousDayTimestamp(submittedRecordTimestamp);
@@ -368,7 +367,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                         DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                                 deleteSpecificMachineRecord(data.getMachine_id(), previousDayTimeStamp);
                                     }
-                                }
+                                }*/
                             } else {
                                 Util.showToast(commonResponse.getMessage(), getContext());
                             }
@@ -433,9 +432,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
                 params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
                         "image/jpeg"));
-                Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
-                params.put("image1", new DataPart("image1", getFileDataFromDrawable(drawable1),
-                        "image/jpeg"));
+                if (data.getStopImage()!=null) {
+                    Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
+                    params.put("image1", new DataPart("image1", getFileDataFromDrawable(drawable1),
+                            "image/jpeg"));
+                }
                 return params;
             }
         };
