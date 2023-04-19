@@ -208,10 +208,6 @@ public class MachineData implements Serializable {
     }
 
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getMakeModel() {
         return makeModel;
     }

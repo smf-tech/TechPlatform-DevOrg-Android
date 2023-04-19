@@ -389,7 +389,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                params.put("imageArraySize","2");
+                if (data.getStopImage()!=null) {
+                    params.put("imageArraySize", "2");
+                }else params.put("imageArraySize", "1");
                 return params;
             }
 

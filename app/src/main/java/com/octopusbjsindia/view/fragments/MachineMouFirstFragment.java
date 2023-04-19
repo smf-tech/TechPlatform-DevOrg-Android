@@ -901,9 +901,10 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     }
 
     public void showResponse(String responseStatus, String requestId, int status) {
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+       /* Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
-                Snackbar.LENGTH_LONG);
+                Snackbar.LENGTH_LONG);*/
+        Util.showToast(getActivity(),responseStatus);
         if (requestId.equals(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)) {
             if (status == 200) {
                 getActivity().finish();

@@ -425,7 +425,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         operatorIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getMachineId());
                                         operatorIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         activity.startActivity(operatorIntent);
-                                       // activity.finish();
                                         break;
                                     case R.id.action_release_supervisor:
                                         if (Util.isConnected(activity)) {
@@ -440,7 +439,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         dailyRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         dailyRecordIntent.putExtra("structureId", ssDataList.get(getAdapterPosition()).getDeployedStructureId());
                                         activity.startActivity(dailyRecordIntent);
-                                       // activity.finish();
                                 }
                             } else {
                                 Util.showToast(activity.getString(R.string.msg_no_network), activity);

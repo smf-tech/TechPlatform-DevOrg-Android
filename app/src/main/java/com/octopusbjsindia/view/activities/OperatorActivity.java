@@ -134,8 +134,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private static final String STATUS_STOP = "Stop";
     private OperatorRequestResponseModel lastWorkingRecordData;
     private OperatorRequestResponseModel previousLatestRecord;
+    private OperatorRequestResponseModel nextLatestRecord;
     private OperatorRequestResponseModel submittedStopRecord;
     final Handler handler = new Handler();
+    private boolean isOperator = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +183,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         // TODO for now this code is called after machine details api.
         if (machine_id != null && structure_id != null && machine_code != null) { // For NON-FA roles
+            isOperator = false;
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
             lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                     getLastWorkingRecord(machine_id);
@@ -188,11 +191,21 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             if (lastWorkingRecordData != null) {
                 setWorkingMachineData(lastWorkingRecordData);
             } else { //new date entry
-                //todo disable all entry except date
                 updateUIForNewEntry();
             }
+
+            //api call to get list of halt reason
+            String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+            Gson gson = new Gson();
+            OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,
+                    OperatorMachineCodeDataModel.class);
+            if (operatorMachineData == null) {
+                presenter.getAllFiltersRequests(machine_code);
+            }
+
         } else {   // For FA/Operator roles
             toolbar.setNavigationIcon(null);
+            isOperator = true;
             String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
             Gson gson = new Gson();
             OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,
@@ -208,7 +221,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     setWorkingMachineData(lastWorkingRecordData);
                 }
             } else {
-                //updateUIForNewEntry();
                 presenter.getAllFiltersRequests("no_machine");
             }
         }
@@ -253,40 +265,46 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (msg.length() <= 0) {
                     // Get previous machine reading entry for validation
                     Long selectedTimestamp = getDateInLong(etDate.getText().toString());
+                    //todo need validation when previous latest record from db is of the days after current selected date
                     previousLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getPreviousLatestRecord(machine_id, selectedTimestamp);
+                    //todo get next days entry and check current start& stop reading should be less than its start reading
+                    nextLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getPreviousLatestRecordAfter(machine_id, selectedTimestamp);
 
-                    //todo need validation when previous latest record from db is of the days after current selected date
-
-                    if (previousLatestRecord != null) {
+                    if (previousLatestRecord != null) { //this is previous latest record
                         if (Integer.parseInt(et_smeter_read.getText().toString()) >= Integer.parseInt(
                                 previousLatestRecord.getStop_meter_reading())) {
-                            addStartMeterRecord();
+
+                            if (nextLatestRecord != null) { //this is next latest record
+                                if (Integer.parseInt(et_smeter_read.getText().toString()) < Integer.parseInt(
+                                        nextLatestRecord.getStart_meter_reading())) {
+                                    addStartMeterRecord();
+                                } else {
+                                    Toast.makeText(this, "Start meter reading should be less than " +
+                                            "next available record's start reading.", Toast.LENGTH_LONG).show();
+                                }
+                            }else {
+                                addStartMeterRecord();
+                            }
                         } else {
                             Toast.makeText(this, "Start meter reading should be greater than " +
                                     "previous record's stop reading", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        //todo get next days entry and check current start& stop reading should be less than its start reading
-                        previousLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                getPreviousLatestRecordAfter(machine_id, selectedTimestamp);
-
-                        if (previousLatestRecord != null) {
+                        if (nextLatestRecord != null) { //this is next latest record
                             if (Integer.parseInt(et_smeter_read.getText().toString()) < Integer.parseInt(
-                                    previousLatestRecord.getStop_meter_reading())) {
+                                    nextLatestRecord.getStart_meter_reading())) {
                                 addStartMeterRecord();
                             } else {
                                 Toast.makeText(this, "Start meter reading should be less than " +
-                                        "previous record's start reading", Toast.LENGTH_LONG).show();
+                                        "next available record's start reading.", Toast.LENGTH_LONG).show();
                             }
                         } else {
                             // This section means previous entry for this machine is not available.
                             addStartMeterRecord();
                         }
-
                     }
-
-                    //checkDate();
                 } else {
                    // Util.showToast(msg, OperatorActivity.this);
                     Snackbar.make(toolbar, msg, Snackbar.LENGTH_SHORT).show();
@@ -309,16 +327,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (msg.length() <= 0) {
 
                     Long selectedTimestamp = getDateInLong(etDate.getText().toString());
-                    previousLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    nextLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getPreviousLatestRecordAfter(machine_id, selectedTimestamp);
 
-                    if (previousLatestRecord != null) {
-                        if (Integer.parseInt(et_emeter_read.getText().toString()) > Integer.parseInt(
-                                previousLatestRecord.getStop_meter_reading())) {
+                    if (nextLatestRecord != null) {
+                        if (Integer.parseInt(et_emeter_read.getText().toString()) <= Integer.parseInt(
+                                nextLatestRecord.getStart_meter_reading())) {
                             addStopMeterRecord();
                         } else {
                             Toast.makeText(this, "Stop meter reading should be less than " +
-                                    "previous record's stop reading", Toast.LENGTH_LONG).show();
+                                    "next available record's start reading.", Toast.LENGTH_LONG).show();
                         }
                     } else {
                         // This section means previous entry for this machine is not available.
@@ -413,8 +431,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
                     }
                     showMultiSelectBottomsheet("Halt Reason", "halt", ListHaltReasons);
-                } else { //this is non-FA case
-
                 }
             }
             return true;
@@ -744,27 +760,32 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
         Gson gson = new Gson();
         editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
-        machine_id = operatorMachineData.getMachine_id();
-        structure_id = operatorMachineData.getStructure_id();
-        machine_code = operatorMachineData.getMachine_code();
         serverCurrentTimeStamp = operatorMachineData.getCurrentTimeStamp();
-        if (machine_code != null && !(machine_code.isEmpty())) {
-            tv_machine_code.setText(machine_code);
-        } else {
-            tv_machine_code.setText("Not Assigned");
-            Util.showToast("Machine not assigned. Contact to DPM.", this);
+        if (isOperator) {
+            machine_id = operatorMachineData.getMachine_id();
+            structure_id = operatorMachineData.getStructure_id();
+            machine_code = operatorMachineData.getMachine_code();
+
+            if (machine_code != null && !(machine_code.isEmpty())) {
+                tv_machine_code.setText(machine_code);
+            } else {
+                tv_machine_code.setText("Not Assigned");
+                Util.showToast("Machine not assigned. Contact to DPM.", this);
+            }
+
+            // GET Working machine record
+            lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    getLastWorkingRecord(machine_id);
+
+            if (lastWorkingRecordData != null) {
+                setWorkingMachineData(lastWorkingRecordData);
+            } else { //new date entry
+                updateUIForNewEntry();
+            }
         }
+
         for (int i = 0; i < operatorMachineData.getNonutilisationTypeData().getEn().size(); i++) {
             ListHaltReasons.add(operatorMachineData.getNonutilisationTypeData().getEn().get(i).getValue());
-        }
-        // GET Working machine record
-        lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                getLastWorkingRecord(machine_id);
-
-        if (lastWorkingRecordData != null) {
-            setWorkingMachineData(lastWorkingRecordData);
-        } else { //new date entry
-            updateUIForNewEntry();
         }
 
         editor.apply();
@@ -1085,9 +1106,15 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         strReasonId = operatorMachineData.getNonutilisationTypeData().getEn().get(selectedPosition).get_id();
         OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
         operatorRequestResponseModel.setMachine_id(machine_id);
+        operatorRequestResponseModel.setMeterReadingDate(new SimpleDateFormat(FORM_DATE).format(new Date()));
+        operatorRequestResponseModel.setMeterReadingTimestamp(System.currentTimeMillis());
         operatorRequestResponseModel.setStatus_code("" + state_halt);
         operatorRequestResponseModel.setStatus("halt");
         operatorRequestResponseModel.setReasonId(strReasonId);
+        //no image in halt case to clear imageHashmap
+        imageHashmap.clear();
+        startUri = null;
+        stopUri = null;
         if (Util.isConnected(this)) {
             uploadMachineLog(operatorRequestResponseModel);
         } else {

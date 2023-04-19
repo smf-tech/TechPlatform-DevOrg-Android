@@ -521,7 +521,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineMeterWorking("Yes");
         //((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setIsTurnover(isTurnoverBelow);
         ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setMachineId(((MachineMouActivity)
-                getActivity()).getMachineDetailData().getMachine().getId());
+                getActivity()).getMachineDetailData().getMachine().getMachineId());
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setTradeName
 //                (etTradeName.getText().toString().trim());
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getProviderInformation().setGSTNumber

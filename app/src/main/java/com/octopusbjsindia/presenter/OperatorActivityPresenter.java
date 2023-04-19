@@ -1,6 +1,7 @@
 package com.octopusbjsindia.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -60,11 +61,11 @@ public class OperatorActivityPresenter implements TMFilterListRequestCallListene
 
     @Override
     public void onFailureListener(String message) {
-
+        Log.e(TAG, "onErrorListener: "+ message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
-
+        Log.e(TAG, "onErrorListener: "+ error);
     }
 }

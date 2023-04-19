@@ -48,6 +48,9 @@ import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.adapters.SSAnalyticsAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,7 +58,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SujalamSufalamFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener, APIDataListener,
-        CustomSpinnerListener {
+      /*  CustomSpinnerListener ,*/ CustomBottomSheetDialogInterface {
 
     private View sujalamSufalamFragmentView;
     private ProgressBar progressBar;
@@ -75,9 +78,9 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
     private ImageView btnFilter;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
             userTalukas = "", userTalukaIds = "";
-    private ArrayList<CustomSpinnerObject> machineStateList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> machineDistrictList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> machineTalukaList = new ArrayList<>();
+    private ArrayList<SelectionListObject> machineStateList = new ArrayList<>();
+    private ArrayList<SelectionListObject> machineDistrictList = new ArrayList<>();
+    private ArrayList<SelectionListObject> machineTalukaList = new ArrayList<>();
     private boolean isFilterApplied;
     private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
 
@@ -175,9 +178,13 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 tvStateFilter.setOnClickListener(this);
                 machineStateList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getStateId().size(); i++) {
-                    CustomSpinnerObject customState = new CustomSpinnerObject();
-                    customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
-                    customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
+                    SelectionListObject customState = new SelectionListObject(
+                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName(),
+                            false,false
+                    );
+                    //customState.set_id(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getId());
+                   // customState.setName(Util.getUserObjectFromPref().getUserLocation().getStateId().get(i).getName());
                     machineStateList.add(customState);
                 }
             }
@@ -190,9 +197,10 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 tvDistrictFilter.setOnClickListener(this);
                 machineDistrictList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getDistrictIds().size(); i++) {
-                    CustomSpinnerObject customDistrict = new CustomSpinnerObject();
-                    customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
-                    customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
+                    SelectionListObject customDistrict = new SelectionListObject(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName(),false,false);
+                   // customDistrict.set_id(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getId());
+                    //customDistrict.setName(Util.getUserObjectFromPref().getUserLocation().getDistrictIds().get(i).getName());
                     machineDistrictList.add(customDistrict);
                 }
             }
@@ -205,9 +213,13 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 tvTalukaFilter.setOnClickListener(this);
                 machineTalukaList.clear();
                 for (int i = 0; i < Util.getUserObjectFromPref().getUserLocation().getTalukaIds().size(); i++) {
-                    CustomSpinnerObject customTaluka = new CustomSpinnerObject();
-                    customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
-                    customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
+                    SelectionListObject customTaluka = new SelectionListObject(
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId(),
+                            Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName(),
+                            false,false
+                    );
+                    //customTaluka.set_id(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getId());
+                   // customTaluka.setName(Util.getUserObjectFromPref().getUserLocation().getTalukaIds().get(i).getName());
                     machineTalukaList.add(customTaluka);
                 }
             }
@@ -324,13 +336,17 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 getActivity().startActivity(intent);
                 break;
             case R.id.tv_state_filter:
-                CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
+               /* CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select State",
                         machineStateList,
                         false);
                 cdd.show();
                 cdd.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                        ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                CustomBottomSheetDialogFragment customBottomsheet = null;
+                showSelectiveBottomSheet(customBottomsheet, "Select State",
+                        machineStateList, false);
                 break;
             case R.id.tv_district_filter:
                 if (Util.isConnected(getActivity())) {
@@ -510,44 +526,69 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
             case Constants.JurisdictionLevelName.TALUKA_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineTalukaList.clear();
+
+                    ArrayList<SelectionListObject> tempTalukaList = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        tempTalukaList.add(new SelectionListObject(location.getId(),
+                                location.getName(), false, false));
+                    }
+                    machineTalukaList.addAll(tempTalukaList);
+
+                    /*for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject talukaList = new CustomSpinnerObject();
                         talukaList.set_id(location.getId());
                         talukaList.setName(location.getName());
                         talukaList.setSelected(false);
                         machineTalukaList.add(talukaList);
-                    }
+                    }*/
                 }
                 //if (!isTalukaApiFirstCall) {
 
-                CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
+                CustomBottomSheetDialogFragment customBottomsheet = null;
+                showSelectiveBottomSheet(customBottomsheet, "Select Taluka",
+                        machineTalukaList, true);
+
+
+               /* CustomSpinnerDialogClass cddTaluka = new CustomSpinnerDialogClass(getActivity(),
                         this, "Select Taluka", machineTalukaList,
                         true);
                 cddTaluka.show();
                 cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                        ViewGroup.LayoutParams.MATCH_PARENT);*/
                 //}
                 break;
             case Constants.JurisdictionLevelName.DISTRICT_LEVEL:
                 if (jurisdictionLevels != null && !jurisdictionLevels.isEmpty()) {
                     machineDistrictList.clear();
-
+                    ArrayList<SelectionListObject> tempDistrictList = new ArrayList<>();
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
+                        JurisdictionLocationV3 location = jurisdictionLevels.get(i);
+                        tempDistrictList.add(new SelectionListObject(location.getId(),
+                                location.getName(), false, false));
+                    }
+                    machineDistrictList.addAll(tempDistrictList);
+                   /* for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         CustomSpinnerObject districtList = new CustomSpinnerObject();
                         districtList.set_id(location.getId());
                         districtList.setName(location.getName());
                         districtList.setSelected(false);
                         machineDistrictList.add(districtList);
-                    }
+                    }*/
                 }
-                CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
+
+                CustomBottomSheetDialogFragment customBottomsheet2 = null;
+                showSelectiveBottomSheet(customBottomsheet2, "Select District",
+                        machineDistrictList, true);
+
+               /* CustomSpinnerDialogClass cddDistrict = new CustomSpinnerDialogClass(getActivity(), this,
                         "Select District", machineDistrictList,
                         true);
                 cddDistrict.show();
                 cddDistrict.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
+                        ViewGroup.LayoutParams.MATCH_PARENT);*/
 
                 break;
             default:
@@ -601,6 +642,13 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         }
     }
 
+    private void showSelectiveBottomSheet(CustomBottomSheetDialogFragment bottomSheet, String Title, ArrayList<SelectionListObject> List, Boolean isMultiSelect) {
+        bottomSheet = new CustomBottomSheetDialogFragment(
+                this, Title, List, isMultiSelect);
+        bottomSheet.show(requireActivity().getSupportFragmentManager(),
+                CustomBottomSheetDialogFragment.TAG);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -621,7 +669,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         return false;
     }
 
-    @Override
+  /*  @Override
     public void onCustomSpinnerSelection(String type) {
         if (type.equals("Select State")) {
             String selectedState = "";
@@ -653,7 +701,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
         } else if (type.equals("Select District")) {
             String selectedDistrict = "";
             selectedDistrictId = "";
-            for (CustomSpinnerObject mDistrict : machineDistrictList) {
+           *//* for (CustomSpinnerObject mDistrict : machineDistrictList) {
                 if (mDistrict.isSelected()) {
                     if (selectedDistrict.length() > 0) {
                         selectedDistrict = selectedDistrict + "," + mDistrict.getName();
@@ -666,7 +714,7 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                         selectedDistrictId = mDistrict.get_id();
                     }
                 }
-            }
+            }*//*
             tvDistrictFilter.setText(selectedDistrict);
             tvTalukaFilter.setText("");
             selectedTalukaId = "";
@@ -698,5 +746,95 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
                 btnFilter.setImageResource(R.drawable.ic_filter);
             }
         }
+    }*/
+
+    @Override
+    public void onCustomBottomSheetSelection(@NonNull String type) {
+        switch (type) {
+            case "Select State":
+                String selectedState = "";
+                selectedStateId = "";
+
+                for (SelectionListObject obj : machineStateList) {
+                    if (obj.isSelected()) {
+                        if (selectedState.length() > 0) {
+                            selectedState = selectedState + "," + obj.getValue();
+                        } else {
+                            selectedState = obj.getValue();
+                        }
+                        if (selectedStateId.length() > 0) {
+                            selectedStateId = selectedStateId + "," + obj.getId();
+                        } else {
+                            selectedStateId = obj.getId();
+                        }
+                        break;
+                    }
+                }
+
+                tvStateFilter.setText(selectedState);
+                tvDistrictFilter.setText("");
+                selectedDistrictId = "";
+                tvTalukaFilter.setText("");
+                selectedTalukaId = "";
+                if (isFilterApplied) {
+                    isFilterApplied = false;
+                    btnFilter.setImageResource(R.drawable.ic_filter);
+                }
+                break;
+            case "Select District":
+                String selectedDistrict = "";
+                selectedDistrictId = "";
+
+                for (SelectionListObject mDistrict : machineDistrictList) {
+                    if (mDistrict.isSelected()) {
+                        if (selectedDistrict.length() > 0) {
+                            selectedDistrict = selectedDistrict + "," + mDistrict.getValue();
+                        } else {
+                            selectedDistrict = mDistrict.getValue();
+                        }
+                        if (selectedDistrictId.length() > 0) {
+                            selectedDistrictId = selectedDistrictId + "," + mDistrict.getId();
+                        } else {
+                            selectedDistrictId = mDistrict.getId();
+                        }
+                    }
+                }
+
+                tvDistrictFilter.setText(selectedDistrict);
+                tvTalukaFilter.setText("");
+                selectedTalukaId = "";
+                if (isFilterApplied) {
+                    isFilterApplied = false;
+                    btnFilter.setImageResource(R.drawable.ic_filter);
+                }
+                break;
+            case "Select Taluka":
+                String selectedTaluka = "";
+                selectedTalukaId = "";
+
+                for (SelectionListObject mTaluka : machineTalukaList) {
+                    if (mTaluka.isSelected()) {
+                        if (selectedTaluka.length() > 0) {
+                            selectedTaluka = selectedTaluka + "," + mTaluka.getValue();
+                        } else {
+                            selectedTaluka = mTaluka.getValue();
+                        }
+                        if (selectedTalukaId.length() > 0) {
+                            selectedTalukaId = selectedTalukaId + "," + mTaluka.getId();
+                        } else {
+                            selectedTalukaId = mTaluka.getId();
+                        }
+                    }
+                }
+
+                tvTalukaFilter.setText(selectedTaluka);
+                if (isFilterApplied) {
+                    isFilterApplied = false;
+                    btnFilter.setImageResource(R.drawable.ic_filter);
+                }
+                break;
+
+        }
+
     }
 }

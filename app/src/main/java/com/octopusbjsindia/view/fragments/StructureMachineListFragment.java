@@ -99,6 +99,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             userTalukas = "", userTalukaIds = "";
     private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
     private boolean isFABOpen = false;
+    private int selectedMachinePosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -276,14 +277,14 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
 
         //this api call is given for deploy machine function. if user directly clicks on "Make machine available"
         // option in takeMOUAction function, this api call is needed.
-        if (isTalukaFilter) {
+        /*if (isTalukaFilter) {
             if (tvDistrictFilter.getText() != null && tvDistrictFilter.getText().toString().length() > 0) {
                 isTalukaApiFirstCall = true;
                 structureMachineListFragmentPresenter.getLocationData(selectedDistrictId,
                         Util.getUserObjectFromPref().getJurisdictionTypeId(),
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
-        }
+        }*/
 
     }
 
@@ -380,9 +381,16 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         }
     }
 
+    //2730 Prasad@1984
     public void takeMouDoneAction(int position) {
         if (isMachineTerminate || isMachineAvailable) {
-            showMouActionPopup(position);
+
+            isTalukaApiFirstCall = true;
+            selectedMachinePosition = position;
+            structureMachineListFragmentPresenter.getLocationData(filteredMachineListData.get(position).getDistrictId(),
+                    Util.getUserObjectFromPref().getJurisdictionTypeId(),
+                    Constants.JurisdictionLevelName.TALUKA_LEVEL);
+
         } else {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "You can not take any action on this machine.",
@@ -626,6 +634,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     case R.id.rb_deploy:
                         mouAction = 1;
                         machineTalukaDeployList.clear();
+
                         machineTalukaDeployList.addAll(machineTalukaList);
                         tlyTerminateReason.setVisibility(View.GONE);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -634,6 +643,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                                 machineTalukaDeployList, false);
                         rvTaluka.setAdapter(mutiselectDialogAdapter);
                         rvTaluka.setVisibility(View.VISIBLE);
+
                         break;
                 }
             }
@@ -885,6 +895,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     cddTaluka.show();
                     cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
+                }else {
+                    showMouActionPopup(selectedMachinePosition);
                 }
 
                 break;

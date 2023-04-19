@@ -46,6 +46,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
+import com.octopusbjsindia.view.activities.SiltTransportationRecordActivity;
 import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
 import com.octopusbjsindia.view.activities.StructureCompletionActivity;
 import com.octopusbjsindia.view.activities.StructurePreparationActivity;
@@ -286,18 +287,24 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                     }
 
+                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_HALTED
+                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_IN_PROGRESS){
+                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                    }
+
+
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent intent;
                             switch (item.getItemId()) {
                                 case R.id.action_silt_transportation_record:
-                                    Intent siltTransportationIntent = new Intent(activity, SSActionsActivity.class);
-                                    siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
-                                    siltTransportationIntent.putExtra("title", "Silt Transportation Record");
-                                    siltTransportationIntent.putExtra("type", "siltTransportRecord");
-//                                    siltTransportationIntent.putExtra("machineId",
-//                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getCode());
+                                    Intent siltTransportationIntent = new Intent(activity, SiltTransportationRecordActivity.class);
+                                   // siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                  //  siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                  //  siltTransportationIntent.putExtra("type", "siltTransportRecord");
+                                    siltTransportationIntent.putExtra("machineId",
+                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());
                                     siltTransportationIntent.putExtra("structureId", ssDataList.get
                                             (getAdapterPosition()).getStructureId());
                                     activity.startActivity(siltTransportationIntent);

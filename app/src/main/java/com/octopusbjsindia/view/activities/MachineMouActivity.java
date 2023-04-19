@@ -175,12 +175,13 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                             CommonResponse responseOBJ = new Gson().fromJson(jsonString, CommonResponse.class);
                             hideProgressBar();
                             if (responseOBJ.getStatus() == 200) {
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(MachineMouActivity.this, responseOBJ.getMessage());
+                                //Toast.makeText(MachineMouActivity.this,responseOBJ.getMessage(),Toast.LENGTH_SHORT).show();
                                 backToMachineList();
                             } else if (responseOBJ.getStatus() == 300) {
-                                Util.showToast(responseOBJ.getMessage(), this);
+                                Util.showToast(MachineMouActivity.this,responseOBJ.getMessage());
                             } else {
-                                Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+                                Util.showToast(MachineMouActivity.this,getResources().getString(R.string.msg_something_went_wrong));
                             }
                             Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {

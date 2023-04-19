@@ -208,9 +208,10 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
     }
 
     public void showResponse(String responseStatus, String requestId, int status) {
-        Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+       /* Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                         .findViewById(android.R.id.content), responseStatus,
-                Snackbar.LENGTH_LONG);
+                Snackbar.LENGTH_LONG);*/
+        Util.showToast(getActivity(), responseStatus);
         if(requestId.equals(MachineDeployStructureListFragmentPresenter.DEPLOY_MACHINE)){
             if(status == 200){
                 getActivity().finish();
