@@ -602,7 +602,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             checkId = 2;
         }
 
-        AlertDialog languageSelectionDialog = new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setCancelable(true)
                 .setSingleChoiceItems(Constants.App.APP_LANGUAGE, checkId, (dialogInterface, i) -> {
@@ -627,9 +627,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                     dialog.dismiss();
                     finish();
                     startActivity(getIntent());
-                }).create();
-
-        languageSelectionDialog.show();
+                }).show();
     }
 
     private void showProfileScreen() {

@@ -557,11 +557,12 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                             hideProgressBar();
                             if (responseOBJ.getStatus() == 200) {
                                 Util.showToast(responseOBJ.getMessage(), SiltTransportationRecordActivity.this);
+                                closeCurrentActivity();
                             } else {
                                 Util.showToast(responseOBJ.getMessage(), SiltTransportationRecordActivity.this);
                             }
                             Log.d("response -", jsonString);
-                            closeCurrentActivity();
+
                         } catch (UnsupportedEncodingException e) {
                             hideProgressBar();
                             e.printStackTrace();

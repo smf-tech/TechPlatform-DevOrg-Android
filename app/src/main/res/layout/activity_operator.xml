@@ -166,7 +166,6 @@
                             app:shapeAppearanceOverlay="@style/Rounded_ImageView_12dp"
                             android:background="@color/google_in"
                             app:strokeColor="@color/google_in"
-                            android:scaleType="centerCrop"
                             android:src="@drawable/ic_start_meter_reading" />
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -180,7 +179,7 @@
                             app:shapeAppearanceOverlay="@style/Rounded_ImageView_12dp"
                             android:background="@color/google_in"
                             app:strokeColor="@color/google_in"
-                            android:scaleType="centerCrop"
+
                             android:src="@drawable/ic_end_meter_reading" />
                         <!--android:drawableEnd="@drawable/ic_cal_event"-->
 
