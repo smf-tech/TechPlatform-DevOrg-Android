@@ -709,6 +709,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == CAMERA_REQUEST) {
+
+           /* Permissions.showPermissionAgainElseDialog(this,grantResults,
+                    "App needs permission to upload meter records.",
+                    "You have denied some permissions. In order to upload meter record app need this permission. Now you can turn on this permission manually from apps permission settings. Click to go to the settings page.");
+           */
+
             HashMap<String, Integer> permissionResults = new HashMap<>();
             int deniedCount = 0;
 
