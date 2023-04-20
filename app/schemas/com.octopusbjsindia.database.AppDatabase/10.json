@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "e4116c707843f0ba8d810bac80bddbce",
+    "identityHash": "a8419e6c017726bf1c77e56bfef99427",
     "entities": [
       {
         "tableName": "SavedForm",
@@ -660,7 +660,7 @@
       },
       {
         "tableName": "OperatorRequestResponseModel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER NOT NULL, `machine_id` TEXT NOT NULL, `meterReadingDate` TEXT NOT NULL, `meterReadingTimestamp` INTEGER NOT NULL, `status` TEXT, `status_code` TEXT, `lat` TEXT, `_long` TEXT, `startImage` TEXT, `stopImage` TEXT, `start_meter_reading` TEXT, `stop_meter_reading` TEXT, `reasonId` TEXT, `structureId` TEXT, PRIMARY KEY(`machine_id`, `meterReadingDate`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER NOT NULL, `machine_id` TEXT NOT NULL, `meterReadingDate` TEXT NOT NULL, `meterReadingTimestamp` INTEGER NOT NULL, `status` TEXT, `status_code` TEXT, `lat` TEXT, `_long` TEXT, `startImage` TEXT, `stopImage` TEXT, `start_meter_reading` TEXT, `stop_meter_reading` TEXT, `reasonId` TEXT, `structureId` TEXT, `isSynced` INTEGER NOT NULL, PRIMARY KEY(`machine_id`, `meterReadingDate`))",
         "fields": [
           {
             "fieldPath": "_id",
@@ -745,6 +745,12 @@
             "columnName": "structureId",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isSynced",
+            "columnName": "isSynced",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -1249,7 +1255,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4116c707843f0ba8d810bac80bddbce')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a8419e6c017726bf1c77e56bfef99427')"
     ]
   }
 }

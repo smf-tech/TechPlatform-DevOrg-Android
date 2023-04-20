@@ -12,8 +12,8 @@ import java.util.List;
 
 @Dao
 public interface OperatorRequestResponseModelDao {
-    @Query("SELECT * FROM OperatorRequestResponseModel")
-    List<OperatorRequestResponseModel> getAllProcesses();
+    @Query("SELECT * FROM OperatorRequestResponseModel WHERE isSynced = 0")
+    List<OperatorRequestResponseModel> getAllUnSyncedProcesses();
 
     @Query("DELETE FROM OperatorRequestResponseModel WHERE _id  = :id")
     void deleteSinglSynccedOperatorRecord(int id);
@@ -25,10 +25,10 @@ public interface OperatorRequestResponseModelDao {
     OperatorRequestResponseModel getLastWorkingRecord(String machineId);
 
     @Query("UPDATE operatorrequestresponsemodel SET status=:status, status_code=:status_code, " +
-            "stopImage=:stopImage, stop_meter_reading=:stopMeterReading, lat=:latitude, _long=:longitude " +
+            "stopImage=:stopImage, stop_meter_reading=:stopMeterReading, lat=:latitude, _long=:longitude, isSynced=:isSync " +
             "WHERE machine_id =:machine_id AND meterReadingDate=:reading_date")
     int updateMachineRecord(String status, String status_code, String stopImage, String stopMeterReading,
-                             String latitude, String longitude, String machine_id, String reading_date);
+                             String latitude, String longitude, String machine_id, String reading_date,boolean isSync);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +
             "meterReadingTimestamp<:selectedTimestamp ORDER BY meterReadingTimestamp DESC LIMIT 1")

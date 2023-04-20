@@ -1012,7 +1012,7 @@ public class OperatorMeterReadingActivity extends BaseActivity implements APIDat
     private void syncMachineOperatorData() {
 
         if (Util.isConnected(OperatorMeterReadingActivity.this)) {
-            List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllProcesses();
+            List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().getAllUnSyncedProcesses();
 
             if (list!=null) {
                 if (list.size()>0) {

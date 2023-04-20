@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.activities;
 
+import static com.octopusbjsindia.utility.Constants.CAMERA_REQUEST;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.FORM_DATE;
 import static com.octopusbjsindia.utility.Util.getDateInLong;
@@ -7,16 +8,21 @@ import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 import static com.octopusbjsindia.utility.Util.showDateDialogEnableAfterMin;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -37,6 +43,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -64,6 +71,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.octopusbjsindia.BuildConfig;
@@ -86,6 +94,8 @@ import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 import com.soundcloud.android.crop.Crop;
 import com.yalantis.ucrop.UCrop;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -98,6 +108,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -284,7 +295,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                     Toast.makeText(this, "Start meter reading should be less than " +
                                             "next available record's start reading.", Toast.LENGTH_LONG).show();
                                 }
-                            }else {
+                            } else {
                                 addStartMeterRecord();
                             }
                         } else {
@@ -306,7 +317,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         }
                     }
                 } else {
-                   // Util.showToast(msg, OperatorActivity.this);
+                    // Util.showToast(msg, OperatorActivity.this);
                     Snackbar.make(toolbar, msg, Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -343,7 +354,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         addStopMeterRecord();
                     }
                 } else {
-                   // Util.showToast(msg, OperatorActivity.this);
+                    // Util.showToast(msg, OperatorActivity.this);
                     Snackbar.make(toolbar, msg, Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -418,7 +429,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         int id = item.getItemId();
         if (id == R.id.halt) {
             if (machine_status.equals(STATUS_WORKING)) {
-               // Util.showToast("Machine is in Working state.", OperatorActivity.this);
+                // Util.showToast("Machine is in Working state.", OperatorActivity.this);
                 Snackbar.make(toolbar, "Machine is in Working state.", Snackbar.LENGTH_SHORT).show();
             } else {
                 strReasonId = "";
@@ -481,6 +492,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         operatorRequestResponseModel.setStart_meter_reading(et_smeter_read.getText().toString());
         operatorRequestResponseModel.setStartImage(startUri.getPath());
         operatorRequestResponseModel.setStructureId(structure_id);
+        operatorRequestResponseModel.setSynced(false);
         //set location
         if (location != null) {
             operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
@@ -533,6 +545,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         submittedStopRecord.setStopImage(stopImage);
         submittedStopRecord.setStop_meter_reading(stopMeterReading);
         submittedStopRecord.setStructureId(structure_id);
+        submittedStopRecord.setSynced(false);
 
         //set location
         if (location != null) {
@@ -550,10 +563,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Toast.makeText(this, "Not able to get location.", Toast.LENGTH_LONG).show();
             }
         }
+        submittedStopRecord.setLat(latitude);
+        submittedStopRecord.setLong(longitude);
 
         int rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                 updateMachineRecord(status, status_code, stopImage, stopMeterReading, latitude,
-                        longitude, machine_id, meterReadingDate);
+                        longitude, machine_id, meterReadingDate, false);
 
         if (rowId != -1) {
             Snackbar.make(toolbar, "Record saved locally", Snackbar.LENGTH_SHORT).show();
@@ -678,7 +693,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions,
+                                           @NotNull int[] grantResults) {
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.GPS_REQUEST) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
@@ -691,6 +708,63 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             } else {
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == CAMERA_REQUEST) {
+            HashMap<String, Integer> permissionResults = new HashMap<>();
+            int deniedCount = 0;
+
+            for (int i = 0; i < grantResults.length; i++) {
+                //Add only permissions which are denied
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    permissionResults.put(permissions[i], grantResults[i]);
+                    deniedCount++;
+                }
+            }
+
+            //check if all permissions are granted
+            if (deniedCount > 0) { //Atleast one or all permissions are denied
+                for (Map.Entry<String, Integer> entry : permissionResults.entrySet()) {
+                    String permName = entry.getKey();
+                    int permResult = entry.getValue();
+
+                    // permission is denied (this is the first time when "never ask again" is not checked)
+                    //so ask again explaining the usage of permission
+                    // shouldShowRequestPermissionRationale will return true
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(OperatorActivity.this, permName)) {
+                        new MaterialAlertDialogBuilder(this)
+                                .setTitle("Permission required")
+                                .setCancelable(true)
+                                .setMessage("App needs permission to upload meter records.")
+                                .setPositiveButton("Okay, Grant permissions", (dialogInterface, i) -> {
+                                    dialogInterface.dismiss();
+                                    Permissions.checkAndRequestStorageCameraPermissions(this,this);
+                                })
+                                .show();
+                    }
+                    // permission is denied and never ask again is checked
+                    // shouldShowRequestRationale will return false
+                    else { //Ask user to go to settings and manually allow permision
+                        new MaterialAlertDialogBuilder(this)
+                                .setTitle("Permission denied")
+                                .setCancelable(false)
+                                .setMessage("You have denied some permissions. In order to upload meter record app need this permission. Now you can turn on this permission manually from apps permission settings. Click to go to the settings page.")
+                                .setPositiveButton("Open settings", (dialogInterface, i) -> {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+                                    intent.setData(uri);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                })
+                                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                                .show();
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
         }
     }
 
@@ -876,10 +950,30 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     private void onAddImageClick() {
-        if (Permissions.isCameraPermissionGranted(this, this)) {
+        if (Permissions.checkAndRequestStorageCameraPermissions(this, this)) {
             showPictureDialog();
-        }
+        }/* else {
+            showManualNotificationPermissionRequiredDialog();
+        }*/
     }
+
+    private void showManualNotificationPermissionRequiredDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Storage or camera permission request")
+                .setMessage("Since you have denied the camera or storage permission earlier, now you have to enable it manually from app settings. Click on \"OPEN SETTINGS\" to enable permissions manually.")
+                .setCancelable(false)
+                .setPositiveButton("Open settings", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
 
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -967,6 +1061,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             if (commonResponse.getStatus() == 200) {
                                 //Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                                 Snackbar.make(toolbar, commonResponse.getMessage(), Snackbar.LENGTH_SHORT).show();
+
+                                //to update db entry to sync
+                                data.setSynced(true);
+                                if (data.getStatus().equalsIgnoreCase("Working")) {
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
+                                } else {
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
+                                                    data.getLong(), machine_id, data.getMeterReadingDate(), true);
+                                }
 
                                 //todo check for next day entry in db if exist then delete this entry from db
                               /*  if (machine_status.equalsIgnoreCase(STATUS_STOP)) {

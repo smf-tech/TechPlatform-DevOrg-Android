@@ -79,6 +79,10 @@ public class OperatorRequestResponseModel {
     @Expose
     private String structureId;
 
+    @SerializedName("isSynced")
+    @Expose
+    private boolean isSynced = false;
+
     public String getMeterReadingDate() {
         return meterReadingDate;
     }
@@ -121,6 +125,14 @@ public class OperatorRequestResponseModel {
 
     public void setMeterReadingTimestamp(long meterReadingTimestamp) {
         this.meterReadingTimestamp = meterReadingTimestamp;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 
     public void setLat(String lat) {

@@ -9,8 +9,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Permissions {
 
@@ -18,33 +23,29 @@ public class Permissions {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                        context.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
+                        context.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED) {
                     return true;
                 } else {
                     if (objectInstance instanceof Fragment) {
-                        ((Fragment) objectInstance).requestPermissions(new String[]{Manifest.permission.CAMERA}, Constants.CAMERA_REQUEST);
+                        ((Fragment) objectInstance).requestPermissions(permissions_33, Constants.CAMERA_REQUEST);
                     } else {
-                        ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.CAMERA}, Constants.CAMERA_REQUEST);
+                        ActivityCompat.requestPermissions(context, permissions_33, Constants.CAMERA_REQUEST);
                     }
                     return false;
                 }
             }
 
             if (context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                    context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_GRANTED) {
+                    context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 if (objectInstance instanceof Fragment) {
-                    ((Fragment) objectInstance).requestPermissions(
-                            new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            Constants.CAMERA_REQUEST);
+                    ((Fragment) objectInstance).requestPermissions(permissions, Constants.CAMERA_REQUEST);
                 } else {
-                    ActivityCompat.requestPermissions(context,
-                            new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            Constants.CAMERA_REQUEST);
+                    ActivityCompat.requestPermissions(context, permissions, Constants.CAMERA_REQUEST);
                 }
                 return false;
             }
@@ -80,29 +81,6 @@ public class Permissions {
         }
     }
 
-    public static <T> boolean isReadExternalStoragePermission(Activity context, T objectInstance) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                if (objectInstance instanceof Fragment) {
-                    ((Fragment) objectInstance).requestPermissions(
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            Constants.READ_EXTERNAL_STORAGE);
-                } else {
-                    ActivityCompat.requestPermissions(context,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            Constants.READ_EXTERNAL_STORAGE);
-                }
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
     public static <T> boolean isWriteExternalStoragePermission(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -129,7 +107,7 @@ public class Permissions {
     public static <T> boolean isCallPermission(Activity context, T objectInstance) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 if (objectInstance instanceof Fragment) {
@@ -148,26 +126,50 @@ public class Permissions {
         }
     }
 
-    static <T> boolean isReadPhoneStatePermissionGranted(Activity context, T objectInstance) {
 
+    public static <T> boolean checkAndRequestStorageCameraPermissions(Activity activity, T objectInstance) {
+        // Check which permissions are granted
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            for (String perm : storagePermissionsList()) {
+                if (ContextCompat.checkSelfPermission(activity, perm) != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(perm);
+                }
+            }
+            // Ask for non-granted permissions
+            if (!listPermissionsNeeded.isEmpty()) {
                 if (objectInstance instanceof Fragment) {
-                    ((Fragment) objectInstance).requestPermissions(
-                            new String[]{Manifest.permission.READ_PHONE_STATE},
-                            Constants.READ_PHONE_STORAGE);
+                    ((Fragment) objectInstance).requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                            Constants.CAMERA_REQUEST);
                 } else {
-                    ActivityCompat.requestPermissions(context,
-                            new String[]{Manifest.permission.READ_PHONE_STATE},
-                            Constants.READ_PHONE_STORAGE);
+                    ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                            Constants.CAMERA_REQUEST);
                 }
                 return false;
             }
-        } else {
-            return true;
         }
+        // App has all permissions. Proceed ahead
+        return true;
+    }
+
+    private static String[] permissions = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA};
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    private static String[] permissions_33 = new String[]{
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.READ_MEDIA_VIDEO,
+            Manifest.permission.CAMERA};
+
+    public static String[] storagePermissionsList() {
+        String[] p;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            p = permissions_33;
+        } else {
+            p = permissions;
+        }
+        return p;
     }
 }

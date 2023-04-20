@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -327,9 +328,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncMachineOperatorData() {
 
         List<OperatorRequestResponseModel> list = DatabaseManager.getDBInstance(Platform.getInstance()).
-                getOperatorRequestResponseModelDao().getAllProcesses();
+                getOperatorRequestResponseModelDao().getAllUnSyncedProcesses();
         for (final OperatorRequestResponseModel data : list) {
-           uploadMachineLog(data);
+            uploadMachineLog(data);
         }
     }
 
@@ -346,6 +347,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             CommonResponse commonResponse = new Gson().fromJson(jsonString, CommonResponse.class);
                             if (commonResponse.getStatus() == 200) {
                                 Util.showToast(commonResponse.getMessage(), getContext());
+
+                                //to update db entry to sync
+                                if (data.getStatus().equalsIgnoreCase("Working")) {
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
+                                }else {
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
+                                                    data.getLong(), data.getMachine_id(), data.getMeterReadingDate(),true);
+                                }
 
                                 //todo check for next day entry in db if exist then delete this entry from db
                                 /*if (data.getStatus().equalsIgnoreCase("Stop")) {
@@ -388,9 +398,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                if (data.getStopImage()!=null) {
+                if (data.getStopImage() != null) {
                     params.put("imageArraySize", "2");
-                }else params.put("imageArraySize", "1");
+                } else {
+                    params.put("imageArraySize", "1");
+                }
                 return params;
             }
 
@@ -429,12 +441,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 //                }
 //                return params;
                 Map<String, DataPart> params = new HashMap<>();
-                Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
-                params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+
+               // Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
+                Bitmap bitmap = BitmapFactory.decodeFile(data.getStartImage());
+                params.put("image0", new DataPart("image0", getFileDataFromBitmap(bitmap),
                         "image/jpeg"));
-                if (data.getStopImage()!=null) {
-                    Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
-                    params.put("image1", new DataPart("image1", getFileDataFromDrawable(drawable1),
+
+                if (data.getStopImage() != null) {
+                    //Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
+                    Bitmap bitmap2 = BitmapFactory.decodeFile(data.getStopImage());
+                    params.put("image1", new DataPart("image1", getFileDataFromBitmap(bitmap2),
                             "image/jpeg"));
                 }
                 return params;
@@ -456,7 +472,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
 
-      //  String imageToSend = data.getImage();
+        //  String imageToSend = data.getImage();
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -542,6 +558,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private byte[] getFileDataFromDrawable(Drawable drawable) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private byte[] getFileDataFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
@@ -683,7 +705,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("STR_PREPARATION exp:", " "+error.getMessage());
+                        Log.d("STR_PREPARATION exp:", " " + error.getMessage());
                     }
                 }) {
 
