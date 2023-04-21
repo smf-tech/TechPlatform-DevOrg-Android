@@ -74,6 +74,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
@@ -81,6 +82,10 @@ import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.models.Operator.OperatorMachineCodeDataModel;
 import com.octopusbjsindia.models.Operator.OperatorRequestResponseModel;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
+import com.octopusbjsindia.models.SujalamSuphalam.MasterDataValue;
+import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorActivityPresenter;
@@ -141,12 +146,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private Location location;
     private MaterialToolbar toolbar;
     private long serverCurrentTimeStamp;
+    private int allowedPastDaysForRecord;
     private static final String STATUS_WORKING = "Working";
     private static final String STATUS_STOP = "Stop";
     private OperatorRequestResponseModel lastWorkingRecordData;
     private OperatorRequestResponseModel previousLatestRecord;
     private OperatorRequestResponseModel nextLatestRecord;
     private OperatorRequestResponseModel submittedStopRecord;
+    private OperatorMachineCodeDataModel sharedPrefOperatorMachineData;
     final Handler handler = new Handler();
     private boolean isOperator = false;
 
@@ -192,10 +199,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // TODO for now this code is called after machine details api.
+
         if (machine_id != null && structure_id != null && machine_code != null) { // For NON-FA roles
             isOperator = false;
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
+
             lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                     getLastWorkingRecord(machine_id);
             tv_machine_code.setText(machine_code);
@@ -206,38 +214,51 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             }
 
             //api call to get list of halt reason
-            String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
-            Gson gson = new Gson();
-            OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,
-                    OperatorMachineCodeDataModel.class);
-            if (operatorMachineData == null) {
+            if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests(machine_code);
+            } else {
+                String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+                Gson gson = new Gson();
+                sharedPrefOperatorMachineData = gson.fromJson(operatorMachineDataStr,
+                        OperatorMachineCodeDataModel.class);
+                if (sharedPrefOperatorMachineData != null) {
+                    //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
+                    allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
+                }
+                Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
 
         } else {   // For FA/Operator roles
             toolbar.setNavigationIcon(null);
             isOperator = true;
-            String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
-            Gson gson = new Gson();
-            OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr,
-                    OperatorMachineCodeDataModel.class);
-            if (operatorMachineData != null && !operatorMachineData.getMachine_id().isEmpty()) {
-                machine_id = operatorMachineData.getMachine_id();
-                machine_code = operatorMachineData.getMachine_code();
-                tv_machine_code.setText(machine_code);
 
-                lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                        getLastWorkingRecord(machine_id);
-                if (lastWorkingRecordData != null) {
-                    setWorkingMachineData(lastWorkingRecordData);
-                }
-            } else {
+            if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests("no_machine");
+            } else {
+                String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
+                Gson gson = new Gson();
+                sharedPrefOperatorMachineData = gson.fromJson(operatorMachineDataStr,
+                        OperatorMachineCodeDataModel.class);
+                if (sharedPrefOperatorMachineData != null && !sharedPrefOperatorMachineData.getMachine_id().isEmpty()) {
+                    machine_id = sharedPrefOperatorMachineData.getMachine_id();
+                    machine_code = sharedPrefOperatorMachineData.getMachine_code();
+                    tv_machine_code.setText(machine_code);
+                    //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
+                    allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
+                    lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getLastWorkingRecord(machine_id);
+                    if (lastWorkingRecordData != null) {
+                        setWorkingMachineData(lastWorkingRecordData);
+                    }
+                }
+                Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
         }
 
         //get lat,long of location
-        gpsTracker = new GPSTracker(this);
+        gpsTracker = new
+
+                GPSTracker(this);
         if (Permissions.isLocationPermissionGranted(this, this)) {
             if (gpsTracker.canGetLocation()) {
                 location = gpsTracker.getLocation();
@@ -245,6 +266,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 gpsTracker.showSettingsAlert();
             }
         }
+
     }
 
     private void setDeviceInfo() {
@@ -359,14 +381,40 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
                 break;
             case R.id.et_date:
-                Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
-                String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(serverCurrentDate);
-                calendar.add(Calendar.DAY_OF_YEAR, -7);
-                Date allowedPastDate = calendar.getTime();
-                String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
-                showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                if (serverCurrentTimeStamp != 0) {
+                    Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
+                    String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(serverCurrentDate);
+                    calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
+                    Date allowedPastDate = calendar.getTime();
+                    String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                    showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                } else {
+                    if (sharedPrefOperatorMachineData != null) {
+                        if (sharedPrefOperatorMachineData.getCurrentTimeStamp() > System.currentTimeMillis()) {
+                            Snackbar.make(toolbar, "Your system date seems to be wrong. Please update it or contact to admin.", Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
+                            String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(serverCurrentDate);
+                            calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
+                            Date allowedPastDate = calendar.getTime();
+                            String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                            showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                        }
+                    } else {
+                        Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
+                        String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(serverCurrentDate);
+                        calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
+                        Date allowedPastDate = calendar.getTime();
+                        String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                        showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                    }
+                }
                 break;
             case R.id.img_start_meter:
                 imageType = "Start";
@@ -742,7 +790,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 .setMessage("App needs permission to upload meter records.")
                                 .setPositiveButton("Okay, Grant permissions", (dialogInterface, i) -> {
                                     dialogInterface.dismiss();
-                                    Permissions.checkAndRequestStorageCameraPermissions(this,this);
+                                    Permissions.checkAndRequestStorageCameraPermissions(this, this);
                                 })
                                 .show();
                     }
@@ -770,7 +818,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
 
             }
-
         }
     }
 
@@ -841,6 +888,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         Gson gson = new Gson();
         editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
         serverCurrentTimeStamp = operatorMachineData.getCurrentTimeStamp();
+        allowedPastDaysForRecord = operatorMachineData.getAllowedPastDaysForRecord();
         if (isOperator) {
             machine_id = operatorMachineData.getMachine_id();
             structure_id = operatorMachineData.getStructure_id();

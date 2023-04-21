@@ -38,6 +38,11 @@ public class OperatorMachineCodeDataModel {
     @SerializedName("current_time_stamp")
     @Expose
     private Long currentTimeStamp;
+
+    @SerializedName("allowedPastDaysForDailyMachineRecord")
+    @Expose
+    private int allowedPastDaysForRecord;
+
     @SerializedName("nonutilisationTypeData")
     @Expose
     private NonutilisationTypeDataList nonutilisationTypeData;
@@ -76,6 +81,10 @@ public class OperatorMachineCodeDataModel {
 
     public int getHour_of_day() {
         return hour_of_day;
+    }
+
+    public int getAllowedPastDaysForRecord() {
+        return allowedPastDaysForRecord;
     }
 
     public void setHour_of_day(int hour_of_day) {
