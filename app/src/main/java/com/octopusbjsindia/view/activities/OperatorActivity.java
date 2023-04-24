@@ -89,6 +89,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.events.CommonResponse;
 import com.octopusbjsindia.models.login.Login;
 import com.octopusbjsindia.presenter.OperatorActivityPresenter;
+import com.octopusbjsindia.syncAdapter.SyncAdapterUtils;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.GPSTracker;
 import com.octopusbjsindia.utility.Permissions;
@@ -118,9 +119,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class OperatorActivity extends AppCompatActivity implements APIDataListener,
-        SingleSelectBottomSheet.MultiSpinnerListener, View.OnClickListener {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
+public class OperatorActivity extends AppCompatActivity implements APIDataListener,
+        SingleSelectBottomSheet.MultiSpinnerListener, View.OnClickListener, EasyPermissions.PermissionCallbacks {
+
+    public static final int RC_CAMERA_AND_LOCATION = 4;
     private final String TAG = "OperatorActivity";
     private ImageView img_start_meter, img_end_meter, clickedImageView;
     private TextView tv_machine_code, tvVersionCode, tvDeviceName;
@@ -234,6 +240,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
             if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests("no_machine");
+                SyncAdapterUtils.manualRefresh();
             } else {
                 String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
                 Gson gson = new Gson();
@@ -633,104 +640,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         machine_status = STATUS_STOP;
     }
 
-  /*  private void checkDate() {
-        String startDateStr = preferences.getString("startDate", "");
-        machine_status = preferences.getString("machineStatus", "");
-        if (!(startDateStr.equals(""))) {
-            Date current = Calendar.getInstance().getTime();
-            Date startDate = null;
-            Date currentDate = null;
-            try {
-                currentDate = df.parse(df.format(current));
-                startDate = df.parse(startDateStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (machine_status.equalsIgnoreCase(STATUS_STOP) |
-                    machine_status.equalsIgnoreCase("submit")) {
-                if (!(startDate.equals(currentDate))) {
-                    editor.putString("machineStatus", "");
-                    editor.putString("stopDate", "");
-                    editor.putString("startDate", "");
-                    editor.putString("stopReading", "");
-                    editor.putString("stopUri", "");
-                    editor.putString("stopDate", "");
-                    editor.apply();
-                    machine_status = "";
-                    img_start_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_start_meter_reading));
-                    et_smeter_read.setText("");
-                    img_end_meter.setImageDrawable(getResources().getDrawable(R.drawable.ic_end_meter_reading));
-                    et_emeter_read.setText("");
-                } else {
-                    editor.putString("machineStatus", "submit");
-                    editor.apply();
-                    machine_status = "submit";
-                }
-            }
-        }
-        setButtons();
-    }*/
-
-   /* private void setButtons() {
-        if (machine_status.equals("")) {
-            img_start_meter.setEnabled(true);
-            et_smeter_read.setEnabled(true);
-            btnStartService.setEnabled(true);
-            img_end_meter.setEnabled(false);
-            et_emeter_read.setEnabled(false);
-            btnStopService.setEnabled(false);
-            Glide.with(OperatorActivity.this)
-                    .load(R.drawable.jcb_stopped)   //Uri.parse(list.get(0).getImage()))
-                    .into(iv_jcb);
-        } else if (machine_status.equals("submit")) {
-            Uri imageUri1 = Uri.parse(preferences.getString("startUri", ""));
-            img_start_meter.setImageURI(imageUri1);
-            et_smeter_read.setText(preferences.getString("startReading", ""));
-            Uri imageUri2 = Uri.parse(preferences.getString("stopUri", ""));
-            img_end_meter.setImageURI(imageUri2);
-            et_emeter_read.setText(preferences.getString("stopReading", ""));
-            img_start_meter.setEnabled(false);
-            et_smeter_read.setEnabled(false);
-            btnStartService.setEnabled(false);
-            img_end_meter.setEnabled(false);
-            et_emeter_read.setEnabled(false);
-            btnStopService.setEnabled(false);
-            Glide.with(OperatorActivity.this)
-                    .load(R.drawable.jcb_stopped)
-                    .into(iv_jcb);
-        } else if (machine_status.equalsIgnoreCase(STATUS_WORKING)) {
-            Uri imageUri = Uri.parse(preferences.getString("startUri", ""));
-            img_start_meter.setImageURI(imageUri);
-            et_smeter_read.setText(preferences.getString("startReading", ""));
-            img_start_meter.setEnabled(false);
-            et_smeter_read.setEnabled(false);
-            btnStartService.setEnabled(false);
-            img_end_meter.setEnabled(true);
-            et_emeter_read.setEnabled(true);
-            btnStopService.setEnabled(true);
-            Glide.with(OperatorActivity.this)
-                    .load(R.drawable.jcb_gif)   //Uri.parse(list.get(0).getImage()))
-                    .into(iv_jcb);
-        } else if (machine_status.equalsIgnoreCase(STATUS_STOP)) {
-            Uri imageUri1 = Uri.parse(preferences.getString("startUri", ""));
-            img_start_meter.setImageURI(imageUri1);
-            et_smeter_read.setText(preferences.getString("startReading", ""));
-            img_start_meter.setEnabled(true);
-            et_smeter_read.setEnabled(true);
-            btnStartService.setEnabled(true);
-
-            Uri imageUri2 = Uri.parse(preferences.getString("stopUri", ""));
-            img_end_meter.setImageURI(imageUri2);
-            et_emeter_read.setText(preferences.getString("stopReading", ""));
-            img_end_meter.setEnabled(false);
-            et_emeter_read.setEnabled(false);
-            btnStopService.setEnabled(false);
-            Glide.with(OperatorActivity.this)
-                    .load(R.drawable.jcb_stopped)
-                    .into(iv_jcb);
-        }
-    }*/
-
     private void showMultiSelectBottomsheet(String Title, String selectedOption, ArrayList<String> List) {
 
         bottomSheetDialogFragment = new SingleSelectBottomSheet(this, selectedOption, List, this::onValuesSelected);
@@ -745,6 +654,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                            @NotNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+
         if (requestCode == Constants.GPS_REQUEST) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -756,69 +669,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             } else {
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
-        } else if (requestCode == CAMERA_REQUEST) {
+        }/* else if (requestCode == CAMERA_REQUEST) {
 
-           /* Permissions.showPermissionAgainElseDialog(this,grantResults,
+            Permissions.showPermissionAgainElseDialog(this,grantResults,
                     "App needs permission to upload meter records.",
                     "You have denied some permissions. In order to upload meter record app need this permission. Now you can turn on this permission manually from apps permission settings. Click to go to the settings page.");
-           */
 
-            HashMap<String, Integer> permissionResults = new HashMap<>();
-            int deniedCount = 0;
-
-            for (int i = 0; i < grantResults.length; i++) {
-                //Add only permissions which are denied
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    permissionResults.put(permissions[i], grantResults[i]);
-                    deniedCount++;
-                }
-            }
-
-            //check if all permissions are granted
-            if (deniedCount > 0) { //Atleast one or all permissions are denied
-                for (Map.Entry<String, Integer> entry : permissionResults.entrySet()) {
-                    String permName = entry.getKey();
-                    int permResult = entry.getValue();
-
-                    // permission is denied (this is the first time when "never ask again" is not checked)
-                    //so ask again explaining the usage of permission
-                    // shouldShowRequestPermissionRationale will return true
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(OperatorActivity.this, permName)) {
-                        new MaterialAlertDialogBuilder(this)
-                                .setTitle("Permission required")
-                                .setCancelable(true)
-                                .setMessage("App needs permission to upload meter records.")
-                                .setPositiveButton("Okay, Grant permissions", (dialogInterface, i) -> {
-                                    dialogInterface.dismiss();
-                                    Permissions.checkAndRequestStorageCameraPermissions(this, this);
-                                })
-                                .show();
-                    }
-                    // permission is denied and never ask again is checked
-                    // shouldShowRequestRationale will return false
-                    else { //Ask user to go to settings and manually allow permision
-                        new MaterialAlertDialogBuilder(this)
-                                .setTitle("Permission denied")
-                                .setCancelable(false)
-                                .setMessage("You have denied some permissions. In order to upload meter record app need this permission. Now you can turn on this permission manually from apps permission settings. Click to go to the settings page.")
-                                .setPositiveButton("Open settings", (dialogInterface, i) -> {
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                    Uri uri = Uri.fromParts("package", this.getPackageName(), null);
-                                    intent.setData(uri);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                })
-                                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                                .show();
-
-                        break;
-
-                    }
-
-                }
-
-            }
-        }
+        }*/
     }
 
     @Override
@@ -1003,29 +860,36 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         editor.apply();
     }
 
+    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
     private void onAddImageClick() {
-        if (Permissions.checkAndRequestStorageCameraPermissions(this, this)) {
+        /*if (Permissions.checkAndRequestStorageCameraPermissions(this, this)) {
             showPictureDialog();
-        }/* else {
-            showManualNotificationPermissionRequiredDialog();
         }*/
+
+        if (EasyPermissions.hasPermissions(this, Permissions.storagePermissionsList())) {
+            showPictureDialog();
+        } else {
+            EasyPermissions.requestPermissions(this,
+                    "App needs permission to upload meter records.",
+                    RC_CAMERA_AND_LOCATION,
+                    Permissions.storagePermissionsList());
+        }
     }
 
-    private void showManualNotificationPermissionRequiredDialog() {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Storage or camera permission request")
-                .setMessage("Since you have denied the camera or storage permission earlier, now you have to enable it manually from app settings. Click on \"OPEN SETTINGS\" to enable permissions manually.")
-                .setCancelable(false)
-                .setPositiveButton("Open settings", (dialog, which) -> {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .show();
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+       // showPictureDialog();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Log.d(TAG, "onPermissionsDenied:" + requestCode + ":" + perms.size());
+
+        // (Optional) Check whether the user denied any permissions and checked "NEVER ASK AGAIN."
+        // This will display a dialog directing them to enable the permission in app settings.
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
     }
 
 

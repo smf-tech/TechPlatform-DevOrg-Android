@@ -140,6 +140,7 @@ dependencies {
 
     //permission library used in WebModuleFragment
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
