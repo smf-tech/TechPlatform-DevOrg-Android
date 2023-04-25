@@ -398,10 +398,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                if (data.getStopImage() != null) {
+                if (data.getStopImage() != null && data.getStartImage()!=null) {
                     params.put("imageArraySize", "2");
-                } else {
+                } else if (data.getStopImage() != null || data.getStartImage()!=null){
                     params.put("imageArraySize", "1");
+                }else {
+                    params.put("imageArraySize", "0");
                 }
                 return params;
             }
@@ -443,10 +445,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Map<String, DataPart> params = new HashMap<>();
 
                // Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
-                Bitmap bitmap = BitmapFactory.decodeFile(data.getStartImage());
-                params.put("image0", new DataPart("image0", getFileDataFromBitmap(bitmap),
-                        "image/jpeg"));
-
+                if (data.getStartImage() != null) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(data.getStartImage());
+                    params.put("image0", new DataPart("image0", getFileDataFromBitmap(bitmap),
+                            "image/jpeg"));
+                }
                 if (data.getStopImage() != null) {
                     //Drawable drawable1 = new BitmapDrawable(getContext().getResources(), data.getStopImage());
                     Bitmap bitmap2 = BitmapFactory.decodeFile(data.getStopImage());

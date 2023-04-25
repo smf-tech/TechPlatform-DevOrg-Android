@@ -43,6 +43,10 @@ public class OperatorMachineCodeDataModel {
     @Expose
     private int allowedPastDaysForRecord;
 
+    @SerializedName("isImagesMandatory")
+    @Expose
+    private boolean isImagesMandatory;
+
     @SerializedName("nonutilisationTypeData")
     @Expose
     private NonutilisationTypeDataList nonutilisationTypeData;
@@ -69,6 +73,10 @@ public class OperatorMachineCodeDataModel {
 
     public void setNonutilisationTypeData(NonutilisationTypeDataList nonutilisationTypeData) {
         this.nonutilisationTypeData = nonutilisationTypeData;
+    }
+
+    public boolean isImagesMandatory() {
+        return isImagesMandatory;
     }
 
     public String getStructure_id() {

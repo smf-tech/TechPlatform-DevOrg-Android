@@ -4,6 +4,7 @@ import static com.octopusbjsindia.utility.Constants.CAMERA_REQUEST;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
 import static com.octopusbjsindia.utility.Constants.FORM_DATE;
 import static com.octopusbjsindia.utility.Util.getDateInLong;
+import static com.octopusbjsindia.utility.Util.getFileDataFromDrawable;
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 import static com.octopusbjsindia.utility.Util.showDateDialogEnableAfterMin;
@@ -153,6 +154,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private MaterialToolbar toolbar;
     private long serverCurrentTimeStamp;
     private int allowedPastDaysForRecord;
+    private boolean isImagesMandatory = true;
     private static final String STATUS_WORKING = "Working";
     private static final String STATUS_STOP = "Stop";
     private OperatorRequestResponseModel lastWorkingRecordData;
@@ -230,6 +232,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (sharedPrefOperatorMachineData != null) {
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
+                    isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
@@ -250,6 +253,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     machine_id = sharedPrefOperatorMachineData.getMachine_id();
                     machine_code = sharedPrefOperatorMachineData.getMachine_code();
                     tv_machine_code.setText(machine_code);
+                    isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
                     lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
@@ -293,7 +297,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         String msg = "";
         switch (view.getId()) {
             case R.id.buttonStartService:
-                if (startUri == null)
+                if (isImagesMandatory && startUri == null)
                     msg = "Please select Start meter reading photo";
                 else if (et_smeter_read.getText().toString().length() <= 0)
                     msg = "Please enter start meter reading";
@@ -351,7 +355,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
                 break;
             case R.id.buttonStopService:
-                if (stopUri == null) {
+                if (isImagesMandatory && stopUri == null) {
                     msg = "Please select Stop meter reading photo";
                 } else if (et_emeter_read.getText().toString().length() <= 0) {
                     msg = "Please Enter Stop meter reading";
@@ -545,7 +549,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         operatorRequestResponseModel.setStatus(STATUS_WORKING);
         operatorRequestResponseModel.setStatus_code("" + state_start);
         operatorRequestResponseModel.setStart_meter_reading(et_smeter_read.getText().toString());
-        operatorRequestResponseModel.setStartImage(startUri.getPath());
+        if (startUri != null) {
+            operatorRequestResponseModel.setStartImage(startUri.getPath());
+        }
         operatorRequestResponseModel.setStructureId(structure_id);
         operatorRequestResponseModel.setSynced(false);
         //set location
@@ -583,21 +589,27 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     private void addStopMeterRecord() {
+        submittedStopRecord = new OperatorRequestResponseModel();
         String status = STATUS_STOP;
         String status_code = "" + state_stop;
-        String stopImage = stopUri.getPath();
+        String stopImage = null;
+        if (stopUri != null) {
+            stopImage = stopUri.getPath();
+            submittedStopRecord.setStopImage(stopImage);
+        }
+      /*  if (startUri!=null){
+            submittedStopRecord.setStartImage(startUri.getPath());
+        }*/
         String stopMeterReading = et_emeter_read.getText().toString();
         String meterReadingDate = etDate.getText().toString();
         String latitude = "";
         String longitude = "";
 
-        submittedStopRecord = new OperatorRequestResponseModel();
         submittedStopRecord.setMachine_id(machine_id);
         submittedStopRecord.setMeterReadingDate(meterReadingDate);
         submittedStopRecord.setMeterReadingTimestamp(getDateInLong(etDate.getText().toString()));
         submittedStopRecord.setStatus(status);
         submittedStopRecord.setStatus_code(status_code);
-        submittedStopRecord.setStopImage(stopImage);
         submittedStopRecord.setStop_meter_reading(stopMeterReading);
         submittedStopRecord.setStructureId(structure_id);
         submittedStopRecord.setSynced(false);
@@ -715,10 +727,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 .into(clickedImageView);*/
                         clickedImageView.setImageURI(resultUri);
                         if (imageType.equals("Start")) {
-                            imageHashmap.put("image0", bitmap);
+                            imageHashmap.put("start", bitmap);
                             startUri = resultUri;
                         } else if (imageType.equals("Stop")) {
-                            imageHashmap.put("image0", bitmap); //image0
+                            imageHashmap.put("stop", bitmap); //image0
                             stopUri = resultUri;
                         }
                     } else {
@@ -746,6 +758,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         editor.putString("operatorMachineData", gson.toJson(operatorMachineData));
         serverCurrentTimeStamp = operatorMachineData.getCurrentTimeStamp();
         allowedPastDaysForRecord = operatorMachineData.getAllowedPastDaysForRecord();
+        isImagesMandatory = operatorMachineData.isImagesMandatory();
+
         if (isOperator) {
             machine_id = operatorMachineData.getMachine_id();
             structure_id = operatorMachineData.getStructure_id();
@@ -878,7 +892,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-       // showPictureDialog();
+        // showPictureDialog();
     }
 
     @Override
@@ -979,7 +993,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             if (commonResponse.getStatus() == 200) {
                                 //Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                                 Snackbar.make(toolbar, commonResponse.getMessage(), Snackbar.LENGTH_SHORT).show();
-
+                                startUri = null;
+                                stopUri = null;
                                 //to update db entry to sync
                                 data.setSynced(true);
                                 if (data.getStatus().equalsIgnoreCase("Working")) {
@@ -1031,7 +1046,21 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                params.put("imageArraySize", String.valueOf(imageHashmap.size()));
+               // params.put("imageArraySize", String.valueOf(imageHashmap.size()));
+
+                if (data.getStatus().equalsIgnoreCase("Working")){
+                    if (data.getStartImage()!=null){
+                        params.put("imageArraySize", "1");
+                    }else {
+                        params.put("imageArraySize", "0");
+                    }
+                }else if (data.getStatus().equalsIgnoreCase("Stop")){
+                    if (data.getStopImage()!=null){
+                        params.put("imageArraySize", "1");
+                    }else {
+                        params.put("imageArraySize", "0");
+                    }
+                }
                 return params;
             }
 
@@ -1063,12 +1092,26 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
-                Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
+              /*  Iterator myVeryOwnIterator = imageHashmap.keySet().iterator();
                 for (int i = 0; i < imageHashmap.size(); i++) {
                     String key = (String) myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), imageHashmap.get(key));
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
+                }*/
+
+                if (data.getStatus().equalsIgnoreCase("Working")) {
+                    if (data.getStartImage() != null) {
+                        drawable = new BitmapDrawable(getResources(), imageHashmap.get("start"));
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
+                }else if (data.getStatus().equalsIgnoreCase("Stop")){
+                    if (data.getStopImage() != null) {
+                        drawable = new BitmapDrawable(getResources(), imageHashmap.get("stop"));
+                        params.put("image0", new DataPart("image0", getFileDataFromDrawable(drawable),
+                                "image/jpeg"));
+                    }
                 }
                 return params;
             }
