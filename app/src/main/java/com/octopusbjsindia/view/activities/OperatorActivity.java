@@ -317,11 +317,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getPreviousLatestRecordAfter(machine_id, selectedTimestamp);
 
                     if (previousLatestRecord != null) { //this is previous latest record
-                        if (Integer.parseInt(et_smeter_read.getText().toString()) >= Integer.parseInt(
+                        if (Float.parseFloat(et_smeter_read.getText().toString()) >= Float.parseFloat(
                                 previousLatestRecord.getStop_meter_reading())) {
 
                             if (nextLatestRecord != null) { //this is next latest record
-                                if (Integer.parseInt(et_smeter_read.getText().toString()) < Integer.parseInt(
+                                if (Float.parseFloat(et_smeter_read.getText().toString()) < Float.parseFloat(
                                         nextLatestRecord.getStart_meter_reading())) {
                                     addStartMeterRecord();
                                 } else {
@@ -337,7 +337,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         }
                     } else {
                         if (nextLatestRecord != null) { //this is next latest record
-                            if (Integer.parseInt(et_smeter_read.getText().toString()) < Integer.parseInt(
+                            if (Float.parseFloat(et_smeter_read.getText().toString()) < Float.parseFloat(
                                     nextLatestRecord.getStart_meter_reading())) {
                                 addStartMeterRecord();
                             } else {
@@ -375,7 +375,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getPreviousLatestRecordAfter(machine_id, selectedTimestamp);
 
                     if (nextLatestRecord != null) {
-                        if (Integer.parseInt(et_emeter_read.getText().toString()) <= Integer.parseInt(
+                        if (Float.parseFloat(et_emeter_read.getText().toString()) <= Float.parseFloat(
                                 nextLatestRecord.getStart_meter_reading())) {
                             addStopMeterRecord();
                         } else {

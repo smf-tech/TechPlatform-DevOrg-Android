@@ -60,6 +60,8 @@
         <TextView
             android:id="@+id/tv_structure_code"
             style="@style/TextViewRegularStyle"
+            android:layout_width="130dp"
+            android:gravity="start"
             android:layout_below="@+id/tv_code_label"
             android:fontFamily="@font/opensans_semibold"
             tools:text="12 apr" />
@@ -105,6 +107,8 @@
         <TextView
             android:id="@+id/tv_structure_name"
             style="@style/TextViewRegularStyle"
+            android:layout_width="210dp"
+            android:gravity="end"
             android:layout_below="@+id/tv_structure_label"
             android:layout_alignParentEnd="true"
             android:fontFamily="@font/opensans_semibold"
