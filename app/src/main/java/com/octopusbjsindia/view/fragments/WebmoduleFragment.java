@@ -236,7 +236,6 @@ public class WebmoduleFragment extends Fragment {
             filePickerFilePath = filePathCallback;
 
             //Checking permission for storage and camera for writing and uploading images
-            //String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
             PermissionHelperWebView.CheckPermissions(requireContext(), new PermissionHelperWebView.CheckPermissionListener() {
                 @Override
                 public void onAllGranted(boolean sync) {

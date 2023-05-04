@@ -351,33 +351,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 //to update db entry to sync
                                 if (data.getStatus().equalsIgnoreCase("Working")) {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
-                                }else {
+                                } else {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
-                                                    data.getLong(), data.getMachine_id(), data.getMeterReadingDate(),true);
+                                                    data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
                                 }
 
-                                //todo check for next day entry in db if exist then delete this entry from db
-                                /*if (data.getStatus().equalsIgnoreCase("Stop")) {
-                                    Long submittedRecordTimestamp = data.getMeterReadingTimestamp();
-                                    Long nextDayTimeStamp = Util.getNextDayTimestamp(submittedRecordTimestamp);
-                                    Long previousDayTimeStamp = Util.getPreviousDayTimestamp(submittedRecordTimestamp);
-
-                                    boolean rowIdNext = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                            getRecordForGivenTimestamp(data.getMachine_id(), nextDayTimeStamp);
-
-                                    boolean rowIdPrevious = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                            getRecordForGivenTimestamp(data.getMachine_id(), previousDayTimeStamp);
-
-                                    if (rowIdNext) {
-                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                                deleteMachineRecord(data);
-                                    }
-                                    if (rowIdPrevious) {
-                                        DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                                deleteSpecificMachineRecord(data.getMachine_id(), previousDayTimeStamp);
-                                    }
-                                }*/
+                                //to delete all previous record other than this latest entry
+                                if (data.getStatus().equalsIgnoreCase("Stop")) {
+                                    long submittedRecordTimestamp = data.getMeterReadingTimestamp();
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            deletePreviousMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
+                                }
                             } else {
                                 Util.showToast(commonResponse.getMessage(), getContext());
                             }
@@ -398,11 +383,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("formData", new Gson().toJson(data));
-                if (data.getStopImage() != null && data.getStartImage()!=null) {
+                if (data.getStopImage() != null && data.getStartImage() != null) {
                     params.put("imageArraySize", "2");
-                } else if (data.getStopImage() != null || data.getStartImage()!=null){
+                } else if (data.getStopImage() != null || data.getStartImage() != null) {
                     params.put("imageArraySize", "1");
-                }else {
+                } else {
                     params.put("imageArraySize", "0");
                 }
                 return params;
@@ -444,7 +429,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 //                return params;
                 Map<String, DataPart> params = new HashMap<>();
 
-               // Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
+                // Drawable drawable = new BitmapDrawable(getContext().getResources(), data.getStartImage());
                 if (data.getStartImage() != null) {
                     Bitmap bitmap = BitmapFactory.decodeFile(data.getStartImage());
                     params.put("image0", new DataPart("image0", getFileDataFromBitmap(bitmap),

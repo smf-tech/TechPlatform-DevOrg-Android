@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -62,10 +63,11 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/bg_circle_red"
-                android:fontFamily="@font/opensans"
+                android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
+                tools:text="2"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_10"
+                android:textSize="7sp"
                 android:visibility="visible" />
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>

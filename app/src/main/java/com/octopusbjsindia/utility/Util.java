@@ -108,6 +108,8 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -123,6 +125,7 @@ import static com.octopusbjsindia.utility.Constants.BATCH_CREATED_DATE;
 import static com.octopusbjsindia.utility.Constants.DATE_FORMAT;
 import static com.octopusbjsindia.utility.Constants.DATE_TIME_FORMAT;
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
+import static com.octopusbjsindia.utility.Constants.FORM_DATE;
 import static com.octopusbjsindia.utility.Constants.FORM_DATE_FORMAT;
 
 public class Util {
@@ -134,6 +137,7 @@ public class Util {
     public static final int SIZE_MATRIMONY_PROFILE = 1080; //used for -> matrimony profile images
     public static final int SIZE_USER_PROFILE = 600; // used for -> basic profile, business profile
     public static final int SIZE_DOCUMENT = 960; // used for -> matrimony document, business images
+
     public static void setError(final EditText inputEditText, String errorMessage) {
         final int padding = 10;
         inputEditText.setCompoundDrawablePadding(padding);
@@ -239,7 +243,7 @@ public class Util {
                         headers.put("roleId", getUserObjectFromPref().getRoleIds());
                     }
                 }
-                headers.put("versionName",getAppVersion());
+                headers.put("versionName", getAppVersion());
             }
         }
 
@@ -591,7 +595,7 @@ public class Util {
 
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if(inputMethodManager.isAcceptingText()){
+        if (inputMethodManager.isAcceptingText()) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
     }
@@ -601,20 +605,20 @@ public class Util {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static long getNextDayTimestamp(long timestamp){
+    public static long getNextDayTimestamp(long timestamp) {
         Date d = new Date(timestamp);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        c.add(Calendar.DATE,1);
+        c.add(Calendar.DATE, 1);
         d = c.getTime();
         return d.getTime();
     }
 
-    public static long getPreviousDayTimestamp(long timestamp){
+    public static long getPreviousDayTimestamp(long timestamp) {
         Date d = new Date(timestamp);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        c.add(Calendar.DATE,-1);
+        c.add(Calendar.DATE, -1);
         d = c.getTime();
         return d.getTime();
     }
@@ -696,6 +700,7 @@ public class Util {
         }
         return String.format(Locale.getDefault(), "%s", date);
     }
+
     public static String getBatchCreatedDate(String date, String dateFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
@@ -714,6 +719,7 @@ public class Util {
         }
         return String.format(Locale.getDefault(), "%s", date);
     }
+
     public static long getCurrentTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.getTime();
@@ -800,6 +806,17 @@ public class Util {
         return new Date();
     }
 
+    public static Date getNextDate(Long timeStamp, String dateTimeFormat) {
+        Calendar calendar = Calendar.getInstance();
+        Date today = new Timestamp(timeStamp);
+        calendar.setTime(today);
+
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date tomorrow = calendar.getTime();
+        return tomorrow;
+    }
+
+
     public static String getFormattedDatee(String date, String opFormat, String ipFormat) {
         if (date == null || date.isEmpty()) {
             return getFormattedDate(new Date().toString());
@@ -861,19 +878,19 @@ public class Util {
     }
 
     //for showing fixed date after input month
-    public static void showEndDateWithMonthDifference(OxyMachineMouActivity oxyMachineMouActivity, EditText etEndDate,long selecteddate,int monthCount) {
-            try {
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(selecteddate);
-                cal.add(Calendar.MONTH, monthCount);
-                Date d = cal.getTime();
-                DateFormat dateFormatting = new SimpleDateFormat(Constants.FORM_DATE);
-                String dateCalulated = dateFormatting.format(d);
-                etEndDate.setText(dateCalulated);
+    public static void showEndDateWithMonthDifference(OxyMachineMouActivity oxyMachineMouActivity, EditText etEndDate, long selecteddate, int monthCount) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(selecteddate);
+            cal.add(Calendar.MONTH, monthCount);
+            Date d = cal.getTime();
+            DateFormat dateFormatting = new SimpleDateFormat(Constants.FORM_DATE);
+            String dateCalulated = dateFormatting.format(d);
+            etEndDate.setText(dateCalulated);
 
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     private int getDaysBetween(String start, String end) {
@@ -1239,8 +1256,33 @@ public class Util {
         dateDialog.show();
     }
 
-    public static void showDateDialogEnableMaxDateFromSelected(Context context, final EditText editText, String selectedDate)
-    {
+    private void showDateDialogForDate(Context context, final EditText editText, Date date) {
+        final Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        long dateLong = date.getTime();
+
+        DatePickerDialog dateDialog
+                = new DatePickerDialog(context, (view, year, monthOfYear, dayOfMonth) -> {
+
+            String date1 = String.format(Locale.getDefault(), "%s", year) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(monthOfYear + 1)) + "-" +
+                    String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
+
+            editText.setText(date1);
+
+        }, mYear, mMonth, mDay);
+
+        dateDialog.getDatePicker().setMaxDate(dateLong);
+        dateDialog.getDatePicker().setMinDate(dateLong);
+        dateDialog.setTitle(context.getString(R.string.select_date_title));
+        dateDialog.show();
+    }
+
+
+    public static void showDateDialogEnableMaxDateFromSelected(Context context, final EditText editText, String selectedDate) {
         final Calendar today = Calendar.getInstance();
         final int mYear = today.get(Calendar.YEAR);
         final int mMonth = today.get(Calendar.MONTH);
@@ -1873,7 +1915,7 @@ public class Util {
             try {
                 if (response != null) {
                     PreferenceHelper preferenceHelper = new PreferenceHelper(Platform.getInstance());
-                    preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,false);
+                    preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY, false);
                     String res = response.toString();
                     Log.d(TAG, "updateFBTokan - Resp: " + res);
                 }
@@ -1907,8 +1949,8 @@ public class Util {
         Platform.getInstance().getVolleyRequestQueue().add(gsonRequest);
     }
 
-   //download and save project specific logo
-   public static  void downloadAndLoadIcon(Context context){
+    //download and save project specific logo
+    public static void downloadAndLoadIcon(Context context) {
        /*SharedPreferences preferences;
        SharedPreferences.Editor editor;
        preferences = Platform.getInstance().getSharedPreferences(
@@ -1940,7 +1982,8 @@ public class Util {
                editor.apply();
            }
        }*/
-   }
+    }
+
     //-------
     private static File getImageFile() {
         // External sdcard location
@@ -1973,7 +2016,7 @@ public class Util {
 
     public static String showEnterEmailDialog(final Activity context, int pos, Fragment fragment) {
         Dialog dialog;
-        Button btn_post_feedback, btn_pre_feedback,btn_submit;
+        Button btn_post_feedback, btn_pre_feedback, btn_submit;
         EditText edt_reason;
         Activity activity = context;
 
@@ -1988,11 +2031,11 @@ public class Util {
         btn_post_feedback = dialog.findViewById(R.id.btn_post_feedback);
         btn_submit = dialog.findViewById(R.id.btn_submit);
 
-        if (pos == 1){
+        if (pos == 1) {
             btn_submit.setVisibility(View.VISIBLE);
             btn_pre_feedback.setVisibility(View.GONE);
             btn_post_feedback.setVisibility(View.GONE);
-        } else if(pos == 2) {
+        } else if (pos == 2) {
             btn_submit.setVisibility(View.VISIBLE);
             btn_pre_feedback.setVisibility(View.GONE);
             btn_post_feedback.setVisibility(View.GONE);
@@ -2009,16 +2052,14 @@ public class Util {
                 String strEmailId = edt_reason.getText().toString().trim();
                 if (!TextUtils.isEmpty(strEmailId)
                         && !Patterns.EMAIL_ADDRESS.matcher(strEmailId).matches()) {
-                    showToast(context,"Please enter valid email.");
+                    showToast(context, "Please enter valid email.");
                 } else {
-                    if (context instanceof SmartGirlWorkshopListActivity){
+                    if (context instanceof SmartGirlWorkshopListActivity) {
                         ((SmartGirlWorkshopListActivity) context).onReceiveEmailId(strEmailId, pos);
-                    }
-                    else if (context instanceof TrainerBatchListActivity){
+                    } else if (context instanceof TrainerBatchListActivity) {
                         ((TrainerBatchListActivity) context).onReceiveEmailId(strEmailId, pos);
-                    }
-                    else if (fragment!= null && fragment instanceof SELFragment){
-                        ((SELFragment)fragment).onReceiveEmailId(strEmailId);
+                    } else if (fragment != null && fragment instanceof SELFragment) {
+                        ((SELFragment) fragment).onReceiveEmailId(strEmailId);
                     }
                     dialog.dismiss();
                 }
@@ -2031,11 +2072,11 @@ public class Util {
                 String strEmailId = edt_reason.getText().toString();
                 if (!TextUtils.isEmpty(strEmailId.toString().trim())
                         && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
-                    showToast(context,"Please enter valid email.");
+                    showToast(context, "Please enter valid email.");
                 } else {
-                    if (fragment instanceof MemberListFragment){
+                    if (fragment instanceof MemberListFragment) {
                         ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
-                    }else if (fragment instanceof MemberListFragment){
+                    } else if (fragment instanceof MemberListFragment) {
                         ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 1);
                     }
 
@@ -2051,11 +2092,11 @@ public class Util {
                 String strEmailId = edt_reason.getText().toString();
                 if (!TextUtils.isEmpty(strEmailId.toString().trim())
                         && !Patterns.EMAIL_ADDRESS.matcher(strEmailId.toString().trim()).matches()) {
-                    showToast(context,"Please enter valid email.");
-                }  else {
-                    if (fragment instanceof MemberListFragment){
+                    showToast(context, "Please enter valid email.");
+                } else {
+                    if (fragment instanceof MemberListFragment) {
                         ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
-                    }else if (fragment instanceof MemberListFragment){
+                    } else if (fragment instanceof MemberListFragment) {
                         ((MemberListFragment) fragment).onReceiveEmailId(strEmailId, 2);
                     }
 
@@ -2068,31 +2109,31 @@ public class Util {
         return "";
     }
 
-    public static void openCropActivityFreeCrop(Activity activity,Uri sourceUri, Uri destinationUri) {
+    public static void openCropActivityFreeCrop(Activity activity, Uri sourceUri, Uri destinationUri) {
         UCrop.Options options = new UCrop.Options();
         options.setFreeStyleCropEnabled(true);
-        options.setAllowedGestures(UCropActivity.SCALE,UCropActivity.SCALE,UCropActivity.SCALE);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
         UCrop.of(sourceUri, destinationUri)
                 .withOptions(options)
                 .start(activity);
     }
 
-    public static void openCropActivityFreeCropWithFragment(Activity activity,Fragment fragment,Uri sourceUri, Uri destinationUri) {
+    public static void openCropActivityFreeCropWithFragment(Activity activity, Fragment fragment, Uri sourceUri, Uri destinationUri) {
         UCrop.Options options = new UCrop.Options();
         options.setFreeStyleCropEnabled(true);
-        options.setAllowedGestures(UCropActivity.SCALE,UCropActivity.SCALE,UCropActivity.SCALE);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
         UCrop.of(sourceUri, destinationUri)
                 .withOptions(options)
-                .start(activity,fragment);
+                .start(activity, fragment);
     }
 
-    public static void openCropActivityFixCrop5_5_6(Activity activity,Fragment fragment,Uri sourceUri, Uri destinationUri) {
+    public static void openCropActivityFixCrop5_5_6(Activity activity, Fragment fragment, Uri sourceUri, Uri destinationUri) {
         UCrop.Options options = new UCrop.Options();
         options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
         UCrop.of(sourceUri, destinationUri)
                 .withAspectRatio(5f, 5.6f)
                 .withOptions(options)
-                .start(activity,fragment);
+                .start(activity, fragment);
     }
 
     public static boolean isPhotoPickerAvailable() {
@@ -2132,7 +2173,7 @@ public class Util {
         return rotatedBitmap;
     }
 
-    public static Bitmap resizeCompressBitmap(Bitmap bitmapImage,int maxSize) {
+    public static Bitmap resizeCompressBitmap(Bitmap bitmapImage, int maxSize) {
         // resize bitmap
         int outWidth;
         int outHeight;
@@ -2202,9 +2243,14 @@ public class Util {
         return result;
     }
 
-    public static boolean isBlankOrNull(String value){
+    public static boolean isBlankOrNull(String value) {
         return value != null && !TextUtils.isEmpty(value.trim());
     }
 
+    public static void setTextElseDash(TextView tv,String value){
+        if (value!=null&& !TextUtils.isEmpty(value)){
+            tv.setText(value);
+        }else tv.setText("-");
+    }
 
 }

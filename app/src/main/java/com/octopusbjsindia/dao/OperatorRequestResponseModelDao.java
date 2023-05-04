@@ -28,10 +28,14 @@ public interface OperatorRequestResponseModelDao {
             "stopImage=:stopImage, stop_meter_reading=:stopMeterReading, lat=:latitude, _long=:longitude, isSynced=:isSync " +
             "WHERE machine_id =:machine_id AND meterReadingDate=:reading_date")
     int updateMachineRecord(String status, String status_code, String stopImage, String stopMeterReading,
-                             String latitude, String longitude, String machine_id, String reading_date,boolean isSync);
+                            String latitude, String longitude, String machine_id, String reading_date, boolean isSync);
+
+    @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND status = 'Stop'" +
+            "ORDER BY meterReadingTimestamp DESC LIMIT 1")
+    OperatorRequestResponseModel getPreviousLatestRecord(String machine_id);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +
-            "meterReadingTimestamp<:selectedTimestamp ORDER BY meterReadingTimestamp DESC LIMIT 1")
+            "meterReadingTimestamp<:selectedTimestamp AND status = 'Stop' ORDER BY meterReadingTimestamp DESC LIMIT 1")
     OperatorRequestResponseModel getPreviousLatestRecord(String machine_id, Long selectedTimestamp);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +
@@ -44,6 +48,10 @@ public interface OperatorRequestResponseModelDao {
 
     @Delete
     void deleteMachineRecord(OperatorRequestResponseModel operatorRequestResponseModel);
+
+    @Query("DELETE FROM OperatorRequestResponseModel WHERE machine_id  = :machine_id AND" +
+            " meterReadingTimestamp<:latestReadingTimestamp AND isSynced = 1")
+    void deletePreviousMachineRecord(String machine_id, long latestReadingTimestamp);
 
     @Query("DELETE FROM OperatorRequestResponseModel WHERE machine_id  = :machine_id AND " +
             "meterReadingTimestamp =:nextDayTimeStamp")

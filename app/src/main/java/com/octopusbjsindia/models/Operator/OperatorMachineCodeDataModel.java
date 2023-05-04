@@ -47,6 +47,10 @@ public class OperatorMachineCodeDataModel {
     @Expose
     private boolean isImagesMandatory;
 
+    @SerializedName("machine_last_record")
+    @Expose
+    private OperatorRequestResponseModel machineLastRecord;
+
     @SerializedName("nonutilisationTypeData")
     @Expose
     private NonutilisationTypeDataList nonutilisationTypeData;
@@ -73,6 +77,10 @@ public class OperatorMachineCodeDataModel {
 
     public void setNonutilisationTypeData(NonutilisationTypeDataList nonutilisationTypeData) {
         this.nonutilisationTypeData = nonutilisationTypeData;
+    }
+
+    public OperatorRequestResponseModel getMachineLastRecord() {
+        return machineLastRecord;
     }
 
     public boolean isImagesMandatory() {
